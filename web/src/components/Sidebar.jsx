@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Sidebar() {
   const location = useLocation()
@@ -16,28 +17,33 @@ function Sidebar() {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem('token')
-      if (!token) return
+      if (!token) {
+        setLoading(false)
+        return
+      }
 
       const userStr = localStorage.getItem('user')
       if (userStr) {
         setUser(JSON.parse(userStr))
       }
 
-      const response = await fetch('/api/requests', {
+      const { data } = await api.get('/api/requests', {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        const requests = data.requests || []
-        const totalUploads = requests.reduce((sum, req) => sum + (req.uploadCount || 0), 0)
-        setStats({
-          totalRequests: requests.length,
-          totalUploads
-        })
-      }
+      const requests = data.requests || []
+      const totalUploads = requests.reduce((sum, req) => sum + (req.uploadCount || 0), 0)
+      setStats({
+        totalRequests: requests.length,
+        totalUploads
+      })
     } catch (error) {
       console.error('Failed to fetch data:', error)
+      // Set defaults on error to prevent rendering issues
+      setStats({
+        totalRequests: 0,
+        totalUploads: 0
+      })
     } finally {
       setLoading(false)
     }
