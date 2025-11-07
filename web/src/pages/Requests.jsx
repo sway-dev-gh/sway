@@ -618,6 +618,41 @@ function Requests() {
                         />
                       </div>
 
+                      <div style={{ marginBottom: theme.spacing[6] }}>
+                        <label style={{
+                          display: 'block',
+                          fontSize: '11px',
+                          color: theme.colors.text.muted,
+                          marginBottom: theme.spacing[2],
+                          textTransform: 'uppercase',
+                          letterSpacing: '1px'
+                        }}>
+                          Link Expires In
+                        </label>
+                        <select
+                          value={formData.timeLimit || '7'}
+                          onChange={(e) => setFormData(prev => ({ ...prev, timeLimit: e.target.value }))}
+                          style={{
+                            width: '100%',
+                            padding: '12px 16px',
+                            background: theme.colors.bg.page,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            color: theme.colors.text.primary,
+                            fontSize: '14px',
+                            fontFamily: 'inherit',
+                            outline: 'none',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          <option value="1">1 day</option>
+                          <option value="3">3 days</option>
+                          <option value="7">7 days</option>
+                          <option value="14">14 days</option>
+                          <option value="30">30 days</option>
+                          <option value="never">Never</option>
+                        </select>
+                      </div>
+
                       {/* Custom Fields based on request type */}
                       {REQUEST_TYPES.find(t => t.id === requestType)?.fields?.map((field) => (
                         <div key={field.id} style={{ marginBottom: theme.spacing[5] }}>

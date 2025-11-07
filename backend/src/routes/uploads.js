@@ -34,7 +34,7 @@ router.get('/:code', async (req, res) => {
     const { code } = req.params
 
     const result = await pool.query(
-      'SELECT id, title, description, is_active FROM file_requests WHERE short_code = $1',
+      'SELECT id, title, description, is_active, request_type, custom_fields, expires_at FROM file_requests WHERE short_code = $1',
       [code]
     )
 
@@ -48,7 +48,10 @@ router.get('/:code', async (req, res) => {
       id: request.id,
       title: request.title,
       description: request.description,
-      isActive: request.is_active
+      isActive: request.is_active,
+      requestType: request.request_type,
+      customFields: request.custom_fields,
+      expiresAt: request.expires_at
     })
   } catch (error) {
     console.error('Get upload request error:', error)
