@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 5001
 
 // Middleware
 app.use(cors({
-  origin: true, // Allow all origins for now
+  origin: ['https://swayfiles.com', 'https://www.swayfiles.com', 'http://localhost:5173'],
   credentials: true
 }))
 
