@@ -54,11 +54,27 @@ function Sidebar() {
     navigate('/login')
   }
 
-  const navItems = [
-    { path: '/dashboard', label: 'Dashboard' },
-    { path: '/requests', label: 'Requests' },
-    { path: '/plan', label: 'Plan' },
-    { path: '/settings', label: 'Settings' }
+  const navSections = [
+    {
+      items: [
+        { path: '/dashboard', label: 'Dashboard' },
+        { path: '/requests', label: 'Requests' }
+      ]
+    },
+    {
+      items: [
+        { path: '/files', label: 'Files' },
+        { path: '/notifications', label: 'Notifications' },
+        { path: '/templates', label: 'Templates' }
+      ]
+    },
+    {
+      items: [
+        { path: '/plan', label: 'Plan' },
+        { path: '/billing', label: 'Billing' },
+        { path: '/settings', label: 'Settings' }
+      ]
+    }
   ]
 
   const topBarStyle = {
@@ -111,28 +127,40 @@ function Sidebar() {
           display: 'flex',
           alignItems: 'center'
         }}>
-          {navItems.map((item) => {
-            const isActive = location.pathname === item.path
-            return (
-              <Link
-                key={item.path}
-                to={item.path}
-                style={navLinkStyle(isActive)}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = theme.colors.bg.hover
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.background = 'transparent'
-                  }
-                }}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
+          {navSections.map((section, sectionIndex) => (
+            <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center' }}>
+              {section.items.map((item) => {
+                const isActive = location.pathname === item.path
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    style={navLinkStyle(isActive)}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = theme.colors.bg.hover
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'transparent'
+                      }
+                    }}
+                  >
+                    {item.label}
+                  </Link>
+                )
+              })}
+              {sectionIndex < navSections.length - 1 && (
+                <div style={{
+                  width: '1px',
+                  height: '20px',
+                  background: theme.colors.border.medium,
+                  margin: `0 ${theme.spacing[4]}`
+                }} />
+              )}
+            </div>
+          ))}
         </nav>
       </div>
 
