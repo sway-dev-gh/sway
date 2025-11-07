@@ -278,7 +278,6 @@ function Requests() {
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                borderRadius: '24px',
                 transition: `all ${theme.transition.fast}`
               }}
               onMouseEnter={(e) => {
