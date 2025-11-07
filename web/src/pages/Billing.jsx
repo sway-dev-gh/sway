@@ -43,6 +43,19 @@ function Billing() {
         else storageLimit = 1
       }
 
+      // Set limits based on plan
+      let requestLimit, uploadLimit
+      if (plan === 'free') {
+        requestLimit = 3
+        uploadLimit = 10
+      } else if (plan === 'pro') {
+        requestLimit = 10
+        uploadLimit = 100
+      } else {
+        requestLimit = 'Unlimited'
+        uploadLimit = 'Unlimited'
+      }
+
       setUsage({
         currentPeriod: {
           requests: data.totalRequests,
@@ -50,8 +63,8 @@ function Billing() {
           storage: (data.storageMB / 1024).toFixed(2) // Convert MB to GB
         },
         limit: {
-          requests: 'Unlimited',
-          uploads: 'Unlimited',
+          requests: requestLimit,
+          uploads: uploadLimit,
           storage: storageLimit
         },
         plan
@@ -335,15 +348,18 @@ function Billing() {
               display: 'flex',
               gap: '12px'
             }}>
-              <button style={{
-                padding: '12px 24px',
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
-                fontSize: '13px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}>
+              <button
+                onClick={() => navigate('/plan')}
+                style={{
+                  padding: '12px 24px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  border: 'none',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
                 Upgrade Plan
               </button>
               <button style={{
