@@ -5,84 +5,12 @@ import theme from '../theme'
 import api from '../api/axios'
 
 const REQUEST_TYPES = [
-  {
-    id: 'code-submission',
-    name: 'Code Submission',
-    description: 'Request code files, repositories, or programming assignments',
-    fields: [
-      { id: 'language', label: 'Programming Language', type: 'text', placeholder: 'e.g., JavaScript, Python, Java' },
-      { id: 'repo', label: 'GitHub/GitLab URL (optional)', type: 'text', placeholder: 'https://github.com/...' }
-    ]
-  },
-  {
-    id: 'design-assets',
-    name: 'Design Assets',
-    description: 'Collect logos, mockups, design files',
-    fields: [
-      { id: 'format', label: 'Preferred Format', type: 'select', options: ['PNG', 'SVG', 'AI', 'PSD', 'Figma', 'Any'] },
-      { id: 'dimensions', label: 'Dimensions (optional)', type: 'text', placeholder: 'e.g., 1920x1080' }
-    ]
-  },
-  {
-    id: 'event-photos',
-    name: 'Event Photos',
-    description: 'Request photos from events or gatherings',
-    fields: [
-      { id: 'eventDate', label: 'Event Date', type: 'date' },
-      { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 20' }
-    ]
-  },
-  {
-    id: 'video-submissions',
-    name: 'Video Submissions',
-    description: 'Collect video content, vlogs, or recordings',
-    fields: [
-      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 5' },
-      { id: 'orientation', label: 'Orientation', type: 'select', options: ['Landscape', 'Portrait', 'Square', 'Any'] }
-    ]
-  },
-  {
-    id: 'application-materials',
-    name: 'Application Materials',
-    description: 'Collect resumes, portfolios, cover letters',
-    fields: [
-      { id: 'position', label: 'Position Applying For', type: 'text', placeholder: 'e.g., Software Engineer' },
-      { id: 'deadline', label: 'Application Deadline', type: 'date' }
-    ]
-  },
-  {
-    id: 'invoice-receipts',
-    name: 'Invoices & Receipts',
-    description: 'Request billing documents and payment receipts',
-    fields: [
-      { id: 'invoiceNumber', label: 'Invoice/Receipt Number', type: 'text', placeholder: 'e.g., INV-001' },
-      { id: 'amount', label: 'Amount', type: 'text', placeholder: 'e.g., $150.00' }
-    ]
-  },
-  { id: 'form-response', name: 'Form Response', description: 'Collect structured form data and responses', fields: [] },
-  { id: 'media-collection', name: 'Mixed Media Collection', description: 'Gather photos, videos, and audio files', fields: [] },
-  { id: 'document-upload', name: 'Document Upload', description: 'Request PDFs, Word docs, spreadsheets', fields: [] },
-  { id: 'client-deliverables', name: 'Client Deliverables', description: 'Request final work or project files', fields: [] },
-  { id: 'feedback-collection', name: 'Feedback Collection', description: 'Gather reviews, comments, testimonials', fields: [] },
-  { id: 'content-submissions', name: 'Content Submissions', description: 'Collect blog posts, articles, written content', fields: [] },
-  { id: 'assignment-handins', name: 'Assignment Hand-ins', description: 'Student homework and project submissions', fields: [] },
-  { id: 'contract-signatures', name: 'Contract Signatures', description: 'Signed documents and agreements', fields: [] },
-  { id: 'audio-files', name: 'Audio Files', description: 'Request podcasts, voice recordings, or music files', fields: [] },
-  { id: 'spreadsheet-data', name: 'Spreadsheet Data', description: 'Collect Excel files, CSV data, or financial reports', fields: [] },
-  { id: 'presentation-slides', name: 'Presentation Slides', description: 'Request PowerPoint, Keynote, or Google Slides', fields: [] },
-  { id: 'legal-documents', name: 'Legal Documents', description: 'Collect contracts, agreements, or legal forms', fields: [] },
-  { id: 'id-verification', name: 'ID Verification', description: 'Collect identification documents for verification', fields: [] },
-  { id: 'medical-records', name: 'Medical Records', description: 'Request health records or medical documentation', fields: [] },
-  { id: 'tax-documents', name: 'Tax Documents', description: 'Collect W2s, 1099s, or tax-related files', fields: [] },
-  { id: 'property-photos', name: 'Property Photos', description: 'Request real estate or property images', fields: [] },
-  { id: 'product-images', name: 'Product Images', description: 'Collect product photos for e-commerce', fields: [] },
-  { id: 'marketing-materials', name: 'Marketing Materials', description: 'Request brochures, flyers, or promotional content', fields: [] },
-  { id: 'social-media-content', name: 'Social Media Content', description: 'Collect posts, stories, or social assets', fields: [] },
-  { id: 'testimonials-reviews', name: 'Testimonials & Reviews', description: 'Gather customer feedback and reviews', fields: [] },
-  { id: 'survey-responses', name: 'Survey Responses', description: 'Collect completed surveys or questionnaires', fields: [] },
-  { id: 'research-data', name: 'Research Data', description: 'Request research findings or data sets', fields: [] },
-  { id: 'screenshot-proof', name: 'Screenshots & Proof', description: 'Collect evidence, screenshots, or verification images', fields: [] },
-  { id: 'general-upload', name: 'General Upload', description: 'Simple file collection for any purpose', fields: [] }
+  { id: 'general', name: 'General Upload', description: 'Simple file collection for any purpose' },
+  { id: 'photos', name: 'Photos', description: 'Collect images and photos' },
+  { id: 'videos', name: 'Videos', description: 'Collect video files' },
+  { id: 'documents', name: 'Documents', description: 'Request PDFs, Word docs, spreadsheets' },
+  { id: 'code', name: 'Code', description: 'Request code files or repositories' },
+  { id: 'design', name: 'Design', description: 'Collect logos, mockups, design files' }
 ]
 
 function Requests() {
@@ -93,7 +21,6 @@ function Requests() {
   const [creating, setCreating] = useState(false)
   const [formData, setFormData] = useState({ title: '', description: '' })
   const [requestType, setRequestType] = useState('')
-  const [searchQuery, setSearchQuery] = useState('')
   const [expiryType, setExpiryType] = useState('preset') // 'preset' or 'custom'
   const [customExpiryValue, setCustomExpiryValue] = useState('')
   const [customExpiryUnit, setCustomExpiryUnit] = useState('days') // 'minutes', 'hours', 'days'
@@ -602,26 +529,6 @@ function Requests() {
                   </div>
                 ) : !requestType ? (
                   <div style={{ padding: '32px' }}>
-                    {/* Search Bar */}
-                    <div style={{ marginBottom: theme.spacing[5] }}>
-                      <input
-                        type="text"
-                        placeholder="Search request types..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '12px 16px',
-                          background: theme.colors.bg.secondary,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          color: theme.colors.text.primary,
-                          fontSize: '14px',
-                          fontFamily: 'inherit',
-                          outline: 'none'
-                        }}
-                      />
-                    </div>
-
                     <div style={{
                       fontSize: '11px',
                       color: theme.colors.text.muted,
@@ -629,54 +536,46 @@ function Requests() {
                       textTransform: 'uppercase',
                       letterSpacing: '1px'
                     }}>
-                      Choose a request type
+                      Choose a type
                     </div>
 
                     <div style={{
                       display: 'grid',
-                      gap: '1px',
-                      background: theme.colors.border.light,
-                      maxHeight: '400px',
-                      overflowY: 'auto'
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: '12px'
                     }}>
-                      {REQUEST_TYPES
-                        .filter(type =>
-                          type.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          type.description.toLowerCase().includes(searchQuery.toLowerCase())
-                        )
-                        .map((type) => (
+                      {REQUEST_TYPES.map((type) => (
                         <div
                           key={type.id}
-                          onClick={() => {
-                            setRequestType(type.id)
-                            setSearchQuery('')
-                          }}
+                          onClick={() => setRequestType(type.id)}
                           style={{
                             padding: '20px',
-                            background: theme.colors.bg.page,
+                            background: theme.colors.bg.secondary,
+                            border: `1px solid ${theme.colors.border.medium}`,
                             cursor: 'pointer',
-                            transition: 'background 0.15s ease'
+                            transition: 'all 0.15s ease'
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = theme.colors.bg.secondary
+                            e.currentTarget.style.background = theme.colors.bg.hover
+                            e.currentTarget.style.borderColor = theme.colors.border.dark
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = theme.colors.bg.page
+                            e.currentTarget.style.background = theme.colors.bg.secondary
+                            e.currentTarget.style.borderColor = theme.colors.border.medium
                           }}
                         >
                           <div style={{
-                            fontSize: '15px',
+                            fontSize: '14px',
                             fontWeight: '400',
                             color: theme.colors.text.primary,
-                            letterSpacing: '-0.01em',
                             marginBottom: theme.spacing[1]
                           }}>
                             {type.name}
                           </div>
                           <div style={{
-                            fontSize: '12px',
-                            color: theme.colors.text.muted,
-                            lineHeight: '1.5'
+                            fontSize: '11px',
+                            color: theme.colors.text.tertiary,
+                            lineHeight: '1.4'
                           }}>
                             {type.description}
                           </div>
@@ -921,67 +820,6 @@ function Requests() {
                           </div>
                         )}
                       </div>
-
-                      {/* Custom Fields based on request type */}
-                      {REQUEST_TYPES.find(t => t.id === requestType)?.fields?.map((field) => (
-                        <div key={field.id} style={{ marginBottom: theme.spacing[5] }}>
-                          <label style={{
-                            display: 'block',
-                            fontSize: '11px',
-                            color: theme.colors.text.muted,
-                            marginBottom: theme.spacing[2],
-                            textTransform: 'uppercase',
-                            letterSpacing: '1px'
-                          }}>
-                            {field.label}
-                          </label>
-                          {field.type === 'select' ? (
-                            <select
-                              value={formData.fields?.[field.id] || ''}
-                              onChange={(e) => setFormData(prev => ({
-                                ...prev,
-                                fields: { ...prev.fields, [field.id]: e.target.value }
-                              }))}
-                              style={{
-                                width: '100%',
-                                padding: '12px 16px',
-                                background: theme.colors.bg.page,
-                                border: `1px solid ${theme.colors.border.medium}`,
-                                color: theme.colors.text.primary,
-                                fontSize: '14px',
-                                fontFamily: 'inherit',
-                                outline: 'none',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              <option value="">Select {field.label}</option>
-                              {field.options.map(opt => (
-                                <option key={opt} value={opt}>{opt}</option>
-                              ))}
-                            </select>
-                          ) : (
-                            <input
-                              type={field.type}
-                              value={formData.fields?.[field.id] || ''}
-                              onChange={(e) => setFormData(prev => ({
-                                ...prev,
-                                fields: { ...prev.fields, [field.id]: e.target.value }
-                              }))}
-                              placeholder={field.placeholder}
-                              style={{
-                                width: '100%',
-                                padding: '12px 16px',
-                                background: theme.colors.bg.page,
-                                border: `1px solid ${theme.colors.border.medium}`,
-                                color: theme.colors.text.primary,
-                                fontSize: '14px',
-                                fontFamily: 'inherit',
-                                outline: 'none'
-                              }}
-                            />
-                          )}
-                        </div>
-                      ))}
 
                       <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
                         <button
