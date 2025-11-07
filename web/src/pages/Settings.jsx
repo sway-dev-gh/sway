@@ -143,15 +143,14 @@ function Settings() {
 
           {/* Settings Sections */}
           <div style={{
-            display: 'grid',
-            gap: '1px',
-            background: theme.colors.border.light
+            maxWidth: '800px'
           }}>
 
             {/* Account Information */}
             <div style={{
               background: theme.colors.bg.page,
-              padding: '40px'
+              padding: '0 0 40px 0',
+              borderBottom: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{
                 fontSize: '9px',
@@ -205,7 +204,8 @@ function Settings() {
             {/* Notifications */}
             <div style={{
               background: theme.colors.bg.page,
-              padding: '40px'
+              padding: '40px 0',
+              borderBottom: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{
                 fontSize: '9px',
@@ -299,7 +299,8 @@ function Settings() {
             {/* Preferences */}
             <div style={{
               background: theme.colors.bg.page,
-              padding: '40px'
+              padding: '40px 0',
+              borderBottom: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{
                 fontSize: '9px',
@@ -406,7 +407,7 @@ function Settings() {
             {/* Danger Zone */}
             <div style={{
               background: theme.colors.bg.page,
-              padding: '40px'
+              padding: '40px 0'
             }}>
               <div style={{
                 fontSize: '9px',
