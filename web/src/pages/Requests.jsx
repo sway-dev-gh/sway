@@ -94,6 +94,9 @@ function Requests() {
   const [formData, setFormData] = useState({ title: '', description: '' })
   const [requestType, setRequestType] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
+  const [expiryType, setExpiryType] = useState('preset') // 'preset' or 'custom'
+  const [customExpiryValue, setCustomExpiryValue] = useState('')
+  const [customExpiryUnit, setCustomExpiryUnit] = useState('days') // 'minutes', 'hours', 'days'
 
   useEffect(() => {
     fetchRequests()
@@ -138,15 +141,42 @@ function Requests() {
     e.preventDefault()
     if (!formData.title.trim() || !requestType) return
 
+    // Validate custom expiry
+    if (expiryType === 'custom') {
+      const value = parseInt(customExpiryValue)
+      if (!value || value < 1) {
+        alert('Please enter a valid expiry time')
+        return
+      }
+      // Minimum 5 minutes validation
+      if (customExpiryUnit === 'minutes' && value < 5) {
+        alert('Minimum expiry time is 5 minutes')
+        return
+      }
+    }
+
     try {
       setCreating(true)
       const token = localStorage.getItem('token')
+
+      // Calculate timeLimit in minutes for custom expiry
+      let timeLimit = formData.timeLimit || '7' // default preset
+      if (expiryType === 'custom') {
+        const value = parseInt(customExpiryValue)
+        let minutes = value
+        if (customExpiryUnit === 'hours') {
+          minutes = value * 60
+        } else if (customExpiryUnit === 'days') {
+          minutes = value * 60 * 24
+        }
+        timeLimit = `custom:${minutes}` // Send as "custom:XXX" where XXX is minutes
+      }
 
       await api.post('/api/requests', {
         title: formData.title,
         description: formData.description,
         type: requestType,
-        timeLimit: formData.timeLimit || '7',
+        timeLimit: timeLimit,
         fields: formData.fields || {}
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -156,6 +186,9 @@ function Requests() {
       setShowModal(false)
       setRequestType('')
       setFormData({ title: '', description: '' })
+      setExpiryType('preset')
+      setCustomExpiryValue('')
+      setCustomExpiryUnit('days')
     } catch (err) {
       console.error('Failed to create request:', err)
       alert(err.response?.data?.error || 'Failed to create request')
@@ -684,28 +717,120 @@ function Requests() {
                         }}>
                           Link Expires In
                         </label>
-                        <select
-                          value={formData.timeLimit || '7'}
-                          onChange={(e) => setFormData(prev => ({ ...prev, timeLimit: e.target.value }))}
-                          style={{
-                            width: '100%',
-                            padding: '12px 16px',
-                            background: theme.colors.bg.page,
-                            border: `1px solid ${theme.colors.border.medium}`,
-                            color: theme.colors.text.primary,
-                            fontSize: '14px',
-                            fontFamily: 'inherit',
-                            outline: 'none',
+
+                        {/* Expiry Type Selection */}
+                        <div style={{ marginBottom: theme.spacing[3] }}>
+                          <label style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            marginBottom: theme.spacing[2],
                             cursor: 'pointer'
-                          }}
-                        >
-                          <option value="1">1 day</option>
-                          <option value="3">3 days</option>
-                          <option value="7">7 days</option>
-                          <option value="14">14 days</option>
-                          <option value="30">30 days</option>
-                          <option value="never">Never</option>
-                        </select>
+                          }}>
+                            <input
+                              type="radio"
+                              name="expiryType"
+                              value="preset"
+                              checked={expiryType === 'preset'}
+                              onChange={(e) => setExpiryType(e.target.value)}
+                              style={{ marginRight: theme.spacing[2] }}
+                            />
+                            <span style={{ fontSize: '14px', color: theme.colors.text.primary }}>Preset time</span>
+                          </label>
+                          <label style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            cursor: 'pointer'
+                          }}>
+                            <input
+                              type="radio"
+                              name="expiryType"
+                              value="custom"
+                              checked={expiryType === 'custom'}
+                              onChange={(e) => setExpiryType(e.target.value)}
+                              style={{ marginRight: theme.spacing[2] }}
+                            />
+                            <span style={{ fontSize: '14px', color: theme.colors.text.primary }}>Custom time</span>
+                          </label>
+                        </div>
+
+                        {expiryType === 'preset' ? (
+                          <select
+                            value={formData.timeLimit || '7'}
+                            onChange={(e) => setFormData(prev => ({ ...prev, timeLimit: e.target.value }))}
+                            style={{
+                              width: '100%',
+                              padding: '12px 16px',
+                              background: theme.colors.bg.page,
+                              border: `1px solid ${theme.colors.border.medium}`,
+                              color: theme.colors.text.primary,
+                              fontSize: '14px',
+                              fontFamily: 'inherit',
+                              outline: 'none',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            <option value="1">1 day</option>
+                            <option value="3">3 days</option>
+                            <option value="7">7 days</option>
+                            <option value="14">14 days</option>
+                            <option value="30">30 days</option>
+                            <option value="never">Never</option>
+                          </select>
+                        ) : (
+                          <div style={{ display: 'flex', gap: theme.spacing[2] }}>
+                            <input
+                              type="number"
+                              min={customExpiryUnit === 'minutes' ? '5' : '1'}
+                              value={customExpiryValue}
+                              onChange={(e) => setCustomExpiryValue(e.target.value)}
+                              placeholder="Enter time"
+                              style={{
+                                flex: 1,
+                                padding: '12px 16px',
+                                background: theme.colors.bg.page,
+                                border: `1px solid ${theme.colors.border.medium}`,
+                                color: theme.colors.text.primary,
+                                fontSize: '14px',
+                                fontFamily: 'inherit',
+                                outline: 'none'
+                              }}
+                            />
+                            <select
+                              value={customExpiryUnit}
+                              onChange={(e) => {
+                                setCustomExpiryUnit(e.target.value)
+                                // Reset value if switching to minutes and current value is less than 5
+                                if (e.target.value === 'minutes' && parseInt(customExpiryValue) < 5) {
+                                  setCustomExpiryValue('5')
+                                }
+                              }}
+                              style={{
+                                padding: '12px 16px',
+                                background: theme.colors.bg.page,
+                                border: `1px solid ${theme.colors.border.medium}`,
+                                color: theme.colors.text.primary,
+                                fontSize: '14px',
+                                fontFamily: 'inherit',
+                                outline: 'none',
+                                cursor: 'pointer',
+                                minWidth: '120px'
+                              }}
+                            >
+                              <option value="minutes">Minutes</option>
+                              <option value="hours">Hours</option>
+                              <option value="days">Days</option>
+                            </select>
+                          </div>
+                        )}
+                        {expiryType === 'custom' && customExpiryUnit === 'minutes' && (
+                          <div style={{
+                            fontSize: '12px',
+                            color: theme.colors.text.muted,
+                            marginTop: theme.spacing[2]
+                          }}>
+                            Minimum: 5 minutes
+                          </div>
+                        )}
                       </div>
 
                       {/* Custom Fields based on request type */}
