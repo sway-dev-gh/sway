@@ -117,22 +117,28 @@ function Settings() {
         marginTop: '60px'
       }}>
         <div style={{
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
           padding: '60px 40px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '60px' }}>
+          <div style={{ marginBottom: '40px' }}>
             <h1 style={{
-              fontSize: '72px',
-              fontWeight: '300',
-              margin: '0',
-              letterSpacing: '-0.02em',
-              lineHeight: '1'
+              fontSize: '32px',
+              fontWeight: '400',
+              margin: 0,
+              color: theme.colors.text.primary
             }}>
               Settings
             </h1>
+            <p style={{
+              fontSize: '14px',
+              color: theme.colors.text.muted,
+              margin: '8px 0 0 0'
+            }}>
+              Manage your account preferences and settings
+            </p>
           </div>
 
           {/* Settings Sections */}

@@ -136,20 +136,19 @@ function Plan() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '60px' }}>
+          <div style={{ marginBottom: '40px' }}>
             <h1 style={{
-              fontSize: '72px',
-              fontWeight: '300',
-              margin: '0 0 16px 0',
-              letterSpacing: '-0.02em',
-              lineHeight: '1'
+              fontSize: '32px',
+              fontWeight: '400',
+              margin: 0,
+              color: theme.colors.text.primary
             }}>
               Plan
             </h1>
             <p style={{
               fontSize: '14px',
-              color: theme.colors.text.secondary,
-              margin: 0
+              color: theme.colors.text.muted,
+              margin: '8px 0 0 0'
             }}>
               Choose the plan that works for you
             </p>

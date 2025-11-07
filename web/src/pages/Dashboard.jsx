@@ -96,18 +96,17 @@ function Dashboard() {
           {/* Header */}
           <div style={{ marginBottom: '40px' }}>
             <h1 style={{
-              fontSize: '72px',
-              fontWeight: '300',
-              margin: '0 0 8px 0',
-              letterSpacing: '-0.02em',
-              lineHeight: '1'
+              fontSize: '32px',
+              fontWeight: '400',
+              margin: 0,
+              color: theme.colors.text.primary
             }}>
               Dashboard
             </h1>
             <p style={{
               fontSize: '14px',
-              color: theme.colors.text.secondary,
-              margin: 0
+              color: theme.colors.text.muted,
+              margin: '8px 0 0 0'
             }}>
               Overview of your file requests and uploads
             </p>
