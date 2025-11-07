@@ -9,7 +9,8 @@ const REQUEST_TYPES = [
     id: 'general-upload',
     name: 'General Upload',
     description: 'Simple file collection',
-    fields: []
+    fields: [],
+    planRequired: 'free'
   },
   {
     id: 'photos',
@@ -18,7 +19,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'resolution', label: 'Preferred Resolution', type: 'select', options: ['Any', '4K', '1080p', '720p'] },
       { id: 'count', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 10' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'videos',
@@ -27,7 +29,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 5' },
       { id: 'orientation', label: 'Orientation', type: 'select', options: ['Landscape', 'Portrait', 'Square', 'Any'] }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'documents',
@@ -36,7 +39,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'docType', label: 'Document Type', type: 'select', options: ['PDF', 'Word', 'Excel', 'PowerPoint', 'Any'] },
       { id: 'pageLimit', label: 'Max Pages (optional)', type: 'number', placeholder: 'e.g., 20' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'code-submission',
@@ -45,7 +49,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'language', label: 'Programming Language', type: 'text', placeholder: 'e.g., JavaScript, Python, Java' },
       { id: 'repo', label: 'GitHub/GitLab URL (optional)', type: 'text', placeholder: 'https://github.com/...' }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'design-assets',
@@ -54,7 +59,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'format', label: 'Preferred Format', type: 'select', options: ['PNG', 'SVG', 'AI', 'PSD', 'Figma', 'Any'] },
       { id: 'dimensions', label: 'Dimensions (optional)', type: 'text', placeholder: 'e.g., 1920x1080' }
-    ]
+    ],
+    planRequired: 'business'
   },
   {
     id: 'event-photos',
@@ -63,7 +69,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'eventDate', label: 'Event Date', type: 'date' },
       { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 20' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'application-materials',
@@ -72,7 +79,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'position', label: 'Position Applying For', type: 'text', placeholder: 'e.g., Software Engineer' },
       { id: 'deadline', label: 'Application Deadline', type: 'date' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'invoices',
@@ -81,7 +89,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'invoiceNumber', label: 'Invoice Number', type: 'text', placeholder: 'e.g., INV-001' },
       { id: 'amount', label: 'Amount', type: 'text', placeholder: 'e.g., $150.00' }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'forms',
@@ -90,7 +99,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'formName', label: 'Form Name', type: 'text', placeholder: 'e.g., Customer Survey' },
       { id: 'submissionCount', label: 'Expected Submissions', type: 'number', placeholder: 'e.g., 50' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'client-deliverables',
@@ -99,7 +109,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'projectName', label: 'Project Name', type: 'text', placeholder: 'e.g., Website Redesign' },
       { id: 'dueDate', label: 'Due Date', type: 'date' }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'feedback',
@@ -108,7 +119,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'feedbackType', label: 'Feedback Type', type: 'select', options: ['Review', 'Testimonial', 'Bug Report', 'Feature Request', 'Other'] },
       { id: 'topic', label: 'Topic', type: 'text', placeholder: 'What is this feedback about?' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'content',
@@ -117,7 +129,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'contentType', label: 'Content Type', type: 'select', options: ['Article', 'Blog Post', 'Script', 'Copy', 'Other'] },
       { id: 'wordCount', label: 'Target Word Count', type: 'number', placeholder: 'e.g., 1000' }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'assignments',
@@ -126,7 +139,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'course', label: 'Course Name', type: 'text', placeholder: 'e.g., CS 101' },
       { id: 'dueDate', label: 'Due Date', type: 'date' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'contracts',
@@ -135,7 +149,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'contractType', label: 'Contract Type', type: 'text', placeholder: 'e.g., NDA, Service Agreement' },
       { id: 'parties', label: 'Number of Parties', type: 'number', placeholder: 'e.g., 2' }
-    ]
+    ],
+    planRequired: 'business'
   },
   {
     id: 'audio',
@@ -144,7 +159,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 30' },
       { id: 'format', label: 'Preferred Format', type: 'select', options: ['MP3', 'WAV', 'AAC', 'Any'] }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'spreadsheets',
@@ -153,7 +169,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'dataType', label: 'Data Type', type: 'text', placeholder: 'e.g., Sales Data, Customer List' },
       { id: 'rowCount', label: 'Expected Rows (optional)', type: 'number', placeholder: 'e.g., 500' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'presentations',
@@ -162,7 +179,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'topic', label: 'Presentation Topic', type: 'text', placeholder: 'e.g., Q4 Results' },
       { id: 'slides', label: 'Expected Slides', type: 'number', placeholder: 'e.g., 15' }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'legal',
@@ -171,7 +189,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'documentType', label: 'Document Type', type: 'text', placeholder: 'e.g., Power of Attorney' },
       { id: 'jurisdiction', label: 'Jurisdiction', type: 'text', placeholder: 'e.g., California' }
-    ]
+    ],
+    planRequired: 'business'
   },
   {
     id: 'id-verification',
@@ -180,7 +199,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'idType', label: 'ID Type', type: 'select', options: ['Passport', 'Driver License', 'State ID', 'Other'] },
       { id: 'country', label: 'Country', type: 'text', placeholder: 'e.g., USA' }
-    ]
+    ],
+    planRequired: 'business'
   },
   {
     id: 'medical',
@@ -189,7 +209,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'recordType', label: 'Record Type', type: 'select', options: ['Lab Results', 'Prescription', 'X-Ray/Imaging', 'Medical History', 'Other'] },
       { id: 'dateOfService', label: 'Date of Service', type: 'date' }
-    ]
+    ],
+    planRequired: 'business'
   },
   {
     id: 'tax-documents',
@@ -198,7 +219,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'taxYear', label: 'Tax Year', type: 'number', placeholder: 'e.g., 2024' },
       { id: 'docType', label: 'Document Type', type: 'select', options: ['W2', '1099', '1040', 'Receipt', 'Other'] }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'property',
@@ -207,7 +229,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'propertyType', label: 'Property Type', type: 'select', options: ['House', 'Apartment', 'Commercial', 'Land', 'Other'] },
       { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 25' }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'products',
@@ -216,7 +239,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'productCategory', label: 'Product Category', type: 'text', placeholder: 'e.g., Electronics, Clothing' },
       { id: 'backgroundType', label: 'Background', type: 'select', options: ['White', 'Transparent', 'Lifestyle', 'Any'] }
-    ]
+    ],
+    planRequired: 'business'
   },
   {
     id: 'marketing',
@@ -225,7 +249,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'campaignName', label: 'Campaign Name', type: 'text', placeholder: 'e.g., Spring Sale 2024' },
       { id: 'platform', label: 'Platform', type: 'select', options: ['Email', 'Social Media', 'Print', 'Digital Ads', 'All'] }
-    ]
+    ],
+    planRequired: 'business'
   },
   {
     id: 'social-media',
@@ -234,7 +259,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'platform', label: 'Platform', type: 'select', options: ['Instagram', 'TikTok', 'Twitter/X', 'Facebook', 'LinkedIn', 'Multiple'] },
       { id: 'contentType', label: 'Content Type', type: 'select', options: ['Post', 'Story', 'Reel', 'Video', 'Image'] }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'surveys',
@@ -243,7 +269,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'surveyName', label: 'Survey Name', type: 'text', placeholder: 'e.g., Customer Satisfaction' },
       { id: 'expectedResponses', label: 'Expected Responses', type: 'number', placeholder: 'e.g., 100' }
-    ]
+    ],
+    planRequired: 'free'
   },
   {
     id: 'research',
@@ -252,7 +279,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'researchTopic', label: 'Research Topic', type: 'text', placeholder: 'e.g., Climate Change Impact' },
       { id: 'dataFormat', label: 'Data Format', type: 'select', options: ['CSV', 'JSON', 'Excel', 'PDF', 'Other'] }
-    ]
+    ],
+    planRequired: 'pro'
   },
   {
     id: 'screenshots',
@@ -261,7 +289,8 @@ const REQUEST_TYPES = [
     fields: [
       { id: 'purpose', label: 'Purpose', type: 'text', placeholder: 'e.g., Bug Report, Tutorial' },
       { id: 'count', label: 'Expected Number', type: 'number', placeholder: 'e.g., 5' }
-    ]
+    ],
+    planRequired: 'free'
   }
 ]
 
@@ -278,9 +307,20 @@ function Requests() {
   const [customExpiryValue, setCustomExpiryValue] = useState('')
   const [customExpiryUnit, setCustomExpiryUnit] = useState('days') // 'minutes', 'hours', 'days'
   const [createdLink, setCreatedLink] = useState(null) // Store the created link
+  const [userPlan, setUserPlan] = useState('free') // Store user's plan
 
   useEffect(() => {
     fetchRequests()
+    // Load user plan
+    const userStr = localStorage.getItem('user')
+    if (userStr) {
+      const userData = JSON.parse(userStr)
+      const plan = userData.plan || 'free'
+      console.log('USER PLAN:', plan, 'Full user data:', userData)
+      setUserPlan(plan)
+    } else {
+      console.log('NO USER DATA IN LOCALSTORAGE')
+    }
     // Load default request type from settings
     const savedSettings = localStorage.getItem('userSettings')
     if (savedSettings) {
@@ -683,9 +723,10 @@ function Requests() {
                   maxWidth: '600px',
                   width: '100%',
                   maxHeight: '90vh',
-                  overflow: 'auto',
+                  overflowY: 'auto',
                   margin: 'auto'
                 }}
+                className="custom-scrollbar"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal Header */}
@@ -830,8 +871,7 @@ function Requests() {
                       gridTemplateColumns: 'repeat(3, 1fr)',
                       gap: '12px',
                       maxHeight: '400px',
-                      overflowY: 'auto',
-                      paddingRight: '8px'
+                      overflowY: 'auto'
                     }}
                     className="custom-scrollbar"
                     >
@@ -840,46 +880,75 @@ function Requests() {
                           type.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           type.description.toLowerCase().includes(searchQuery.toLowerCase())
                         )
-                        .map((type) => (
-                        <div
-                          key={type.id}
-                          onClick={() => {
-                            setRequestType(type.id)
-                            setSearchQuery('')
-                          }}
-                          style={{
-                            padding: '16px',
-                            background: theme.colors.bg.secondary,
-                            border: `1px solid ${theme.colors.border.medium}`,
-                            cursor: 'pointer',
-                            transition: 'all 0.15s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = theme.colors.bg.hover
-                            e.currentTarget.style.borderColor = theme.colors.border.dark
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = theme.colors.bg.secondary
-                            e.currentTarget.style.borderColor = theme.colors.border.medium
-                          }}
-                        >
-                          <div style={{
-                            fontSize: '13px',
-                            fontWeight: '400',
-                            color: theme.colors.text.primary,
-                            marginBottom: theme.spacing[1]
-                          }}>
-                            {type.name}
-                          </div>
-                          <div style={{
-                            fontSize: '11px',
-                            color: theme.colors.text.tertiary,
-                            lineHeight: '1.3'
-                          }}>
-                            {type.description}
-                          </div>
-                        </div>
-                      ))}
+                        .map((type) => {
+                          const planLevels = { 'free': 0, 'pro': 1, 'business': 2 }
+                          const isLocked = planLevels[userPlan] < planLevels[type.planRequired]
+
+                          return (
+                            <div
+                              key={type.id}
+                              onClick={() => {
+                                if (isLocked) {
+                                  alert(`This request type requires ${type.planRequired === 'pro' ? 'Pro' : 'Business'} plan. Please upgrade to use this feature.`)
+                                } else {
+                                  setRequestType(type.id)
+                                  setSearchQuery('')
+                                }
+                              }}
+                              style={{
+                                padding: '16px',
+                                background: isLocked ? theme.colors.bg.page : theme.colors.bg.secondary,
+                                border: `1px solid ${theme.colors.border.medium}`,
+                                cursor: isLocked ? 'not-allowed' : 'pointer',
+                                transition: 'all 0.15s ease',
+                                opacity: isLocked ? 0.5 : 1,
+                                position: 'relative'
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!isLocked) {
+                                  e.currentTarget.style.background = theme.colors.bg.hover
+                                  e.currentTarget.style.borderColor = theme.colors.border.dark
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!isLocked) {
+                                  e.currentTarget.style.background = theme.colors.bg.secondary
+                                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                                }
+                              }}
+                            >
+                              {isLocked && (
+                                <div style={{
+                                  position: 'absolute',
+                                  top: '8px',
+                                  right: '8px',
+                                  fontSize: '10px',
+                                  color: theme.colors.text.tertiary,
+                                  textTransform: 'uppercase',
+                                  letterSpacing: '1px',
+                                  fontWeight: '500'
+                                }}>
+                                  {type.planRequired}
+                                </div>
+                              )}
+                              <div style={{
+                                fontSize: '13px',
+                                fontWeight: '400',
+                                color: theme.colors.text.primary,
+                                marginBottom: theme.spacing[1]
+                              }}>
+                                {type.name}
+                              </div>
+                              <div style={{
+                                fontSize: '11px',
+                                color: theme.colors.text.tertiary,
+                                lineHeight: '1.3'
+                              }}>
+                                {type.description}
+                              </div>
+                            </div>
+                          )
+                        })}
                     </div>
                   </div>
                 ) : (
@@ -1260,18 +1329,12 @@ function Requests() {
 
       {/* Custom Scrollbar Styles */}
       <style>{`
+        .custom-scrollbar {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
         .custom-scrollbar::-webkit-scrollbar {
-          width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-          background: ${theme.colors.border.medium};
-          border-radius: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-          background: ${theme.colors.border.dark};
+          display: none;
         }
       `}</style>
     </>
