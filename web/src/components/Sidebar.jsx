@@ -50,7 +50,6 @@ function Sidebar() {
   }
 
   const navItems = [
-    { path: '/dashboard', label: 'Dashboard', icon: '■' },
     { path: '/requests', label: 'Requests', icon: '■' },
     { path: '/plan', label: 'Plan', icon: '■' },
     { path: '/settings', label: 'Settings', icon: '■' }
