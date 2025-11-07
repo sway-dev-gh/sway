@@ -138,9 +138,15 @@ function Notifications() {
                 <div
                   key={notification.id}
                   style={{
-                    padding: '20px',
+                    padding: '24px',
                     background: theme.colors.bg.page,
-                    transition: `all ${theme.transition.fast}`
+                    transition: `background ${theme.transition.fast}`
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = theme.colors.bg.hover
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = theme.colors.bg.page
                   }}
                 >
                   <div style={{
@@ -150,14 +156,14 @@ function Notifications() {
                     marginBottom: '8px'
                   }}>
                     <div style={{
-                      fontSize: '13px',
+                      fontSize: '15px',
                       color: theme.colors.text.primary,
-                      fontWeight: theme.weight.medium
+                      fontWeight: '400'
                     }}>
                       {notification.title}
                     </div>
                     <div style={{
-                      fontSize: '11px',
+                      fontSize: '12px',
                       color: theme.colors.text.tertiary
                     }}>
                       {formatTimeAgo(notification.createdAt)}
@@ -165,17 +171,17 @@ function Notifications() {
                   </div>
                   <div style={{
                     fontSize: '13px',
-                    color: theme.colors.text.secondary,
+                    color: theme.colors.text.muted,
                     marginBottom: '8px',
                     lineHeight: '1.5'
                   }}>
                     {notification.message}
                   </div>
                   <div style={{
-                    fontSize: '11px',
-                    color: theme.colors.text.muted
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary
                   }}>
-                    Request: <span style={{ color: theme.colors.text.secondary }}>{notification.requestTitle}</span>
+                    {notification.requestTitle}
                   </div>
                 </div>
               ))}

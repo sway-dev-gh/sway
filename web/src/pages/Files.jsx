@@ -154,44 +154,54 @@ function Files() {
             </div>
           ) : (
             <div style={{
-              border: `1px solid ${theme.colors.border.medium}`
+              display: 'grid',
+              gap: '1px',
+              background: theme.colors.border.light
             }}>
-              {files.map((file, index) => (
+              {files.map((file) => (
                 <div
                   key={file.id}
                   style={{
-                    padding: '20px',
-                    borderBottom: index < files.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                    background: theme.colors.bg.page,
+                    padding: '24px',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    transition: `background ${theme.transition.fast}`
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = theme.colors.bg.hover
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = theme.colors.bg.page
                   }}
                 >
-                  <div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{
-                      fontSize: '14px',
+                      fontSize: '15px',
                       color: theme.colors.text.primary,
-                      marginBottom: '4px'
+                      marginBottom: '4px',
+                      fontWeight: '400',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis'
                     }}>
                       {file.fileName}
                     </div>
                     <div style={{
+                      fontSize: '13px',
+                      color: theme.colors.text.muted,
+                      marginBottom: '4px'
+                    }}>
+                      {file.requestTitle}
+                    </div>
+                    <div style={{
                       fontSize: '12px',
-                      color: theme.colors.text.muted
+                      color: theme.colors.text.tertiary
                     }}>
                       {formatFileSize(file.fileSize)} • {formatDate(file.uploadedAt)}
-                      {file.requestTitle && ` • ${file.requestTitle}`}
+                      {file.uploaderName && ` • ${file.uploaderName}`}
                     </div>
-                    {file.uploaderName && (
-                      <div style={{
-                        fontSize: '11px',
-                        color: theme.colors.text.tertiary,
-                        marginTop: '4px'
-                      }}>
-                        From: {file.uploaderName}
-                        {file.uploaderEmail && ` (${file.uploaderEmail})`}
-                      </div>
-                    )}
                   </div>
                   <button
                     onClick={() => downloadFile(file.id, file.fileName)}
@@ -202,7 +212,10 @@ function Files() {
                       border: 'none',
                       fontSize: '13px',
                       cursor: 'pointer',
-                      transition: `all ${theme.transition.fast}`
+                      transition: `all ${theme.transition.fast}`,
+                      whiteSpace: 'nowrap',
+                      marginLeft: '20px',
+                      flexShrink: 0
                     }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = theme.colors.text.secondary
