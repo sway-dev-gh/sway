@@ -1,14 +1,7 @@
 {
-  "redirects": [
-    {
-      "source": "/dashboard",
-      "destination": "/requests",
-      "permanent": true
-    }
-  ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api).*)",
       "destination": "/index.html"
     }
   ]
