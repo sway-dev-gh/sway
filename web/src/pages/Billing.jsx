@@ -72,6 +72,18 @@ function Billing() {
     return Math.min((current / limit) * 100, 100)
   }
 
+  const getStorageWarning = () => {
+    const percentage = calculatePercentage(usage.currentPeriod.storage, usage.limit.storage)
+    if (percentage >= 90) {
+      return { show: true, message: 'You are running out of storage space', severity: 'critical' }
+    } else if (percentage >= 75) {
+      return { show: true, message: 'You are approaching your storage limit', severity: 'warning' }
+    }
+    return { show: false }
+  }
+
+  const storageWarning = getStorageWarning()
+
   if (loading) {
     return (
       <div style={{
@@ -126,6 +138,50 @@ function Billing() {
               Track your usage and manage billing
             </p>
           </div>
+
+          {/* Storage Warning Banner */}
+          {storageWarning.show && (
+            <div style={{
+              padding: '16px 24px',
+              background: storageWarning.severity === 'critical' ? 'rgba(0, 0, 0, 0.05)' : 'rgba(0, 0, 0, 0.03)',
+              border: `1px solid ${storageWarning.severity === 'critical' ? theme.colors.border.medium : theme.colors.border.light}`,
+              marginBottom: '40px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
+            }}>
+              <div>
+                <div style={{
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  color: theme.colors.text.primary,
+                  marginBottom: '4px'
+                }}>
+                  {storageWarning.message}
+                </div>
+                <div style={{
+                  fontSize: '13px',
+                  color: theme.colors.text.muted
+                }}>
+                  You're using {usage.currentPeriod.storage} GB of {usage.limit.storage} GB ({calculatePercentage(usage.currentPeriod.storage, usage.limit.storage).toFixed(1)}%)
+                </div>
+              </div>
+              <button
+                onClick={() => navigate('/plan')}
+                style={{
+                  padding: '10px 20px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  border: 'none',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
+                Upgrade Plan
+              </button>
+            </div>
+          )}
 
           {/* Usage Metrics */}
           <div style={{
@@ -228,9 +284,29 @@ function Billing() {
               </div>
               <div style={{
                 fontSize: '12px',
-                color: theme.colors.text.muted
+                color: theme.colors.text.muted,
+                marginBottom: '12px'
               }}>
                 of {usage.limit.storage} GB
+              </div>
+              {/* Storage Progress Bar */}
+              <div style={{
+                width: '100%',
+                height: '4px',
+                background: theme.colors.border.light,
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  width: `${Math.min(calculatePercentage(usage.currentPeriod.storage, usage.limit.storage), 100)}%`,
+                  height: '100%',
+                  background: calculatePercentage(usage.currentPeriod.storage, usage.limit.storage) >= 90
+                    ? theme.colors.text.primary
+                    : calculatePercentage(usage.currentPeriod.storage, usage.limit.storage) >= 75
+                      ? theme.colors.text.secondary
+                      : theme.colors.text.tertiary,
+                  transition: 'width 0.3s ease'
+                }} />
               </div>
             </div>
           </div>
