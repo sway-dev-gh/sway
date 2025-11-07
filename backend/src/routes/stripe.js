@@ -56,8 +56,8 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
   }
 })
 
-// Webhook to handle successful payments
-router.post('/webhook', async (req, res) => {
+// Webhook to handle successful payments (needs raw body)
+router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   const stripe = getStripe()
   if (!stripe) {
     return res.status(503).json({ error: 'Stripe is not configured' })
