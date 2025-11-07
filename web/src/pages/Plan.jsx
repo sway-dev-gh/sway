@@ -73,7 +73,7 @@ function Plan() {
     {
       id: 'pro',
       name: 'Pro',
-      price: '$9',
+      price: '$5',
       period: '/month',
       storage: '50 GB',
       features: [
@@ -86,7 +86,7 @@ function Plan() {
     {
       id: 'business',
       name: 'Business',
-      price: '$29',
+      price: '$19',
       period: '/month',
       storage: '200 GB',
       features: [
