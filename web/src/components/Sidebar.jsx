@@ -253,12 +253,26 @@ function Sidebar() {
             }}>
               {user.email?.charAt(0).toUpperCase() || 'U'}
             </div>
-            <div style={{
-              fontSize: theme.fontSize.sm,
-              fontWeight: theme.weight.medium,
-              color: theme.colors.text.primary
-            }}>
-              {user.email?.split('@')[0] || 'User'}
+            <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[2] }}>
+              <div style={{
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.primary
+              }}>
+                {user.email?.split('@')[0] || 'User'}
+              </div>
+              <div style={{
+                fontSize: '9px',
+                fontWeight: theme.weight.semibold,
+                color: theme.colors.text.tertiary,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px',
+                padding: '2px 6px',
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.medium}`
+              }}>
+                {user.plan || 'Free'}
+              </div>
             </div>
           </div>
 

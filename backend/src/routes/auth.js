@@ -24,7 +24,7 @@ router.post('/signup', async (req, res) => {
 
     // Create user
     const result = await pool.query(
-      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name',
+      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, plan',
       [email, passwordHash, name || null]
     )
 
@@ -37,7 +37,15 @@ router.post('/signup', async (req, res) => {
       { expiresIn: '30d' }
     )
 
-    res.json({ token, user })
+    res.json({
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        plan: user.plan || 'free'
+      }
+    })
   } catch (error) {
     console.error('Signup error:', error)
     res.status(500).json({ error: 'Signup failed' })
@@ -80,7 +88,8 @@ router.post('/login', async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
+        plan: user.plan || 'free'
       }
     })
   } catch (error) {
