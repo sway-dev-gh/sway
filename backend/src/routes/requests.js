@@ -26,19 +26,28 @@ router.post('/', authenticateToken, async (req, res) => {
     const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
     const userPlan = userResult.rows[0]?.plan || 'free'
 
-    // Free plan: limit to 3 active requests
-    if (userPlan === 'free') {
+    // Enforce active request limits by plan
+    const requestLimits = {
+      free: 3,
+      pro: 10,
+      business: null // unlimited
+    }
+
+    const limit = requestLimits[userPlan]
+
+    if (limit !== null) {
       const activeRequestsResult = await pool.query(
         'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
         [req.userId]
       )
       const activeCount = parseInt(activeRequestsResult.rows[0].count)
 
-      if (activeCount >= 3) {
+      if (activeCount >= limit) {
+        const upgradePlan = userPlan === 'free' ? 'Pro' : 'Business'
         return res.status(403).json({
-          error: 'Request limit reached. Free plan allows 3 active requests. Upgrade to Pro for unlimited requests.',
+          error: `Request limit reached. ${userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} plan allows ${limit} active requests. Upgrade to ${upgradePlan} for ${userPlan === 'free' ? '10 requests' : 'unlimited requests'}.`,
           limitReached: true,
-          currentPlan: 'free'
+          currentPlan: userPlan
         })
       }
     }

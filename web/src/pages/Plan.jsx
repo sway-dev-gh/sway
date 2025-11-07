@@ -78,7 +78,7 @@ function Plan() {
       storage: '50 GB',
       features: [
         '50 GB total storage',
-        'Unlimited requests',
+        '10 active requests',
         'Limited file types',
         '100 files per request'
       ]
