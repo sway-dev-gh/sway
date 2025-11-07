@@ -732,7 +732,11 @@ function Requests() {
                               value="preset"
                               checked={expiryType === 'preset'}
                               onChange={(e) => setExpiryType(e.target.value)}
-                              style={{ marginRight: theme.spacing[2] }}
+                              style={{
+                                marginRight: theme.spacing[2],
+                                accentColor: theme.colors.white,
+                                filter: 'grayscale(1)'
+                              }}
                             />
                             <span style={{ fontSize: '14px', color: theme.colors.text.primary }}>Preset time</span>
                           </label>
@@ -747,7 +751,11 @@ function Requests() {
                               value="custom"
                               checked={expiryType === 'custom'}
                               onChange={(e) => setExpiryType(e.target.value)}
-                              style={{ marginRight: theme.spacing[2] }}
+                              style={{
+                                marginRight: theme.spacing[2],
+                                accentColor: theme.colors.white,
+                                filter: 'grayscale(1)'
+                              }}
                             />
                             <span style={{ fontSize: '14px', color: theme.colors.text.primary }}>Custom time</span>
                           </label>

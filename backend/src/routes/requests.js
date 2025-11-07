@@ -33,16 +33,17 @@ router.post('/', authenticateToken, async (req, res) => {
     // Calculate expiration date if timeLimit is provided
     let expiresAt = null
     if (timeLimit && timeLimit !== 'never') {
-      if (timeLimit.startsWith('custom:')) {
+      const timeLimitStr = String(timeLimit)
+      if (timeLimitStr.startsWith('custom:')) {
         // Custom time in minutes format: "custom:XXX"
-        const minutes = parseInt(timeLimit.split(':')[1])
+        const minutes = parseInt(timeLimitStr.split(':')[1])
         if (minutes >= 5) { // Minimum 5 minutes
           expiresAt = new Date()
           expiresAt.setMinutes(expiresAt.getMinutes() + minutes)
         }
-      } else if (parseInt(timeLimit) > 0) {
+      } else if (parseInt(timeLimitStr) > 0) {
         // Preset time in days
-        const days = parseInt(timeLimit)
+        const days = parseInt(timeLimitStr)
         expiresAt = new Date()
         expiresAt.setDate(expiresAt.getDate() + days)
       }
