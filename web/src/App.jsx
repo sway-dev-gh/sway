@@ -9,6 +9,8 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import './App.css'
 
+// Dashboard removed - stats integrated into Requests page
+
 function App() {
   return (
     <BrowserRouter>
