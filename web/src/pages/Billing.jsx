@@ -114,115 +114,107 @@ function Billing() {
           {/* Usage Metrics */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '24px',
-            marginBottom: '40px'
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1px',
+            background: theme.colors.border.light,
+            marginBottom: '60px'
           }}>
             {/* Requests */}
             <div style={{
-              padding: '24px',
-              border: `1px solid ${theme.colors.border.medium}`,
-              background: theme.colors.bg.secondary
+              background: theme.colors.bg.page,
+              padding: '40px'
             }}>
               <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.muted,
-                marginBottom: '8px'
+                fontSize: '9px',
+                color: theme.colors.text.tertiary,
+                marginBottom: theme.spacing[3],
+                textTransform: 'uppercase',
+                letterSpacing: '1.5px',
+                fontWeight: theme.weight.semibold
               }}>
                 Requests
               </div>
               <div style={{
-                fontSize: '28px',
+                fontSize: '48px',
                 fontWeight: '300',
                 color: theme.colors.text.primary,
+                letterSpacing: '-0.03em',
+                lineHeight: '1',
                 marginBottom: '16px'
               }}>
-                {usage.currentPeriod.requests} / {usage.limit.requests}
+                {usage.currentPeriod.requests}
               </div>
               <div style={{
-                width: '100%',
-                height: '4px',
-                background: theme.colors.border.medium,
-                overflow: 'hidden'
+                fontSize: '12px',
+                color: theme.colors.text.muted
               }}>
-                <div style={{
-                  width: `${calculatePercentage(usage.currentPeriod.requests, usage.limit.requests)}%`,
-                  height: '100%',
-                  background: theme.colors.white,
-                  transition: 'width 0.3s ease'
-                }} />
+                of {usage.limit.requests}
               </div>
             </div>
 
             {/* Uploads */}
             <div style={{
-              padding: '24px',
-              border: `1px solid ${theme.colors.border.medium}`,
-              background: theme.colors.bg.secondary
+              background: theme.colors.bg.page,
+              padding: '40px'
             }}>
               <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.muted,
-                marginBottom: '8px'
+                fontSize: '9px',
+                color: theme.colors.text.tertiary,
+                marginBottom: theme.spacing[3],
+                textTransform: 'uppercase',
+                letterSpacing: '1.5px',
+                fontWeight: theme.weight.semibold
               }}>
                 Uploads
               </div>
               <div style={{
-                fontSize: '28px',
+                fontSize: '48px',
                 fontWeight: '300',
                 color: theme.colors.text.primary,
+                letterSpacing: '-0.03em',
+                lineHeight: '1',
                 marginBottom: '16px'
               }}>
-                {usage.currentPeriod.uploads} / {usage.limit.uploads}
+                {usage.currentPeriod.uploads}
               </div>
               <div style={{
-                width: '100%',
-                height: '4px',
-                background: theme.colors.border.medium,
-                overflow: 'hidden'
+                fontSize: '12px',
+                color: theme.colors.text.muted
               }}>
-                <div style={{
-                  width: `${calculatePercentage(usage.currentPeriod.uploads, usage.limit.uploads)}%`,
-                  height: '100%',
-                  background: theme.colors.white,
-                  transition: 'width 0.3s ease'
-                }} />
+                of {usage.limit.uploads}
               </div>
             </div>
 
             {/* Storage */}
             <div style={{
-              padding: '24px',
-              border: `1px solid ${theme.colors.border.medium}`,
-              background: theme.colors.bg.secondary
+              background: theme.colors.bg.page,
+              padding: '40px'
             }}>
               <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.muted,
-                marginBottom: '8px'
+                fontSize: '9px',
+                color: theme.colors.text.tertiary,
+                marginBottom: theme.spacing[3],
+                textTransform: 'uppercase',
+                letterSpacing: '1.5px',
+                fontWeight: theme.weight.semibold
               }}>
                 Storage
               </div>
               <div style={{
-                fontSize: '28px',
+                fontSize: '48px',
                 fontWeight: '300',
                 color: theme.colors.text.primary,
+                letterSpacing: '-0.03em',
+                lineHeight: '1',
                 marginBottom: '16px'
               }}>
-                {usage.currentPeriod.storage} GB / {usage.limit.storage} GB
+                {usage.currentPeriod.storage} MB
               </div>
               <div style={{
-                width: '100%',
-                height: '4px',
-                background: theme.colors.border.medium,
-                overflow: 'hidden'
+                fontSize: '12px',
+                color: theme.colors.text.muted
               }}>
-                <div style={{
-                  width: `${calculatePercentage(usage.currentPeriod.storage, usage.limit.storage)}%`,
-                  height: '100%',
-                  background: theme.colors.white,
-                  transition: 'width 0.3s ease'
-                }} />
+                of {usage.limit.storage} MB
               </div>
             </div>
           </div>

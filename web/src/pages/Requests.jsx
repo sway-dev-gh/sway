@@ -97,6 +97,7 @@ function Requests() {
   const [expiryType, setExpiryType] = useState('preset') // 'preset' or 'custom'
   const [customExpiryValue, setCustomExpiryValue] = useState('')
   const [customExpiryUnit, setCustomExpiryUnit] = useState('days') // 'minutes', 'hours', 'days'
+  const [createdLink, setCreatedLink] = useState(null) // Store the created link
 
   useEffect(() => {
     fetchRequests()
@@ -137,6 +138,24 @@ function Requests() {
     }
   }
 
+  const closeModal = () => {
+    setShowModal(false)
+    setRequestType('')
+    setFormData({ title: '', description: '' })
+    setExpiryType('preset')
+    setCustomExpiryValue('')
+    setCustomExpiryUnit('days')
+    setCreatedLink(null)
+  }
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      alert('Link copied to clipboard!')
+    }).catch(() => {
+      alert('Failed to copy. Please copy manually.')
+    })
+  }
+
   const handleCreateRequest = async (e) => {
     e.preventDefault()
     if (!formData.title.trim() || !requestType) return
@@ -172,7 +191,7 @@ function Requests() {
         timeLimit = `custom:${minutes}` // Send as "custom:XXX" where XXX is minutes
       }
 
-      await api.post('/api/requests', {
+      const { data } = await api.post('/api/requests', {
         title: formData.title,
         description: formData.description,
         type: requestType,
@@ -182,13 +201,12 @@ function Requests() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
+      // Store the shareable link
+      const shareableLink = `${window.location.origin}/r/${data.shortCode}`
+      setCreatedLink(shareableLink)
+
       await fetchRequests()
-      setShowModal(false)
-      setRequestType('')
-      setFormData({ title: '', description: '' })
-      setExpiryType('preset')
-      setCustomExpiryValue('')
-      setCustomExpiryUnit('days')
+      // Don't close modal yet - show the link first
     } catch (err) {
       console.error('Failed to create request:', err)
       alert(err.response?.data?.error || 'Failed to create request')
@@ -463,11 +481,7 @@ function Requests() {
                 zIndex: 1000,
                 padding: '40px'
               }}
-              onClick={() => {
-                setShowModal(false)
-                setRequestType('')
-                setFormData({ title: '', description: '' })
-              }}
+              onClick={closeModal}
             >
               <div
                 style={{
@@ -518,7 +532,75 @@ function Requests() {
                 </div>
 
                 {/* Modal Content */}
-                {!requestType ? (
+                {createdLink ? (
+                  /* Success Screen */
+                  <div style={{ padding: '48px 32px', textAlign: 'center' }}>
+                    <div style={{
+                      fontSize: '18px',
+                      color: theme.colors.text.primary,
+                      marginBottom: '24px',
+                      fontWeight: '400'
+                    }}>
+                      Request Created Successfully!
+                    </div>
+
+                    <div style={{
+                      fontSize: '13px',
+                      color: theme.colors.text.muted,
+                      marginBottom: '32px'
+                    }}>
+                      Share this link with people to collect files
+                    </div>
+
+                    {/* Link Display */}
+                    <div style={{
+                      padding: '16px',
+                      background: theme.colors.bg.secondary,
+                      border: `1px solid ${theme.colors.border.medium}`,
+                      marginBottom: '24px',
+                      wordBreak: 'break-all',
+                      fontSize: '14px',
+                      color: theme.colors.text.primary,
+                      fontFamily: 'monospace'
+                    }}>
+                      {createdLink}
+                    </div>
+
+                    {/* Buttons */}
+                    <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                      <button
+                        onClick={() => copyToClipboard(createdLink)}
+                        style={{
+                          padding: '12px 24px',
+                          background: theme.colors.white,
+                          color: theme.colors.black,
+                          border: 'none',
+                          fontSize: '14px',
+                          fontWeight: '400',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit'
+                        }}
+                      >
+                        Copy Link
+                      </button>
+                      <button
+                        onClick={closeModal}
+                        style={{
+                          padding: '12px 24px',
+                          background: 'transparent',
+                          color: theme.colors.text.secondary,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          fontSize: '14px',
+                          fontWeight: '400',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit'
+                        }}
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                ) : !requestType ? (
                   <div style={{ padding: '32px' }}>
                     {/* Search Bar */}
                     <div style={{ marginBottom: theme.spacing[5] }}>
