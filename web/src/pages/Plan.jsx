@@ -34,7 +34,8 @@ function Plan() {
     setUpgrading(true)
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch('/api/stripe/create-checkout-session', {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://api.swayfiles.com'
+      const response = await fetch(`${API_URL}/api/stripe/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
