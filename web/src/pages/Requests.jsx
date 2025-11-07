@@ -587,8 +587,11 @@ function Requests() {
                       gridTemplateColumns: 'repeat(3, 1fr)',
                       gap: '12px',
                       maxHeight: '400px',
-                      overflowY: 'auto'
-                    }}>
+                      overflowY: 'auto',
+                      paddingRight: '8px'
+                    }}
+                    className="custom-scrollbar"
+                    >
                       {REQUEST_TYPES
                         .filter(type =>
                           type.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -921,6 +924,23 @@ function Requests() {
           )}
         </div>
       </div>
+
+      {/* Custom Scrollbar Styles */}
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: ${theme.colors.border.medium};
+          border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: ${theme.colors.border.dark};
+        }
+      `}</style>
     </>
   )
 }
