@@ -63,10 +63,11 @@ function Plan() {
       name: 'Free',
       price: '$0',
       storage: '1 GB',
+      retention: 'Files kept 30 days',
       features: [
         '1 GB total storage',
         '3 active requests',
-        'Basic file types only',
+        'Basic files (images, PDFs, docs)',
         '10 files per request'
       ]
     },
@@ -76,10 +77,11 @@ function Plan() {
       price: '$5',
       period: '/month',
       storage: '50 GB',
+      retention: 'Files kept forever',
       features: [
         '50 GB total storage',
         '10 active requests',
-        'Limited file types',
+        'More types (+ videos, audio, archives)',
         '100 files per request'
       ]
     },
@@ -89,11 +91,13 @@ function Plan() {
       price: '$19',
       period: '/month',
       storage: '200 GB',
+      retention: 'Files kept forever',
       features: [
         '200 GB total storage',
         'Unlimited requests',
         'All file types',
-        'Unlimited files per request'
+        'Unlimited files per request',
+        'Priority support'
       ]
     }
   ]
@@ -246,7 +250,7 @@ function Plan() {
                     fontSize: '11px',
                     color: theme.colors.text.muted
                   }}>
-                    Keep files indefinitely
+                    {plan.retention}
                   </div>
                 </div>
 

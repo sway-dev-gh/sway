@@ -217,7 +217,7 @@ function Billing() {
                 letterSpacing: '1.5px',
                 fontWeight: theme.weight.semibold
               }}>
-                Requests
+                Active Requests
               </div>
               <div style={{
                 fontSize: '48px',
@@ -231,13 +231,20 @@ function Billing() {
               </div>
               <div style={{
                 fontSize: '12px',
-                color: theme.colors.text.muted
+                color: theme.colors.text.muted,
+                marginBottom: '4px'
               }}>
-                of {usage.limit.requests}
+                of {usage.limit.requests} {typeof usage.limit.requests === 'number' ? 'allowed' : ''}
+              </div>
+              <div style={{
+                fontSize: '10px',
+                color: theme.colors.text.tertiary
+              }}>
+                Active file requests
               </div>
             </div>
 
-            {/* Uploads */}
+            {/* Total Files */}
             <div style={{
               background: theme.colors.bg.page,
               padding: '40px'
@@ -250,7 +257,7 @@ function Billing() {
                 letterSpacing: '1.5px',
                 fontWeight: theme.weight.semibold
               }}>
-                Uploads
+                Total Files
               </div>
               <div style={{
                 fontSize: '48px',
@@ -264,9 +271,16 @@ function Billing() {
               </div>
               <div style={{
                 fontSize: '12px',
-                color: theme.colors.text.muted
+                color: theme.colors.text.muted,
+                marginBottom: '4px'
               }}>
-                of {usage.limit.uploads}
+                {typeof usage.limit.uploads === 'number' ? `${usage.limit.uploads} per request max` : 'Unlimited per request'}
+              </div>
+              <div style={{
+                fontSize: '10px',
+                color: theme.colors.text.tertiary
+              }}>
+                Files uploaded to all requests
               </div>
             </div>
 
