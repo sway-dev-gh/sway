@@ -293,10 +293,8 @@ function Requests() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '16px',
-                      cursor: 'pointer',
                       transition: `all ${theme.transition.fast}`
                     }}
-                    onClick={() => navigate(`/requests/${req.id}`)}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = theme.colors.bg.hover
                       e.currentTarget.style.paddingLeft = '12px'
@@ -313,25 +311,30 @@ function Requests() {
                     }}
                   >
                     {/* Icon/Avatar */}
-                    <div style={{
-                      width: '48px',
-                      height: '48px',
-                      borderRadius: '50%',
-                      background: theme.colors.bg.secondary,
-                      border: `1px solid ${theme.colors.border.medium}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '18px',
-                      fontWeight: '300',
-                      color: theme.colors.text.secondary,
-                      flexShrink: 0
-                    }}>
+                    <div
+                      onClick={() => navigate(`/requests/${req.id}`)}
+                      style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '50%',
+                        background: theme.colors.bg.secondary,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '18px',
+                        fontWeight: '300',
+                        color: theme.colors.text.secondary,
+                        flexShrink: 0,
+                        cursor: 'pointer'
+                      }}>
                       {req.uploadCount || 0}
                     </div>
 
                     {/* Content */}
-                    <div style={{ flex: 1, minWidth: 0 }}>
+                    <div
+                      onClick={() => navigate(`/requests/${req.id}`)}
+                      style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
                       <div style={{
                         fontSize: '15px',
                         fontWeight: '400',
@@ -361,6 +364,50 @@ function Requests() {
                       flexShrink: 0
                     }}>
                       {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div style={{
+                      display: 'flex',
+                      gap: '8px',
+                      flexShrink: 0
+                    }}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          navigate(`/requests/${req.id}`)
+                        }}
+                        style={{
+                          padding: '8px 16px',
+                          background: theme.colors.white,
+                          color: theme.colors.black,
+                          border: 'none',
+                          fontSize: '13px',
+                          fontWeight: '400',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit'
+                        }}
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleDelete(req.id)
+                        }}
+                        style={{
+                          padding: '8px 16px',
+                          background: 'transparent',
+                          color: theme.colors.text.secondary,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          fontSize: '13px',
+                          fontWeight: '400',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit'
+                        }}
+                      >
+                        Delete
+                      </button>
                     </div>
                   </div>
                 ))}
