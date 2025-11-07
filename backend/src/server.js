@@ -41,6 +41,12 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' })
 })
 
-app.listen(PORT, () => {
-  console.log(`✓ Sway backend running on port ${PORT}`)
-})
+// Only start server in development (not on Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`✓ Sway backend running on port ${PORT}`)
+  })
+}
+
+// Export for Vercel serverless
+module.exports = app
