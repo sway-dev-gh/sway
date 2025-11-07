@@ -8,7 +8,8 @@ function Billing() {
   const navigate = useNavigate()
   const [usage, setUsage] = useState({
     currentPeriod: { requests: 0, uploads: 0, storage: 0 },
-    limit: { requests: 'Unlimited', uploads: 'Unlimited', storage: 1024 } // 1 GB for free tier
+    limit: { requests: 'Unlimited', uploads: 'Unlimited', storage: 1 }, // GB
+    plan: 'free'
   })
   const [loading, setLoading] = useState(true)
 
@@ -28,17 +29,32 @@ function Billing() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
+      // Get user plan for storage limit
+      const userStr = localStorage.getItem('user')
+      let storageLimit = 1 // Default to 1 GB for free
+      let plan = 'free'
+
+      if (userStr) {
+        const user = JSON.parse(userStr)
+        plan = user.plan || 'free'
+        // Set storage limits based on plan
+        if (plan === 'pro') storageLimit = 50
+        else if (plan === 'business') storageLimit = 200
+        else storageLimit = 1
+      }
+
       setUsage({
         currentPeriod: {
           requests: data.totalRequests,
           uploads: data.totalUploads,
-          storage: data.storageMB
+          storage: (data.storageMB / 1024).toFixed(2) // Convert MB to GB
         },
         limit: {
           requests: 'Unlimited',
           uploads: 'Unlimited',
-          storage: 1024 // 1 GB in MB
-        }
+          storage: storageLimit
+        },
+        plan
       })
     } catch (error) {
       console.error('Error fetching usage:', error)
@@ -208,13 +224,13 @@ function Billing() {
                 lineHeight: '1',
                 marginBottom: '16px'
               }}>
-                {usage.currentPeriod.storage} MB
+                {usage.currentPeriod.storage} GB
               </div>
               <div style={{
                 fontSize: '12px',
                 color: theme.colors.text.muted
               }}>
-                of {usage.limit.storage} MB
+                of {usage.limit.storage} GB
               </div>
             </div>
           </div>

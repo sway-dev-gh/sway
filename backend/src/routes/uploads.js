@@ -74,9 +74,12 @@ router.post('/:code/upload', upload.array('files', 10), async (req, res) => {
       return res.status(400).json({ error: 'At least one file is required' })
     }
 
-    // Get request
+    // Get request with user info
     const requestResult = await pool.query(
-      'SELECT id, is_active FROM file_requests WHERE short_code = $1',
+      `SELECT fr.id, fr.is_active, fr.user_id, u.storage_limit_gb, u.plan
+       FROM file_requests fr
+       JOIN users u ON fr.user_id = u.id
+       WHERE fr.short_code = $1`,
       [code]
     )
 
@@ -88,6 +91,31 @@ router.post('/:code/upload', upload.array('files', 10), async (req, res) => {
 
     if (!request.is_active) {
       return res.status(403).json({ error: 'This request is no longer accepting uploads' })
+    }
+
+    // Check storage limits
+    const storageResult = await pool.query(
+      `SELECT COALESCE(SUM(u.file_size), 0) as total_bytes
+       FROM uploads u
+       JOIN file_requests fr ON u.request_id = fr.id
+       WHERE fr.user_id = $1`,
+      [request.user_id]
+    )
+
+    const currentStorageBytes = parseInt(storageResult.rows[0].total_bytes)
+    const newFilesBytes = files.reduce((sum, file) => sum + file.size, 0)
+    const totalStorageBytes = currentStorageBytes + newFilesBytes
+    const storageLimitBytes = request.storage_limit_gb * 1024 * 1024 * 1024 // Convert GB to bytes
+
+    if (totalStorageBytes > storageLimitBytes) {
+      const currentStorageGB = (currentStorageBytes / (1024 * 1024 * 1024)).toFixed(2)
+      const limitGB = request.storage_limit_gb
+      return res.status(403).json({
+        error: 'Storage limit exceeded',
+        message: `The account owner has reached their storage limit (${currentStorageGB} GB of ${limitGB} GB used). Please contact them to upgrade their plan.`,
+        currentStorage: currentStorageGB,
+        storageLimit: limitGB
+      })
     }
 
     // Create upload records for each file
