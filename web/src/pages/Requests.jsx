@@ -316,18 +316,7 @@ function Requests() {
     if (userStr) {
       const userData = JSON.parse(userStr)
       const plan = userData.plan || 'free'
-      console.log('USER PLAN:', plan, 'Full user data:', userData)
       setUserPlan(plan)
-    } else {
-      console.log('NO USER DATA IN LOCALSTORAGE')
-    }
-    // Load default request type from settings
-    const savedSettings = localStorage.getItem('userSettings')
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings)
-      if (settings.defaultRequestType) {
-        setRequestType(settings.defaultRequestType)
-      }
     }
   }, [])
 
@@ -368,6 +357,18 @@ function Requests() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const openModal = () => {
+    // Load default request type from settings when opening modal
+    const savedSettings = localStorage.getItem('userSettings')
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings)
+      if (settings.defaultRequestType) {
+        setRequestType(settings.defaultRequestType)
+      }
+    }
+    setShowModal(true)
   }
 
   const closeModal = () => {
@@ -518,7 +519,7 @@ function Requests() {
               </h1>
             </div>
             <button
-              onClick={() => setShowModal(true)}
+              onClick={openModal}
               style={{
                 background: theme.colors.white,
                 color: theme.colors.black,
