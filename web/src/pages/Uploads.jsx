@@ -113,7 +113,8 @@ function Uploads() {
         minHeight: '100vh',
         background: '#000',
         color: '#fff',
-        marginLeft: '220px'
+        marginLeft: '60px',
+        marginTop: '60px'
       }}>
         <div style={{
           maxWidth: '1200px',

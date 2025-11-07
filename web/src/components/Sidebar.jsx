@@ -66,10 +66,28 @@ function Sidebar() {
     top: 0,
     left: 0,
     bottom: 0,
-    width: '220px',
+    width: '60px',
     background: theme.colors.bg.sidebar,
     borderRight: `1px solid ${theme.colors.border.medium}`,
-    zIndex: 100
+    zIndex: 100,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  }
+
+  const topBarStyle = {
+    position: 'fixed',
+    top: 0,
+    left: '60px',
+    right: 0,
+    height: '60px',
+    background: theme.colors.bg.sidebar,
+    borderBottom: `1px solid ${theme.colors.border.medium}`,
+    zIndex: 99,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: `0 ${theme.spacing[6]}`
   }
 
   const logoStyle = {
@@ -106,46 +124,98 @@ function Sidebar() {
     background: theme.colors.bg.sidebar
   }
 
+  const iconButtonStyle = (isActive) => ({
+    width: '40px',
+    height: '40px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: theme.radius.md,
+    background: isActive ? theme.colors.bg.hover : 'transparent',
+    color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
+    transition: `all ${theme.transition.fast}`,
+    marginBottom: theme.spacing[2],
+    textDecoration: 'none',
+    fontSize: '18px'
+  })
+
   return (
-    <div style={sidebarStyle}>
-      {/* Insights Section */}
-      <div style={{
-        padding: `${theme.spacing[4]} ${theme.spacing[3]}`,
-        borderBottom: `1px solid ${theme.colors.border.medium}`
-      }}>
-        <div style={{
-          fontSize: '10px',
-          color: theme.colors.text.muted,
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-          marginBottom: theme.spacing[3],
-          fontWeight: theme.weight.semibold
-        }}>
-          Insights
+    <>
+      {/* Thin Left Sidebar - Icon Navigation Only */}
+      <div style={sidebarStyle}>
+        {/* Logo/Brand Icon */}
+        <div style={logoStyle}>
+          <span style={{ fontSize: '20px' }}>■</span>
         </div>
 
+        {/* Navigation Icons */}
+        <nav style={{ padding: `${theme.spacing[4]} 0`, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          {navItems.map((item) => {
+            const isActive = location.pathname === item.path
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                style={iconButtonStyle(isActive)}
+                title={item.label}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = theme.colors.bg.hover
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'transparent'
+                  }
+                }}
+              >
+                <span style={{ fontSize: '18px' }}>{item.icon}</span>
+              </Link>
+            )
+          })}
+        </nav>
+      </div>
+
+      {/* Top Bar - Insights and User Section */}
+      <div style={topBarStyle}>
+        {/* Insights - Horizontal Layout */}
         <div style={{
           display: 'flex',
-          flexDirection: 'column',
-          gap: theme.spacing[2]
+          alignItems: 'center',
+          gap: theme.spacing[4]
         }}>
+          <div style={{
+            fontSize: '10px',
+            color: theme.colors.text.tertiary,
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            fontWeight: theme.weight.normal,
+            opacity: 0.6
+          }}>
+            Insights
+          </div>
+
           {/* Total Requests */}
           <div style={{
-            padding: theme.spacing[2],
-            background: theme.colors.bg.hover,
+            display: 'flex',
+            alignItems: 'center',
+            gap: theme.spacing[2],
+            padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
+            background: 'transparent',
+            border: `1px solid ${theme.colors.border.light}`,
             borderRadius: theme.radius.sm
           }}>
             <div style={{
-              fontSize: '20px',
-              fontWeight: '300',
-              color: theme.colors.white,
-              marginBottom: '2px'
+              fontSize: '16px',
+              fontWeight: '400',
+              color: theme.colors.text.secondary
             }}>
               {stats.totalRequests}
             </div>
             <div style={{
-              fontSize: '11px',
-              color: theme.colors.text.tertiary
+              fontSize: '10px',
+              color: theme.colors.text.tertiary,
+              opacity: 0.7
             }}>
               Requests
             </div>
@@ -153,128 +223,101 @@ function Sidebar() {
 
           {/* Total Files */}
           <div style={{
-            padding: theme.spacing[2],
-            background: theme.colors.bg.hover,
+            display: 'flex',
+            alignItems: 'center',
+            gap: theme.spacing[2],
+            padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
+            background: 'transparent',
+            border: `1px solid ${theme.colors.border.light}`,
             borderRadius: theme.radius.sm
           }}>
             <div style={{
-              fontSize: '20px',
-              fontWeight: '300',
-              color: theme.colors.white,
-              marginBottom: '2px'
+              fontSize: '16px',
+              fontWeight: '400',
+              color: theme.colors.text.secondary
             }}>
               {stats.totalUploads}
             </div>
             <div style={{
-              fontSize: '11px',
-              color: theme.colors.text.tertiary
+              fontSize: '10px',
+              color: theme.colors.text.tertiary,
+              opacity: 0.7
             }}>
-              Files Collected
+              Files
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Navigation */}
-      <nav style={{ padding: `${theme.spacing[4]} 0` }}>
-        {navItems.map((item) => {
-          const isActive = location.pathname === item.path
-          return (
-            <Link
-              key={item.path}
-              to={item.path}
-              style={navLinkStyle(isActive)}
-              onMouseEnter={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = theme.colors.bg.hover
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive) {
-                  e.currentTarget.style.background = 'transparent'
-                }
-              }}
-            >
-              <span style={{ fontSize: '6px', opacity: 0.6 }}>{item.icon}</span>
-              <span>{item.label}</span>
-            </Link>
-          )
-        })}
-      </nav>
-
-      {/* User Section */}
-      <div style={userSectionStyle}>
+        {/* User Section - Horizontal */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: theme.spacing[3],
-          marginBottom: theme.spacing[3]
+          gap: theme.spacing[4]
         }}>
           <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: theme.radius.full,
-            background: theme.colors.black,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: theme.fontSize.sm,
-            fontWeight: theme.weight.semibold,
-            color: theme.colors.white,
-            border: `2px solid ${theme.colors.border.medium}`
+            gap: theme.spacing[3]
           }}>
-            {user.email?.charAt(0).toUpperCase() || 'U'}
-          </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: theme.radius.full,
+              background: theme.colors.black,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               fontSize: theme.fontSize.sm,
-              fontWeight: theme.weight.medium,
-              color: theme.colors.text.primary,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
+              fontWeight: theme.weight.semibold,
+              color: theme.colors.white,
+              border: `2px solid ${theme.colors.border.medium}`
             }}>
-              {user.email?.split('@')[0] || 'User'}
+              {user.email?.charAt(0).toUpperCase() || 'U'}
             </div>
-            <div style={{
-              fontSize: theme.fontSize.xs,
-              color: theme.colors.text.tertiary,
-              whiteSpace: 'nowrap',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis'
-            }}>
-              {user.email || 'Loading...'}
+            <div>
+              <div style={{
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.primary
+              }}>
+                {user.email?.split('@')[0] || 'User'}
+              </div>
+              <div style={{
+                fontSize: theme.fontSize.xs,
+                color: theme.colors.text.tertiary
+              }}>
+                {user.email || 'Loading...'}
+              </div>
             </div>
           </div>
-        </div>
 
-        <button
-          onClick={handleLogout}
-          style={{
-            background: 'transparent',
-            border: `1px solid ${theme.colors.border.medium}`,
-            color: theme.colors.text.secondary,
-            cursor: 'pointer',
-            padding: theme.spacing[2],
-            fontSize: theme.fontSize.sm,
-            borderRadius: theme.radius.md,
-            fontWeight: theme.weight.medium,
-            width: '100%',
-            transition: `all ${theme.transition.fast}`
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = theme.colors.bg.hover
-            e.currentTarget.style.color = theme.colors.text.primary
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'transparent'
-            e.currentTarget.style.color = theme.colors.text.secondary
-          }}
-        >
-          Sign Out
-        </button>
+          <button
+            onClick={handleLogout}
+            style={{
+              background: 'transparent',
+              border: `1px solid ${theme.colors.border.medium}`,
+              color: theme.colors.text.secondary,
+              cursor: 'pointer',
+              padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
+              fontSize: theme.fontSize.sm,
+              borderRadius: theme.radius.md,
+              fontWeight: theme.weight.medium,
+              transition: `all ${theme.transition.fast}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.hover
+              e.currentTarget.style.color = theme.colors.text.primary
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = theme.colors.text.secondary
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
