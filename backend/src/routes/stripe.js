@@ -1,12 +1,25 @@
 const express = require('express')
 const router = express.Router()
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const { authenticateToken } = require('../middleware/auth')
 const pool = require('../db/pool')
+
+// Lazy-load Stripe only when needed
+let stripe = null
+const getStripe = () => {
+  if (!stripe && process.env.STRIPE_SECRET_KEY) {
+    stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+  }
+  return stripe
+}
 
 // Create checkout session for plan upgrade
 router.post('/create-checkout-session', authenticateToken, async (req, res) => {
   try {
+    const stripe = getStripe()
+    if (!stripe) {
+      return res.status(503).json({ error: 'Stripe is not configured' })
+    }
+
     const { planId } = req.body
 
     if (!planId || !['pro', 'business'].includes(planId)) {
@@ -45,6 +58,11 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
 
 // Webhook to handle successful payments
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const stripe = getStripe()
+  if (!stripe) {
+    return res.status(503).json({ error: 'Stripe is not configured' })
+  }
+
   const sig = req.headers['stripe-signature']
   let event
 
@@ -142,6 +160,11 @@ router.get('/plan-info', authenticateToken, async (req, res) => {
 // Cancel subscription
 router.post('/cancel-subscription', authenticateToken, async (req, res) => {
   try {
+    const stripe = getStripe()
+    if (!stripe) {
+      return res.status(503).json({ error: 'Stripe is not configured' })
+    }
+
     const result = await pool.query(
       'SELECT stripe_subscription_id FROM users WHERE id = $1',
       [req.userId]
