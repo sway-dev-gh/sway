@@ -97,6 +97,14 @@ function Requests() {
 
   useEffect(() => {
     fetchRequests()
+    // Load default request type from settings
+    const savedSettings = localStorage.getItem('userSettings')
+    if (savedSettings) {
+      const settings = JSON.parse(savedSettings)
+      if (settings.defaultRequestType) {
+        setRequestType(settings.defaultRequestType)
+      }
+    }
   }, [])
 
   const fetchRequests = async () => {

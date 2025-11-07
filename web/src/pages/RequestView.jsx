@@ -41,6 +41,49 @@ function RequestView() {
     alert('Link copied!')
   }
 
+  const handleDelete = async () => {
+    if (!confirm('Delete this request? This cannot be undone and all uploads will be lost.')) return
+
+    try {
+      const token = localStorage.getItem('token')
+      await fetch(`/api/requests/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      navigate('/requests')
+    } catch (error) {
+      console.error('Delete error:', error)
+      alert('Failed to delete request')
+    }
+  }
+
+  const handleToggleActive = async () => {
+    const newStatus = !data.request.isActive
+    const action = newStatus ? 'reactivate' : 'close'
+
+    if (!confirm(`Are you sure you want to ${action} this request?`)) return
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/requests/${id}/toggle-active`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ isActive: newStatus })
+      })
+
+      if (response.ok) {
+        fetchRequest() // Reload the data
+      }
+    } catch (error) {
+      console.error('Toggle active error:', error)
+      alert(`Failed to ${action} request`)
+    }
+  }
+
   const downloadFile = async (uploadId, filename) => {
     try {
       const token = localStorage.getItem('token')
@@ -184,6 +227,42 @@ function RequestView() {
                 }}
               >
                 Copy Link
+              </button>
+            </div>
+
+            {/* Request Actions */}
+            <div style={{
+              marginTop: '16px',
+              display: 'flex',
+              gap: '8px'
+            }}>
+              <button
+                onClick={handleToggleActive}
+                style={{
+                  padding: '8px 16px',
+                  background: 'transparent',
+                  color: '#fff',
+                  border: '1px solid #333',
+                  fontSize: '13px',
+                  fontWeight: '400',
+                  cursor: 'pointer'
+                }}
+              >
+                {data.request.isActive ? 'Close Request' : 'Reactivate Request'}
+              </button>
+              <button
+                onClick={handleDelete}
+                style={{
+                  padding: '8px 16px',
+                  background: 'transparent',
+                  color: '#ff3b30',
+                  border: '1px solid #ff3b30',
+                  fontSize: '13px',
+                  fontWeight: '400',
+                  cursor: 'pointer'
+                }}
+              >
+                Delete Request
               </button>
             </div>
           </div>

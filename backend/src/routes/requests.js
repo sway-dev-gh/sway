@@ -135,6 +135,7 @@ router.get('/:id', authenticateToken, async (req, res) => {
         shortCode: request.short_code,
         title: request.title,
         description: request.description,
+        isActive: request.is_active,
         createdAt: request.created_at
       },
       uploads: uploadsResult.rows.map(u => ({
@@ -169,6 +170,31 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error('Delete request error:', error)
     res.status(500).json({ error: 'Failed to delete request' })
+  }
+})
+
+// PATCH /api/requests/:id/toggle-active - Toggle request active status
+router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
+  try {
+    const { isActive } = req.body
+
+    if (typeof isActive !== 'boolean') {
+      return res.status(400).json({ error: 'isActive must be a boolean' })
+    }
+
+    const result = await pool.query(
+      'UPDATE file_requests SET is_active = $1 WHERE id = $2 AND user_id = $3 RETURNING *',
+      [isActive, req.params.id, req.userId]
+    )
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Request not found' })
+    }
+
+    res.json({ success: true, request: result.rows[0] })
+  } catch (error) {
+    console.error('Toggle active error:', error)
+    res.status(500).json({ error: 'Failed to update request' })
   }
 })
 

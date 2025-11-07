@@ -3,10 +3,51 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 
+// All request types from Requests.jsx
+const REQUEST_TYPES = [
+  { id: 'code-submission', name: 'Code Submission' },
+  { id: 'design-assets', name: 'Design Assets' },
+  { id: 'event-photos', name: 'Event Photos' },
+  { id: 'video-submissions', name: 'Video Submissions' },
+  { id: 'application-materials', name: 'Application Materials' },
+  { id: 'invoice-receipts', name: 'Invoices & Receipts' },
+  { id: 'form-response', name: 'Form Response' },
+  { id: 'media-collection', name: 'Mixed Media Collection' },
+  { id: 'document-upload', name: 'Document Upload' },
+  { id: 'client-deliverables', name: 'Client Deliverables' },
+  { id: 'feedback-collection', name: 'Feedback Collection' },
+  { id: 'content-submissions', name: 'Content Submissions' },
+  { id: 'assignment-handins', name: 'Assignment Hand-ins' },
+  { id: 'contract-signatures', name: 'Contract Signatures' },
+  { id: 'audio-files', name: 'Audio Files' },
+  { id: 'spreadsheet-data', name: 'Spreadsheet Data' },
+  { id: 'presentation-slides', name: 'Presentation Slides' },
+  { id: 'legal-documents', name: 'Legal Documents' },
+  { id: 'id-verification', name: 'ID Verification' },
+  { id: 'medical-records', name: 'Medical Records' },
+  { id: 'tax-documents', name: 'Tax Documents' },
+  { id: 'property-photos', name: 'Property Photos' },
+  { id: 'product-images', name: 'Product Images' },
+  { id: 'marketing-materials', name: 'Marketing Materials' },
+  { id: 'social-media-content', name: 'Social Media Content' },
+  { id: 'testimonials-reviews', name: 'Testimonials & Reviews' },
+  { id: 'survey-responses', name: 'Survey Responses' },
+  { id: 'research-data', name: 'Research Data' },
+  { id: 'screenshot-proof', name: 'Screenshots & Proof' },
+  { id: 'general-upload', name: 'General Upload' }
+]
+
 function Settings() {
   const navigate = useNavigate()
   const [user, setUser] = useState({ email: '' })
   const [loading, setLoading] = useState(true)
+  const [settings, setSettings] = useState({
+    defaultRequestType: 'general-upload',
+    fileSizeLimit: 50,
+    emailNotifications: true,
+    requestNotifications: true
+  })
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -19,8 +60,30 @@ function Settings() {
     if (userStr) {
       setUser(JSON.parse(userStr))
     }
+
+    // Load settings from localStorage
+    const savedSettings = localStorage.getItem('userSettings')
+    if (savedSettings) {
+      setSettings(JSON.parse(savedSettings))
+    }
+
     setLoading(false)
   }, [navigate])
+
+  const saveSettings = () => {
+    setSaving(true)
+    localStorage.setItem('userSettings', JSON.stringify(settings))
+    setTimeout(() => {
+      setSaving(false)
+    }, 500)
+  }
+
+  const handleSettingChange = (key, value) => {
+    setSettings(prev => ({
+      ...prev,
+      [key]: value
+    }))
+  }
 
   if (loading) {
     return (
@@ -161,7 +224,8 @@ function Settings() {
                 }}>
                   <input
                     type="checkbox"
-                    defaultChecked
+                    checked={settings.emailNotifications}
+                    onChange={(e) => handleSettingChange('emailNotifications', e.target.checked)}
                     style={{
                       marginRight: theme.spacing[3],
                       width: '16px',
@@ -197,7 +261,8 @@ function Settings() {
                 }}>
                   <input
                     type="checkbox"
-                    defaultChecked
+                    checked={settings.requestNotifications}
+                    onChange={(e) => handleSettingChange('requestNotifications', e.target.checked)}
                     style={{
                       marginRight: theme.spacing[3],
                       width: '16px',
@@ -249,26 +314,28 @@ function Settings() {
                 }}>
                   Default Request Type
                 </div>
-                <select style={{
-                  width: '100%',
-                  padding: '12px',
-                  background: theme.colors.bg.secondary,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  color: theme.colors.text.primary,
-                  fontSize: '14px',
-                  fontFamily: 'inherit',
-                  outline: 'none',
-                  cursor: 'pointer'
-                }}>
-                  <option>Document Request</option>
-                  <option>Form Submission</option>
-                  <option>Media Collection</option>
-                  <option>Portfolio Review</option>
-                  <option>General Upload</option>
+                <select
+                  value={settings.defaultRequestType}
+                  onChange={(e) => handleSettingChange('defaultRequestType', e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: theme.colors.bg.secondary,
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    color: theme.colors.text.primary,
+                    fontSize: '14px',
+                    fontFamily: 'inherit',
+                    outline: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {REQUEST_TYPES.map(type => (
+                    <option key={type.id} value={type.id}>{type.name}</option>
+                  ))}
                 </select>
               </div>
 
-              <div style={{ marginBottom: theme.spacing[4] }}>
+              <div style={{ marginBottom: theme.spacing[6] }}>
                 <div style={{
                   fontSize: '13px',
                   color: theme.colors.text.secondary,
@@ -276,24 +343,58 @@ function Settings() {
                 }}>
                   File Size Limit
                 </div>
-                <select style={{
-                  width: '100%',
-                  padding: '12px',
-                  background: theme.colors.bg.secondary,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  color: theme.colors.text.primary,
-                  fontSize: '14px',
-                  fontFamily: 'inherit',
-                  outline: 'none',
-                  cursor: 'pointer'
-                }}>
-                  <option>10 MB</option>
-                  <option>50 MB</option>
-                  <option>100 MB</option>
-                  <option>500 MB</option>
-                  <option>1 GB</option>
+                <select
+                  value={settings.fileSizeLimit}
+                  onChange={(e) => handleSettingChange('fileSizeLimit', parseInt(e.target.value))}
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: theme.colors.bg.secondary,
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    color: theme.colors.text.primary,
+                    fontSize: '14px',
+                    fontFamily: 'inherit',
+                    outline: 'none',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <option value={10}>10 MB</option>
+                  <option value={50}>50 MB</option>
+                  <option value={100}>100 MB</option>
+                  <option value={500}>500 MB</option>
+                  <option value={1024}>1 GB</option>
                 </select>
               </div>
+
+              {/* Save Button */}
+              <button
+                onClick={saveSettings}
+                disabled={saving}
+                style={{
+                  padding: '12px 24px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  border: 'none',
+                  fontSize: '14px',
+                  fontWeight: theme.weight.medium,
+                  cursor: saving ? 'not-allowed' : 'pointer',
+                  fontFamily: 'inherit',
+                  opacity: saving ? 0.6 : 1,
+                  transition: `all ${theme.transition.fast}`
+                }}
+                onMouseEnter={(e) => {
+                  if (!saving) {
+                    e.currentTarget.style.background = theme.colors.text.secondary
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!saving) {
+                    e.currentTarget.style.background = theme.colors.white
+                  }
+                }}
+              >
+                {saving ? 'Saved!' : 'Save Preferences'}
+              </button>
             </div>
 
             {/* Danger Zone */}
