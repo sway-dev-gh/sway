@@ -192,4 +192,77 @@ router.post('/cancel-subscription', authenticateToken, async (req, res) => {
   }
 })
 
+// Request refund (cancel immediately and refund)
+router.post('/request-refund', authenticateToken, async (req, res) => {
+  try {
+    const stripe = getStripe()
+    if (!stripe) {
+      return res.status(503).json({ error: 'Stripe is not configured' })
+    }
+
+    const result = await pool.query(
+      'SELECT stripe_subscription_id, stripe_customer_id, created_at FROM users WHERE id = $1',
+      [req.userId]
+    )
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+    const { stripe_subscription_id, stripe_customer_id, created_at } = result.rows[0]
+
+    if (!stripe_subscription_id) {
+      return res.status(400).json({ error: 'No active subscription' })
+    }
+
+    // Get the subscription to find the latest invoice
+    const subscription = await stripe.subscriptions.retrieve(stripe_subscription_id)
+
+    // Check if subscription is within 30 day refund window
+    const subscriptionCreated = new Date(subscription.created * 1000)
+    const daysSinceCreation = Math.floor((Date.now() - subscriptionCreated.getTime()) / (1000 * 60 * 60 * 24))
+
+    if (daysSinceCreation > 30) {
+      return res.status(400).json({
+        error: 'Refund window expired',
+        message: 'Refunds are only available within 30 days of purchase'
+      })
+    }
+
+    // Get the latest invoice and create a refund
+    if (subscription.latest_invoice) {
+      const invoice = await stripe.invoices.retrieve(subscription.latest_invoice)
+
+      if (invoice.payment_intent) {
+        // Create refund for the payment
+        await stripe.refunds.create({
+          payment_intent: invoice.payment_intent,
+          reason: 'requested_by_customer'
+        })
+      }
+    }
+
+    // Cancel the subscription immediately (not at period end)
+    await stripe.subscriptions.cancel(stripe_subscription_id)
+
+    // Update user to free plan
+    await pool.query(
+      `UPDATE users
+       SET plan = 'free',
+           stripe_subscription_id = NULL,
+           storage_limit_gb = 1
+       WHERE id = $1`,
+      [req.userId]
+    )
+
+    res.json({
+      success: true,
+      message: 'Refund processed successfully. Your subscription has been cancelled and you have been downgraded to the free plan.'
+    })
+  } catch (error) {
+    console.error('Request refund error:', error)
+    res.status(500).json({ error: 'Failed to process refund request' })
+  }
+})
+
 module.exports = router
