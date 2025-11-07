@@ -10,6 +10,7 @@ import Signup from './pages/Signup'
 import './App.css'
 
 // Dashboard removed - stats integrated into Requests page
+// Updated: Dashboard functionality now in Requests
 
 function App() {
   return (
