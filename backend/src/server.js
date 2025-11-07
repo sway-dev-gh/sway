@@ -24,8 +24,9 @@ app.use(cors({
   credentials: true
 }))
 
-// IMPORTANT: Stripe webhook needs raw body, so this route must come BEFORE express.json()
-app.use('/api/stripe/webhook', express.raw({ type: 'application/json' }))
+// IMPORTANT: Stripe webhook needs raw body BEFORE JSON parsing
+// Apply raw body parser specifically to webhook route before json parser
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json' }), stripeRoutes)
 
 // JSON parsing for all other routes
 app.use(express.json())
