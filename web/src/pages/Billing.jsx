@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Billing() {
   const navigate = useNavigate()
   const [usage, setUsage] = useState({
     currentPeriod: { requests: 0, uploads: 0, storage: 0 },
-    limit: { requests: 100, uploads: 1000, storage: 10 }
+    limit: { requests: 'Unlimited', uploads: 'Unlimited', storage: 1024 } // 1 GB for free tier
   })
   const [loading, setLoading] = useState(true)
 
@@ -23,14 +24,29 @@ function Billing() {
         return
       }
 
-      // TODO: Fetch usage and billing data from backend
-      // For now, show placeholder data
+      const { data } = await api.get('/api/stats', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
       setUsage({
-        currentPeriod: { requests: 0, uploads: 0, storage: 0 },
-        limit: { requests: 100, uploads: 1000, storage: 10 }
+        currentPeriod: {
+          requests: data.totalRequests,
+          uploads: data.totalUploads,
+          storage: data.storageMB
+        },
+        limit: {
+          requests: 'Unlimited',
+          uploads: 'Unlimited',
+          storage: 1024 // 1 GB in MB
+        }
       })
     } catch (error) {
       console.error('Error fetching usage:', error)
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        navigate('/login')
+      }
     } finally {
       setLoading(false)
     }

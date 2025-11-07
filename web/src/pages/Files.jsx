@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Files() {
   const navigate = useNavigate()
@@ -20,14 +21,60 @@ function Files() {
         return
       }
 
-      // TODO: Fetch all files from all requests
-      // For now, show empty state
-      setFiles([])
+      const { data } = await api.get('/api/files', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setFiles(data.files || [])
     } catch (error) {
       console.error('Error fetching files:', error)
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        navigate('/login')
+      }
     } finally {
       setLoading(false)
     }
+  }
+
+  const downloadFile = async (fileId, fileName) => {
+    try {
+      const token = localStorage.getItem('token')
+      const response = await api.get(`/api/files/${fileId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
+      })
+
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', fileName)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+    } catch (error) {
+      console.error('Error downloading file:', error)
+      alert('Failed to download file')
+    }
+  }
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 B'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
+  }
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
   }
 
   if (loading) {
@@ -126,23 +173,44 @@ function Files() {
                       color: theme.colors.text.primary,
                       marginBottom: '4px'
                     }}>
-                      {file.name}
+                      {file.fileName}
                     </div>
                     <div style={{
                       fontSize: '12px',
                       color: theme.colors.text.muted
                     }}>
-                      {file.size} • {file.uploadedAt}
+                      {formatFileSize(file.fileSize)} • {formatDate(file.uploadedAt)}
+                      {file.requestTitle && ` • ${file.requestTitle}`}
                     </div>
+                    {file.uploaderName && (
+                      <div style={{
+                        fontSize: '11px',
+                        color: theme.colors.text.tertiary,
+                        marginTop: '4px'
+                      }}>
+                        From: {file.uploaderName}
+                        {file.uploaderEmail && ` (${file.uploaderEmail})`}
+                      </div>
+                    )}
                   </div>
-                  <button style={{
-                    padding: '8px 16px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    border: 'none',
-                    fontSize: '13px',
-                    cursor: 'pointer'
-                  }}>
+                  <button
+                    onClick={() => downloadFile(file.id, file.fileName)}
+                    style={{
+                      padding: '8px 16px',
+                      background: theme.colors.white,
+                      color: theme.colors.black,
+                      border: 'none',
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      transition: `all ${theme.transition.fast}`
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = theme.colors.text.secondary
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = theme.colors.white
+                    }}
+                  >
                     Download
                   </button>
                 </div>

@@ -4,6 +4,37 @@ const path = require('path')
 const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
 
+// GET /api/files - Get all files for user (protected)
+router.get('/', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT u.id, u.file_name, u.file_size, u.uploaded_at, u.uploader_name, u.uploader_email,
+              r.title as request_title, r.short_code
+       FROM uploads u
+       JOIN file_requests r ON u.request_id = r.id
+       WHERE r.user_id = $1
+       ORDER BY u.uploaded_at DESC`,
+      [req.userId]
+    )
+
+    res.json({
+      files: result.rows.map(f => ({
+        id: f.id,
+        fileName: f.file_name,
+        fileSize: f.file_size,
+        uploadedAt: f.uploaded_at,
+        uploaderName: f.uploader_name,
+        uploaderEmail: f.uploader_email,
+        requestTitle: f.request_title,
+        requestCode: f.short_code
+      }))
+    })
+  } catch (error) {
+    console.error('Get files error:', error)
+    res.status(500).json({ error: 'Failed to fetch files' })
+  }
+})
+
 // GET /api/files/:id - Download file (protected)
 router.get('/:id', authenticateToken, async (req, res) => {
   try {

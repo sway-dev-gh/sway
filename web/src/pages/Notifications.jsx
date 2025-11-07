@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Notifications() {
   const navigate = useNavigate()
@@ -20,14 +21,36 @@ function Notifications() {
         return
       }
 
-      // TODO: Fetch notifications from backend
-      // For now, show empty state
-      setNotifications([])
+      const { data } = await api.get('/api/notifications', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setNotifications(data.notifications || [])
     } catch (error) {
       console.error('Error fetching notifications:', error)
+      if (error.response?.status === 401) {
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        navigate('/login')
+      }
     } finally {
       setLoading(false)
     }
+  }
+
+  const formatTimeAgo = (dateString) => {
+    const now = new Date()
+    const date = new Date(dateString)
+    const diff = now - date
+    const seconds = Math.floor(diff / 1000)
+    const minutes = Math.floor(seconds / 60)
+    const hours = Math.floor(minutes / 60)
+    const days = Math.floor(hours / 24)
+
+    if (days > 0) return `${days}d ago`
+    if (hours > 0) return `${hours}h ago`
+    if (minutes > 0) return `${minutes}m ago`
+    return 'Just now'
   }
 
   if (loading) {
@@ -107,29 +130,52 @@ function Notifications() {
             </div>
           ) : (
             <div style={{
-              border: `1px solid ${theme.colors.border.medium}`
+              display: 'grid',
+              gap: '1px',
+              background: theme.colors.border.light
             }}>
-              {notifications.map((notification, index) => (
+              {notifications.map((notification) => (
                 <div
                   key={notification.id}
                   style={{
                     padding: '20px',
-                    borderBottom: index < notifications.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
-                    background: notification.read ? 'transparent' : theme.colors.bg.secondary
+                    background: theme.colors.bg.page,
+                    transition: `all ${theme.transition.fast}`
                   }}
                 >
                   <div style={{
-                    fontSize: '14px',
-                    color: theme.colors.text.primary,
-                    marginBottom: '4px'
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '8px'
                   }}>
-                    {notification.title}
+                    <div style={{
+                      fontSize: '13px',
+                      color: theme.colors.text.primary,
+                      fontWeight: theme.weight.medium
+                    }}>
+                      {notification.title}
+                    </div>
+                    <div style={{
+                      fontSize: '11px',
+                      color: theme.colors.text.tertiary
+                    }}>
+                      {formatTimeAgo(notification.createdAt)}
+                    </div>
                   </div>
                   <div style={{
-                    fontSize: '12px',
+                    fontSize: '13px',
+                    color: theme.colors.text.secondary,
+                    marginBottom: '8px',
+                    lineHeight: '1.5'
+                  }}>
+                    {notification.message}
+                  </div>
+                  <div style={{
+                    fontSize: '11px',
                     color: theme.colors.text.muted
                   }}>
-                    {notification.message} • {notification.time}
+                    Request: <span style={{ color: theme.colors.text.secondary }}>{notification.requestTitle}</span>
                   </div>
                 </div>
               ))}

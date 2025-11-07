@@ -26,12 +26,18 @@ function Dashboard() {
         return
       }
 
-      const { data } = await api.get('/api/requests', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      // Fetch stats and requests in parallel
+      const [statsResponse, requestsResponse] = await Promise.all([
+        api.get('/api/stats', {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        api.get('/api/requests', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      ])
 
-      const requests = data.requests || []
-      const totalUploads = requests.reduce((sum, req) => sum + (req.uploadCount || 0), 0)
+      const stats = statsResponse.data
+      const requests = requestsResponse.data.requests || []
 
       // Get recent requests (last 5)
       const recentRequests = requests
@@ -39,9 +45,9 @@ function Dashboard() {
         .slice(0, 5)
 
       setStats({
-        totalRequests: requests.length,
-        totalUploads,
-        storageUsed: 0, // TODO: Calculate from backend
+        totalRequests: stats.totalRequests,
+        totalUploads: stats.totalUploads,
+        storageUsed: stats.storageMB,
         recentRequests
       })
     } catch (error) {
