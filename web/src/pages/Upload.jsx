@@ -3,21 +3,49 @@ import { useParams } from 'react-router-dom'
 import api from '../api/axios'
 import theme from '../theme'
 
-// Match the REQUEST_TYPES from Requests.jsx
+// MUST match REQUEST_TYPES from Requests.jsx exactly
 const REQUEST_TYPES = [
   {
-    id: 'code-submission',
-    name: 'Code Submission',
+    id: 'general-upload',
+    name: 'General Upload',
+    fields: []
+  },
+  {
+    id: 'photos',
+    name: 'Photos',
     fields: [
-      { id: 'language', label: 'Programming Language', type: 'text', placeholder: 'e.g., JavaScript, Python, Java' },
-      { id: 'repo', label: 'GitHub/GitLab URL (optional)', type: 'text', placeholder: 'https://github.com/...' }
+      { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 10' },
+      { id: 'resolution', label: 'Resolution Preference', type: 'select', options: ['Any', 'High Resolution', 'Web Optimized'] }
+    ]
+  },
+  {
+    id: 'videos',
+    name: 'Videos',
+    fields: [
+      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 5' },
+      { id: 'orientation', label: 'Orientation', type: 'select', options: ['Any', 'Landscape', 'Portrait', 'Square'] }
+    ]
+  },
+  {
+    id: 'documents',
+    name: 'Documents',
+    fields: [
+      { id: 'format', label: 'Preferred Format', type: 'select', options: ['Any', 'PDF', 'Word', 'Text'] }
+    ]
+  },
+  {
+    id: 'code-submission',
+    name: 'Code',
+    fields: [
+      { id: 'language', label: 'Programming Language', type: 'text', placeholder: 'e.g., JavaScript, Python' },
+      { id: 'repo', label: 'Repository URL (optional)', type: 'text', placeholder: 'https://github.com/...' }
     ]
   },
   {
     id: 'design-assets',
-    name: 'Design Assets',
+    name: 'Design',
     fields: [
-      { id: 'format', label: 'Preferred Format', type: 'select', options: ['PNG', 'SVG', 'AI', 'PSD', 'Figma', 'Any'] },
+      { id: 'format', label: 'Preferred Format', type: 'select', options: ['Any', 'PNG', 'SVG', 'AI', 'PSD', 'Figma'] },
       { id: 'dimensions', label: 'Dimensions (optional)', type: 'text', placeholder: 'e.g., 1920x1080' }
     ]
   },
@@ -26,31 +54,178 @@ const REQUEST_TYPES = [
     name: 'Event Photos',
     fields: [
       { id: 'eventDate', label: 'Event Date', type: 'date' },
-      { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 20' }
-    ]
-  },
-  {
-    id: 'video-submissions',
-    name: 'Video Submissions',
-    fields: [
-      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 5' },
-      { id: 'orientation', label: 'Orientation', type: 'select', options: ['Landscape', 'Portrait', 'Square', 'Any'] }
+      { id: 'eventName', label: 'Event Name', type: 'text', placeholder: 'e.g., Company Retreat 2024' }
     ]
   },
   {
     id: 'application-materials',
-    name: 'Application Materials',
+    name: 'Applications',
     fields: [
-      { id: 'position', label: 'Position Applying For', type: 'text', placeholder: 'e.g., Software Engineer' },
-      { id: 'deadline', label: 'Application Deadline', type: 'date' }
+      { id: 'position', label: 'Position/Program', type: 'text', placeholder: 'e.g., Software Engineer' },
+      { id: 'deadline', label: 'Deadline', type: 'date' }
     ]
   },
   {
-    id: 'invoice-receipts',
-    name: 'Invoices & Receipts',
+    id: 'invoices',
+    name: 'Invoices',
     fields: [
-      { id: 'invoiceNumber', label: 'Invoice/Receipt Number', type: 'text', placeholder: 'e.g., INV-001' },
+      { id: 'invoiceNumber', label: 'Invoice Number', type: 'text', placeholder: 'e.g., INV-001' },
       { id: 'amount', label: 'Amount', type: 'text', placeholder: 'e.g., $150.00' }
+    ]
+  },
+  {
+    id: 'forms',
+    name: 'Forms',
+    fields: [
+      { id: 'formType', label: 'Form Type', type: 'text', placeholder: 'e.g., Survey, Registration' }
+    ]
+  },
+  {
+    id: 'client-deliverables',
+    name: 'Deliverables',
+    fields: [
+      { id: 'projectName', label: 'Project Name', type: 'text', placeholder: 'e.g., Website Redesign' },
+      { id: 'dueDate', label: 'Due Date', type: 'date' }
+    ]
+  },
+  {
+    id: 'feedback',
+    name: 'Feedback',
+    fields: [
+      { id: 'category', label: 'Category', type: 'select', options: ['General', 'Bug Report', 'Feature Request', 'Other'] },
+      { id: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
+    ]
+  },
+  {
+    id: 'content',
+    name: 'Content',
+    fields: [
+      { id: 'contentType', label: 'Content Type', type: 'select', options: ['Blog Post', 'Article', 'Social Media', 'Other'] }
+    ]
+  },
+  {
+    id: 'assignments',
+    name: 'Assignments',
+    fields: [
+      { id: 'course', label: 'Course/Subject', type: 'text', placeholder: 'e.g., Computer Science 101' },
+      { id: 'dueDate', label: 'Due Date', type: 'date' }
+    ]
+  },
+  {
+    id: 'contracts',
+    name: 'Contracts',
+    fields: [
+      { id: 'contractType', label: 'Contract Type', type: 'text', placeholder: 'e.g., Employment, Vendor' },
+      { id: 'effectiveDate', label: 'Effective Date', type: 'date' }
+    ]
+  },
+  {
+    id: 'audio',
+    name: 'Audio',
+    fields: [
+      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 10' },
+      { id: 'format', label: 'Preferred Format', type: 'select', options: ['Any', 'MP3', 'WAV', 'AAC'] }
+    ]
+  },
+  {
+    id: 'spreadsheets',
+    name: 'Spreadsheets',
+    fields: [
+      { id: 'format', label: 'Preferred Format', type: 'select', options: ['Any', 'Excel', 'CSV', 'Google Sheets'] }
+    ]
+  },
+  {
+    id: 'presentations',
+    name: 'Presentations',
+    fields: [
+      { id: 'format', label: 'Preferred Format', type: 'select', options: ['Any', 'PowerPoint', 'PDF', 'Google Slides'] },
+      { id: 'slideCount', label: 'Expected Slides', type: 'number', placeholder: 'e.g., 10' }
+    ]
+  },
+  {
+    id: 'legal',
+    name: 'Legal Docs',
+    fields: [
+      { id: 'docType', label: 'Document Type', type: 'text', placeholder: 'e.g., Contract, Agreement, NDA' }
+    ]
+  },
+  {
+    id: 'id-verification',
+    name: 'ID Verification',
+    fields: [
+      { id: 'idType', label: 'ID Type', type: 'select', options: ['Passport', 'Driver License', 'National ID', 'Other'] }
+    ]
+  },
+  {
+    id: 'medical',
+    name: 'Medical Records',
+    fields: [
+      { id: 'recordType', label: 'Record Type', type: 'text', placeholder: 'e.g., Lab Results, Prescription' },
+      { id: 'date', label: 'Record Date', type: 'date' }
+    ]
+  },
+  {
+    id: 'tax-documents',
+    name: 'Tax Docs',
+    fields: [
+      { id: 'taxYear', label: 'Tax Year', type: 'number', placeholder: 'e.g., 2024' },
+      { id: 'docType', label: 'Document Type', type: 'text', placeholder: 'e.g., W2, 1099' }
+    ]
+  },
+  {
+    id: 'property',
+    name: 'Property Photos',
+    fields: [
+      { id: 'address', label: 'Property Address', type: 'text', placeholder: 'e.g., 123 Main St' },
+      { id: 'roomCount', label: 'Number of Rooms', type: 'number', placeholder: 'e.g., 5' }
+    ]
+  },
+  {
+    id: 'products',
+    name: 'Product Images',
+    fields: [
+      { id: 'productName', label: 'Product Name', type: 'text', placeholder: 'e.g., Wireless Headphones' },
+      { id: 'imageCount', label: 'Number of Images', type: 'number', placeholder: 'e.g., 5' }
+    ]
+  },
+  {
+    id: 'marketing',
+    name: 'Marketing',
+    fields: [
+      { id: 'campaign', label: 'Campaign Name', type: 'text', placeholder: 'e.g., Spring Sale 2024' },
+      { id: 'channel', label: 'Channel', type: 'select', options: ['Social Media', 'Email', 'Print', 'Digital Ads', 'Other'] }
+    ]
+  },
+  {
+    id: 'social-media',
+    name: 'Social Media',
+    fields: [
+      { id: 'platform', label: 'Platform', type: 'select', options: ['Instagram', 'Facebook', 'Twitter', 'LinkedIn', 'TikTok', 'Other'] },
+      { id: 'contentType', label: 'Content Type', type: 'select', options: ['Photo', 'Video', 'Story', 'Reel', 'Post'] }
+    ]
+  },
+  {
+    id: 'surveys',
+    name: 'Surveys',
+    fields: [
+      { id: 'surveyName', label: 'Survey Name', type: 'text', placeholder: 'e.g., Customer Satisfaction' },
+      { id: 'responseCount', label: 'Expected Responses', type: 'number', placeholder: 'e.g., 100' }
+    ]
+  },
+  {
+    id: 'research',
+    name: 'Research Data',
+    fields: [
+      { id: 'topic', label: 'Research Topic', type: 'text', placeholder: 'e.g., Market Analysis' },
+      { id: 'format', label: 'Data Format', type: 'select', options: ['CSV', 'Excel', 'PDF', 'Raw Data', 'Other'] }
+    ]
+  },
+  {
+    id: 'screenshots',
+    name: 'Screenshots',
+    fields: [
+      { id: 'purpose', label: 'Purpose', type: 'text', placeholder: 'e.g., Bug Report, Documentation' },
+      { id: 'count', label: 'Number of Screenshots', type: 'number', placeholder: 'e.g., 5' }
     ]
   }
 ]
