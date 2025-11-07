@@ -102,6 +102,73 @@ function Sidebar() {
 
   return (
     <div style={sidebarStyle}>
+      {/* Insights Section */}
+      <div style={{
+        padding: `${theme.spacing[4]} ${theme.spacing[3]}`,
+        borderBottom: `1px solid ${theme.colors.border.medium}`
+      }}>
+        <div style={{
+          fontSize: '10px',
+          color: theme.colors.text.muted,
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+          marginBottom: theme.spacing[3],
+          fontWeight: theme.weight.semibold
+        }}>
+          Insights
+        </div>
+
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: theme.spacing[2]
+        }}>
+          {/* Total Requests */}
+          <div style={{
+            padding: theme.spacing[2],
+            background: theme.colors.bg.hover,
+            borderRadius: theme.radius.sm
+          }}>
+            <div style={{
+              fontSize: '20px',
+              fontWeight: '300',
+              color: theme.colors.white,
+              marginBottom: '2px'
+            }}>
+              {stats.totalRequests}
+            </div>
+            <div style={{
+              fontSize: '11px',
+              color: theme.colors.text.tertiary
+            }}>
+              Requests
+            </div>
+          </div>
+
+          {/* Total Files */}
+          <div style={{
+            padding: theme.spacing[2],
+            background: theme.colors.bg.hover,
+            borderRadius: theme.radius.sm
+          }}>
+            <div style={{
+              fontSize: '20px',
+              fontWeight: '300',
+              color: theme.colors.white,
+              marginBottom: '2px'
+            }}>
+              {stats.totalUploads}
+            </div>
+            <div style={{
+              fontSize: '11px',
+              color: theme.colors.text.tertiary
+            }}>
+              Files Collected
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Navigation */}
       <nav style={{ padding: `${theme.spacing[4]} 0` }}>
         {navItems.map((item) => {

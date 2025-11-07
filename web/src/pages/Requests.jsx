@@ -94,13 +94,6 @@ function Requests() {
   const [formData, setFormData] = useState({ title: '', description: '' })
   const [requestType, setRequestType] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
-  const [user, setUser] = useState({ email: '', plan: 'free' })
-  const [stats, setStats] = useState({
-    totalFiles: 0,
-    totalRequests: 0,
-    storageUsed: 0,
-    storageLimit: 1
-  })
 
   useEffect(() => {
     fetchRequests()
@@ -115,28 +108,12 @@ function Requests() {
         return
       }
 
-      // Get user data from localStorage
-      const userStr = localStorage.getItem('user')
-      if (userStr) {
-        const userData = JSON.parse(userStr)
-        setUser(userData)
-      }
-
       const { data } = await api.get('/api/requests', {
         headers: { Authorization: `Bearer ${token}` }
       })
 
       const requestsList = data.requests || []
       setRequests(requestsList)
-
-      // Calculate stats
-      const totalFiles = requestsList.reduce((sum, req) => sum + (req.uploadCount || 0), 0)
-      setStats({
-        totalFiles,
-        totalRequests: requestsList.length,
-        storageUsed: totalFiles > 0 ? 0.24 : 0,
-        storageLimit: user.plan === 'business' ? 200 : user.plan === 'pro' ? 50 : 1
-      })
     } catch (err) {
       console.error('Failed to fetch requests:', err)
       if (err.response?.status === 401) {
@@ -194,14 +171,6 @@ function Requests() {
       alert('Failed to delete')
     }
   }
-
-  const getPlanColor = (plan) => {
-    if (plan === 'business') return '#fff'
-    if (plan === 'pro') return '#ccc'
-    return '#666'
-  }
-
-  const storagePercentage = (stats.storageUsed / stats.storageLimit) * 100
 
   if (loading) {
     return (
@@ -280,162 +249,6 @@ function Requests() {
             >
               + New
             </button>
-          </div>
-
-          {/* Stats Grid */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-            gap: '20px',
-            marginBottom: '36px'
-          }}>
-            {/* Total Files Collected */}
-            <div style={{
-              padding: '24px',
-              background: theme.colors.bg.secondary,
-              border: `1px solid ${theme.colors.border.medium}`,
-              borderRadius: theme.radius.md
-            }}>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.muted,
-                marginBottom: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Files Collected
-              </div>
-              <div style={{
-                fontSize: '42px',
-                fontWeight: '300',
-                color: stats.totalFiles > 0 ? theme.colors.white : theme.colors.text.muted,
-                letterSpacing: '-0.02em',
-                marginBottom: '6px'
-              }}>
-                {stats.totalFiles}
-              </div>
-              <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.tertiary
-              }}>
-                across {stats.totalRequests} {stats.totalRequests === 1 ? 'request' : 'requests'}
-              </div>
-            </div>
-
-            {/* Storage Used */}
-            <div style={{
-              padding: '24px',
-              background: theme.colors.bg.secondary,
-              border: `1px solid ${theme.colors.border.medium}`,
-              borderRadius: theme.radius.md
-            }}>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.muted,
-                marginBottom: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Storage Used
-              </div>
-              <div style={{
-                fontSize: '42px',
-                fontWeight: '300',
-                color: stats.storageUsed > 0 ? theme.colors.white : theme.colors.text.muted,
-                letterSpacing: '-0.02em',
-                marginBottom: '6px'
-              }}>
-                {stats.storageUsed.toFixed(2)} <span style={{ fontSize: '22px', color: theme.colors.text.muted }}>GB</span>
-              </div>
-              <div style={{
-                marginTop: '16px',
-                marginBottom: '8px'
-              }}>
-                <div style={{
-                  width: '100%',
-                  height: '6px',
-                  background: theme.colors.border.medium,
-                  borderRadius: '3px',
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    width: `${Math.min(storagePercentage, 100)}%`,
-                    height: '100%',
-                    background: storagePercentage > 80 ? '#ff5555' : theme.colors.white,
-                    transition: 'width 0.3s ease'
-                  }} />
-                </div>
-              </div>
-              <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.tertiary
-              }}>
-                {stats.storageLimit - stats.storageUsed > 0 ? `${(stats.storageLimit - stats.storageUsed).toFixed(2)} GB remaining` : 'Storage full'}
-              </div>
-            </div>
-
-            {/* Current Plan */}
-            <div style={{
-              padding: '24px',
-              background: theme.colors.bg.secondary,
-              border: `1px solid ${theme.colors.border.medium}`,
-              borderRadius: theme.radius.md
-            }}>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.muted,
-                marginBottom: '12px',
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Current Plan
-              </div>
-              <div style={{
-                fontSize: '42px',
-                fontWeight: '300',
-                color: getPlanColor(user.plan),
-                letterSpacing: '-0.02em',
-                marginBottom: '6px',
-                textTransform: 'capitalize'
-              }}>
-                {user.plan || 'Free'}
-              </div>
-              <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.tertiary,
-                marginBottom: '16px'
-              }}>
-                {user.plan === 'business' ? '200 GB storage' : user.plan === 'pro' ? '50 GB storage' : '1 GB storage'}
-              </div>
-              {user.plan === 'free' && (
-                <button
-                  onClick={() => navigate('/plan')}
-                  style={{
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    border: 'none',
-                    padding: '10px 20px',
-                    fontSize: '13px',
-                    fontWeight: theme.weight.medium,
-                    cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    borderRadius: theme.radius.md,
-                    transition: `all ${theme.transition.fast}`
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = theme.colors.text.secondary
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = theme.colors.white
-                  }}
-                >
-                  Upgrade Plan
-                </button>
-              )}
-            </div>
           </div>
 
           {/* Request List - WhatsApp Style */}
