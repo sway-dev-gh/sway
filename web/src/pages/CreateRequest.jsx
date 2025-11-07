@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api/axios'
 import '../styles/CreateRequest.css'
 
 export default function CreateRequest() {
@@ -18,7 +18,7 @@ export default function CreateRequest() {
 
     try {
       const token = localStorage.getItem('token')
-      const { data } = await axios.post('/api/requests', formData, {
+      const { data } = await api.post('/api/requests', formData, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setCreated(data)

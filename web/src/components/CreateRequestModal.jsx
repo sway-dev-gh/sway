@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
+import api from '../api/axios'
 import './CreateRequestModal.css'
 
 export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
@@ -34,7 +34,7 @@ export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
 
     try {
       const token = localStorage.getItem('token')
-      const { data } = await axios.post(
+      const { data } = await api.post(
         '/api/requests',
         {
           title,

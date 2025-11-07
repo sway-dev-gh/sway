@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api/axios'
 import '../styles/Upload.css'
 
 export default function Upload() {
@@ -21,7 +21,7 @@ export default function Upload() {
 
   const fetchRequest = async () => {
     try {
-      const { data } = await axios.get(`/api/r/${shortCode}`)
+      const { data } = await api.get(`/api/r/${shortCode}`)
       setRequestData(data)
     } catch (error) {
       console.error('Error fetching request:', error)
@@ -52,7 +52,7 @@ export default function Upload() {
         formDataObj.append('files', file)
       })
 
-      await axios.post(`/api/r/${shortCode}/upload`, formDataObj, {
+      await api.post(`/api/r/${shortCode}/upload`, formDataObj, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import api from '../api/axios'
 import '../styles/Auth.css'
 
 export default function Signup() {
@@ -19,7 +19,7 @@ export default function Signup() {
     setLoading(true)
 
     try {
-      const { data } = await axios.post('/api/auth/signup', formData)
+      const { data } = await api.post('/api/auth/signup', formData)
       localStorage.setItem('token', data.token)
       localStorage.setItem('user', JSON.stringify(data.user))
       navigate('/dashboard')
