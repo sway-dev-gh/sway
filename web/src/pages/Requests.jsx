@@ -5,12 +5,35 @@ import theme from '../theme'
 import api from '../api/axios'
 
 const REQUEST_TYPES = [
-  { id: 'general', name: 'General Upload', description: 'Simple file collection for any purpose' },
-  { id: 'photos', name: 'Photos', description: 'Collect images and photos' },
+  { id: 'general-upload', name: 'General Upload', description: 'Simple file collection' },
+  { id: 'photos', name: 'Photos', description: 'Collect images' },
   { id: 'videos', name: 'Videos', description: 'Collect video files' },
-  { id: 'documents', name: 'Documents', description: 'Request PDFs, Word docs, spreadsheets' },
-  { id: 'code', name: 'Code', description: 'Request code files or repositories' },
-  { id: 'design', name: 'Design', description: 'Collect logos, mockups, design files' }
+  { id: 'documents', name: 'Documents', description: 'PDFs, Word docs, spreadsheets' },
+  { id: 'code-submission', name: 'Code', description: 'Code files or repositories' },
+  { id: 'design-assets', name: 'Design', description: 'Logos, mockups, design files' },
+  { id: 'event-photos', name: 'Event Photos', description: 'Photos from events' },
+  { id: 'application-materials', name: 'Applications', description: 'Resumes, portfolios' },
+  { id: 'invoices', name: 'Invoices', description: 'Billing documents' },
+  { id: 'forms', name: 'Forms', description: 'Form responses' },
+  { id: 'client-deliverables', name: 'Deliverables', description: 'Final work files' },
+  { id: 'feedback', name: 'Feedback', description: 'Reviews, testimonials' },
+  { id: 'content', name: 'Content', description: 'Articles, written content' },
+  { id: 'assignments', name: 'Assignments', description: 'Homework, projects' },
+  { id: 'contracts', name: 'Contracts', description: 'Signed documents' },
+  { id: 'audio', name: 'Audio', description: 'Podcasts, recordings' },
+  { id: 'spreadsheets', name: 'Spreadsheets', description: 'Excel, CSV data' },
+  { id: 'presentations', name: 'Presentations', description: 'PowerPoint, Keynote' },
+  { id: 'legal', name: 'Legal Docs', description: 'Legal forms' },
+  { id: 'id-verification', name: 'ID Verification', description: 'Identification docs' },
+  { id: 'medical', name: 'Medical Records', description: 'Health documentation' },
+  { id: 'tax-documents', name: 'Tax Docs', description: 'W2s, 1099s' },
+  { id: 'property', name: 'Property Photos', description: 'Real estate images' },
+  { id: 'products', name: 'Product Images', description: 'E-commerce photos' },
+  { id: 'marketing', name: 'Marketing', description: 'Promotional content' },
+  { id: 'social-media', name: 'Social Media', description: 'Posts, stories' },
+  { id: 'surveys', name: 'Surveys', description: 'Survey responses' },
+  { id: 'research', name: 'Research Data', description: 'Research findings' },
+  { id: 'screenshots', name: 'Screenshots', description: 'Proof, verification images' }
 ]
 
 function Requests() {
@@ -21,6 +44,7 @@ function Requests() {
   const [creating, setCreating] = useState(false)
   const [formData, setFormData] = useState({ title: '', description: '' })
   const [requestType, setRequestType] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
   const [expiryType, setExpiryType] = useState('preset') // 'preset' or 'custom'
   const [customExpiryValue, setCustomExpiryValue] = useState('')
   const [customExpiryUnit, setCustomExpiryUnit] = useState('days') // 'minutes', 'hours', 'days'
@@ -529,6 +553,25 @@ function Requests() {
                   </div>
                 ) : !requestType ? (
                   <div style={{ padding: '32px' }}>
+                    {/* Search Bar */}
+                    <input
+                      type="text"
+                      placeholder="Search request types..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        background: theme.colors.bg.secondary,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        color: theme.colors.text.primary,
+                        fontSize: '14px',
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        marginBottom: theme.spacing[5]
+                      }}
+                    />
+
                     <div style={{
                       fontSize: '11px',
                       color: theme.colors.text.muted,
@@ -541,15 +584,25 @@ function Requests() {
 
                     <div style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(2, 1fr)',
-                      gap: '12px'
+                      gridTemplateColumns: 'repeat(3, 1fr)',
+                      gap: '12px',
+                      maxHeight: '400px',
+                      overflowY: 'auto'
                     }}>
-                      {REQUEST_TYPES.map((type) => (
+                      {REQUEST_TYPES
+                        .filter(type =>
+                          type.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          type.description.toLowerCase().includes(searchQuery.toLowerCase())
+                        )
+                        .map((type) => (
                         <div
                           key={type.id}
-                          onClick={() => setRequestType(type.id)}
+                          onClick={() => {
+                            setRequestType(type.id)
+                            setSearchQuery('')
+                          }}
                           style={{
-                            padding: '20px',
+                            padding: '16px',
                             background: theme.colors.bg.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
                             cursor: 'pointer',
@@ -565,7 +618,7 @@ function Requests() {
                           }}
                         >
                           <div style={{
-                            fontSize: '14px',
+                            fontSize: '13px',
                             fontWeight: '400',
                             color: theme.colors.text.primary,
                             marginBottom: theme.spacing[1]
@@ -575,7 +628,7 @@ function Requests() {
                           <div style={{
                             fontSize: '11px',
                             color: theme.colors.text.tertiary,
-                            lineHeight: '1.4'
+                            lineHeight: '1.3'
                           }}>
                             {type.description}
                           </div>
