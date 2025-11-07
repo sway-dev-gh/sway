@@ -16,10 +16,31 @@ function generateShortCode() {
 // POST /api/requests - Create new request
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { title, description, type, timeLimit, fields } = req.body
+    const { title, description, type, timeLimit, fields, customFields } = req.body
 
     if (!title || !title.trim()) {
       return res.status(400).json({ error: 'Title is required' })
+    }
+
+    // Check user's plan and enforce request limits
+    const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
+    const userPlan = userResult.rows[0]?.plan || 'free'
+
+    // Free plan: limit to 3 active requests
+    if (userPlan === 'free') {
+      const activeRequestsResult = await pool.query(
+        'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
+        [req.userId]
+      )
+      const activeCount = parseInt(activeRequestsResult.rows[0].count)
+
+      if (activeCount >= 3) {
+        return res.status(403).json({
+          error: 'Request limit reached. Free plan allows 3 active requests. Upgrade to Pro for unlimited requests.',
+          limitReached: true,
+          currentPlan: 'free'
+        })
+      }
     }
 
     // Generate unique short code
@@ -61,7 +82,7 @@ router.post('/', authenticateToken, async (req, res) => {
         description || null,
         type || null,
         timeLimit ? parseInt(timeLimit) : null,
-        fields ? JSON.stringify(fields) : null,
+        customFields ? JSON.stringify(customFields) : null,
         expiresAt
       ]
     )

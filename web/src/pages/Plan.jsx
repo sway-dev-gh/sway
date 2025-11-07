@@ -65,9 +65,9 @@ function Plan() {
       storage: '1 GB',
       features: [
         '1 GB total storage',
-        'Unlimited requests',
-        'All file types',
-        'Email support'
+        '3 active requests',
+        'Basic file types only',
+        '10 files per request'
       ]
     },
     {
@@ -79,8 +79,8 @@ function Plan() {
       features: [
         '50 GB total storage',
         'Unlimited requests',
-        'All file types',
-        'Email support'
+        'Limited file types',
+        '100 files per request'
       ]
     },
     {
@@ -93,7 +93,7 @@ function Plan() {
         '200 GB total storage',
         'Unlimited requests',
         'All file types',
-        'Email support'
+        'Unlimited files per request'
       ]
     }
   ]

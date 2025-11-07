@@ -93,6 +93,60 @@ router.post('/:code/upload', upload.array('files', 10), async (req, res) => {
       return res.status(403).json({ error: 'This request is no longer accepting uploads' })
     }
 
+    // Check files per request limit based on plan
+    const uploadCountResult = await pool.query(
+      'SELECT COUNT(*) as count FROM uploads WHERE request_id = $1',
+      [request.id]
+    )
+    const currentFileCount = parseInt(uploadCountResult.rows[0].count)
+    const newFileCount = currentFileCount + files.length
+
+    let filesPerRequestLimit
+    if (request.plan === 'free') {
+      filesPerRequestLimit = 10
+    } else if (request.plan === 'pro') {
+      filesPerRequestLimit = 100
+    } else {
+      filesPerRequestLimit = null // Unlimited for business
+    }
+
+    if (filesPerRequestLimit && newFileCount > filesPerRequestLimit) {
+      return res.status(403).json({
+        error: 'File limit exceeded',
+        message: `This request can only accept ${filesPerRequestLimit} files (Free plan limit). Currently has ${currentFileCount} files. Upgrade to Business for unlimited files.`,
+        currentCount: currentFileCount,
+        limit: filesPerRequestLimit
+      })
+    }
+
+    // Check file type restrictions based on plan
+    const basicFileTypes = ['.jpg', '.jpeg', '.png', '.gif', '.pdf', '.doc', '.docx', '.txt']
+    const limitedFileTypes = [...basicFileTypes, '.mp4', '.mov', '.avi', '.zip', '.rar', '.xlsx', '.xls', '.ppt', '.pptx', '.mp3', '.wav']
+
+    for (const file of files) {
+      const fileExt = path.extname(file.originalname).toLowerCase()
+
+      if (request.plan === 'free') {
+        if (!basicFileTypes.includes(fileExt)) {
+          return res.status(403).json({
+            error: 'File type not allowed',
+            message: `Free plan only supports basic file types (images, PDFs, and documents). File "${file.originalname}" is not allowed. Upgrade to Pro for more file types.`,
+            fileName: file.originalname,
+            allowedTypes: basicFileTypes
+          })
+        }
+      } else if (request.plan === 'pro') {
+        if (!limitedFileTypes.includes(fileExt)) {
+          return res.status(403).json({
+            error: 'File type not allowed',
+            message: `Pro plan doesn't support this file type. File "${file.originalname}" is not allowed. Upgrade to Business for all file types.`,
+            fileName: file.originalname
+          })
+        }
+      }
+      // Business plan has no file type restrictions
+    }
+
     // Check storage limits
     const storageResult = await pool.query(
       `SELECT COALESCE(SUM(u.file_size), 0) as total_bytes

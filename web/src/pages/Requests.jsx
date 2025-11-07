@@ -5,35 +5,264 @@ import theme from '../theme'
 import api from '../api/axios'
 
 const REQUEST_TYPES = [
-  { id: 'general-upload', name: 'General Upload', description: 'Simple file collection' },
-  { id: 'photos', name: 'Photos', description: 'Collect images' },
-  { id: 'videos', name: 'Videos', description: 'Collect video files' },
-  { id: 'documents', name: 'Documents', description: 'PDFs, Word docs, spreadsheets' },
-  { id: 'code-submission', name: 'Code', description: 'Code files or repositories' },
-  { id: 'design-assets', name: 'Design', description: 'Logos, mockups, design files' },
-  { id: 'event-photos', name: 'Event Photos', description: 'Photos from events' },
-  { id: 'application-materials', name: 'Applications', description: 'Resumes, portfolios' },
-  { id: 'invoices', name: 'Invoices', description: 'Billing documents' },
-  { id: 'forms', name: 'Forms', description: 'Form responses' },
-  { id: 'client-deliverables', name: 'Deliverables', description: 'Final work files' },
-  { id: 'feedback', name: 'Feedback', description: 'Reviews, testimonials' },
-  { id: 'content', name: 'Content', description: 'Articles, written content' },
-  { id: 'assignments', name: 'Assignments', description: 'Homework, projects' },
-  { id: 'contracts', name: 'Contracts', description: 'Signed documents' },
-  { id: 'audio', name: 'Audio', description: 'Podcasts, recordings' },
-  { id: 'spreadsheets', name: 'Spreadsheets', description: 'Excel, CSV data' },
-  { id: 'presentations', name: 'Presentations', description: 'PowerPoint, Keynote' },
-  { id: 'legal', name: 'Legal Docs', description: 'Legal forms' },
-  { id: 'id-verification', name: 'ID Verification', description: 'Identification docs' },
-  { id: 'medical', name: 'Medical Records', description: 'Health documentation' },
-  { id: 'tax-documents', name: 'Tax Docs', description: 'W2s, 1099s' },
-  { id: 'property', name: 'Property Photos', description: 'Real estate images' },
-  { id: 'products', name: 'Product Images', description: 'E-commerce photos' },
-  { id: 'marketing', name: 'Marketing', description: 'Promotional content' },
-  { id: 'social-media', name: 'Social Media', description: 'Posts, stories' },
-  { id: 'surveys', name: 'Surveys', description: 'Survey responses' },
-  { id: 'research', name: 'Research Data', description: 'Research findings' },
-  { id: 'screenshots', name: 'Screenshots', description: 'Proof, verification images' }
+  {
+    id: 'general-upload',
+    name: 'General Upload',
+    description: 'Simple file collection',
+    fields: []
+  },
+  {
+    id: 'photos',
+    name: 'Photos',
+    description: 'Collect images',
+    fields: [
+      { id: 'resolution', label: 'Preferred Resolution', type: 'select', options: ['Any', '4K', '1080p', '720p'] },
+      { id: 'count', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 10' }
+    ]
+  },
+  {
+    id: 'videos',
+    name: 'Videos',
+    description: 'Collect video files',
+    fields: [
+      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 5' },
+      { id: 'orientation', label: 'Orientation', type: 'select', options: ['Landscape', 'Portrait', 'Square', 'Any'] }
+    ]
+  },
+  {
+    id: 'documents',
+    name: 'Documents',
+    description: 'PDFs, Word docs, spreadsheets',
+    fields: [
+      { id: 'docType', label: 'Document Type', type: 'select', options: ['PDF', 'Word', 'Excel', 'PowerPoint', 'Any'] },
+      { id: 'pageLimit', label: 'Max Pages (optional)', type: 'number', placeholder: 'e.g., 20' }
+    ]
+  },
+  {
+    id: 'code-submission',
+    name: 'Code',
+    description: 'Code files or repositories',
+    fields: [
+      { id: 'language', label: 'Programming Language', type: 'text', placeholder: 'e.g., JavaScript, Python, Java' },
+      { id: 'repo', label: 'GitHub/GitLab URL (optional)', type: 'text', placeholder: 'https://github.com/...' }
+    ]
+  },
+  {
+    id: 'design-assets',
+    name: 'Design',
+    description: 'Logos, mockups, design files',
+    fields: [
+      { id: 'format', label: 'Preferred Format', type: 'select', options: ['PNG', 'SVG', 'AI', 'PSD', 'Figma', 'Any'] },
+      { id: 'dimensions', label: 'Dimensions (optional)', type: 'text', placeholder: 'e.g., 1920x1080' }
+    ]
+  },
+  {
+    id: 'event-photos',
+    name: 'Event Photos',
+    description: 'Photos from events',
+    fields: [
+      { id: 'eventDate', label: 'Event Date', type: 'date' },
+      { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 20' }
+    ]
+  },
+  {
+    id: 'application-materials',
+    name: 'Applications',
+    description: 'Resumes, portfolios',
+    fields: [
+      { id: 'position', label: 'Position Applying For', type: 'text', placeholder: 'e.g., Software Engineer' },
+      { id: 'deadline', label: 'Application Deadline', type: 'date' }
+    ]
+  },
+  {
+    id: 'invoices',
+    name: 'Invoices',
+    description: 'Billing documents',
+    fields: [
+      { id: 'invoiceNumber', label: 'Invoice Number', type: 'text', placeholder: 'e.g., INV-001' },
+      { id: 'amount', label: 'Amount', type: 'text', placeholder: 'e.g., $150.00' }
+    ]
+  },
+  {
+    id: 'forms',
+    name: 'Forms',
+    description: 'Form responses',
+    fields: [
+      { id: 'formName', label: 'Form Name', type: 'text', placeholder: 'e.g., Customer Survey' },
+      { id: 'submissionCount', label: 'Expected Submissions', type: 'number', placeholder: 'e.g., 50' }
+    ]
+  },
+  {
+    id: 'client-deliverables',
+    name: 'Deliverables',
+    description: 'Final work files',
+    fields: [
+      { id: 'projectName', label: 'Project Name', type: 'text', placeholder: 'e.g., Website Redesign' },
+      { id: 'dueDate', label: 'Due Date', type: 'date' }
+    ]
+  },
+  {
+    id: 'feedback',
+    name: 'Feedback',
+    description: 'Reviews, testimonials',
+    fields: [
+      { id: 'feedbackType', label: 'Feedback Type', type: 'select', options: ['Review', 'Testimonial', 'Bug Report', 'Feature Request', 'Other'] },
+      { id: 'topic', label: 'Topic', type: 'text', placeholder: 'What is this feedback about?' }
+    ]
+  },
+  {
+    id: 'content',
+    name: 'Content',
+    description: 'Articles, written content',
+    fields: [
+      { id: 'contentType', label: 'Content Type', type: 'select', options: ['Article', 'Blog Post', 'Script', 'Copy', 'Other'] },
+      { id: 'wordCount', label: 'Target Word Count', type: 'number', placeholder: 'e.g., 1000' }
+    ]
+  },
+  {
+    id: 'assignments',
+    name: 'Assignments',
+    description: 'Homework, projects',
+    fields: [
+      { id: 'course', label: 'Course Name', type: 'text', placeholder: 'e.g., CS 101' },
+      { id: 'dueDate', label: 'Due Date', type: 'date' }
+    ]
+  },
+  {
+    id: 'contracts',
+    name: 'Contracts',
+    description: 'Signed documents',
+    fields: [
+      { id: 'contractType', label: 'Contract Type', type: 'text', placeholder: 'e.g., NDA, Service Agreement' },
+      { id: 'parties', label: 'Number of Parties', type: 'number', placeholder: 'e.g., 2' }
+    ]
+  },
+  {
+    id: 'audio',
+    name: 'Audio',
+    description: 'Podcasts, recordings',
+    fields: [
+      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 30' },
+      { id: 'format', label: 'Preferred Format', type: 'select', options: ['MP3', 'WAV', 'AAC', 'Any'] }
+    ]
+  },
+  {
+    id: 'spreadsheets',
+    name: 'Spreadsheets',
+    description: 'Excel, CSV data',
+    fields: [
+      { id: 'dataType', label: 'Data Type', type: 'text', placeholder: 'e.g., Sales Data, Customer List' },
+      { id: 'rowCount', label: 'Expected Rows (optional)', type: 'number', placeholder: 'e.g., 500' }
+    ]
+  },
+  {
+    id: 'presentations',
+    name: 'Presentations',
+    description: 'PowerPoint, Keynote',
+    fields: [
+      { id: 'topic', label: 'Presentation Topic', type: 'text', placeholder: 'e.g., Q4 Results' },
+      { id: 'slides', label: 'Expected Slides', type: 'number', placeholder: 'e.g., 15' }
+    ]
+  },
+  {
+    id: 'legal',
+    name: 'Legal Docs',
+    description: 'Legal forms',
+    fields: [
+      { id: 'documentType', label: 'Document Type', type: 'text', placeholder: 'e.g., Power of Attorney' },
+      { id: 'jurisdiction', label: 'Jurisdiction', type: 'text', placeholder: 'e.g., California' }
+    ]
+  },
+  {
+    id: 'id-verification',
+    name: 'ID Verification',
+    description: 'Identification docs',
+    fields: [
+      { id: 'idType', label: 'ID Type', type: 'select', options: ['Passport', 'Driver License', 'State ID', 'Other'] },
+      { id: 'country', label: 'Country', type: 'text', placeholder: 'e.g., USA' }
+    ]
+  },
+  {
+    id: 'medical',
+    name: 'Medical Records',
+    description: 'Health documentation',
+    fields: [
+      { id: 'recordType', label: 'Record Type', type: 'select', options: ['Lab Results', 'Prescription', 'X-Ray/Imaging', 'Medical History', 'Other'] },
+      { id: 'dateOfService', label: 'Date of Service', type: 'date' }
+    ]
+  },
+  {
+    id: 'tax-documents',
+    name: 'Tax Docs',
+    description: 'W2s, 1099s',
+    fields: [
+      { id: 'taxYear', label: 'Tax Year', type: 'number', placeholder: 'e.g., 2024' },
+      { id: 'docType', label: 'Document Type', type: 'select', options: ['W2', '1099', '1040', 'Receipt', 'Other'] }
+    ]
+  },
+  {
+    id: 'property',
+    name: 'Property Photos',
+    description: 'Real estate images',
+    fields: [
+      { id: 'propertyType', label: 'Property Type', type: 'select', options: ['House', 'Apartment', 'Commercial', 'Land', 'Other'] },
+      { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 25' }
+    ]
+  },
+  {
+    id: 'products',
+    name: 'Product Images',
+    description: 'E-commerce photos',
+    fields: [
+      { id: 'productCategory', label: 'Product Category', type: 'text', placeholder: 'e.g., Electronics, Clothing' },
+      { id: 'backgroundType', label: 'Background', type: 'select', options: ['White', 'Transparent', 'Lifestyle', 'Any'] }
+    ]
+  },
+  {
+    id: 'marketing',
+    name: 'Marketing',
+    description: 'Promotional content',
+    fields: [
+      { id: 'campaignName', label: 'Campaign Name', type: 'text', placeholder: 'e.g., Spring Sale 2024' },
+      { id: 'platform', label: 'Platform', type: 'select', options: ['Email', 'Social Media', 'Print', 'Digital Ads', 'All'] }
+    ]
+  },
+  {
+    id: 'social-media',
+    name: 'Social Media',
+    description: 'Posts, stories',
+    fields: [
+      { id: 'platform', label: 'Platform', type: 'select', options: ['Instagram', 'TikTok', 'Twitter/X', 'Facebook', 'LinkedIn', 'Multiple'] },
+      { id: 'contentType', label: 'Content Type', type: 'select', options: ['Post', 'Story', 'Reel', 'Video', 'Image'] }
+    ]
+  },
+  {
+    id: 'surveys',
+    name: 'Surveys',
+    description: 'Survey responses',
+    fields: [
+      { id: 'surveyName', label: 'Survey Name', type: 'text', placeholder: 'e.g., Customer Satisfaction' },
+      { id: 'expectedResponses', label: 'Expected Responses', type: 'number', placeholder: 'e.g., 100' }
+    ]
+  },
+  {
+    id: 'research',
+    name: 'Research Data',
+    description: 'Research findings',
+    fields: [
+      { id: 'researchTopic', label: 'Research Topic', type: 'text', placeholder: 'e.g., Climate Change Impact' },
+      { id: 'dataFormat', label: 'Data Format', type: 'select', options: ['CSV', 'JSON', 'Excel', 'PDF', 'Other'] }
+    ]
+  },
+  {
+    id: 'screenshots',
+    name: 'Screenshots',
+    description: 'Proof, verification images',
+    fields: [
+      { id: 'purpose', label: 'Purpose', type: 'text', placeholder: 'e.g., Bug Report, Tutorial' },
+      { id: 'count', label: 'Expected Number', type: 'number', placeholder: 'e.g., 5' }
+    ]
+  }
 ]
 
 function Requests() {
@@ -42,7 +271,7 @@ function Requests() {
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [creating, setCreating] = useState(false)
-  const [formData, setFormData] = useState({ title: '', description: '' })
+  const [formData, setFormData] = useState({ title: '', description: '', customFields: {} })
   const [requestType, setRequestType] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [expiryType, setExpiryType] = useState('preset') // 'preset' or 'custom'
@@ -92,7 +321,7 @@ function Requests() {
   const closeModal = () => {
     setShowModal(false)
     setRequestType('')
-    setFormData({ title: '', description: '' })
+    setFormData({ title: '', description: '', customFields: {} })
     setExpiryType('preset')
     setCustomExpiryValue('')
     setCustomExpiryUnit('days')
@@ -147,7 +376,7 @@ function Requests() {
         description: formData.description,
         type: requestType,
         timeLimit: timeLimit,
-        fields: formData.fields || {}
+        customFields: formData.customFields || {}
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -465,7 +694,7 @@ function Requests() {
                     onClick={() => {
                       setShowModal(false)
                       setRequestType('')
-                      setFormData({ title: '', description: '' })
+                      setFormData({ title: '', description: '', customFields: {} })
                     }}
                     style={{
                       background: 'transparent',
@@ -742,6 +971,96 @@ function Requests() {
                         />
                       </div>
 
+                      {/* Custom Fields based on Request Type */}
+                      {(() => {
+                        const selectedType = REQUEST_TYPES.find(t => t.id === requestType)
+                        const customFields = selectedType?.fields || []
+
+                        if (customFields.length === 0) return null
+
+                        return customFields.map((field) => (
+                          <div key={field.id} style={{ marginBottom: theme.spacing[5] }}>
+                            <label style={{
+                              display: 'block',
+                              fontSize: '11px',
+                              color: theme.colors.text.muted,
+                              marginBottom: theme.spacing[2],
+                              textTransform: 'uppercase',
+                              letterSpacing: '1px'
+                            }}>
+                              {field.label}
+                            </label>
+
+                            {field.type === 'select' ? (
+                              <select
+                                value={formData.customFields[field.id] || ''}
+                                onChange={(e) => setFormData(prev => ({
+                                  ...prev,
+                                  customFields: { ...prev.customFields, [field.id]: e.target.value }
+                                }))}
+                                style={{
+                                  width: '100%',
+                                  padding: '12px 16px',
+                                  background: theme.colors.bg.page,
+                                  border: `1px solid ${theme.colors.border.medium}`,
+                                  color: theme.colors.text.primary,
+                                  fontSize: '14px',
+                                  fontFamily: 'inherit',
+                                  outline: 'none',
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                <option value="">Select...</option>
+                                {field.options.map(opt => (
+                                  <option key={opt} value={opt}>{opt}</option>
+                                ))}
+                              </select>
+                            ) : field.type === 'textarea' ? (
+                              <textarea
+                                value={formData.customFields[field.id] || ''}
+                                onChange={(e) => setFormData(prev => ({
+                                  ...prev,
+                                  customFields: { ...prev.customFields, [field.id]: e.target.value }
+                                }))}
+                                placeholder={field.placeholder || ''}
+                                rows={4}
+                                style={{
+                                  width: '100%',
+                                  padding: '12px 16px',
+                                  background: theme.colors.bg.page,
+                                  border: `1px solid ${theme.colors.border.medium}`,
+                                  color: theme.colors.text.primary,
+                                  fontSize: '14px',
+                                  fontFamily: 'inherit',
+                                  outline: 'none',
+                                  resize: 'vertical'
+                                }}
+                              />
+                            ) : (
+                              <input
+                                type={field.type}
+                                value={formData.customFields[field.id] || ''}
+                                onChange={(e) => setFormData(prev => ({
+                                  ...prev,
+                                  customFields: { ...prev.customFields, [field.id]: e.target.value }
+                                }))}
+                                placeholder={field.placeholder || ''}
+                                style={{
+                                  width: '100%',
+                                  padding: '12px 16px',
+                                  background: theme.colors.bg.page,
+                                  border: `1px solid ${theme.colors.border.medium}`,
+                                  color: theme.colors.text.primary,
+                                  fontSize: '14px',
+                                  fontFamily: 'inherit',
+                                  outline: 'none'
+                                }}
+                              />
+                            )}
+                          </div>
+                        ))
+                      })()}
+
                       <div style={{ marginBottom: theme.spacing[6] }}>
                         <label style={{
                           display: 'block',
@@ -883,7 +1202,7 @@ function Requests() {
                           onClick={() => {
                             setShowModal(false)
                             setRequestType('')
-                            setFormData({ title: '', description: '' })
+                            setFormData({ title: '', description: '', customFields: {} })
                           }}
                           style={{
                             padding: '12px 24px',
