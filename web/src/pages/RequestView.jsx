@@ -96,7 +96,6 @@ function RequestView() {
           minHeight: '100vh',
           background: '#000',
           color: '#fff',
-          marginLeft: '60px',
           marginTop: '60px',
           padding: '60px 40px'
         }}>
@@ -113,7 +112,6 @@ function RequestView() {
         minHeight: '100vh',
         background: '#000',
         color: '#fff',
-        marginLeft: '60px',
         marginTop: '60px'
       }}>
         <div style={{

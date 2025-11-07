@@ -39,7 +39,6 @@ function Sidebar() {
       })
     } catch (error) {
       console.error('Failed to fetch data:', error)
-      // Set defaults on error to prevent rendering issues
       setStats({
         totalRequests: 0,
         totalUploads: 0
@@ -56,108 +55,69 @@ function Sidebar() {
   }
 
   const navItems = [
-    { path: '/requests', label: 'Requests', icon: '■' },
-    { path: '/plan', label: 'Plan', icon: '■' },
-    { path: '/settings', label: 'Settings', icon: '■' }
+    { path: '/requests', label: 'Requests' },
+    { path: '/plan', label: 'Plan' },
+    { path: '/settings', label: 'Settings' }
   ]
-
-  const sidebarStyle = {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    width: '60px',
-    background: theme.colors.bg.sidebar,
-    borderRight: `1px solid ${theme.colors.border.medium}`,
-    zIndex: 100,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  }
 
   const topBarStyle = {
     position: 'fixed',
     top: 0,
-    left: '60px',
+    left: 0,
     right: 0,
     height: '60px',
     background: theme.colors.bg.sidebar,
     borderBottom: `1px solid ${theme.colors.border.medium}`,
-    zIndex: 99,
+    zIndex: 100,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: `0 ${theme.spacing[6]}`
   }
 
-  const logoStyle = {
-    padding: `${theme.spacing[8]} ${theme.spacing[6]} ${theme.spacing[6]}`,
-    borderBottom: `1px solid ${theme.colors.border.medium}`,
-    display: 'flex',
-    alignItems: 'center',
-    gap: theme.spacing[3],
-    minHeight: '80px'
-  }
-
   const navLinkStyle = (isActive) => ({
-    display: 'flex',
+    display: 'inline-flex',
     alignItems: 'center',
-    gap: theme.spacing[2],
-    padding: `10px ${theme.spacing[3]}`,
-    margin: `1px ${theme.spacing[3]}`,
+    padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
     fontSize: theme.fontSize.sm,
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.md,
-    transition: `all ${theme.transition.fast}`
-  })
-
-  const userSectionStyle = {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: theme.spacing[4],
-    borderTop: `1px solid ${theme.colors.border.medium}`,
-    background: theme.colors.bg.sidebar
-  }
-
-  const iconButtonStyle = (isActive) => ({
-    width: '40px',
-    height: '40px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: theme.radius.md,
-    background: isActive ? theme.colors.bg.hover : 'transparent',
-    color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     transition: `all ${theme.transition.fast}`,
-    marginBottom: theme.spacing[2],
-    textDecoration: 'none',
-    fontSize: '18px'
+    marginRight: theme.spacing[2]
   })
 
   return (
-    <>
-      {/* Thin Left Sidebar - Icon Navigation Only */}
-      <div style={sidebarStyle}>
-        {/* Logo/Brand Icon */}
-        <div style={logoStyle}>
-          <span style={{ fontSize: '20px' }}>■</span>
+    <div style={topBarStyle}>
+      {/* Left Section - Navigation */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing[6]
+      }}>
+        {/* Logo/Brand */}
+        <div style={{
+          fontSize: '18px',
+          fontWeight: theme.weight.semibold,
+          color: theme.colors.text.primary
+        }}>
+          Sway
         </div>
 
-        {/* Navigation Icons */}
-        <nav style={{ padding: `${theme.spacing[4]} 0`, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        {/* Navigation Links */}
+        <nav style={{
+          display: 'flex',
+          alignItems: 'center'
+        }}>
           {navItems.map((item) => {
             const isActive = location.pathname === item.path
             return (
               <Link
                 key={item.path}
                 to={item.path}
-                style={iconButtonStyle(isActive)}
-                title={item.label}
+                style={navLinkStyle(isActive)}
                 onMouseEnter={(e) => {
                   if (!isActive) {
                     e.currentTarget.style.background = theme.colors.bg.hover
@@ -169,32 +129,25 @@ function Sidebar() {
                   }
                 }}
               >
-                <span style={{ fontSize: '18px' }}>{item.icon}</span>
+                {item.label}
               </Link>
             )
           })}
         </nav>
       </div>
 
-      {/* Top Bar - Insights and User Section */}
-      <div style={topBarStyle}>
-        {/* Insights - Horizontal Layout */}
+      {/* Right Section - Stats and User */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing[6]
+      }}>
+        {/* Stats */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
           gap: theme.spacing[4]
         }}>
-          <div style={{
-            fontSize: '10px',
-            color: theme.colors.text.tertiary,
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            fontWeight: theme.weight.normal,
-            opacity: 0.6
-          }}>
-            Insights
-          </div>
-
           {/* Total Requests */}
           <div style={{
             display: 'flex',
@@ -248,46 +201,38 @@ function Sidebar() {
           </div>
         </div>
 
-        {/* User Section - Horizontal */}
+        {/* User Section */}
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: theme.spacing[4]
+          gap: theme.spacing[3]
         }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: theme.spacing[3]
+            gap: theme.spacing[2]
           }}>
             <div style={{
-              width: '36px',
-              height: '36px',
+              width: '32px',
+              height: '32px',
               borderRadius: theme.radius.full,
               background: theme.colors.black,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: theme.fontSize.sm,
+              fontSize: '12px',
               fontWeight: theme.weight.semibold,
               color: theme.colors.white,
               border: `2px solid ${theme.colors.border.medium}`
             }}>
               {user.email?.charAt(0).toUpperCase() || 'U'}
             </div>
-            <div>
-              <div style={{
-                fontSize: theme.fontSize.sm,
-                fontWeight: theme.weight.medium,
-                color: theme.colors.text.primary
-              }}>
-                {user.email?.split('@')[0] || 'User'}
-              </div>
-              <div style={{
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.tertiary
-              }}>
-                {user.email || 'Loading...'}
-              </div>
+            <div style={{
+              fontSize: theme.fontSize.sm,
+              fontWeight: theme.weight.medium,
+              color: theme.colors.text.primary
+            }}>
+              {user.email?.split('@')[0] || 'User'}
             </div>
           </div>
 
@@ -317,7 +262,7 @@ function Sidebar() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
