@@ -441,7 +441,7 @@ function Requests() {
                   maxWidth: '600px',
                   width: '100%',
                   maxHeight: '90vh',
-                  overflow: 'auto'
+                  overflow: 'hidden'
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
