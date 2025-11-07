@@ -55,6 +55,7 @@ function Sidebar() {
   }
 
   const navItems = [
+    { path: '/dashboard', label: 'Dashboard' },
     { path: '/requests', label: 'Requests' },
     { path: '/plan', label: 'Plan' },
     { path: '/settings', label: 'Settings' }

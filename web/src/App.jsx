@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
 import Requests from './pages/Requests'
 import Uploads from './pages/Uploads'
 import Plan from './pages/Plan'
@@ -9,18 +10,15 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import './App.css'
 
-// Dashboard removed - stats integrated into Requests page
-// Updated: Dashboard functionality now in Requests
-
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/requests" replace />} />
-        <Route path="/dashboard" element={<Navigate to="/requests" replace />} />
+        <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/r/:shortCode" element={<Upload />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/requests/:id" element={<RequestView />} />
         <Route path="/uploads" element={<Uploads />} />
