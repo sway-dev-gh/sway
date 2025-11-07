@@ -127,7 +127,7 @@ function Plan() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginLeft: '260px'
+        marginLeft: '220px'
       }}>
         <div style={{
           maxWidth: '1200px',

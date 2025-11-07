@@ -100,27 +100,27 @@ function Dashboard() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginLeft: '260px'
+        marginLeft: '220px'
       }}>
         <div style={{
           maxWidth: '1600px',
           margin: '0 auto',
-          padding: '60px 40px'
+          padding: '40px 32px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '48px' }}>
+          <div style={{ marginBottom: '32px' }}>
             <h1 style={{
-              fontSize: '32px',
+              fontSize: '28px',
               fontWeight: '400',
               margin: 0,
-              marginBottom: '8px',
+              marginBottom: '6px',
               color: theme.colors.text.primary
             }}>
               Dashboard
             </h1>
             <p style={{
-              fontSize: '14px',
+              fontSize: '13px',
               color: theme.colors.text.muted,
               margin: 0
             }}>
@@ -131,13 +131,13 @@ function Dashboard() {
           {/* Stats Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '24px',
-            marginBottom: '48px'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+            gap: '20px',
+            marginBottom: '36px'
           }}>
             {/* Total Files Collected */}
             <div style={{
-              padding: '32px',
+              padding: '24px',
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.medium}`,
               borderRadius: theme.radius.md
@@ -145,7 +145,7 @@ function Dashboard() {
               <div style={{
                 fontSize: '11px',
                 color: theme.colors.text.muted,
-                marginBottom: '16px',
+                marginBottom: '12px',
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px',
                 fontWeight: theme.weight.semibold
@@ -153,11 +153,11 @@ function Dashboard() {
                 Files Collected
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: '42px',
                 fontWeight: '300',
                 color: stats.totalFiles > 0 ? theme.colors.white : theme.colors.text.muted,
                 letterSpacing: '-0.02em',
-                marginBottom: '8px'
+                marginBottom: '6px'
               }}>
                 {stats.totalFiles}
               </div>
@@ -171,7 +171,7 @@ function Dashboard() {
 
             {/* Storage Used */}
             <div style={{
-              padding: '32px',
+              padding: '24px',
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.medium}`,
               borderRadius: theme.radius.md
@@ -179,7 +179,7 @@ function Dashboard() {
               <div style={{
                 fontSize: '11px',
                 color: theme.colors.text.muted,
-                marginBottom: '16px',
+                marginBottom: '12px',
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px',
                 fontWeight: theme.weight.semibold
@@ -187,13 +187,13 @@ function Dashboard() {
                 Storage Used
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: '42px',
                 fontWeight: '300',
                 color: stats.storageUsed > 0 ? theme.colors.white : theme.colors.text.muted,
                 letterSpacing: '-0.02em',
-                marginBottom: '8px'
+                marginBottom: '6px'
               }}>
-                {stats.storageUsed.toFixed(2)} <span style={{ fontSize: '24px', color: theme.colors.text.muted }}>GB</span>
+                {stats.storageUsed.toFixed(2)} <span style={{ fontSize: '22px', color: theme.colors.text.muted }}>GB</span>
               </div>
               <div style={{
                 marginTop: '16px',
@@ -224,7 +224,7 @@ function Dashboard() {
 
             {/* Current Plan */}
             <div style={{
-              padding: '32px',
+              padding: '24px',
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.medium}`,
               borderRadius: theme.radius.md
@@ -232,7 +232,7 @@ function Dashboard() {
               <div style={{
                 fontSize: '11px',
                 color: theme.colors.text.muted,
-                marginBottom: '16px',
+                marginBottom: '12px',
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px',
                 fontWeight: theme.weight.semibold
@@ -240,11 +240,11 @@ function Dashboard() {
                 Current Plan
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: '42px',
                 fontWeight: '300',
                 color: getPlanColor(user.plan),
                 letterSpacing: '-0.02em',
-                marginBottom: '8px',
+                marginBottom: '6px',
                 textTransform: 'capitalize'
               }}>
                 {user.plan || 'Free'}
@@ -290,10 +290,10 @@ function Dashboard() {
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: '24px'
+              marginBottom: '20px'
             }}>
               <h2 style={{
-                fontSize: '20px',
+                fontSize: '18px',
                 fontWeight: '400',
                 margin: 0,
                 color: theme.colors.text.primary
@@ -369,11 +369,11 @@ function Dashboard() {
                   <div
                     key={req.id}
                     style={{
-                      padding: '20px 24px',
+                      padding: '16px 20px',
                       borderBottom: index < requests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '16px',
+                      gap: '14px',
                       cursor: 'pointer',
                       transition: `all ${theme.transition.fast}`
                     }}

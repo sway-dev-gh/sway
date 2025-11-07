@@ -96,7 +96,7 @@ function RequestView() {
           minHeight: '100vh',
           background: '#000',
           color: '#fff',
-          marginLeft: '260px',
+          marginLeft: '220px',
           padding: '60px 40px'
         }}>
           <p style={{ fontSize: '14px', color: '#666' }}>Request not found</p>
@@ -112,7 +112,7 @@ function RequestView() {
         minHeight: '100vh',
         background: '#000',
         color: '#fff',
-        marginLeft: '260px'
+        marginLeft: '220px'
       }}>
         <div style={{
           maxWidth: '1200px',

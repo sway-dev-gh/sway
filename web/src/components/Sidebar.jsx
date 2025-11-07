@@ -61,7 +61,7 @@ function Sidebar() {
     top: 0,
     left: 0,
     bottom: 0,
-    width: '260px',
+    width: '220px',
     background: theme.colors.bg.sidebar,
     borderRight: `1px solid ${theme.colors.border.medium}`,
     zIndex: 100
@@ -79,9 +79,9 @@ function Sidebar() {
   const navLinkStyle = (isActive) => ({
     display: 'flex',
     alignItems: 'center',
-    gap: theme.spacing[3],
-    padding: `12px ${theme.spacing[4]}`,
-    margin: `2px ${theme.spacing[4]}`,
+    gap: theme.spacing[2],
+    padding: `10px ${theme.spacing[3]}`,
+    margin: `1px ${theme.spacing[3]}`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
     fontSize: theme.fontSize.sm,
@@ -104,7 +104,7 @@ function Sidebar() {
   return (
     <div style={sidebarStyle}>
       {/* Navigation */}
-      <nav style={{ padding: `${theme.spacing[6]} 0` }}>
+      <nav style={{ padding: `${theme.spacing[4]} 0` }}>
         {navItems.map((item) => {
           const isActive = location.pathname === item.path
           return (
