@@ -291,6 +291,18 @@ function Requests() {
     }
   }, [])
 
+  // Disable body scroll when modal is open
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = 'unset'
+    }
+    return () => {
+      document.body.style.overflow = 'unset'
+    }
+  }, [showModal])
+
   const fetchRequests = async () => {
     try {
       setLoading(true)
@@ -659,7 +671,8 @@ function Requests() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 zIndex: 1000,
-                padding: '40px'
+                padding: '40px',
+                overflowY: 'auto'
               }}
               onClick={closeModal}
             >
@@ -670,7 +683,8 @@ function Requests() {
                   maxWidth: '600px',
                   width: '100%',
                   maxHeight: '90vh',
-                  overflow: 'hidden'
+                  overflow: 'auto',
+                  margin: 'auto'
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
