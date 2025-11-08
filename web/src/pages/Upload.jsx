@@ -259,22 +259,13 @@ export default function Upload() {
       const { data } = await api.get(`/api/r/${shortCode}`)
       setRequestData(data)
 
-      // Process branding data if available
-      if (data.branding && data.branding.requestTypeDesigns && data.requestType) {
-        try {
-          const designs = JSON.parse(data.branding.requestTypeDesigns)
-          const requestTypeDesign = designs[data.requestType]
-          if (requestTypeDesign) {
-            setBrandingData({
-              backgroundColor: requestTypeDesign.backgroundColor || '#000000',
-              elements: requestTypeDesign.elements || [],
-              logoUrl: data.branding.logoUrl,
-              removeBranding: data.branding.removeBranding
-            })
-          }
-        } catch (e) {
-          console.error('Error parsing branding data:', e)
-        }
+      // Process simplified branding data if available
+      if (data.branding) {
+        setBrandingData({
+          backgroundColor: data.branding.background_color || '#FFFFFF',
+          logoUrl: data.branding.logo_url,
+          removeBranding: data.branding.remove_branding ?? true
+        })
       }
     } catch (error) {
       console.error('Error fetching request:', error)
@@ -464,14 +455,18 @@ export default function Upload() {
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <div style={{
-          fontSize: '16px',
-          fontWeight: '400',
-          color: theme.colors.text.primary,
-          letterSpacing: '0.02em'
-        }}>
-          SWAY
-        </div>
+        {brandingData?.logoUrl ? (
+          <img src={brandingData.logoUrl} alt="Logo" style={{ maxHeight: '40px', maxWidth: '200px' }} />
+        ) : (
+          <div style={{
+            fontSize: '16px',
+            fontWeight: '400',
+            color: theme.colors.text.primary,
+            letterSpacing: '0.02em'
+          }}>
+            SWAY
+          </div>
+        )}
         {timeRemaining && (
           <div style={{
             fontSize: '13px',
