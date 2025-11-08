@@ -7,6 +7,7 @@ function AdminModeActivator({ onActivate }) {
   const [error, setError] = useState('')
   const [timeLeft, setTimeLeft] = useState(15)
   const [isAdminMode, setIsAdminMode] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState('free')
   const lastShiftTime = useRef(0)
   const timerRef = useRef(null)
 
@@ -17,6 +18,12 @@ function AdminModeActivator({ onActivate }) {
   useEffect(() => {
     const adminKey = localStorage.getItem('adminKey')
     setIsAdminMode(!!adminKey)
+
+    // Load current plan override if exists
+    const planOverride = localStorage.getItem('adminPlanOverride')
+    if (planOverride) {
+      setSelectedPlan(planOverride)
+    }
   }, [])
 
   useEffect(() => {
@@ -74,6 +81,13 @@ function AdminModeActivator({ onActivate }) {
     }
   }
 
+  const handlePlanChange = (plan) => {
+    setSelectedPlan(plan)
+    localStorage.setItem('adminPlanOverride', plan)
+    // Reload to apply plan changes
+    window.location.reload()
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -81,6 +95,7 @@ function AdminModeActivator({ onActivate }) {
       // Exiting admin mode - verify password
       if (password === ADMIN_PASSWORD) {
         localStorage.removeItem('adminKey')
+        localStorage.removeItem('adminPlanOverride')
         setIsAdminMode(false)
         closeModal()
         window.location.reload() // Refresh to apply changes
@@ -204,6 +219,72 @@ function AdminModeActivator({ onActivate }) {
             seconds remaining
           </div>
         </div>
+
+        {/* Plan Selector - Only show in admin mode */}
+        {isAdminMode && (
+          <div style={{ marginBottom: '24px' }}>
+            <label style={{
+              display: 'block',
+              fontSize: '13px',
+              fontWeight: theme.weight.medium,
+              color: theme.colors.text.secondary,
+              marginBottom: '12px',
+              textAlign: 'center'
+            }}>
+              Switch Testing Plan
+            </label>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '8px'
+            }}>
+              {['free', 'pro', 'business'].map((plan) => (
+                <button
+                  key={plan}
+                  type="button"
+                  onClick={() => handlePlanChange(plan)}
+                  style={{
+                    padding: '12px 8px',
+                    background: selectedPlan === plan ? theme.colors.white : 'transparent',
+                    border: `2px solid ${selectedPlan === plan ? theme.colors.white : theme.colors.border.medium}`,
+                    borderRadius: '8px',
+                    color: selectedPlan === plan ? theme.colors.black : theme.colors.text.secondary,
+                    fontSize: '13px',
+                    fontWeight: theme.weight.semibold,
+                    textTransform: 'uppercase',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedPlan !== plan) {
+                      e.currentTarget.style.background = theme.colors.bg.hover
+                      e.currentTarget.style.borderColor = theme.colors.white
+                      e.currentTarget.style.color = theme.colors.text.primary
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedPlan !== plan) {
+                      e.currentTarget.style.background = 'transparent'
+                      e.currentTarget.style.borderColor = theme.colors.border.medium
+                      e.currentTarget.style.color = theme.colors.text.secondary
+                    }
+                  }}
+                >
+                  {plan}
+                </button>
+              ))}
+            </div>
+            <div style={{
+              marginTop: '8px',
+              fontSize: '11px',
+              color: theme.colors.text.tertiary,
+              textAlign: 'center',
+              fontStyle: 'italic'
+            }}>
+              Current: {selectedPlan.toUpperCase()}
+            </div>
+          </div>
+        )}
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
