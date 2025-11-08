@@ -85,8 +85,6 @@ function Sidebar() {
     height: '60px',
     background: theme.colors.bg.sidebar,
     borderBottom: `1px solid ${theme.colors.border.medium}`,
-    boxShadow: theme.shadows.md,
-    backdropFilter: 'blur(20px)',
     zIndex: 100,
     display: 'flex',
     alignItems: 'center',

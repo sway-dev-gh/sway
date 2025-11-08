@@ -63,13 +63,6 @@ const theme = {
     fast: '0.15s ease',
     normal: '0.2s ease',
     slow: '0.3s ease'
-  },
-  shadows: {
-    sm: '0 1px 2px 0 rgba(0, 0, 0, 0.3)',
-    md: '0 2px 4px 0 rgba(0, 0, 0, 0.4)',
-    lg: '0 4px 12px 0 rgba(0, 0, 0, 0.5)',
-    xl: '0 8px 24px 0 rgba(0, 0, 0, 0.6)',
-    inner: 'inset 0 1px 2px 0 rgba(0, 0, 0, 0.3)'
   }
 }
 
