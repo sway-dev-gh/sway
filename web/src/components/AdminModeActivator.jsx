@@ -239,10 +239,10 @@ function AdminModeActivator({ onActivate }) {
             </label>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
+              gridTemplateColumns: 'repeat(2, 1fr)',
               gap: '8px'
             }}>
-              {['free', 'pro', 'business'].map((plan) => (
+              {['free', 'pro'].map((plan) => (
                 <button
                   key={plan}
                   type="button"

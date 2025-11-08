@@ -297,20 +297,14 @@ function Sidebar() {
               <div style={{
                 fontSize: '9px',
                 fontWeight: theme.weight.bold,
-                color: effectivePlan?.toLowerCase() === 'business' ? theme.colors.white :
-                       effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
+                color: effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
                        theme.colors.text.tertiary,
                 textTransform: 'uppercase',
                 letterSpacing: '0.6px',
                 padding: '3px 8px',
-                background: effectivePlan?.toLowerCase() === 'business' ? theme.colors.black :
-                           effectivePlan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
+                background: effectivePlan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
                            theme.colors.bg.secondary,
-                border: `1px solid ${
-                  effectivePlan?.toLowerCase() === 'business' ? theme.colors.white :
-                  effectivePlan?.toLowerCase() === 'pro' ? theme.colors.border.medium :
-                  theme.colors.border.medium
-                }`,
+                border: `1px solid ${theme.colors.border.medium}`,
                 borderRadius: '4px'
               }}>
                 {effectivePlan || 'Free'}
