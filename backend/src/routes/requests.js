@@ -24,34 +24,36 @@ router.post('/', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Title is required' })
     }
 
-    // Check user's plan and enforce request limits
-    const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
-    const userPlan = userResult.rows[0]?.plan || 'free'
+    // Check user's plan and enforce request limits (skip for admin)
+    if (!req.isAdmin) {
+      const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
+      const userPlan = userResult.rows[0]?.plan || 'free'
 
-    // Enforce ACTIVE request limits by plan (new monetization structure)
-    const activeRequestLimits = {
-      free: 1,       // 1 active request
-      pro: null,     // unlimited
-      business: null // unlimited
-    }
+      // Enforce ACTIVE request limits by plan (new monetization structure)
+      const activeRequestLimits = {
+        free: 1,       // 1 active request
+        pro: null,     // unlimited
+        business: null // unlimited
+      }
 
-    const activeLimit = activeRequestLimits[userPlan]
+      const activeLimit = activeRequestLimits[userPlan]
 
-    // Check active request limit (only for free plan)
-    if (activeLimit !== null) {
-      const activeRequestsResult = await pool.query(
-        'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
-        [req.userId]
-      )
-      const activeCount = parseInt(activeRequestsResult.rows[0].count)
+      // Check active request limit (only for free plan)
+      if (activeLimit !== null) {
+        const activeRequestsResult = await pool.query(
+          'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
+          [req.userId]
+        )
+        const activeCount = parseInt(activeRequestsResult.rows[0].count)
 
-      if (activeCount >= activeLimit) {
-        return res.status(403).json({
-          error: `Free plan allows only ${activeLimit} active request at a time. Upgrade to Pro ($9/mo) for unlimited requests.`,
-          limitReached: true,
-          currentPlan: userPlan,
-          upgradeRequired: 'pro'
-        })
+        if (activeCount >= activeLimit) {
+          return res.status(403).json({
+            error: `Free plan allows only ${activeLimit} active request at a time. Upgrade to Pro ($9/mo) for unlimited requests.`,
+            limitReached: true,
+            currentPlan: userPlan,
+            upgradeRequired: 'pro'
+          })
+        }
       }
     }
 
@@ -249,8 +251,8 @@ router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'isActive must be a boolean' })
     }
 
-    // If trying to activate, check active request limits
-    if (isActive === true) {
+    // If trying to activate, check active request limits (skip for admin)
+    if (isActive === true && !req.isAdmin) {
       const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
       const userPlan = userResult.rows[0]?.plan || 'free'
 
