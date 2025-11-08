@@ -53,6 +53,19 @@ function Notifications() {
     return 'Just now'
   }
 
+  const deleteNotification = async (notificationId) => {
+    try {
+      const token = localStorage.getItem('token')
+      await api.delete(`/api/notifications/${notificationId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setNotifications(prev => prev.filter(n => n.id !== notificationId))
+    } catch (error) {
+      console.error('Error deleting notification:', error)
+      alert('Failed to delete notification')
+    }
+  }
+
   if (loading) {
     return (
       <div style={{
@@ -113,29 +126,40 @@ function Notifications() {
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: '1px',
-              background: theme.colors.border.light,
-              borderRadius: '12px',
-              overflow: 'hidden',
-              marginBottom: '40px',
-              border: `1px solid ${theme.colors.border.light}`
+              gap: '16px',
+              marginBottom: '48px'
             }}>
-              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Notifications</div>
-                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{notifications.length}</div>
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                padding: '28px 24px',
+                borderRadius: '12px',
+                border: `1px solid ${theme.colors.border.light}`
+              }}>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Notifications</div>
+                <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{notifications.length}</div>
               </div>
-              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Today</div>
-                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                padding: '28px 24px',
+                borderRadius: '12px',
+                border: `1px solid ${theme.colors.border.light}`
+              }}>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Today</div>
+                <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>
                   {notifications.filter(n => {
                     const diff = new Date() - new Date(n.createdAt)
                     return diff < 24 * 60 * 60 * 1000
                   }).length}
                 </div>
               </div>
-              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>This Week</div>
-                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+              <div style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                padding: '28px 24px',
+                borderRadius: '12px',
+                border: `1px solid ${theme.colors.border.light}`
+              }}>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>This Week</div>
+                <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>
                   {notifications.filter(n => {
                     const diff = new Date() - new Date(n.createdAt)
                     return diff < 7 * 24 * 60 * 60 * 1000
@@ -154,20 +178,14 @@ function Notifications() {
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`
             }}>
-              <div style={{
-                fontSize: '15px',
-                marginBottom: '8px',
-                color: theme.colors.text.muted
+              <p style={{
+                fontSize: '14px',
+                color: theme.colors.text.muted,
+                margin: 0,
+                lineHeight: '1.6'
               }}>
-                No notifications yet
-              </div>
-              <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.tertiary,
-                lineHeight: '1.5'
-              }}>
-                You'll be notified when files are uploaded to your requests
-              </div>
+                No notifications yet. You'll be notified when files are uploaded to your requests.
+              </p>
             </div>
           ) : (
             <div style={{
@@ -180,10 +198,13 @@ function Notifications() {
                 <div
                   key={notification.id}
                   style={{
-                    padding: '24px 28px',
+                    padding: '24px',
                     background: 'transparent',
                     borderBottom: index < notifications.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
-                    transition: `all ${theme.transition.fast}`
+                    transition: `all ${theme.transition.fast}`,
+                    display: 'flex',
+                    gap: '20px',
+                    alignItems: 'flex-start'
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
@@ -192,48 +213,78 @@ function Notifications() {
                     e.currentTarget.style.background = 'transparent'
                   }}
                 >
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    marginBottom: '10px'
-                  }}>
+                  <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{
-                      fontSize: '15px',
-                      color: theme.colors.text.primary,
-                      fontWeight: theme.weight.medium
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      marginBottom: '8px',
+                      gap: '12px'
                     }}>
-                      {notification.title}
+                      <div style={{
+                        fontSize: '15px',
+                        color: theme.colors.text.primary,
+                        fontWeight: theme.weight.medium,
+                        flex: 1
+                      }}>
+                        {notification.title}
+                      </div>
+                      <div style={{
+                        fontSize: '11px',
+                        color: theme.colors.text.tertiary,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        fontWeight: theme.weight.medium,
+                        padding: '4px 10px',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        borderRadius: '4px',
+                        border: `1px solid ${theme.colors.border.light}`,
+                        flexShrink: 0
+                      }}>
+                        {formatTimeAgo(notification.createdAt)}
+                      </div>
                     </div>
                     <div style={{
-                      fontSize: '11px',
+                      fontSize: '13px',
+                      color: theme.colors.text.muted,
+                      marginBottom: '8px',
+                      lineHeight: '1.6'
+                    }}>
+                      {notification.message}
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
                       color: theme.colors.text.tertiary,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      fontWeight: theme.weight.medium,
-                      padding: '4px 10px',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      borderRadius: '4px',
-                      border: `1px solid ${theme.colors.border.light}`
+                      fontFamily: 'monospace'
                     }}>
-                      {formatTimeAgo(notification.createdAt)}
+                      {notification.requestTitle}
                     </div>
                   </div>
-                  <div style={{
-                    fontSize: '13px',
-                    color: theme.colors.text.muted,
-                    marginBottom: '10px',
-                    lineHeight: '1.6'
-                  }}>
-                    {notification.message}
-                  </div>
-                  <div style={{
-                    fontSize: '12px',
-                    color: theme.colors.text.tertiary,
-                    fontFamily: 'monospace'
-                  }}>
-                    {notification.requestTitle}
-                  </div>
+                  <button
+                    onClick={() => deleteNotification(notification.id)}
+                    style={{
+                      padding: '8px 16px',
+                      background: 'transparent',
+                      color: theme.colors.text.secondary,
+                      border: `1px solid ${theme.colors.border.medium}`,
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: `all ${theme.transition.fast}`,
+                      flexShrink: 0
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                      e.currentTarget.style.borderColor = theme.colors.border.dark
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent'
+                      e.currentTarget.style.borderColor = theme.colors.border.medium
+                    }}
+                  >
+                    Delete
+                  </button>
                 </div>
               ))}
             </div>
