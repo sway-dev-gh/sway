@@ -12,6 +12,10 @@ function Sidebar() {
   const [loading, setLoading] = useState(true)
   const [isAdminMode, setIsAdminMode] = useState(false)
 
+  // Calculate effective plan (admin override or user plan)
+  const adminPlanOverride = localStorage.getItem('adminPlanOverride')
+  const effectivePlan = isAdminMode && adminPlanOverride ? adminPlanOverride : (user.plan || 'free')
+
   useEffect(() => {
     // Check for admin mode
     const adminKey = localStorage.getItem('adminKey')
@@ -323,23 +327,23 @@ function Sidebar() {
               <div style={{
                 fontSize: '9px',
                 fontWeight: theme.weight.bold,
-                color: user.plan?.toLowerCase() === 'business' ? theme.colors.white :
-                       user.plan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
+                color: effectivePlan?.toLowerCase() === 'business' ? theme.colors.white :
+                       effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
                        theme.colors.text.tertiary,
                 textTransform: 'uppercase',
                 letterSpacing: '0.6px',
                 padding: '3px 8px',
-                background: user.plan?.toLowerCase() === 'business' ? theme.colors.black :
-                           user.plan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
+                background: effectivePlan?.toLowerCase() === 'business' ? theme.colors.black :
+                           effectivePlan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
                            theme.colors.bg.secondary,
                 border: `1px solid ${
-                  user.plan?.toLowerCase() === 'business' ? theme.colors.white :
-                  user.plan?.toLowerCase() === 'pro' ? theme.colors.border.medium :
+                  effectivePlan?.toLowerCase() === 'business' ? theme.colors.white :
+                  effectivePlan?.toLowerCase() === 'pro' ? theme.colors.border.medium :
                   theme.colors.border.medium
                 }`,
                 borderRadius: '4px'
               }}>
-                {user.plan || 'Free'}
+                {effectivePlan || 'Free'}
               </div>
             </div>
           </div>
