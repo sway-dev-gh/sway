@@ -432,90 +432,89 @@ export default function Upload() {
   return (
     <div style={{
       minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
       background: theme.colors.bg.page,
-      padding: '40px 24px'
+      padding: '0'
     }}>
+      {/* Top Bar */}
       <div style={{
-        width: '100%',
-        maxWidth: '600px'
+        borderBottom: `1px solid ${theme.colors.border.medium}`,
+        padding: '20px 40px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }}>
+        <div style={{
+          fontSize: '16px',
+          fontWeight: '400',
+          color: theme.colors.text.primary,
+          letterSpacing: '0.02em'
+        }}>
+          SWAY
+        </div>
+        {timeRemaining && (
+          <div style={{
+            fontSize: '13px',
+            color: timeRemaining === 'Expired' ? '#ef4444' : theme.colors.text.secondary
+          }}>
+            {timeRemaining}
+          </div>
+        )}
+      </div>
+
+      {/* Main Content */}
+      <div style={{
+        maxWidth: '720px',
+        margin: '0 auto',
+        padding: '80px 40px'
       }}>
         {/* Header */}
         <div style={{
-          marginBottom: '48px',
-          textAlign: 'center'
+          marginBottom: '64px'
         }}>
-          <div style={{
-            fontSize: '10px',
-            fontWeight: '600',
-            textTransform: 'uppercase',
-            letterSpacing: '2px',
-            color: theme.colors.text.tertiary,
-            marginBottom: '24px'
-          }}>
-            SWAY
-          </div>
           <h1 style={{
-            fontSize: '32px',
+            fontSize: '40px',
             fontWeight: '300',
             margin: '0 0 16px 0',
             color: theme.colors.white,
-            letterSpacing: '-0.01em',
-            lineHeight: '1.2'
+            letterSpacing: '-0.02em',
+            lineHeight: '1.1'
           }}>
             {requestData.title}
           </h1>
           {requestData.description && (
             <p style={{
-              fontSize: '15px',
+              fontSize: '16px',
               color: theme.colors.text.secondary,
-              margin: '0 0 24px 0',
+              margin: 0,
               lineHeight: '1.6',
-              maxWidth: '480px',
-              marginLeft: 'auto',
-              marginRight: 'auto'
+              maxWidth: '560px'
             }}>
               {requestData.description}
             </p>
           )}
-          {timeRemaining && (
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              padding: '8px 16px',
-              background: theme.colors.bg.secondary,
-              border: `1px solid ${theme.colors.border.medium}`,
-              borderRadius: theme.radius.md,
-              fontSize: '13px',
-              fontWeight: '500',
-              color: timeRemaining === 'Expired' ? '#ef4444' : theme.colors.text.secondary
-            }}>
-              {timeRemaining}
-            </div>
-          )}
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} style={{
-          background: theme.colors.bg.secondary,
-          padding: '40px',
-          border: `1px solid ${theme.colors.border.medium}`,
-          borderRadius: theme.radius.lg
-        }}>
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '12px',
-              color: theme.colors.text.secondary,
-              marginBottom: '8px',
-              fontWeight: '500',
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
-            }}>
-              Your Name
-            </label>
+        <form onSubmit={handleSubmit}>
+          {/* Basic Fields */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '20px',
+            marginBottom: '40px'
+          }}>
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '11px',
+                color: theme.colors.text.secondary,
+                marginBottom: '10px',
+                fontWeight: '500',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+              }}>
+                Name
+              </label>
             <input
               type="text"
               value={formData.name}
