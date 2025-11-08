@@ -122,7 +122,7 @@ function Sidebar() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: `0 ${theme.spacing[6]}`
+    padding: '0 20px'
   }
 
   const navLinkStyle = (isActive) => ({
@@ -246,73 +246,11 @@ function Sidebar() {
         </nav>
       </div>
 
-      {/* Right Section - Stats and User */}
+      {/* Right Section - User */}
       <div style={{
         display: 'flex',
-        alignItems: 'center',
-        gap: theme.spacing[6]
+        alignItems: 'center'
       }}>
-        {/* Stats */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: theme.spacing[4]
-        }}>
-          {/* Total Requests */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: theme.spacing[2],
-            padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
-            background: 'transparent',
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: theme.radius.sm,
-            transition: `all ${theme.transition.fast}`
-          }}>
-            <div style={{
-              fontSize: '16px',
-              fontWeight: '400',
-              color: theme.colors.text.secondary
-            }}>
-              {stats.totalRequests}
-            </div>
-            <div style={{
-              fontSize: '10px',
-              color: theme.colors.text.tertiary,
-              opacity: 0.7
-            }}>
-              Requests
-            </div>
-          </div>
-
-          {/* Total Files */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: theme.spacing[2],
-            padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
-            background: 'transparent',
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: theme.radius.sm,
-            transition: `all ${theme.transition.fast}`
-          }}>
-            <div style={{
-              fontSize: '16px',
-              fontWeight: '400',
-              color: theme.colors.text.secondary
-            }}>
-              {stats.totalUploads}
-            </div>
-            <div style={{
-              fontSize: '10px',
-              color: theme.colors.text.tertiary,
-              opacity: 0.7
-            }}>
-              Files
-            </div>
-          </div>
-        </div>
-
         {/* User Section */}
         <div style={{
           display: 'flex',
