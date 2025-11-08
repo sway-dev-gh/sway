@@ -17,6 +17,19 @@ function Sidebar() {
     const adminKey = localStorage.getItem('adminKey')
     setIsAdminMode(!!adminKey)
     fetchData()
+
+    // Listen for Control+Tab to exit admin mode
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.key === 'Tab') {
+        e.preventDefault()
+        if (localStorage.getItem('adminKey')) {
+          localStorage.removeItem('adminKey')
+          window.location.reload()
+        }
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   const fetchData = async () => {
