@@ -282,9 +282,8 @@ export default function Upload() {
   }
 
   const getRequestTypeFields = () => {
-    if (!requestData?.requestType) return []
-    const type = REQUEST_TYPES.find(t => t.id === requestData.requestType)
-    return type?.fields || []
+    // Use custom fields from the database instead of hardcoded REQUEST_TYPES
+    return requestData?.customFields || []
   }
 
   const handleFileChange = (e) => {
