@@ -779,7 +779,7 @@ export default function Upload() {
         </form>
       </div>
 
-      {/* Render Canva-style branding elements */}
+      {/* Render branded elements from new Branding editor */}
       {brandingData && brandingData.elements && brandingData.elements.length > 0 && (
         <div style={{
           position: 'absolute',
@@ -791,79 +791,139 @@ export default function Upload() {
           zIndex: 0,
           overflow: 'hidden'
         }}>
-          {brandingData.elements.map((element, index) => {
-            const commonStyle = {
-              position: 'absolute',
-              left: `${element.x}px`,
-              top: `${element.y}px`,
-              width: `${element.width}px`,
-              height: `${element.height}px`,
-              opacity: element.opacity,
-              transform: `rotate(${element.rotation}deg)`,
-              zIndex: element.zIndex
-            }
-
-            if (element.type === 'text') {
+          {brandingData.elements.map((el, index) => {
+            // Text and Heading elements
+            if (el.type === 'text' || el.type === 'heading') {
               return (
                 <div
                   key={index}
                   style={{
-                    ...commonStyle,
-                    color: element.color,
-                    fontSize: `${element.fontSize}px`,
-                    fontWeight: element.fontWeight,
-                    fontFamily: element.fontFamily,
-                    textAlign: element.textAlign || 'left',
-                    display: 'flex',
-                    alignItems: 'center',
-                    whiteSpace: 'pre-wrap',
-                    wordBreak: 'break-word'
+                    position: 'absolute',
+                    left: `${el.x}%`,
+                    top: `${el.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    fontSize: `${el.fontSize}px`,
+                    fontWeight: el.fontWeight,
+                    color: el.color,
+                    textAlign: el.align || 'center',
+                    whiteSpace: 'nowrap'
                   }}
                 >
-                  {element.text}
+                  {el.content}
                 </div>
               )
             }
 
-            if (element.type === 'shape') {
-              if (element.shape === 'rectangle') {
+            // Button elements (can have links!)
+            if (el.type === 'button') {
+              const buttonContent = (
+                <div
+                  style={{
+                    padding: `${el.paddingY}px ${el.paddingX}px`,
+                    background: el.backgroundColor,
+                    color: el.textColor,
+                    fontSize: `${el.fontSize}px`,
+                    fontWeight: el.fontWeight,
+                    borderRadius: `${el.borderRadius}px`,
+                    whiteSpace: 'nowrap',
+                    display: 'inline-block'
+                  }}
+                >
+                  {el.content}
+                </div>
+              )
+
+              // If button has a link, wrap it in an anchor tag and enable pointer events
+              if (el.link && el.link.trim()) {
                 return (
                   <div
                     key={index}
                     style={{
-                      ...commonStyle,
-                      backgroundColor: element.fill,
-                      borderRadius: `${element.cornerRadius || 0}px`
+                      position: 'absolute',
+                      left: `${el.x}%`,
+                      top: `${el.y}%`,
+                      transform: 'translate(-50%, -50%)',
+                      pointerEvents: 'auto'  // Enable clicks for links
                     }}
-                  />
+                  >
+                    <a
+                      href={el.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        textDecoration: 'none',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {buttonContent}
+                    </a>
+                  </div>
                 )
               }
 
-              if (element.shape === 'circle') {
-                return (
-                  <div
-                    key={index}
-                    style={{
-                      ...commonStyle,
-                      backgroundColor: element.fill,
-                      borderRadius: '50%'
-                    }}
-                  />
-                )
-              }
+              // Decorative button (no link)
+              return (
+                <div
+                  key={index}
+                  style={{
+                    position: 'absolute',
+                    left: `${el.x}%`,
+                    top: `${el.y}%`,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                >
+                  {buttonContent}
+                </div>
+              )
             }
 
-            if (element.type === 'image' && element.src) {
+            // Shape elements
+            if (el.type === 'shape') {
               return (
-                <img
+                <div
                   key={index}
-                  src={element.src}
-                  alt=""
                   style={{
-                    ...commonStyle,
-                    objectFit: 'cover'
+                    position: 'absolute',
+                    left: `${el.x}%`,
+                    top: `${el.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    width: `${el.width}px`,
+                    height: `${el.height}px`,
+                    background: el.backgroundColor,
+                    borderRadius: `${el.borderRadius}px`,
+                    opacity: el.opacity ?? 1
                   }}
                 />
+              )
+            }
+
+            // Image elements
+            if (el.type === 'image' && el.url) {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    position: 'absolute',
+                    left: `${el.x}%`,
+                    top: `${el.y}%`,
+                    transform: 'translate(-50%, -50%)',
+                    width: `${el.width}px`,
+                    height: `${el.height}px`,
+                    borderRadius: `${el.borderRadius}px`,
+                    opacity: el.opacity ?? 1,
+                    overflow: 'hidden'
+                  }}
+                >
+                  <img
+                    src={el.url}
+                    alt=""
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                  />
+                </div>
               )
             }
 
