@@ -253,8 +253,10 @@ function Dashboard() {
               border: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Requests</div>
-              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.totalRequests}</div>
-              <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, marginTop: '8px' }}>{stats.activeRequests} active</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.activeRequests}</div>
+              <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, marginTop: '8px' }}>
+                of {(user.plan || 'free').toLowerCase() === 'pro' ? '100' : '20'}
+              </div>
             </div>
 
             <div style={{
