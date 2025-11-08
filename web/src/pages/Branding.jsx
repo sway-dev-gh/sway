@@ -15,6 +15,13 @@ function Branding() {
   const [removeBranding, setRemoveBranding] = useState(true)
   const [logoUrl, setLogoUrl] = useState(null)
 
+  // Get user plan info
+  const userStr = localStorage.getItem('user')
+  const user = userStr ? JSON.parse(userStr) : null
+  const isAdminMode = localStorage.getItem('adminKey')
+  const adminPlanOverride = localStorage.getItem('adminPlanOverride')
+  const effectivePlan = isAdminMode && adminPlanOverride ? adminPlanOverride : (user?.plan || 'free')
+
   // Save status
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved' | 'error'
   const [errorMessage, setErrorMessage] = useState('')
@@ -61,8 +68,10 @@ function Branding() {
       // Check if user has access (Pro/Business or Admin)
       const userStr = localStorage.getItem('user')
       const user = userStr ? JSON.parse(userStr) : null
+      const isAdminMode = localStorage.getItem('adminKey')
 
-      if (!hasMinimumPlan(user, 'pro')) {
+      // Allow access if admin mode OR if user has pro/business plan
+      if (!isAdminMode && !hasMinimumPlan(user, 'pro')) {
         // Redirect to plan page - Free users don't have access
         navigate('/plan')
         return
@@ -176,14 +185,20 @@ function Branding() {
     }
   }
 
-  // Predefined color themes
+  // Predefined color themes - expanded palette
   const colorThemes = [
     { name: 'White', color: '#FFFFFF' },
     { name: 'Black', color: '#000000' },
     { name: 'Dark Gray', color: '#1A1A1A' },
     { name: 'Light Gray', color: '#F5F5F5' },
     { name: 'Navy', color: '#0A1929' },
-    { name: 'Slate', color: '#1E293B' }
+    { name: 'Slate', color: '#1E293B' },
+    { name: 'Charcoal', color: '#2C2C2C' },
+    { name: 'Graphite', color: '#36454F' },
+    { name: 'Stone', color: '#E5E4E2' },
+    { name: 'Cream', color: '#FFFDD0' },
+    { name: 'Beige', color: '#F5F5DC' },
+    { name: 'Midnight', color: '#191970' }
   ]
 
   if (initialLoad) {
@@ -235,6 +250,20 @@ function Branding() {
             }}>
               Branding Settings
             </h2>
+            {/* Plan Badge */}
+            <div style={{
+              padding: '4px 12px',
+              background: isAdminMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+              border: `1px solid ${isAdminMode ? theme.colors.white : theme.colors.border.medium}`,
+              borderRadius: '6px',
+              fontSize: '11px',
+              fontWeight: '600',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              color: isAdminMode ? theme.colors.white : theme.colors.text.tertiary
+            }}>
+              {isAdminMode ? `ADMIN: ${effectivePlan.toUpperCase()}` : effectivePlan.toUpperCase()}
+            </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -398,7 +427,7 @@ function Branding() {
               {/* Theme Presets */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(3, 1fr)',
+                gridTemplateColumns: 'repeat(4, 1fr)',
                 gap: '8px',
                 marginBottom: '16px'
               }}>
