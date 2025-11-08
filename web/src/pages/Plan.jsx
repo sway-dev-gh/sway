@@ -64,12 +64,14 @@ function Plan() {
       name: 'Free',
       price: '$0',
       period: '',
-      tagline: 'Get started',
+      tagline: 'Try it out',
+      description: 'Perfect for testing Sway Files and collecting a few files from students, clients, or friends.',
       features: [
         { text: '1 active request', highlight: false },
         { text: 'Up to 10 uploads total', highlight: false },
-        { text: 'Basic branding', highlight: false },
-        { text: 'Files kept 30 days', highlight: false }
+        { text: 'Basic file types only', highlight: false },
+        { text: 'Files kept 30 days', highlight: false },
+        { text: 'Community support', highlight: false }
       ]
     },
     {
@@ -77,15 +79,17 @@ function Plan() {
       name: 'Pro',
       price: '$9',
       period: '/month',
-      tagline: 'For freelancers & teachers',
+      tagline: 'Most popular',
+      description: 'Built for freelancers, teachers, and creators who regularly collect files from clients or students.',
       popular: true,
       features: [
         { text: 'Unlimited requests', highlight: true },
         { text: 'Unlimited uploads', highlight: true },
-        { text: 'File size limits lifted', highlight: true },
-        { text: 'Basic branding removal', highlight: false },
+        { text: 'All file types supported', highlight: true },
+        { text: 'Remove Sway branding', highlight: false },
         { text: 'Email notifications', highlight: false },
-        { text: 'Files kept forever', highlight: false }
+        { text: 'Files stored forever', highlight: false },
+        { text: 'Priority support', highlight: false }
       ]
     },
     {
@@ -93,11 +97,12 @@ function Plan() {
       name: 'Business',
       price: '$39',
       period: '/month',
-      tagline: 'For teams & businesses',
+      tagline: 'For growing teams',
+      description: 'Everything in Pro, plus advanced features for teams, agencies, and businesses collecting files at scale.',
       features: [
         { text: 'Everything in Pro', highlight: false },
-        { text: 'Custom domain', highlight: true },
-        { text: 'Team access (up to 5)', highlight: true },
+        { text: 'Custom domain (files.yourcompany.com)', highlight: true },
+        { text: 'Team access (up to 5 members)', highlight: true },
         { text: 'Dropbox/Drive sync', highlight: true },
         { text: 'Large file limits (5GB)', highlight: true },
         { text: 'Priority support', highlight: false }
@@ -256,10 +261,24 @@ function Plan() {
                 <div style={{
                   fontSize: '13px',
                   color: theme.colors.text.muted,
-                  marginBottom: '24px',
-                  minHeight: '20px'
+                  marginBottom: '8px',
+                  minHeight: '20px',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  fontWeight: '500'
                 }}>
                   {plan.tagline}
+                </div>
+
+                {/* Description */}
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.secondary,
+                  marginBottom: '24px',
+                  lineHeight: '1.5',
+                  minHeight: '42px'
+                }}>
+                  {plan.description}
                 </div>
 
                 {/* Price */}
