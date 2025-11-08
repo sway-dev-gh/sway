@@ -63,7 +63,15 @@ function Dashboard() {
 
       const userStr = localStorage.getItem('user')
       if (userStr) {
-        setUser(JSON.parse(userStr))
+        const userData = JSON.parse(userStr)
+
+        // Check for admin plan override
+        const adminPlanOverride = localStorage.getItem('adminPlanOverride')
+        if (adminPlanOverride) {
+          userData.plan = adminPlanOverride
+        }
+
+        setUser(userData)
       }
 
       const [statsResponse, requestsResponse, filesResponse] = await Promise.all([
