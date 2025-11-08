@@ -129,15 +129,15 @@ function Sidebar() {
   const navLinkStyle = (isActive) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: `6px 10px`,
+    padding: `8px 14px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
-    fontSize: '12px',
+    fontSize: '14px',
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.sm,
     transition: `all ${theme.transition.fast}`,
-    marginRight: '6px',
+    marginRight: '8px',
     whiteSpace: 'nowrap'
   })
 
@@ -145,10 +145,10 @@ function Sidebar() {
     <div style={topBarStyle}>
       {/* Logo/Brand */}
       <div style={{
-        fontSize: '18px',
+        fontSize: '20px',
         fontWeight: theme.weight.semibold,
         color: theme.colors.text.primary,
-        marginRight: '40px'
+        marginRight: '32px'
       }}>
         Sway
       </div>
@@ -158,7 +158,7 @@ function Sidebar() {
         display: 'flex',
         alignItems: 'center',
         flex: 1,
-        justifyContent: 'space-between'
+        gap: '4px'
       }}>
           {navSections.map((section, sectionIndex) => (
             <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center' }}>
@@ -234,9 +234,9 @@ function Sidebar() {
               {sectionIndex < navSections.length - 1 && (
                 <div style={{
                   width: '1px',
-                  height: '16px',
+                  height: '20px',
                   background: theme.colors.border.medium,
-                  margin: `0 8px`
+                  margin: `0 12px`
                 }} />
               )}
             </div>
