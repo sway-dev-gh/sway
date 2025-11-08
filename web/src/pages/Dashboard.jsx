@@ -152,233 +152,396 @@ function Dashboard() {
             </p>
           </div>
 
-          {/* Stats Grid - Modern 2025 Style */}
+          {/* Stats Grid - Clean & Professional */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '16px',
-            marginBottom: '60px'
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '1px',
+            background: theme.colors.border.light,
+            borderRadius: '16px',
+            overflow: 'hidden',
+            marginBottom: '48px',
+            border: `1px solid ${theme.colors.border.light}`
           }}>
             {/* Total Requests */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              padding: '32px',
-              borderRadius: '12px',
-              border: `1px solid ${theme.colors.border.light}`,
-              transition: `all ${theme.transition.normal}`,
-              cursor: 'default'
+              background: theme.colors.bg.page,
+              padding: '40px 32px',
+              transition: `all ${theme.transition.fast}`
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.background = theme.colors.bg.page
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: '10px',
                 color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[3],
+                marginBottom: '16px',
                 textTransform: 'uppercase',
-                letterSpacing: '1.2px',
-                fontWeight: theme.weight.medium
+                letterSpacing: '1.5px',
+                fontWeight: theme.weight.semibold
               }}>
-                Total Requests
+                Requests
               </div>
               <div style={{
-                fontSize: '56px',
-                fontWeight: '300',
-                color: theme.colors.text.primary,
-                letterSpacing: '-0.04em',
+                fontSize: '48px',
+                fontWeight: '200',
+                color: theme.colors.white,
+                letterSpacing: '-0.05em',
                 lineHeight: '1',
-                background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                marginBottom: '8px'
               }}>
                 {stats.totalRequests}
+              </div>
+              <div style={{
+                fontSize: '11px',
+                color: theme.colors.text.muted,
+                marginTop: '12px'
+              }}>
+                All time
               </div>
             </div>
 
             {/* Total Files */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              padding: '32px',
-              borderRadius: '12px',
-              border: `1px solid ${theme.colors.border.light}`,
-              transition: `all ${theme.transition.normal}`,
-              cursor: 'default'
+              background: theme.colors.bg.page,
+              padding: '40px 32px',
+              transition: `all ${theme.transition.fast}`
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.background = theme.colors.bg.page
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: '10px',
                 color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[3],
+                marginBottom: '16px',
                 textTransform: 'uppercase',
-                letterSpacing: '1.2px',
-                fontWeight: theme.weight.medium
+                letterSpacing: '1.5px',
+                fontWeight: theme.weight.semibold
               }}>
-                Total Files
+                Files
               </div>
               <div style={{
-                fontSize: '56px',
-                fontWeight: '300',
-                color: theme.colors.text.primary,
-                letterSpacing: '-0.04em',
+                fontSize: '48px',
+                fontWeight: '200',
+                color: theme.colors.white,
+                letterSpacing: '-0.05em',
                 lineHeight: '1',
-                background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                marginBottom: '8px'
               }}>
                 {stats.totalUploads}
+              </div>
+              <div style={{
+                fontSize: '11px',
+                color: theme.colors.text.muted,
+                marginTop: '12px'
+              }}>
+                Uploaded
               </div>
             </div>
 
             {/* Storage Used */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.03)',
-              padding: '32px',
-              borderRadius: '12px',
-              border: `1px solid ${theme.colors.border.light}`,
-              transition: `all ${theme.transition.normal}`,
-              cursor: 'default'
+              background: theme.colors.bg.page,
+              padding: '40px 32px',
+              transition: `all ${theme.transition.fast}`
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.transform = 'translateY(-2px)'
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.transform = 'translateY(0)'
+              e.currentTarget.style.background = theme.colors.bg.page
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: '10px',
                 color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[3],
+                marginBottom: '16px',
                 textTransform: 'uppercase',
-                letterSpacing: '1.2px',
-                fontWeight: theme.weight.medium
+                letterSpacing: '1.5px',
+                fontWeight: theme.weight.semibold
               }}>
-                Storage Used
+                Storage
               </div>
               <div style={{
-                fontSize: '56px',
-                fontWeight: '300',
-                color: theme.colors.text.primary,
-                letterSpacing: '-0.04em',
+                fontSize: '48px',
+                fontWeight: '200',
+                color: theme.colors.white,
+                letterSpacing: '-0.05em',
                 lineHeight: '1',
-                background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                marginBottom: '8px'
               }}>
-                {stats.storageUsed} MB
+                {(stats.storageUsed / 1024).toFixed(1)}
+              </div>
+              <div style={{
+                fontSize: '11px',
+                color: theme.colors.text.muted,
+                marginTop: '12px'
+              }}>
+                GB used
+              </div>
+            </div>
+
+            {/* Avg Files Per Request */}
+            <div style={{
+              background: theme.colors.bg.page,
+              padding: '40px 32px',
+              transition: `all ${theme.transition.fast}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.page
+            }}>
+              <div style={{
+                fontSize: '10px',
+                color: theme.colors.text.tertiary,
+                marginBottom: '16px',
+                textTransform: 'uppercase',
+                letterSpacing: '1.5px',
+                fontWeight: theme.weight.semibold
+              }}>
+                Average
+              </div>
+              <div style={{
+                fontSize: '48px',
+                fontWeight: '200',
+                color: theme.colors.white,
+                letterSpacing: '-0.05em',
+                lineHeight: '1',
+                marginBottom: '8px'
+              }}>
+                {stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '0'}
+              </div>
+              <div style={{
+                fontSize: '11px',
+                color: theme.colors.text.muted,
+                marginTop: '12px'
+              }}>
+                Files/request
               </div>
             </div>
           </div>
 
-          {/* Recent Requests - Modern Style */}
-          <div>
-            <h2 style={{
-              fontSize: '28px',
-              fontWeight: '400',
-              margin: '0 0 32px 0',
-              letterSpacing: '-0.02em',
-              color: theme.colors.text.primary
-            }}>
-              Recent Requests
-            </h2>
-
-            {stats.recentRequests.length === 0 ? (
+          {/* Recent Activity - Enhanced */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '2fr 1fr',
+            gap: '24px'
+          }}>
+            {/* Recent Requests */}
+            <div>
               <div style={{
-                textAlign: 'center',
-                padding: '80px 40px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                borderRadius: '16px',
-                border: `1px solid ${theme.colors.border.light}`
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: '24px'
               }}>
-                <p style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.muted,
+                <h2 style={{
+                  fontSize: '20px',
+                  fontWeight: '500',
                   margin: 0,
-                  lineHeight: '1.6'
+                  letterSpacing: '-0.01em',
+                  color: theme.colors.text.primary
                 }}>
-                  No requests yet. Create your first request to get started.
-                </p>
+                  Recent Requests
+                </h2>
+                <Link to="/requests" style={{
+                  fontSize: '13px',
+                  color: theme.colors.text.secondary,
+                  textDecoration: 'none',
+                  padding: '6px 12px',
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '6px',
+                  transition: `all ${theme.transition.fast}`
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                  e.currentTarget.style.color = theme.colors.white
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = theme.colors.text.secondary
+                }}>
+                  View all
+                </Link>
               </div>
-            ) : (
-              <div style={{
-                display: 'grid',
-                gap: '12px'
-              }}>
-                {stats.recentRequests.map((req, index) => (
-                  <Link
-                    key={req.id}
-                    to={`/requests/${req.id}`}
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      padding: '20px 24px',
-                      borderRadius: '12px',
-                      border: `1px solid ${theme.colors.border.light}`,
-                      display: 'grid',
-                      gridTemplateColumns: '1fr auto',
-                      alignItems: 'center',
-                      gap: '20px',
-                      textDecoration: 'none',
-                      transition: `all ${theme.transition.normal}`
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                      e.currentTarget.style.borderColor = theme.colors.border.medium
-                      e.currentTarget.style.transform = 'translateY(-1px)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-                      e.currentTarget.style.borderColor = theme.colors.border.light
-                      e.currentTarget.style.transform = 'translateY(0)'
-                    }}
-                  >
-                    <div>
-                      <div style={{
-                        fontSize: '16px',
-                        fontWeight: '500',
-                        marginBottom: '6px',
-                        color: theme.colors.text.primary
-                      }}>
-                        {req.title}
+
+              {stats.recentRequests.length === 0 ? (
+                <div style={{
+                  textAlign: 'center',
+                  padding: '80px 40px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  borderRadius: '12px',
+                  border: `1px solid ${theme.colors.border.light}`
+                }}>
+                  <p style={{
+                    fontSize: '14px',
+                    color: theme.colors.text.muted,
+                    margin: 0,
+                    lineHeight: '1.6'
+                  }}>
+                    No requests yet. Create your first request to get started.
+                  </p>
+                </div>
+              ) : (
+                <div style={{
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  borderRadius: '12px',
+                  border: `1px solid ${theme.colors.border.light}`,
+                  overflow: 'hidden'
+                }}>
+                  {stats.recentRequests.map((req, index) => (
+                    <Link
+                      key={req.id}
+                      to={`/requests/${req.id}`}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr auto auto',
+                        alignItems: 'center',
+                        padding: '20px 24px',
+                        gap: '16px',
+                        textDecoration: 'none',
+                        borderBottom: index < stats.recentRequests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                        transition: `all ${theme.transition.fast}`,
+                        background: 'transparent'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'transparent'
+                      }}
+                    >
+                      <div>
+                        <div style={{
+                          fontSize: '15px',
+                          fontWeight: '500',
+                          marginBottom: '4px',
+                          color: theme.colors.text.primary
+                        }}>
+                          {req.title}
+                        </div>
+                        <div style={{
+                          fontSize: '12px',
+                          color: theme.colors.text.tertiary
+                        }}>
+                          {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        </div>
                       </div>
                       <div style={{
-                        fontSize: '14px',
-                        color: theme.colors.text.tertiary
+                        fontSize: '13px',
+                        color: theme.colors.text.secondary,
+                        padding: '4px 10px',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        borderRadius: '4px',
+                        whiteSpace: 'nowrap'
                       }}>
                         {req.uploadCount || 0} {req.uploadCount === 1 ? 'file' : 'files'}
                       </div>
-                    </div>
-                    <div style={{
-                      fontSize: '13px',
-                      color: theme.colors.text.tertiary,
-                      padding: '6px 12px',
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '6px'
-                    }}>
-                      {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </div>
-                  </Link>
-                ))}
+                      <div style={{
+                        fontSize: '18px',
+                        color: theme.colors.text.tertiary
+                      }}>
+                        →
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Quick Actions */}
+            <div>
+              <h2 style={{
+                fontSize: '20px',
+                fontWeight: '500',
+                margin: '0 0 24px 0',
+                letterSpacing: '-0.01em',
+                color: theme.colors.text.primary
+              }}>
+                Quick Actions
+              </h2>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
+              }}>
+                <Link to="/requests/new" style={{
+                  padding: '20px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  borderRadius: '12px',
+                  textDecoration: 'none',
+                  transition: `all ${theme.transition.fast}`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}>
+                  <div style={{ fontSize: '15px', fontWeight: '600' }}>New Request</div>
+                  <div style={{ fontSize: '12px', opacity: 0.7 }}>Create a file upload request</div>
+                </Link>
+
+                <Link to="/files" style={{
+                  padding: '20px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  color: theme.colors.text.primary,
+                  borderRadius: '12px',
+                  border: `1px solid ${theme.colors.border.light}`,
+                  textDecoration: 'none',
+                  transition: `all ${theme.transition.fast}`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                  e.currentTarget.style.borderColor = theme.colors.border.light
+                }}>
+                  <div style={{ fontSize: '15px', fontWeight: '500' }}>View Files</div>
+                  <div style={{ fontSize: '12px', color: theme.colors.text.muted }}>Browse all uploaded files</div>
+                </Link>
+
+                <Link to="/templates" style={{
+                  padding: '20px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  color: theme.colors.text.primary,
+                  borderRadius: '12px',
+                  border: `1px solid ${theme.colors.border.light}`,
+                  textDecoration: 'none',
+                  transition: `all ${theme.transition.fast}`,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                  e.currentTarget.style.borderColor = theme.colors.border.light
+                }}>
+                  <div style={{ fontSize: '15px', fontWeight: '500' }}>Templates</div>
+                  <div style={{ fontSize: '12px', color: theme.colors.text.muted }}>Manage request templates</div>
+                </Link>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
