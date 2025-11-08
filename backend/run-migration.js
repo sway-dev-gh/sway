@@ -17,7 +17,10 @@ async function runMigration() {
       '005_add_request_type_designs.sql',
       '006_team_members.sql',
       '007_custom_domains.sql',
-      '008_integrations.sql'
+      '008_integrations.sql',
+      '009_notifications.sql',
+      '010_support.sql',
+      '011_branding.sql'
     ]
 
     for (const migration of migrations) {
