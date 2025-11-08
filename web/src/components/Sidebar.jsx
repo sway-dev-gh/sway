@@ -229,6 +229,14 @@ function Sidebar() {
                   </Link>
                 )
               })}
+              {sectionIndex < navSections.length - 1 && (
+                <div style={{
+                  width: '1px',
+                  height: '16px',
+                  background: theme.colors.border.medium,
+                  margin: '0 8px'
+                }} />
+              )}
             </div>
           ))}
       </nav>
