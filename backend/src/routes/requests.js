@@ -28,42 +28,16 @@ router.post('/', authenticateToken, async (req, res) => {
     const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
     const userPlan = userResult.rows[0]?.plan || 'free'
 
-    // Enforce TOTAL request limits by plan (not just active)
-    const totalRequestLimits = {
-      free: 10,      // 10 total requests ever
-      pro: 50,       // 50 total requests
-      business: null // unlimited
-    }
-
-    // Enforce ACTIVE request limits by plan
+    // Enforce ACTIVE request limits by plan (new monetization structure)
     const activeRequestLimits = {
-      free: 3,
-      pro: 10,
+      free: 1,       // 1 active request
+      pro: null,     // unlimited
       business: null // unlimited
     }
 
-    const totalLimit = totalRequestLimits[userPlan]
     const activeLimit = activeRequestLimits[userPlan]
 
-    // Check total request limit
-    if (totalLimit !== null) {
-      const totalRequestsResult = await pool.query(
-        'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1',
-        [req.userId]
-      )
-      const totalCount = parseInt(totalRequestsResult.rows[0].count)
-
-      if (totalCount >= totalLimit) {
-        const upgradePlan = userPlan === 'free' ? 'Pro' : 'Business'
-        return res.status(403).json({
-          error: `Total request limit reached. ${userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} plan allows ${totalLimit} total requests. Upgrade to ${upgradePlan} for more requests.`,
-          limitReached: true,
-          currentPlan: userPlan
-        })
-      }
-    }
-
-    // Check active request limit
+    // Check active request limit (only for free plan)
     if (activeLimit !== null) {
       const activeRequestsResult = await pool.query(
         'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
@@ -72,11 +46,11 @@ router.post('/', authenticateToken, async (req, res) => {
       const activeCount = parseInt(activeRequestsResult.rows[0].count)
 
       if (activeCount >= activeLimit) {
-        const upgradePlan = userPlan === 'free' ? 'Pro' : 'Business'
         return res.status(403).json({
-          error: `Active request limit reached. ${userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} plan allows ${activeLimit} active requests. Upgrade to ${upgradePlan} for ${userPlan === 'free' ? '10 active requests' : 'unlimited requests'}.`,
+          error: `Free plan allows only ${activeLimit} active request at a time. Upgrade to Pro ($9/mo) for unlimited requests.`,
           limitReached: true,
-          currentPlan: userPlan
+          currentPlan: userPlan,
+          upgradeRequired: 'pro'
         })
       }
     }
@@ -281,9 +255,9 @@ router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
       const userPlan = userResult.rows[0]?.plan || 'free'
 
       const activeRequestLimits = {
-        free: 3,
-        pro: 10,
-        business: null
+        free: 1,       // 1 active request
+        pro: null,     // unlimited
+        business: null // unlimited
       }
 
       const activeLimit = activeRequestLimits[userPlan]
@@ -296,11 +270,11 @@ router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
         const activeCount = parseInt(activeRequestsResult.rows[0].count)
 
         if (activeCount >= activeLimit) {
-          const upgradePlan = userPlan === 'free' ? 'Pro' : 'Business'
           return res.status(403).json({
-            error: `Cannot activate request. Active request limit reached (${activeCount}/${activeLimit}). Upgrade to ${upgradePlan} for more active requests.`,
+            error: `Free plan allows only ${activeLimit} active request at a time. Upgrade to Pro ($9/mo) for unlimited requests.`,
             limitReached: true,
-            currentPlan: userPlan
+            currentPlan: userPlan,
+            upgradeRequired: 'pro'
           })
         }
       }

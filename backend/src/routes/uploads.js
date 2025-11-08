@@ -149,31 +149,30 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
       return res.status(403).json({ error: 'This request is no longer accepting uploads' })
     }
 
-    // Check files per request limit based on plan
-    const uploadCountResult = await pool.query(
-      'SELECT COUNT(*) as count FROM uploads WHERE request_id = $1',
-      [request.id]
-    )
-    const currentFileCount = parseInt(uploadCountResult.rows[0].count)
-    const newFileCount = currentFileCount + files.length
-
-    let filesPerRequestLimit
+    // Check TOTAL uploads limit for FREE tier (across all requests)
     if (request.plan === 'free') {
-      filesPerRequestLimit = 10
-    } else if (request.plan === 'pro') {
-      filesPerRequestLimit = 100
-    } else {
-      filesPerRequestLimit = null // Unlimited for business
-    }
+      const totalUploadsResult = await pool.query(
+        `SELECT COUNT(*) as count
+         FROM uploads u
+         JOIN file_requests fr ON u.request_id = fr.id
+         WHERE fr.user_id = $1`,
+        [request.user_id]
+      )
+      const currentTotalUploads = parseInt(totalUploadsResult.rows[0].count)
+      const newTotalUploads = currentTotalUploads + files.length
+      const freeUploadLimit = 10
 
-    if (filesPerRequestLimit && newFileCount > filesPerRequestLimit) {
-      return res.status(403).json({
-        error: 'File limit exceeded',
-        message: `This request can only accept ${filesPerRequestLimit} files (Free plan limit). Currently has ${currentFileCount} files. Upgrade to Business for unlimited files.`,
-        currentCount: currentFileCount,
-        limit: filesPerRequestLimit
-      })
+      if (newTotalUploads > freeUploadLimit) {
+        return res.status(403).json({
+          error: 'Upload limit exceeded',
+          message: `Free plan allows up to ${freeUploadLimit} total uploads. Currently has ${currentTotalUploads} uploads. Upgrade to Pro ($9/mo) for unlimited uploads.`,
+          currentCount: currentTotalUploads,
+          limit: freeUploadLimit,
+          upgradeRequired: 'pro'
+        })
+      }
     }
+    // Pro and Business plans have unlimited uploads
 
     // Check file type restrictions based on plan (extension + MIME type)
     const basicFileTypes = {
