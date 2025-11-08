@@ -279,7 +279,7 @@ function Sidebar() {
               }}>
                 {user.email?.split('@')[0] || 'User'}
               </div>
-              {isAdminMode && (
+              {isAdminMode ? (
                 <div style={{
                   fontSize: '9px',
                   fontWeight: theme.weight.bold,
@@ -293,22 +293,23 @@ function Sidebar() {
                 }}>
                   ADMIN
                 </div>
+              ) : (
+                <div style={{
+                  fontSize: '9px',
+                  fontWeight: theme.weight.bold,
+                  color: effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
+                         theme.colors.text.tertiary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.6px',
+                  padding: '3px 8px',
+                  background: effectivePlan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
+                             theme.colors.bg.secondary,
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '4px'
+                }}>
+                  {effectivePlan || 'Free'}
+                </div>
               )}
-              <div style={{
-                fontSize: '9px',
-                fontWeight: theme.weight.bold,
-                color: effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
-                       theme.colors.text.tertiary,
-                textTransform: 'uppercase',
-                letterSpacing: '0.6px',
-                padding: '3px 8px',
-                background: effectivePlan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
-                           theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: '4px'
-              }}>
-                {effectivePlan || 'Free'}
-              </div>
             </div>
           </div>
 

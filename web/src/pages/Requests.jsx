@@ -60,7 +60,7 @@ const REQUEST_TYPES = [
       { id: 'format', label: 'Preferred Format', type: 'select', options: ['PNG', 'SVG', 'AI', 'PSD', 'Figma', 'Any'] },
       { id: 'dimensions', label: 'Dimensions (optional)', type: 'text', placeholder: 'e.g., 1920x1080' }
     ],
-    planRequired: 'business'
+    planRequired: 'pro'
   },
   {
     id: 'event-photos',
@@ -150,7 +150,7 @@ const REQUEST_TYPES = [
       { id: 'contractType', label: 'Contract Type', type: 'text', placeholder: 'e.g., NDA, Service Agreement' },
       { id: 'parties', label: 'Number of Parties', type: 'number', placeholder: 'e.g., 2' }
     ],
-    planRequired: 'business'
+    planRequired: 'pro'
   },
   {
     id: 'audio',
@@ -190,7 +190,7 @@ const REQUEST_TYPES = [
       { id: 'documentType', label: 'Document Type', type: 'text', placeholder: 'e.g., Power of Attorney' },
       { id: 'jurisdiction', label: 'Jurisdiction', type: 'text', placeholder: 'e.g., California' }
     ],
-    planRequired: 'business'
+    planRequired: 'pro'
   },
   {
     id: 'id-verification',
@@ -200,7 +200,7 @@ const REQUEST_TYPES = [
       { id: 'idType', label: 'ID Type', type: 'select', options: ['Passport', 'Driver License', 'State ID', 'Other'] },
       { id: 'country', label: 'Country', type: 'text', placeholder: 'e.g., USA' }
     ],
-    planRequired: 'business'
+    planRequired: 'pro'
   },
   {
     id: 'medical',
@@ -210,7 +210,7 @@ const REQUEST_TYPES = [
       { id: 'recordType', label: 'Record Type', type: 'select', options: ['Lab Results', 'Prescription', 'X-Ray/Imaging', 'Medical History', 'Other'] },
       { id: 'dateOfService', label: 'Date of Service', type: 'date' }
     ],
-    planRequired: 'business'
+    planRequired: 'pro'
   },
   {
     id: 'tax-documents',
@@ -240,7 +240,7 @@ const REQUEST_TYPES = [
       { id: 'productCategory', label: 'Product Category', type: 'text', placeholder: 'e.g., Electronics, Clothing' },
       { id: 'backgroundType', label: 'Background', type: 'select', options: ['White', 'Transparent', 'Lifestyle', 'Any'] }
     ],
-    planRequired: 'business'
+    planRequired: 'pro'
   },
   {
     id: 'marketing',
@@ -250,7 +250,7 @@ const REQUEST_TYPES = [
       { id: 'campaignName', label: 'Campaign Name', type: 'text', placeholder: 'e.g., Spring Sale 2024' },
       { id: 'platform', label: 'Platform', type: 'select', options: ['Email', 'Social Media', 'Print', 'Digital Ads', 'All'] }
     ],
-    planRequired: 'business'
+    planRequired: 'pro'
   },
   {
     id: 'social-media',
@@ -914,7 +914,7 @@ function Requests() {
                           type.description.toLowerCase().includes(searchQuery.toLowerCase())
                         )
                         .map((type) => {
-                          const planLevels = { 'free': 0, 'pro': 1, 'business': 2 }
+                          const planLevels = { 'free': 0, 'pro': 1 }
                           const isLocked = planLevels[userPlan] < planLevels[type.planRequired]
 
                           return (
