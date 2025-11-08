@@ -460,7 +460,7 @@ function Branding() {
                     <span style={{
                       fontSize: '10px',
                       fontWeight: '600',
-                      color: themeItem.color === '#FFFFFF' || themeItem.color === '#F5F5F5'
+                      color: ['#FFFFFF', '#F5F5F5', '#E5E4E2', '#FFFDD0', '#F5F5DC'].includes(themeItem.color)
                         ? theme.colors.black
                         : theme.colors.white,
                       textTransform: 'uppercase',
