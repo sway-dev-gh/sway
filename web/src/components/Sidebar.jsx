@@ -122,7 +122,8 @@ function Sidebar() {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '0 20px'
+    padding: '0 20px',
+    gap: '40px'
   }
 
   const navLinkStyle = (isActive) => ({
@@ -146,7 +147,9 @@ function Sidebar() {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '20px'
+        gap: '20px',
+        flex: 1,
+        minWidth: 0
       }}>
         {/* Logo/Brand */}
         <div style={{
