@@ -65,46 +65,29 @@ function Plan() {
       price: '$0',
       period: '',
       tagline: 'Try it out',
-      description: 'Perfect for testing Sway Files and collecting a few files from students, clients, or friends.',
+      description: 'Perfect for testing Sway and collecting files.',
       features: [
-        { text: '1 active request', highlight: false },
-        { text: 'Up to 10 uploads total', highlight: false },
-        { text: 'Basic file types only', highlight: false },
-        { text: 'Files kept 30 days', highlight: false },
-        { text: 'Community support', highlight: false }
+        { text: '20 active requests', highlight: false },
+        { text: '2GB storage', highlight: false },
+        { text: 'Watermark required', highlight: false },
+        { text: 'Basic support', highlight: false }
       ]
     },
     {
       id: 'pro',
       name: 'Pro',
-      price: '$9',
+      price: '$15',
       period: '/month',
       tagline: 'Most popular',
-      description: 'Built for freelancers, teachers, and creators who regularly collect files from clients or students.',
+      description: 'Everything you need to collect files professionally.',
       popular: true,
       features: [
-        { text: 'Unlimited requests', highlight: true },
-        { text: 'Unlimited uploads', highlight: true },
-        { text: 'All file types supported', highlight: true },
-        { text: 'Remove Sway branding', highlight: false },
-        { text: 'Email notifications', highlight: false },
-        { text: 'Files stored forever', highlight: false },
-        { text: 'Priority support', highlight: false }
-      ]
-    },
-    {
-      id: 'business',
-      name: 'Business',
-      price: '$17',
-      period: '/month',
-      tagline: 'For growing teams',
-      description: 'Everything in Pro, plus advanced features for teams, agencies, and businesses collecting files at scale.',
-      features: [
-        { text: 'Everything in Pro', highlight: false },
-        { text: 'Custom domain (files.yourcompany.com)', highlight: true },
-        { text: 'Team access (up to 5 members)', highlight: true },
-        { text: 'Dropbox/Drive sync', highlight: true },
-        { text: 'Large file limits (5GB)', highlight: true },
+        { text: 'Unlimited active requests', highlight: true },
+        { text: '100GB storage', highlight: true },
+        { text: 'No watermark - custom logo', highlight: true },
+        { text: 'Custom domain', highlight: true },
+        { text: 'Team access (3 seats)', highlight: true },
+        { text: 'Dropbox integration', highlight: true },
         { text: 'Priority support', highlight: false }
       ]
     }

@@ -102,9 +102,9 @@ function Sidebar() {
     },
     {
       items: [
-        { path: '/custom-domain', label: 'Domain', planRequired: 'business' },
-        { path: '/team-access', label: 'Team', planRequired: 'business' },
-        { path: '/dropbox-sync', label: 'Dropbox', planRequired: 'business' }
+        { path: '/custom-domain', label: 'Domain', planRequired: 'pro' },
+        { path: '/team-access', label: 'Team', planRequired: 'pro' },
+        { path: '/dropbox-sync', label: 'Dropbox', planRequired: 'pro' }
       ]
     },
     {
@@ -121,20 +121,13 @@ function Sidebar() {
     if (isAdminMode) return true // Admin has access to everything
     if (!requiredPlan) return true // Free features
     const userPlan = user.plan?.toLowerCase() || 'free'
-    if (requiredPlan === 'pro') {
-      return userPlan === 'pro' || userPlan === 'business'
-    }
-    if (requiredPlan === 'business') {
-      return userPlan === 'business'
-    }
-    return false
+    // Only FREE and PRO plans now - pro gets everything
+    return requiredPlan === 'pro' ? userPlan === 'pro' : true
   }
 
   // Helper to get upgrade plan needed
   const getUpgradePlan = (requiredPlan) => {
-    if (requiredPlan === 'pro') return 'Pro'
-    if (requiredPlan === 'business') return 'Business'
-    return null
+    return requiredPlan === 'pro' ? 'Pro' : null
   }
 
   const topBarStyle = {
