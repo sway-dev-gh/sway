@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import theme from '../theme'
 import api from '../api/axios'
+import AdminModeActivator from './AdminModeActivator'
 
 function Sidebar() {
   const location = useLocation()
@@ -56,6 +57,11 @@ function Sidebar() {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     navigate('/login')
+  }
+
+  const handleAdminActivate = () => {
+    setIsAdminMode(true)
+    window.location.reload() // Reload to apply admin mode
   }
 
   const navSections = [
@@ -145,6 +151,7 @@ function Sidebar() {
   })
 
   return (
+    <>
     <div style={topBarStyle}>
       {/* Logo/Brand */}
       <div style={{
@@ -351,6 +358,10 @@ function Sidebar() {
         </div>
       </div>
     </div>
+
+    {/* Admin Mode Activator */}
+    <AdminModeActivator onActivate={handleAdminActivate} />
+    </>
   )
 }
 
