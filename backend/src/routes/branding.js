@@ -44,17 +44,16 @@ router.post('/settings', authenticateToken, async (req, res) => {
       remove_branding
     } = req.body
 
-    // Check user plan - only Pro/Business can use branding (skip check for admin users)
+    // Check user plan - only Pro/Business can use branding
     const userResult = await pool.query(
-      'SELECT plan, is_admin FROM users WHERE id = $1',
+      'SELECT plan FROM users WHERE id = $1',
       [userId]
     )
 
     const userPlan = userResult.rows[0]?.plan?.toLowerCase()
-    const isAdmin = userResult.rows[0]?.is_admin
 
-    // Allow if user is admin OR has pro/business plan
-    if (!isAdmin && userPlan !== 'pro' && userPlan !== 'business') {
+    // Enforce plan check (Pro/Business required)
+    if (userPlan !== 'pro' && userPlan !== 'business') {
       return res.status(403).json({ error: 'Pro or Business plan required for custom branding' })
     }
 
