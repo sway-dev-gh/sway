@@ -132,23 +132,68 @@ function Templates() {
             </p>
           </div>
 
-          {/* Templates List */}
+          {/* Summary Stats */}
+          {templates.length > 0 && (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '1px',
+              background: theme.colors.border.light,
+              borderRadius: '12px',
+              overflow: 'hidden',
+              marginBottom: '40px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Templates</div>
+                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{templates.length}</div>
+              </div>
+              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Most Used Type</div>
+                <div style={{ fontSize: '16px', fontWeight: '400', color: theme.colors.white, marginTop: '8px' }}>
+                  {(() => {
+                    if (templates.length === 0) return 'N/A'
+                    const typeCounts = templates.reduce((acc, t) => {
+                      acc[t.requestType] = (acc[t.requestType] || 0) + 1
+                      return acc
+                    }, {})
+                    const mostUsed = Object.entries(typeCounts).sort((a, b) => b[1] - a[1])[0]?.[0]
+                    return mostUsed ? getRequestTypeName(mostUsed) : 'N/A'
+                  })()}
+                </div>
+              </div>
+              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Avg Time Limit</div>
+                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+                  {templates.length > 0 && templates.some(t => t.timeLimitDays) ?
+                    Math.round(templates.filter(t => t.timeLimitDays).reduce((sum, t) => sum + t.timeLimitDays, 0) / templates.filter(t => t.timeLimitDays).length) + 'd'
+                    : '—'}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Templates Grid */}
           {templates.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '120px 40px',
-              color: theme.colors.text.muted
+              padding: '80px 40px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{
                 fontSize: '15px',
-                marginBottom: '16px'
+                marginBottom: '8px',
+                color: theme.colors.text.muted
               }}>
                 No templates yet
               </div>
               <div style={{
                 fontSize: '13px',
                 color: theme.colors.text.tertiary,
-                marginBottom: '24px'
+                marginBottom: '24px',
+                lineHeight: '1.5'
               }}>
                 Templates are created automatically from your existing requests
               </div>
@@ -159,6 +204,7 @@ function Templates() {
                   background: theme.colors.white,
                   color: theme.colors.black,
                   border: 'none',
+                  borderRadius: '8px',
                   fontSize: '13px',
                   fontWeight: theme.weight.medium,
                   cursor: 'pointer',
@@ -177,66 +223,82 @@ function Templates() {
           ) : (
             <div style={{
               display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
               gap: '1px',
-              background: theme.colors.border.light
+              background: theme.colors.border.light,
+              borderRadius: '12px',
+              padding: '1px',
+              border: `1px solid ${theme.colors.border.light}`
             }}>
               {templates.map((template) => (
                 <div
                   key={template.id}
                   style={{
-                    padding: '20px',
+                    padding: '28px',
                     background: theme.colors.bg.page,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    transition: `all ${theme.transition.fast}`
+                    borderRadius: '11px',
+                    transition: `all ${theme.transition.fast}`,
+                    cursor: 'pointer'
                   }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = theme.colors.bg.page
+                  }}
+                  onClick={() => navigate('/requests')}
                 >
-                  <div style={{ flex: 1 }}>
-                    <div style={{
-                      fontSize: '14px',
-                      color: theme.colors.text.primary,
-                      marginBottom: '6px',
-                      fontWeight: theme.weight.medium
-                    }}>
-                      {template.name}
-                    </div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: theme.colors.text.muted,
-                      marginBottom: '8px'
-                    }}>
-                      {template.description}
-                    </div>
-                    <div style={{
-                      fontSize: '11px',
-                      color: theme.colors.text.tertiary
-                    }}>
-                      Type: {getRequestTypeName(template.requestType)}
-                      {template.timeLimitDays && ` • ${template.timeLimitDays} days`}
-                    </div>
+                  <div style={{
+                    fontSize: '16px',
+                    color: theme.colors.text.primary,
+                    marginBottom: '10px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    {template.name}
                   </div>
-                  <button
-                    onClick={() => navigate('/requests')}
-                    style={{
-                      padding: '8px 16px',
-                      background: theme.colors.white,
-                      color: theme.colors.black,
-                      border: 'none',
-                      fontSize: '13px',
-                      cursor: 'pointer',
-                      transition: `all ${theme.transition.fast}`,
-                      whiteSpace: 'nowrap'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = theme.colors.text.secondary
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = theme.colors.white
-                    }}
-                  >
-                    View Request
-                  </button>
+                  <div style={{
+                    fontSize: '13px',
+                    color: theme.colors.text.muted,
+                    marginBottom: '16px',
+                    lineHeight: '1.5',
+                    minHeight: '40px'
+                  }}>
+                    {template.description}
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    gap: '8px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <div style={{
+                      fontSize: '10px',
+                      color: theme.colors.text.tertiary,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      fontWeight: theme.weight.semibold,
+                      padding: '6px 12px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: `1px solid ${theme.colors.border.medium}`,
+                      borderRadius: '4px'
+                    }}>
+                      {getRequestTypeName(template.requestType)}
+                    </div>
+                    {template.timeLimitDays && (
+                      <div style={{
+                        fontSize: '10px',
+                        color: theme.colors.text.tertiary,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        fontWeight: theme.weight.semibold,
+                        padding: '6px 12px',
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: '4px'
+                      }}>
+                        {template.timeLimitDays} Days
+                      </div>
+                    )}
+                  </div>
                 </div>
               ))}
             </div>

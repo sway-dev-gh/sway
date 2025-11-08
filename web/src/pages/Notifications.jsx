@@ -108,63 +108,113 @@ function Notifications() {
             </p>
           </div>
 
+          {/* Summary Stats */}
+          {notifications.length > 0 && (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '1px',
+              background: theme.colors.border.light,
+              borderRadius: '12px',
+              overflow: 'hidden',
+              marginBottom: '40px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Notifications</div>
+                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{notifications.length}</div>
+              </div>
+              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Today</div>
+                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+                  {notifications.filter(n => {
+                    const diff = new Date() - new Date(n.createdAt)
+                    return diff < 24 * 60 * 60 * 1000
+                  }).length}
+                </div>
+              </div>
+              <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+                <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>This Week</div>
+                <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+                  {notifications.filter(n => {
+                    const diff = new Date() - new Date(n.createdAt)
+                    return diff < 7 * 24 * 60 * 60 * 1000
+                  }).length}
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Notifications List */}
           {notifications.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '120px 40px',
-              color: theme.colors.text.muted
+              padding: '80px 40px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{
                 fontSize: '15px',
-                marginBottom: '16px'
+                marginBottom: '8px',
+                color: theme.colors.text.muted
               }}>
                 No notifications yet
               </div>
               <div style={{
                 fontSize: '13px',
-                color: theme.colors.text.tertiary
+                color: theme.colors.text.tertiary,
+                lineHeight: '1.5'
               }}>
                 You'll be notified when files are uploaded to your requests
               </div>
             </div>
           ) : (
             <div style={{
-              display: 'grid',
-              gap: '1px',
-              background: theme.colors.border.light
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              overflow: 'hidden'
             }}>
-              {notifications.map((notification) => (
+              {notifications.map((notification, index) => (
                 <div
                   key={notification.id}
                   style={{
-                    padding: '24px',
-                    background: theme.colors.bg.page,
-                    transition: `background ${theme.transition.fast}`
+                    padding: '24px 28px',
+                    background: 'transparent',
+                    borderBottom: index < notifications.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                    transition: `all ${theme.transition.fast}`
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = theme.colors.bg.hover
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = theme.colors.bg.page
+                    e.currentTarget.style.background = 'transparent'
                   }}
                 >
                   <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'flex-start',
-                    marginBottom: '8px'
+                    marginBottom: '10px'
                   }}>
                     <div style={{
                       fontSize: '15px',
                       color: theme.colors.text.primary,
-                      fontWeight: '400'
+                      fontWeight: theme.weight.medium
                     }}>
                       {notification.title}
                     </div>
                     <div style={{
-                      fontSize: '12px',
-                      color: theme.colors.text.tertiary
+                      fontSize: '11px',
+                      color: theme.colors.text.tertiary,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      fontWeight: theme.weight.medium,
+                      padding: '4px 10px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      borderRadius: '4px',
+                      border: `1px solid ${theme.colors.border.light}`
                     }}>
                       {formatTimeAgo(notification.createdAt)}
                     </div>
@@ -172,14 +222,15 @@ function Notifications() {
                   <div style={{
                     fontSize: '13px',
                     color: theme.colors.text.muted,
-                    marginBottom: '8px',
-                    lineHeight: '1.5'
+                    marginBottom: '10px',
+                    lineHeight: '1.6'
                   }}>
                     {notification.message}
                   </div>
                   <div style={{
                     fontSize: '12px',
-                    color: theme.colors.text.tertiary
+                    color: theme.colors.text.tertiary,
+                    fontFamily: 'monospace'
                   }}>
                     {notification.requestTitle}
                   </div>
