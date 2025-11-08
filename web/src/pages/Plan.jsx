@@ -63,42 +63,44 @@ function Plan() {
       id: 'free',
       name: 'Free',
       price: '$0',
-      storage: '1 GB',
-      retention: 'Files kept 30 days',
+      period: '',
+      tagline: 'Get started',
       features: [
-        '1 GB total storage',
-        '3 active requests',
-        'Basic files (images, PDFs, docs)',
-        '10 files per request'
+        { text: '1 active request', highlight: false },
+        { text: 'Up to 10 uploads total', highlight: false },
+        { text: 'Basic branding', highlight: false },
+        { text: 'Files kept 30 days', highlight: false }
       ]
     },
     {
       id: 'pro',
       name: 'Pro',
-      price: '$5',
+      price: '$9',
       period: '/month',
-      storage: '50 GB',
-      retention: 'Files kept forever',
+      tagline: 'For freelancers & teachers',
+      popular: true,
       features: [
-        '50 GB total storage',
-        '10 active requests',
-        'More types (+ videos, audio, archives)',
-        '100 files per request'
+        { text: 'Unlimited requests', highlight: true },
+        { text: 'Unlimited uploads', highlight: true },
+        { text: 'File size limits lifted', highlight: true },
+        { text: 'Basic branding removal', highlight: false },
+        { text: 'Email notifications', highlight: false },
+        { text: 'Files kept forever', highlight: false }
       ]
     },
     {
       id: 'business',
       name: 'Business',
-      price: '$19',
+      price: '$39',
       period: '/month',
-      storage: '200 GB',
-      retention: 'Files kept forever',
+      tagline: 'For teams & businesses',
       features: [
-        '200 GB total storage',
-        'Unlimited requests',
-        'All file types',
-        'Unlimited files per request',
-        'Priority support'
+        { text: 'Everything in Pro', highlight: false },
+        { text: 'Custom domain', highlight: true },
+        { text: 'Team access (up to 5)', highlight: true },
+        { text: 'Dropbox/Drive sync', highlight: true },
+        { text: 'Large file limits (5GB)', highlight: true },
+        { text: 'Priority support', highlight: false }
       ]
     }
   ]
@@ -135,77 +137,114 @@ function Plan() {
         marginTop: '60px'
       }}>
         <div style={{
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
           padding: '60px 40px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '40px' }}>
+          <div style={{ marginBottom: '60px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '32px',
+              fontSize: '48px',
               fontWeight: '400',
-              margin: 0,
-              color: theme.colors.text.primary
+              margin: '0 0 16px 0',
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em',
+              background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
             }}>
-              Plan
+              Simple, Predictable Pricing
             </h1>
             <p style={{
-              fontSize: '14px',
-              color: theme.colors.text.muted,
-              margin: '8px 0 0 0'
+              fontSize: '18px',
+              color: theme.colors.text.secondary,
+              margin: 0,
+              maxWidth: '600px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              lineHeight: '1.6'
             }}>
-              Choose the plan that works for you
+              Start free. Upgrade when you need more. Cancel anytime.
             </p>
           </div>
 
-          {/* Current Plan Badge */}
-          <div style={{
-            marginBottom: '60px',
-            padding: '24px',
-            background: theme.colors.bg.secondary,
-            border: `1px solid ${theme.colors.border.medium}`
-          }}>
-            <div style={{
-              fontSize: '11px',
-              color: theme.colors.text.muted,
-              marginBottom: theme.spacing[2],
-              textTransform: 'uppercase',
-              letterSpacing: '1.5px'
-            }}>
-              Current Plan
-            </div>
-            <div style={{
-              fontSize: '24px',
-              fontWeight: '300',
-              color: theme.colors.text.primary,
-              letterSpacing: '-0.01em'
-            }}>
-              {plans.find(p => p.id === currentPlan)?.name}
-            </div>
-          </div>
-
-          {/* Plans Grid */}
+          {/* Plans Grid - Modern 2025 Style */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1px',
-            background: theme.colors.border.light
+            gap: '24px',
+            marginBottom: '80px'
           }}>
             {plans.map((plan) => (
               <div
                 key={plan.id}
                 style={{
-                  background: theme.colors.bg.page,
-                  padding: '40px',
-                  position: 'relative'
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  padding: '40px 32px',
+                  borderRadius: '16px',
+                  border: plan.popular ? `2px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
+                  position: 'relative',
+                  transition: `all ${theme.transition.normal}`,
+                  transform: plan.popular ? 'scale(1.05)' : 'scale(1)'
+                }}
+                onMouseEnter={(e) => {
+                  if (!plan.popular) {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                    e.currentTarget.style.borderColor = theme.colors.border.medium
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!plan.popular) {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                    e.currentTarget.style.borderColor = theme.colors.border.light
+                  }
                 }}
               >
+                {/* Popular Badge */}
+                {plan.popular && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-12px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    padding: '4px 16px',
+                    borderRadius: '100px',
+                    fontSize: '11px',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    Most Popular
+                  </div>
+                )}
+
+                {/* Current Plan Badge */}
+                {plan.id === currentPlan && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    color: theme.colors.text.secondary,
+                    padding: '4px 12px',
+                    borderRadius: '6px',
+                    fontSize: '10px',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    Current
+                  </div>
+                )}
+
                 {/* Plan Name */}
                 <div style={{
-                  fontSize: '9px',
+                  fontSize: '14px',
                   color: theme.colors.text.tertiary,
-                  marginBottom: theme.spacing[4],
+                  marginBottom: '8px',
                   textTransform: 'uppercase',
                   letterSpacing: '1.5px',
                   fontWeight: theme.weight.semibold
@@ -213,64 +252,59 @@ function Plan() {
                   {plan.name}
                 </div>
 
-                {/* Price */}
-                <div style={{ marginBottom: theme.spacing[6] }}>
-                  <div style={{
-                    fontSize: '48px',
-                    fontWeight: '300',
-                    color: theme.colors.text.primary,
-                    letterSpacing: '-0.03em',
-                    lineHeight: '1'
-                  }}>
-                    {plan.price}
-                  </div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: theme.colors.text.muted,
-                    marginTop: theme.spacing[2],
-                    height: '20px'
-                  }}>
-                    {plan.period || '\u00A0'}
-                  </div>
+                {/* Tagline */}
+                <div style={{
+                  fontSize: '13px',
+                  color: theme.colors.text.muted,
+                  marginBottom: '24px',
+                  minHeight: '20px'
+                }}>
+                  {plan.tagline}
                 </div>
 
-                {/* Storage */}
-                <div style={{
-                  marginBottom: theme.spacing[6],
-                  paddingBottom: theme.spacing[6],
-                  borderBottom: `1px solid ${theme.colors.border.light}`
-                }}>
-                  <div style={{
-                    fontSize: '13px',
-                    color: theme.colors.text.secondary,
-                    marginBottom: theme.spacing[1]
-                  }}>
-                    {plan.storage} total storage
-                  </div>
-                  <div style={{
-                    fontSize: '11px',
-                    color: theme.colors.text.muted
-                  }}>
-                    {plan.retention}
+                {/* Price */}
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                    <div style={{
+                      fontSize: '56px',
+                      fontWeight: '300',
+                      color: theme.colors.text.primary,
+                      letterSpacing: '-0.04em',
+                      lineHeight: '1'
+                    }}>
+                      {plan.price}
+                    </div>
+                    <div style={{
+                      fontSize: '16px',
+                      color: theme.colors.text.muted,
+                      marginBottom: '4px'
+                    }}>
+                      {plan.period}
+                    </div>
                   </div>
                 </div>
 
                 {/* Features */}
-                <div style={{ marginBottom: theme.spacing[6] }}>
+                <div style={{ marginBottom: '32px', minHeight: '200px' }}>
                   {plan.features.map((feature, index) => (
                     <div
                       key={index}
                       style={{
-                        fontSize: '13px',
-                        color: theme.colors.text.secondary,
-                        marginBottom: theme.spacing[2],
+                        fontSize: '14px',
+                        color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
+                        marginBottom: '12px',
                         display: 'flex',
                         alignItems: 'flex-start',
-                        gap: theme.spacing[2]
+                        gap: '12px',
+                        fontWeight: feature.highlight ? '500' : '400'
                       }}
                     >
-                      <span style={{ color: theme.colors.text.muted }}>—</span>
-                      <span>{feature}</span>
+                      <span style={{
+                        color: theme.colors.text.primary,
+                        fontSize: '16px',
+                        lineHeight: '1'
+                      }}>✓</span>
+                      <span style={{ flex: 1 }}>{feature.text}</span>
                     </div>
                   ))}
                 </div>
@@ -281,110 +315,217 @@ function Plan() {
                   disabled={plan.id === currentPlan || upgrading}
                   style={{
                     width: '100%',
-                    padding: '12px 24px',
-                    background: plan.id === currentPlan ? 'transparent' : theme.colors.white,
-                    color: plan.id === currentPlan ? theme.colors.text.secondary : theme.colors.black,
-                    border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : theme.colors.white}`,
+                    padding: '14px 28px',
+                    background: plan.id === currentPlan ? 'transparent' : (plan.popular ? theme.colors.white : 'transparent'),
+                    color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
+                    border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
+                    borderRadius: '10px',
                     fontSize: '14px',
-                    fontWeight: '400',
+                    fontWeight: '600',
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
-                    transition: 'all 0.15s ease',
+                    transition: `all ${theme.transition.normal}`,
                     opacity: upgrading ? 0.6 : 1
                   }}
                   onMouseEnter={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
-                      e.currentTarget.style.background = theme.colors.text.secondary
+                      if (plan.popular) {
+                        e.currentTarget.style.background = theme.colors.text.secondary
+                        e.currentTarget.style.transform = 'translateY(-2px)'
+                      } else {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'
+                      }
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
-                      e.currentTarget.style.background = theme.colors.white
+                      e.currentTarget.style.background = plan.popular ? theme.colors.white : 'transparent'
+                      e.currentTarget.style.transform = 'translateY(0)'
                     }
                   }}
                 >
-                  {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : 'Upgrade')}
+                  {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? 'Get Started Free' : 'Upgrade to ' + plan.name))}
                 </button>
               </div>
             ))}
           </div>
 
+          {/* Value Props */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '24px',
+            marginBottom: '80px'
+          }}>
+            <div style={{
+              padding: '32px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '32px',
+                marginBottom: '16px'
+              }}>🔒</div>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: '500',
+                color: theme.colors.text.primary,
+                marginBottom: '8px'
+              }}>
+                Secure & Private
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                lineHeight: '1.6'
+              }}>
+                Your files are encrypted and stored securely. We never share your data.
+              </div>
+            </div>
+
+            <div style={{
+              padding: '32px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '32px',
+                marginBottom: '16px'
+              }}>⚡</div>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: '500',
+                color: theme.colors.text.primary,
+                marginBottom: '8px'
+              }}>
+                Lightning Fast
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                lineHeight: '1.6'
+              }}>
+                Upload and download files at blazing speeds. No waiting around.
+              </div>
+            </div>
+
+            <div style={{
+              padding: '32px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '32px',
+                marginBottom: '16px'
+              }}>💰</div>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: '500',
+                color: theme.colors.text.primary,
+                marginBottom: '8px'
+              }}>
+                Cancel Anytime
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                lineHeight: '1.6'
+              }}>
+                No long-term contracts. Cancel your subscription whenever you want.
+              </div>
+            </div>
+          </div>
+
           {/* FAQ Section */}
-          <div style={{ marginTop: '80px' }}>
+          <div>
             <h2 style={{
-              fontSize: '24px',
-              fontWeight: '300',
+              fontSize: '32px',
+              fontWeight: '400',
               margin: '0 0 40px 0',
-              letterSpacing: '-0.01em'
+              letterSpacing: '-0.02em',
+              textAlign: 'center'
             }}>
               Frequently Asked Questions
             </h2>
 
             <div style={{
               display: 'grid',
-              gap: '1px',
-              background: theme.colors.border.light
+              gap: '16px',
+              maxWidth: '800px',
+              margin: '0 auto'
             }}>
               <div style={{
-                background: theme.colors.bg.page,
-                padding: '24px'
+                background: 'rgba(255, 255, 255, 0.02)',
+                padding: '28px 32px',
+                borderRadius: '12px',
+                border: `1px solid ${theme.colors.border.light}`
               }}>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '16px',
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[2],
-                  fontWeight: theme.weight.medium
+                  marginBottom: '12px',
+                  fontWeight: '500'
                 }}>
                   Can I change my plan at any time?
                 </div>
                 <div style={{
-                  fontSize: '13px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
-                  Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately.
+                  Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate your billing.
                 </div>
               </div>
 
               <div style={{
-                background: theme.colors.bg.page,
-                padding: '24px'
+                background: 'rgba(255, 255, 255, 0.02)',
+                padding: '28px 32px',
+                borderRadius: '12px',
+                border: `1px solid ${theme.colors.border.light}`
               }}>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '16px',
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[2],
-                  fontWeight: theme.weight.medium
+                  marginBottom: '12px',
+                  fontWeight: '500'
                 }}>
-                  What happens if I exceed my storage limit?
+                  What happens if I hit my upload limit?
                 </div>
                 <div style={{
-                  fontSize: '13px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
-                  You'll receive a notification when you reach 80% of your storage limit. You can upgrade your plan or delete old files to free up space.
+                  On the Free plan, you can have 1 active request with up to 10 total uploads. You'll need to upgrade to Pro for unlimited uploads.
                 </div>
               </div>
 
               <div style={{
-                background: theme.colors.bg.page,
-                padding: '24px'
+                background: 'rgba(255, 255, 255, 0.02)',
+                padding: '28px 32px',
+                borderRadius: '12px',
+                border: `1px solid ${theme.colors.border.light}`
               }}>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '16px',
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[2],
-                  fontWeight: theme.weight.medium
+                  marginBottom: '12px',
+                  fontWeight: '500'
                 }}>
                   Do you offer refunds?
                 </div>
                 <div style={{
-                  fontSize: '13px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
-                  Yes, we offer a 30-day money-back guarantee on all paid plans. No questions asked.
+                  Yes, we offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, we'll refund you in full. No questions asked.
                 </div>
               </div>
             </div>
