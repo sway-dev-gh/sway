@@ -85,32 +85,13 @@ function Sidebar() {
     {
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
-        { path: '/requests', label: 'Requests', planRequired: null }
-      ]
-    },
-    {
-      items: [
-        { path: '/files', label: 'Files', planRequired: null },
-        { path: '/notifications', label: 'Notifs', planRequired: null }
-      ]
-    },
-    {
-      items: [
-        { path: '/support', label: 'Support', planRequired: 'pro' },
-        { path: '/branding', label: 'Branding', planRequired: 'pro' }
-      ]
-    },
-    {
-      items: [
-        { path: '/custom-domain', label: 'Domain', planRequired: 'pro' },
-        { path: '/team-access', label: 'Team', planRequired: 'pro' },
-        { path: '/dropbox-sync', label: 'Dropbox', planRequired: 'pro' }
+        { path: '/requests', label: 'Requests', planRequired: null },
+        { path: '/files', label: 'Files', planRequired: null }
       ]
     },
     {
       items: [
         { path: '/plan', label: 'Plan', planRequired: null },
-        { path: '/billing', label: 'Billing', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
       ]
     }
