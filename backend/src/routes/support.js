@@ -14,15 +14,17 @@ router.post('/tickets', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Subject and message are required' })
     }
 
-    // Check user's plan (Pro or Business required)
-    const userResult = await pool.query(
-      'SELECT plan FROM users WHERE id = $1',
-      [userId]
-    )
+    // Check user's plan (Pro or Business required) - bypass for admins
+    if (!req.isAdmin) {
+      const userResult = await pool.query(
+        'SELECT plan FROM users WHERE id = $1',
+        [userId]
+      )
 
-    const userPlan = userResult.rows[0]?.plan?.toLowerCase()
-    if (userPlan !== 'pro' && userPlan !== 'business') {
-      return res.status(403).json({ error: 'Pro or Business plan required for priority support' })
+      const userPlan = userResult.rows[0]?.plan?.toLowerCase()
+      if (userPlan !== 'pro' && userPlan !== 'business') {
+        return res.status(403).json({ error: 'Pro or Business plan required for priority support' })
+      }
     }
 
     // Create ticket

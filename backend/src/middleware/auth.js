@@ -2,6 +2,15 @@ const jwt = require('jsonwebtoken')
 
 const authenticateToken = (req, res, next) => {
   try {
+    // Check for admin secret key first
+    const adminKey = req.headers['x-admin-key']
+    if (adminKey && adminKey === process.env.ADMIN_SECRET_KEY) {
+      req.isAdmin = true
+      req.userId = 'admin'
+      req.userEmail = 'admin@sway.com'
+      return next()
+    }
+
     // Get token from cookies or Authorization header
     let token = null
 
@@ -18,6 +27,7 @@ const authenticateToken = (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
     req.userId = decoded.userId
     req.userEmail = decoded.email
+    req.isAdmin = false
     next()
   } catch (err) {
     console.error('Auth error:', err.message)

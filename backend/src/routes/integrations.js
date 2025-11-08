@@ -61,15 +61,17 @@ router.post('/:provider/connect', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Invalid provider' })
     }
 
-    // Check user's plan (Business required)
-    const userResult = await pool.query(
-      'SELECT plan FROM users WHERE id = $1',
-      [userId]
-    )
+    // Check user's plan (Business required) - bypass for admins
+    if (!req.isAdmin) {
+      const userResult = await pool.query(
+        'SELECT plan FROM users WHERE id = $1',
+        [userId]
+      )
 
-    const userPlan = userResult.rows[0]?.plan?.toLowerCase()
-    if (userPlan !== 'business') {
-      return res.status(403).json({ error: 'Business plan required for cloud integrations' })
+      const userPlan = userResult.rows[0]?.plan?.toLowerCase()
+      if (userPlan !== 'business') {
+        return res.status(403).json({ error: 'Business plan required for cloud integrations' })
+      }
     }
 
     // TODO: In production, implement actual OAuth flow for Dropbox/Google Drive

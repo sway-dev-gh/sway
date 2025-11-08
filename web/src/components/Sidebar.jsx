@@ -9,8 +9,12 @@ function Sidebar() {
   const [user, setUser] = useState({ email: '' })
   const [stats, setStats] = useState({ totalRequests: 0, totalUploads: 0 })
   const [loading, setLoading] = useState(true)
+  const [isAdminMode, setIsAdminMode] = useState(false)
 
   useEffect(() => {
+    // Check for admin mode
+    const adminKey = localStorage.getItem('adminKey')
+    setIsAdminMode(!!adminKey)
     fetchData()
   }, [])
 
@@ -92,6 +96,7 @@ function Sidebar() {
 
   // Helper to check if user has access to a feature
   const hasAccess = (requiredPlan) => {
+    if (isAdminMode) return true // Admin has access to everything
     if (!requiredPlan) return true // Free features
     const userPlan = user.plan?.toLowerCase() || 'free'
     if (requiredPlan === 'pro') {
@@ -280,6 +285,21 @@ function Sidebar() {
               }}>
                 {user.email?.split('@')[0] || 'User'}
               </div>
+              {isAdminMode && (
+                <div style={{
+                  fontSize: '9px',
+                  fontWeight: theme.weight.bold,
+                  color: theme.colors.black,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.6px',
+                  padding: '3px 8px',
+                  background: theme.colors.white,
+                  border: `1px solid ${theme.colors.white}`,
+                  borderRadius: '4px'
+                }}>
+                  ADMIN
+                </div>
+              )}
               <div style={{
                 fontSize: '9px',
                 fontWeight: theme.weight.bold,
