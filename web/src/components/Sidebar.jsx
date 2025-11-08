@@ -121,15 +121,14 @@ function Sidebar() {
     zIndex: 100,
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '0 20px',
-    gap: '40px'
+    padding: '0 24px',
+    gap: '32px'
   }
 
   const navLinkStyle = (isActive) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: `8px 14px`,
+    padding: `8px 12px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
     fontSize: '14px',
@@ -137,7 +136,6 @@ function Sidebar() {
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.sm,
     transition: `all ${theme.transition.fast}`,
-    marginRight: '8px',
     whiteSpace: 'nowrap'
   })
 
@@ -148,7 +146,7 @@ function Sidebar() {
         fontSize: '20px',
         fontWeight: theme.weight.semibold,
         color: theme.colors.text.primary,
-        marginRight: '32px'
+        flexShrink: 0
       }}>
         Sway
       </div>
@@ -161,7 +159,7 @@ function Sidebar() {
         justifyContent: 'space-evenly'
       }}>
           {navSections.map((section, sectionIndex) => (
-            <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
               {section.items.map((item) => {
                 const isActive = location.pathname === item.path
                 const locked = !hasAccess(item.planRequired)
