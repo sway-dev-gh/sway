@@ -4,6 +4,30 @@ import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 
+// Request types from Requests.jsx
+const REQUEST_TYPES = [
+  { id: 'general-upload', name: 'General Upload' },
+  { id: 'photos', name: 'Photos' },
+  { id: 'videos', name: 'Videos' },
+  { id: 'documents', name: 'Documents' },
+  { id: 'code-submission', name: 'Code' },
+  { id: 'design-assets', name: 'Design' },
+  { id: 'event-photos', name: 'Event Photos' },
+  { id: 'application-materials', name: 'Applications' },
+  { id: 'invoices', name: 'Invoices' },
+  { id: 'forms', name: 'Forms' },
+  { id: 'client-deliverables', name: 'Deliverables' },
+  { id: 'feedback', name: 'Feedback' },
+  { id: 'content', name: 'Content' },
+  { id: 'assignments', name: 'Assignments' },
+  { id: 'contracts', name: 'Contracts' },
+  { id: 'audio', name: 'Audio' },
+  { id: 'spreadsheets', name: 'Spreadsheets' },
+  { id: 'presentations', name: 'Presentations' },
+  { id: 'legal', name: 'Legal Docs' },
+  { id: 'id-verification', name: 'ID Verification' }
+]
+
 // Default elements for new canvas
 const DEFAULT_ELEMENTS = [
   {
@@ -61,12 +85,18 @@ function Branding() {
   const [dragging, setDragging] = useState(null)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
 
-  // Canvas settings
+  // Request type selection
+  const [selectedRequestType, setSelectedRequestType] = useState('general-upload')
+
+  // Store designs for all request types
+  const [allDesigns, setAllDesigns] = useState({})
+
+  // Canvas settings (for current request type)
   const [backgroundColor, setBackgroundColor] = useState('#000000')
   const [removeBranding, setRemoveBranding] = useState(true)
   const [logoUrl, setLogoUrl] = useState(null)
 
-  // Elements on canvas
+  // Elements on canvas (for current request type)
   const [elements, setElements] = useState(DEFAULT_ELEMENTS)
   const [selectedElement, setSelectedElement] = useState(null)
 
@@ -77,6 +107,11 @@ function Branding() {
     fetchBrandingSettings()
   }, [])
 
+  // When request type changes, load that type's design
+  useEffect(() => {
+    loadRequestTypeDesign(selectedRequestType)
+  }, [selectedRequestType, allDesigns])
+
   const fetchBrandingSettings = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -85,16 +120,16 @@ function Branding() {
       })
 
       if (data.settings) {
-        setBackgroundColor(data.settings.background_color || '#000000')
         setRemoveBranding(data.settings.remove_branding ?? true)
         setLogoUrl(data.settings.logo_url)
 
-        // Load custom elements if available
-        if (data.settings.canvas_elements) {
+        // Load per-request-type designs
+        if (data.settings.request_type_designs) {
           try {
-            setElements(JSON.parse(data.settings.canvas_elements))
+            const designs = JSON.parse(data.settings.request_type_designs)
+            setAllDesigns(designs)
           } catch (e) {
-            console.error('Failed to parse canvas elements:', e)
+            console.error('Failed to parse request type designs:', e)
           }
         }
       }
@@ -105,16 +140,60 @@ function Branding() {
     }
   }
 
+  // Load design for specific request type
+  const loadRequestTypeDesign = (requestType) => {
+    if (!allDesigns[requestType]) {
+      // Use defaults if no design exists for this type
+      setBackgroundColor('#000000')
+      setElements(DEFAULT_ELEMENTS)
+      return
+    }
+
+    const design = allDesigns[requestType]
+    setBackgroundColor(design.backgroundColor || '#000000')
+    setElements(design.elements || DEFAULT_ELEMENTS)
+  }
+
+  // Save current design before switching request types
+  const saveCurrentDesignToState = () => {
+    setAllDesigns(prev => ({
+      ...prev,
+      [selectedRequestType]: {
+        backgroundColor,
+        elements
+      }
+    }))
+  }
+
+  // Handle request type change
+  const handleRequestTypeChange = (newType) => {
+    saveCurrentDesignToState()
+    setSelectedRequestType(newType)
+    setSelectedElement(null)
+  }
+
   const handleSave = async () => {
     setLoading(true)
 
+    // Save current design to state first
+    saveCurrentDesignToState()
+
     try {
       const token = localStorage.getItem('token')
+
+      // Include current type's latest changes
+      const designsToSave = {
+        ...allDesigns,
+        [selectedRequestType]: {
+          backgroundColor,
+          elements
+        }
+      }
+
       await api.post('/api/branding/settings', {
         remove_branding: removeBranding,
         logo_url: logoUrl,
-        background_color: backgroundColor,
-        canvas_elements: JSON.stringify(elements)
+        request_type_designs: JSON.stringify(designsToSave)
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -309,10 +388,53 @@ function Branding() {
               <p style={{
                 fontSize: '12px',
                 color: theme.colors.text.muted,
-                margin: '6px 0 0 0'
+                margin: '6px 0 12px 0'
               }}>
                 Customize your upload page
               </p>
+
+              {/* Request Type Selector */}
+              <div>
+                <label style={{
+                  display: 'block',
+                  fontSize: '11px',
+                  color: theme.colors.text.tertiary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  marginBottom: '8px',
+                  fontWeight: '600'
+                }}>
+                  Request Type
+                </label>
+                <select
+                  value={selectedRequestType}
+                  onChange={(e) => handleRequestTypeChange(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    background: theme.colors.bg.page,
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    borderRadius: '6px',
+                    color: theme.colors.text.primary,
+                    fontSize: '13px',
+                    fontFamily: 'inherit',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {REQUEST_TYPES.map(type => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
+                  ))}
+                </select>
+                <p style={{
+                  fontSize: '11px',
+                  color: theme.colors.text.tertiary,
+                  margin: '6px 0 0 0'
+                }}>
+                  Each request type can have its own design
+                </p>
+              </div>
             </div>
 
             {/* Panel Tabs */}
