@@ -318,7 +318,7 @@ function AdminModeActivator({ onActivate }) {
           textAlign: 'center',
           fontStyle: 'italic'
         }}>
-          Tip: Press Shift+Tab to reopen this dialog
+          Tip: Press Shift twice quickly to reopen this dialog
         </div>
       </div>
     </div>
