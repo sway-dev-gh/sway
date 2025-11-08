@@ -152,179 +152,32 @@ function Dashboard() {
             </p>
           </div>
 
-          {/* Stats Grid - Clean & Professional */}
+          {/* Summary Stats */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: '1px',
             background: theme.colors.border.light,
-            borderRadius: '16px',
+            borderRadius: '12px',
             overflow: 'hidden',
-            marginBottom: '48px',
+            marginBottom: '40px',
             border: `1px solid ${theme.colors.border.light}`
           }}>
-            {/* Total Requests */}
-            <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px 32px',
-              transition: `all ${theme.transition.fast}`
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.page
-            }}>
-              <div style={{
-                fontSize: '10px',
-                color: theme.colors.text.tertiary,
-                marginBottom: '16px',
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Requests
-              </div>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: '200',
-                color: theme.colors.white,
-                letterSpacing: '-0.05em',
-                lineHeight: '1',
-                marginBottom: '8px'
-              }}>
-                {stats.totalRequests}
-              </div>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.muted,
-                marginTop: '12px'
-              }}>
-                All time
-              </div>
+            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Requests</div>
+              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{stats.totalRequests}</div>
             </div>
-
-            {/* Total Files */}
-            <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px 32px',
-              transition: `all ${theme.transition.fast}`
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.page
-            }}>
-              <div style={{
-                fontSize: '10px',
-                color: theme.colors.text.tertiary,
-                marginBottom: '16px',
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Files
-              </div>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: '200',
-                color: theme.colors.white,
-                letterSpacing: '-0.05em',
-                lineHeight: '1',
-                marginBottom: '8px'
-              }}>
-                {stats.totalUploads}
-              </div>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.muted,
-                marginTop: '12px'
-              }}>
-                Uploaded
-              </div>
+            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Files</div>
+              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{stats.totalUploads}</div>
             </div>
-
-            {/* Storage Used */}
-            <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px 32px',
-              transition: `all ${theme.transition.fast}`
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.page
-            }}>
-              <div style={{
-                fontSize: '10px',
-                color: theme.colors.text.tertiary,
-                marginBottom: '16px',
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Storage
-              </div>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: '200',
-                color: theme.colors.white,
-                letterSpacing: '-0.05em',
-                lineHeight: '1',
-                marginBottom: '8px'
-              }}>
-                {(stats.storageUsed / 1024).toFixed(1)}
-              </div>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.muted,
-                marginTop: '12px'
-              }}>
-                GB used
-              </div>
+            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Storage Used</div>
+              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{(stats.storageUsed / 1024).toFixed(2)} GB</div>
             </div>
-
-            {/* Avg Files Per Request */}
-            <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px 32px',
-              transition: `all ${theme.transition.fast}`
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.page
-            }}>
-              <div style={{
-                fontSize: '10px',
-                color: theme.colors.text.tertiary,
-                marginBottom: '16px',
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Average
-              </div>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: '200',
-                color: theme.colors.white,
-                letterSpacing: '-0.05em',
-                lineHeight: '1',
-                marginBottom: '8px'
-              }}>
-                {stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '0'}
-              </div>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.muted,
-                marginTop: '12px'
-              }}>
-                Files/request
-              </div>
+            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Avg Files/Request</div>
+              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '—'}</div>
             </div>
           </div>
 
