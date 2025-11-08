@@ -207,19 +207,19 @@ function CustomDomain() {
               <div style={{
                 padding: '16px',
                 borderRadius: '8px',
-                background: verificationStatus === 'verified' ? 'rgba(0, 255, 0, 0.05)' :
-                           verificationStatus === 'failed' ? 'rgba(255, 0, 0, 0.05)' :
-                           'rgba(255, 255, 0, 0.05)',
+                background: verificationStatus === 'verified' ? 'rgba(255, 255, 255, 0.08)' :
+                           verificationStatus === 'failed' ? 'rgba(255, 255, 255, 0.03)' :
+                           'rgba(255, 255, 255, 0.05)',
                 border: `1px solid ${
-                  verificationStatus === 'verified' ? 'rgba(0, 255, 0, 0.2)' :
-                  verificationStatus === 'failed' ? 'rgba(255, 0, 0, 0.2)' :
-                  'rgba(255, 255, 0, 0.2)'
+                  verificationStatus === 'verified' ? theme.colors.white :
+                  verificationStatus === 'failed' ? theme.colors.border.medium :
+                  theme.colors.border.light
                 }`,
                 marginBottom: '24px'
               }}>
                 <div style={{
                   fontSize: '13px',
-                  color: theme.colors.text.primary,
+                  color: verificationStatus === 'verified' ? theme.colors.white : theme.colors.text.primary,
                   fontWeight: theme.weight.medium
                 }}>
                   {verificationStatus === 'verified' && '✓ Domain verified successfully'}
