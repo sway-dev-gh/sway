@@ -158,10 +158,10 @@ function Sidebar() {
         display: 'flex',
         alignItems: 'center',
         flex: 1,
-        gap: '4px'
+        justifyContent: 'space-evenly'
       }}>
           {navSections.map((section, sectionIndex) => (
-            <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center' }}>
+            <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
               {section.items.map((item) => {
                 const isActive = location.pathname === item.path
                 const locked = !hasAccess(item.planRequired)
@@ -231,14 +231,6 @@ function Sidebar() {
                   </Link>
                 )
               })}
-              {sectionIndex < navSections.length - 1 && (
-                <div style={{
-                  width: '1px',
-                  height: '20px',
-                  background: theme.colors.border.medium,
-                  margin: `0 12px`
-                }} />
-              )}
             </div>
           ))}
       </nav>
