@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
@@ -10,6 +10,23 @@ function Support() {
   const [message, setMessage] = useState('')
   const [priority, setPriority] = useState('normal')
   const [loading, setLoading] = useState(false)
+
+  // Check if user has access (Pro/Business or Admin)
+  useEffect(() => {
+    const adminKey = localStorage.getItem('adminKey')
+    const isAdmin = !!adminKey
+
+    if (!isAdmin) {
+      const userStr = localStorage.getItem('user')
+      if (userStr) {
+        const user = JSON.parse(userStr)
+        const userPlan = user.plan?.toLowerCase() || 'free'
+        if (userPlan !== 'pro' && userPlan !== 'business') {
+          navigate('/plan')
+        }
+      }
+    }
+  }, [navigate])
 
   const handleSubmit = async (e) => {
     e.preventDefault()

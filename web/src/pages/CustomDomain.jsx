@@ -10,6 +10,23 @@ function CustomDomain() {
   const [verificationStatus, setVerificationStatus] = useState(null) // null, 'pending', 'verified', 'failed'
   const [loading, setLoading] = useState(false)
 
+  // Check if user has access (Business or Admin)
+  useEffect(() => {
+    const adminKey = localStorage.getItem('adminKey')
+    const isAdmin = !!adminKey
+
+    if (!isAdmin) {
+      const userStr = localStorage.getItem('user')
+      if (userStr) {
+        const user = JSON.parse(userStr)
+        const userPlan = user.plan?.toLowerCase() || 'free'
+        if (userPlan !== 'business') {
+          navigate('/plan')
+        }
+      }
+    }
+  }, [navigate])
+
   useEffect(() => {
     fetchDomain()
   }, [])
