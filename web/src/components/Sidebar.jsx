@@ -64,7 +64,7 @@ function Sidebar() {
     {
       items: [
         { path: '/files', label: 'Files', planRequired: null },
-        { path: '/notifications', label: 'Notifications', planRequired: null },
+        { path: '/notifications', label: 'Notifs', planRequired: null },
         { path: '/templates', label: 'Templates', planRequired: null }
       ]
     },
@@ -76,9 +76,9 @@ function Sidebar() {
     },
     {
       items: [
-        { path: '/custom-domain', label: 'Custom Domain', planRequired: 'business' },
-        { path: '/team-access', label: 'Team Access', planRequired: 'business' },
-        { path: '/dropbox-sync', label: 'Dropbox Sync', planRequired: 'business' }
+        { path: '/custom-domain', label: 'Domain', planRequired: 'business' },
+        { path: '/team-access', label: 'Team', planRequired: 'business' },
+        { path: '/dropbox-sync', label: 'Dropbox', planRequired: 'business' }
       ]
     },
     {
@@ -128,15 +128,16 @@ function Sidebar() {
   const navLinkStyle = (isActive) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
+    padding: `6px 10px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
-    fontSize: theme.fontSize.sm,
+    fontSize: '12px',
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.sm,
     transition: `all ${theme.transition.fast}`,
-    marginRight: theme.spacing[2]
+    marginRight: '6px',
+    whiteSpace: 'nowrap'
   })
 
   return (
@@ -145,7 +146,7 @@ function Sidebar() {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: theme.spacing[6]
+        gap: '20px'
       }}>
         {/* Logo/Brand */}
         <div style={{
@@ -235,9 +236,9 @@ function Sidebar() {
               {sectionIndex < navSections.length - 1 && (
                 <div style={{
                   width: '1px',
-                  height: '20px',
+                  height: '16px',
                   background: theme.colors.border.medium,
-                  margin: `0 ${theme.spacing[4]}`
+                  margin: `0 8px`
                 }} />
               )}
             </div>
