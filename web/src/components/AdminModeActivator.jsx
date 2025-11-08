@@ -310,7 +310,6 @@ function AdminModeActivator({ onActivate }) {
                 setError('')
               }}
               onFocus={() => setIsTyping(true)}
-              onBlur={() => setIsTyping(false)}
               autoFocus
               placeholder="Enter password..."
               style={{
