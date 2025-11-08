@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS integrations (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   integration_type VARCHAR(50) NOT NULL, -- 'dropbox', 'google_drive'
   is_active BOOLEAN NOT NULL DEFAULT false,
   access_token TEXT,

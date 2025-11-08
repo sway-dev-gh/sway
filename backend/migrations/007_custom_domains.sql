@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS custom_domains (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE,
+  user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE UNIQUE,
   domain VARCHAR(255) NOT NULL UNIQUE,
   verification_status VARCHAR(50) NOT NULL DEFAULT 'pending', -- 'pending', 'verified', 'failed'
   verification_token VARCHAR(255),

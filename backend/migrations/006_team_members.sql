@@ -3,7 +3,7 @@
 
 CREATE TABLE IF NOT EXISTS team_members (
   id SERIAL PRIMARY KEY,
-  owner_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   email VARCHAR(255) NOT NULL,
   role VARCHAR(50) NOT NULL DEFAULT 'member', -- 'member' or 'admin'
   status VARCHAR(50) NOT NULL DEFAULT 'pending', -- 'pending', 'active', 'removed'
