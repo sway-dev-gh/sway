@@ -14,7 +14,6 @@ async function runMigration() {
 
     // Run migrations in order
     const migrations = [
-      '004_premium_features.sql',
       '005_add_request_type_designs.sql'
     ]
 
