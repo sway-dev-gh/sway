@@ -12,15 +12,24 @@ async function runMigration() {
   try {
     console.log('Connecting to database...')
 
-    // Read migration file
-    const migrationPath = path.join(__dirname, 'migrations', '005_add_request_type_designs.sql')
-    const sql = fs.readFileSync(migrationPath, 'utf-8')
+    // Run migrations in order
+    const migrations = [
+      '004_premium_features.sql',
+      '005_add_request_type_designs.sql'
+    ]
 
-    console.log('Running migration: 005_add_request_type_designs.sql')
+    for (const migration of migrations) {
+      const migrationPath = path.join(__dirname, 'migrations', migration)
+      const sql = fs.readFileSync(migrationPath, 'utf-8')
 
-    await pool.query(sql)
+      console.log(`Running migration: ${migration}`)
 
-    console.log('✓ Migration completed successfully')
+      await pool.query(sql)
+
+      console.log(`✓ ${migration} completed successfully`)
+    }
+
+    console.log('\n✓ All migrations completed successfully')
     process.exit(0)
   } catch (error) {
     console.error('✗ Migration failed:', error.message)
