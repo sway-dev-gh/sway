@@ -177,12 +177,11 @@ function Sidebar() {
         Sway
       </div>
 
-      {/* Navigation Links - Spread across full width */}
+      {/* Navigation Links */}
       <nav style={{
         display: 'flex',
         alignItems: 'center',
-        flex: 1,
-        justifyContent: 'space-between'
+        gap: '12px'
       }}>
           {navSections.map((section, sectionIndex) => (
             <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
