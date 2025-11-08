@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
@@ -58,28 +58,81 @@ function Branding() {
   const [saveStatus, setSaveStatus] = useState('saved') // 'saved' | 'saving' | 'unsaved' | 'error'
   const [errorMessage, setErrorMessage] = useState('')
   const [successMessage, setSuccessMessage] = useState('')
+  const autoSaveTimerRef = useRef(null)
 
-  useEffect(() => {
-    fetchBrandingSettings()
-  }, [])
+  // Save current design before switching request types
+  const saveCurrentDesignToState = useCallback(() => {
+    setAllDesigns(prev => ({
+      ...prev,
+      [selectedRequestType]: {
+        backgroundColor,
+        elements
+      }
+    }))
+  }, [selectedRequestType, backgroundColor, elements])
 
-  // When request type changes, load that type's design
-  useEffect(() => {
-    if (!initialLoad) {
-      loadRequestTypeDesign(selectedRequestType)
+  // Load design for specific request type
+  const loadRequestTypeDesign = useCallback((requestType, designs = allDesigns) => {
+    if (!designs[requestType]) {
+      // Start with blank canvas if no design exists
+      setBackgroundColor('#FFFFFF')
+      setElements([])
+      setSelectedElement(null)
+      return
     }
-  }, [selectedRequestType])
 
-  // Mark as unsaved when changes are made
-  useEffect(() => {
-    if (!initialLoad && saveStatus === 'saved') {
-      setSaveStatus('unsaved')
-    }
-  }, [backgroundColor, elements, removeBranding])
+    const design = designs[requestType]
+    setBackgroundColor(design.backgroundColor || '#FFFFFF')
+    setElements(design.elements || [])
+    setSelectedElement(null)
+  }, [allDesigns])
 
-  const fetchBrandingSettings = async () => {
+  // Auto-save function (using useCallback to avoid dependency issues)
+  const handleAutoSave = useCallback(async () => {
+    setSaveStatus('saving')
+    setErrorMessage('')
+    setSuccessMessage('')
+
     try {
       const token = localStorage.getItem('token')
+
+      // Include current type's latest changes
+      const designsToSave = {
+        ...allDesigns,
+        [selectedRequestType]: {
+          backgroundColor,
+          elements
+        }
+      }
+
+      await api.post('/api/branding/settings', {
+        remove_branding: removeBranding,
+        logo_url: logoUrl,
+        request_type_designs: JSON.stringify(designsToSave)
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setSaveStatus('saved')
+      setSuccessMessage('Auto-saved')
+      setTimeout(() => setSuccessMessage(''), 2000)
+    } catch (error) {
+      console.error('Error auto-saving branding settings:', error)
+      setSaveStatus('error')
+      setErrorMessage('Auto-save failed')
+    }
+  }, [allDesigns, selectedRequestType, backgroundColor, elements, removeBranding, logoUrl])
+
+  const fetchBrandingSettings = useCallback(async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        console.error('No token found')
+        setErrorMessage('Please log in to access branding settings')
+        setInitialLoad(false)
+        return
+      }
+
       const { data } = await api.get('/api/branding/settings', {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -97,43 +150,76 @@ function Branding() {
             loadRequestTypeDesign(selectedRequestType, designs)
           } catch (e) {
             console.error('Failed to parse request type designs:', e)
+            // If parsing fails, just start with empty designs
+            setAllDesigns({})
           }
         }
       }
+      // Clear any previous error messages on successful load
+      setErrorMessage('')
     } catch (error) {
       console.error('Error fetching branding settings:', error)
-      setErrorMessage('Failed to load branding settings')
+      console.error('Error response:', error.response)
+      if (error.response?.status === 401) {
+        setErrorMessage('Session expired. Please log in again.')
+      } else if (error.response?.status === 403) {
+        setErrorMessage('Pro or Business plan required for custom branding')
+      } else {
+        setErrorMessage(`Failed to load branding settings: ${error.response?.data?.error || error.message}`)
+      }
     } finally {
       setInitialLoad(false)
     }
-  }
+  }, [selectedRequestType, loadRequestTypeDesign])
 
-  // Load design for specific request type
-  const loadRequestTypeDesign = (requestType, designs = allDesigns) => {
-    if (!designs[requestType]) {
-      // Start with blank canvas if no design exists
-      setBackgroundColor('#FFFFFF')
-      setElements([])
-      setSelectedElement(null)
-      return
+  // When request type changes, load that type's design
+  useEffect(() => {
+    if (!initialLoad) {
+      loadRequestTypeDesign(selectedRequestType)
+    }
+  }, [selectedRequestType, initialLoad, loadRequestTypeDesign])
+
+  useEffect(() => {
+    fetchBrandingSettings()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Mark as unsaved when changes are made AND trigger auto-save
+  useEffect(() => {
+    if (!initialLoad && saveStatus === 'saved') {
+      setSaveStatus('unsaved')
+      // Clear existing timer
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current)
+      }
+      // Set new auto-save timer (3 seconds after last change)
+      autoSaveTimerRef.current = setTimeout(() => {
+        handleAutoSave()
+      }, 3000)
     }
 
-    const design = designs[requestType]
-    setBackgroundColor(design.backgroundColor || '#FFFFFF')
-    setElements(design.elements || [])
-    setSelectedElement(null)
-  }
-
-  // Save current design before switching request types
-  const saveCurrentDesignToState = () => {
-    setAllDesigns(prev => ({
-      ...prev,
-      [selectedRequestType]: {
-        backgroundColor,
-        elements
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current)
       }
-    }))
-  }
+    }
+  }, [backgroundColor, elements, removeBranding, initialLoad, saveStatus, handleAutoSave])
+
+  // Auto-save before page unload
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (saveStatus === 'unsaved') {
+        // Trigger save synchronously
+        handleAutoSave()
+        // Show browser warning
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [saveStatus, handleAutoSave])
 
   // Handle request type change
   const handleRequestTypeChange = (newType) => {
@@ -1225,7 +1311,12 @@ function Branding() {
               {/* Canvas */}
               <div
                 ref={canvasRef}
-                onClick={() => setSelectedElement(null)}
+                onClick={(e) => {
+                  // Only deselect if clicking directly on canvas background (not on elements)
+                  if (e.target === canvasRef.current) {
+                    setSelectedElement(null)
+                  }
+                }}
                 style={{
                   width: '100%',
                   height: '100%',

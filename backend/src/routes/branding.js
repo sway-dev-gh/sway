@@ -7,6 +7,7 @@ const { authenticateToken } = require('../middleware/auth')
 router.get('/settings', authenticateToken, async (req, res) => {
   try {
     const userId = req.userId
+    console.log('Fetching branding settings for user:', userId)
 
     const result = await pool.query(
       `SELECT id, user_id, remove_branding, logo_url, primary_color, request_type_designs, created_at, updated_at
@@ -15,8 +16,11 @@ router.get('/settings', authenticateToken, async (req, res) => {
       [userId]
     )
 
+    console.log('Branding settings query result rows:', result.rows.length)
+
     if (result.rows.length === 0) {
       // Return default settings if none exist
+      console.log('No branding settings found, returning defaults')
       return res.json({
         settings: {
           remove_branding: false,
@@ -27,10 +31,12 @@ router.get('/settings', authenticateToken, async (req, res) => {
       })
     }
 
+    console.log('Returning branding settings:', result.rows[0])
     res.json({ settings: result.rows[0] })
   } catch (error) {
     console.error('Error fetching branding settings:', error)
-    res.status(500).json({ error: 'Failed to fetch branding settings' })
+    console.error('Error stack:', error.stack)
+    res.status(500).json({ error: 'Failed to fetch branding settings', details: error.message })
   }
 })
 
