@@ -524,92 +524,107 @@ function Requests() {
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                padding: '12px 24px',
+                padding: '12px 28px',
+                borderRadius: '8px',
                 fontSize: '14px',
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                transition: `all ${theme.transition.fast}`
+                transition: `all ${theme.transition.normal}`
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = theme.colors.text.secondary
+                e.currentTarget.style.transform = 'translateY(-1px)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.white
+                e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
-              + New
+              + New Request
             </button>
           </div>
 
-          {/* Request List - WhatsApp Style */}
+          {/* Request List - Modern 2025 Style */}
           <div>
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
                 padding: '120px 40px',
-                color: theme.colors.text.muted
+                background: 'rgba(255, 255, 255, 0.02)',
+                borderRadius: '16px',
+                border: `1px solid ${theme.colors.border.light}`
               }}>
                 <div style={{
-                  fontSize: '15px',
-                  marginBottom: '16px'
+                  fontSize: '16px',
+                  marginBottom: '12px',
+                  color: theme.colors.text.muted
                 }}>
                   No requests yet
                 </div>
                 <div style={{
-                  fontSize: '13px',
-                  color: theme.colors.text.tertiary
+                  fontSize: '14px',
+                  color: theme.colors.text.tertiary,
+                  lineHeight: '1.5'
                 }}>
-                  Tap the + button to create your first request
+                  Click "+ New Request" to create your first request
                 </div>
               </div>
             ) : (
-              <div>
+              <div style={{
+                display: 'grid',
+                gap: '12px'
+              }}>
                 {requests
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((req, index) => (
                   <div
                     key={req.id}
                     style={{
-                      padding: '20px 0',
-                      borderBottom: index < requests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                      padding: '20px 24px',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      borderRadius: '12px',
+                      border: `1px solid ${theme.colors.border.light}`,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '16px',
-                      transition: `all ${theme.transition.fast}`
+                      gap: '20px',
+                      transition: `all ${theme.transition.normal}`
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = theme.colors.bg.hover
-                      e.currentTarget.style.paddingLeft = '12px'
-                      e.currentTarget.style.paddingRight = '12px'
-                      e.currentTarget.style.marginLeft = '-12px'
-                      e.currentTarget.style.marginRight = '-12px'
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                      e.currentTarget.style.borderColor = theme.colors.border.medium
+                      e.currentTarget.style.transform = 'translateY(-1px)'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.paddingLeft = '0'
-                      e.currentTarget.style.paddingRight = '0'
-                      e.currentTarget.style.marginLeft = '0'
-                      e.currentTarget.style.marginRight = '0'
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                      e.currentTarget.style.borderColor = theme.colors.border.light
+                      e.currentTarget.style.transform = 'translateY(0)'
                     }}
                   >
                     {/* Icon/Avatar */}
                     <div
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '50%',
-                        background: theme.colors.bg.secondary,
+                        width: '56px',
+                        height: '56px',
+                        borderRadius: '12px',
+                        background: 'rgba(255, 255, 255, 0.05)',
                         border: `1px solid ${theme.colors.border.medium}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '18px',
-                        fontWeight: '300',
-                        color: theme.colors.text.secondary,
+                        fontSize: '20px',
+                        fontWeight: '400',
+                        color: theme.colors.text.primary,
                         flexShrink: 0,
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        transition: `all ${theme.transition.fast}`
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
                       }}>
                       {req.uploadCount || 0}
                     </div>
@@ -619,9 +634,9 @@ function Requests() {
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
                       <div style={{
-                        fontSize: '15px',
-                        fontWeight: '400',
-                        marginBottom: '4px',
+                        fontSize: '16px',
+                        fontWeight: '500',
+                        marginBottom: '6px',
                         color: theme.colors.text.primary,
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
@@ -630,8 +645,8 @@ function Requests() {
                         {req.title}
                       </div>
                       <div style={{
-                        fontSize: '13px',
-                        color: theme.colors.text.muted,
+                        fontSize: '14px',
+                        color: theme.colors.text.tertiary,
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis'
@@ -642,8 +657,11 @@ function Requests() {
 
                     {/* Time */}
                     <div style={{
-                      fontSize: '12px',
+                      fontSize: '13px',
                       color: theme.colors.text.tertiary,
+                      padding: '6px 12px',
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      borderRadius: '6px',
                       flexShrink: 0
                     }}>
                       {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -661,14 +679,24 @@ function Requests() {
                           navigate(`/requests/${req.id}`)
                         }}
                         style={{
-                          padding: '8px 16px',
+                          padding: '10px 20px',
                           background: theme.colors.white,
                           color: theme.colors.black,
                           border: 'none',
+                          borderRadius: '8px',
                           fontSize: '13px',
-                          fontWeight: '400',
+                          fontWeight: '500',
                           cursor: 'pointer',
-                          fontFamily: 'inherit'
+                          fontFamily: 'inherit',
+                          transition: `all ${theme.transition.fast}`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = theme.colors.text.secondary
+                          e.currentTarget.style.transform = 'translateY(-1px)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = theme.colors.white
+                          e.currentTarget.style.transform = 'translateY(0)'
                         }}
                       >
                         View
@@ -679,14 +707,24 @@ function Requests() {
                           handleDelete(req.id)
                         }}
                         style={{
-                          padding: '8px 16px',
+                          padding: '10px 20px',
                           background: 'transparent',
                           color: theme.colors.text.secondary,
                           border: `1px solid ${theme.colors.border.medium}`,
+                          borderRadius: '8px',
                           fontSize: '13px',
-                          fontWeight: '400',
+                          fontWeight: '500',
                           cursor: 'pointer',
-                          fontFamily: 'inherit'
+                          fontFamily: 'inherit',
+                          transition: `all ${theme.transition.fast}`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                          e.currentTarget.style.borderColor = theme.colors.border.dark
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent'
+                          e.currentTarget.style.borderColor = theme.colors.border.medium
                         }}
                       >
                         Delete

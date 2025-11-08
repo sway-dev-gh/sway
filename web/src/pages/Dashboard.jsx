@@ -152,35 +152,51 @@ function Dashboard() {
             </p>
           </div>
 
-          {/* Stats Grid */}
+          {/* Stats Grid - Modern 2025 Style */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1px',
-            background: theme.colors.border.light,
+            gap: '16px',
             marginBottom: '60px'
           }}>
             {/* Total Requests */}
             <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px'
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '32px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              transition: `all ${theme.transition.normal}`,
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+              e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{
-                fontSize: '9px',
+                fontSize: '11px',
                 color: theme.colors.text.tertiary,
                 marginBottom: theme.spacing[3],
                 textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
+                letterSpacing: '1.2px',
+                fontWeight: theme.weight.medium
               }}>
                 Total Requests
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: '56px',
                 fontWeight: '300',
                 color: theme.colors.text.primary,
-                letterSpacing: '-0.03em',
-                lineHeight: '1'
+                letterSpacing: '-0.04em',
+                lineHeight: '1',
+                background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
               }}>
                 {stats.totalRequests}
               </div>
@@ -188,25 +204,42 @@ function Dashboard() {
 
             {/* Total Files */}
             <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px'
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '32px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              transition: `all ${theme.transition.normal}`,
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+              e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{
-                fontSize: '9px',
+                fontSize: '11px',
                 color: theme.colors.text.tertiary,
                 marginBottom: theme.spacing[3],
                 textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
+                letterSpacing: '1.2px',
+                fontWeight: theme.weight.medium
               }}>
                 Total Files
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: '56px',
                 fontWeight: '300',
                 color: theme.colors.text.primary,
-                letterSpacing: '-0.03em',
-                lineHeight: '1'
+                letterSpacing: '-0.04em',
+                lineHeight: '1',
+                background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
               }}>
                 {stats.totalUploads}
               </div>
@@ -214,38 +247,56 @@ function Dashboard() {
 
             {/* Storage Used */}
             <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px'
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '32px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              transition: `all ${theme.transition.normal}`,
+              cursor: 'default'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+              e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{
-                fontSize: '9px',
+                fontSize: '11px',
                 color: theme.colors.text.tertiary,
                 marginBottom: theme.spacing[3],
                 textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
+                letterSpacing: '1.2px',
+                fontWeight: theme.weight.medium
               }}>
                 Storage Used
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: '56px',
                 fontWeight: '300',
                 color: theme.colors.text.primary,
-                letterSpacing: '-0.03em',
-                lineHeight: '1'
+                letterSpacing: '-0.04em',
+                lineHeight: '1',
+                background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
               }}>
                 {stats.storageUsed} MB
               </div>
             </div>
           </div>
 
-          {/* Recent Requests */}
+          {/* Recent Requests - Modern Style */}
           <div>
             <h2 style={{
-              fontSize: '24px',
-              fontWeight: '300',
-              margin: '0 0 24px 0',
-              letterSpacing: '-0.01em'
+              fontSize: '28px',
+              fontWeight: '400',
+              margin: '0 0 32px 0',
+              letterSpacing: '-0.02em',
+              color: theme.colors.text.primary
             }}>
               Recent Requests
             </h2>
@@ -254,12 +305,15 @@ function Dashboard() {
               <div style={{
                 textAlign: 'center',
                 padding: '80px 40px',
-                border: `1px solid ${theme.colors.border.medium}`
+                background: 'rgba(255, 255, 255, 0.02)',
+                borderRadius: '16px',
+                border: `1px solid ${theme.colors.border.light}`
               }}>
                 <p style={{
-                  fontSize: '14px',
+                  fontSize: '15px',
                   color: theme.colors.text.muted,
-                  margin: 0
+                  margin: 0,
+                  lineHeight: '1.6'
                 }}>
                   No requests yet. Create your first request to get started.
                 </p>
@@ -267,49 +321,57 @@ function Dashboard() {
             ) : (
               <div style={{
                 display: 'grid',
-                gap: '1px',
-                background: theme.colors.border.light
+                gap: '12px'
               }}>
                 {stats.recentRequests.map((req, index) => (
                   <Link
                     key={req.id}
                     to={`/requests/${req.id}`}
                     style={{
-                      background: theme.colors.bg.page,
-                      padding: '24px',
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      padding: '20px 24px',
+                      borderRadius: '12px',
+                      border: `1px solid ${theme.colors.border.light}`,
                       display: 'grid',
                       gridTemplateColumns: '1fr auto',
                       alignItems: 'center',
                       gap: '20px',
                       textDecoration: 'none',
-                      transition: `all ${theme.transition.fast}`
+                      transition: `all ${theme.transition.normal}`
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = theme.colors.bg.hover
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                      e.currentTarget.style.borderColor = theme.colors.border.medium
+                      e.currentTarget.style.transform = 'translateY(-1px)'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = theme.colors.bg.page
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                      e.currentTarget.style.borderColor = theme.colors.border.light
+                      e.currentTarget.style.transform = 'translateY(0)'
                     }}
                   >
                     <div>
                       <div style={{
-                        fontSize: '15px',
-                        fontWeight: '400',
-                        marginBottom: '4px',
+                        fontSize: '16px',
+                        fontWeight: '500',
+                        marginBottom: '6px',
                         color: theme.colors.text.primary
                       }}>
                         {req.title}
                       </div>
                       <div style={{
-                        fontSize: '13px',
-                        color: theme.colors.text.muted
+                        fontSize: '14px',
+                        color: theme.colors.text.tertiary
                       }}>
                         {req.uploadCount || 0} {req.uploadCount === 1 ? 'file' : 'files'}
                       </div>
                     </div>
                     <div style={{
-                      fontSize: '12px',
-                      color: theme.colors.text.tertiary
+                      fontSize: '13px',
+                      color: theme.colors.text.tertiary,
+                      padding: '6px 12px',
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      borderRadius: '6px'
                     }}>
                       {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </div>
