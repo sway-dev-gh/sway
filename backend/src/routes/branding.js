@@ -55,9 +55,9 @@ router.post('/settings', authenticateToken, async (req, res) => {
 
       const userPlan = userResult.rows[0]?.plan?.toLowerCase()
 
-      // Enforce plan check (Pro/Business required)
-      if (userPlan !== 'pro' && userPlan !== 'business') {
-        return res.status(403).json({ error: 'Pro or Business plan required for custom branding' })
+      // FREE: branding locked | PRO: full branding access
+      if (userPlan !== 'pro') {
+        return res.status(403).json({ error: 'Pro plan required for custom branding' })
       }
     }
 

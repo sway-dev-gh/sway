@@ -29,28 +29,19 @@ router.post('/', authenticateToken, async (req, res) => {
       const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
       const userPlan = userResult.rows[0]?.plan || 'free'
 
-      // Enforce ACTIVE request limits by plan (new monetization structure)
-      const activeRequestLimits = {
-        free: 1,       // 1 active request
-        pro: null,     // unlimited
-        business: null // unlimited
-      }
-
-      const activeLimit = activeRequestLimits[userPlan]
-
-      // Check active request limit (only for free plan)
-      if (activeLimit !== null) {
+      // FREE: 20 active requests limit | PRO: unlimited
+      if (userPlan === 'free') {
         const activeRequestsResult = await pool.query(
           'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
           [req.userId]
         )
         const activeCount = parseInt(activeRequestsResult.rows[0].count)
 
-        if (activeCount >= activeLimit) {
+        if (activeCount >= 20) {
           return res.status(403).json({
-            error: `Free plan allows only ${activeLimit} active request at a time. Upgrade to Pro ($9/mo) for unlimited requests.`,
+            error: 'Free plan allows 20 active requests. Upgrade to Pro ($15/mo) for unlimited requests.',
             limitReached: true,
-            currentPlan: userPlan,
+            currentPlan: 'free',
             upgradeRequired: 'pro'
           })
         }
@@ -256,26 +247,19 @@ router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
       const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
       const userPlan = userResult.rows[0]?.plan || 'free'
 
-      const activeRequestLimits = {
-        free: 1,       // 1 active request
-        pro: null,     // unlimited
-        business: null // unlimited
-      }
-
-      const activeLimit = activeRequestLimits[userPlan]
-
-      if (activeLimit !== null) {
+      // FREE: 20 active requests limit | PRO: unlimited
+      if (userPlan === 'free') {
         const activeRequestsResult = await pool.query(
           'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
           [req.userId]
         )
         const activeCount = parseInt(activeRequestsResult.rows[0].count)
 
-        if (activeCount >= activeLimit) {
+        if (activeCount >= 20) {
           return res.status(403).json({
-            error: `Free plan allows only ${activeLimit} active request at a time. Upgrade to Pro ($9/mo) for unlimited requests.`,
+            error: 'Free plan allows 20 active requests. Upgrade to Pro ($15/mo) for unlimited requests.',
             limitReached: true,
-            currentPlan: userPlan,
+            currentPlan: 'free',
             upgradeRequired: 'pro'
           })
         }
