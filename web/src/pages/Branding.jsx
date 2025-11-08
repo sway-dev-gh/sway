@@ -434,7 +434,7 @@ function Branding() {
   }
 
   // Mouse move - update element position or size
-  const handleMouseMove = (e) => {
+  const handleMouseMove = useCallback((e) => {
     if (!canvasRef.current) return
     if (!dragging && !resizing) return
 
@@ -495,13 +495,13 @@ function Branding() {
         y: Math.max(0, Math.min(100, y))
       })
     }
-  }
+  }, [dragging, resizing, dragOffset, elements, updateElement])
 
   // Mouse up - stop drag or resize
-  const handleMouseUp = () => {
+  const handleMouseUp = useCallback(() => {
     setDragging(null)
     setResizing(null)
-  }
+  }, [])
 
   useEffect(() => {
     if (dragging || resizing) {
@@ -512,7 +512,7 @@ function Branding() {
         window.removeEventListener('mouseup', handleMouseUp)
       }
     }
-  }, [dragging, resizing, dragOffset])
+  }, [dragging, resizing, handleMouseMove, handleMouseUp])
 
   const selectedEl = elements.find(el => el.id === selectedElement)
 
