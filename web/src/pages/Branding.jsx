@@ -35,6 +35,7 @@ function Branding() {
   const canvasRef = useRef(null)
   const [dragging, setDragging] = useState(null)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
+  const [resizing, setResizing] = useState(null) // { elementId, handle: 'nw'|'ne'|'sw'|'se'|'n'|'s'|'e'|'w', startX, startY, startWidth, startHeight }
 
   // Request type selection
   const [selectedRequestType, setSelectedRequestType] = useState('general-upload')
@@ -220,6 +221,24 @@ function Branding() {
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
   }, [saveStatus, handleAutoSave])
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Delete key - remove selected element
+      if ((e.key === 'Delete' || e.key === 'Backspace') && selectedElement && !e.target.matches('input, textarea')) {
+        e.preventDefault()
+        setElements(elements.filter(el => el.id !== selectedElement))
+        setSelectedElement(null)
+      }
+      // Escape key - deselect
+      if (e.key === 'Escape' && selectedElement) {
+        setSelectedElement(null)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [selectedElement, elements])
 
   // Handle request type change
   const handleRequestTypeChange = (newType) => {
