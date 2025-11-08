@@ -507,27 +507,11 @@ function Dashboard() {
             }}>
               <div style={{
                 padding: '20px 24px',
-                borderBottom: `1px solid ${theme.colors.border.light}`,
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                borderBottom: `1px solid ${theme.colors.border.light}`
               }}>
                 <div style={{ fontSize: '14px', color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
                   Recent Uploads
                 </div>
-                <Link
-                  to="/files"
-                  style={{
-                    fontSize: '12px',
-                    color: theme.colors.text.secondary,
-                    textDecoration: 'none',
-                    transition: `color ${theme.transition.fast}`
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
-                  onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.secondary}
-                >
-                  View all →
-                </Link>
               </div>
               <div>
                 {stats.recentUploads.length === 0 ? (
@@ -545,13 +529,8 @@ function Dashboard() {
                       key={file.id}
                       style={{
                         padding: '16px 24px',
-                        borderBottom: index < stats.recentUploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
-                        transition: `background ${theme.transition.fast}`,
-                        cursor: 'pointer'
+                        borderBottom: index < stats.recentUploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
                       }}
-                      onClick={() => navigate('/files')}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
                       <div style={{
                         fontSize: '13px',
