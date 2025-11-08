@@ -57,25 +57,58 @@ function Sidebar() {
   const navSections = [
     {
       items: [
-        { path: '/dashboard', label: 'Dashboard' },
-        { path: '/requests', label: 'Requests' }
+        { path: '/dashboard', label: 'Dashboard', planRequired: null },
+        { path: '/requests', label: 'Requests', planRequired: null }
       ]
     },
     {
       items: [
-        { path: '/files', label: 'Files' },
-        { path: '/notifications', label: 'Notifications' },
-        { path: '/templates', label: 'Templates' }
+        { path: '/files', label: 'Files', planRequired: null },
+        { path: '/notifications', label: 'Notifications', planRequired: null },
+        { path: '/templates', label: 'Templates', planRequired: null }
       ]
     },
     {
       items: [
-        { path: '/plan', label: 'Plan' },
-        { path: '/billing', label: 'Billing' },
-        { path: '/settings', label: 'Settings' }
+        { path: '/support', label: 'Support', planRequired: 'pro' },
+        { path: '/branding', label: 'Branding', planRequired: 'pro' }
+      ]
+    },
+    {
+      items: [
+        { path: '/custom-domain', label: 'Custom Domain', planRequired: 'business' },
+        { path: '/team-access', label: 'Team Access', planRequired: 'business' },
+        { path: '/dropbox-sync', label: 'Dropbox Sync', planRequired: 'business' }
+      ]
+    },
+    {
+      items: [
+        { path: '/plan', label: 'Plan', planRequired: null },
+        { path: '/billing', label: 'Billing', planRequired: null },
+        { path: '/settings', label: 'Settings', planRequired: null }
       ]
     }
   ]
+
+  // Helper to check if user has access to a feature
+  const hasAccess = (requiredPlan) => {
+    if (!requiredPlan) return true // Free features
+    const userPlan = user.plan?.toLowerCase() || 'free'
+    if (requiredPlan === 'pro') {
+      return userPlan === 'pro' || userPlan === 'business'
+    }
+    if (requiredPlan === 'business') {
+      return userPlan === 'business'
+    }
+    return false
+  }
+
+  // Helper to get upgrade plan needed
+  const getUpgradePlan = (requiredPlan) => {
+    if (requiredPlan === 'pro') return 'Pro'
+    if (requiredPlan === 'business') return 'Business'
+    return null
+  }
 
   const topBarStyle = {
     position: 'fixed',
@@ -132,6 +165,53 @@ function Sidebar() {
             <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center' }}>
               {section.items.map((item) => {
                 const isActive = location.pathname === item.path
+                const locked = !hasAccess(item.planRequired)
+                const upgradePlan = locked ? getUpgradePlan(item.planRequired) : null
+
+                if (locked) {
+                  // Render locked item (non-clickable with visual indicator)
+                  return (
+                    <div
+                      key={item.path}
+                      onClick={() => navigate('/plan')}
+                      style={{
+                        ...navLinkStyle(false),
+                        opacity: 0.5,
+                        cursor: 'pointer',
+                        position: 'relative',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '6px'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = theme.colors.bg.hover
+                        e.currentTarget.style.opacity = '0.7'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.opacity = '0.5'
+                      }}
+                      title={`Upgrade to ${upgradePlan} to unlock`}
+                    >
+                      <span>{item.label}</span>
+                      <span style={{
+                        fontSize: '8px',
+                        fontWeight: theme.weight.semibold,
+                        color: theme.colors.text.tertiary,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                        padding: '2px 4px',
+                        background: theme.colors.bg.secondary,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: '2px'
+                      }}>
+                        {upgradePlan}
+                      </span>
+                    </div>
+                  )
+                }
+
+                // Render normal accessible item
                 return (
                   <Link
                     key={item.path}
@@ -268,13 +348,22 @@ function Sidebar() {
               </div>
               <div style={{
                 fontSize: '9px',
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.tertiary,
+                fontWeight: theme.weight.bold,
+                color: user.plan?.toLowerCase() === 'business' ? theme.colors.white :
+                       user.plan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
+                       theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                padding: '2px 6px',
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.medium}`
+                letterSpacing: '0.6px',
+                padding: '3px 8px',
+                background: user.plan?.toLowerCase() === 'business' ? theme.colors.black :
+                           user.plan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
+                           theme.colors.bg.secondary,
+                border: `1px solid ${
+                  user.plan?.toLowerCase() === 'business' ? theme.colors.white :
+                  user.plan?.toLowerCase() === 'pro' ? theme.colors.border.medium :
+                  theme.colors.border.medium
+                }`,
+                borderRadius: '4px'
               }}>
                 {user.plan || 'Free'}
               </div>

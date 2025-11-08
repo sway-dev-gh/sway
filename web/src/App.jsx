@@ -12,6 +12,11 @@ import RequestView from './pages/RequestView'
 import Upload from './pages/Upload'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import Support from './pages/Support'
+import Branding from './pages/Branding'
+import CustomDomain from './pages/CustomDomain'
+import TeamAccess from './pages/TeamAccess'
+import DropboxSync from './pages/DropboxSync'
 import './App.css'
 
 function App() {
@@ -29,6 +34,11 @@ function App() {
         <Route path="/files" element={<Files />} />
         <Route path="/notifications" element={<Notifications />} />
         <Route path="/templates" element={<Templates />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/branding" element={<Branding />} />
+        <Route path="/custom-domain" element={<CustomDomain />} />
+        <Route path="/team-access" element={<TeamAccess />} />
+        <Route path="/dropbox-sync" element={<DropboxSync />} />
         <Route path="/plan" element={<Plan />} />
         <Route path="/billing" element={<Billing />} />
         <Route path="/settings" element={<Settings />} />
