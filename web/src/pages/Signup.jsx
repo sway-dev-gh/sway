@@ -108,13 +108,16 @@ export default function Signup() {
                 fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`
+                transition: `all ${theme.transition.fast}`,
+                boxShadow: theme.shadows.inner
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.text.secondary
+                e.currentTarget.style.boxShadow = theme.shadows.sm
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = theme.shadows.inner
               }}
             />
           </div>
@@ -144,13 +147,16 @@ export default function Signup() {
                 fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`
+                transition: `all ${theme.transition.fast}`,
+                boxShadow: theme.shadows.inner
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.text.secondary
+                e.currentTarget.style.boxShadow = theme.shadows.sm
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = theme.shadows.inner
               }}
             />
           </div>
@@ -181,13 +187,16 @@ export default function Signup() {
                 fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`
+                transition: `all ${theme.transition.fast}`,
+                boxShadow: theme.shadows.inner
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.text.secondary
+                e.currentTarget.style.boxShadow = theme.shadows.sm
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = theme.shadows.inner
               }}
             />
           </div>
@@ -207,16 +216,21 @@ export default function Signup() {
               cursor: loading ? 'not-allowed' : 'pointer',
               transition: `all ${theme.transition.fast}`,
               fontFamily: 'inherit',
-              opacity: loading ? 0.6 : 1
+              opacity: loading ? 0.6 : 1,
+              boxShadow: theme.shadows.sm
             }}
             onMouseEnter={(e) => {
               if (!loading) {
                 e.currentTarget.style.background = theme.colors.text.secondary
+                e.currentTarget.style.transform = 'translateY(-1px)'
+                e.currentTarget.style.boxShadow = theme.shadows.md
               }
             }}
             onMouseLeave={(e) => {
               if (!loading) {
                 e.currentTarget.style.background = theme.colors.white
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = theme.shadows.sm
               }
             }}
           >

@@ -85,6 +85,8 @@ function Sidebar() {
     height: '60px',
     background: theme.colors.bg.sidebar,
     borderBottom: `1px solid ${theme.colors.border.medium}`,
+    boxShadow: theme.shadows.md,
+    backdropFilter: 'blur(20px)',
     zIndex: 100,
     display: 'flex',
     alignItems: 'center',
@@ -101,6 +103,7 @@ function Sidebar() {
     fontSize: theme.fontSize.sm,
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
+    borderRadius: theme.radius.sm,
     transition: `all ${theme.transition.fast}`,
     marginRight: theme.spacing[2]
   })
@@ -183,7 +186,9 @@ function Sidebar() {
             gap: theme.spacing[2],
             padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
             background: 'transparent',
-            border: `1px solid ${theme.colors.border.light}`
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: theme.radius.sm,
+            transition: `all ${theme.transition.fast}`
           }}>
             <div style={{
               fontSize: '16px',
@@ -208,7 +213,9 @@ function Sidebar() {
             gap: theme.spacing[2],
             padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
             background: 'transparent',
-            border: `1px solid ${theme.colors.border.light}`
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: theme.radius.sm,
+            transition: `all ${theme.transition.fast}`
           }}>
             <div style={{
               fontSize: '16px',
@@ -281,6 +288,7 @@ function Sidebar() {
             style={{
               background: 'transparent',
               border: `1px solid ${theme.colors.border.medium}`,
+              borderRadius: theme.radius.sm,
               color: theme.colors.text.secondary,
               cursor: 'pointer',
               padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
