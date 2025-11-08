@@ -71,6 +71,10 @@ function Dashboard() {
           userData.plan = adminPlanOverride
         }
 
+        // Set storage limit based on plan
+        const plan = (userData.plan || 'free').toLowerCase()
+        userData.storage_limit_gb = plan === 'pro' ? 30 : 2
+
         setUser(userData)
       }
 
