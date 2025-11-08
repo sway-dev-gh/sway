@@ -182,7 +182,7 @@ function Sidebar() {
         display: 'flex',
         alignItems: 'center',
         flex: 1,
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-between'
       }}>
           {navSections.map((section, sectionIndex) => (
             <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
