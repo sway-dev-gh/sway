@@ -152,7 +152,7 @@ function Sidebar() {
   const navLinkStyle = (isActive) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: `8px 12px`,
+    padding: `6px 12px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
     fontSize: '14px',
@@ -160,7 +160,8 @@ function Sidebar() {
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.sm,
     transition: `all ${theme.transition.fast}`,
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+    height: '32px'
   })
 
   return (
@@ -257,9 +258,10 @@ function Sidebar() {
               {sectionIndex < navSections.length - 1 && (
                 <div style={{
                   width: '1px',
-                  height: '16px',
+                  height: '20px',
                   background: theme.colors.border.medium,
-                  margin: '0 8px'
+                  margin: '0 12px',
+                  alignSelf: 'center'
                 }} />
               )}
             </div>
