@@ -160,9 +160,11 @@ function Plan() {
           {/* Plans Grid - Modern 2025 Style */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '24px',
-            marginBottom: '80px'
+            marginBottom: '80px',
+            maxWidth: '900px',
+            margin: '0 auto 80px auto'
           }}>
             {plans.map((plan) => (
               <div
@@ -504,7 +506,7 @@ function Plan() {
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
-                  On the Free plan, you can have 1 active request with up to 10 total uploads. You'll need to upgrade to Pro for unlimited uploads.
+                  On the Free plan, you can have up to 20 active requests with 2GB total storage. You'll need to upgrade to Pro for unlimited requests and 100GB storage.
                 </div>
               </div>
 
