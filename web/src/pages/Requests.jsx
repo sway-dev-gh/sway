@@ -511,11 +511,11 @@ function Requests() {
           padding: '60px 40px'
         }}>
 
-          {/* Simple Header with Action */}
+          {/* Header */}
           <div style={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             marginBottom: '40px'
           }}>
             <div>
@@ -527,6 +527,13 @@ function Requests() {
               }}>
                 Requests
               </h1>
+              <p style={{
+                fontSize: '14px',
+                color: theme.colors.text.muted,
+                margin: '8px 0 0 0'
+              }}>
+                Create and manage file upload requests
+              </p>
             </div>
             <button
               onClick={openModal}
@@ -560,25 +567,19 @@ function Requests() {
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '120px 40px',
+                padding: '80px 40px',
                 background: 'rgba(255, 255, 255, 0.02)',
-                borderRadius: '16px',
+                borderRadius: '12px',
                 border: `1px solid ${theme.colors.border.light}`
               }}>
-                <div style={{
-                  fontSize: '16px',
-                  marginBottom: '12px',
-                  color: theme.colors.text.muted
-                }}>
-                  No requests yet
-                </div>
-                <div style={{
+                <p style={{
                   fontSize: '14px',
-                  color: theme.colors.text.tertiary,
-                  lineHeight: '1.5'
+                  color: theme.colors.text.muted,
+                  margin: 0,
+                  lineHeight: '1.6'
                 }}>
-                  Click "+ New Request" to create your first request
-                </div>
+                  No requests yet. Click "+ New Request" to create your first request.
+                </p>
               </div>
             ) : (
               <div style={{
@@ -591,40 +592,38 @@ function Requests() {
                   <div
                     key={req.id}
                     style={{
-                      padding: '20px 24px',
+                      padding: '24px',
                       background: 'rgba(255, 255, 255, 0.02)',
                       borderRadius: '12px',
                       border: `1px solid ${theme.colors.border.light}`,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '20px',
-                      transition: `all ${theme.transition.normal}`
+                      gap: '24px',
+                      transition: `all ${theme.transition.fast}`
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
                       e.currentTarget.style.borderColor = theme.colors.border.medium
-                      e.currentTarget.style.transform = 'translateY(-1px)'
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
                       e.currentTarget.style.borderColor = theme.colors.border.light
-                      e.currentTarget.style.transform = 'translateY(0)'
                     }}
                   >
-                    {/* Icon/Avatar */}
+                    {/* File Count Badge */}
                     <div
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{
-                        width: '56px',
-                        height: '56px',
-                        borderRadius: '12px',
-                        background: 'rgba(255, 255, 255, 0.05)',
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '8px',
+                        background: theme.colors.bg.secondary,
                         border: `1px solid ${theme.colors.border.medium}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '20px',
-                        fontWeight: '400',
+                        fontSize: '18px',
+                        fontWeight: '500',
                         color: theme.colors.text.primary,
                         flexShrink: 0,
                         cursor: 'pointer',
@@ -634,7 +633,7 @@ function Requests() {
                         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                        e.currentTarget.style.background = theme.colors.bg.secondary
                       }}>
                       {req.uploadCount || 0}
                     </div>
@@ -644,9 +643,9 @@ function Requests() {
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
                       <div style={{
-                        fontSize: '16px',
+                        fontSize: '15px',
                         fontWeight: '500',
-                        marginBottom: '6px',
+                        marginBottom: '4px',
                         color: theme.colors.text.primary,
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
@@ -655,26 +654,11 @@ function Requests() {
                         {req.title}
                       </div>
                       <div style={{
-                        fontSize: '14px',
-                        color: theme.colors.text.tertiary,
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        fontSize: '13px',
+                        color: theme.colors.text.tertiary
                       }}>
-                        {req.uploadCount || 0} {req.uploadCount === 1 ? 'file' : 'files'}
+                        {req.uploadCount || 0} {req.uploadCount === 1 ? 'file' : 'files'} • {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                       </div>
-                    </div>
-
-                    {/* Time */}
-                    <div style={{
-                      fontSize: '13px',
-                      color: theme.colors.text.tertiary,
-                      padding: '6px 12px',
-                      background: 'rgba(255, 255, 255, 0.03)',
-                      borderRadius: '6px',
-                      flexShrink: 0
-                    }}>
-                      {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </div>
 
                     {/* Action Buttons */}

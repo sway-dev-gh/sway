@@ -156,28 +156,44 @@ function Dashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '1px',
-            background: theme.colors.border.light,
-            borderRadius: '12px',
-            overflow: 'hidden',
-            marginBottom: '40px',
-            border: `1px solid ${theme.colors.border.light}`
+            gap: '16px',
+            marginBottom: '48px'
           }}>
-            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Requests</div>
-              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{stats.totalRequests}</div>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px 24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Requests</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.totalRequests}</div>
             </div>
-            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Files</div>
-              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{stats.totalUploads}</div>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px 24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Files</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.totalUploads}</div>
             </div>
-            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Storage Used</div>
-              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{(stats.storageUsed / 1024).toFixed(2)} GB</div>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px 24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Storage Used</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{(stats.storageUsed / 1024).toFixed(2)} <span style={{ fontSize: '20px', color: theme.colors.text.secondary }}>GB</span></div>
             </div>
-            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Avg Files/Request</div>
-              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '—'}</div>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px 24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Avg Files/Request</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '—'}</div>
             </div>
           </div>
 
