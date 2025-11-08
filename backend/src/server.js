@@ -14,6 +14,7 @@ const notificationRoutes = require('./routes/notifications')
 const templateRoutes = require('./routes/templates')
 const statsRoutes = require('./routes/stats')
 const stripeRoutes = require('./routes/stripe')
+const pool = require('./db/pool')
 
 const app = express()
 const PORT = process.env.PORT || 5001
@@ -53,6 +54,26 @@ app.use((err, req, res, next) => {
   console.error('Server error:', err)
   res.status(500).json({ error: 'Internal server error' })
 })
+
+// Cleanup job: Deactivate expired requests every hour
+const cleanupExpiredRequests = async () => {
+  try {
+    const result = await pool.query(
+      'UPDATE file_requests SET is_active = false WHERE expires_at < NOW() AND is_active = true RETURNING id'
+    )
+    if (result.rowCount > 0) {
+      console.log(`✓ Deactivated ${result.rowCount} expired request(s)`)
+    }
+  } catch (error) {
+    console.error('Error cleaning up expired requests:', error)
+  }
+}
+
+// Run cleanup every hour
+setInterval(cleanupExpiredRequests, 60 * 60 * 1000)
+
+// Run cleanup on startup
+cleanupExpiredRequests()
 
 // Start server (for Render, Railway, etc.)
 app.listen(PORT, () => {

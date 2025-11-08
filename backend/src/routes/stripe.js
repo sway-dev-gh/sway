@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { authenticateToken } = require('../middleware/auth')
 const pool = require('../db/pool')
+const { createNotification } = require('./notifications')
 
 // Lazy-load Stripe only when needed
 let stripe = null
@@ -99,12 +100,28 @@ router.post('/webhook', async (req, res) => {
           [planId, session.customer, session.subscription, storageLimit, userId]
         )
 
+        // Create notification for successful upgrade
+        const planName = planId.charAt(0).toUpperCase() + planId.slice(1)
+        await createNotification(
+          userId,
+          'plan_upgrade',
+          'Plan Upgraded Successfully',
+          `Your plan has been upgraded to ${planName}. You now have ${storageLimit} GB of storage and access to all ${planName} features.`,
+          { planId, storageLimit }
+        )
+
         console.log(`User ${userId} upgraded to ${planId}`)
         break
       }
 
       case 'customer.subscription.deleted': {
         const subscription = event.data.object
+
+        // Get user ID before downgrading
+        const userResult = await pool.query(
+          'SELECT id FROM users WHERE stripe_subscription_id = $1',
+          [subscription.id]
+        )
 
         // Downgrade user to free plan when subscription is cancelled
         await pool.query(
@@ -116,14 +133,44 @@ router.post('/webhook', async (req, res) => {
           [subscription.id]
         )
 
+        // Create notification for downgrade
+        if (userResult.rows.length > 0) {
+          await createNotification(
+            userResult.rows[0].id,
+            'plan_downgrade',
+            'Subscription Cancelled',
+            `Your subscription has been cancelled and you've been downgraded to the Free plan. You now have 1 GB of storage.`,
+            { planId: 'free', storageLimit: 1 }
+          )
+        }
+
         console.log(`Subscription ${subscription.id} cancelled, user downgraded to free`)
         break
       }
 
       case 'invoice.payment_failed': {
         const invoice = event.data.object
+
+        // Get user by Stripe customer ID
+        const userResult = await pool.query(
+          'SELECT id FROM users WHERE stripe_customer_id = $1',
+          [invoice.customer]
+        )
+
+        if (userResult.rows.length > 0) {
+          const userId = userResult.rows[0].id
+
+          // Create notification for payment failure
+          await createNotification(
+            userId,
+            'payment_failed',
+            'Payment Failed',
+            `Your recent payment failed. Please update your payment method to avoid service interruption. You can manage your subscription in the Billing page.`,
+            { invoiceId: invoice.id, amount: invoice.amount_due }
+          )
+        }
+
         console.log(`Payment failed for customer ${invoice.customer}`)
-        // You could send an email notification here
         break
       }
 

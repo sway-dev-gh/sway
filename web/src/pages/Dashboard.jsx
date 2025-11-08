@@ -15,8 +15,42 @@ function Dashboard() {
   })
 
   useEffect(() => {
+    // Check if returning from Stripe checkout
+    const urlParams = new URLSearchParams(window.location.search)
+    const sessionId = urlParams.get('session_id')
+
+    if (sessionId) {
+      // Clear the session_id from URL
+      window.history.replaceState({}, document.title, window.location.pathname)
+
+      // Fetch updated user data after successful payment
+      fetchUpdatedUserData()
+    }
+
     fetchDashboardData()
   }, [])
+
+  const fetchUpdatedUserData = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const API_URL = import.meta.env.VITE_API_URL || 'https://api.swayfiles.com'
+
+      const { data } = await api.get(`${API_URL}/api/stripe/plan-info`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      // Update localStorage with new plan info
+      const userStr = localStorage.getItem('user')
+      if (userStr) {
+        const user = JSON.parse(userStr)
+        user.plan = data.plan
+        user.storage_limit_gb = data.storage_limit_gb
+        localStorage.setItem('user', JSON.stringify(user))
+      }
+    } catch (error) {
+      console.error('Failed to fetch updated user data:', error)
+    }
+  }
 
   const fetchDashboardData = async () => {
     try {

@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
+const fs = require('fs')
+const path = require('path')
 
 // Helper to generate short code
 function generateShortCode() {
@@ -26,26 +28,53 @@ router.post('/', authenticateToken, async (req, res) => {
     const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
     const userPlan = userResult.rows[0]?.plan || 'free'
 
-    // Enforce active request limits by plan
-    const requestLimits = {
+    // Enforce TOTAL request limits by plan (not just active)
+    const totalRequestLimits = {
+      free: 10,      // 10 total requests ever
+      pro: 50,       // 50 total requests
+      business: null // unlimited
+    }
+
+    // Enforce ACTIVE request limits by plan
+    const activeRequestLimits = {
       free: 3,
       pro: 10,
       business: null // unlimited
     }
 
-    const limit = requestLimits[userPlan]
+    const totalLimit = totalRequestLimits[userPlan]
+    const activeLimit = activeRequestLimits[userPlan]
 
-    if (limit !== null) {
+    // Check total request limit
+    if (totalLimit !== null) {
+      const totalRequestsResult = await pool.query(
+        'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1',
+        [req.userId]
+      )
+      const totalCount = parseInt(totalRequestsResult.rows[0].count)
+
+      if (totalCount >= totalLimit) {
+        const upgradePlan = userPlan === 'free' ? 'Pro' : 'Business'
+        return res.status(403).json({
+          error: `Total request limit reached. ${userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} plan allows ${totalLimit} total requests. Upgrade to ${upgradePlan} for more requests.`,
+          limitReached: true,
+          currentPlan: userPlan
+        })
+      }
+    }
+
+    // Check active request limit
+    if (activeLimit !== null) {
       const activeRequestsResult = await pool.query(
         'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
         [req.userId]
       )
       const activeCount = parseInt(activeRequestsResult.rows[0].count)
 
-      if (activeCount >= limit) {
+      if (activeCount >= activeLimit) {
         const upgradePlan = userPlan === 'free' ? 'Pro' : 'Business'
         return res.status(403).json({
-          error: `Request limit reached. ${userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} plan allows ${limit} active requests. Upgrade to ${upgradePlan} for ${userPlan === 'free' ? '10 requests' : 'unlimited requests'}.`,
+          error: `Active request limit reached. ${userPlan.charAt(0).toUpperCase() + userPlan.slice(1)} plan allows ${activeLimit} active requests. Upgrade to ${upgradePlan} for ${userPlan === 'free' ? '10 active requests' : 'unlimited requests'}.`,
           limitReached: true,
           currentPlan: userPlan
         })
@@ -198,6 +227,15 @@ router.get('/:id', authenticateToken, async (req, res) => {
 // DELETE /api/requests/:id - Delete request
 router.delete('/:id', authenticateToken, async (req, res) => {
   try {
+    // First, get all file paths for this request before deleting
+    const uploadsResult = await pool.query(
+      `SELECT u.storage_path
+       FROM uploads u
+       WHERE u.request_id = $1`,
+      [req.params.id]
+    )
+
+    // Delete the request (CASCADE will delete uploads from DB)
     const result = await pool.query(
       'DELETE FROM file_requests WHERE id = $1 AND user_id = $2 RETURNING id',
       [req.params.id, req.userId]
@@ -205,6 +243,20 @@ router.delete('/:id', authenticateToken, async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Request not found' })
+    }
+
+    // Delete physical files from disk
+    const uploadsDir = path.join(__dirname, '../uploads')
+    for (const upload of uploadsResult.rows) {
+      const filePath = path.join(uploadsDir, upload.storage_path)
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath)
+        }
+      } catch (fileError) {
+        console.error(`Failed to delete file ${upload.storage_path}:`, fileError)
+        // Continue deleting other files even if one fails
+      }
     }
 
     res.json({ success: true })
@@ -221,6 +273,37 @@ router.patch('/:id/toggle-active', authenticateToken, async (req, res) => {
 
     if (typeof isActive !== 'boolean') {
       return res.status(400).json({ error: 'isActive must be a boolean' })
+    }
+
+    // If trying to activate, check active request limits
+    if (isActive === true) {
+      const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [req.userId])
+      const userPlan = userResult.rows[0]?.plan || 'free'
+
+      const activeRequestLimits = {
+        free: 3,
+        pro: 10,
+        business: null
+      }
+
+      const activeLimit = activeRequestLimits[userPlan]
+
+      if (activeLimit !== null) {
+        const activeRequestsResult = await pool.query(
+          'SELECT COUNT(*) as count FROM file_requests WHERE user_id = $1 AND is_active = true',
+          [req.userId]
+        )
+        const activeCount = parseInt(activeRequestsResult.rows[0].count)
+
+        if (activeCount >= activeLimit) {
+          const upgradePlan = userPlan === 'free' ? 'Pro' : 'Business'
+          return res.status(403).json({
+            error: `Cannot activate request. Active request limit reached (${activeCount}/${activeLimit}). Upgrade to ${upgradePlan} for more active requests.`,
+            limitReached: true,
+            currentPlan: userPlan
+          })
+        }
+      }
     }
 
     const result = await pool.query(

@@ -3,9 +3,28 @@ const router = express.Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const pool = require('../db/pool')
+const rateLimit = require('express-rate-limit')
+
+// Rate limiter for signup - strict to prevent multi-account abuse
+const signupLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 3, // 3 signups per hour per IP
+  message: { error: 'Too many accounts created from this IP. Please try again in an hour.' },
+  standardHeaders: true,
+  legacyHeaders: false
+})
+
+// Rate limiter for login - less strict
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // 10 login attempts per 15 minutes per IP
+  message: { error: 'Too many login attempts. Please try again in 15 minutes.' },
+  standardHeaders: true,
+  legacyHeaders: false
+})
 
 // POST /api/auth/signup
-router.post('/signup', async (req, res) => {
+router.post('/signup', signupLimiter, async (req, res) => {
   try {
     const { name, email, password } = req.body
 
@@ -53,7 +72,7 @@ router.post('/signup', async (req, res) => {
 })
 
 // POST /api/auth/login
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   try {
     const { email, password } = req.body
 
