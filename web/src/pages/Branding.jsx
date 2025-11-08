@@ -402,27 +402,90 @@ function Branding() {
     e.stopPropagation()
   }
 
-  // Mouse move - update element position
-  const handleMouseMove = (e) => {
-    if (!dragging || !canvasRef.current) return
+  // Mouse down on resize handle - start resize
+  const handleResizeMouseDown = (e, elementId, handle) => {
+    if (!canvasRef.current) return
+    e.stopPropagation()
 
-    const rect = canvasRef.current.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100 - dragOffset.x
-    const y = ((e.clientY - rect.top) / rect.height) * 100 - dragOffset.y
+    const element = elements.find(el => el.id === elementId)
+    if (!element) return
 
-    updateElement(dragging, {
-      x: Math.max(0, Math.min(100, x)),
-      y: Math.max(0, Math.min(100, y))
-    })
+    setResizing({ elementId, handle, initialElement: { ...element } })
+    setSelectedElement(elementId)
   }
 
-  // Mouse up - stop drag
+  // Mouse move - update element position or size
+  const handleMouseMove = (e) => {
+    if (!canvasRef.current) return
+    if (!dragging && !resizing) return
+
+    const rect = canvasRef.current.getBoundingClientRect()
+
+    // Handle resize
+    if (resizing) {
+      const { elementId, handle, initialElement } = resizing
+      const element = elements.find(el => el.id === elementId)
+      if (!element) return
+
+      const canvasWidth = rect.width
+      const canvasHeight = rect.height
+
+      const currentMouseX = e.clientX - rect.left
+      const currentMouseY = e.clientY - rect.top
+
+      const initialWidth = initialElement.width || 200
+      const initialHeight = initialElement.height || 200
+      const centerX = (initialElement.x / 100) * canvasWidth
+      const centerY = (initialElement.y / 100) * canvasHeight
+
+      let newWidth = initialWidth
+      let newHeight = initialHeight
+
+      // Calculate new dimensions based on handle
+      if (handle.includes('e')) {
+        const dx = currentMouseX - centerX
+        newWidth = Math.max(20, dx * 2)
+      }
+      if (handle.includes('w')) {
+        const dx = centerX - currentMouseX
+        newWidth = Math.max(20, dx * 2)
+      }
+      if (handle.includes('s')) {
+        const dy = currentMouseY - centerY
+        newHeight = Math.max(20, dy * 2)
+      }
+      if (handle.includes('n')) {
+        const dy = centerY - currentMouseY
+        newHeight = Math.max(20, dy * 2)
+      }
+
+      updateElement(elementId, {
+        width: Math.round(newWidth),
+        height: Math.round(newHeight)
+      })
+      return
+    }
+
+    // Handle drag
+    if (dragging) {
+      const x = ((e.clientX - rect.left) / rect.width) * 100 - dragOffset.x
+      const y = ((e.clientY - rect.top) / rect.height) * 100 - dragOffset.y
+
+      updateElement(dragging, {
+        x: Math.max(0, Math.min(100, x)),
+        y: Math.max(0, Math.min(100, y))
+      })
+    }
+  }
+
+  // Mouse up - stop drag or resize
   const handleMouseUp = () => {
     setDragging(null)
+    setResizing(null)
   }
 
   useEffect(() => {
-    if (dragging) {
+    if (dragging || resizing) {
       window.addEventListener('mousemove', handleMouseMove)
       window.addEventListener('mouseup', handleMouseUp)
       return () => {
@@ -430,7 +493,7 @@ function Branding() {
         window.removeEventListener('mouseup', handleMouseUp)
       }
     }
-  }, [dragging, dragOffset])
+  }, [dragging, resizing, dragOffset])
 
   const selectedEl = elements.find(el => el.id === selectedElement)
 
@@ -1441,58 +1504,112 @@ function Branding() {
 
                   if (el.type === 'shape') {
                     return (
-                      <div
-                        key={el.id}
-                        onMouseDown={(e) => handleMouseDown(e, el.id)}
-                        style={{
-                          position: 'absolute',
-                          left: `${el.x}%`,
-                          top: `${el.y}%`,
-                          transform: 'translate(-50%, -50%)',
-                          width: `${el.width}px`,
-                          height: `${el.height}px`,
-                          background: el.backgroundColor,
-                          borderRadius: `${el.borderRadius}px`,
-                          opacity: el.opacity ?? 1,
-                          cursor: dragging === el.id ? 'grabbing' : 'grab',
-                          border: isSelected ? '3px solid rgba(0, 123, 255, 0.8)' : 'none',
-                          outline: isSelected ? '2px solid rgba(0, 123, 255, 0.3)' : 'none',
-                          outlineOffset: '2px'
-                        }}
-                      />
+                      <div key={el.id} style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, transform: 'translate(-50%, -50%)' }}>
+                        <div
+                          onMouseDown={(e) => handleMouseDown(e, el.id)}
+                          style={{
+                            width: `${el.width}px`,
+                            height: `${el.height}px`,
+                            background: el.backgroundColor,
+                            borderRadius: `${el.borderRadius}px`,
+                            opacity: el.opacity ?? 1,
+                            cursor: dragging === el.id ? 'grabbing' : 'grab',
+                            border: isSelected ? '3px solid rgba(0, 123, 255, 0.8)' : 'none',
+                            outline: isSelected ? '2px solid rgba(0, 123, 255, 0.3)' : 'none',
+                            outlineOffset: '2px',
+                            position: 'relative'
+                          }}
+                        >
+                          {isSelected && (
+                            <>
+                              {/* Resize handles */}
+                              {['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].map(handle => (
+                                <div
+                                  key={handle}
+                                  onMouseDown={(e) => handleResizeMouseDown(e, el.id, handle)}
+                                  style={{
+                                    position: 'absolute',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'white',
+                                    border: '2px solid rgba(0, 123, 255, 0.8)',
+                                    borderRadius: '50%',
+                                    cursor: `${handle}-resize`,
+                                    ...(handle === 'nw' && { top: '-6px', left: '-6px' }),
+                                    ...(handle === 'n' && { top: '-6px', left: '50%', transform: 'translateX(-50%)' }),
+                                    ...(handle === 'ne' && { top: '-6px', right: '-6px' }),
+                                    ...(handle === 'e' && { top: '50%', right: '-6px', transform: 'translateY(-50%)' }),
+                                    ...(handle === 'se' && { bottom: '-6px', right: '-6px' }),
+                                    ...(handle === 's' && { bottom: '-6px', left: '50%', transform: 'translateX(-50%)' }),
+                                    ...(handle === 'sw' && { bottom: '-6px', left: '-6px' }),
+                                    ...(handle === 'w' && { top: '50%', left: '-6px', transform: 'translateY(-50%)' })
+                                  }}
+                                />
+                              ))}
+                            </>
+                          )}
+                        </div>
+                      </div>
                     )
                   }
 
                   if (el.type === 'image') {
                     return (
-                      <div
-                        key={el.id}
-                        onMouseDown={(e) => handleMouseDown(e, el.id)}
-                        style={{
-                          position: 'absolute',
-                          left: `${el.x}%`,
-                          top: `${el.y}%`,
-                          transform: 'translate(-50%, -50%)',
-                          width: `${el.width}px`,
-                          height: `${el.height}px`,
-                          borderRadius: `${el.borderRadius}px`,
-                          opacity: el.opacity ?? 1,
-                          cursor: dragging === el.id ? 'grabbing' : 'grab',
-                          border: isSelected ? '3px solid rgba(0, 123, 255, 0.8)' : 'none',
-                          outline: isSelected ? '2px solid rgba(0, 123, 255, 0.3)' : 'none',
-                          outlineOffset: '2px',
-                          overflow: 'hidden',
-                          background: el.url ? 'none' : 'rgba(200, 200, 200, 0.3)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                      >
-                        {el.url ? (
-                          <img src={el.url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                        ) : (
-                          <span style={{ fontSize: '11px', color: '#999', userSelect: 'none' }}>Image</span>
-                        )}
+                      <div key={el.id} style={{ position: 'absolute', left: `${el.x}%`, top: `${el.y}%`, transform: 'translate(-50%, -50%)' }}>
+                        <div
+                          onMouseDown={(e) => handleMouseDown(e, el.id)}
+                          style={{
+                            width: `${el.width}px`,
+                            height: `${el.height}px`,
+                            borderRadius: `${el.borderRadius}px`,
+                            opacity: el.opacity ?? 1,
+                            cursor: dragging === el.id ? 'grabbing' : 'grab',
+                            border: isSelected ? '3px solid rgba(0, 123, 255, 0.8)' : 'none',
+                            outline: isSelected ? '2px solid rgba(0, 123, 255, 0.3)' : 'none',
+                            outlineOffset: '2px',
+                            overflow: 'hidden',
+                            background: el.url ? 'none' : 'rgba(200, 200, 200, 0.3)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            position: 'relative'
+                          }}
+                        >
+                          {el.url ? (
+                            <img src={el.url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : (
+                            <span style={{ fontSize: '11px', color: '#999', userSelect: 'none' }}>Image</span>
+                          )}
+                          {isSelected && (
+                            <>
+                              {/* Resize handles */}
+                              {['nw', 'n', 'ne', 'e', 'se', 's', 'sw', 'w'].map(handle => (
+                                <div
+                                  key={handle}
+                                  onMouseDown={(e) => handleResizeMouseDown(e, el.id, handle)}
+                                  style={{
+                                    position: 'absolute',
+                                    width: '8px',
+                                    height: '8px',
+                                    background: 'white',
+                                    border: '2px solid rgba(0, 123, 255, 0.8)',
+                                    borderRadius: '50%',
+                                    cursor: `${handle}-resize`,
+                                    zIndex: 10,
+                                    ...(handle === 'nw' && { top: '-6px', left: '-6px' }),
+                                    ...(handle === 'n' && { top: '-6px', left: '50%', transform: 'translateX(-50%)' }),
+                                    ...(handle === 'ne' && { top: '-6px', right: '-6px' }),
+                                    ...(handle === 'e' && { top: '50%', right: '-6px', transform: 'translateY(-50%)' }),
+                                    ...(handle === 'se' && { bottom: '-6px', right: '-6px' }),
+                                    ...(handle === 's' && { bottom: '-6px', left: '50%', transform: 'translateX(-50%)' }),
+                                    ...(handle === 'sw' && { bottom: '-6px', left: '-6px' }),
+                                    ...(handle === 'w' && { top: '50%', left: '-6px', transform: 'translateY(-50%)' })
+                                  }}
+                                />
+                              ))}
+                            </>
+                          )}
+                        </div>
                       </div>
                     )
                   }
