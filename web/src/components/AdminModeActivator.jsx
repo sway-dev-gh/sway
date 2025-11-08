@@ -6,18 +6,31 @@ function AdminModeActivator({ onActivate }) {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [timeLeft, setTimeLeft] = useState(15)
-  const keySequence = useRef([])
+  const [isAdminMode, setIsAdminMode] = useState(false)
+  const lastShiftTime = useRef(0)
   const timerRef = useRef(null)
 
-  // Secret key sequence: Shift+Tab (pressed together)
+  // Secret key sequence: Double Shift tap
   const ADMIN_PASSWORD = '1TcY38sGrA1;'
+
+  // Check if already in admin mode on mount
+  useEffect(() => {
+    const adminKey = localStorage.getItem('adminKey')
+    setIsAdminMode(!!adminKey)
+  }, [])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Check if Shift+Tab is pressed
-      if (e.shiftKey && e.key === 'Tab') {
-        e.preventDefault() // Prevent default tab behavior
-        openAdminModal()
+      // Check for double Shift tap (within 500ms)
+      if (e.key === 'Shift') {
+        const now = Date.now()
+        if (now - lastShiftTime.current < 500) {
+          // Double tap detected!
+          openAdminModal()
+          lastShiftTime.current = 0 // Reset
+        } else {
+          lastShiftTime.current = now
+        }
       }
     }
 
@@ -64,13 +77,28 @@ function AdminModeActivator({ onActivate }) {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (password === ADMIN_PASSWORD) {
-      localStorage.setItem('adminKey', ADMIN_PASSWORD)
-      closeModal()
-      onActivate()
+    if (isAdminMode) {
+      // Exiting admin mode - verify password
+      if (password === ADMIN_PASSWORD) {
+        localStorage.removeItem('adminKey')
+        setIsAdminMode(false)
+        closeModal()
+        window.location.reload() // Refresh to apply changes
+      } else {
+        setError('Incorrect password')
+        setPassword('')
+      }
     } else {
-      setError('Incorrect password')
-      setPassword('')
+      // Entering admin mode - verify password
+      if (password === ADMIN_PASSWORD) {
+        localStorage.setItem('adminKey', ADMIN_PASSWORD)
+        setIsAdminMode(true)
+        closeModal()
+        onActivate()
+      } else {
+        setError('Incorrect password')
+        setPassword('')
+      }
     }
   }
 
@@ -138,7 +166,7 @@ function AdminModeActivator({ onActivate }) {
           textAlign: 'center',
           margin: '0 0 12px 0'
         }}>
-          ADMIN MODE
+          {isAdminMode ? 'EXIT ADMIN MODE' : 'ADMIN MODE'}
         </h2>
 
         {/* Subtitle */}
@@ -148,7 +176,9 @@ function AdminModeActivator({ onActivate }) {
           textAlign: 'center',
           margin: '0 0 32px 0'
         }}>
-          You are about to enter admin mode
+          {isAdminMode
+            ? 'Currently in admin mode. Enter password to exit.'
+            : 'You are about to enter admin mode'}
         </p>
 
         {/* Timer */}
@@ -256,10 +286,10 @@ function AdminModeActivator({ onActivate }) {
               style={{
                 flex: 1,
                 padding: '12px',
-                background: theme.colors.white,
+                background: isAdminMode ? '#ff4444' : theme.colors.white,
                 border: 'none',
                 borderRadius: '8px',
-                color: theme.colors.black,
+                color: isAdminMode ? theme.colors.white : theme.colors.black,
                 fontSize: '14px',
                 fontWeight: theme.weight.semibold,
                 cursor: 'pointer',
@@ -272,7 +302,7 @@ function AdminModeActivator({ onActivate }) {
                 e.currentTarget.style.transform = 'scale(1)'
               }}
             >
-              Activate Admin Mode
+              {isAdminMode ? 'Exit Admin Mode' : 'Activate Admin Mode'}
             </button>
           </div>
         </form>
