@@ -124,10 +124,7 @@ function Branding() {
     }
   }, [allDesigns, selectedRequestType, backgroundColor, elements, removeBranding, logoUrl])
 
-  const fetchBrandingSettings = useCallback(async (retryCount = 0) => {
-    const maxRetries = 1
-    const retryDelay = 1000 // Just 1 second retry
-
+  const fetchBrandingSettings = useCallback(async () => {
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -139,7 +136,7 @@ function Branding() {
 
       const { data } = await api.get('/api/branding/settings', {
         headers: { Authorization: `Bearer ${token}` },
-        timeout: 10000 // 10 second timeout
+        timeout: 5000 // 5 second timeout
       })
 
       if (data.settings) {
@@ -162,42 +159,19 @@ function Branding() {
       }
       // Clear any previous error messages on successful load
       setErrorMessage('')
+      setInitialLoad(false)
     } catch (error) {
       console.error('Error fetching branding settings:', error)
-      console.error('Error response:', error.response)
 
       // Handle specific error cases
       if (error.response?.status === 401) {
         setErrorMessage('Session expired. Please log in again.')
-        setInitialLoad(false)
-        return
       } else if (error.response?.status === 403) {
         setErrorMessage('Pro or Business plan required for custom branding')
-        setInitialLoad(false)
-        return
-      }
-
-      // Retry on network errors or 5xx server errors
-      const isNetworkError = !error.response || error.code === 'ECONNABORTED' || error.message === 'Network Error'
-      const isServerError = error.response?.status >= 500
-
-      if ((isNetworkError || isServerError) && retryCount < maxRetries) {
-        console.log(`Retrying fetch (attempt ${retryCount + 1}/${maxRetries}) in ${retryDelay}ms...`)
-        setErrorMessage(`Retrying...`)
-
-        setTimeout(() => {
-          fetchBrandingSettings(retryCount + 1)
-        }, retryDelay)
       } else {
-        // Final error after all retries
         setErrorMessage(`Failed to load branding settings: ${error.response?.data?.error || error.message}`)
-        setInitialLoad(false)
       }
-    } finally {
-      // Only set initialLoad to false on final attempt or success
-      if (retryCount >= maxRetries) {
-        setInitialLoad(false)
-      }
+      setInitialLoad(false)
     }
   }, [selectedRequestType, loadRequestTypeDesign])
 
