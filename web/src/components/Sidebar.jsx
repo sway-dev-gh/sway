@@ -87,8 +87,7 @@ function Sidebar() {
     {
       items: [
         { path: '/files', label: 'Files', planRequired: null },
-        { path: '/notifications', label: 'Notifs', planRequired: null },
-        { path: '/templates', label: 'Templates', planRequired: null }
+        { path: '/notifications', label: 'Notifs', planRequired: null }
       ]
     },
     {
