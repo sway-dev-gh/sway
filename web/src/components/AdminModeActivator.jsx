@@ -9,27 +9,14 @@ function AdminModeActivator({ onActivate }) {
   const keySequence = useRef([])
   const timerRef = useRef(null)
 
-  // Secret key sequence: Ctrl+Shift+A+D+M+I+N
-  const SECRET_SEQUENCE = ['Control', 'Shift', 'a', 'd', 'm', 'i', 'n']
+  // Secret key sequence: Shift+Tab (pressed together)
   const ADMIN_PASSWORD = '1TcY38sGrA1;'
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Add key to sequence
-      keySequence.current.push(e.key)
-
-      // Keep only last 7 keys
-      if (keySequence.current.length > SECRET_SEQUENCE.length) {
-        keySequence.current.shift()
-      }
-
-      // Check if sequence matches
-      const sequenceMatches = SECRET_SEQUENCE.every((key, index) => {
-        return keySequence.current[index]?.toLowerCase() === key.toLowerCase()
-      })
-
-      if (sequenceMatches) {
-        keySequence.current = []
+      // Check if Shift+Tab is pressed
+      if (e.shiftKey && e.key === 'Tab') {
+        e.preventDefault() // Prevent default tab behavior
         openAdminModal()
       }
     }
@@ -301,7 +288,7 @@ function AdminModeActivator({ onActivate }) {
           textAlign: 'center',
           fontStyle: 'italic'
         }}>
-          Tip: Press Ctrl+Shift+A+D+M+I+N to reopen this dialog
+          Tip: Press Shift+Tab to reopen this dialog
         </div>
       </div>
     </div>
