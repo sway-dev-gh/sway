@@ -134,6 +134,21 @@ function Branding() {
         return
       }
 
+      // Check if user has access (Pro/Business or Admin)
+      const userStr = localStorage.getItem('user')
+      const adminKey = localStorage.getItem('adminKey')
+      const isAdmin = !!adminKey
+
+      if (!isAdmin && userStr) {
+        const user = JSON.parse(userStr)
+        const userPlan = user.plan?.toLowerCase() || 'free'
+        if (userPlan !== 'pro' && userPlan !== 'business') {
+          // Redirect to plan page
+          navigate('/plan')
+          return
+        }
+      }
+
       const { data } = await api.get('/api/branding/settings', {
         headers: { Authorization: `Bearer ${token}` },
         timeout: 5000 // 5 second timeout
@@ -167,13 +182,15 @@ function Branding() {
       if (error.response?.status === 401) {
         setErrorMessage('Session expired. Please log in again.')
       } else if (error.response?.status === 403) {
-        setErrorMessage('Pro or Business plan required for custom branding')
+        // Redirect to plan page
+        navigate('/plan')
+        return
       } else {
         setErrorMessage(`Failed to load branding settings: ${error.response?.data?.error || error.message}`)
       }
       setInitialLoad(false)
     }
-  }, [selectedRequestType, loadRequestTypeDesign])
+  }, [selectedRequestType, loadRequestTypeDesign, navigate])
 
   // When request type changes, load that type's design
   useEffect(() => {
