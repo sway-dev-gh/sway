@@ -49,8 +49,3 @@ END $$;
 
 -- Create index if it doesn't exist
 CREATE INDEX IF NOT EXISTS idx_branding_user_id ON branding_settings(user_id);
-
--- Add comments
-COMMENT ON TABLE branding_settings IS 'Custom branding settings for user upload pages';
-COMMENT ON COLUMN branding_settings.show_watermark IS 'Whether to show "Powered by Sway" watermark';
-COMMENT ON COLUMN branding_settings.custom_message IS 'Custom welcome message for upload pages';
