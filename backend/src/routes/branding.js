@@ -9,7 +9,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
     const userId = req.userId
 
     const result = await pool.query(
-      `SELECT id, user_id, remove_branding, logo_url, primary_color, created_at, updated_at
+      `SELECT id, user_id, remove_branding, logo_url, primary_color, request_type_designs, created_at, updated_at
        FROM branding_settings
        WHERE user_id = $1`,
       [userId]
@@ -21,7 +21,8 @@ router.get('/settings', authenticateToken, async (req, res) => {
         settings: {
           remove_branding: false,
           logo_url: null,
-          primary_color: '#000000'
+          primary_color: '#000000',
+          request_type_designs: null
         }
       })
     }
@@ -36,7 +37,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
 // Save or update branding settings
 router.post('/settings', authenticateToken, async (req, res) => {
   try {
-    const { remove_branding, logo_url, primary_color } = req.body
+    const { remove_branding, logo_url, primary_color, request_type_designs } = req.body
     const userId = req.userId
 
     // Check user's plan (Pro or Business required) - bypass for admins
@@ -54,20 +55,22 @@ router.post('/settings', authenticateToken, async (req, res) => {
 
     // Upsert branding settings
     const result = await pool.query(
-      `INSERT INTO branding_settings (user_id, remove_branding, logo_url, primary_color)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO branding_settings (user_id, remove_branding, logo_url, primary_color, request_type_designs)
+       VALUES ($1, $2, $3, $4, $5)
        ON CONFLICT (user_id)
        DO UPDATE SET
          remove_branding = EXCLUDED.remove_branding,
          logo_url = EXCLUDED.logo_url,
          primary_color = EXCLUDED.primary_color,
+         request_type_designs = EXCLUDED.request_type_designs,
          updated_at = NOW()
-       RETURNING id, user_id, remove_branding, logo_url, primary_color, created_at, updated_at`,
+       RETURNING id, user_id, remove_branding, logo_url, primary_color, request_type_designs, created_at, updated_at`,
       [
         userId,
         remove_branding !== undefined ? remove_branding : false,
         logo_url || null,
-        primary_color || '#000000'
+        primary_color || '#000000',
+        request_type_designs || null
       ]
     )
 
