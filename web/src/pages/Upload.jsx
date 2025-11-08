@@ -432,167 +432,137 @@ export default function Upload() {
     <div style={{
       minHeight: '100vh',
       background: theme.colors.bg.page,
-      display: 'flex',
-      flexDirection: 'column'
+      padding: '0'
     }}>
-      {/* Top Bar - Minimal and Modern */}
+      {/* Top Bar */}
       <div style={{
-        borderBottom: `1px solid ${theme.colors.border.light}`,
-        padding: '24px 48px',
+        borderBottom: `1px solid ${theme.colors.border.medium}`,
+        padding: '20px 40px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'center',
-        backdropFilter: 'blur(10px)',
-        position: 'sticky',
-        top: 0,
-        zIndex: 10,
-        background: 'rgba(0, 0, 0, 0.6)'
+        alignItems: 'center'
       }}>
         <div style={{
-          fontSize: '15px',
-          fontWeight: '500',
+          fontSize: '16px',
+          fontWeight: '400',
           color: theme.colors.text.primary,
-          letterSpacing: '0.5px'
+          letterSpacing: '0.02em'
         }}>
           SWAY
         </div>
         {timeRemaining && (
           <div style={{
-            fontSize: '12px',
-            color: timeRemaining === 'Expired' ? '#ef4444' : theme.colors.text.tertiary,
-            padding: '6px 12px',
-            background: theme.colors.bg.secondary,
-            borderRadius: '20px',
-            border: `1px solid ${theme.colors.border.light}`
+            fontSize: '13px',
+            color: timeRemaining === 'Expired' ? '#ef4444' : theme.colors.text.secondary
           }}>
             {timeRemaining}
           </div>
         )}
       </div>
 
-      {/* Main Content - Card-based Modern Layout */}
+      {/* Main Content */}
       <div style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '48px 24px'
+        maxWidth: '720px',
+        margin: '0 auto',
+        padding: '80px 40px'
       }}>
+        {/* Header */}
         <div style={{
-          width: '100%',
-          maxWidth: '580px'
+          marginBottom: '64px'
         }}>
-          {/* Header - More Visual Hierarchy */}
-          <div style={{
-            marginBottom: '48px',
-            textAlign: 'left'
+          <h1 style={{
+            fontSize: '40px',
+            fontWeight: '300',
+            margin: '0 0 16px 0',
+            color: theme.colors.white,
+            letterSpacing: '-0.02em',
+            lineHeight: '1.1'
           }}>
-            <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 16px 0',
-              color: theme.colors.white,
-              letterSpacing: '-0.03em',
-              lineHeight: '1.1',
-              background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+            {requestData.title}
+          </h1>
+          {requestData.description && (
+            <p style={{
+              fontSize: '16px',
+              color: theme.colors.text.secondary,
+              margin: 0,
+              lineHeight: '1.6',
+              maxWidth: '560px'
             }}>
-              {requestData.title}
-            </h1>
-            {requestData.description && (
-              <p style={{
-                fontSize: '15px',
-                color: theme.colors.text.secondary,
-                margin: 0,
-                lineHeight: '1.7',
-                fontWeight: '400'
-              }}>
-                {requestData.description}
-              </p>
-            )}
-          </div>
+              {requestData.description}
+            </p>
+          )}
+        </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
           {/* Basic Fields */}
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '32px' }}>
             <label style={{
               display: 'block',
-              fontSize: '12px',
-              color: theme.colors.text.tertiary,
-              marginBottom: '10px',
-              fontWeight: '500',
-              letterSpacing: '0.5px',
-              textTransform: 'uppercase'
+              fontSize: '13px',
+              color: theme.colors.text.secondary,
+              marginBottom: '8px',
+              fontWeight: theme.weight.medium
             }}>
-              Your Name
+              Name
             </label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
-              placeholder="Enter your full name"
               style={{
                 width: '100%',
-                padding: '14px 18px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px',
+                padding: '12px 16px',
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md,
                 color: theme.colors.text.primary,
-                fontSize: '15px',
+                fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.normal}`
+                transition: `all ${theme.transition.fast}`
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.borderColor = theme.colors.text.secondary
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.light
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                e.currentTarget.style.borderColor = theme.colors.border.medium
               }}
             />
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '32px' }}>
             <label style={{
               display: 'block',
-              fontSize: '12px',
-              color: theme.colors.text.tertiary,
-              marginBottom: '10px',
-              fontWeight: '500',
-              letterSpacing: '0.5px',
-              textTransform: 'uppercase'
+              fontSize: '13px',
+              color: theme.colors.text.secondary,
+              marginBottom: '8px',
+              fontWeight: theme.weight.medium
             }}>
-              Email Address
+              Email
             </label>
             <input
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="you@example.com"
               style={{
                 width: '100%',
-                padding: '14px 18px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px',
+                padding: '12px 16px',
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md,
                 color: theme.colors.text.primary,
-                fontSize: '15px',
+                fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.normal}`
+                transition: `all ${theme.transition.fast}`
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.borderColor = theme.colors.text.secondary
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.light
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                e.currentTarget.style.borderColor = theme.colors.border.medium
               }}
             />
           </div>
@@ -673,18 +643,16 @@ export default function Upload() {
             </div>
           ))}
 
-          {/* File Upload - Modern Drag & Drop Style */}
-          <div style={{ marginBottom: '32px' }}>
+          {/* File Upload */}
+          <div style={{ marginBottom: '40px' }}>
             <label style={{
               display: 'block',
-              fontSize: '12px',
-              color: theme.colors.text.tertiary,
-              marginBottom: '10px',
-              fontWeight: '500',
-              letterSpacing: '0.5px',
-              textTransform: 'uppercase'
+              fontSize: '13px',
+              color: theme.colors.text.secondary,
+              marginBottom: '8px',
+              fontWeight: theme.weight.medium
             }}>
-              Select Files
+              Files
             </label>
             <input
               type="file"
@@ -693,62 +661,57 @@ export default function Upload() {
               required
               style={{
                 width: '100%',
-                padding: '20px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: `2px dashed ${theme.colors.border.medium}`,
-                borderRadius: '16px',
+                padding: '12px 16px',
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md,
                 color: theme.colors.text.primary,
                 fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                cursor: 'pointer',
-                transition: `all ${theme.transition.normal}`
+                cursor: 'pointer'
               }}
             />
             {files.length > 0 && (
               <div style={{
-                marginTop: '16px',
-                padding: '20px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px'
+                marginTop: '12px',
+                padding: '16px',
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md
               }}>
                 <div style={{
-                  fontSize: '11px',
-                  fontWeight: '600',
-                  color: theme.colors.text.tertiary,
-                  marginBottom: '14px',
-                  letterSpacing: '0.5px',
-                  textTransform: 'uppercase'
+                  fontSize: '12px',
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.secondary,
+                  marginBottom: '12px'
                 }}>
-                  {files.length} File{files.length > 1 ? 's' : ''} Selected
+                  {files.length} file{files.length > 1 ? 's' : ''} selected
                 </div>
                 {files.map((file, idx) => (
                   <div key={idx} style={{
-                    fontSize: '14px',
+                    fontSize: '13px',
                     color: theme.colors.text.secondary,
-                    marginBottom: idx < files.length - 1 ? '12px' : '0',
+                    marginBottom: idx < files.length - 1 ? '8px' : '0',
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    padding: '12px 0',
+                    padding: '8px 0',
                     borderBottom: idx < files.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
                   }}>
                     <span style={{
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
-                      marginRight: '16px',
-                      color: theme.colors.text.primary,
-                      fontWeight: '500'
+                      marginRight: '12px',
+                      color: theme.colors.text.primary
                     }}>
                       {file.name}
                     </span>
                     <span style={{
                       color: theme.colors.text.tertiary,
-                      fontSize: '13px',
-                      flexShrink: 0,
-                      fontWeight: '500'
+                      fontSize: '12px',
+                      flexShrink: 0
                     }}>
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </span>
@@ -758,39 +721,36 @@ export default function Upload() {
             )}
           </div>
 
-          {/* Submit Button - Modern Gradient Style */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={uploading}
             style={{
               width: '100%',
-              padding: '16px 32px',
+              padding: '12px 24px',
               background: theme.colors.white,
               color: theme.colors.black,
               border: 'none',
-              borderRadius: '12px',
-              fontSize: '15px',
-              fontWeight: '600',
+              borderRadius: theme.radius.md,
+              fontSize: '14px',
+              fontWeight: theme.weight.medium,
               cursor: uploading ? 'not-allowed' : 'pointer',
-              transition: `all ${theme.transition.normal}`,
+              transition: `all ${theme.transition.fast}`,
               fontFamily: 'inherit',
-              opacity: uploading ? 0.5 : 1,
-              letterSpacing: '0.3px'
+              opacity: uploading ? 0.6 : 1
             }}
             onMouseEnter={(e) => {
               if (!uploading) {
-                e.currentTarget.style.transform = 'translateY(-1px)'
                 e.currentTarget.style.background = theme.colors.text.secondary
               }
             }}
             onMouseLeave={(e) => {
               if (!uploading) {
-                e.currentTarget.style.transform = 'translateY(0)'
                 e.currentTarget.style.background = theme.colors.white
               }
             }}
           >
-            {uploading ? 'Uploading Files...' : 'Submit Files'}
+            {uploading ? 'Uploading...' : 'Upload Files'}
           </button>
         </form>
       </div>
