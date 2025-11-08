@@ -263,24 +263,24 @@ function Notifications() {
                   <button
                     onClick={() => deleteNotification(notification.id)}
                     style={{
-                      padding: '8px 16px',
-                      background: 'transparent',
-                      color: theme.colors.text.secondary,
-                      border: `1px solid ${theme.colors.border.medium}`,
-                      borderRadius: '6px',
-                      fontSize: '12px',
-                      fontWeight: '500',
+                      padding: '10px 20px',
+                      background: theme.colors.black,
+                      color: theme.colors.white,
+                      border: `2px solid ${theme.colors.white}`,
+                      borderRadius: '8px',
+                      fontSize: '13px',
+                      fontWeight: theme.weight.semibold,
                       cursor: 'pointer',
-                      transition: `all ${theme.transition.fast}`,
+                      transition: 'all 0.2s ease',
                       flexShrink: 0
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                      e.currentTarget.style.borderColor = theme.colors.border.dark
+                      e.currentTarget.style.transform = 'scale(1.03)'
+                      e.currentTarget.style.filter = 'brightness(1.1)'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.borderColor = theme.colors.border.medium
+                      e.currentTarget.style.transform = 'scale(1)'
+                      e.currentTarget.style.filter = 'brightness(1)'
                     }}
                   >
                     Delete
