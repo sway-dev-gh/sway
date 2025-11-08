@@ -87,21 +87,9 @@ function Sidebar() {
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
         { path: '/requests', label: 'Requests', planRequired: null },
-        { path: '/files', label: 'Files', planRequired: null }
-      ]
-    },
-    {
-      items: [
-        { path: '/plan', label: 'Plan', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
       ]
     }
-  ]
-
-  const moreItems = [
-    { path: '/branding', label: 'Branding', planRequired: 'pro' },
-    { path: '/custom-domain', label: 'Domain', planRequired: 'pro' },
-    { path: '/team-access', label: 'Team', planRequired: 'pro' }
   ]
 
   // Helper to check if user has access to a feature
@@ -249,122 +237,6 @@ function Sidebar() {
               )}
             </div>
           ))}
-
-          {/* More Dropdown */}
-          <div style={{ position: 'relative' }}>
-            <div style={{ width: '1px', height: '20px', background: theme.colors.border.medium, margin: '0 12px' }} />
-            <button
-              onClick={() => setShowMoreDropdown(!showMoreDropdown)}
-              style={{
-                ...navLinkStyle(false),
-                background: 'transparent',
-                border: 'none',
-                cursor: 'pointer',
-                fontFamily: 'inherit'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.hover
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent'
-              }}
-            >
-              More ▾
-            </button>
-
-            {/* Dropdown Menu */}
-            {showMoreDropdown && (
-              <div style={{
-                position: 'absolute',
-                top: '40px',
-                left: 0,
-                background: theme.colors.bg.sidebar,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
-                padding: '8px',
-                minWidth: '180px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                zIndex: 1000
-              }}>
-                {moreItems.map((item) => {
-                  const isActive = location.pathname === item.path
-                  const locked = !hasAccess(item.planRequired)
-                  const upgradePlan = locked ? getUpgradePlan(item.planRequired) : null
-
-                  if (locked) {
-                    return (
-                      <div
-                        key={item.path}
-                        onClick={() => { navigate('/plan'); setShowMoreDropdown(false); }}
-                        style={{
-                          padding: '8px 12px',
-                          cursor: 'pointer',
-                          borderRadius: theme.radius.sm,
-                          fontSize: '14px',
-                          color: theme.colors.text.secondary,
-                          opacity: 0.6,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          transition: `all ${theme.transition.fast}`
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = theme.colors.bg.hover
-                          e.currentTarget.style.opacity = '0.8'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.opacity = '0.6'
-                        }}
-                      >
-                        <span>{item.label}</span>
-                        <span style={{
-                          fontSize: '8px',
-                          fontWeight: theme.weight.semibold,
-                          color: theme.colors.text.tertiary,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px',
-                          padding: '2px 4px',
-                          background: theme.colors.bg.secondary,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: '2px'
-                        }}>
-                          {upgradePlan}
-                        </span>
-                      </div>
-                    )
-                  }
-
-                  return (
-                    <Link
-                      key={item.path}
-                      to={item.path}
-                      onClick={() => setShowMoreDropdown(false)}
-                      style={{
-                        display: 'block',
-                        padding: '8px 12px',
-                        cursor: 'pointer',
-                        borderRadius: theme.radius.sm,
-                        fontSize: '14px',
-                        color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
-                        background: isActive ? theme.colors.bg.hover : 'transparent',
-                        textDecoration: 'none',
-                        transition: `all ${theme.transition.fast}`
-                      }}
-                      onMouseEnter={(e) => {
-                        if (!isActive) e.currentTarget.style.background = theme.colors.bg.hover
-                      }}
-                      onMouseLeave={(e) => {
-                        if (!isActive) e.currentTarget.style.background = 'transparent'
-                      }}
-                    >
-                      {item.label}
-                    </Link>
-                  )
-                })}
-              </div>
-            )}
-          </div>
       </nav>
 
       {/* Right Section - User */}
