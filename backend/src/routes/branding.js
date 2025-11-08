@@ -9,7 +9,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
     const userId = req.userId
 
     const result = await pool.query(
-      `SELECT id, logo_url, background_color, remove_branding,
+      `SELECT id, logo_url, background_color, remove_branding, custom_footer,
               created_at, updated_at
        FROM branding_settings
        WHERE user_id = $1`,
@@ -22,7 +22,8 @@ router.get('/settings', authenticateToken, async (req, res) => {
         settings: {
           background_color: '#FFFFFF',
           remove_branding: true,
-          logo_url: null
+          logo_url: null,
+          custom_footer: null
         }
       })
     }
@@ -41,7 +42,8 @@ router.post('/settings', authenticateToken, async (req, res) => {
     const {
       logo_url,
       background_color,
-      remove_branding
+      remove_branding,
+      custom_footer
     } = req.body
 
     // Check user plan - only Pro/Business can use branding (skip for admin)
@@ -61,22 +63,24 @@ router.post('/settings', authenticateToken, async (req, res) => {
 
     const result = await pool.query(
       `INSERT INTO branding_settings (
-         user_id, logo_url, background_color, remove_branding
+         user_id, logo_url, background_color, remove_branding, custom_footer
        )
-       VALUES ($1, $2, $3, $4)
+       VALUES ($1, $2, $3, $4, $5)
        ON CONFLICT (user_id)
        DO UPDATE SET
          logo_url = EXCLUDED.logo_url,
          background_color = EXCLUDED.background_color,
          remove_branding = EXCLUDED.remove_branding,
+         custom_footer = EXCLUDED.custom_footer,
          updated_at = NOW()
-       RETURNING id, logo_url, background_color, remove_branding,
+       RETURNING id, logo_url, background_color, remove_branding, custom_footer,
                  created_at, updated_at`,
       [
         userId,
         logo_url || null,
         background_color || '#FFFFFF',
-        remove_branding !== undefined ? remove_branding : true
+        remove_branding !== undefined ? remove_branding : true,
+        custom_footer || null
       ]
     )
 
