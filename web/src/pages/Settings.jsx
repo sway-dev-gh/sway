@@ -3,50 +3,10 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 
-// Must match REQUEST_TYPES from Requests.jsx exactly
-const REQUEST_TYPES = [
-  { id: 'general-upload', name: 'General Upload' },
-  { id: 'photos', name: 'Photos' },
-  { id: 'videos', name: 'Videos' },
-  { id: 'documents', name: 'Documents' },
-  { id: 'code-submission', name: 'Code' },
-  { id: 'design-assets', name: 'Design' },
-  { id: 'event-photos', name: 'Event Photos' },
-  { id: 'application-materials', name: 'Applications' },
-  { id: 'invoices', name: 'Invoices' },
-  { id: 'forms', name: 'Forms' },
-  { id: 'client-deliverables', name: 'Deliverables' },
-  { id: 'feedback', name: 'Feedback' },
-  { id: 'content', name: 'Content' },
-  { id: 'assignments', name: 'Assignments' },
-  { id: 'contracts', name: 'Contracts' },
-  { id: 'audio', name: 'Audio' },
-  { id: 'spreadsheets', name: 'Spreadsheets' },
-  { id: 'presentations', name: 'Presentations' },
-  { id: 'legal', name: 'Legal Docs' },
-  { id: 'id-verification', name: 'ID Verification' },
-  { id: 'medical', name: 'Medical Records' },
-  { id: 'tax-documents', name: 'Tax Docs' },
-  { id: 'property', name: 'Property Photos' },
-  { id: 'products', name: 'Product Images' },
-  { id: 'marketing', name: 'Marketing' },
-  { id: 'social-media', name: 'Social Media' },
-  { id: 'surveys', name: 'Surveys' },
-  { id: 'research', name: 'Research Data' },
-  { id: 'screenshots', name: 'Screenshots' }
-]
-
 function Settings() {
   const navigate = useNavigate()
   const [user, setUser] = useState({ email: '' })
   const [loading, setLoading] = useState(true)
-  const [settings, setSettings] = useState({
-    defaultRequestType: 'general-upload',
-    fileSizeLimit: 50,
-    emailNotifications: true,
-    requestNotifications: true
-  })
-  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -60,29 +20,8 @@ function Settings() {
       setUser(JSON.parse(userStr))
     }
 
-    // Load settings from localStorage
-    const savedSettings = localStorage.getItem('userSettings')
-    if (savedSettings) {
-      setSettings(JSON.parse(savedSettings))
-    }
-
     setLoading(false)
   }, [navigate])
-
-  const saveSettings = () => {
-    setSaving(true)
-    localStorage.setItem('userSettings', JSON.stringify(settings))
-    setTimeout(() => {
-      setSaving(false)
-    }, 500)
-  }
-
-  const handleSettingChange = (key, value) => {
-    setSettings(prev => ({
-      ...prev,
-      [key]: value
-    }))
-  }
 
   if (loading) {
     return (
@@ -148,8 +87,7 @@ function Settings() {
             {/* Account Information */}
             <div style={{
               background: theme.colors.bg.page,
-              padding: '0 0 40px 0',
-              borderBottom: `1px solid ${theme.colors.border.light}`
+              padding: '0 0 40px 0'
             }}>
               <div style={{
                 fontSize: '9px',
@@ -179,120 +117,34 @@ function Settings() {
                 </div>
               </div>
 
-              <div style={{ marginBottom: theme.spacing[6] }}>
-                <div style={{
-                  fontSize: '13px',
+              <button
+                onClick={() => {
+                  if (confirm('Are you sure you want to delete your account? This cannot be undone.')) {
+                    alert('Account deletion would be processed here')
+                  }
+                }}
+                style={{
+                  padding: '12px 24px',
+                  background: 'transparent',
                   color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  Account Status
-                </div>
-                <div style={{
-                  display: 'inline-block',
-                  padding: '6px 12px',
-                  background: theme.colors.bg.secondary,
                   border: `1px solid ${theme.colors.border.medium}`,
-                  fontSize: '12px',
-                  color: theme.colors.text.primary
-                }}>
-                  Active
-                </div>
-              </div>
-            </div>
-
-            {/* Notifications */}
-            <div style={{
-              background: theme.colors.bg.page,
-              padding: '40px 0',
-              borderBottom: `1px solid ${theme.colors.border.light}`
-            }}>
-              <div style={{
-                fontSize: '9px',
-                color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[4],
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.semibold
-              }}>
-                Notifications
-              </div>
-
-              <div style={{ marginBottom: theme.spacing[4] }}>
-                <label style={{
-                  display: 'flex',
-                  alignItems: 'center',
+                  fontSize: '14px',
+                  fontWeight: '400',
                   cursor: 'pointer',
-                  padding: theme.spacing[3],
-                  background: theme.colors.bg.secondary,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  <input
-                    type="checkbox"
-                    checked={settings.emailNotifications}
-                    onChange={(e) => handleSettingChange('emailNotifications', e.target.checked)}
-                    style={{
-                      marginRight: theme.spacing[3],
-                      width: '16px',
-                      height: '16px',
-                      accentColor: theme.colors.white,
-                      filter: 'grayscale(1)'
-                    }}
-                  />
-                  <div>
-                    <div style={{
-                      fontSize: '14px',
-                      color: theme.colors.text.primary,
-                      marginBottom: '4px'
-                    }}>
-                      Email notifications
-                    </div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: theme.colors.text.muted
-                    }}>
-                      Receive email when files are uploaded
-                    </div>
-                  </div>
-                </label>
-
-                <label style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  padding: theme.spacing[3],
-                  background: theme.colors.bg.secondary,
-                  border: `1px solid ${theme.colors.border.medium}`
-                }}>
-                  <input
-                    type="checkbox"
-                    checked={settings.requestNotifications}
-                    onChange={(e) => handleSettingChange('requestNotifications', e.target.checked)}
-                    style={{
-                      marginRight: theme.spacing[3],
-                      width: '16px',
-                      height: '16px',
-                      accentColor: theme.colors.white,
-                      filter: 'grayscale(1)'
-                    }}
-                  />
-                  <div>
-                    <div style={{
-                      fontSize: '14px',
-                      color: theme.colors.text.primary,
-                      marginBottom: '4px'
-                    }}>
-                      Request notifications
-                    </div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: theme.colors.text.muted
-                    }}>
-                      Get notified about request activity
-                    </div>
-                  </div>
-                </label>
-              </div>
+                  fontFamily: 'inherit',
+                  transition: `all ${theme.transition.fast}`
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.white
+                  e.currentTarget.style.color = theme.colors.white
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                  e.currentTarget.style.color = theme.colors.text.secondary
+                }}
+              >
+                Delete Account
+              </button>
             </div>
 
           </div>
