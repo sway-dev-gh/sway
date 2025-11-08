@@ -136,26 +136,37 @@ function Files() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: '1px',
-            background: theme.colors.border.light,
-            borderRadius: '12px',
-            overflow: 'hidden',
-            marginBottom: '40px',
-            border: `1px solid ${theme.colors.border.light}`
+            gap: '16px',
+            marginBottom: '48px'
           }}>
-            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Files</div>
-              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{files.length}</div>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px 24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Files</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{files.length}</div>
             </div>
-            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Size</div>
-              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px 24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Size</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>
                 {formatFileSize(files.reduce((sum, f) => sum + (f.fileSize || 0), 0))}
               </div>
             </div>
-            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
-              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Requests</div>
-              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px 24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Requests</div>
+              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>
                 {new Set(files.map(f => f.requestId)).size}
               </div>
             </div>
@@ -170,20 +181,14 @@ function Files() {
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`
             }}>
-              <div style={{
-                fontSize: '15px',
-                marginBottom: '8px',
-                color: theme.colors.text.muted
+              <p style={{
+                fontSize: '14px',
+                color: theme.colors.text.muted,
+                margin: 0,
+                lineHeight: '1.6'
               }}>
-                No files yet
-              </div>
-              <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.tertiary,
-                lineHeight: '1.5'
-              }}>
-                Files uploaded to your requests will appear here
-              </div>
+                No files yet. Files uploaded to your requests will appear here.
+              </p>
             </div>
           ) : (
             <div style={{
