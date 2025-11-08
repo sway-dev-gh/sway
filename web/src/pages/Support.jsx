@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Support() {
   const navigate = useNavigate()
@@ -14,14 +15,30 @@ function Support() {
     e.preventDefault()
     setLoading(true)
 
-    // TODO: Implement actual support ticket creation
-    setTimeout(() => {
+    try {
+      const token = localStorage.getItem('token')
+      await api.post('/api/support/tickets', {
+        subject,
+        message,
+        priority
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
       alert('Support ticket submitted! We\'ll get back to you within 24 hours.')
       setSubject('')
       setMessage('')
       setPriority('normal')
+    } catch (error) {
+      console.error('Error submitting support ticket:', error)
+      if (error.response?.status === 403) {
+        alert('Pro or Business plan required for priority support')
+      } else {
+        alert('Failed to submit support ticket. Please try again.')
+      }
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
 
   return (

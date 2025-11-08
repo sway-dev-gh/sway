@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Branding() {
   const navigate = useNavigate()
@@ -9,15 +10,55 @@ function Branding() {
   const [customLogo, setCustomLogo] = useState(null)
   const [customColor, setCustomColor] = useState('#000000')
   const [loading, setLoading] = useState(false)
+  const [initialLoad, setInitialLoad] = useState(true)
+
+  useEffect(() => {
+    fetchBrandingSettings()
+  }, [])
+
+  const fetchBrandingSettings = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.get('/api/branding/settings', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      if (data.settings) {
+        setRemoveBranding(data.settings.remove_branding)
+        setCustomLogo(data.settings.logo_url)
+        setCustomColor(data.settings.primary_color)
+      }
+    } catch (error) {
+      console.error('Error fetching branding settings:', error)
+    } finally {
+      setInitialLoad(false)
+    }
+  }
 
   const handleSave = async () => {
     setLoading(true)
 
-    // TODO: Implement actual branding settings save
-    setTimeout(() => {
+    try {
+      const token = localStorage.getItem('token')
+      await api.post('/api/branding/settings', {
+        remove_branding: removeBranding,
+        logo_url: customLogo,
+        primary_color: customColor
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
       alert('Branding settings saved successfully!')
+    } catch (error) {
+      console.error('Error saving branding settings:', error)
+      if (error.response?.status === 403) {
+        alert('Pro or Business plan required for custom branding')
+      } else {
+        alert('Failed to save branding settings. Please try again.')
+      }
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
 
   const handleLogoUpload = (e) => {

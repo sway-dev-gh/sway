@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function CustomDomain() {
   const navigate = useNavigate()
@@ -9,23 +10,80 @@ function CustomDomain() {
   const [verificationStatus, setVerificationStatus] = useState(null) // null, 'pending', 'verified', 'failed'
   const [loading, setLoading] = useState(false)
 
+  useEffect(() => {
+    fetchDomain()
+  }, [])
+
+  const fetchDomain = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.get('/api/domain', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      if (data.domain) {
+        setDomain(data.domain.domain)
+        setVerificationStatus(data.domain.verification_status)
+      }
+    } catch (error) {
+      console.error('Error fetching domain:', error)
+    }
+  }
+
   const handleVerifyDomain = async () => {
     if (!domain) return
 
     setLoading(true)
     setVerificationStatus('pending')
 
-    // TODO: Implement actual domain verification
-    setTimeout(() => {
-      setVerificationStatus('verified')
-      setLoading(false)
+    try {
+      const token = localStorage.getItem('token')
+
+      // First, add the domain if not already added
+      try {
+        await api.post('/api/domain', {
+          domain
+        }, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+      } catch (error) {
+        // Domain might already exist, continue to verification
+      }
+
+      // Then verify it
+      const { data } = await api.post('/api/domain/verify', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setVerificationStatus(data.domain.verification_status)
       alert('Domain verified successfully!')
-    }, 2000)
+    } catch (error) {
+      console.error('Error verifying domain:', error)
+      setVerificationStatus('failed')
+      if (error.response?.status === 403) {
+        alert('Business plan required for custom domains')
+      } else {
+        alert('Failed to verify domain. Please check your DNS settings.')
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const handleRemoveDomain = () => {
-    setDomain('')
-    setVerificationStatus(null)
+  const handleRemoveDomain = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      await api.delete('/api/domain', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setDomain('')
+      setVerificationStatus(null)
+      alert('Domain removed successfully')
+    } catch (error) {
+      console.error('Error removing domain:', error)
+      alert('Failed to remove domain')
+    }
   }
 
   return (

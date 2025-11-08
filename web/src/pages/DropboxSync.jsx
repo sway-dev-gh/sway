@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function DropboxSync() {
   const navigate = useNavigate()
@@ -10,28 +11,106 @@ function DropboxSync() {
   const [syncFolder, setSyncFolder] = useState('/Sway Files')
   const [lastSync, setLastSync] = useState(null)
   const [syncing, setSyncing] = useState(false)
+  const [loading, setLoading] = useState(true)
 
-  const handleConnect = () => {
-    // TODO: Implement Dropbox OAuth flow
-    setIsConnected(true)
-    alert('Dropbox connected successfully!')
-  }
+  useEffect(() => {
+    fetchIntegrationStatus()
+  }, [])
 
-  const handleDisconnect = () => {
-    if (confirm('Are you sure you want to disconnect Dropbox?')) {
-      setIsConnected(false)
-      setLastSync(null)
+  const fetchIntegrationStatus = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.get('/api/integrations/dropbox', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      if (data.integration) {
+        setIsConnected(data.integration.is_active)
+        setAutoSync(data.integration.auto_sync)
+        setSyncFolder(data.integration.sync_folder)
+        setLastSync(data.integration.last_sync_at ? new Date(data.integration.last_sync_at) : null)
+      }
+    } catch (error) {
+      console.error('Error fetching Dropbox status:', error)
+    } finally {
+      setLoading(false)
     }
   }
 
-  const handleSyncNow = () => {
+  const handleConnect = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.post('/api/integrations/dropbox/connect', {
+        auto_sync: autoSync,
+        sync_folder: syncFolder
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setIsConnected(true)
+      alert('Dropbox connected successfully!')
+    } catch (error) {
+      console.error('Error connecting Dropbox:', error)
+      if (error.response?.status === 403) {
+        alert('Business plan required for cloud integrations')
+      } else {
+        alert('Failed to connect Dropbox. Please try again.')
+      }
+    }
+  }
+
+  const handleDisconnect = async () => {
+    if (!confirm('Are you sure you want to disconnect Dropbox?')) return
+
+    try {
+      const token = localStorage.getItem('token')
+      await api.post('/api/integrations/dropbox/disconnect', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setIsConnected(false)
+      setLastSync(null)
+      alert('Dropbox disconnected successfully')
+    } catch (error) {
+      console.error('Error disconnecting Dropbox:', error)
+      alert('Failed to disconnect Dropbox')
+    }
+  }
+
+  const handleSyncNow = async () => {
     setSyncing(true)
-    // TODO: Implement actual sync
-    setTimeout(() => {
-      setLastSync(new Date())
-      setSyncing(false)
+
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.post('/api/integrations/dropbox/sync', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setLastSync(data.integration.last_sync_at ? new Date(data.integration.last_sync_at) : new Date())
       alert('Files synced to Dropbox successfully!')
-    }, 2000)
+    } catch (error) {
+      console.error('Error syncing to Dropbox:', error)
+      alert('Failed to sync files to Dropbox')
+    } finally {
+      setSyncing(false)
+    }
+  }
+
+  const handleUpdateSettings = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      await api.patch('/api/integrations/dropbox', {
+        auto_sync: autoSync,
+        sync_folder: syncFolder
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      alert('Settings updated successfully!')
+    } catch (error) {
+      console.error('Error updating settings:', error)
+      alert('Failed to update settings')
+    }
   }
 
   return (
@@ -78,8 +157,7 @@ function DropboxSync() {
             <div style={{
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: isConnected ? '24px' : '0'
+              alignItems: 'center'
             }}>
               <div>
                 <h3 style={{
@@ -95,59 +173,27 @@ function DropboxSync() {
                   color: theme.colors.text.muted,
                   margin: 0
                 }}>
-                  {isConnected ? 'Connected and syncing' : 'Not connected'}
+                  {isConnected ? '✓ Connected' : 'Not connected'}
                 </p>
               </div>
 
-              {isConnected ? (
-                <button
-                  onClick={handleDisconnect}
-                  style={{
-                    padding: '10px 20px',
-                    background: 'transparent',
-                    border: `1px solid ${theme.colors.border.medium}`,
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: theme.weight.medium,
-                    color: theme.colors.text.secondary,
-                    cursor: 'pointer',
-                    transition: theme.transition.normal
-                  }}
-                >
-                  Disconnect
-                </button>
-              ) : (
-                <button
-                  onClick={handleConnect}
-                  style={{
-                    padding: '10px 20px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '13px',
-                    fontWeight: theme.weight.medium,
-                    cursor: 'pointer',
-                    transition: theme.transition.normal
-                  }}
-                >
-                  Connect Dropbox
-                </button>
-              )}
+              <button
+                onClick={isConnected ? handleDisconnect : handleConnect}
+                style={{
+                  padding: '10px 24px',
+                  background: isConnected ? 'transparent' : theme.colors.white,
+                  color: isConnected ? theme.colors.text.secondary : theme.colors.black,
+                  border: isConnected ? `1px solid ${theme.colors.border.medium}` : 'none',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  fontWeight: theme.weight.medium,
+                  cursor: 'pointer',
+                  transition: theme.transition.normal
+                }}
+              >
+                {isConnected ? 'Disconnect' : 'Connect Dropbox'}
+              </button>
             </div>
-
-            {isConnected && lastSync && (
-              <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.tertiary,
-                padding: '12px',
-                background: theme.colors.bg.page,
-                borderRadius: '6px',
-                border: `1px solid ${theme.colors.border.medium}`
-              }}>
-                Last synced: {lastSync.toLocaleString()}
-              </div>
-            )}
           </div>
 
           {/* Sync Settings */}
@@ -174,7 +220,9 @@ function DropboxSync() {
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center',
-                  marginBottom: '20px'
+                  marginBottom: '24px',
+                  paddingBottom: '24px',
+                  borderBottom: `1px solid ${theme.colors.border.light}`
                 }}>
                   <div>
                     <div style={{
@@ -183,15 +231,16 @@ function DropboxSync() {
                       color: theme.colors.text.primary,
                       marginBottom: '4px'
                     }}>
-                      Automatic Sync
+                      Auto-sync
                     </div>
                     <div style={{
-                      fontSize: '13px',
+                      fontSize: '12px',
                       color: theme.colors.text.muted
                     }}>
-                      Automatically sync new uploads to Dropbox
+                      Automatically sync files when uploaded
                     </div>
                   </div>
+
                   <label style={{
                     position: 'relative',
                     display: 'inline-block',
@@ -238,7 +287,7 @@ function DropboxSync() {
                     color: theme.colors.text.secondary,
                     marginBottom: '8px'
                   }}>
-                    Dropbox Folder
+                    Sync Folder
                   </label>
                   <input
                     type="text"
@@ -246,15 +295,33 @@ function DropboxSync() {
                     onChange={(e) => setSyncFolder(e.target.value)}
                     style={{
                       width: '100%',
-                      padding: '12px 16px',
+                      padding: '10px 14px',
                       background: theme.colors.bg.page,
                       border: `1px solid ${theme.colors.border.medium}`,
                       borderRadius: '8px',
                       color: theme.colors.text.primary,
-                      fontSize: '14px'
+                      fontSize: '13px',
+                      marginBottom: '12px'
                     }}
                   />
                 </div>
+
+                <button
+                  onClick={handleUpdateSettings}
+                  style={{
+                    padding: '10px 20px',
+                    background: 'transparent',
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    fontWeight: theme.weight.medium,
+                    color: theme.colors.text.secondary,
+                    cursor: 'pointer',
+                    transition: theme.transition.normal
+                  }}
+                >
+                  Save Settings
+                </button>
               </div>
 
               {/* Manual Sync */}
@@ -272,18 +339,22 @@ function DropboxSync() {
                 }}>
                   Manual Sync
                 </h3>
-                <p style={{
-                  fontSize: '13px',
-                  color: theme.colors.text.muted,
-                  margin: '0 0 20px 0'
-                }}>
-                  Manually trigger a sync of all files to Dropbox
-                </p>
+
+                {lastSync && (
+                  <p style={{
+                    fontSize: '13px',
+                    color: theme.colors.text.muted,
+                    margin: '0 0 16px 0'
+                  }}>
+                    Last synced: {lastSync.toLocaleString()}
+                  </p>
+                )}
+
                 <button
                   onClick={handleSyncNow}
                   disabled={syncing}
                   style={{
-                    padding: '12px 32px',
+                    padding: '12px 24px',
                     background: theme.colors.white,
                     color: theme.colors.black,
                     border: 'none',
@@ -300,55 +371,6 @@ function DropboxSync() {
               </div>
             </>
           )}
-
-          {/* Google Drive Option (Coming Soon) */}
-          <div style={{
-            background: 'rgba(255, 255, 255, 0.02)',
-            borderRadius: '16px',
-            border: `1px solid ${theme.colors.border.light}`,
-            padding: '32px',
-            marginTop: '24px',
-            opacity: 0.6
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              <div>
-                <h3 style={{
-                  fontSize: '16px',
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.primary,
-                  margin: '0 0 6px 0'
-                }}>
-                  Google Drive
-                </h3>
-                <p style={{
-                  fontSize: '13px',
-                  color: theme.colors.text.muted,
-                  margin: 0
-                }}>
-                  Coming soon
-                </p>
-              </div>
-              <button
-                disabled
-                style={{
-                  padding: '10px 20px',
-                  background: 'transparent',
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  borderRadius: '8px',
-                  fontSize: '13px',
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.tertiary,
-                  cursor: 'not-allowed'
-                }}
-              >
-                Coming Soon
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </>

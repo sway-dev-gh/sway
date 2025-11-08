@@ -1,17 +1,35 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function TeamAccess() {
   const navigate = useNavigate()
-  const [teamMembers, setTeamMembers] = useState([
-    { id: 1, email: 'john@company.com', role: 'Admin', status: 'Active' },
-    { id: 2, email: 'sarah@company.com', role: 'Member', status: 'Active' }
-  ])
+  const [teamMembers, setTeamMembers] = useState([])
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteRole, setInviteRole] = useState('member')
   const [loading, setLoading] = useState(false)
+  const [initialLoad, setInitialLoad] = useState(true)
+
+  useEffect(() => {
+    fetchTeamMembers()
+  }, [])
+
+  const fetchTeamMembers = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.get('/api/team/members', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setTeamMembers(data.teamMembers || [])
+    } catch (error) {
+      console.error('Error fetching team members:', error)
+    } finally {
+      setInitialLoad(false)
+    }
+  }
 
   const handleInvite = async (e) => {
     e.preventDefault()
@@ -19,22 +37,46 @@ function TeamAccess() {
 
     setLoading(true)
 
-    // TODO: Implement actual team member invitation
-    setTimeout(() => {
-      setTeamMembers([...teamMembers, {
-        id: teamMembers.length + 1,
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.post('/api/team/members', {
         email: inviteEmail,
-        role: inviteRole === 'admin' ? 'Admin' : 'Member',
-        status: 'Pending'
-      }])
+        role: inviteRole
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setTeamMembers([...teamMembers, data.teamMember])
       setInviteEmail('')
+      alert('Team member invited successfully!')
+    } catch (error) {
+      console.error('Error inviting team member:', error)
+      if (error.response?.status === 403) {
+        alert('Business plan required for team access')
+      } else if (error.response?.data?.error) {
+        alert(error.response.data.error)
+      } else {
+        alert('Failed to invite team member')
+      }
+    } finally {
       setLoading(false)
-    }, 1000)
+    }
   }
 
-  const handleRemoveMember = (id) => {
-    if (confirm('Are you sure you want to remove this team member?')) {
+  const handleRemoveMember = async (id) => {
+    if (!confirm('Are you sure you want to remove this team member?')) return
+
+    try {
+      const token = localStorage.getItem('token')
+      await api.delete(`/api/team/members/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
       setTeamMembers(teamMembers.filter(m => m.id !== id))
+      alert('Team member removed successfully')
+    } catch (error) {
+      console.error('Error removing team member:', error)
+      alert('Failed to remove team member')
     }
   }
 
@@ -125,17 +167,17 @@ function TeamAccess() {
                 </select>
                 <button
                   type="submit"
-                  disabled={loading || teamMembers.length >= 5}
+                  disabled={loading}
                   style={{
                     padding: '12px 24px',
                     background: theme.colors.white,
                     color: theme.colors.black,
                     border: 'none',
                     borderRadius: '8px',
-                    fontSize: '13px',
+                    fontSize: '14px',
                     fontWeight: theme.weight.medium,
-                    cursor: (loading || teamMembers.length >= 5) ? 'not-allowed' : 'pointer',
-                    opacity: (loading || teamMembers.length >= 5) ? 0.6 : 1,
+                    cursor: loading ? 'not-allowed' : 'pointer',
+                    opacity: loading ? 0.6 : 1,
                     transition: theme.transition.normal,
                     whiteSpace: 'nowrap'
                   }}
@@ -143,14 +185,15 @@ function TeamAccess() {
                   {loading ? 'Inviting...' : 'Send Invite'}
                 </button>
               </div>
-
-              <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.tertiary
-              }}>
-                {teamMembers.length}/5 team members
-              </div>
             </form>
+
+            <p style={{
+              fontSize: '12px',
+              color: theme.colors.text.tertiary,
+              margin: '8px 0 0 0'
+            }}>
+              {teamMembers.length} / 5 team members
+            </p>
           </div>
 
           {/* Team Members List */}
@@ -160,10 +203,7 @@ function TeamAccess() {
             border: `1px solid ${theme.colors.border.light}`,
             overflow: 'hidden'
           }}>
-            <div style={{
-              padding: '20px 24px',
-              borderBottom: `1px solid ${theme.colors.border.light}`
-            }}>
+            <div style={{ padding: '24px 32px', borderBottom: `1px solid ${theme.colors.border.light}` }}>
               <h3 style={{
                 fontSize: '16px',
                 fontWeight: theme.weight.medium,
@@ -176,12 +216,12 @@ function TeamAccess() {
 
             {teamMembers.length === 0 ? (
               <div style={{
-                padding: '60px 24px',
+                padding: '60px 32px',
                 textAlign: 'center',
                 color: theme.colors.text.muted,
                 fontSize: '14px'
               }}>
-                No team members yet. Invite someone to get started.
+                No team members yet. Invite your first team member above.
               </div>
             ) : (
               <div>
@@ -189,28 +229,27 @@ function TeamAccess() {
                   <div
                     key={member.id}
                     style={{
-                      padding: '20px 24px',
+                      padding: '20px 32px',
                       borderBottom: `1px solid ${theme.colors.border.light}`,
                       display: 'flex',
-                      justifyContent: 'space-between',
                       alignItems: 'center',
-                      transition: theme.transition.fast
+                      justifyContent: 'space-between'
                     }}
                   >
                     <div style={{ flex: 1 }}>
                       <div style={{
                         fontSize: '14px',
-                        color: theme.colors.text.primary,
                         fontWeight: theme.weight.medium,
+                        color: theme.colors.text.primary,
                         marginBottom: '4px'
                       }}>
                         {member.email}
                       </div>
                       <div style={{
-                        fontSize: '13px',
-                        color: theme.colors.text.muted
+                        fontSize: '12px',
+                        color: theme.colors.text.tertiary
                       }}>
-                        {member.role} • {member.status}
+                        Role: {member.role} • Status: {member.status}
                       </div>
                     </div>
 
@@ -221,14 +260,14 @@ function TeamAccess() {
                         background: 'transparent',
                         border: `1px solid ${theme.colors.border.medium}`,
                         borderRadius: '6px',
+                        color: theme.colors.text.secondary,
                         fontSize: '12px',
                         fontWeight: theme.weight.medium,
-                        color: theme.colors.text.secondary,
                         cursor: 'pointer',
                         transition: theme.transition.normal
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = theme.colors.border.strong
+                        e.currentTarget.style.borderColor = theme.colors.text.tertiary
                         e.currentTarget.style.color = theme.colors.text.primary
                       }}
                       onMouseLeave={(e) => {
@@ -242,36 +281,6 @@ function TeamAccess() {
                 ))}
               </div>
             )}
-          </div>
-
-          {/* Permissions Info */}
-          <div style={{
-            marginTop: '32px',
-            padding: '24px',
-            background: 'rgba(255, 255, 255, 0.02)',
-            borderRadius: '12px',
-            border: `1px solid ${theme.colors.border.light}`
-          }}>
-            <h4 style={{
-              fontSize: '14px',
-              fontWeight: theme.weight.medium,
-              color: theme.colors.text.primary,
-              margin: '0 0 12px 0'
-            }}>
-              Permission Levels
-            </h4>
-            <div style={{
-              fontSize: '13px',
-              color: theme.colors.text.muted,
-              lineHeight: '1.8'
-            }}>
-              <div style={{ marginBottom: '6px' }}>
-                <strong style={{ color: theme.colors.text.secondary }}>Admin:</strong> Full access to all features, can manage team members
-              </div>
-              <div>
-                <strong style={{ color: theme.colors.text.secondary }}>Member:</strong> Can create requests, view uploads, download files
-              </div>
-            </div>
           </div>
         </div>
       </div>
