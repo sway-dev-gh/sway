@@ -14,6 +14,7 @@ function Branding() {
   const [backgroundColor, setBackgroundColor] = useState('#FFFFFF')
   const [removeBranding, setRemoveBranding] = useState(true)
   const [logoUrl, setLogoUrl] = useState(null)
+  const [customFooter, setCustomFooter] = useState('')
 
   // Get user plan info
   const userStr = localStorage.getItem('user')
@@ -40,7 +41,8 @@ function Branding() {
       await api.post('/api/branding/settings', {
         remove_branding: removeBranding,
         logo_url: logoUrl,
-        background_color: backgroundColor
+        background_color: backgroundColor,
+        custom_footer: customFooter
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -86,6 +88,7 @@ function Branding() {
         setRemoveBranding(data.settings.remove_branding ?? true)
         setLogoUrl(data.settings.logo_url)
         setBackgroundColor(data.settings.background_color || '#FFFFFF')
+        setCustomFooter(data.settings.custom_footer || '')
       }
 
       setErrorMessage('')
@@ -128,7 +131,7 @@ function Branding() {
         clearTimeout(autoSaveTimerRef.current)
       }
     }
-  }, [backgroundColor, removeBranding, logoUrl, initialLoad, saveStatus, handleAutoSave])
+  }, [backgroundColor, removeBranding, logoUrl, customFooter, initialLoad, saveStatus, handleAutoSave])
 
   // Auto-save before page unload
   useEffect(() => {
@@ -155,7 +158,8 @@ function Branding() {
       await api.post('/api/branding/settings', {
         remove_branding: removeBranding,
         logo_url: logoUrl,
-        background_color: backgroundColor
+        background_color: backgroundColor,
+        custom_footer: customFooter
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -584,6 +588,48 @@ function Branding() {
                 </span>
               </label>
             </div>
+
+            {/* Custom Footer */}
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '24px',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                marginBottom: '12px'
+              }}>
+                Custom Footer Text
+              </label>
+              <textarea
+                value={customFooter}
+                onChange={(e) => setCustomFooter(e.target.value)}
+                placeholder="Add custom text to the bottom of your upload pages (e.g., contact info, terms)"
+                style={{
+                  width: '100%',
+                  minHeight: '80px',
+                  padding: '12px 14px',
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '8px',
+                  color: theme.colors.text.primary,
+                  fontSize: '13px',
+                  fontFamily: 'inherit',
+                  resize: 'vertical'
+                }}
+              />
+              <p style={{
+                fontSize: '11px',
+                color: theme.colors.text.tertiary,
+                margin: '8px 0 0 0'
+              }}>
+                Optional: Add contact information, terms, or other text to display at the bottom
+              </p>
+            </div>
           </div>
 
           {/* RIGHT - Preview */}
@@ -661,16 +707,27 @@ function Branding() {
                 </div>
               </div>
 
-              {/* Powered by Sway */}
-              {!removeBranding && (
-                <div style={{
-                  fontSize: '11px',
-                  color: isLightColor(backgroundColor) ? '#999999' : 'rgba(255, 255, 255, 0.4)',
-                  marginTop: '40px'
-                }}>
-                  Powered by Sway
-                </div>
-              )}
+              {/* Custom Footer and/or Powered by Sway */}
+              <div style={{ marginTop: '40px', textAlign: 'center' }}>
+                {customFooter && (
+                  <div style={{
+                    fontSize: '11px',
+                    color: isLightColor(backgroundColor) ? '#666666' : 'rgba(255, 255, 255, 0.6)',
+                    marginBottom: !removeBranding ? '8px' : '0',
+                    whiteSpace: 'pre-wrap'
+                  }}>
+                    {customFooter}
+                  </div>
+                )}
+                {!removeBranding && (
+                  <div style={{
+                    fontSize: '11px',
+                    color: isLightColor(backgroundColor) ? '#999999' : 'rgba(255, 255, 255, 0.4)'
+                  }}>
+                    Powered by Sway
+                  </div>
+                )}
+              </div>
             </div>
             <p style={{
               fontSize: '11px',
