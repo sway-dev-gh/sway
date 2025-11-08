@@ -64,13 +64,11 @@ function Plan() {
       name: 'Free',
       price: '$0',
       period: '',
-      tagline: 'Try it out',
-      description: 'Perfect for testing Sway and collecting files.',
+      tagline: 'Get started',
+      description: 'Perfect for trying out Sway.',
       features: [
         { text: '20 active requests', highlight: false },
-        { text: '2GB storage', highlight: false },
-        { text: 'Watermark required', highlight: false },
-        { text: 'Basic support', highlight: false }
+        { text: '2GB storage', highlight: false }
       ]
     },
     {
@@ -79,16 +77,11 @@ function Plan() {
       price: '$15',
       period: '/month',
       tagline: 'Most popular',
-      description: 'Everything you need to collect files professionally.',
+      description: 'More requests, more storage.',
       popular: true,
       features: [
-        { text: 'Unlimited active requests', highlight: true },
-        { text: '100GB storage', highlight: true },
-        { text: 'No watermark - custom logo', highlight: true },
-        { text: 'Custom domain', highlight: true },
-        { text: 'Team access (3 seats)', highlight: true },
-        { text: 'Dropbox integration', highlight: true },
-        { text: 'Priority support', highlight: false }
+        { text: 'Unlimited requests', highlight: true },
+        { text: '100GB storage', highlight: true }
       ]
     }
   ]
