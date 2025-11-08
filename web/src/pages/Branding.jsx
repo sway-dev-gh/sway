@@ -125,8 +125,8 @@ function Branding() {
   }, [allDesigns, selectedRequestType, backgroundColor, elements, removeBranding, logoUrl])
 
   const fetchBrandingSettings = useCallback(async (retryCount = 0) => {
-    const maxRetries = 3
-    const retryDelay = Math.min(1000 * Math.pow(2, retryCount), 5000) // Exponential backoff: 1s, 2s, 4s max
+    const maxRetries = 1
+    const retryDelay = 1000 // Just 1 second retry
 
     try {
       const token = localStorage.getItem('token')
@@ -183,7 +183,7 @@ function Branding() {
 
       if ((isNetworkError || isServerError) && retryCount < maxRetries) {
         console.log(`Retrying fetch (attempt ${retryCount + 1}/${maxRetries}) in ${retryDelay}ms...`)
-        setErrorMessage(`Loading... (attempt ${retryCount + 1}/${maxRetries + 1})`)
+        setErrorMessage(`Retrying...`)
 
         setTimeout(() => {
           fetchBrandingSettings(retryCount + 1)
