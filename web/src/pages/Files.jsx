@@ -132,24 +132,53 @@ function Files() {
             </p>
           </div>
 
-          {/* Files List - Modern 2025 Style */}
+          {/* Summary Stats */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            gap: '1px',
+            background: theme.colors.border.light,
+            borderRadius: '12px',
+            overflow: 'hidden',
+            marginBottom: '40px',
+            border: `1px solid ${theme.colors.border.light}`
+          }}>
+            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Files</div>
+              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>{files.length}</div>
+            </div>
+            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Total Size</div>
+              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+                {formatFileSize(files.reduce((sum, f) => sum + (f.fileSize || 0), 0))}
+              </div>
+            </div>
+            <div style={{ background: theme.colors.bg.page, padding: '24px' }}>
+              <div style={{ fontSize: '10px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '8px' }}>Requests</div>
+              <div style={{ fontSize: '32px', fontWeight: '200', color: theme.colors.white }}>
+                {new Set(files.map(f => f.requestId)).size}
+              </div>
+            </div>
+          </div>
+
+          {/* Files Table */}
           {files.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '120px 40px',
+              padding: '80px 40px',
               background: 'rgba(255, 255, 255, 0.02)',
-              borderRadius: '16px',
+              borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{
-                fontSize: '16px',
-                marginBottom: '12px',
+                fontSize: '15px',
+                marginBottom: '8px',
                 color: theme.colors.text.muted
               }}>
                 No files yet
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: '13px',
                 color: theme.colors.text.tertiary,
                 lineHeight: '1.5'
               }}>
@@ -158,87 +187,107 @@ function Files() {
             </div>
           ) : (
             <div style={{
-              display: 'grid',
-              gap: '12px'
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '12px',
+              border: `1px solid ${theme.colors.border.light}`,
+              overflow: 'hidden'
             }}>
-              {files.map((file) => (
+              {/* Table Header */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 1.5fr 120px 150px 100px',
+                padding: '16px 24px',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderBottom: `1px solid ${theme.colors.border.light}`
+              }}>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: theme.weight.semibold }}>File Name</div>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: theme.weight.semibold }}>Request</div>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: theme.weight.semibold }}>Size</div>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: theme.weight.semibold }}>Uploaded</div>
+                <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', fontWeight: theme.weight.semibold, textAlign: 'right' }}>Action</div>
+              </div>
+
+              {/* Table Rows */}
+              {files.map((file, index) => (
                 <div
                   key={file.id}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.02)',
+                    display: 'grid',
+                    gridTemplateColumns: '2fr 1.5fr 120px 150px 100px',
                     padding: '20px 24px',
-                    borderRadius: '12px',
-                    border: `1px solid ${theme.colors.border.light}`,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    transition: `all ${theme.transition.normal}`
+                    borderBottom: index < files.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                    transition: `all ${theme.transition.fast}`,
+                    background: 'transparent',
+                    alignItems: 'center'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
-                    e.currentTarget.style.transform = 'translateY(-1px)'
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-                    e.currentTarget.style.borderColor = theme.colors.border.light
-                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.background = 'transparent'
                   }}
                 >
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{
-                      fontSize: '16px',
-                      color: theme.colors.text.primary,
-                      marginBottom: '6px',
-                      fontWeight: '500',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis'
-                    }}>
-                      {file.fileName}
-                    </div>
-                    <div style={{
-                      fontSize: '14px',
-                      color: theme.colors.text.muted,
-                      marginBottom: '4px'
-                    }}>
-                      {file.requestTitle}
-                    </div>
-                    <div style={{
-                      fontSize: '13px',
-                      color: theme.colors.text.tertiary
-                    }}>
-                      {formatFileSize(file.fileSize)} • {formatDate(file.uploadedAt)}
-                      {file.uploaderName && ` • ${file.uploaderName}`}
-                    </div>
+                  <div style={{
+                    fontSize: '14px',
+                    color: theme.colors.text.primary,
+                    fontWeight: '500',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    paddingRight: '16px'
+                  }}>
+                    {file.fileName}
                   </div>
-                  <button
-                    onClick={() => downloadFile(file.id, file.fileName)}
-                    style={{
-                      padding: '10px 20px',
-                      background: theme.colors.white,
-                      color: theme.colors.black,
-                      border: 'none',
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      fontWeight: '500',
-                      cursor: 'pointer',
-                      transition: `all ${theme.transition.normal}`,
-                      whiteSpace: 'nowrap',
-                      marginLeft: '20px',
-                      flexShrink: 0
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = theme.colors.text.secondary
-                      e.currentTarget.style.transform = 'translateY(-1px)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = theme.colors.white
-                      e.currentTarget.style.transform = 'translateY(0)'
-                    }}
-                  >
-                    Download
-                  </button>
+                  <div style={{
+                    fontSize: '13px',
+                    color: theme.colors.text.secondary,
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    paddingRight: '16px'
+                  }}>
+                    {file.requestTitle}
+                  </div>
+                  <div style={{
+                    fontSize: '13px',
+                    color: theme.colors.text.secondary
+                  }}>
+                    {formatFileSize(file.fileSize)}
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary
+                  }}>
+                    {new Date(file.uploadedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <button
+                      onClick={() => downloadFile(file.id, file.fileName)}
+                      style={{
+                        padding: '6px 14px',
+                        background: 'transparent',
+                        color: theme.colors.text.secondary,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        transition: `all ${theme.transition.fast}`
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                        e.currentTarget.style.color = theme.colors.white
+                        e.currentTarget.style.borderColor = theme.colors.white
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.color = theme.colors.text.secondary
+                        e.currentTarget.style.borderColor = theme.colors.border.medium
+                      }}
+                    >
+                      Download
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
