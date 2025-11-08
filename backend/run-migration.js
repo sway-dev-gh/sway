@@ -14,7 +14,10 @@ async function runMigration() {
 
     // Run migrations in order
     const migrations = [
-      '005_add_request_type_designs.sql'
+      '005_add_request_type_designs.sql',
+      '006_team_members.sql',
+      '007_custom_domains.sql',
+      '008_integrations.sql'
     ]
 
     for (const migration of migrations) {
