@@ -73,7 +73,7 @@ function Dashboard() {
 
         // Set storage limit based on plan
         const plan = (userData.plan || 'free').toLowerCase()
-        userData.storage_limit_gb = plan === 'pro' ? 30 : 2
+        userData.storage_limit_gb = plan === 'pro' ? 50 : 2
 
         setUser(userData)
       }
@@ -255,7 +255,7 @@ function Dashboard() {
               <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Requests</div>
               <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.activeRequests}</div>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, marginTop: '8px' }}>
-                of {(user.plan || 'free').toLowerCase() === 'pro' ? '100' : '20'}
+                of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'}
               </div>
             </div>
 

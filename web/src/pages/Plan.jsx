@@ -80,8 +80,8 @@ function Plan() {
       description: 'More requests, more storage.',
       popular: true,
       features: [
-        { text: '100 active requests', highlight: true },
-        { text: '30GB storage', highlight: true }
+        { text: '200 active requests', highlight: true },
+        { text: '50GB storage', highlight: true }
       ]
     }
   ]
@@ -407,7 +407,7 @@ function Plan() {
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
-                  On the Free plan, you can have up to 20 active requests with 2GB total storage. You'll need to upgrade to Pro for 100 active requests and 30GB storage.
+                  On the Free plan, you can have up to 20 active requests with 2GB total storage. You'll need to upgrade to Pro for 200 active requests and 50GB storage.
                 </div>
               </div>
 
