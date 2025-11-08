@@ -435,34 +435,34 @@ export default function Upload() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '#FAFAFA',
+      background: theme.colors.bg.page,
       padding: '40px 24px'
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '520px'
+        maxWidth: '600px'
       }}>
         {/* Header */}
         <div style={{
-          marginBottom: '60px',
+          marginBottom: '48px',
           textAlign: 'center'
         }}>
           <div style={{
-            fontSize: '11px',
+            fontSize: '10px',
             fontWeight: '600',
             textTransform: 'uppercase',
-            letterSpacing: '1.5px',
-            color: '#999',
-            marginBottom: '32px'
+            letterSpacing: '2px',
+            color: theme.colors.text.tertiary,
+            marginBottom: '24px'
           }}>
-            Sway
+            SWAY
           </div>
           <h1 style={{
-            fontSize: '28px',
-            fontWeight: '400',
-            margin: '0 0 12px 0',
-            color: '#000',
-            letterSpacing: '-0.02em',
+            fontSize: '32px',
+            fontWeight: '300',
+            margin: '0 0 16px 0',
+            color: theme.colors.white,
+            letterSpacing: '-0.01em',
             lineHeight: '1.2'
           }}>
             {requestData.title}
@@ -470,10 +470,10 @@ export default function Upload() {
           {requestData.description && (
             <p style={{
               fontSize: '15px',
-              color: '#666',
+              color: theme.colors.text.secondary,
               margin: '0 0 24px 0',
               lineHeight: '1.6',
-              maxWidth: '400px',
+              maxWidth: '480px',
               marginLeft: 'auto',
               marginRight: 'auto'
             }}>
@@ -485,11 +485,12 @@ export default function Upload() {
               display: 'inline-flex',
               alignItems: 'center',
               padding: '8px 16px',
-              background: '#FFF',
-              border: '1px solid #E5E5E5',
+              background: theme.colors.bg.secondary,
+              border: `1px solid ${theme.colors.border.medium}`,
+              borderRadius: theme.radius.md,
               fontSize: '13px',
               fontWeight: '500',
-              color: timeRemaining === 'Expired' ? '#FF3B30' : '#666'
+              color: timeRemaining === 'Expired' ? '#ef4444' : theme.colors.text.secondary
             }}>
               {timeRemaining}
             </div>
@@ -498,16 +499,17 @@ export default function Upload() {
 
         {/* Form */}
         <form onSubmit={handleSubmit} style={{
-          background: '#FFF',
+          background: theme.colors.bg.secondary,
           padding: '40px',
-          border: '1px solid #E5E5E5'
+          border: `1px solid ${theme.colors.border.medium}`,
+          borderRadius: theme.radius.lg
         }}>
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: '24px' }}>
             <label style={{
               display: 'block',
               fontSize: '12px',
-              color: '#666',
-              marginBottom: '10px',
+              color: theme.colors.text.secondary,
+              marginBottom: '8px',
               fontWeight: '500',
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
@@ -519,77 +521,81 @@ export default function Upload() {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
-              placeholder="Enter your name"
+              placeholder="will"
               style={{
                 width: '100%',
-                padding: '14px 16px',
-                background: '#FAFAFA',
-                border: '1px solid #E5E5E5',
-                color: '#000',
-                fontSize: '15px',
+                padding: '12px 16px',
+                background: theme.colors.bg.primary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md,
+                color: theme.colors.white,
+                fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.15s ease'
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = '#000'
-                e.currentTarget.style.background = '#FFF'
+                e.currentTarget.style.borderColor = theme.colors.text.secondary
+                e.currentTarget.style.background = theme.colors.bg.primary
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#E5E5E5'
-                e.currentTarget.style.background = '#FAFAFA'
+                e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.background = theme.colors.bg.primary
               }}
             />
           </div>
 
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: '24px' }}>
             <label style={{
               display: 'block',
               fontSize: '12px',
-              color: '#666',
-              marginBottom: '10px',
+              color: theme.colors.text.secondary,
+              marginBottom: '8px',
               fontWeight: '500',
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
             }}>
-              Your Email <span style={{ color: '#999', textTransform: 'none' }}>(optional)</span>
+              Your Email <span style={{ color: theme.colors.text.tertiary, textTransform: 'none', fontWeight: '400' }}>(optional)</span>
             </label>
             <input
               type="email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="your@email.com"
+              placeholder="williamclinchard@gmail.com"
               style={{
                 width: '100%',
-                padding: '14px 16px',
-                background: '#FAFAFA',
-                border: '1px solid #E5E5E5',
-                color: '#000',
-                fontSize: '15px',
+                padding: '12px 16px',
+                background: theme.colors.bg.primary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md,
+                color: theme.colors.white,
+                fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: 'all 0.2s ease'
+                transition: 'all 0.15s ease'
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = '#000'
-                e.currentTarget.style.background = '#FFF'
+                e.currentTarget.style.borderColor = theme.colors.text.secondary
+                e.currentTarget.style.background = theme.colors.bg.primary
               }}
               onBlur={(e) => {
-                e.currentTarget.style.borderColor = '#E5E5E5'
-                e.currentTarget.style.background = '#FAFAFA'
+                e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.background = theme.colors.bg.primary
               }}
             />
           </div>
 
           {/* Custom Fields */}
           {customFields.map((field) => (
-            <div key={field.id} style={{ marginBottom: '20px' }}>
+            <div key={field.id} style={{ marginBottom: '24px' }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '12px',
                 color: theme.colors.text.secondary,
                 marginBottom: '8px',
-                fontWeight: theme.weight.medium
+                fontWeight: '500',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
               }}>
                 {field.label}
               </label>
@@ -603,19 +609,19 @@ export default function Upload() {
                   style={{
                     width: '100%',
                     padding: '12px 16px',
-                    background: theme.colors.bg.secondary,
+                    background: theme.colors.bg.primary,
                     border: `1px solid ${theme.colors.border.medium}`,
                     borderRadius: theme.radius.md,
-                    color: theme.colors.text.primary,
+                    color: theme.colors.white,
                     fontSize: '14px',
                     fontFamily: 'inherit',
                     outline: 'none',
                     cursor: 'pointer'
                   }}
                 >
-                  <option value="">Select {field.label}</option>
+                  <option value="" style={{ background: theme.colors.bg.primary }}>Select Preferred Resolution</option>
                   {field.options.map(opt => (
-                    <option key={opt} value={opt}>{opt}</option>
+                    <option key={opt} value={opt} style={{ background: theme.colors.bg.primary }}>{opt}</option>
                   ))}
                 </select>
               ) : (
@@ -630,14 +636,14 @@ export default function Upload() {
                   style={{
                     width: '100%',
                     padding: '12px 16px',
-                    background: theme.colors.bg.secondary,
+                    background: theme.colors.bg.primary,
                     border: `1px solid ${theme.colors.border.medium}`,
                     borderRadius: theme.radius.md,
-                    color: theme.colors.text.primary,
+                    color: theme.colors.white,
                     fontSize: '14px',
                     fontFamily: 'inherit',
                     outline: 'none',
-                    transition: `all ${theme.transition.fast}`
+                    transition: 'all 0.15s ease'
                   }}
                   onFocus={(e) => {
                     e.currentTarget.style.borderColor = theme.colors.text.secondary
@@ -654,8 +660,8 @@ export default function Upload() {
             <label style={{
               display: 'block',
               fontSize: '12px',
-              color: '#666',
-              marginBottom: '10px',
+              color: theme.colors.text.secondary,
+              marginBottom: '8px',
               fontWeight: '500',
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
@@ -669,11 +675,12 @@ export default function Upload() {
               required
               style={{
                 width: '100%',
-                padding: '14px 16px',
-                background: '#FAFAFA',
-                border: '1px solid #E5E5E5',
-                color: '#000',
-                fontSize: '15px',
+                padding: '12px 16px',
+                background: theme.colors.bg.primary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md,
+                color: theme.colors.white,
+                fontSize: '14px',
                 fontFamily: 'inherit',
                 outline: 'none',
                 cursor: 'pointer'
@@ -683,33 +690,34 @@ export default function Upload() {
               <div style={{
                 marginTop: '16px',
                 padding: '16px',
-                background: '#FAFAFA',
-                border: '1px solid #E5E5E5'
+                background: theme.colors.bg.primary,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md
               }}>
                 <div style={{
-                  fontSize: '11px',
+                  fontSize: '10px',
                   fontWeight: '600',
                   textTransform: 'uppercase',
-                  letterSpacing: '1px',
-                  color: '#999',
+                  letterSpacing: '1.5px',
+                  color: theme.colors.text.tertiary,
                   marginBottom: '12px'
                 }}>
                   {files.length} File{files.length > 1 ? 's' : ''} Selected
                 </div>
                 {files.map((file, idx) => (
                   <div key={idx} style={{
-                    fontSize: '14px',
-                    color: '#666',
+                    fontSize: '13px',
+                    color: theme.colors.text.secondary,
                     marginBottom: idx < files.length - 1 ? '8px' : '0',
-                    fontFamily: 'monospace',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    padding: '8px 0'
                   }}>
                     <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginRight: '12px' }}>
                       {file.name}
                     </span>
-                    <span style={{ color: '#999', fontSize: '13px', flexShrink: 0 }}>
+                    <span style={{ color: theme.colors.text.tertiary, fontSize: '12px', flexShrink: 0 }}>
                       {(file.size / 1024 / 1024).toFixed(2)} MB
                     </span>
                   </div>
@@ -723,27 +731,28 @@ export default function Upload() {
             disabled={uploading}
             style={{
               width: '100%',
-              padding: '16px 24px',
-              background: '#000',
-              color: '#FFF',
+              padding: '14px 24px',
+              background: theme.colors.white,
+              color: theme.colors.bg.primary,
               border: 'none',
-              fontSize: '14px',
+              borderRadius: theme.radius.md,
+              fontSize: '13px',
               fontWeight: '600',
               cursor: uploading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s ease',
+              transition: 'all 0.15s ease',
               fontFamily: 'inherit',
-              opacity: uploading ? 0.6 : 1,
+              opacity: uploading ? 0.5 : 1,
               textTransform: 'uppercase',
               letterSpacing: '1px'
             }}
             onMouseEnter={(e) => {
               if (!uploading) {
-                e.currentTarget.style.background = '#333'
+                e.currentTarget.style.opacity = '0.9'
               }
             }}
             onMouseLeave={(e) => {
               if (!uploading) {
-                e.currentTarget.style.background = '#000'
+                e.currentTarget.style.opacity = '1'
               }
             }}
           >
