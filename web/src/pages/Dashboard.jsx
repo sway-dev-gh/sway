@@ -148,7 +148,7 @@ function Dashboard() {
               color: theme.colors.text.muted,
               margin: '8px 0 0 0'
             }}>
-              Overview of your file requests and uploads
+              Your file requests and uploads at a glance
             </p>
           </div>
 
