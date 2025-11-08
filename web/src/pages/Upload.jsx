@@ -619,7 +619,7 @@ export default function Upload() {
                     cursor: 'pointer'
                   }}
                 >
-                  <option value="" style={{ background: theme.colors.bg.primary }}>Select Preferred Resolution</option>
+                  <option value="" style={{ background: theme.colors.bg.primary }}>Select {field.label}</option>
                   {field.options.map(opt => (
                     <option key={opt} value={opt} style={{ background: theme.colors.bg.primary }}>{opt}</option>
                   ))}
