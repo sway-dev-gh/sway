@@ -14,6 +14,11 @@ const notificationRoutes = require('./routes/notifications')
 const templateRoutes = require('./routes/templates')
 const statsRoutes = require('./routes/stats')
 const stripeRoutes = require('./routes/stripe')
+const supportRoutes = require('./routes/support')
+const brandingRoutes = require('./routes/branding')
+const domainRoutes = require('./routes/domain')
+const teamRoutes = require('./routes/team')
+const integrationsRoutes = require('./routes/integrations')
 const pool = require('./db/pool')
 
 const app = express()
@@ -43,6 +48,11 @@ app.use('/api/notifications', notificationRoutes)
 app.use('/api/templates', templateRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/stripe', stripeRoutes)
+app.use('/api/support', supportRoutes)
+app.use('/api/branding', brandingRoutes)
+app.use('/api/domain', domainRoutes)
+app.use('/api/team', teamRoutes)
+app.use('/api/integrations', integrationsRoutes)
 
 // Health check
 app.get('/health', (req, res) => {
