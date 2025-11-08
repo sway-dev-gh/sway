@@ -95,7 +95,7 @@ function Plan() {
     {
       id: 'business',
       name: 'Business',
-      price: '$39',
+      price: '$17',
       period: '/month',
       tagline: 'For growing teams',
       description: 'Everything in Pro, plus advanced features for teams, agencies, and businesses collecting files at scale.',
