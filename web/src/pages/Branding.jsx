@@ -201,6 +201,10 @@ function Branding() {
     { name: 'Midnight', color: '#191970' }
   ]
 
+  // Helper to check if a color is light
+  const lightColors = ['#FFFFFF', '#F5F5F5', '#E5E4E2', '#FFFDD0', '#F5F5DC']
+  const isLightColor = (color) => lightColors.includes(color)
+
   if (initialLoad) {
     return (
       <div style={{
@@ -460,7 +464,7 @@ function Branding() {
                     <span style={{
                       fontSize: '10px',
                       fontWeight: '600',
-                      color: ['#FFFFFF', '#F5F5F5', '#E5E4E2', '#FFFDD0', '#F5F5DC'].includes(themeItem.color)
+                      color: isLightColor(themeItem.color)
                         ? theme.colors.black
                         : theme.colors.white,
                       textTransform: 'uppercase',
@@ -627,7 +631,7 @@ function Branding() {
               }}>
                 <div style={{
                   padding: '40px',
-                  border: `2px dashed ${backgroundColor === '#FFFFFF' || backgroundColor === '#F5F5F5' ? '#CCCCCC' : 'rgba(255, 255, 255, 0.3)'}`,
+                  border: `2px dashed ${isLightColor(backgroundColor) ? '#CCCCCC' : 'rgba(255, 255, 255, 0.3)'}`,
                   borderRadius: '12px',
                   textAlign: 'center',
                   maxWidth: '400px',
@@ -636,21 +640,21 @@ function Branding() {
                   <div style={{
                     fontSize: '48px',
                     marginBottom: '12px',
-                    color: backgroundColor === '#FFFFFF' || backgroundColor === '#F5F5F5' ? '#666666' : 'rgba(255, 255, 255, 0.6)'
+                    color: isLightColor(backgroundColor) ? '#666666' : 'rgba(255, 255, 255, 0.6)'
                   }}>
                     📁
                   </div>
                   <div style={{
                     fontSize: '14px',
                     fontWeight: '500',
-                    color: backgroundColor === '#FFFFFF' || backgroundColor === '#F5F5F5' ? '#333333' : 'rgba(255, 255, 255, 0.9)',
+                    color: isLightColor(backgroundColor) ? '#333333' : 'rgba(255, 255, 255, 0.9)',
                     marginBottom: '8px'
                   }}>
                     Upload form appears here
                   </div>
                   <div style={{
                     fontSize: '11px',
-                    color: backgroundColor === '#FFFFFF' || backgroundColor === '#F5F5F5' ? '#999999' : 'rgba(255, 255, 255, 0.5)'
+                    color: isLightColor(backgroundColor) ? '#999999' : 'rgba(255, 255, 255, 0.5)'
                   }}>
                     This is a preview of your branded upload page
                   </div>
@@ -661,7 +665,7 @@ function Branding() {
               {!removeBranding && (
                 <div style={{
                   fontSize: '11px',
-                  color: backgroundColor === '#FFFFFF' || backgroundColor === '#F5F5F5' ? '#999999' : 'rgba(255, 255, 255, 0.4)',
+                  color: isLightColor(backgroundColor) ? '#999999' : 'rgba(255, 255, 255, 0.4)',
                   marginTop: '40px'
                 }}>
                   Powered by Sway
