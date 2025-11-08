@@ -143,28 +143,23 @@ function Sidebar() {
 
   return (
     <div style={topBarStyle}>
-      {/* Left Section - Navigation */}
+      {/* Logo/Brand */}
       <div style={{
+        fontSize: '18px',
+        fontWeight: theme.weight.semibold,
+        color: theme.colors.text.primary,
+        marginRight: '40px'
+      }}>
+        Sway
+      </div>
+
+      {/* Navigation Links - Spread across full width */}
+      <nav style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '20px',
         flex: 1,
-        minWidth: 0
+        justifyContent: 'space-between'
       }}>
-        {/* Logo/Brand */}
-        <div style={{
-          fontSize: '18px',
-          fontWeight: theme.weight.semibold,
-          color: theme.colors.text.primary
-        }}>
-          Sway
-        </div>
-
-        {/* Navigation Links */}
-        <nav style={{
-          display: 'flex',
-          alignItems: 'center'
-        }}>
           {navSections.map((section, sectionIndex) => (
             <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center' }}>
               {section.items.map((item) => {
@@ -246,8 +241,7 @@ function Sidebar() {
               )}
             </div>
           ))}
-        </nav>
-      </div>
+      </nav>
 
       {/* Right Section - User */}
       <div style={{
