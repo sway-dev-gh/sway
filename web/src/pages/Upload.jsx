@@ -248,6 +248,7 @@ export default function Upload() {
   const [files, setFiles] = useState([])
   const [uploading, setUploading] = useState(false)
   const [success, setSuccess] = useState(false)
+  const [brandingData, setBrandingData] = useState(null)
 
   useEffect(() => {
     fetchRequest()
@@ -257,6 +258,24 @@ export default function Upload() {
     try {
       const { data } = await api.get(`/api/r/${shortCode}`)
       setRequestData(data)
+
+      // Process branding data if available
+      if (data.branding && data.branding.requestTypeDesigns && data.requestType) {
+        try {
+          const designs = JSON.parse(data.branding.requestTypeDesigns)
+          const requestTypeDesign = designs[data.requestType]
+          if (requestTypeDesign) {
+            setBrandingData({
+              backgroundColor: requestTypeDesign.backgroundColor || '#000000',
+              elements: requestTypeDesign.elements || [],
+              logoUrl: data.branding.logoUrl,
+              removeBranding: data.branding.removeBranding
+            })
+          }
+        } catch (e) {
+          console.error('Error parsing branding data:', e)
+        }
+      }
     } catch (error) {
       console.error('Error fetching request:', error)
     } finally {
@@ -428,11 +447,14 @@ export default function Upload() {
   const timeRemaining = getTimeRemaining()
   const customFields = getRequestTypeFields()
 
+  const pageBackground = brandingData?.backgroundColor || theme.colors.bg.page
+
   return (
     <div style={{
       minHeight: '100vh',
-      background: theme.colors.bg.page,
-      padding: '0'
+      background: pageBackground,
+      padding: '0',
+      position: 'relative'
     }}>
       {/* Top Bar */}
       <div style={{
@@ -464,7 +486,9 @@ export default function Upload() {
       <div style={{
         maxWidth: '720px',
         margin: '0 auto',
-        padding: '80px 40px'
+        padding: '80px 40px',
+        position: 'relative',
+        zIndex: 10
       }}>
         {/* Header */}
         <div style={{
@@ -754,6 +778,99 @@ export default function Upload() {
           </button>
         </form>
       </div>
+
+      {/* Render Canva-style branding elements */}
+      {brandingData && brandingData.elements && brandingData.elements.length > 0 && (
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          pointerEvents: 'none',
+          zIndex: 0,
+          overflow: 'hidden'
+        }}>
+          {brandingData.elements.map((element, index) => {
+            const commonStyle = {
+              position: 'absolute',
+              left: `${element.x}px`,
+              top: `${element.y}px`,
+              width: `${element.width}px`,
+              height: `${element.height}px`,
+              opacity: element.opacity,
+              transform: `rotate(${element.rotation}deg)`,
+              zIndex: element.zIndex
+            }
+
+            if (element.type === 'text') {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    ...commonStyle,
+                    color: element.color,
+                    fontSize: `${element.fontSize}px`,
+                    fontWeight: element.fontWeight,
+                    fontFamily: element.fontFamily,
+                    textAlign: element.textAlign || 'left',
+                    display: 'flex',
+                    alignItems: 'center',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-word'
+                  }}
+                >
+                  {element.text}
+                </div>
+              )
+            }
+
+            if (element.type === 'shape') {
+              if (element.shape === 'rectangle') {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      ...commonStyle,
+                      backgroundColor: element.fill,
+                      borderRadius: `${element.cornerRadius || 0}px`
+                    }}
+                  />
+                )
+              }
+
+              if (element.shape === 'circle') {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      ...commonStyle,
+                      backgroundColor: element.fill,
+                      borderRadius: '50%'
+                    }}
+                  />
+                )
+              }
+            }
+
+            if (element.type === 'image' && element.src) {
+              return (
+                <img
+                  key={index}
+                  src={element.src}
+                  alt=""
+                  style={{
+                    ...commonStyle,
+                    objectFit: 'cover'
+                  }}
+                />
+              )
+            }
+
+            return null
+          })}
+        </div>
+      )}
     </div>
   )
 }
