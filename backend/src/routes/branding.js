@@ -9,8 +9,7 @@ router.get('/settings', authenticateToken, async (req, res) => {
     const userId = req.userId
 
     const result = await pool.query(
-      `SELECT id, logo_url, background_color, text_color, accent_color, 
-              custom_message, show_watermark, custom_css, elements, 
+      `SELECT id, logo_url, background_color, remove_branding,
               created_at, updated_at
        FROM branding_settings
        WHERE user_id = $1`,
@@ -21,11 +20,9 @@ router.get('/settings', authenticateToken, async (req, res) => {
       // Return default settings if none exist
       return res.json({
         settings: {
-          background_color: '#000000',
-          text_color: '#FFFFFF',
-          accent_color: '#FFFFFF',
-          show_watermark: true,
-          elements: []
+          background_color: '#FFFFFF',
+          remove_branding: true,
+          logo_url: null
         }
       })
     }
@@ -44,44 +41,38 @@ router.post('/settings', authenticateToken, async (req, res) => {
     const {
       logo_url,
       background_color,
-      text_color,
-      accent_color,
-      custom_message,
-      show_watermark,
-      custom_css,
-      elements
+      remove_branding
     } = req.body
+
+    // Check user plan - only Pro/Business can use branding
+    const userResult = await pool.query(
+      'SELECT plan FROM users WHERE id = $1',
+      [userId]
+    )
+
+    const userPlan = userResult.rows[0]?.plan?.toLowerCase()
+    if (userPlan !== 'pro' && userPlan !== 'business') {
+      return res.status(403).json({ error: 'Pro or Business plan required for custom branding' })
+    }
 
     const result = await pool.query(
       `INSERT INTO branding_settings (
-         user_id, logo_url, background_color, text_color, accent_color,
-         custom_message, show_watermark, custom_css, elements
+         user_id, logo_url, background_color, remove_branding
        )
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       VALUES ($1, $2, $3, $4)
        ON CONFLICT (user_id)
        DO UPDATE SET
-         logo_url = COALESCE(EXCLUDED.logo_url, branding_settings.logo_url),
-         background_color = COALESCE(EXCLUDED.background_color, branding_settings.background_color),
-         text_color = COALESCE(EXCLUDED.text_color, branding_settings.text_color),
-         accent_color = COALESCE(EXCLUDED.accent_color, branding_settings.accent_color),
-         custom_message = COALESCE(EXCLUDED.custom_message, branding_settings.custom_message),
-         show_watermark = COALESCE(EXCLUDED.show_watermark, branding_settings.show_watermark),
-         custom_css = COALESCE(EXCLUDED.custom_css, branding_settings.custom_css),
-         elements = COALESCE(EXCLUDED.elements, branding_settings.elements),
+         logo_url = EXCLUDED.logo_url,
+         background_color = EXCLUDED.background_color,
+         remove_branding = EXCLUDED.remove_branding,
          updated_at = NOW()
-       RETURNING id, logo_url, background_color, text_color, accent_color,
-                 custom_message, show_watermark, custom_css, elements,
+       RETURNING id, logo_url, background_color, remove_branding,
                  created_at, updated_at`,
       [
         userId,
         logo_url || null,
-        background_color || '#000000',
-        text_color || '#FFFFFF',
-        accent_color || '#FFFFFF',
-        custom_message || null,
-        show_watermark !== undefined ? show_watermark : true,
-        custom_css || null,
-        elements ? JSON.stringify(elements) : '[]'
+        background_color || '#FFFFFF',
+        remove_branding !== undefined ? remove_branding : true
       ]
     )
 
