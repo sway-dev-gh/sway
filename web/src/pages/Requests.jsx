@@ -308,6 +308,8 @@ function Requests() {
   const [customExpiryUnit, setCustomExpiryUnit] = useState('days') // 'minutes', 'hours', 'days'
   const [createdLink, setCreatedLink] = useState(null) // Store the created link
   const [userPlan, setUserPlan] = useState('free') // Store user's plan
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false) // Upgrade prompt
+  const [upgradeMessage, setUpgradeMessage] = useState('') // Upgrade message from backend
 
   useEffect(() => {
     fetchRequests()
@@ -442,7 +444,15 @@ function Requests() {
       // Don't close modal yet - show the link first
     } catch (err) {
       console.error('Failed to create request:', err)
-      alert(err.response?.data?.error || 'Failed to create request')
+      const errorData = err.response?.data
+
+      // Check if it's a limit reached error
+      if (errorData?.limitReached) {
+        setUpgradeMessage(errorData.error)
+        setShowUpgradeModal(true)
+      } else {
+        alert(errorData?.error || 'Failed to create request')
+      }
     } finally {
       setCreating(false)
     }
@@ -1365,6 +1375,115 @@ function Requests() {
           )}
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.85)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10000,
+            backdropFilter: 'blur(8px)'
+          }}
+          onClick={() => setShowUpgradeModal(false)}
+        >
+          <div
+            style={{
+              background: theme.colors.bg.elevated,
+              borderRadius: '16px',
+              padding: '48px',
+              maxWidth: '520px',
+              width: 'calc(100% - 32px)',
+              border: `1px solid ${theme.colors.border.medium}`,
+              textAlign: 'center'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{
+              fontSize: '48px',
+              marginBottom: '24px'
+            }}>
+              🚀
+            </div>
+            <h2 style={{
+              fontSize: '28px',
+              fontWeight: '400',
+              margin: '0 0 16px 0',
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em'
+            }}>
+              Upgrade to Pro
+            </h2>
+            <p style={{
+              fontSize: '16px',
+              color: theme.colors.text.secondary,
+              margin: '0 0 32px 0',
+              lineHeight: '1.6'
+            }}>
+              {upgradeMessage}
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+              <Link
+                to="/plan"
+                style={{
+                  padding: '14px 32px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '15px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: `all ${theme.transition.normal}`,
+                  textDecoration: 'none',
+                  display: 'inline-block'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = theme.colors.text.secondary
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = theme.colors.white
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+              >
+                View Plans
+              </Link>
+              <button
+                onClick={() => setShowUpgradeModal(false)}
+                style={{
+                  padding: '14px 32px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  color: theme.colors.text.secondary,
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '10px',
+                  fontSize: '15px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: `all ${theme.transition.normal}`
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                  e.currentTarget.style.borderColor = theme.colors.border.strong
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                }}
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Custom Scrollbar Styles */}
       <style>{`
