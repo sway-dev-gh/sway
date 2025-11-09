@@ -141,14 +141,25 @@ function Sidebar() {
     <>
     <div style={topBarStyle}>
       {/* Logo/Brand */}
-      <div style={{
-        fontSize: '32px',
-        fontWeight: theme.weight.semibold,
-        color: theme.colors.text.primary,
-        flexShrink: 0
-      }}>
-        Sway
-      </div>
+      <Link to="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <img
+          src="/logo.svg"
+          alt="Sway"
+          style={{
+            width: '40px',
+            height: '40px',
+            flexShrink: 0
+          }}
+        />
+        <div style={{
+          fontSize: '32px',
+          fontWeight: theme.weight.semibold,
+          color: theme.colors.text.primary,
+          flexShrink: 0
+        }}>
+          Sway
+        </div>
+      </Link>
 
       {/* Navigation Links */}
       <nav style={{

@@ -44,15 +44,31 @@ export default function Login() {
           marginBottom: '40px',
           textAlign: 'center'
         }}>
-          <h1 style={{
-            fontSize: '42px',
-            fontWeight: '500',
-            margin: '0 0 8px 0',
-            color: theme.colors.text.primary,
-            letterSpacing: '-0.02em'
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '12px',
+            marginBottom: '8px'
           }}>
-            Sway
-          </h1>
+            <img
+              src="/logo.svg"
+              alt="Sway"
+              style={{
+                width: '50px',
+                height: '50px'
+              }}
+            />
+            <h1 style={{
+              fontSize: '42px',
+              fontWeight: '500',
+              margin: 0,
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em'
+            }}>
+              Sway
+            </h1>
+          </div>
           <p style={{
             fontSize: '20px',
             color: theme.colors.text.secondary,
