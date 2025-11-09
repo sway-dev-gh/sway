@@ -46,11 +46,11 @@ router.get('/', authenticateToken, async (req, res) => {
 
     // Upload trend (last 7 days) - available to all users
     const uploadsByDayResult = await pool.query(
-      `SELECT DATE(u.created_at) as date, COUNT(*) as count
+      `SELECT DATE(u.uploaded_at) as date, COUNT(*) as count
        FROM uploads u
        JOIN file_requests fr ON u.request_id = fr.id
-       WHERE fr.user_id = $1 AND u.created_at >= NOW() - INTERVAL '7 days'
-       GROUP BY DATE(u.created_at)
+       WHERE fr.user_id = $1 AND u.uploaded_at >= NOW() - INTERVAL '7 days'
+       GROUP BY DATE(u.uploaded_at)
        ORDER BY date ASC`,
       [userId]
     )
@@ -99,11 +99,11 @@ router.get('/', authenticateToken, async (req, res) => {
     if (userPlan === 'pro') {
       // Recent activity (last 7 days)
       const recentActivityResult = await pool.query(
-        `SELECT DATE(u.created_at) as date, COUNT(*) as uploads
+        `SELECT DATE(u.uploaded_at) as date, COUNT(*) as uploads
          FROM uploads u
          JOIN file_requests fr ON u.request_id = fr.id
-         WHERE fr.user_id = $1 AND u.created_at >= NOW() - INTERVAL '7 days'
-         GROUP BY DATE(u.created_at)
+         WHERE fr.user_id = $1 AND u.uploaded_at >= NOW() - INTERVAL '7 days'
+         GROUP BY DATE(u.uploaded_at)
          ORDER BY date DESC`,
         [userId]
       )
