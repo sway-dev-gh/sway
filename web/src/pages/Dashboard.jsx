@@ -247,7 +247,7 @@ function Dashboard() {
               <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Uploads</div>
               <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
               <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.muted }}>
-                {stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
+                {stats.uploadsByDay && stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
               </div>
             </div>
 
