@@ -195,15 +195,12 @@ function Responses() {
               border: `1px solid ${theme.colors.border.light}`,
               borderRadius: '12px',
               padding: '60px 20px',
-              textAlign: 'center'
+              textAlign: 'center',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
-              <div style={{
-                fontSize: '48px',
-                marginBottom: '16px',
-                opacity: 0.3,
-                fontWeight: theme.weight.light,
-                color: theme.colors.text.tertiary
-              }}>—</div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: theme.weight.medium,
