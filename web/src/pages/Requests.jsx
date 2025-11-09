@@ -155,13 +155,12 @@ function Requests() {
   useEffect(() => {
     fetchRequests()
     const userStr = localStorage.getItem('user')
-    const adminKey = localStorage.getItem('adminKey')
     if (userStr) {
       const userData = JSON.parse(userStr)
-      // If admin key exists, set plan to 'business' (highest level)
-      const plan = adminKey ? 'business' : (userData.plan || 'free')
+      // Admin mode does NOT bypass plan restrictions
+      // User must have actual Pro plan to access Pro features
+      const plan = userData.plan || 'free'
       console.log('[Requests] User data from localStorage:', userData)
-      console.log('[Requests] Admin key present:', !!adminKey)
       console.log('[Requests] Setting userPlan to:', plan)
       setUserPlan(plan)
     }
@@ -784,7 +783,7 @@ function Requests() {
                           type.description.toLowerCase().includes(searchQuery.toLowerCase())
                         )
                         .map((type) => {
-                          const planLevels = { 'free': 0, 'pro': 1, 'business': 2 }
+                          const planLevels = { 'free': 0, 'pro': 1 }
                           const currentPlanLevel = planLevels[userPlan] || 0
                           const requiredPlanLevel = planLevels[type.planRequired] || 0
                           const isLocked = currentPlanLevel < requiredPlanLevel
