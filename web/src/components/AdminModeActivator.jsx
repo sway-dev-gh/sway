@@ -8,7 +8,6 @@ function AdminModeActivator({ onActivate }) {
   const [timeLeft, setTimeLeft] = useState(15)
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [selectedPlan, setSelectedPlan] = useState('free')
-  const [isTyping, setIsTyping] = useState(false)
   const lastShiftTime = useRef(0)
   const timerRef = useRef(null)
 
@@ -50,7 +49,7 @@ function AdminModeActivator({ onActivate }) {
   }, [showModal])
 
   useEffect(() => {
-    if (showModal && !isTyping) {
+    if (showModal) {
       timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
@@ -60,8 +59,6 @@ function AdminModeActivator({ onActivate }) {
           return prev - 1
         })
       }, 1000)
-    } else if (timerRef.current) {
-      clearInterval(timerRef.current)
     }
 
     return () => {
@@ -69,14 +66,13 @@ function AdminModeActivator({ onActivate }) {
         clearInterval(timerRef.current)
       }
     }
-  }, [showModal, isTyping])
+  }, [showModal])
 
   const openAdminModal = () => {
     setShowModal(true)
     setPassword('')
     setError('')
     setTimeLeft(15)
-    setIsTyping(false)
   }
 
   const closeModal = () => {
@@ -309,7 +305,6 @@ function AdminModeActivator({ onActivate }) {
                   setPassword(e.target.value)
                   setError('')
                 }}
-                onFocus={() => setIsTyping(true)}
                 autoFocus
                 placeholder="Enter password..."
                 style={{
