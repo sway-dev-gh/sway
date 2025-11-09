@@ -76,10 +76,8 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
     const { code } = req.params
 
     const result = await pool.query(
-      `SELECT fr.id, fr.title, fr.description, fr.is_active, fr.request_type, fr.custom_fields, fr.expires_at, fr.user_id,
-              bs.remove_branding, bs.logo_url, bs.primary_color, bs.request_type_designs
+      `SELECT fr.id, fr.title, fr.description, fr.is_active, fr.request_type, fr.custom_fields, fr.expires_at, fr.user_id
        FROM file_requests fr
-       LEFT JOIN branding_settings bs ON fr.user_id = bs.user_id
        WHERE fr.short_code = $1`,
       [code]
     )
@@ -97,13 +95,7 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
       isActive: request.is_active,
       requestType: request.request_type,
       customFields: request.custom_fields,
-      expiresAt: request.expires_at,
-      branding: {
-        removeBranding: request.remove_branding || false,
-        logoUrl: request.logo_url,
-        primaryColor: request.primary_color,
-        requestTypeDesigns: request.request_type_designs
-      }
+      expiresAt: request.expires_at
     })
   } catch (error) {
     console.error('Get upload request error:', error)
