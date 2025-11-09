@@ -200,8 +200,10 @@ function Responses() {
               <div style={{
                 fontSize: '48px',
                 marginBottom: '16px',
-                opacity: 0.3
-              }}>📥</div>
+                opacity: 0.3,
+                fontWeight: theme.weight.light,
+                color: theme.colors.text.tertiary
+              }}>—</div>
               <h3 style={{
                 fontSize: '18px',
                 fontWeight: theme.weight.medium,
