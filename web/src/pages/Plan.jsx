@@ -69,7 +69,7 @@ function Plan() {
       features: [
         { text: '20 active requests', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: '5 basic request types', highlight: false }
+        { text: 'Limited request types', highlight: false }
       ]
     },
     {
@@ -83,7 +83,7 @@ function Plan() {
       features: [
         { text: '200 active requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: '15 request types (Videos, Code, Design & more)', highlight: true }
+        { text: 'Unlimited request types', highlight: true }
       ]
     }
   ]
