@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import api from '../api/axios'
+import theme from '../theme'
 
 function Upload() {
   const { shortCode } = useParams()
@@ -15,6 +16,7 @@ function Upload() {
   const [uploading, setUploading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [brandingData, setBrandingData] = useState(null)
+  const [validationError, setValidationError] = useState('')
 
   useEffect(() => {
     fetchRequest()
@@ -36,10 +38,41 @@ function Upload() {
     setFiles(Array.from(e.target.files))
   }
 
+  const validateRequiredFields = () => {
+    // Clear previous errors
+    setValidationError('')
+
+    // Check if fieldRequirements exists in requestData
+    if (!requestData.fieldRequirements) {
+      return true
+    }
+
+    // Check each custom field for required status
+    for (const [fieldId, isRequired] of Object.entries(requestData.fieldRequirements)) {
+      if (isRequired) {
+        const fieldValue = formData.customFields[fieldId]
+        if (!fieldValue || fieldValue.trim() === '') {
+          // Find the field label for better error message
+          const field = requestData.customFields?.find(f => f.id === fieldId)
+          const fieldLabel = field?.label || 'A required field'
+          setValidationError(`${fieldLabel} is required`)
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (files.length === 0) {
       alert('Please select at least one file')
+      return
+    }
+
+    // Validate required fields
+    if (!validateRequiredFields()) {
       return
     }
 
@@ -460,17 +493,22 @@ function Upload() {
 
           {/* Custom Fields */}
           {requestData.customFields && requestData.customFields.length > 0 && (
-            requestData.customFields.map((field) => (
-              <div key={field.id} style={{ marginBottom: '20px' }}>
-                <label style={{
-                  display: 'block',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  color: '#a1a1a1',
-                  marginBottom: '8px'
-                }}>
-                  {field.label}
-                </label>
+            requestData.customFields.map((field) => {
+              const isRequired = requestData.fieldRequirements?.[field.id] === true
+              return (
+                <div key={field.id} style={{ marginBottom: '20px' }}>
+                  <label style={{
+                    display: 'block',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    color: '#a1a1a1',
+                    marginBottom: '8px'
+                  }}>
+                    {field.label}
+                    {isRequired && (
+                      <span style={{ color: theme.colors.error, marginLeft: '4px' }}>*</span>
+                    )}
+                  </label>
                 {field.type === 'select' ? (
                   <select
                     value={formData.customFields[field.id] || ''}
@@ -523,7 +561,24 @@ function Upload() {
                   />
                 )}
               </div>
-            ))
+              )
+            })
+          )}
+
+          {/* Validation Error Message */}
+          {validationError && (
+            <div style={{
+              marginBottom: '20px',
+              padding: '12px 16px',
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              borderRadius: '8px',
+              color: theme.colors.error,
+              fontSize: theme.fontSize.sm,
+              textAlign: 'center'
+            }}>
+              {validationError}
+            </div>
           )}
 
           {/* Submit Button */}

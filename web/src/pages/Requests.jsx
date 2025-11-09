@@ -133,6 +133,7 @@ function Requests() {
   const [userPlan, setUserPlan] = useState('free')
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [upgradeMessage, setUpgradeMessage] = useState('')
+  const [fieldRequirements, setFieldRequirements] = useState({})
 
   useEffect(() => {
     fetchRequests()
@@ -194,6 +195,7 @@ function Requests() {
     setCustomExpiryValue('')
     setCustomExpiryUnit('days')
     setCreatedLink(null)
+    setFieldRequirements({})
   }
 
   const copyToClipboard = (text) => {
@@ -241,7 +243,8 @@ function Requests() {
         description: formData.description,
         type: requestType,
         timeLimit: timeLimit,
-        customFields: formData.customFields || {}
+        customFields: formData.customFields || {},
+        fieldRequirements: fieldRequirements
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -933,15 +936,57 @@ function Requests() {
 
                         return customFields.map((field) => (
                           <div key={field.id} style={{ marginBottom: theme.spacing[5] }}>
-                            <label style={{
-                              display: 'block',
-                              fontSize: theme.fontSize.sm,
-                              color: theme.colors.text.secondary,
-                              marginBottom: theme.spacing[2],
-                              fontWeight: theme.weight.medium
+                            <div style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginBottom: theme.spacing[2]
                             }}>
-                              {field.label}
-                            </label>
+                              <label style={{
+                                display: 'block',
+                                fontSize: theme.fontSize.sm,
+                                color: theme.colors.text.secondary,
+                                fontWeight: theme.weight.medium
+                              }}>
+                                {field.label}
+                              </label>
+
+                              {/* Required Toggle Switch */}
+                              <label style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                cursor: 'pointer',
+                                gap: theme.spacing[2]
+                              }}>
+                                <span style={{
+                                  fontSize: theme.fontSize.sm,
+                                  color: theme.colors.text.tertiary,
+                                  fontWeight: theme.weight.medium
+                                }}>
+                                  Required
+                                </span>
+                                <input
+                                  type="checkbox"
+                                  checked={fieldRequirements[field.id] || false}
+                                  onChange={(e) => setFieldRequirements(prev => ({
+                                    ...prev,
+                                    [field.id]: e.target.checked
+                                  }))}
+                                  style={{
+                                    appearance: 'none',
+                                    width: '44px',
+                                    height: '24px',
+                                    background: fieldRequirements[field.id] ? theme.colors.white : theme.colors.bg.page,
+                                    borderRadius: '12px',
+                                    border: `1px solid ${theme.colors.border.medium}`,
+                                    position: 'relative',
+                                    cursor: 'pointer',
+                                    transition: `all ${theme.transition.fast}`,
+                                    outline: 'none'
+                                  }}
+                                />
+                              </label>
+                            </div>
 
                             {field.type === 'select' ? (
                               <select
@@ -1284,6 +1329,24 @@ function Requests() {
         }
         .custom-scrollbar::-webkit-scrollbar {
           display: none;
+        }
+
+        /* Toggle Switch Styles */
+        input[type="checkbox"][style*="appearance: none"]::before {
+          content: '';
+          position: absolute;
+          width: 18px;
+          height: 18px;
+          border-radius: 50%;
+          background: ${theme.colors.black};
+          top: 2px;
+          left: 2px;
+          transition: transform 0.2s ease;
+        }
+
+        input[type="checkbox"][style*="appearance: none"]:checked::before {
+          transform: translateX(20px);
+          background: ${theme.colors.black};
         }
       `}</style>
     </>
