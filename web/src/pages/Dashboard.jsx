@@ -77,78 +77,34 @@ function Dashboard() {
         setUser(userData)
       }
 
-      const [statsResponse, requestsResponse, filesResponse] = await Promise.all([
-        api.get('/api/stats', { headers: { Authorization: `Bearer ${token}` } }),
-        api.get('/api/requests', { headers: { Authorization: `Bearer ${token}` } }),
-        api.get('/api/files', { headers: { Authorization: `Bearer ${token}` } })
-      ])
+      // Fetch analytics (basic for free, advanced for pro)
+      const analyticsResponse = await api.get('/api/analytics', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
 
-      const statsData = statsResponse.data
+      const analytics = analyticsResponse.data
+
+      // Fetch recent requests for activity list
+      const requestsResponse = await api.get('/api/requests', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
       const requests = requestsResponse.data.requests || []
-      const files = filesResponse.data.files || []
-
-      // Calculate active requests
-      const activeRequests = requests.filter(r => r.isActive).length
-
-      // Get recent requests (last 5)
       const recentRequests = requests
         .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
         .slice(0, 5)
 
-      // Get recent uploads (last 5)
-      const recentUploads = files
-        .sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))
-        .slice(0, 5)
-
-      // Calculate uploads by day (last 7 days)
-      const uploadsByDay = []
-      const today = new Date()
-      for (let i = 6; i >= 0; i--) {
-        const date = new Date(today)
-        date.setDate(date.getDate() - i)
-        date.setHours(0, 0, 0, 0)
-
-        const nextDate = new Date(date)
-        nextDate.setDate(nextDate.getDate() + 1)
-
-        const count = files.filter(f => {
-          const uploadDate = new Date(f.uploadedAt)
-          return uploadDate >= date && uploadDate < nextDate
-        }).length
-
-        uploadsByDay.push({
-          date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-          count
-        })
-      }
-
-      // Calculate requests by type
-      const requestsByType = requests.reduce((acc, req) => {
-        const type = req.requestType || 'general-upload'
-        acc[type] = (acc[type] || 0) + 1
-        return acc
-      }, {})
-
-      // Calculate storage by request (top 5)
-      const storageByRequest = requests
-        .map(req => ({
-          title: req.title,
-          storage: files.filter(f => f.requestId === req.id)
-            .reduce((sum, f) => sum + (f.fileSize || 0), 0)
-        }))
-        .sort((a, b) => b.storage - a.storage)
-        .slice(0, 5)
-
       setStats({
-        totalRequests: statsData.totalRequests,
-        totalUploads: statsData.totalUploads,
-        storageUsed: statsData.storageMB,
-        activeRequests,
+        totalRequests: analytics.totalRequests,
+        totalUploads: analytics.totalUploads,
+        storageUsed: analytics.totalStorageGB * 1024, // Convert GB to MB for consistency
+        activeRequests: analytics.activeRequests,
         recentRequests,
-        recentUploads,
-        uploadsByDay,
-        requestsByType,
-        storageByRequest
+        // Pro-only analytics
+        recentActivity: analytics.advanced?.recentActivity || [],
+        topRequests: analytics.advanced?.topRequests || [],
+        fileTypeBreakdown: analytics.advanced?.fileTypeBreakdown || [],
+        avgUploadsPerRequest: analytics.advanced?.avgUploadsPerRequest || 0,
+        plan: analytics.plan
       })
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error)

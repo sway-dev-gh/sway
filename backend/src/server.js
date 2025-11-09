@@ -13,6 +13,7 @@ const fileRoutes = require('./routes/files')
 const statsRoutes = require('./routes/stats')
 const stripeRoutes = require('./routes/stripe')
 const adminRoutes = require('./routes/admin')
+const analyticsRoutes = require('./routes/analytics')
 const pool = require('./db/pool')
 
 const app = express()
@@ -41,6 +42,7 @@ app.use('/api/files', fileRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/stripe', stripeRoutes)
 app.use('/api/admin', adminRoutes)
+app.use('/api/analytics', analyticsRoutes)
 
 // Health check
 app.get('/health', (req, res) => {
