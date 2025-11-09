@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Plan() {
   const navigate = useNavigate()
@@ -34,17 +35,10 @@ function Plan() {
     setUpgrading(true)
     try {
       const token = localStorage.getItem('token')
-      const API_URL = import.meta.env.VITE_API_URL || 'https://api.swayfiles.com'
-      const response = await fetch(`${API_URL}/api/stripe/create-checkout-session`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ planId })
+      const { data } = await api.post('/api/stripe/create-checkout-session', { planId }, {
+        headers: { Authorization: `Bearer ${token}` }
       })
 
-      const data = await response.json()
       if (data.url) {
         window.location.href = data.url
       } else {

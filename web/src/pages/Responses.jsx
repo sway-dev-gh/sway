@@ -37,14 +37,12 @@ function Responses() {
   const handleDownload = async (id) => {
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://api.swayfiles.com'}/api/files/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const response = await api.get(`/api/files/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob'
       })
 
-      if (!response.ok) throw new Error('Download failed')
-
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
+      const url = window.URL.createObjectURL(response.data)
       const a = document.createElement('a')
       a.href = url
       a.download = responses.find(r => r.id === id)?.fileName || 'download'

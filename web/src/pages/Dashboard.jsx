@@ -35,9 +35,8 @@ function Dashboard() {
   const fetchUpdatedUserData = async () => {
     try {
       const token = localStorage.getItem('token')
-      const API_URL = import.meta.env.VITE_API_URL || 'https://api.swayfiles.com'
 
-      const { data } = await api.get(`${API_URL}/api/stripe/plan-info`, {
+      const { data } = await api.get('/api/stripe/plan-info', {
         headers: { Authorization: `Bearer ${token}` }
       })
 
