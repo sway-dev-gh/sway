@@ -338,17 +338,17 @@ function Customization() {
             </div>
 
             {/* Request Selector */}
-            {requests.length > 0 && (
-              <div style={{ marginBottom: theme.spacing[6] }}>
-                <label style={{
-                  display: 'block',
-                  fontSize: '14px',
-                  color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[3],
-                  fontWeight: theme.weight.medium
-                }}>
-                  Select Request to Preview
-                </label>
+            <div style={{ marginBottom: theme.spacing[6] }}>
+              <label style={{
+                display: 'block',
+                fontSize: '14px',
+                color: theme.colors.text.primary,
+                marginBottom: theme.spacing[3],
+                fontWeight: theme.weight.medium
+              }}>
+                Select Request to Preview
+              </label>
+              {requests.length > 0 ? (
                 <select
                   value={selectedRequest?.id || ''}
                   onChange={(e) => {
@@ -382,8 +382,23 @@ function Customization() {
                     </option>
                   ))}
                 </select>
-              </div>
-            )}
+              ) : (
+                <div style={{
+                  width: '100%',
+                  height: '44px',
+                  padding: '0 14px',
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '10px',
+                  color: theme.colors.text.tertiary,
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  No requests yet - create one to preview
+                </div>
+              )}
+            </div>
 
             {/* Preview Box - Full Interface Preview */}
             <div style={{ marginBottom: theme.spacing[8] }}>
