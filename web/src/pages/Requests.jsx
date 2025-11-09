@@ -362,14 +362,7 @@ function Requests() {
   }
 
   const openModal = () => {
-    // Load default request type from settings when opening modal
-    const savedSettings = localStorage.getItem('userSettings')
-    if (savedSettings) {
-      const settings = JSON.parse(savedSettings)
-      if (settings.defaultRequestType) {
-        setRequestType(settings.defaultRequestType)
-      }
-    }
+    // Always start at selection page
     setShowModal(true)
   }
 
