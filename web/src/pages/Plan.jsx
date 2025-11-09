@@ -343,7 +343,7 @@ function Plan() {
           </div>
 
           {/* FAQ Section */}
-          <div>
+          <div style={{ marginTop: theme.spacing[16] }}>
             <h2 style={{
               fontSize: '24px',
               fontWeight: theme.weight.medium,

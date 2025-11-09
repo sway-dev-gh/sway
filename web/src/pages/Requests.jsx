@@ -875,7 +875,7 @@ function Requests() {
                     {/* Buttons */}
                     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                       <button
-                        onClick={() => copyToClipboard(createdLink)}
+                        onClick={() => window.open(createdLink, '_blank')}
                         style={{
                           padding: '14px 28px',
                           background: theme.colors.white,
@@ -895,6 +895,31 @@ function Requests() {
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = theme.colors.white
                           e.currentTarget.style.transform = 'translateY(0)'
+                        }}
+                      >
+                        Open Link
+                      </button>
+                      <button
+                        onClick={() => copyToClipboard(createdLink)}
+                        style={{
+                          padding: '14px 28px',
+                          background: 'transparent',
+                          color: theme.colors.text.primary,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          borderRadius: '12px',
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                          fontFamily: 'inherit',
+                          transition: `all ${theme.transition.fast}`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = theme.colors.bg.hover
+                          e.currentTarget.style.borderColor = theme.colors.border.dark
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent'
+                          e.currentTarget.style.borderColor = theme.colors.border.medium
                         }}
                       >
                         Copy Link

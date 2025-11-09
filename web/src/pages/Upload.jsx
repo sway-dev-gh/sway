@@ -486,341 +486,360 @@ export default function Upload() {
 
       {/* Main Content */}
       <div style={{
-        maxWidth: '720px',
+        maxWidth: '600px',
         margin: '0 auto',
-        padding: '80px 40px',
+        padding: `${theme.spacing[12]} ${theme.spacing[6]}`,
         position: 'relative',
         zIndex: 10
       }}>
         {/* Header */}
         <div style={{
-          marginBottom: '64px'
+          textAlign: 'center',
+          marginBottom: theme.spacing[12]
         }}>
           <h1 style={{
-            fontSize: '40px',
-            fontWeight: '300',
-            margin: '0 0 16px 0',
+            fontSize: '28px',
+            fontWeight: '500',
+            margin: '0 0 12px 0',
             color: theme.colors.white,
             letterSpacing: '-0.02em',
-            lineHeight: '1.1'
+            lineHeight: '1.2'
           }}>
             {requestData.title}
           </h1>
           {requestData.description && (
             <p style={{
-              fontSize: '16px',
+              fontSize: '15px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6',
-              maxWidth: '560px'
+              lineHeight: '1.6'
             }}>
               {requestData.description}
             </p>
           )}
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit}>
-          {/* Basic Fields */}
-          <div style={{ marginBottom: '32px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '13px',
-              color: theme.colors.text.secondary,
-              marginBottom: '8px',
-              fontWeight: theme.weight.medium
-            }}>
-              Name
-            </label>
-            <input
-              type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              required
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
-                color: theme.colors.text.primary,
-                fontSize: '14px',
-                fontFamily: 'inherit',
-                outline: 'none',
-                transition: `all ${theme.transition.fast}`
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.text.secondary
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-              }}
-            />
-          </div>
-
-          <div style={{ marginBottom: '32px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '13px',
-              color: theme.colors.text.secondary,
-              marginBottom: '8px',
-              fontWeight: theme.weight.medium
-            }}>
-              Email
-            </label>
-            <input
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
-                color: theme.colors.text.primary,
-                fontSize: '14px',
-                fontFamily: 'inherit',
-                outline: 'none',
-                transition: `all ${theme.transition.fast}`
-              }}
-              onFocus={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.text.secondary
-              }}
-              onBlur={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-              }}
-            />
-          </div>
-
-          {/* Custom Fields */}
-          {customFields.map((field) => (
-            <div key={field.id} style={{ marginBottom: '32px' }}>
+        {/* Form Card */}
+        <div style={{
+          background: theme.colors.bg.secondary,
+          borderRadius: theme.radius['2xl'],
+          border: `1px solid ${theme.colors.border.light}`,
+          boxShadow: theme.shadows.md,
+          padding: theme.spacing[12]
+        }}>
+          <form onSubmit={handleSubmit}>
+            {/* Basic Fields */}
+            <div style={{ marginBottom: theme.spacing[6] }}>
               <label style={{
                 display: 'block',
                 fontSize: '13px',
                 color: theme.colors.text.secondary,
-                marginBottom: '8px',
+                marginBottom: theme.spacing[2],
                 fontWeight: theme.weight.medium
               }}>
-                {field.label}
+                Name
               </label>
-              {field.type === 'select' ? (
-                <select
-                  value={formData.customFields[field.id] || ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    customFields: { ...prev.customFields, [field.id]: e.target.value }
-                  }))}
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    background: theme.colors.bg.secondary,
-                    border: `1px solid ${theme.colors.border.medium}`,
-                    borderRadius: theme.radius.md,
-                    color: theme.colors.text.primary,
-                    fontSize: '14px',
-                    fontFamily: 'inherit',
-                    outline: 'none',
-                    transition: `all ${theme.transition.fast}`,
-                    cursor: 'pointer'
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.text.secondary
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
-                  }}
-                >
-                  <option value="" style={{ background: theme.colors.bg.secondary }}>Select {field.label}</option>
-                  {field.options.map(opt => (
-                    <option key={opt} value={opt} style={{ background: theme.colors.bg.secondary }}>{opt}</option>
-                  ))}
-                </select>
-              ) : (
-                <input
-                  type={field.type}
-                  value={formData.customFields[field.id] || ''}
-                  onChange={(e) => setFormData(prev => ({
-                    ...prev,
-                    customFields: { ...prev.customFields, [field.id]: e.target.value }
-                  }))}
-                  placeholder={field.placeholder}
-                  style={{
-                    width: '100%',
-                    padding: '12px 16px',
-                    background: theme.colors.bg.secondary,
-                    border: `1px solid ${theme.colors.border.medium}`,
-                    borderRadius: theme.radius.md,
-                    color: theme.colors.text.primary,
-                    fontSize: '14px',
-                    fontFamily: 'inherit',
-                    outline: 'none',
-                    transition: `all ${theme.transition.fast}`
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.text.secondary
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
-                  }}
-                />
-              )}
-            </div>
-          ))}
-
-          {/* File Upload */}
-          <div style={{ marginBottom: '40px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '13px',
-              color: theme.colors.text.secondary,
-              marginBottom: '12px',
-              fontWeight: theme.weight.medium,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
-            }}>
-              Files
-            </label>
-            <label style={{
-              display: 'block',
-              padding: '48px 24px',
-              background: 'rgba(255, 255, 255, 0.02)',
-              border: `2px dashed ${theme.colors.border.medium}`,
-              borderRadius: '12px',
-              textAlign: 'center',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              position: 'relative'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = theme.colors.white
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-            }}
-            >
               <input
-                type="file"
-                onChange={handleFileChange}
-                multiple
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
                 style={{
-                  position: 'absolute',
-                  opacity: 0,
                   width: '100%',
-                  height: '100%',
-                  top: 0,
-                  left: 0,
-                  cursor: 'pointer'
+                  height: '44px',
+                  padding: '0 16px',
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: theme.radius.md,
+                  color: theme.colors.text.primary,
+                  fontSize: '15px',
+                  fontFamily: 'inherit',
+                  outline: 'none',
+                  transition: `all ${theme.transition.fast}`
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.white
+                  e.currentTarget.style.background = theme.colors.bg.secondary
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                  e.currentTarget.style.background = theme.colors.bg.page
                 }}
               />
-              <div style={{
-                fontSize: '48px',
-                marginBottom: '16px',
-                opacity: 0.4
-              }}>
-                ↑
-              </div>
-              <div style={{
-                fontSize: '15px',
-                fontWeight: theme.weight.medium,
-                color: theme.colors.text.primary,
-                marginBottom: '8px'
-              }}>
-                Click to upload or drag and drop
-              </div>
-              <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.tertiary
-              }}>
-                Multiple files supported • Max 50MB per file
-              </div>
-            </label>
-            {files.length > 0 && (
-              <div style={{
-                marginTop: '12px',
-                padding: '16px',
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md
-              }}>
-                <div style={{
-                  fontSize: '12px',
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.secondary,
-                  marginBottom: '12px'
-                }}>
-                  {files.length} file{files.length > 1 ? 's' : ''} selected
-                </div>
-                {files.map((file, idx) => (
-                  <div key={idx} style={{
-                    fontSize: '13px',
-                    color: theme.colors.text.secondary,
-                    marginBottom: idx < files.length - 1 ? '8px' : '0',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '8px 0',
-                    borderBottom: idx < files.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
-                  }}>
-                    <span style={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      marginRight: '12px',
-                      color: theme.colors.text.primary
-                    }}>
-                      {file.name}
-                    </span>
-                    <span style={{
-                      color: theme.colors.text.tertiary,
-                      fontSize: '12px',
-                      flexShrink: 0
-                    }}>
-                      {(file.size / 1024 / 1024).toFixed(2)} MB
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+            </div>
 
-          {/* Submit Button */}
-          <button
-            type="submit"
-            disabled={uploading}
-            style={{
-              width: '100%',
-              padding: '16px 32px',
-              background: theme.colors.white,
-              color: theme.colors.black,
-              border: 'none',
-              borderRadius: '8px',
-              fontSize: '15px',
-              fontWeight: theme.weight.semibold,
-              cursor: uploading ? 'not-allowed' : 'pointer',
-              transition: `all ${theme.transition.fast}`,
-              letterSpacing: '0.3px',
-              fontFamily: 'inherit',
-              opacity: uploading ? 0.6 : 1
-            }}
-            onMouseEnter={(e) => {
-              if (!uploading) {
-                e.currentTarget.style.background = theme.colors.text.secondary
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!uploading) {
-                e.currentTarget.style.background = theme.colors.white
-              }
-            }}
-          >
-            {uploading ? 'Uploading...' : 'Upload Files'}
-          </button>
-        </form>
+            <div style={{ marginBottom: theme.spacing[8] }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[2],
+                fontWeight: theme.weight.medium
+              }}>
+                Email
+              </label>
+              <input
+                type="email"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                style={{
+                  width: '100%',
+                  height: '44px',
+                  padding: '0 16px',
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: theme.radius.md,
+                  color: theme.colors.text.primary,
+                  fontSize: '15px',
+                  fontFamily: 'inherit',
+                  outline: 'none',
+                  transition: `all ${theme.transition.fast}`
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.white
+                  e.currentTarget.style.background = theme.colors.bg.secondary
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                  e.currentTarget.style.background = theme.colors.bg.page
+                }}
+              />
+            </div>
+
+            {/* Custom Fields */}
+            {customFields.map((field, index) => (
+              <div key={field.id} style={{ marginBottom: index === customFields.length - 1 ? theme.spacing[8] : theme.spacing[6] }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '13px',
+                  color: theme.colors.text.secondary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  {field.label}
+                </label>
+                {field.type === 'select' ? (
+                  <select
+                    value={formData.customFields[field.id] || ''}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      customFields: { ...prev.customFields, [field.id]: e.target.value }
+                    }))}
+                    style={{
+                      width: '100%',
+                      height: '44px',
+                      padding: '0 16px',
+                      background: theme.colors.bg.page,
+                      border: `1px solid ${theme.colors.border.medium}`,
+                      borderRadius: theme.radius.md,
+                      color: theme.colors.text.primary,
+                      fontSize: '15px',
+                      fontFamily: 'inherit',
+                      outline: 'none',
+                      transition: `all ${theme.transition.fast}`,
+                      cursor: 'pointer'
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = theme.colors.white
+                      e.currentTarget.style.background = theme.colors.bg.secondary
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = theme.colors.border.medium
+                      e.currentTarget.style.background = theme.colors.bg.page
+                    }}
+                  >
+                    <option value="" style={{ background: theme.colors.bg.page }}>Select {field.label}</option>
+                    {field.options.map(opt => (
+                      <option key={opt} value={opt} style={{ background: theme.colors.bg.page }}>{opt}</option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type={field.type}
+                    value={formData.customFields[field.id] || ''}
+                    onChange={(e) => setFormData(prev => ({
+                      ...prev,
+                      customFields: { ...prev.customFields, [field.id]: e.target.value }
+                    }))}
+                    placeholder={field.placeholder}
+                    style={{
+                      width: '100%',
+                      height: '44px',
+                      padding: '0 16px',
+                      background: theme.colors.bg.page,
+                      border: `1px solid ${theme.colors.border.medium}`,
+                      borderRadius: theme.radius.md,
+                      color: theme.colors.text.primary,
+                      fontSize: '15px',
+                      fontFamily: 'inherit',
+                      outline: 'none',
+                      transition: `all ${theme.transition.fast}`
+                    }}
+                    onFocus={(e) => {
+                      e.currentTarget.style.borderColor = theme.colors.white
+                      e.currentTarget.style.background = theme.colors.bg.secondary
+                    }}
+                    onBlur={(e) => {
+                      e.currentTarget.style.borderColor = theme.colors.border.medium
+                      e.currentTarget.style.background = theme.colors.bg.page
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+
+            {/* File Upload */}
+            <div style={{ marginBottom: theme.spacing[8] }}>
+              <label style={{
+                display: 'block',
+                fontSize: '13px',
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[3],
+                fontWeight: theme.weight.medium
+              }}>
+                Upload Files
+              </label>
+              <label style={{
+                display: 'block',
+                padding: theme.spacing[12],
+                background: theme.colors.bg.page,
+                border: `2px dashed ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.lg,
+                textAlign: 'center',
+                cursor: 'pointer',
+                transition: `all ${theme.transition.normal}`,
+                position: 'relative'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = theme.colors.white
+                e.currentTarget.style.background = theme.colors.bg.hover
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.background = theme.colors.bg.page
+              }}
+              >
+                <input
+                  type="file"
+                  onChange={handleFileChange}
+                  multiple
+                  required
+                  style={{
+                    position: 'absolute',
+                    opacity: 0,
+                    width: '100%',
+                    height: '100%',
+                    top: 0,
+                    left: 0,
+                    cursor: 'pointer'
+                  }}
+                />
+                <div style={{
+                  fontSize: '40px',
+                  marginBottom: theme.spacing[3],
+                  color: theme.colors.text.tertiary
+                }}>
+                  ↑
+                </div>
+                <div style={{
+                  fontSize: '15px',
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2]
+                }}>
+                  Click to browse or drag files here
+                </div>
+                <div style={{
+                  fontSize: '13px',
+                  color: theme.colors.text.tertiary
+                }}>
+                  Multiple files supported
+                </div>
+              </label>
+              {files.length > 0 && (
+                <div style={{
+                  marginTop: theme.spacing[4],
+                  padding: theme.spacing[4],
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: theme.radius.md
+                }}>
+                  <div style={{
+                    fontSize: '13px',
+                    fontWeight: theme.weight.medium,
+                    color: theme.colors.text.secondary,
+                    marginBottom: theme.spacing[3]
+                  }}>
+                    {files.length} file{files.length > 1 ? 's' : ''} selected
+                  </div>
+                  {files.map((file, idx) => (
+                    <div key={idx} style={{
+                      fontSize: '13px',
+                      color: theme.colors.text.secondary,
+                      marginBottom: idx < files.length - 1 ? theme.spacing[2] : '0',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      padding: `${theme.spacing[2]} 0`,
+                      borderBottom: idx < files.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
+                    }}>
+                      <span style={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        marginRight: theme.spacing[3],
+                        color: theme.colors.text.primary
+                      }}>
+                        {file.name}
+                      </span>
+                      <span style={{
+                        color: theme.colors.text.tertiary,
+                        fontSize: '12px',
+                        flexShrink: 0
+                      }}>
+                        {(file.size / 1024 / 1024).toFixed(2)} MB
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={uploading}
+              style={{
+                width: '100%',
+                height: '44px',
+                background: theme.colors.white,
+                color: theme.colors.black,
+                border: 'none',
+                borderRadius: theme.radius.md,
+                fontSize: '15px',
+                fontWeight: theme.weight.semibold,
+                cursor: uploading ? 'not-allowed' : 'pointer',
+                transition: `all ${theme.transition.fast}`,
+                fontFamily: 'inherit',
+                opacity: uploading ? 0.6 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (!uploading) {
+                  e.currentTarget.style.background = theme.colors.text.secondary
+                  e.currentTarget.style.color = theme.colors.black
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!uploading) {
+                  e.currentTarget.style.background = theme.colors.white
+                  e.currentTarget.style.color = theme.colors.black
+                }
+              }}
+            >
+              {uploading ? 'Uploading...' : 'Upload Files'}
+            </button>
+          </form>
+        </div>
       </div>
 
       {/* Render branded elements from new Branding editor */}
