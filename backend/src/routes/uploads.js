@@ -159,30 +159,7 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
       return res.status(403).json({ error: 'This request is no longer accepting uploads' })
     }
 
-    // Check TOTAL uploads limit for FREE tier (across all requests)
-    if (request.plan === 'free') {
-      const totalUploadsResult = await pool.query(
-        `SELECT COUNT(*) as count
-         FROM uploads u
-         JOIN file_requests fr ON u.request_id = fr.id
-         WHERE fr.user_id = $1`,
-        [request.user_id]
-      )
-      const currentTotalUploads = parseInt(totalUploadsResult.rows[0].count)
-      const newTotalUploads = currentTotalUploads + files.length
-      const freeUploadLimit = 10
-
-      if (newTotalUploads > freeUploadLimit) {
-        return res.status(403).json({
-          error: 'Upload limit exceeded',
-          message: `Free plan allows up to ${freeUploadLimit} total uploads. Currently has ${currentTotalUploads} uploads. Upgrade to Pro ($9/mo) for unlimited uploads.`,
-          currentCount: currentTotalUploads,
-          limit: freeUploadLimit,
-          upgradeRequired: 'pro'
-        })
-      }
-    }
-    // Pro and Business plans have unlimited uploads
+    // Pro plan has unlimited uploads - no upload count check needed
 
     // Check file type restrictions based on plan (extension + MIME type)
     const basicFileTypes = {
@@ -196,21 +173,6 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
       '.txt': ['text/plain']
     }
 
-    const limitedFileTypes = {
-      ...basicFileTypes,
-      '.mp4': ['video/mp4'],
-      '.mov': ['video/quicktime'],
-      '.avi': ['video/x-msvideo', 'video/avi'],
-      '.zip': ['application/zip', 'application/x-zip-compressed'],
-      '.rar': ['application/x-rar-compressed', 'application/vnd.rar'],
-      '.xlsx': ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'],
-      '.xls': ['application/vnd.ms-excel'],
-      '.ppt': ['application/vnd.ms-powerpoint'],
-      '.pptx': ['application/vnd.openxmlformats-officedocument.presentationml.presentation'],
-      '.mp3': ['audio/mpeg'],
-      '.wav': ['audio/wav', 'audio/x-wav']
-    }
-
     for (const file of files) {
       const fileExt = path.extname(file.originalname).toLowerCase()
       const fileMime = file.mimetype.toLowerCase()
@@ -219,7 +181,7 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
         if (!basicFileTypes[fileExt]) {
           return res.status(403).json({
             error: 'File type not allowed',
-            message: `Free plan only supports basic file types (images, PDFs, and documents). File "${file.originalname}" is not allowed. Upgrade to Pro for more file types.`,
+            message: `Free plan only supports basic file types (images, PDFs, and documents). File "${file.originalname}" is not allowed. Upgrade to Pro for ALL file types.`,
             fileName: file.originalname,
             allowedTypes: Object.keys(basicFileTypes)
           })
@@ -233,25 +195,8 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
             fileName: file.originalname
           })
         }
-      } else if (request.plan === 'pro') {
-        if (!limitedFileTypes[fileExt]) {
-          return res.status(403).json({
-            error: 'File type not allowed',
-            message: `Pro plan doesn't support this file type. File "${file.originalname}" is not allowed. Upgrade to Business for all file types.`,
-            fileName: file.originalname
-          })
-        }
-
-        // Validate MIME type matches extension
-        if (!limitedFileTypes[fileExt].includes(fileMime)) {
-          return res.status(403).json({
-            error: 'File type mismatch',
-            message: `File "${file.originalname}" appears to be disguised. The file extension doesn't match the actual file type.`,
-            fileName: file.originalname
-          })
-        }
       }
-      // Business plan has no file type restrictions
+      // Pro plan has no file type restrictions - all file types allowed
     }
 
     // Use transaction with row-level locking to prevent race conditions

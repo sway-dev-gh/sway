@@ -23,20 +23,17 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
 
     const { planId } = req.body
 
-    if (!planId || !['pro', 'business'].includes(planId)) {
+    if (!planId || planId !== 'pro') {
       return res.status(400).json({ error: 'Invalid plan ID' })
     }
 
-    // Define price IDs (you'll create these in Stripe Dashboard)
-    const prices = {
-      pro: process.env.STRIPE_PRO_PRICE_ID,
-      business: process.env.STRIPE_BUSINESS_PRICE_ID
-    }
+    // SwayFiles Pro Plan Price ID
+    const priceId = 'price_1SRM4OHh6kpeQiCo8U0xxGT5'
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: [{
-        price: prices[planId],
+        price: priceId,
         quantity: 1,
       }],
       mode: 'subscription',
@@ -46,7 +43,7 @@ router.post('/create-checkout-session', authenticateToken, async (req, res) => {
       customer_email: req.userEmail,
       metadata: {
         userId: req.userId.toString(),
-        planId: planId
+        planId: 'pro'
       }
     })
 
@@ -84,33 +81,28 @@ router.post('/webhook', async (req, res) => {
       case 'checkout.session.completed': {
         const session = event.data.object
         const userId = session.metadata.userId
-        const planId = session.metadata.planId
 
-        // Determine storage limit based on plan
-        const storageLimit = planId === 'pro' ? 50 : 200
-
-        // Update user's plan in database
+        // Update user's plan in database (Pro plan: 50GB storage, 200 requests)
         await pool.query(
           `UPDATE users
-           SET plan = $1,
-               stripe_customer_id = $2,
-               stripe_subscription_id = $3,
-               storage_limit_gb = $4
-           WHERE id = $5`,
-          [planId, session.customer, session.subscription, storageLimit, userId]
+           SET plan = 'pro',
+               stripe_customer_id = $1,
+               stripe_subscription_id = $2,
+               storage_limit_gb = 50
+           WHERE id = $3`,
+          [session.customer, session.subscription, userId]
         )
 
         // Create notification for successful upgrade
-        const planName = planId.charAt(0).toUpperCase() + planId.slice(1)
         await createNotification(
           userId,
           'plan_upgrade',
           'Plan Upgraded Successfully',
-          `Your plan has been upgraded to ${planName}. You now have ${storageLimit} GB of storage and access to all ${planName} features.`,
-          { planId, storageLimit }
+          `Your plan has been upgraded to Pro. You now have 50 GB of storage and 200 active requests.`,
+          { planId: 'pro', storageLimit: 50 }
         )
 
-        console.log(`User ${userId} upgraded to ${planId}`)
+        console.log(`User ${userId} upgraded to Pro`)
         break
       }
 
@@ -128,7 +120,7 @@ router.post('/webhook', async (req, res) => {
           `UPDATE users
            SET plan = 'free',
                stripe_subscription_id = NULL,
-               storage_limit_gb = 1
+               storage_limit_gb = 2
            WHERE stripe_subscription_id = $1`,
           [subscription.id]
         )
@@ -139,8 +131,8 @@ router.post('/webhook', async (req, res) => {
             userResult.rows[0].id,
             'plan_downgrade',
             'Subscription Cancelled',
-            `Your subscription has been cancelled and you've been downgraded to the Free plan. You now have 1 GB of storage.`,
-            { planId: 'free', storageLimit: 1 }
+            `Your subscription has been cancelled and you've been downgraded to the Free plan. You now have 2 GB of storage and 20 active requests.`,
+            { planId: 'free', storageLimit: 2 }
           )
         }
 
@@ -297,7 +289,7 @@ router.post('/request-refund', authenticateToken, async (req, res) => {
       `UPDATE users
        SET plan = 'free',
            stripe_subscription_id = NULL,
-           storage_limit_gb = 1
+           storage_limit_gb = 2
        WHERE id = $1`,
       [req.userId]
     )

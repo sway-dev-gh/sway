@@ -68,7 +68,8 @@ function Plan() {
       description: 'Perfect for trying out Sway.',
       features: [
         { text: '20 active requests', highlight: false },
-        { text: '2GB storage', highlight: false }
+        { text: '2GB storage', highlight: false },
+        { text: 'Basic file types only (images, PDFs, docs)', highlight: false }
       ]
     },
     {
@@ -77,11 +78,12 @@ function Plan() {
       price: '$15',
       period: '/month',
       tagline: 'Most popular',
-      description: 'More requests, more storage.',
+      description: 'Unlimited power for serious users.',
       popular: true,
       features: [
         { text: '200 active requests', highlight: true },
-        { text: '50GB storage', highlight: true }
+        { text: '50GB storage', highlight: true },
+        { text: 'ALL file types supported', highlight: true }
       ]
     }
   ]

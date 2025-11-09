@@ -1,7 +1,7 @@
 /**
  * Get the effective user plan, checking for admin plan override first
  * @param {object} user - The user object from localStorage
- * @returns {string} The effective plan ('free', 'pro', or 'business')
+ * @returns {string} The effective plan ('free' or 'pro')
  */
 export function getEffectivePlan(user) {
   const adminPlanOverride = localStorage.getItem('adminPlanOverride')
@@ -14,7 +14,7 @@ export function getEffectivePlan(user) {
 /**
  * Check if user has at least the specified plan level
  * @param {object} user - The user object from localStorage
- * @param {string} requiredPlan - The minimum required plan ('free', 'pro', or 'business')
+ * @param {string} requiredPlan - The minimum required plan ('free' or 'pro')
  * @returns {boolean} True if user has at least the required plan
  */
 export function hasMinimumPlan(user, requiredPlan) {
@@ -22,8 +22,7 @@ export function hasMinimumPlan(user, requiredPlan) {
 
   const planLevels = {
     'free': 0,
-    'pro': 1,
-    'business': 2
+    'pro': 1
   }
 
   return planLevels[effectivePlan] >= planLevels[requiredPlan]
