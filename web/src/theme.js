@@ -21,9 +21,9 @@ const theme = {
     },
     white: '#ffffff',
     black: '#000000',
-    accent: '#3b82f6',
-    success: '#10b981',
-    warning: '#f59e0b',
+    accent: '#ffffff',
+    success: '#ffffff',
+    warning: '#ffffff',
     error: '#ef4444'
   },
   shadows: {

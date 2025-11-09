@@ -223,15 +223,11 @@ function Dashboard() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: theme.fontSize['4xl'],
-              fontWeight: theme.weight.semibold,
+              fontSize: '40px',
+              fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
+              letterSpacing: '-0.02em'
             }}>
               Dashboard
             </h1>
@@ -254,10 +250,9 @@ function Dashboard() {
           }}>
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[12],
-              borderRadius: theme.radius['2xl'],
+              padding: '32px',
+              borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
-              borderLeft: `4px solid ${theme.colors.accent}`,
               boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
             }}
@@ -282,10 +277,9 @@ function Dashboard() {
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[12],
-              borderRadius: theme.radius['2xl'],
+              padding: '32px',
+              borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
-              borderLeft: `4px solid ${theme.colors.success}`,
               boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
             }}
@@ -310,10 +304,9 @@ function Dashboard() {
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[12],
-              borderRadius: theme.radius['2xl'],
+              padding: '32px',
+              borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
-              borderLeft: `4px solid ${getStoragePercentage() > 80 ? theme.colors.error : theme.colors.warning}`,
               gridColumn: 'span 2',
               boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
@@ -350,7 +343,7 @@ function Dashboard() {
                 <div style={{
                   width: `${getStoragePercentage()}%`,
                   height: '100%',
-                  background: getStoragePercentage() > 80 ? `linear-gradient(90deg, ${theme.colors.error} 0%, ${theme.colors.warning} 100%)` : `linear-gradient(90deg, ${theme.colors.accent} 0%, ${theme.colors.success} 100%)`,
+                  background: theme.colors.white,
                   transition: `width ${theme.transition.slow}`
                 }} />
               </div>
@@ -399,7 +392,7 @@ function Dashboard() {
                       <div style={{
                         width: '100%',
                         height: `${(day.count / maxUploadsInWeek) * 100}%`,
-                        background: `linear-gradient(180deg, ${theme.colors.accent} 0%, ${theme.colors.white} 100%)`,
+                        background: theme.colors.white,
                         borderRadius: `${theme.radius.sm} ${theme.radius.sm} 0 0`,
                         minHeight: day.count > 0 ? '6px' : '0',
                         transition: `height ${theme.transition.slow}`

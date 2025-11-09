@@ -37,7 +37,7 @@ export default function Login() {
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '400px'
+        maxWidth: '440px'
       }}>
         {/* Header */}
         <div style={{
@@ -46,17 +46,18 @@ export default function Login() {
         }}>
           <h1 style={{
             fontSize: '32px',
-            fontWeight: '300',
-            margin: '0 0 8px 0',
+            fontWeight: '500',
+            margin: '0 0 12px 0',
             color: theme.colors.text.primary,
             letterSpacing: '-0.02em'
           }}>
             Sway
           </h1>
           <p style={{
-            fontSize: '14px',
+            fontSize: '15px',
             color: theme.colors.text.secondary,
-            margin: 0
+            margin: 0,
+            lineHeight: '1.6'
           }}>
             Sign in to continue
           </p>
@@ -79,7 +80,7 @@ export default function Login() {
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '20px' }}>
+          <div style={{ marginBottom: '16px' }}>
             <label style={{
               display: 'block',
               fontSize: '13px',
@@ -96,27 +97,29 @@ export default function Login() {
               required
               style={{
                 width: '100%',
-                padding: '12px 16px',
-                background: theme.colors.bg.secondary,
+                height: '52px',
+                padding: '16px',
+                background: theme.colors.bg.page,
                 border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
+                borderRadius: '12px',
                 color: theme.colors.text.primary,
-                fontSize: '14px',
+                fontSize: '15px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`,
-                
+                transition: `all ${theme.transition.fast}`
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.text.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.dark
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(64, 64, 64, 0.1)'
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = 'none'
               }}
             />
           </div>
 
-          <div style={{ marginBottom: '24px' }}>
+          <div style={{ marginBottom: '28px' }}>
             <label style={{
               display: 'block',
               fontSize: '13px',
@@ -133,22 +136,24 @@ export default function Login() {
               required
               style={{
                 width: '100%',
-                padding: '12px 16px',
-                background: theme.colors.bg.secondary,
+                height: '52px',
+                padding: '16px',
+                background: theme.colors.bg.page,
                 border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
+                borderRadius: '12px',
                 color: theme.colors.text.primary,
-                fontSize: '14px',
+                fontSize: '15px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`,
-                
+                transition: `all ${theme.transition.fast}`
               }}
               onFocus={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.text.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.dark
+                e.currentTarget.style.boxShadow = '0 0 0 3px rgba(64, 64, 64, 0.1)'
               }}
               onBlur={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = 'none'
               }}
             />
           </div>
@@ -158,27 +163,29 @@ export default function Login() {
             disabled={loading}
             style={{
               width: '100%',
-              padding: '12px 24px',
+              height: '52px',
+              padding: '0 24px',
               background: theme.colors.white,
               color: theme.colors.black,
               border: 'none',
-              borderRadius: theme.radius.md,
-              fontSize: '14px',
+              borderRadius: '12px',
+              fontSize: '15px',
               fontWeight: theme.weight.medium,
               cursor: loading ? 'not-allowed' : 'pointer',
               transition: `all ${theme.transition.fast}`,
               fontFamily: 'inherit',
-              opacity: loading ? 0.6 : 1,
-              
+              opacity: loading ? 0.6 : 1
             }}
             onMouseEnter={(e) => {
               if (!loading) {
-                e.currentTarget.style.background = theme.colors.text.secondary
+                e.currentTarget.style.background = '#e5e5e5'
+                e.currentTarget.style.transform = 'translateY(-1px)'
               }
             }}
             onMouseLeave={(e) => {
               if (!loading) {
                 e.currentTarget.style.background = theme.colors.white
+                e.currentTarget.style.transform = 'translateY(0)'
               }
             }}
           >
@@ -191,22 +198,23 @@ export default function Login() {
           textAlign: 'center',
           marginTop: '32px',
           color: theme.colors.text.secondary,
-          fontSize: '13px'
+          fontSize: '14px',
+          lineHeight: '1.6'
         }}>
           Don't have an account?{' '}
           <Link
             to="/signup"
             style={{
-              color: theme.colors.text.primary,
+              color: theme.colors.white,
               textDecoration: 'none',
               fontWeight: theme.weight.medium,
-              transition: `opacity ${theme.transition.fast}`
+              transition: `color ${theme.transition.fast}`
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.opacity = '0.6'
+              e.currentTarget.style.color = theme.colors.text.secondary
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.opacity = '1'
+              e.currentTarget.style.color = theme.colors.white
             }}
           >
             Sign up
