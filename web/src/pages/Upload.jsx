@@ -228,7 +228,7 @@ function Upload() {
           textTransform: 'uppercase',
           letterSpacing: '1px'
         }}>
-          {brandingData?.customDomain || 'Swayfiles'}
+          {brandingData?.customDomain || 'Sway'}
         </div>
 
         {/* Large Title */}
@@ -555,7 +555,7 @@ function Upload() {
             textAlign: 'center',
             marginTop: '32px'
           }}>
-            Powered by Swayfiles
+            Powered by Sway
           </div>
         </form>
       </div>
