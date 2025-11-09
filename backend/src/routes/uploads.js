@@ -89,15 +89,28 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
 
     const request = result.rows[0]
 
+    // Get branding information for the user
+    const brandingResult = await pool.query(
+      'SELECT custom_domain, branding_elements FROM users WHERE id = $1',
+      [request.user_id]
+    )
+    const brandingData = brandingResult.rows[0] || {}
+
     res.json({
-      id: request.id,
-      title: request.title,
-      description: request.description,
-      isActive: request.is_active,
-      requestType: request.request_type,
-      customFields: request.custom_fields,
-      fieldRequirements: request.field_requirements,
-      expiresAt: request.expires_at
+      request: {
+        id: request.id,
+        title: request.title,
+        description: request.description,
+        isActive: request.is_active,
+        requestType: request.request_type,
+        customFields: request.custom_fields,
+        fieldRequirements: request.field_requirements,
+        expiresAt: request.expires_at
+      },
+      branding: {
+        customDomain: brandingData.custom_domain,
+        elements: brandingData.branding_elements || []
+      }
     })
   } catch (error) {
     console.error('Get upload request error:', error)
