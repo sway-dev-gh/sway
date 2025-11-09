@@ -16,7 +16,11 @@ function Dashboard() {
     recentUploads: [],
     uploadsByDay: [],
     requestsByType: {},
-    storageByRequest: []
+    storageByRequest: [],
+    recentActivity: [],
+    topRequests: [],
+    fileTypeBreakdown: [],
+    avgUploadsPerRequest: 0
   })
   const [user, setUser] = useState({ plan: 'free', storage_limit_gb: 1 })
 
