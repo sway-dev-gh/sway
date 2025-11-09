@@ -10,13 +10,16 @@ function Upload() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    customFields: {}
+    customFields: {},
+    password: ''
   })
   const [files, setFiles] = useState([])
   const [uploading, setUploading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [brandingData, setBrandingData] = useState(null)
   const [validationError, setValidationError] = useState('')
+  const [passwordVerified, setPasswordVerified] = useState(false)
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
 
   useEffect(() => {
     fetchRequest()
@@ -29,6 +32,13 @@ function Upload() {
       console.log('[Upload] Received data:', data)
       setRequestData(data.request)
       setBrandingData(data.branding)
+
+      // If password required, show password prompt
+      if (data.request.requiresPassword) {
+        setShowPasswordPrompt(true)
+      } else {
+        setPasswordVerified(true)
+      }
     } catch (error) {
       console.error('[Upload] Failed to fetch request:', error)
       console.error('[Upload] Error response:', error.response?.data)
@@ -86,6 +96,11 @@ function Upload() {
       formDataObj.append('name', formData.name)
       formDataObj.append('email', formData.email)
 
+      // Add password if required
+      if (requestData.requiresPassword && formData.password) {
+        formDataObj.append('password', formData.password)
+      }
+
       // Add custom fields
       Object.keys(formData.customFields).forEach(key => {
         formDataObj.append(`customFields[${key}]`, formData.customFields[key])
@@ -102,7 +117,11 @@ function Upload() {
       setSuccess(true)
     } catch (error) {
       console.error('Upload error:', error)
-      alert(error.response?.data?.error || 'Failed to upload files')
+      if (error.response?.status === 401) {
+        alert('Incorrect password. Please try again.')
+      } else {
+        alert(error.response?.data?.error || 'Failed to upload files')
+      }
     } finally {
       setUploading(false)
     }
@@ -157,6 +176,88 @@ function Upload() {
           }}>
             This upload link is invalid or has expired.
           </div>
+        </div>
+      </div>
+    )
+  }
+
+  // PASSWORD PROMPT
+  if (showPasswordPrompt && !passwordVerified) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: '#000000',
+        padding: '40px 20px'
+      }}>
+        <div style={{
+          maxWidth: '400px',
+          width: '100%'
+        }}>
+          <h1 style={{
+            fontSize: '32px',
+            fontWeight: 600,
+            color: '#ffffff',
+            marginBottom: '12px',
+            textAlign: 'center'
+          }}>
+            Password Required
+          </h1>
+          <p style={{
+            fontSize: '16px',
+            color: '#999',
+            marginBottom: '32px',
+            textAlign: 'center'
+          }}>
+            This request is password-protected
+          </p>
+          <form onSubmit={(e) => {
+            e.preventDefault()
+            if (formData.password) {
+              setPasswordVerified(true)
+              setShowPasswordPrompt(false)
+            }
+          }}>
+            <input
+              type="password"
+              value={formData.password}
+              onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+              placeholder="Enter password"
+              required
+              autoFocus
+              style={{
+                width: '100%',
+                padding: '16px 20px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid #2a2a2a',
+                borderRadius: '12px',
+                color: '#ffffff',
+                fontSize: '16px',
+                fontFamily: 'inherit',
+                outline: 'none',
+                marginBottom: '16px'
+              }}
+            />
+            <button
+              type="submit"
+              style={{
+                width: '100%',
+                padding: '16px',
+                background: '#ffffff',
+                color: '#000000',
+                border: 'none',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontFamily: 'inherit'
+              }}
+            >
+              Continue
+            </button>
+          </form>
         </div>
       </div>
     )
