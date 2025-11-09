@@ -44,12 +44,54 @@ router.get('/', authenticateToken, async (req, res) => {
     const totalStorageBytes = parseInt(totalStorageResult.rows[0].total_bytes)
     const totalStorageGB = (totalStorageBytes / (1024 * 1024 * 1024)).toFixed(2)
 
+    // Upload trend (last 7 days) - available to all users
+    const uploadsByDayResult = await pool.query(
+      `SELECT DATE(u.created_at) as date, COUNT(*) as count
+       FROM uploads u
+       JOIN file_requests fr ON u.request_id = fr.id
+       WHERE fr.user_id = $1 AND u.created_at >= NOW() - INTERVAL '7 days'
+       GROUP BY DATE(u.created_at)
+       ORDER BY date ASC`,
+      [userId]
+    )
+
+    // Fill in missing days with 0 uploads
+    const uploadsByDay = []
+    for (let i = 6; i >= 0; i--) {
+      const date = new Date()
+      date.setDate(date.getDate() - i)
+      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      const existing = uploadsByDayResult.rows.find(row => {
+        const rowDate = new Date(row.date)
+        return rowDate.toDateString() === date.toDateString()
+      })
+      uploadsByDay.push({
+        date: dateStr,
+        count: existing ? parseInt(existing.count) : 0
+      })
+    }
+
+    // Request types breakdown - available to all users
+    const requestsByTypeResult = await pool.query(
+      `SELECT request_type, COUNT(*) as count
+       FROM file_requests
+       WHERE user_id = $1
+       GROUP BY request_type`,
+      [userId]
+    )
+    const requestsByType = {}
+    requestsByTypeResult.rows.forEach(row => {
+      requestsByType[row.request_type || 'unknown'] = parseInt(row.count)
+    })
+
     // Basic response for free users
     const basicStats = {
       totalRequests,
       activeRequests,
       totalUploads,
       totalStorageGB: parseFloat(totalStorageGB),
+      uploadsByDay,
+      requestsByType,
       plan: userPlan
     }
 
