@@ -141,6 +141,8 @@ function Requests() {
     if (userStr) {
       const userData = JSON.parse(userStr)
       const plan = userData.plan || 'free'
+      console.log('[Requests] User data from localStorage:', userData)
+      console.log('[Requests] Setting userPlan to:', plan)
       setUserPlan(plan)
     }
   }, [])
@@ -762,8 +764,12 @@ function Requests() {
                           type.description.toLowerCase().includes(searchQuery.toLowerCase())
                         )
                         .map((type) => {
-                          const planLevels = { 'free': 0, 'pro': 1 }
-                          const isLocked = planLevels[userPlan] < planLevels[type.planRequired]
+                          const planLevels = { 'free': 0, 'pro': 1, 'business': 2 }
+                          const currentPlanLevel = planLevels[userPlan] || 0
+                          const requiredPlanLevel = planLevels[type.planRequired] || 0
+                          const isLocked = currentPlanLevel < requiredPlanLevel
+
+                          console.log(`[Requests] Type: ${type.name}, userPlan: ${userPlan}, currentLevel: ${currentPlanLevel}, requiredLevel: ${requiredPlanLevel}, isLocked: ${isLocked}`)
 
                           return (
                             <div
