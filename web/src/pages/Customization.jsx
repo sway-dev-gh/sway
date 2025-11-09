@@ -2,10 +2,13 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Customization() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
+  const [requests, setRequests] = useState([])
+  const [selectedRequest, setSelectedRequest] = useState(null)
 
   // Load saved customizations from localStorage
   const [customization, setCustomization] = useState({
@@ -22,7 +25,25 @@ function Customization() {
       navigate('/login')
       return
     }
-    setLoading(false)
+
+    // Fetch user's requests
+    const fetchRequests = async () => {
+      try {
+        const { data } = await api.get('/api/requests', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        setRequests(data.requests || [])
+        if (data.requests && data.requests.length > 0) {
+          setSelectedRequest(data.requests[0])
+        }
+      } catch (error) {
+        console.error('Failed to fetch requests:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchRequests()
   }, [navigate])
 
   const handleSave = () => {
@@ -316,6 +337,54 @@ function Customization() {
               </p>
             </div>
 
+            {/* Request Selector */}
+            {requests.length > 0 && (
+              <div style={{ marginBottom: theme.spacing[6] }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[3],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Select Request to Preview
+                </label>
+                <select
+                  value={selectedRequest?.id || ''}
+                  onChange={(e) => {
+                    const request = requests.find(r => r.id === parseInt(e.target.value))
+                    setSelectedRequest(request)
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '44px',
+                    padding: '0 14px',
+                    background: theme.colors.bg.page,
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    borderRadius: '10px',
+                    color: theme.colors.text.primary,
+                    fontSize: '14px',
+                    fontFamily: 'inherit',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    transition: `all ${theme.transition.fast}`
+                  }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = theme.colors.border.dark
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = theme.colors.border.medium
+                  }}
+                >
+                  {requests.map((request) => (
+                    <option key={request.id} value={request.id}>
+                      {request.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
             {/* Preview Box - Full Interface Preview */}
             <div style={{ marginBottom: theme.spacing[8] }}>
               <label style={{
@@ -325,7 +394,7 @@ function Customization() {
                 marginBottom: theme.spacing[3],
                 fontWeight: theme.weight.medium
               }}>
-                Preview
+                Preview {selectedRequest ? `- ${selectedRequest.title}` : ''}
               </label>
               <div style={{
                 padding: theme.spacing[10],
@@ -344,7 +413,7 @@ function Customization() {
                     letterSpacing: '-0.02em',
                     fontFamily: customization.fontFamily
                   }}>
-                    Share Your Files
+                    {selectedRequest?.title || 'Share Your Files'}
                   </h1>
                   <p style={{
                     fontSize: '15px',
@@ -354,7 +423,7 @@ function Customization() {
                     lineHeight: '1.6',
                     fontFamily: customization.fontFamily
                   }}>
-                    Upload your files to this request
+                    {selectedRequest?.description || 'Upload your files to this request'}
                   </p>
                 </div>
 
