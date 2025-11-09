@@ -305,17 +305,16 @@ function Requests() {
   const [formData, setFormData] = useState({ title: '', description: '', customFields: {} })
   const [requestType, setRequestType] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
-  const [expiryType, setExpiryType] = useState('preset') // 'preset' or 'custom'
+  const [expiryType, setExpiryType] = useState('preset')
   const [customExpiryValue, setCustomExpiryValue] = useState('')
-  const [customExpiryUnit, setCustomExpiryUnit] = useState('days') // 'minutes', 'hours', 'days'
-  const [createdLink, setCreatedLink] = useState(null) // Store the created link
-  const [userPlan, setUserPlan] = useState('free') // Store user's plan
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false) // Upgrade prompt
-  const [upgradeMessage, setUpgradeMessage] = useState('') // Upgrade message from backend
+  const [customExpiryUnit, setCustomExpiryUnit] = useState('days')
+  const [createdLink, setCreatedLink] = useState(null)
+  const [userPlan, setUserPlan] = useState('free')
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [upgradeMessage, setUpgradeMessage] = useState('')
 
   useEffect(() => {
     fetchRequests()
-    // Load user plan
     const userStr = localStorage.getItem('user')
     if (userStr) {
       const userData = JSON.parse(userStr)
@@ -324,7 +323,6 @@ function Requests() {
     }
   }, [])
 
-  // Disable body scroll when modal is open
   useEffect(() => {
     if (showModal) {
       document.body.style.overflow = 'hidden'
@@ -364,7 +362,6 @@ function Requests() {
   }
 
   const openModal = () => {
-    // Always start at selection page
     setShowModal(true)
   }
 
@@ -390,14 +387,12 @@ function Requests() {
     e.preventDefault()
     if (!formData.title.trim() || !requestType) return
 
-    // Validate custom expiry
     if (expiryType === 'custom') {
       const value = parseInt(customExpiryValue)
       if (!value || value < 1) {
         alert('Please enter a valid expiry time')
         return
       }
-      // Minimum 5 minutes validation
       if (customExpiryUnit === 'minutes' && value < 5) {
         alert('Minimum expiry time is 5 minutes')
         return
@@ -408,8 +403,7 @@ function Requests() {
       setCreating(true)
       const token = localStorage.getItem('token')
 
-      // Calculate timeLimit in minutes for custom expiry
-      let timeLimit = formData.timeLimit || '7' // default preset
+      let timeLimit = formData.timeLimit || '7'
       if (expiryType === 'custom') {
         const value = parseInt(customExpiryValue)
         let minutes = value
@@ -418,7 +412,7 @@ function Requests() {
         } else if (customExpiryUnit === 'days') {
           minutes = value * 60 * 24
         }
-        timeLimit = `custom:${minutes}` // Send as "custom:XXX" where XXX is minutes
+        timeLimit = `custom:${minutes}`
       }
 
       const { data } = await api.post('/api/requests', {
@@ -431,17 +425,14 @@ function Requests() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      // Store the shareable link
       const shareableLink = `${window.location.origin}/r/${data.shortCode}`
       setCreatedLink(shareableLink)
 
       await fetchRequests()
-      // Don't close modal yet - show the link first
     } catch (err) {
       console.error('Failed to create request:', err)
       const errorData = err.response?.data
 
-      // Check if it's a limit reached error
       if (errorData?.limitReached) {
         setUpgradeMessage(errorData.error)
         setShowUpgradeModal(true)
@@ -545,15 +536,17 @@ function Requests() {
                 cursor: 'pointer',
                 fontFamily: 'inherit',
                 transition: `all ${theme.transition.normal}`,
-                height: '52px'
+                boxShadow: theme.shadows.md
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = theme.colors.text.secondary
-                e.currentTarget.style.transform = 'translateY(-1px)'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.white
                 e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = theme.shadows.md
               }}
             >
               + New Request
@@ -726,7 +719,7 @@ function Requests() {
                             background: theme.colors.white,
                             color: theme.colors.black,
                             border: 'none',
-                            borderRadius: '12px',
+                            borderRadius: '10px',
                             fontSize: '13px',
                             fontWeight: '500',
                             cursor: 'pointer',
@@ -755,7 +748,7 @@ function Requests() {
                             background: 'transparent',
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: '12px',
+                            borderRadius: '10px',
                             fontSize: '13px',
                             fontWeight: theme.weight.medium,
                             cursor: 'pointer',
@@ -781,7 +774,7 @@ function Requests() {
             )}
           </div>
 
-          {/* Create Request Modal */}
+          {/* Create Request Modal - Simplified */}
           {showModal && (
             <div
               style={{
@@ -790,61 +783,64 @@ function Requests() {
                 left: 0,
                 right: 0,
                 bottom: 0,
-                background: 'rgba(0, 0, 0, 0.95)',
+                background: 'rgba(0, 0, 0, 0.8)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 zIndex: 1000,
                 padding: '40px',
-                overflowY: 'auto'
+                overflowY: 'auto',
+                backdropFilter: 'blur(8px)'
               }}
               onClick={closeModal}
             >
               <div
                 style={{
-                  background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  maxWidth: '600px',
+                  background: theme.colors.bg.secondary,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: theme.radius['2xl'],
+                  maxWidth: '540px',
                   width: '100%',
                   maxHeight: '90vh',
                   overflowY: 'auto',
-                  margin: 'auto'
+                  margin: 'auto',
+                  boxShadow: theme.shadows.glowStrong
                 }}
                 className="custom-scrollbar"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal Header */}
                 <div style={{
-                  padding: '32px',
-                  borderBottom: `1px solid ${theme.colors.border.medium}`,
+                  padding: '28px 32px',
+                  borderBottom: `1px solid ${theme.colors.border.light}`,
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
                   <h2 style={{
-                    fontSize: '24px',
-                    fontWeight: '300',
+                    fontSize: '20px',
+                    fontWeight: '500',
                     margin: 0,
-                    letterSpacing: '-0.01em'
+                    letterSpacing: '-0.01em',
+                    color: theme.colors.text.primary
                   }}>
-                    Create New Request
+                    {createdLink ? 'Request Created' : (requestType ? 'Create Request' : 'Choose Request Type')}
                   </h2>
                   <button
-                    onClick={() => {
-                      setShowModal(false)
-                      setRequestType('')
-                      setFormData({ title: '', description: '', customFields: {} })
-                    }}
+                    onClick={closeModal}
                     style={{
                       background: 'transparent',
-                      border: `1px solid ${theme.colors.border.medium}`,
-                      fontSize: '20px',
+                      border: 'none',
+                      fontSize: '24px',
                       color: theme.colors.text.muted,
                       cursor: 'pointer',
-                      padding: '8px 14px',
+                      padding: '4px 8px',
                       lineHeight: '1',
-                      fontFamily: 'inherit'
+                      fontFamily: 'inherit',
+                      transition: `color ${theme.transition.fast}`
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
+                    onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.muted}
                   >
                     ×
                   </button>
@@ -853,29 +849,22 @@ function Requests() {
                 {/* Modal Content */}
                 {createdLink ? (
                   /* Success Screen */
-                  <div style={{ padding: '48px 32px', textAlign: 'center' }}>
+                  <div style={{ padding: '40px 32px' }}>
                     <div style={{
-                      fontSize: '18px',
-                      color: theme.colors.text.primary,
+                      fontSize: '15px',
+                      color: theme.colors.text.secondary,
                       marginBottom: '24px',
-                      fontWeight: '400'
-                    }}>
-                      Request Created Successfully!
-                    </div>
-
-                    <div style={{
-                      fontSize: '13px',
-                      color: theme.colors.text.muted,
-                      marginBottom: '32px'
+                      textAlign: 'center'
                     }}>
                       Share this link with people to collect files
                     </div>
 
                     {/* Link Display */}
                     <div style={{
-                      padding: '16px',
-                      background: theme.colors.bg.secondary,
+                      padding: '16px 20px',
+                      background: theme.colors.bg.page,
                       border: `1px solid ${theme.colors.border.medium}`,
+                      borderRadius: '12px',
                       marginBottom: '24px',
                       wordBreak: 'break-all',
                       fontSize: '14px',
@@ -888,47 +877,26 @@ function Requests() {
                     {/* Buttons */}
                     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                       <button
-                        onClick={() => window.open(createdLink, '_blank')}
+                        onClick={() => copyToClipboard(createdLink)}
                         style={{
-                          padding: '12px 24px',
+                          padding: '14px 28px',
                           background: theme.colors.white,
                           color: theme.colors.black,
                           border: 'none',
+                          borderRadius: '12px',
                           fontSize: '14px',
-                          fontWeight: theme.weight.semibold,
+                          fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
                           transition: `all ${theme.transition.fast}`
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = theme.colors.text.secondary
-                          e.currentTarget.style.transform = 'scale(1.02)'
+                          e.currentTarget.style.transform = 'translateY(-1px)'
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = theme.colors.white
-                          e.currentTarget.style.transform = 'scale(1)'
-                        }}
-                      >
-                        Open Link
-                      </button>
-                      <button
-                        onClick={() => copyToClipboard(createdLink)}
-                        style={{
-                          padding: '12px 24px',
-                          background: 'transparent',
-                          color: theme.colors.text.primary,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          fontSize: '14px',
-                          fontWeight: '400',
-                          cursor: 'pointer',
-                          fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
+                          e.currentTarget.style.transform = 'translateY(0)'
                         }}
                       >
                         Copy Link
@@ -936,21 +904,24 @@ function Requests() {
                       <button
                         onClick={closeModal}
                         style={{
-                          padding: '12px 24px',
+                          padding: '14px 28px',
                           background: 'transparent',
                           color: theme.colors.text.secondary,
                           border: `1px solid ${theme.colors.border.medium}`,
+                          borderRadius: '12px',
                           fontSize: '14px',
-                          fontWeight: '400',
+                          fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
                           transition: `all ${theme.transition.fast}`
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                          e.currentTarget.style.background = theme.colors.bg.hover
+                          e.currentTarget.style.borderColor = theme.colors.border.dark
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = 'transparent'
+                          e.currentTarget.style.borderColor = theme.colors.border.medium
                         }}
                       >
                         Close
@@ -958,7 +929,7 @@ function Requests() {
                     </div>
                   </div>
                 ) : !requestType ? (
-                  <div style={{ padding: '32px' }}>
+                  <div style={{ padding: '24px 32px' }}>
                     {/* Search Bar */}
                     <input
                       type="text"
@@ -968,8 +939,9 @@ function Requests() {
                       style={{
                         width: '100%',
                         padding: '12px 16px',
-                        background: theme.colors.bg.secondary,
+                        background: theme.colors.bg.page,
                         border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: '10px',
                         color: theme.colors.text.primary,
                         fontSize: '14px',
                         fontFamily: 'inherit',
@@ -979,20 +951,10 @@ function Requests() {
                     />
 
                     <div style={{
-                      fontSize: '11px',
-                      color: theme.colors.text.muted,
-                      marginBottom: theme.spacing[4],
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px'
-                    }}>
-                      Choose a type
-                    </div>
-
-                    <div style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(3, 1fr)',
+                      gridTemplateColumns: 'repeat(2, 1fr)',
                       gap: '12px',
-                      maxHeight: '400px',
+                      maxHeight: '420px',
                       overflowY: 'auto'
                     }}
                     className="custom-scrollbar"
@@ -1019,10 +981,11 @@ function Requests() {
                               }}
                               style={{
                                 padding: '16px',
-                                background: isLocked ? theme.colors.bg.page : theme.colors.bg.secondary,
+                                background: isLocked ? theme.colors.bg.page : theme.colors.bg.page,
                                 border: `1px solid ${theme.colors.border.medium}`,
+                                borderRadius: '10px',
                                 cursor: isLocked ? 'not-allowed' : 'pointer',
-                                transition: 'all 0.15s ease',
+                                transition: `all ${theme.transition.fast}`,
                                 opacity: isLocked ? 0.5 : 1,
                                 position: 'relative'
                               }}
@@ -1034,7 +997,7 @@ function Requests() {
                               }}
                               onMouseLeave={(e) => {
                                 if (!isLocked) {
-                                  e.currentTarget.style.background = theme.colors.bg.secondary
+                                  e.currentTarget.style.background = theme.colors.bg.page
                                   e.currentTarget.style.borderColor = theme.colors.border.medium
                                 }
                               }}
@@ -1050,21 +1013,21 @@ function Requests() {
                                   letterSpacing: '1px',
                                   fontWeight: '500'
                                 }}>
-                                  {type.planRequired}
+                                  PRO
                                 </div>
                               )}
                               <div style={{
-                                fontSize: '13px',
-                                fontWeight: '400',
+                                fontSize: '14px',
+                                fontWeight: '500',
                                 color: theme.colors.text.primary,
                                 marginBottom: theme.spacing[1]
                               }}>
                                 {type.name}
                               </div>
                               <div style={{
-                                fontSize: '11px',
+                                fontSize: '12px',
                                 color: theme.colors.text.tertiary,
-                                lineHeight: '1.3'
+                                lineHeight: '1.4'
                               }}>
                                 {type.description}
                               </div>
@@ -1075,29 +1038,29 @@ function Requests() {
                   </div>
                 ) : (
                   <form onSubmit={handleCreateRequest}>
-                    <div style={{ padding: '32px' }}>
+                    <div style={{ padding: '24px 32px' }}>
                       <div style={{ marginBottom: theme.spacing[5] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '11px',
-                          color: theme.colors.text.muted,
+                          fontSize: '13px',
+                          color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
-                          textTransform: 'uppercase',
-                          letterSpacing: '1px'
+                          fontWeight: theme.weight.medium
                         }}>
-                          Type
+                          Request Type
                         </label>
                         <div style={{
                           padding: '12px 16px',
-                          background: theme.colors.bg.secondary,
+                          background: theme.colors.bg.page,
                           border: `1px solid ${theme.colors.border.medium}`,
+                          borderRadius: '10px',
                           fontSize: '14px',
                           color: theme.colors.text.primary,
                           display: 'flex',
                           justifyContent: 'space-between',
                           alignItems: 'center'
                         }}>
-                          {requestType}
+                          {REQUEST_TYPES.find(t => t.id === requestType)?.name || requestType}
                           <button
                             type="button"
                             onClick={() => setRequestType('')}
@@ -1106,9 +1069,13 @@ function Requests() {
                               border: 'none',
                               color: theme.colors.text.secondary,
                               cursor: 'pointer',
-                              fontSize: '12px',
-                              padding: 0
+                              fontSize: '13px',
+                              padding: 0,
+                              fontWeight: '500',
+                              transition: `color ${theme.transition.fast}`
                             }}
+                            onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
+                            onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.secondary}
                           >
                             Change
                           </button>
@@ -1118,11 +1085,10 @@ function Requests() {
                       <div style={{ marginBottom: theme.spacing[5] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '11px',
-                          color: theme.colors.text.muted,
+                          fontSize: '13px',
+                          color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
-                          textTransform: 'uppercase',
-                          letterSpacing: '1px'
+                          fontWeight: theme.weight.medium
                         }}>
                           Title
                         </label>
@@ -1137,6 +1103,7 @@ function Requests() {
                             padding: '12px 16px',
                             background: theme.colors.bg.page,
                             border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '10px',
                             color: theme.colors.text.primary,
                             fontSize: '14px',
                             fontFamily: 'inherit',
@@ -1149,23 +1116,23 @@ function Requests() {
                       <div style={{ marginBottom: theme.spacing[6] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '11px',
-                          color: theme.colors.text.muted,
+                          fontSize: '13px',
+                          color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
-                          textTransform: 'uppercase',
-                          letterSpacing: '1px'
+                          fontWeight: theme.weight.medium
                         }}>
                           Description (optional)
                         </label>
                         <textarea
                           value={formData.description}
                           onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                          rows={4}
+                          rows={3}
                           style={{
                             width: '100%',
                             padding: '12px 16px',
                             background: theme.colors.bg.page,
                             border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '10px',
                             color: theme.colors.text.primary,
                             fontSize: '14px',
                             fontFamily: 'inherit',
@@ -1187,11 +1154,10 @@ function Requests() {
                           <div key={field.id} style={{ marginBottom: theme.spacing[5] }}>
                             <label style={{
                               display: 'block',
-                              fontSize: '11px',
-                              color: theme.colors.text.muted,
+                              fontSize: '13px',
+                              color: theme.colors.text.secondary,
                               marginBottom: theme.spacing[2],
-                              textTransform: 'uppercase',
-                              letterSpacing: '1px'
+                              fontWeight: theme.weight.medium
                             }}>
                               {field.label}
                             </label>
@@ -1208,6 +1174,7 @@ function Requests() {
                                   padding: '12px 16px',
                                   background: theme.colors.bg.page,
                                   border: `1px solid ${theme.colors.border.medium}`,
+                                  borderRadius: '10px',
                                   color: theme.colors.text.primary,
                                   fontSize: '14px',
                                   fontFamily: 'inherit',
@@ -1228,12 +1195,13 @@ function Requests() {
                                   customFields: { ...prev.customFields, [field.id]: e.target.value }
                                 }))}
                                 placeholder={field.placeholder || ''}
-                                rows={4}
+                                rows={3}
                                 style={{
                                   width: '100%',
                                   padding: '12px 16px',
                                   background: theme.colors.bg.page,
                                   border: `1px solid ${theme.colors.border.medium}`,
+                                  borderRadius: '10px',
                                   color: theme.colors.text.primary,
                                   fontSize: '14px',
                                   fontFamily: 'inherit',
@@ -1255,6 +1223,7 @@ function Requests() {
                                   padding: '12px 16px',
                                   background: theme.colors.bg.page,
                                   border: `1px solid ${theme.colors.border.medium}`,
+                                  borderRadius: '10px',
                                   color: theme.colors.text.primary,
                                   fontSize: '14px',
                                   fontFamily: 'inherit',
@@ -1269,11 +1238,10 @@ function Requests() {
                       <div style={{ marginBottom: theme.spacing[6] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '11px',
-                          color: theme.colors.text.muted,
+                          fontSize: '13px',
+                          color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
-                          textTransform: 'uppercase',
-                          letterSpacing: '1px'
+                          fontWeight: theme.weight.medium
                         }}>
                           Link Expires In
                         </label>
@@ -1330,6 +1298,7 @@ function Requests() {
                               padding: '12px 16px',
                               background: theme.colors.bg.page,
                               border: `1px solid ${theme.colors.border.medium}`,
+                              borderRadius: '10px',
                               color: theme.colors.text.primary,
                               fontSize: '14px',
                               fontFamily: 'inherit',
@@ -1357,6 +1326,7 @@ function Requests() {
                                 padding: '12px 16px',
                                 background: theme.colors.bg.page,
                                 border: `1px solid ${theme.colors.border.medium}`,
+                                borderRadius: '10px',
                                 color: theme.colors.text.primary,
                                 fontSize: '14px',
                                 fontFamily: 'inherit',
@@ -1367,7 +1337,6 @@ function Requests() {
                               value={customExpiryUnit}
                               onChange={(e) => {
                                 setCustomExpiryUnit(e.target.value)
-                                // Reset value if switching to minutes and current value is less than 5
                                 if (e.target.value === 'minutes' && parseInt(customExpiryValue) < 5) {
                                   setCustomExpiryValue('5')
                                 }
@@ -1376,6 +1345,7 @@ function Requests() {
                                 padding: '12px 16px',
                                 background: theme.colors.bg.page,
                                 border: `1px solid ${theme.colors.border.medium}`,
+                                borderRadius: '10px',
                                 color: theme.colors.text.primary,
                                 fontSize: '14px',
                                 fontFamily: 'inherit',
@@ -1390,34 +1360,31 @@ function Requests() {
                             </select>
                           </div>
                         )}
-                        {expiryType === 'custom' && customExpiryUnit === 'minutes' && (
-                          <div style={{
-                            fontSize: '12px',
-                            color: theme.colors.text.muted,
-                            marginTop: theme.spacing[2]
-                          }}>
-                            Minimum: 5 minutes
-                          </div>
-                        )}
                       </div>
 
-                      <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
                         <button
                           type="button"
-                          onClick={() => {
-                            setShowModal(false)
-                            setRequestType('')
-                            setFormData({ title: '', description: '', customFields: {} })
-                          }}
+                          onClick={closeModal}
                           style={{
                             padding: '12px 24px',
                             background: 'transparent',
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '10px',
                             fontSize: '14px',
-                            fontWeight: '400',
+                            fontWeight: '500',
                             cursor: 'pointer',
-                            fontFamily: 'inherit'
+                            fontFamily: 'inherit',
+                            transition: `all ${theme.transition.fast}`
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = theme.colors.bg.hover
+                            e.currentTarget.style.borderColor = theme.colors.border.dark
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent'
+                            e.currentTarget.style.borderColor = theme.colors.border.medium
                           }}
                         >
                           Cancel
@@ -1430,11 +1397,25 @@ function Requests() {
                             background: theme.colors.white,
                             color: theme.colors.black,
                             border: 'none',
+                            borderRadius: '10px',
                             fontSize: '14px',
-                            fontWeight: '400',
+                            fontWeight: '500',
                             cursor: creating ? 'not-allowed' : 'pointer',
                             opacity: creating ? 0.5 : 1,
-                            fontFamily: 'inherit'
+                            fontFamily: 'inherit',
+                            transition: `all ${theme.transition.fast}`
+                          }}
+                          onMouseEnter={(e) => {
+                            if (!creating) {
+                              e.currentTarget.style.background = theme.colors.text.secondary
+                              e.currentTarget.style.transform = 'translateY(-1px)'
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (!creating) {
+                              e.currentTarget.style.background = theme.colors.white
+                              e.currentTarget.style.transform = 'translateY(0)'
+                            }
                           }}
                         >
                           {creating ? 'Creating...' : 'Create Request'}
@@ -1469,25 +1450,20 @@ function Requests() {
         >
           <div
             style={{
-              background: theme.colors.bg.elevated,
-              borderRadius: '16px',
+              background: theme.colors.bg.secondary,
+              borderRadius: theme.radius['2xl'],
               padding: '48px',
-              maxWidth: '520px',
+              maxWidth: '480px',
               width: 'calc(100% - 32px)',
-              border: `1px solid ${theme.colors.border.medium}`,
-              textAlign: 'center'
+              border: `1px solid ${theme.colors.border.light}`,
+              textAlign: 'center',
+              boxShadow: theme.shadows.glowStrong
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div style={{
-              fontSize: '48px',
-              marginBottom: '24px'
-            }}>
-              🚀
-            </div>
             <h2 style={{
-              fontSize: '28px',
-              fontWeight: '400',
+              fontSize: '24px',
+              fontWeight: '500',
               margin: '0 0 16px 0',
               color: theme.colors.text.primary,
               letterSpacing: '-0.02em'
@@ -1495,7 +1471,7 @@ function Requests() {
               Upgrade to Pro
             </h2>
             <p style={{
-              fontSize: '16px',
+              fontSize: '15px',
               color: theme.colors.text.secondary,
               margin: '0 0 32px 0',
               lineHeight: '1.6'
@@ -1510,7 +1486,7 @@ function Requests() {
                   background: theme.colors.white,
                   color: theme.colors.black,
                   border: 'none',
-                  borderRadius: '10px',
+                  borderRadius: '12px',
                   fontSize: '15px',
                   fontWeight: '500',
                   cursor: 'pointer',
@@ -1533,21 +1509,22 @@ function Requests() {
                 onClick={() => setShowUpgradeModal(false)}
                 style={{
                   padding: '14px 32px',
-                  background: 'rgba(255, 255, 255, 0.05)',
+                  background: 'transparent',
                   color: theme.colors.text.secondary,
                   border: `1px solid ${theme.colors.border.medium}`,
-                  borderRadius: '10px',
+                  borderRadius: '12px',
                   fontSize: '15px',
                   fontWeight: '500',
                   cursor: 'pointer',
-                  transition: `all ${theme.transition.normal}`
+                  transition: `all ${theme.transition.normal}`,
+                  fontFamily: 'inherit'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
-                  e.currentTarget.style.borderColor = theme.colors.border.strong
+                  e.currentTarget.style.background = theme.colors.bg.hover
+                  e.currentTarget.style.borderColor = theme.colors.border.dark
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                  e.currentTarget.style.background = 'transparent'
                   e.currentTarget.style.borderColor = theme.colors.border.medium
                 }}
               >

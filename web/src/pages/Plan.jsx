@@ -64,8 +64,7 @@ function Plan() {
       name: 'Free',
       price: '$0',
       period: '',
-      tagline: 'Get started',
-      description: 'Perfect for trying out Sway.',
+      description: 'Perfect for trying out Sway',
       features: [
         { text: '20 active requests', highlight: false },
         { text: '2GB storage', highlight: false },
@@ -77,13 +76,12 @@ function Plan() {
       name: 'Pro',
       price: '$15',
       period: '/month',
-      tagline: 'Most popular',
-      description: 'Unlimited power for serious users.',
+      description: 'Unlimited power for professionals',
       popular: true,
       features: [
         { text: '200 active requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'Unlimited request types', highlight: true }
+        { text: 'All request types', highlight: true }
       ]
     }
   ]
@@ -126,24 +124,21 @@ function Plan() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[16], textAlign: 'center' }}>
+          <div style={{ marginBottom: theme.spacing[14], textAlign: 'center' }}>
             <h1 style={{
               fontSize: '28px',
               fontWeight: '500',
-              margin: '0 0 16px 0',
+              margin: '0 0 12px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.03em'
+              letterSpacing: '-0.02em'
             }}>
-              Simple, Predictable Pricing
+              Simple Pricing
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '15px',
               color: theme.colors.text.secondary,
               margin: 0,
-              maxWidth: '600px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              lineHeight: '1.7'
+              lineHeight: '1.6'
             }}>
               Start free. Upgrade when you need more. Cancel anytime.
             </p>
@@ -153,23 +148,23 @@ function Plan() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: theme.spacing[8],
-            marginBottom: theme.spacing[20],
-            maxWidth: '1000px',
-            margin: '0 auto 120px auto'
+            gap: theme.spacing[6],
+            marginBottom: theme.spacing[16],
+            maxWidth: '900px',
+            margin: '0 auto 80px auto'
           }}>
             {plans.map((plan) => (
               <div
                 key={plan.id}
                 style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[12],
+                  padding: theme.spacing[10],
                   borderRadius: theme.radius['2xl'],
-                  border: plan.popular ? `2px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
+                  border: plan.popular ? `1px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
                   position: 'relative',
                   boxShadow: plan.popular ? theme.shadows.glowStrong : theme.shadows.md,
                   transition: `all ${theme.transition.normal}`,
-                  transform: plan.popular ? 'scale(1.05)' : 'scale(1)'
+                  transform: plan.popular ? 'scale(1.02)' : 'scale(1)'
                 }}
                 onMouseEnter={(e) => {
                   if (!plan.popular) {
@@ -178,7 +173,7 @@ function Plan() {
                     e.currentTarget.style.boxShadow = theme.shadows.glowStrong
                     e.currentTarget.style.transform = 'scale(1.02)'
                   } else {
-                    e.currentTarget.style.transform = 'scale(1.07)'
+                    e.currentTarget.style.transform = 'scale(1.04)'
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -188,7 +183,7 @@ function Plan() {
                     e.currentTarget.style.boxShadow = theme.shadows.md
                     e.currentTarget.style.transform = 'scale(1)'
                   } else {
-                    e.currentTarget.style.transform = 'scale(1.05)'
+                    e.currentTarget.style.transform = 'scale(1.02)'
                   }
                 }}
               >
@@ -196,15 +191,15 @@ function Plan() {
                 {plan.popular && (
                   <div style={{
                     position: 'absolute',
-                    top: '-14px',
+                    top: '-12px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     background: theme.colors.white,
                     color: theme.colors.black,
-                    padding: '8px 24px',
+                    padding: '6px 20px',
                     borderRadius: theme.radius.full,
-                    fontSize: '12px',
-                    fontWeight: theme.weight.bold,
+                    fontSize: '11px',
+                    fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
@@ -216,11 +211,11 @@ function Plan() {
                 {plan.id === currentPlan && (
                   <div style={{
                     position: 'absolute',
-                    top: theme.spacing[6],
-                    right: theme.spacing[6],
+                    top: theme.spacing[5],
+                    right: theme.spacing[5],
                     background: 'rgba(255, 255, 255, 0.1)',
                     color: theme.colors.text.secondary,
-                    padding: '6px 14px',
+                    padding: '4px 12px',
                     borderRadius: theme.radius.md,
                     fontSize: '11px',
                     fontWeight: theme.weight.semibold,
@@ -237,26 +232,26 @@ function Plan() {
                   color: theme.colors.text.tertiary,
                   marginBottom: theme.spacing[2],
                   textTransform: 'uppercase',
-                  letterSpacing: '1.5px',
-                  fontWeight: theme.weight.semibold
+                  letterSpacing: '1.2px',
+                  fontWeight: theme.weight.medium
                 }}>
                   {plan.name}
                 </div>
 
                 {/* Price */}
-                <div style={{ marginBottom: theme.spacing[6] }}>
+                <div style={{ marginBottom: theme.spacing[5] }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[1] }}>
                     <div style={{
-                      fontSize: plan.popular ? '80px' : '64px',
-                      fontWeight: theme.weight.bold,
+                      fontSize: '56px',
+                      fontWeight: theme.weight.semibold,
                       color: theme.colors.text.primary,
-                      letterSpacing: '-0.05em',
+                      letterSpacing: '-0.04em',
                       lineHeight: '1'
                     }}>
                       {plan.price}
                     </div>
                     <div style={{
-                      fontSize: '18px',
+                      fontSize: '15px',
                       color: theme.colors.text.muted,
                       marginBottom: theme.spacing[2]
                     }}>
@@ -267,36 +262,35 @@ function Plan() {
 
                 {/* Description */}
                 <div style={{
-                  fontSize: '15px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[10],
-                  lineHeight: '1.6',
-                  minHeight: '48px'
+                  marginBottom: theme.spacing[8],
+                  lineHeight: '1.5'
                 }}>
                   {plan.description}
                 </div>
 
                 {/* Features */}
-                <div style={{ marginBottom: theme.spacing[10], minHeight: '180px' }}>
+                <div style={{ marginBottom: theme.spacing[8] }}>
                   {plan.features.map((feature, index) => (
                     <div
                       key={index}
                       style={{
-                        fontSize: '15px',
+                        fontSize: '14px',
                         color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
-                        marginBottom: theme.spacing[4],
+                        marginBottom: theme.spacing[3],
                         display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: theme.spacing[3],
+                        alignItems: 'center',
+                        gap: theme.spacing[2],
                         fontWeight: feature.highlight ? theme.weight.medium : theme.weight.normal
                       }}
                     >
                       <span style={{
                         color: theme.colors.text.primary,
-                        fontSize: '18px',
+                        fontSize: '16px',
                         lineHeight: '1'
                       }}>✓</span>
-                      <span style={{ flex: 1 }}>{feature.text}</span>
+                      <span>{feature.text}</span>
                     </div>
                   ))}
                 </div>
@@ -307,18 +301,17 @@ function Plan() {
                   disabled={plan.id === currentPlan || upgrading}
                   style={{
                     width: '100%',
-                    padding: '16px 32px',
+                    padding: '14px 28px',
                     background: plan.id === currentPlan ? 'transparent' : (plan.popular ? theme.colors.white : 'transparent'),
                     color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
                     border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
                     borderRadius: '12px',
-                    fontSize: '15px',
+                    fontSize: '14px',
                     fontWeight: '500',
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
                     transition: `all ${theme.transition.normal}`,
-                    opacity: upgrading ? 0.6 : 1,
-                    height: '56px'
+                    opacity: upgrading ? 0.6 : 1
                   }}
                   onMouseEnter={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
@@ -327,6 +320,7 @@ function Plan() {
                         e.currentTarget.style.transform = 'translateY(-1px)'
                       } else {
                         e.currentTarget.style.background = theme.colors.bg.hover
+                        e.currentTarget.style.borderColor = theme.colors.border.dark
                       }
                     }
                   }}
@@ -337,11 +331,12 @@ function Plan() {
                         e.currentTarget.style.transform = 'translateY(0)'
                       } else {
                         e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.borderColor = theme.colors.border.medium
                       }
                     }
                   }}
                 >
-                  {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? 'Get Started Free' : 'Upgrade to ' + plan.name))}
+                  {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? 'Get Started' : 'Upgrade to Pro'))}
                 </button>
               </div>
             ))}
@@ -350,24 +345,25 @@ function Plan() {
           {/* FAQ Section */}
           <div>
             <h2 style={{
-              fontSize: '28px',
-              fontWeight: theme.weight.normal,
-              margin: '0 0 48px 0',
+              fontSize: '24px',
+              fontWeight: theme.weight.medium,
+              margin: '0 0 32px 0',
               letterSpacing: '-0.02em',
-              textAlign: 'center'
+              textAlign: 'center',
+              color: theme.colors.text.primary
             }}>
               Frequently Asked Questions
             </h2>
 
             <div style={{
               display: 'grid',
-              gap: theme.spacing[5],
-              maxWidth: '900px',
+              gap: theme.spacing[4],
+              maxWidth: '800px',
               margin: '0 auto'
             }}>
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[10],
+                padding: theme.spacing[8],
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md,
@@ -384,17 +380,17 @@ function Plan() {
                 e.currentTarget.style.boxShadow = theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: '18px',
+                  fontSize: '16px',
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[3],
+                  marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
                 }}>
                   Can I change my plan at any time?
                 </div>
                 <div style={{
-                  fontSize: '15px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.7'
+                  lineHeight: '1.6'
                 }}>
                   Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate your billing.
                 </div>
@@ -402,7 +398,7 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[10],
+                padding: theme.spacing[8],
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md,
@@ -419,17 +415,17 @@ function Plan() {
                 e.currentTarget.style.boxShadow = theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: '18px',
+                  fontSize: '16px',
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[3],
+                  marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
                 }}>
                   What happens if I hit my upload limit?
                 </div>
                 <div style={{
-                  fontSize: '15px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.7'
+                  lineHeight: '1.6'
                 }}>
                   On the Free plan, you can have up to 20 active requests with 2GB total storage. You'll need to upgrade to Pro for 200 active requests and 50GB storage.
                 </div>
@@ -437,7 +433,7 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[10],
+                padding: theme.spacing[8],
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md,
@@ -454,17 +450,17 @@ function Plan() {
                 e.currentTarget.style.boxShadow = theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: '18px',
+                  fontSize: '16px',
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[3],
+                  marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
                 }}>
                   Do you offer refunds?
                 </div>
                 <div style={{
-                  fontSize: '15px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.7'
+                  lineHeight: '1.6'
                 }}>
                   Yes, we offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, we'll refund you in full. No questions asked.
                 </div>
