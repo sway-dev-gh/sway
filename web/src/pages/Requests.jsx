@@ -600,7 +600,7 @@ function Requests() {
                   maxHeight: '90vh',
                   overflowY: 'auto',
                   margin: 'auto',
-                  boxShadow: theme.shadows.glowStrong
+                  boxShadow: theme.shadows.lg
                 }}
                 className="custom-scrollbar"
                 onClick={(e) => e.stopPropagation()}
@@ -1216,7 +1216,7 @@ function Requests() {
               width: 'calc(100% - 32px)',
               border: `1px solid ${theme.colors.border.light}`,
               textAlign: 'center',
-              boxShadow: theme.shadows.glowStrong
+              boxShadow: theme.shadows.lg
             }}
             onClick={(e) => e.stopPropagation()}
           >
