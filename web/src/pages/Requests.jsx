@@ -22,7 +22,7 @@ const REQUEST_TYPES = [
       { id: 'customField3', label: 'Custom Field 3', type: 'text', placeholder: 'Enter custom field name' },
       { id: 'instructions', label: 'Additional Instructions', type: 'textarea', placeholder: 'Any special instructions for uploaders...' }
     ],
-    planRequired: 'free'
+    planRequired: 'pro'
   },
   {
     id: 'documents',
