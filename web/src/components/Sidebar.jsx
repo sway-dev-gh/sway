@@ -141,7 +141,7 @@ function Sidebar() {
     <>
     <div style={topBarStyle}>
       {/* Logo/Brand */}
-      <Link to="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '12px' }}>
+      <Link to="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
         <img
           src="/logo.svg"
           alt="Sway"
@@ -151,14 +151,6 @@ function Sidebar() {
             flexShrink: 0
           }}
         />
-        <div style={{
-          fontSize: '32px',
-          fontWeight: theme.weight.semibold,
-          color: theme.colors.text.primary,
-          flexShrink: 0
-        }}>
-          Sway
-        </div>
       </Link>
 
       {/* Navigation Links */}
