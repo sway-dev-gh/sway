@@ -74,6 +74,7 @@ const upload = multer({
 router.get('/:code', getRequestLimiter, async (req, res) => {
   try {
     const { code } = req.params
+    console.log(`[Uploads] Fetching request with code: ${code}`)
 
     const result = await pool.query(
       `SELECT fr.id, fr.title, fr.description, fr.is_active, fr.request_type, fr.custom_fields, fr.field_requirements, fr.expires_at, fr.user_id
