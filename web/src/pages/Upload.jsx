@@ -705,14 +705,6 @@ export default function Upload() {
                 cursor: 'pointer',
                                 position: 'relative'
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.white
-                e.currentTarget.style.background = theme.colors.bg.hover
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-                e.currentTarget.style.background = theme.colors.bg.page
-              }}
               >
                 <input
                   type="file"
@@ -816,18 +808,6 @@ export default function Upload() {
                 cursor: uploading ? 'not-allowed' : 'pointer',
                                 fontFamily: 'inherit',
                 opacity: uploading ? 0.6 : 1
-              }}
-              onMouseEnter={(e) => {
-                if (!uploading) {
-                  e.currentTarget.style.background = theme.colors.text.secondary
-                  e.currentTarget.style.color = theme.colors.black
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!uploading) {
-                  e.currentTarget.style.background = theme.colors.white
-                  e.currentTarget.style.color = theme.colors.black
-                }
               }}
             >
               {uploading ? 'Uploading...' : 'Upload Files'}

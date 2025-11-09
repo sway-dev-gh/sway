@@ -178,14 +178,6 @@ function Sidebar() {
                         alignItems: 'center',
                         gap: '6px'
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = theme.colors.bg.hover
-                        e.currentTarget.style.opacity = '0.7'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.opacity = '0.5'
-                      }}
                       title={`Upgrade to ${upgradePlan} to unlock`}
                     >
                       <span>{item.label}</span>
@@ -212,16 +204,6 @@ function Sidebar() {
                     key={item.path}
                     to={item.path}
                     style={navLinkStyle(isActive)}
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background = theme.colors.bg.hover
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background = 'transparent'
-                      }
-                    }}
                   >
                     {item.label}
                   </Link>
@@ -324,14 +306,6 @@ function Sidebar() {
               fontSize: theme.fontSize.sm,
               fontWeight: theme.weight.medium,
                           }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.hover
-              e.currentTarget.style.color = theme.colors.text.primary
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent'
-              e.currentTarget.style.color = theme.colors.text.secondary
-            }}
           >
             Sign Out
           </button>

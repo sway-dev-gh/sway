@@ -265,20 +265,6 @@ function AdminModeActivator({ onActivate }) {
                     textTransform: 'uppercase',
                     cursor: 'pointer',
                                       }}
-                  onMouseEnter={(e) => {
-                    if (selectedPlan !== plan) {
-                      e.currentTarget.style.background = theme.colors.bg.hover
-                      e.currentTarget.style.borderColor = theme.colors.white
-                      e.currentTarget.style.color = theme.colors.text.primary
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (selectedPlan !== plan) {
-                      e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.borderColor = theme.colors.border.medium
-                      e.currentTarget.style.color = theme.colors.text.secondary
-                    }
-                  }}
                 >
                   {plan}
                 </button>
@@ -362,14 +348,6 @@ function AdminModeActivator({ onActivate }) {
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer',
                               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.hover
-                e.currentTarget.style.color = theme.colors.text.primary
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'transparent'
-                e.currentTarget.style.color = theme.colors.text.secondary
-              }}
             >
               Cancel
             </button>
@@ -386,12 +364,6 @@ function AdminModeActivator({ onActivate }) {
                 fontWeight: theme.weight.semibold,
                 cursor: 'pointer',
                               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.02)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)'
-              }}
             >
               {isAdminMode ? 'Exit Admin Mode' : 'Activate Admin Mode'}
             </button>

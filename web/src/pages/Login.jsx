@@ -178,18 +178,6 @@ export default function Login() {
                                 fontFamily: 'inherit',
                 opacity: loading ? 0.6 : 1
               }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.background = theme.colors.text.secondary
-                  e.currentTarget.style.transform = 'translateY(-1px)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.background = theme.colors.white
-                  e.currentTarget.style.transform = 'translateY(0)'
-                }
-              }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>
@@ -212,12 +200,6 @@ export default function Login() {
               textDecoration: 'none',
               fontWeight: theme.weight.medium,
               transition: `color ${theme.transition.fast}`
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = theme.colors.text.secondary
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = theme.colors.white
             }}
           >
             Sign up

@@ -147,19 +147,7 @@ function Responses() {
               borderRadius: theme.radius['2xl'],
               padding: theme.spacing[12],
               boxShadow: theme.shadows.md,
-                          }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.hover
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              e.currentTarget.style.transform = 'translateY(-2px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.secondary
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.boxShadow = theme.shadows.md
-              e.currentTarget.style.transform = 'translateY(0)'
-            }}>
+                          }}>
               <div style={{
                 fontSize: '12px',
                 color: theme.colors.text.tertiary,
@@ -186,19 +174,7 @@ function Responses() {
               borderRadius: theme.radius['2xl'],
               padding: theme.spacing[12],
               boxShadow: theme.shadows.md,
-                          }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.hover
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              e.currentTarget.style.transform = 'translateY(-2px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.secondary
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.boxShadow = theme.shadows.md
-              e.currentTarget.style.transform = 'translateY(0)'
-            }}>
+                          }}>
               <div style={{
                 fontSize: '12px',
                 color: theme.colors.text.tertiary,
@@ -421,14 +397,6 @@ function Responses() {
                               cursor: 'pointer',
                                                             fontFamily: 'inherit',
                               height: '44px'
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.background = theme.colors.text.secondary
-                              e.currentTarget.style.transform = 'translateY(-1px)'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.background = theme.colors.white
-                              e.currentTarget.style.transform = 'translateY(0)'
                             }}
                           >
                             Download

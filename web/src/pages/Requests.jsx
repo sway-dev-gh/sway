@@ -595,14 +595,6 @@ function Requests() {
                 fontFamily: 'inherit',
                                 height: '40px'
               }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#e5e5e5'
-                e.currentTarget.style.transform = 'translateY(-1px)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.white
-                e.currentTarget.style.transform = 'translateY(0)'
-              }}
             >
               New Request
             </button>
@@ -781,14 +773,6 @@ function Requests() {
                             fontFamily: 'inherit',
                                                         height: '36px'
                           }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = theme.colors.text.secondary
-                            e.currentTarget.style.transform = 'translateY(-1px)'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = theme.colors.white
-                            e.currentTarget.style.transform = 'translateY(0)'
-                          }}
                         >
                           View
                         </button>
@@ -808,14 +792,6 @@ function Requests() {
                             cursor: 'pointer',
                             fontFamily: 'inherit',
                                                         height: '36px'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = theme.colors.bg.hover
-                            e.currentTarget.style.borderColor = theme.colors.border.dark
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent'
-                            e.currentTarget.style.borderColor = theme.colors.border.medium
                           }}
                         >
                           Delete
@@ -942,14 +918,6 @@ function Requests() {
                           cursor: 'pointer',
                           fontFamily: 'inherit',
                                                   }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = theme.colors.text.secondary
-                          e.currentTarget.style.transform = 'translateY(-1px)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = theme.colors.white
-                          e.currentTarget.style.transform = 'translateY(0)'
-                        }}
                       >
                         Open Link
                       </button>
@@ -966,14 +934,6 @@ function Requests() {
                           cursor: 'pointer',
                           fontFamily: 'inherit',
                                                   }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = theme.colors.bg.hover
-                          e.currentTarget.style.borderColor = theme.colors.border.dark
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.borderColor = theme.colors.border.medium
-                        }}
                       >
                         Copy Link
                       </button>
@@ -990,14 +950,6 @@ function Requests() {
                           cursor: 'pointer',
                           fontFamily: 'inherit',
                                                   }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = theme.colors.bg.hover
-                          e.currentTarget.style.borderColor = theme.colors.border.dark
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.borderColor = theme.colors.border.medium
-                        }}
                       >
                         Close
                       </button>
@@ -1062,18 +1014,6 @@ function Requests() {
                                 cursor: isLocked ? 'not-allowed' : 'pointer',
                                                                 opacity: isLocked ? 0.5 : 1,
                                 position: 'relative'
-                              }}
-                              onMouseEnter={(e) => {
-                                if (!isLocked) {
-                                  e.currentTarget.style.background = theme.colors.bg.hover
-                                  e.currentTarget.style.borderColor = theme.colors.border.dark
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (!isLocked) {
-                                  e.currentTarget.style.background = theme.colors.bg.page
-                                  e.currentTarget.style.borderColor = theme.colors.border.medium
-                                }
                               }}
                             >
                               {isLocked && (
@@ -1451,14 +1391,6 @@ function Requests() {
                             cursor: 'pointer',
                             fontFamily: 'inherit',
                                                       }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.background = theme.colors.bg.hover
-                            e.currentTarget.style.borderColor = theme.colors.border.dark
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent'
-                            e.currentTarget.style.borderColor = theme.colors.border.medium
-                          }}
                         >
                           Cancel
                         </button>
@@ -1477,18 +1409,6 @@ function Requests() {
                             opacity: creating ? 0.5 : 1,
                             fontFamily: 'inherit',
                                                       }}
-                          onMouseEnter={(e) => {
-                            if (!creating) {
-                              e.currentTarget.style.background = theme.colors.text.secondary
-                              e.currentTarget.style.transform = 'translateY(-1px)'
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (!creating) {
-                              e.currentTarget.style.background = theme.colors.white
-                              e.currentTarget.style.transform = 'translateY(0)'
-                            }
-                          }}
                         >
                           {creating ? 'Creating...' : 'Create Request'}
                         </button>
@@ -1565,14 +1485,6 @@ function Requests() {
                                     textDecoration: 'none',
                   display: 'inline-block'
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = theme.colors.text.secondary
-                  e.currentTarget.style.transform = 'translateY(-1px)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = theme.colors.white
-                  e.currentTarget.style.transform = 'translateY(0)'
-                }}
               >
                 View Plans
               </Link>
@@ -1588,14 +1500,6 @@ function Requests() {
                   fontWeight: '500',
                   cursor: 'pointer',
                                     fontFamily: 'inherit'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = theme.colors.bg.hover
-                  e.currentTarget.style.borderColor = theme.colors.border.dark
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.borderColor = theme.colors.border.medium
                 }}
               >
                 Maybe Later

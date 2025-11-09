@@ -254,19 +254,7 @@ function Dashboard() {
               borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
-                          }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.hover
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              e.currentTarget.style.transform = 'translateY(-2px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.secondary
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.boxShadow = theme.shadows.md
-              e.currentTarget.style.transform = 'translateY(0)'
-            }}>
+                          }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Active Requests</div>
               <div style={{ fontSize: '48px', fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
               <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
@@ -280,19 +268,7 @@ function Dashboard() {
               borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
-                          }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.hover
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              e.currentTarget.style.transform = 'translateY(-2px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.secondary
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.boxShadow = theme.shadows.md
-              e.currentTarget.style.transform = 'translateY(0)'
-            }}>
+                          }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Uploads</div>
               <div style={{ fontSize: '48px', fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
               <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
@@ -307,19 +283,7 @@ function Dashboard() {
               border: `1px solid ${theme.colors.border.light}`,
               gridColumn: 'span 2',
               boxShadow: theme.shadows.md,
-                          }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.hover
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              e.currentTarget.style.transform = 'translateY(-2px)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.bg.secondary
-              e.currentTarget.style.borderColor = theme.colors.border.light
-              e.currentTarget.style.boxShadow = theme.shadows.md
-              e.currentTarget.style.transform = 'translateY(0)'
-            }}>
+                          }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Storage Used</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[3], marginBottom: theme.spacing[5] }}>
                 <div style={{ fontSize: '48px', fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1' }}>

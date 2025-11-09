@@ -143,18 +143,6 @@ function Settings() {
                   boxShadow: `0 0 0 0 ${theme.colors.error}`,
                                     height: '48px'
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = theme.colors.error
-                  e.currentTarget.style.color = theme.colors.white
-                  e.currentTarget.style.boxShadow = `0 0 20px rgba(239, 68, 68, 0.4)`
-                  e.currentTarget.style.transform = 'scale(1.02)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = theme.colors.error
-                  e.currentTarget.style.boxShadow = `0 0 0 0 ${theme.colors.error}`
-                  e.currentTarget.style.transform = 'scale(1)'
-                }}
               >
                 Delete Account
               </button>

@@ -218,18 +218,6 @@ export default function Signup() {
                             fontFamily: 'inherit',
               opacity: loading ? 0.6 : 1
             }}
-            onMouseEnter={(e) => {
-              if (!loading) {
-                e.currentTarget.style.background = '#e5e5e5'
-                e.currentTarget.style.transform = 'translateY(-1px)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!loading) {
-                e.currentTarget.style.background = theme.colors.white
-                e.currentTarget.style.transform = 'translateY(0)'
-              }
-            }}
           >
             {loading ? 'Creating account...' : 'Sign Up'}
           </button>
@@ -251,12 +239,6 @@ export default function Signup() {
               textDecoration: 'none',
               fontWeight: theme.weight.medium,
               transition: `color ${theme.transition.fast}`
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = theme.colors.text.secondary
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = theme.colors.white
             }}
           >
             Sign in
