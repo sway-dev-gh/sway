@@ -564,18 +564,18 @@ function Requests() {
           }}>
             <div>
               <h1 style={{
-                fontSize: '28px',
-                fontWeight: '500',
+                fontSize: '48px',
+                fontWeight: theme.weight.bold,
                 margin: 0,
                 color: theme.colors.text.primary,
-                letterSpacing: '-0.02em'
+                letterSpacing: '-0.03em'
               }}>
                 Requests
               </h1>
               <p style={{
-                fontSize: '15px',
+                fontSize: '18px',
                 color: theme.colors.text.secondary,
-                margin: '12px 0 0 0',
+                margin: '16px 0 0 0',
                 lineHeight: '1.6'
               }}>
                 Create and manage file upload requests
@@ -587,13 +587,14 @@ function Requests() {
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: '500',
+                padding: '16px 32px',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: theme.weight.bold,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                                height: '40px'
+                height: '56px',
+                boxShadow: theme.shadows.lg
               }}
             >
               New Request

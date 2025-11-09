@@ -402,38 +402,42 @@ export default function Upload() {
         alignItems: 'center',
         justifyContent: 'center',
         background: theme.colors.bg.page,
-        padding: '24px'
+        padding: '40px'
       }}>
         <div style={{
-          maxWidth: '400px',
+          maxWidth: '800px',
           textAlign: 'center'
         }}>
           <div style={{
-            width: '64px',
-            height: '64px',
+            width: '160px',
+            height: '160px',
             borderRadius: '50%',
             background: theme.colors.bg.secondary,
-            border: `1px solid ${theme.colors.border.medium}`,
+            border: `3px solid ${theme.colors.white}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '32px',
-            margin: '0 auto 24px auto'
+            fontSize: '80px',
+            margin: '0 auto 48px auto',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)'
           }}>
             ✓
           </div>
           <h2 style={{
-            fontSize: '24px',
-            fontWeight: '300',
-            margin: '0 0 12px 0',
-            color: theme.colors.text.primary
+            fontSize: '64px',
+            fontWeight: theme.weight.bold,
+            margin: '0 0 28px 0',
+            color: theme.colors.white,
+            letterSpacing: '-0.03em',
+            lineHeight: '1.0'
           }}>
             Files Uploaded Successfully
           </h2>
           <p style={{
-            fontSize: '14px',
+            fontSize: '22px',
             color: theme.colors.text.secondary,
-            margin: 0
+            margin: 0,
+            lineHeight: '1.7'
           }}>
             Thank you for submitting your files.
           </p>
@@ -484,48 +488,51 @@ export default function Upload() {
         )}
       </div>
 
-      {/* Main Content */}
+      {/* Main Content - ULTRA SPACIOUS */}
       <div style={{
-        maxWidth: '600px',
+        maxWidth: '900px',
         margin: '0 auto',
-        padding: `${theme.spacing[12]} ${theme.spacing[6]}`,
+        padding: '80px 40px',
         position: 'relative',
         zIndex: 10
       }}>
-        {/* Header */}
+        {/* Header - ULTRA NEXT LEVEL */}
         <div style={{
           textAlign: 'center',
-          marginBottom: theme.spacing[12]
+          marginBottom: '80px'
         }}>
           <h1 style={{
-            fontSize: '28px',
-            fontWeight: '500',
-            margin: '0 0 12px 0',
+            fontSize: '80px',
+            fontWeight: theme.weight.bold,
+            margin: '0 0 32px 0',
             color: theme.colors.white,
-            letterSpacing: '-0.02em',
-            lineHeight: '1.2'
+            letterSpacing: '-0.04em',
+            lineHeight: '1.0'
           }}>
             {requestData.title}
           </h1>
           {requestData.description && (
             <p style={{
-              fontSize: '15px',
+              fontSize: '20px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6'
+              lineHeight: '1.7',
+              maxWidth: '600px',
+              marginLeft: 'auto',
+              marginRight: 'auto'
             }}>
               {requestData.description}
             </p>
           )}
         </div>
 
-        {/* Form Card */}
+        {/* Form Card - PREMIUM SPACING */}
         <div style={{
           background: theme.colors.bg.secondary,
-          borderRadius: theme.radius['2xl'],
-          border: `1px solid ${theme.colors.border.light}`,
-          boxShadow: theme.shadows.md,
-          padding: theme.spacing[12]
+          borderRadius: '32px',
+          border: `2px solid ${theme.colors.border.light}`,
+          boxShadow: theme.shadows.xl,
+          padding: '60px'
         }}>
           <form onSubmit={handleSubmit}>
             {/* Basic Fields */}
@@ -684,26 +691,39 @@ export default function Upload() {
               </div>
             ))}
 
-            {/* File Upload */}
-            <div style={{ marginBottom: theme.spacing[8] }}>
+            {/* File Upload - ULTRA NEXT LEVEL */}
+            <div style={{ marginBottom: '60px' }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '16px',
                 color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[3],
-                fontWeight: theme.weight.medium
+                marginBottom: '28px',
+                fontWeight: theme.weight.bold,
+                letterSpacing: '1px',
+                textTransform: 'uppercase'
               }}>
                 Upload Files
               </label>
               <label style={{
                 display: 'block',
-                padding: theme.spacing[12],
+                padding: '120px 80px',
                 background: theme.colors.bg.page,
-                border: `2px dashed ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.lg,
+                border: `4px dashed ${theme.colors.border.dark}`,
+                borderRadius: '32px',
                 textAlign: 'center',
                 cursor: 'pointer',
-                                position: 'relative'
+                position: 'relative',
+                transition: `all ${theme.transition.base}`
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = theme.colors.white
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.transform = 'scale(1.01)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = theme.colors.border.dark
+                e.currentTarget.style.background = theme.colors.bg.page
+                e.currentTarget.style.transform = 'scale(1)'
               }}
               >
                 <input
@@ -722,22 +742,24 @@ export default function Upload() {
                   }}
                 />
                 <div style={{
-                  fontSize: '40px',
-                  marginBottom: theme.spacing[3],
-                  color: theme.colors.text.tertiary
+                  fontSize: '96px',
+                  marginBottom: '32px',
+                  color: theme.colors.white,
+                  lineHeight: '1'
                 }}>
                   ↑
                 </div>
                 <div style={{
-                  fontSize: '15px',
-                  fontWeight: theme.weight.medium,
+                  fontSize: '24px',
+                  fontWeight: theme.weight.bold,
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[2]
+                  marginBottom: '16px',
+                  letterSpacing: '-0.02em'
                 }}>
                   Click to browse or drag files here
                 </div>
                 <div style={{
-                  fontSize: '13px',
+                  fontSize: '17px',
                   color: theme.colors.text.tertiary
                 }}>
                   Multiple files supported
@@ -745,70 +767,97 @@ export default function Upload() {
               </label>
               {files.length > 0 && (
                 <div style={{
-                  marginTop: theme.spacing[4],
-                  padding: theme.spacing[4],
-                  background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.md
+                  marginTop: theme.spacing[8]
                 }}>
                   <div style={{
-                    fontSize: '13px',
-                    fontWeight: theme.weight.medium,
+                    fontSize: '14px',
+                    fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
-                    marginBottom: theme.spacing[3]
+                    marginBottom: theme.spacing[5],
+                    letterSpacing: '0.5px',
+                    textTransform: 'uppercase'
                   }}>
                     {files.length} file{files.length > 1 ? 's' : ''} selected
                   </div>
-                  {files.map((file, idx) => (
-                    <div key={idx} style={{
-                      fontSize: '13px',
-                      color: theme.colors.text.secondary,
-                      marginBottom: idx < files.length - 1 ? theme.spacing[2] : '0',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      padding: `${theme.spacing[2]} 0`,
-                      borderBottom: idx < files.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
-                    }}>
-                      <span style={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        marginRight: theme.spacing[3],
-                        color: theme.colors.text.primary
+                  <div style={{
+                    display: 'grid',
+                    gap: theme.spacing[3]
+                  }}>
+                    {files.map((file, idx) => (
+                      <div key={idx} style={{
+                        padding: theme.spacing[6],
+                        background: theme.colors.bg.secondary,
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: theme.radius.xl,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        boxShadow: theme.shadows.sm
                       }}>
-                        {file.name}
-                      </span>
-                      <span style={{
-                        color: theme.colors.text.tertiary,
-                        fontSize: '12px',
-                        flexShrink: 0
-                      }}>
-                        {(file.size / 1024 / 1024).toFixed(2)} MB
-                      </span>
-                    </div>
-                  ))}
+                        <div style={{
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          marginRight: theme.spacing[4]
+                        }}>
+                          <div style={{
+                            fontSize: '15px',
+                            fontWeight: theme.weight.medium,
+                            color: theme.colors.text.primary,
+                            marginBottom: theme.spacing[1]
+                          }}>
+                            {file.name}
+                          </div>
+                          <div style={{
+                            fontSize: '13px',
+                            color: theme.colors.text.tertiary
+                          }}>
+                            {(file.size / 1024 / 1024).toFixed(2)} MB
+                          </div>
+                        </div>
+                        <div style={{
+                          width: '48px',
+                          height: '48px',
+                          borderRadius: theme.radius.lg,
+                          background: theme.colors.bg.page,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '20px',
+                          color: theme.colors.white,
+                          flexShrink: 0
+                        }}>
+                          📄
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
 
-            {/* Submit Button */}
+            {/* Submit Button - NEXT LEVEL */}
             <button
               type="submit"
               disabled={uploading}
               style={{
                 width: '100%',
-                height: '44px',
+                height: '64px',
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                borderRadius: theme.radius.md,
-                fontSize: '15px',
-                fontWeight: theme.weight.semibold,
+                borderRadius: theme.radius.xl,
+                fontSize: '17px',
+                fontWeight: theme.weight.bold,
                 cursor: uploading ? 'not-allowed' : 'pointer',
-                                fontFamily: 'inherit',
-                opacity: uploading ? 0.6 : 1
+                fontFamily: 'inherit',
+                opacity: uploading ? 0.6 : 1,
+                boxShadow: uploading ? 'none' : theme.shadows.lg,
+                transition: `all ${theme.transition.base}`,
+                letterSpacing: '-0.01em'
               }}
+              onMouseEnter={(e) => !uploading && (e.currentTarget.style.transform = 'translateY(-2px)')}
+              onMouseLeave={(e) => !uploading && (e.currentTarget.style.transform = 'translateY(0)')}
             >
               {uploading ? 'Uploading...' : 'Upload Files'}
             </button>

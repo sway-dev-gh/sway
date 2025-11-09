@@ -123,22 +123,22 @@ function Plan() {
           padding: theme.spacing[12]
         }}>
 
-          {/* Header */}
+          {/* Header - BIG AND BOLD */}
           <div style={{ marginBottom: '100px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '28px',
-              fontWeight: '500',
-              margin: '0 0 12px 0',
+              fontSize: '56px',
+              fontWeight: theme.weight.bold,
+              margin: '0 0 20px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.03em'
             }}>
               Simple Pricing
             </h1>
             <p style={{
-              fontSize: '15px',
+              fontSize: '20px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6'
+              lineHeight: '1.7'
             }}>
               Start free. Upgrade when you need more. Cancel anytime.
             </p>
