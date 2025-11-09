@@ -409,7 +409,7 @@ function Customization() {
                 marginBottom: theme.spacing[3],
                 fontWeight: theme.weight.medium
               }}>
-                Preview {selectedRequest ? `- ${selectedRequest.title}` : ''}
+                Preview{selectedRequest ? ` - ${selectedRequest.title}` : ' - Example Request'}
               </label>
               <div style={{
                 padding: theme.spacing[10],
@@ -428,7 +428,7 @@ function Customization() {
                     letterSpacing: '-0.02em',
                     fontFamily: customization.fontFamily
                   }}>
-                    {selectedRequest?.title || 'Share Your Files'}
+                    {selectedRequest?.title || 'Your Request Title'}
                   </h1>
                   <p style={{
                     fontSize: '15px',
@@ -438,7 +438,7 @@ function Customization() {
                     lineHeight: '1.6',
                     fontFamily: customization.fontFamily
                   }}>
-                    {selectedRequest?.description || 'Upload your files to this request'}
+                    {selectedRequest?.description || 'Your request description will appear here'}
                   </p>
                 </div>
 
