@@ -34,7 +34,10 @@ function AdminModeActivator({ onActivate }) {
         const now = Date.now()
         if (now - lastShiftTime.current < 500) {
           // Double tap detected!
-          openAdminModal()
+          // Only open if not already showing (prevents resetting password while typing)
+          if (!showModal) {
+            openAdminModal()
+          }
           lastShiftTime.current = 0 // Reset
         } else {
           lastShiftTime.current = now
@@ -44,7 +47,7 @@ function AdminModeActivator({ onActivate }) {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [showModal])
 
   useEffect(() => {
     if (showModal && !isTyping) {
