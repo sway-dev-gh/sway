@@ -124,7 +124,7 @@ function Plan() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[14], textAlign: 'center' }}>
+          <div style={{ marginBottom: '100px', textAlign: 'center' }}>
             <h1 style={{
               fontSize: '28px',
               fontWeight: '500',
@@ -162,29 +162,7 @@ function Plan() {
                   borderRadius: theme.radius['2xl'],
                   border: plan.popular ? `1px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
                   position: 'relative',
-                  boxShadow: plan.popular ? theme.shadows.glowStrong : theme.shadows.md,
-                  transition: `all ${theme.transition.normal}`,
-                  transform: plan.popular ? 'scale(1.02)' : 'scale(1)'
-                }}
-                onMouseEnter={(e) => {
-                  if (!plan.popular) {
-                    e.currentTarget.style.background = theme.colors.bg.hover
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
-                    e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-                    e.currentTarget.style.transform = 'scale(1.02)'
-                  } else {
-                    e.currentTarget.style.transform = 'scale(1.04)'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!plan.popular) {
-                    e.currentTarget.style.background = theme.colors.bg.secondary
-                    e.currentTarget.style.borderColor = theme.colors.border.light
-                    e.currentTarget.style.boxShadow = theme.shadows.md
-                    e.currentTarget.style.transform = 'scale(1)'
-                  } else {
-                    e.currentTarget.style.transform = 'scale(1.02)'
-                  }
+                  boxShadow: plan.popular ? theme.shadows.glowStrong : theme.shadows.md
                 }}
               >
                 {/* Popular Badge */}
@@ -193,7 +171,6 @@ function Plan() {
                     position: 'absolute',
                     top: '-12px',
                     left: '50%',
-                    transform: 'translateX(-50%)',
                     background: theme.colors.white,
                     color: theme.colors.black,
                     padding: '6px 20px',
@@ -310,26 +287,15 @@ function Plan() {
                     fontWeight: '500',
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
-                    transition: `all ${theme.transition.normal}`,
                     opacity: upgrading ? 0.6 : 1
                   }}
-                  onMouseEnter={(e) => {
-                    if (plan.id !== currentPlan && !upgrading) {
-                      if (plan.popular) {
-                        e.currentTarget.style.background = theme.colors.text.secondary
-                        e.currentTarget.style.transform = 'translateY(-1px)'
-                      } else {
+                  else {
                         e.currentTarget.style.background = theme.colors.bg.hover
                         e.currentTarget.style.borderColor = theme.colors.border.dark
                       }
                     }
                   }}
-                  onMouseLeave={(e) => {
-                    if (plan.id !== currentPlan && !upgrading) {
-                      if (plan.popular) {
-                        e.currentTarget.style.background = theme.colors.white
-                        e.currentTarget.style.transform = 'translateY(0)'
-                      } else {
+                  else {
                         e.currentTarget.style.background = 'transparent'
                         e.currentTarget.style.borderColor = theme.colors.border.medium
                       }
@@ -367,18 +333,9 @@ function Plan() {
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md,
-                transition: `all ${theme.transition.normal}`
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.hover
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-                e.currentTarget.style.boxShadow = theme.shadows.md
-              }}>
+                }}
+                  }
+                  }>
                 <div style={{
                   fontSize: '16px',
                   color: theme.colors.text.primary,
@@ -402,18 +359,9 @@ function Plan() {
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md,
-                transition: `all ${theme.transition.normal}`
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.hover
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-                e.currentTarget.style.boxShadow = theme.shadows.md
-              }}>
+                }}
+                  }
+                  }>
                 <div style={{
                   fontSize: '16px',
                   color: theme.colors.text.primary,
@@ -437,18 +385,9 @@ function Plan() {
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md,
-                transition: `all ${theme.transition.normal}`
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.hover
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-                e.currentTarget.style.boxShadow = theme.shadows.md
-              }}>
+                }}
+                  }
+                  }>
                 <div style={{
                   fontSize: '16px',
                   color: theme.colors.text.primary,

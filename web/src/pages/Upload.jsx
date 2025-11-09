@@ -555,8 +555,7 @@ export default function Upload() {
                   fontSize: '15px',
                   fontFamily: 'inherit',
                   outline: 'none',
-                  transition: `all ${theme.transition.fast}`
-                }}
+                                  }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = theme.colors.white
                   e.currentTarget.style.background = theme.colors.bg.secondary
@@ -593,8 +592,7 @@ export default function Upload() {
                   fontSize: '15px',
                   fontFamily: 'inherit',
                   outline: 'none',
-                  transition: `all ${theme.transition.fast}`
-                }}
+                                  }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = theme.colors.white
                   e.currentTarget.style.background = theme.colors.bg.secondary
@@ -636,8 +634,7 @@ export default function Upload() {
                       fontSize: '15px',
                       fontFamily: 'inherit',
                       outline: 'none',
-                      transition: `all ${theme.transition.fast}`,
-                      cursor: 'pointer'
+                                            cursor: 'pointer'
                     }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = theme.colors.white
@@ -673,8 +670,7 @@ export default function Upload() {
                       fontSize: '15px',
                       fontFamily: 'inherit',
                       outline: 'none',
-                      transition: `all ${theme.transition.fast}`
-                    }}
+                                          }}
                     onFocus={(e) => {
                       e.currentTarget.style.borderColor = theme.colors.white
                       e.currentTarget.style.background = theme.colors.bg.secondary
@@ -707,8 +703,7 @@ export default function Upload() {
                 borderRadius: theme.radius.lg,
                 textAlign: 'center',
                 cursor: 'pointer',
-                transition: `all ${theme.transition.normal}`,
-                position: 'relative'
+                                position: 'relative'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.white
@@ -819,8 +814,7 @@ export default function Upload() {
                 fontSize: '15px',
                 fontWeight: theme.weight.semibold,
                 cursor: uploading ? 'not-allowed' : 'pointer',
-                transition: `all ${theme.transition.fast}`,
-                fontFamily: 'inherit',
+                                fontFamily: 'inherit',
                 opacity: uploading ? 0.6 : 1
               }}
               onMouseEnter={(e) => {
@@ -864,8 +858,7 @@ export default function Upload() {
                     position: 'absolute',
                     left: `${el.x}%`,
                     top: `${el.y}%`,
-                    transform: 'translate(-50%, -50%)',
-                    fontSize: `${el.fontSize}px`,
+                                        fontSize: `${el.fontSize}px`,
                     fontWeight: el.fontWeight,
                     color: el.color,
                     textAlign: el.align || 'center',
@@ -905,8 +898,7 @@ export default function Upload() {
                       position: 'absolute',
                       left: `${el.x}%`,
                       top: `${el.y}%`,
-                      transform: 'translate(-50%, -50%)',
-                      pointerEvents: 'auto'  // Enable clicks for links
+                                            pointerEvents: 'auto'  // Enable clicks for links
                     }}
                   >
                     <a
@@ -932,8 +924,7 @@ export default function Upload() {
                     position: 'absolute',
                     left: `${el.x}%`,
                     top: `${el.y}%`,
-                    transform: 'translate(-50%, -50%)'
-                  }}
+                                      }}
                 >
                   {buttonContent}
                 </div>
@@ -949,8 +940,7 @@ export default function Upload() {
                     position: 'absolute',
                     left: `${el.x}%`,
                     top: `${el.y}%`,
-                    transform: 'translate(-50%, -50%)',
-                    width: `${el.width}px`,
+                                        width: `${el.width}px`,
                     height: `${el.height}px`,
                     background: el.backgroundColor,
                     borderRadius: `${el.borderRadius}px`,
@@ -969,8 +959,7 @@ export default function Upload() {
                     position: 'absolute',
                     left: `${el.x}%`,
                     top: `${el.y}%`,
-                    transform: 'translate(-50%, -50%)',
-                    width: `${el.width}px`,
+                                        width: `${el.width}px`,
                     height: `${el.height}px`,
                     borderRadius: `${el.borderRadius}px`,
                     opacity: el.opacity ?? 1,

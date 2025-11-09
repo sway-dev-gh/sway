@@ -141,8 +141,7 @@ function Settings() {
                   cursor: 'pointer',
                   fontFamily: 'inherit',
                   boxShadow: `0 0 0 0 ${theme.colors.error}`,
-                  transition: `all ${theme.transition.normal}`,
-                  height: '48px'
+                                    height: '48px'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = theme.colors.error

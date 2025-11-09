@@ -115,8 +115,7 @@ export default function Login() {
                   fontSize: '14px',
                   fontFamily: 'inherit',
                   outline: 'none',
-                  transition: `all ${theme.transition.fast}`
-                }}
+                                  }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = theme.colors.border.dark
                 }}
@@ -152,8 +151,7 @@ export default function Login() {
                   fontSize: '14px',
                   fontFamily: 'inherit',
                   outline: 'none',
-                  transition: `all ${theme.transition.fast}`
-                }}
+                                  }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = theme.colors.border.dark
                 }}
@@ -177,8 +175,7 @@ export default function Login() {
                 fontSize: '14px',
                 fontWeight: theme.weight.medium,
                 cursor: loading ? 'not-allowed' : 'pointer',
-                transition: `all ${theme.transition.fast}`,
-                fontFamily: 'inherit',
+                                fontFamily: 'inherit',
                 opacity: loading ? 0.6 : 1
               }}
               onMouseEnter={(e) => {

@@ -111,8 +111,7 @@ export default function Signup() {
                 fontSize: '15px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`
-              }}
+                              }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.dark
                 e.currentTarget.style.boxShadow = '0 0 0 3px rgba(64, 64, 64, 0.1)'
@@ -150,8 +149,7 @@ export default function Signup() {
                 fontSize: '15px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`
-              }}
+                              }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.dark
                 e.currentTarget.style.boxShadow = '0 0 0 3px rgba(64, 64, 64, 0.1)'
@@ -191,8 +189,7 @@ export default function Signup() {
                 fontSize: '15px',
                 fontFamily: 'inherit',
                 outline: 'none',
-                transition: `all ${theme.transition.fast}`
-              }}
+                              }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = theme.colors.border.dark
                 e.currentTarget.style.boxShadow = '0 0 0 3px rgba(64, 64, 64, 0.1)'
@@ -218,8 +215,7 @@ export default function Signup() {
               fontSize: '15px',
               fontWeight: theme.weight.medium,
               cursor: loading ? 'not-allowed' : 'pointer',
-              transition: `all ${theme.transition.fast}`,
-              fontFamily: 'inherit',
+                            fontFamily: 'inherit',
               opacity: loading ? 0.6 : 1
             }}
             onMouseEnter={(e) => {

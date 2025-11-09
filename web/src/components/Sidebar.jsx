@@ -133,8 +133,7 @@ function Sidebar() {
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.md,
-    transition: `all ${theme.transition.fast}`,
-    whiteSpace: 'nowrap',
+        whiteSpace: 'nowrap',
     height: '40px'
   })
 
@@ -324,8 +323,7 @@ function Sidebar() {
               padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
               fontSize: theme.fontSize.sm,
               fontWeight: theme.weight.medium,
-              transition: `all ${theme.transition.fast}`
-            }}
+                          }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.color = theme.colors.text.primary

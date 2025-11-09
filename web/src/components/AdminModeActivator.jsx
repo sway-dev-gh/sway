@@ -218,8 +218,7 @@ function AdminModeActivator({ onActivate }) {
             fontWeight: theme.weight.bold,
             color: timeLeft <= 5 ? '#ff4444' : theme.colors.white,
             fontFamily: 'monospace',
-            transition: 'color 0.3s'
-          }}>
+                      }}>
             {timeLeft}
           </div>
           <div style={{
@@ -265,8 +264,7 @@ function AdminModeActivator({ onActivate }) {
                     fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
                     cursor: 'pointer',
-                    transition: 'all 0.2s'
-                  }}
+                                      }}
                   onMouseEnter={(e) => {
                     if (selectedPlan !== plan) {
                       e.currentTarget.style.background = theme.colors.bg.hover
@@ -331,8 +329,7 @@ function AdminModeActivator({ onActivate }) {
                   fontSize: '16px',
                   fontFamily: 'monospace',
                   outline: 'none',
-                  transition: 'border-color 0.2s'
-                }}
+                                  }}
               />
               {error && (
                 <div style={{
@@ -364,8 +361,7 @@ function AdminModeActivator({ onActivate }) {
                 fontSize: '14px',
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
+                              }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.hover
                 e.currentTarget.style.color = theme.colors.text.primary
@@ -389,8 +385,7 @@ function AdminModeActivator({ onActivate }) {
                 fontSize: '14px',
                 fontWeight: theme.weight.semibold,
                 cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
+                              }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.02)'
               }}

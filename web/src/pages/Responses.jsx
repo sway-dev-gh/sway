@@ -147,8 +147,7 @@ function Responses() {
               borderRadius: theme.radius['2xl'],
               padding: theme.spacing[12],
               boxShadow: theme.shadows.md,
-              transition: `all ${theme.transition.normal}`
-            }}
+                          }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
@@ -187,8 +186,7 @@ function Responses() {
               borderRadius: theme.radius['2xl'],
               padding: theme.spacing[12],
               boxShadow: theme.shadows.md,
-              transition: `all ${theme.transition.normal}`
-            }}
+                          }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
@@ -343,9 +341,9 @@ function Responses() {
                           background: index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.02)',
                           transition: `background ${theme.transition.fast}`
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = theme.colors.bg.hover}
-                        onMouseLeave={(e) => e.currentTarget.style.background = index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.02)'}
-                      >
+
+
+                                        >
                         <td style={{
                           padding: theme.spacing[6]
                         }}>
@@ -421,8 +419,7 @@ function Responses() {
                               fontSize: '14px',
                               fontWeight: '500',
                               cursor: 'pointer',
-                              transition: `all ${theme.transition.fast}`,
-                              fontFamily: 'inherit',
+                                                            fontFamily: 'inherit',
                               height: '44px'
                             }}
                             onMouseEnter={(e) => {

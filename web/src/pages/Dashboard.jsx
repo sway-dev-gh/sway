@@ -254,8 +254,7 @@ function Dashboard() {
               borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
-              transition: `all ${theme.transition.normal}`
-            }}
+                          }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
@@ -281,8 +280,7 @@ function Dashboard() {
               borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
-              transition: `all ${theme.transition.normal}`
-            }}
+                          }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
@@ -309,8 +307,7 @@ function Dashboard() {
               border: `1px solid ${theme.colors.border.light}`,
               gridColumn: 'span 2',
               boxShadow: theme.shadows.md,
-              transition: `all ${theme.transition.normal}`
-            }}
+                          }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
@@ -501,9 +498,9 @@ function Dashboard() {
                     textDecoration: 'none',
                     transition: `color ${theme.transition.fast}`
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
-                  onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.secondary}
-                >
+
+
+                                  >
                   View all →
                 </Link>
               </div>
@@ -528,9 +525,9 @@ function Dashboard() {
                         cursor: 'pointer'
                       }}
                       onClick={() => navigate('/requests')}
-                      onMouseEnter={(e) => e.currentTarget.style.background = theme.colors.bg.hover}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                    >
+
+
+                                      >
                       <div style={{
                         fontSize: '14px',
                         color: theme.colors.text.primary,
@@ -577,9 +574,9 @@ function Dashboard() {
                     textDecoration: 'none',
                     transition: `color ${theme.transition.fast}`
                   }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
-                  onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.secondary}
-                >
+
+
+                                  >
                   View all →
                 </Link>
               </div>

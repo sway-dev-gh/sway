@@ -593,8 +593,7 @@ function Requests() {
                 fontWeight: '500',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                transition: `all ${theme.transition.fast}`,
-                height: '40px'
+                                height: '40px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = '#e5e5e5'
@@ -718,9 +717,9 @@ function Requests() {
                         alignItems: 'center'
                       }}
                       onClick={() => navigate(`/requests/${req.id}`)}
-                      onMouseEnter={(e) => e.currentTarget.style.background = theme.colors.bg.hover}
-                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                    >
+
+
+                                      >
                       {/* Title */}
                       <div style={{
                         fontSize: '15px',
@@ -780,8 +779,7 @@ function Requests() {
                             fontWeight: '500',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            transition: `all ${theme.transition.fast}`,
-                            height: '36px'
+                                                        height: '36px'
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.background = theme.colors.text.secondary
@@ -809,8 +807,7 @@ function Requests() {
                             fontWeight: theme.weight.medium,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            transition: `all ${theme.transition.fast}`,
-                            height: '36px'
+                                                        height: '36px'
                           }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.background = theme.colors.bg.hover
@@ -895,9 +892,9 @@ function Requests() {
                       fontFamily: 'inherit',
                       transition: `color ${theme.transition.fast}`
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
-                    onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.muted}
-                  >
+
+
+                                    >
                     ×
                   </button>
                 </div>
@@ -944,8 +941,7 @@ function Requests() {
                           fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`
-                        }}
+                                                  }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = theme.colors.text.secondary
                           e.currentTarget.style.transform = 'translateY(-1px)'
@@ -969,8 +965,7 @@ function Requests() {
                           fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`
-                        }}
+                                                  }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = theme.colors.bg.hover
                           e.currentTarget.style.borderColor = theme.colors.border.dark
@@ -994,8 +989,7 @@ function Requests() {
                           fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`
-                        }}
+                                                  }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = theme.colors.bg.hover
                           e.currentTarget.style.borderColor = theme.colors.border.dark
@@ -1066,8 +1060,7 @@ function Requests() {
                                 border: `1px solid ${theme.colors.border.medium}`,
                                 borderRadius: '10px',
                                 cursor: isLocked ? 'not-allowed' : 'pointer',
-                                transition: `all ${theme.transition.fast}`,
-                                opacity: isLocked ? 0.5 : 1,
+                                                                opacity: isLocked ? 0.5 : 1,
                                 position: 'relative'
                               }}
                               onMouseEnter={(e) => {
@@ -1155,9 +1148,9 @@ function Requests() {
                               fontWeight: '500',
                               transition: `color ${theme.transition.fast}`
                             }}
-                            onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
-                            onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.secondary}
-                          >
+
+
+                                            >
                             Change
                           </button>
                         </div>
@@ -1457,8 +1450,7 @@ function Requests() {
                             fontWeight: '500',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            transition: `all ${theme.transition.fast}`
-                          }}
+                                                      }}
                           onMouseEnter={(e) => {
                             e.currentTarget.style.background = theme.colors.bg.hover
                             e.currentTarget.style.borderColor = theme.colors.border.dark
@@ -1484,8 +1476,7 @@ function Requests() {
                             cursor: creating ? 'not-allowed' : 'pointer',
                             opacity: creating ? 0.5 : 1,
                             fontFamily: 'inherit',
-                            transition: `all ${theme.transition.fast}`
-                          }}
+                                                      }}
                           onMouseEnter={(e) => {
                             if (!creating) {
                               e.currentTarget.style.background = theme.colors.text.secondary
@@ -1571,8 +1562,7 @@ function Requests() {
                   fontSize: '15px',
                   fontWeight: '500',
                   cursor: 'pointer',
-                  transition: `all ${theme.transition.normal}`,
-                  textDecoration: 'none',
+                                    textDecoration: 'none',
                   display: 'inline-block'
                 }}
                 onMouseEnter={(e) => {
@@ -1597,8 +1587,7 @@ function Requests() {
                   fontSize: '15px',
                   fontWeight: '500',
                   cursor: 'pointer',
-                  transition: `all ${theme.transition.normal}`,
-                  fontFamily: 'inherit'
+                                    fontFamily: 'inherit'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = theme.colors.bg.hover
