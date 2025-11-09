@@ -114,6 +114,15 @@ const REQUEST_TYPES = [
       { id: 'format', label: 'Preferred Format', type: 'select', options: ['MP3', 'WAV', 'AAC', 'Any'] }
     ],
     planRequired: 'pro'
+  },
+  {
+    id: 'custom',
+    name: 'Custom',
+    description: 'Create your own request',
+    titleLabel: 'Request Title',
+    descriptionLabel: 'Request Description (optional)',
+    fields: [],
+    planRequired: 'free'
   }
 ]
 
