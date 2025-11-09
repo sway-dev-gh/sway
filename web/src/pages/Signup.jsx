@@ -172,7 +172,8 @@ export default function Signup() {
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
-              minLength={6}
+              minLength={12}
+              placeholder="Min 12 chars: upper, lower, number, special"
               style={{
                 width: '100%',
                 padding: '12px 16px',

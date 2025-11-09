@@ -1,10 +1,17 @@
 const jwt = require('jsonwebtoken')
 
+// CRITICAL SECURITY: Validate JWT_SECRET exists at startup
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL ERROR: JWT_SECRET environment variable is not set!')
+  console.error('Application cannot start without a secure JWT secret.')
+  process.exit(1)
+}
+
 const authenticateToken = (req, res, next) => {
   try {
     // Check for admin secret key first
     const adminKey = req.headers['x-admin-key']
-    if (adminKey && adminKey === process.env.ADMIN_SECRET_KEY) {
+    if (adminKey && process.env.ADMIN_SECRET_KEY && adminKey === process.env.ADMIN_SECRET_KEY) {
       req.isAdmin = true
       req.userId = 'admin'
       req.userEmail = 'admin@sway.com'
@@ -24,7 +31,8 @@ const authenticateToken = (req, res, next) => {
       return res.status(401).json({ error: 'Not authenticated' })
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key')
+    // SECURITY: No fallback secret - will throw if JWT_SECRET missing
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
     req.userId = decoded.userId
     req.userEmail = decoded.email
     req.isAdmin = false

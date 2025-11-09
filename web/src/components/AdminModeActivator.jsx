@@ -11,9 +11,6 @@ function AdminModeActivator({ onActivate }) {
   const lastShiftTime = useRef(0)
   const timerRef = useRef(null)
 
-  // Secret key sequence: Double Shift tap
-  const ADMIN_PASSWORD = '1TcY38sGrA1;'
-
   // Check if already in admin mode on mount
   useEffect(() => {
     const adminKey = localStorage.getItem('adminKey')
@@ -102,14 +99,31 @@ function AdminModeActivator({ onActivate }) {
       closeModal()
       window.location.reload() // Refresh to apply changes
     } else {
-      // Entering admin mode - verify password
-      if (password === ADMIN_PASSWORD) {
-        localStorage.setItem('adminKey', ADMIN_PASSWORD)
-        setIsAdminMode(true)
-        closeModal()
-        onActivate()
-      } else {
-        setError('Incorrect password')
+      // Entering admin mode - verify password with backend
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'https://api.swayfiles.com'
+        const response = await fetch(`${API_URL}/api/admin/verify`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ password })
+        })
+
+        const data = await response.json()
+
+        if (response.ok && data.valid) {
+          localStorage.setItem('adminKey', password)
+          setIsAdminMode(true)
+          closeModal()
+          onActivate()
+        } else {
+          setError('Incorrect password')
+          setPassword('')
+        }
+      } catch (error) {
+        console.error('Admin verification error:', error)
+        setError('Failed to verify password')
         setPassword('')
       }
     }

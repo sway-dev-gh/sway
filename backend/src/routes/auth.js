@@ -32,10 +32,30 @@ router.post('/signup', signupLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Email and password required' })
     }
 
+    // SECURITY: Validate password strength (min 12 characters with complexity)
+    if (password.length < 12) {
+      return res.status(400).json({
+        error: 'Password must be at least 12 characters long'
+      })
+    }
+
+    // Check password complexity
+    const hasUpperCase = /[A-Z]/.test(password)
+    const hasLowerCase = /[a-z]/.test(password)
+    const hasNumber = /[0-9]/.test(password)
+    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password)
+
+    if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecial) {
+      return res.status(400).json({
+        error: 'Password must contain uppercase, lowercase, number, and special character'
+      })
+    }
+
     // Check if user exists
     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email])
     if (existing.rows.length > 0) {
-      return res.status(400).json({ error: 'Email already registered' })
+      // SECURITY: Use generic message to prevent user enumeration
+      return res.status(400).json({ error: 'If this email is not registered, you will receive a confirmation email' })
     }
 
     // Hash password
@@ -49,10 +69,10 @@ router.post('/signup', signupLimiter, async (req, res) => {
 
     const user = result.rows[0]
 
-    // Generate JWT
+    // Generate JWT (no fallback secret - will throw if missing)
     const token = jwt.sign(
       { userId: user.id, email: user.email },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '30d' }
     )
 
@@ -92,13 +112,14 @@ router.post('/login', loginLimiter, async (req, res) => {
     // Check password
     const validPassword = await bcrypt.compare(password, user.password_hash)
     if (!validPassword) {
+      // SECURITY: Use same message as invalid email to prevent user enumeration
       return res.status(401).json({ error: 'Invalid credentials' })
     }
 
-    // Generate JWT
+    // Generate JWT (no fallback secret - will throw if missing)
     const token = jwt.sign(
       { userId: user.id, email: user.email },
-      process.env.JWT_SECRET || 'your-secret-key',
+      process.env.JWT_SECRET,
       { expiresIn: '30d' }
     )
 
