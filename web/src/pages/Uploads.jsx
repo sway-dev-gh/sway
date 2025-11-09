@@ -132,7 +132,7 @@ function Uploads() {
               Uploads
             </h1>
             <p style={{
-              fontSize: '14px',
+              fontSize: '20px',
               color: '#666',
               margin: 0
             }}>
@@ -148,7 +148,7 @@ function Uploads() {
               border: '1px solid #333'
             }}>
               <p style={{
-                fontSize: '14px',
+                fontSize: '20px',
                 color: '#666',
                 margin: 0
               }}>
@@ -174,7 +174,7 @@ function Uploads() {
                   {/* File Name */}
                   <div style={{ minWidth: 0 }}>
                     <div style={{
-                      fontSize: '14px',
+                      fontSize: '20px',
                       fontWeight: '400',
                       marginBottom: '4px',
                       color: '#fff',
@@ -186,7 +186,7 @@ function Uploads() {
                       {upload.fileName}
                     </div>
                     <div style={{
-                      fontSize: '13px',
+                      fontSize: '19px',
                       color: '#666'
                     }}>
                       {(upload.fileSize / 1024 / 1024).toFixed(2)} MB
@@ -196,7 +196,7 @@ function Uploads() {
                   {/* Uploader */}
                   <div style={{ minWidth: 0 }}>
                     <div style={{
-                      fontSize: '14px',
+                      fontSize: '20px',
                       fontWeight: '400',
                       marginBottom: '4px',
                       color: '#fff',
@@ -208,7 +208,7 @@ function Uploads() {
                     </div>
                     {upload.uploaderEmail && (
                       <div style={{
-                        fontSize: '13px',
+                        fontSize: '19px',
                         color: '#666',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -224,7 +224,7 @@ function Uploads() {
                     <Link
                       to={`/requests/${upload.requestId}`}
                       style={{
-                        fontSize: '14px',
+                        fontSize: '20px',
                         color: '#fff',
                         textDecoration: 'none',
                         overflow: 'hidden',
@@ -240,7 +240,7 @@ function Uploads() {
                   {/* Date */}
                   <div>
                     <div style={{
-                      fontSize: '13px',
+                      fontSize: '19px',
                       color: '#666'
                     }}>
                       {new Date(upload.uploadedAt).toLocaleDateString()}
@@ -256,7 +256,7 @@ function Uploads() {
                         background: '#fff',
                         color: '#000',
                         border: 'none',
-                        fontSize: '13px',
+                        fontSize: '19px',
                         fontWeight: '400',
                         cursor: 'pointer',
                         whiteSpace: 'nowrap'

@@ -621,7 +621,7 @@ function Requests() {
                   No requests yet
                 </h3>
                 <p style={{
-                  fontSize: '15px',
+                  fontSize: '22px',
                   color: theme.colors.text.secondary,
                   margin: 0,
                   lineHeight: '1.6'
@@ -646,7 +646,7 @@ function Requests() {
                   background: theme.colors.bg.secondary
                 }}>
                   <div style={{
-                    fontSize: '12px',
+                    fontSize: '18px',
                     color: theme.colors.text.tertiary,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
@@ -655,7 +655,7 @@ function Requests() {
                     Title
                   </div>
                   <div style={{
-                    fontSize: '12px',
+                    fontSize: '18px',
                     color: theme.colors.text.tertiary,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
@@ -664,7 +664,7 @@ function Requests() {
                     Type
                   </div>
                   <div style={{
-                    fontSize: '12px',
+                    fontSize: '18px',
                     color: theme.colors.text.tertiary,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
@@ -674,7 +674,7 @@ function Requests() {
                     Files
                   </div>
                   <div style={{
-                    fontSize: '12px',
+                    fontSize: '18px',
                     color: theme.colors.text.tertiary,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
@@ -683,7 +683,7 @@ function Requests() {
                     Created
                   </div>
                   <div style={{
-                    fontSize: '12px',
+                    fontSize: '18px',
                     color: theme.colors.text.tertiary,
                     textTransform: 'uppercase',
                     letterSpacing: '1px',
@@ -768,7 +768,7 @@ function Requests() {
                             color: theme.colors.black,
                             border: 'none',
                             borderRadius: '10px',
-                            fontSize: '15px',
+                            fontSize: '22px',
                             fontWeight: '500',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
@@ -788,7 +788,7 @@ function Requests() {
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: '10px',
-                            fontSize: '13px',
+                            fontSize: '19px',
                             fontWeight: theme.weight.medium,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
@@ -881,7 +881,7 @@ function Requests() {
                   /* Success Screen */
                   <div style={{ padding: '40px 32px' }}>
                     <div style={{
-                      fontSize: '15px',
+                      fontSize: '22px',
                       color: theme.colors.text.secondary,
                       marginBottom: '24px',
                       textAlign: 'center'
@@ -897,7 +897,7 @@ function Requests() {
                       borderRadius: '12px',
                       marginBottom: '24px',
                       wordBreak: 'break-all',
-                      fontSize: '14px',
+                      fontSize: '20px',
                       color: theme.colors.text.primary,
                       fontFamily: 'monospace'
                     }}>
@@ -914,7 +914,7 @@ function Requests() {
                           color: theme.colors.black,
                           border: 'none',
                           borderRadius: '12px',
-                          fontSize: '14px',
+                          fontSize: '20px',
                           fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
@@ -930,7 +930,7 @@ function Requests() {
                           color: theme.colors.text.primary,
                           border: `1px solid ${theme.colors.border.medium}`,
                           borderRadius: '12px',
-                          fontSize: '14px',
+                          fontSize: '20px',
                           fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
@@ -946,7 +946,7 @@ function Requests() {
                           color: theme.colors.text.secondary,
                           border: `1px solid ${theme.colors.border.medium}`,
                           borderRadius: '12px',
-                          fontSize: '14px',
+                          fontSize: '20px',
                           fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
@@ -971,7 +971,7 @@ function Requests() {
                         border: `1px solid ${theme.colors.border.medium}`,
                         borderRadius: '10px',
                         color: theme.colors.text.primary,
-                        fontSize: '14px',
+                        fontSize: '20px',
                         fontFamily: 'inherit',
                         outline: 'none',
                         marginBottom: theme.spacing[5]
@@ -1032,7 +1032,7 @@ function Requests() {
                                 </div>
                               )}
                               <div style={{
-                                fontSize: '14px',
+                                fontSize: '20px',
                                 fontWeight: '500',
                                 color: theme.colors.text.primary,
                                 marginBottom: theme.spacing[1]
@@ -1040,7 +1040,7 @@ function Requests() {
                                 {type.name}
                               </div>
                               <div style={{
-                                fontSize: '12px',
+                                fontSize: '18px',
                                 color: theme.colors.text.tertiary,
                                 lineHeight: '1.4'
                               }}>
@@ -1057,7 +1057,7 @@ function Requests() {
                       <div style={{ marginBottom: theme.spacing[5] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '13px',
+                          fontSize: '19px',
                           color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
                           fontWeight: theme.weight.medium
@@ -1069,7 +1069,7 @@ function Requests() {
                           background: theme.colors.bg.page,
                           border: `1px solid ${theme.colors.border.medium}`,
                           borderRadius: '10px',
-                          fontSize: '14px',
+                          fontSize: '20px',
                           color: theme.colors.text.primary,
                           display: 'flex',
                           justifyContent: 'space-between',
@@ -1084,7 +1084,7 @@ function Requests() {
                               border: 'none',
                               color: theme.colors.text.secondary,
                               cursor: 'pointer',
-                              fontSize: '13px',
+                              fontSize: '19px',
                               padding: 0,
                               fontWeight: '500',
                               transition: `color ${theme.transition.fast}`
@@ -1100,7 +1100,7 @@ function Requests() {
                       <div style={{ marginBottom: theme.spacing[5] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '13px',
+                          fontSize: '19px',
                           color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
                           fontWeight: theme.weight.medium
@@ -1120,7 +1120,7 @@ function Requests() {
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: '10px',
                             color: theme.colors.text.primary,
-                            fontSize: '14px',
+                            fontSize: '20px',
                             fontFamily: 'inherit',
                             outline: 'none'
                           }}
@@ -1131,7 +1131,7 @@ function Requests() {
                       <div style={{ marginBottom: theme.spacing[6] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '13px',
+                          fontSize: '19px',
                           color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
                           fontWeight: theme.weight.medium
@@ -1149,7 +1149,7 @@ function Requests() {
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: '10px',
                             color: theme.colors.text.primary,
-                            fontSize: '14px',
+                            fontSize: '20px',
                             fontFamily: 'inherit',
                             outline: 'none',
                             resize: 'vertical'
@@ -1169,7 +1169,7 @@ function Requests() {
                           <div key={field.id} style={{ marginBottom: theme.spacing[5] }}>
                             <label style={{
                               display: 'block',
-                              fontSize: '13px',
+                              fontSize: '19px',
                               color: theme.colors.text.secondary,
                               marginBottom: theme.spacing[2],
                               fontWeight: theme.weight.medium
@@ -1191,7 +1191,7 @@ function Requests() {
                                   border: `1px solid ${theme.colors.border.medium}`,
                                   borderRadius: '10px',
                                   color: theme.colors.text.primary,
-                                  fontSize: '14px',
+                                  fontSize: '20px',
                                   fontFamily: 'inherit',
                                   outline: 'none',
                                   cursor: 'pointer'
@@ -1218,7 +1218,7 @@ function Requests() {
                                   border: `1px solid ${theme.colors.border.medium}`,
                                   borderRadius: '10px',
                                   color: theme.colors.text.primary,
-                                  fontSize: '14px',
+                                  fontSize: '20px',
                                   fontFamily: 'inherit',
                                   outline: 'none',
                                   resize: 'vertical'
@@ -1240,7 +1240,7 @@ function Requests() {
                                   border: `1px solid ${theme.colors.border.medium}`,
                                   borderRadius: '10px',
                                   color: theme.colors.text.primary,
-                                  fontSize: '14px',
+                                  fontSize: '20px',
                                   fontFamily: 'inherit',
                                   outline: 'none'
                                 }}
@@ -1253,7 +1253,7 @@ function Requests() {
                       <div style={{ marginBottom: theme.spacing[6] }}>
                         <label style={{
                           display: 'block',
-                          fontSize: '13px',
+                          fontSize: '19px',
                           color: theme.colors.text.secondary,
                           marginBottom: theme.spacing[2],
                           fontWeight: theme.weight.medium
@@ -1281,7 +1281,7 @@ function Requests() {
                                 filter: 'grayscale(1)'
                               }}
                             />
-                            <span style={{ fontSize: '14px', color: theme.colors.text.primary }}>Preset time</span>
+                            <span style={{ fontSize: '20px', color: theme.colors.text.primary }}>Preset time</span>
                           </label>
                           <label style={{
                             display: 'flex',
@@ -1300,7 +1300,7 @@ function Requests() {
                                 filter: 'grayscale(1)'
                               }}
                             />
-                            <span style={{ fontSize: '14px', color: theme.colors.text.primary }}>Custom time</span>
+                            <span style={{ fontSize: '20px', color: theme.colors.text.primary }}>Custom time</span>
                           </label>
                         </div>
 
@@ -1315,7 +1315,7 @@ function Requests() {
                               border: `1px solid ${theme.colors.border.medium}`,
                               borderRadius: '10px',
                               color: theme.colors.text.primary,
-                              fontSize: '14px',
+                              fontSize: '20px',
                               fontFamily: 'inherit',
                               outline: 'none',
                               cursor: 'pointer'
@@ -1343,7 +1343,7 @@ function Requests() {
                                 border: `1px solid ${theme.colors.border.medium}`,
                                 borderRadius: '10px',
                                 color: theme.colors.text.primary,
-                                fontSize: '14px',
+                                fontSize: '20px',
                                 fontFamily: 'inherit',
                                 outline: 'none'
                               }}
@@ -1362,7 +1362,7 @@ function Requests() {
                                 border: `1px solid ${theme.colors.border.medium}`,
                                 borderRadius: '10px',
                                 color: theme.colors.text.primary,
-                                fontSize: '14px',
+                                fontSize: '20px',
                                 fontFamily: 'inherit',
                                 outline: 'none',
                                 cursor: 'pointer',
@@ -1387,7 +1387,7 @@ function Requests() {
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: '10px',
-                            fontSize: '14px',
+                            fontSize: '20px',
                             fontWeight: '500',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
@@ -1404,7 +1404,7 @@ function Requests() {
                             color: theme.colors.black,
                             border: 'none',
                             borderRadius: '10px',
-                            fontSize: '14px',
+                            fontSize: '20px',
                             fontWeight: '500',
                             cursor: creating ? 'not-allowed' : 'pointer',
                             opacity: creating ? 0.5 : 1,
@@ -1464,7 +1464,7 @@ function Requests() {
               Upgrade to Pro
             </h2>
             <p style={{
-              fontSize: '15px',
+              fontSize: '22px',
               color: theme.colors.text.secondary,
               margin: '0 0 32px 0',
               lineHeight: '1.6'
@@ -1480,7 +1480,7 @@ function Requests() {
                   color: theme.colors.black,
                   border: 'none',
                   borderRadius: '12px',
-                  fontSize: '15px',
+                  fontSize: '22px',
                   fontWeight: '500',
                   cursor: 'pointer',
                                     textDecoration: 'none',
@@ -1497,7 +1497,7 @@ function Requests() {
                   color: theme.colors.text.secondary,
                   border: `1px solid ${theme.colors.border.medium}`,
                   borderRadius: '12px',
-                  fontSize: '15px',
+                  fontSize: '22px',
                   fontWeight: '500',
                   cursor: 'pointer',
                                     fontFamily: 'inherit'

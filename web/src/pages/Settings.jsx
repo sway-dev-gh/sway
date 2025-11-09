@@ -95,7 +95,7 @@ function Settings() {
               boxShadow: theme.shadows.lg
             }}>
               <div style={{
-                fontSize: '14px',
+                fontSize: '20px',
                 color: theme.colors.text.tertiary,
                 marginBottom: theme.spacing[8],
                 textTransform: 'uppercase',

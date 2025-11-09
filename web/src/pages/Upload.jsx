@@ -383,7 +383,7 @@ export default function Upload() {
             Request not found
           </h2>
           <p style={{
-            fontSize: '14px',
+            fontSize: '20px',
             color: theme.colors.text.secondary,
             margin: 0
           }}>
@@ -480,7 +480,7 @@ export default function Upload() {
         )}
         {timeRemaining && (
           <div style={{
-            fontSize: '13px',
+            fontSize: '19px',
             color: timeRemaining === 'Expired' ? '#ef4444' : theme.colors.text.secondary
           }}>
             {timeRemaining}
@@ -539,7 +539,7 @@ export default function Upload() {
             <div style={{ marginBottom: theme.spacing[6] }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '19px',
                 color: theme.colors.text.secondary,
                 marginBottom: theme.spacing[2],
                 fontWeight: theme.weight.medium
@@ -559,7 +559,7 @@ export default function Upload() {
                   border: `1px solid ${theme.colors.border.medium}`,
                   borderRadius: theme.radius.md,
                   color: theme.colors.text.primary,
-                  fontSize: '15px',
+                  fontSize: '22px',
                   fontFamily: 'inherit',
                   outline: 'none',
                                   }}
@@ -577,7 +577,7 @@ export default function Upload() {
             <div style={{ marginBottom: theme.spacing[8] }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '19px',
                 color: theme.colors.text.secondary,
                 marginBottom: theme.spacing[2],
                 fontWeight: theme.weight.medium
@@ -596,7 +596,7 @@ export default function Upload() {
                   border: `1px solid ${theme.colors.border.medium}`,
                   borderRadius: theme.radius.md,
                   color: theme.colors.text.primary,
-                  fontSize: '15px',
+                  fontSize: '22px',
                   fontFamily: 'inherit',
                   outline: 'none',
                                   }}
@@ -616,7 +616,7 @@ export default function Upload() {
               <div key={field.id} style={{ marginBottom: index === customFields.length - 1 ? theme.spacing[8] : theme.spacing[6] }}>
                 <label style={{
                   display: 'block',
-                  fontSize: '13px',
+                  fontSize: '19px',
                   color: theme.colors.text.secondary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -638,7 +638,7 @@ export default function Upload() {
                       border: `1px solid ${theme.colors.border.medium}`,
                       borderRadius: theme.radius.md,
                       color: theme.colors.text.primary,
-                      fontSize: '15px',
+                      fontSize: '22px',
                       fontFamily: 'inherit',
                       outline: 'none',
                                             cursor: 'pointer'
@@ -674,7 +674,7 @@ export default function Upload() {
                       border: `1px solid ${theme.colors.border.medium}`,
                       borderRadius: theme.radius.md,
                       color: theme.colors.text.primary,
-                      fontSize: '15px',
+                      fontSize: '22px',
                       fontFamily: 'inherit',
                       outline: 'none',
                                           }}
@@ -770,7 +770,7 @@ export default function Upload() {
                   marginTop: theme.spacing[8]
                 }}>
                   <div style={{
-                    fontSize: '14px',
+                    fontSize: '20px',
                     fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
                     marginBottom: theme.spacing[5],
@@ -801,7 +801,7 @@ export default function Upload() {
                           marginRight: theme.spacing[4]
                         }}>
                           <div style={{
-                            fontSize: '15px',
+                            fontSize: '22px',
                             fontWeight: theme.weight.medium,
                             color: theme.colors.text.primary,
                             marginBottom: theme.spacing[1]
@@ -809,7 +809,7 @@ export default function Upload() {
                             {file.name}
                           </div>
                           <div style={{
-                            fontSize: '13px',
+                            fontSize: '19px',
                             color: theme.colors.text.tertiary
                           }}>
                             {(file.size / 1024 / 1024).toFixed(2)} MB

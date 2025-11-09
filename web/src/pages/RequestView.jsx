@@ -142,7 +142,7 @@ function RequestView() {
           marginTop: '60px',
           padding: '60px 40px'
         }}>
-          <p style={{ fontSize: '14px', color: '#666' }}>Request not found</p>
+          <p style={{ fontSize: '20px', color: '#666' }}>Request not found</p>
         </div>
       </>
     )
@@ -168,7 +168,7 @@ function RequestView() {
             to="/requests"
             style={{
               display: 'inline-block',
-              fontSize: '14px',
+              fontSize: '20px',
               color: '#666',
               textDecoration: 'none',
               marginBottom: '40px'
@@ -189,7 +189,7 @@ function RequestView() {
             </h1>
             {data.request.description && (
               <p style={{
-                fontSize: '14px',
+                fontSize: '20px',
                 color: '#666',
                 margin: '0 0 24px 0',
                 lineHeight: '1.6'
@@ -208,7 +208,7 @@ function RequestView() {
               alignItems: 'center'
             }}>
               <code style={{
-                fontSize: '13px',
+                fontSize: '19px',
                 color: '#ccc',
                 fontFamily: 'monospace'
               }}>
@@ -221,7 +221,7 @@ function RequestView() {
                   background: '#fff',
                   color: '#000',
                   border: 'none',
-                  fontSize: '13px',
+                  fontSize: '19px',
                   fontWeight: '400',
                   cursor: 'pointer'
                 }}
@@ -243,7 +243,7 @@ function RequestView() {
                   background: 'transparent',
                   color: '#fff',
                   border: '1px solid #333',
-                  fontSize: '13px',
+                  fontSize: '19px',
                   fontWeight: '400',
                   cursor: 'pointer'
                 }}
@@ -257,7 +257,7 @@ function RequestView() {
                   background: 'transparent',
                   color: '#ff3b30',
                   border: '1px solid #ff3b30',
-                  fontSize: '13px',
+                  fontSize: '19px',
                   fontWeight: '400',
                   cursor: 'pointer'
                 }}
@@ -285,7 +285,7 @@ function RequestView() {
                 border: '1px solid #333'
               }}>
                 <p style={{
-                  fontSize: '14px',
+                  fontSize: '20px',
                   color: '#666',
                   margin: 0
                 }}>
@@ -309,7 +309,7 @@ function RequestView() {
                   >
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{
-                        fontSize: '15px',
+                        fontSize: '22px',
                         fontWeight: '400',
                         marginBottom: '4px',
                         color: '#fff'
@@ -318,7 +318,7 @@ function RequestView() {
                       </div>
                       {upload.uploaderEmail && (
                         <div style={{
-                          fontSize: '13px',
+                          fontSize: '19px',
                           color: '#666',
                           marginBottom: '8px'
                         }}>
@@ -326,7 +326,7 @@ function RequestView() {
                         </div>
                       )}
                       <div style={{
-                        fontSize: '13px',
+                        fontSize: '19px',
                         color: '#ccc',
                         marginBottom: '4px',
                         fontFamily: 'monospace'
@@ -334,7 +334,7 @@ function RequestView() {
                         {upload.fileName}
                       </div>
                       <div style={{
-                        fontSize: '13px',
+                        fontSize: '19px',
                         color: '#666'
                       }}>
                         {(upload.fileSize / 1024 / 1024).toFixed(2)} MB · {new Date(upload.uploadedAt).toLocaleString()}
@@ -348,7 +348,7 @@ function RequestView() {
                         background: '#fff',
                         color: '#000',
                         border: 'none',
-                        fontSize: '13px',
+                        fontSize: '19px',
                         fontWeight: '400',
                         cursor: 'pointer'
                       }}

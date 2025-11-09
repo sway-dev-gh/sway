@@ -58,7 +58,7 @@ export default function Signup() {
             Sway
           </h1>
           <p style={{
-            fontSize: '15px',
+            fontSize: '22px',
             color: theme.colors.text.secondary,
             margin: 0,
             lineHeight: '1.6'
@@ -75,7 +75,7 @@ export default function Signup() {
             border: `1px solid ${theme.colors.border.medium}`,
             borderRadius: '12px',
             color: theme.colors.text.primary,
-            fontSize: '14px',
+            fontSize: '20px',
             marginBottom: '24px',
             lineHeight: '1.6'
           }}>
@@ -88,7 +88,7 @@ export default function Signup() {
           <div style={{ marginBottom: '16px' }}>
             <label style={{
               display: 'block',
-              fontSize: '15px',
+              fontSize: '22px',
               color: theme.colors.text.secondary,
               marginBottom: '8px',
               fontWeight: theme.weight.medium
@@ -126,7 +126,7 @@ export default function Signup() {
           <div style={{ marginBottom: '16px' }}>
             <label style={{
               display: 'block',
-              fontSize: '13px',
+              fontSize: '19px',
               color: theme.colors.text.secondary,
               marginBottom: '8px',
               fontWeight: theme.weight.medium
@@ -146,7 +146,7 @@ export default function Signup() {
                 border: `1px solid ${theme.colors.border.medium}`,
                 borderRadius: '12px',
                 color: theme.colors.text.primary,
-                fontSize: '15px',
+                fontSize: '22px',
                 fontFamily: 'inherit',
                 outline: 'none',
                               }}
@@ -164,7 +164,7 @@ export default function Signup() {
           <div style={{ marginBottom: '28px' }}>
             <label style={{
               display: 'block',
-              fontSize: '13px',
+              fontSize: '19px',
               color: theme.colors.text.secondary,
               marginBottom: '8px',
               fontWeight: theme.weight.medium
@@ -186,7 +186,7 @@ export default function Signup() {
                 border: `1px solid ${theme.colors.border.medium}`,
                 borderRadius: '12px',
                 color: theme.colors.text.primary,
-                fontSize: '15px',
+                fontSize: '22px',
                 fontFamily: 'inherit',
                 outline: 'none',
                               }}
@@ -212,7 +212,7 @@ export default function Signup() {
               color: theme.colors.black,
               border: 'none',
               borderRadius: '12px',
-              fontSize: '15px',
+              fontSize: '22px',
               fontWeight: theme.weight.medium,
               cursor: loading ? 'not-allowed' : 'pointer',
                             fontFamily: 'inherit',
@@ -228,7 +228,7 @@ export default function Signup() {
           textAlign: 'center',
           marginTop: '32px',
           color: theme.colors.text.secondary,
-          fontSize: '14px',
+          fontSize: '20px',
           lineHeight: '1.6'
         }}>
           Already have an account?{' '}

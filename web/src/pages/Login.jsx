@@ -45,7 +45,7 @@ export default function Login() {
           textAlign: 'center'
         }}>
           <h1 style={{
-            fontSize: '28px',
+            fontSize: '42px',
             fontWeight: '500',
             margin: '0 0 8px 0',
             color: theme.colors.text.primary,
@@ -54,7 +54,7 @@ export default function Login() {
             Sway
           </h1>
           <p style={{
-            fontSize: '14px',
+            fontSize: '20px',
             color: theme.colors.text.secondary,
             margin: 0,
             lineHeight: '1.5'
@@ -79,7 +79,7 @@ export default function Login() {
               border: `1px solid rgba(255, 59, 48, 0.2)`,
               borderRadius: theme.radius.md,
               color: '#FF3B30',
-              fontSize: '13px',
+              fontSize: '19px',
               marginBottom: '20px',
               lineHeight: '1.4'
             }}>
@@ -92,7 +92,7 @@ export default function Login() {
             <div style={{ marginBottom: '16px' }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '19px',
                 color: theme.colors.text.secondary,
                 marginBottom: '8px',
                 fontWeight: theme.weight.medium
@@ -112,7 +112,7 @@ export default function Login() {
                   border: `1px solid ${theme.colors.border.medium}`,
                   borderRadius: '10px',
                   color: theme.colors.text.primary,
-                  fontSize: '14px',
+                  fontSize: '20px',
                   fontFamily: 'inherit',
                   outline: 'none',
                                   }}
@@ -128,7 +128,7 @@ export default function Login() {
             <div style={{ marginBottom: '24px' }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
+                fontSize: '19px',
                 color: theme.colors.text.secondary,
                 marginBottom: '8px',
                 fontWeight: theme.weight.medium
@@ -148,7 +148,7 @@ export default function Login() {
                   border: `1px solid ${theme.colors.border.medium}`,
                   borderRadius: '10px',
                   color: theme.colors.text.primary,
-                  fontSize: '14px',
+                  fontSize: '20px',
                   fontFamily: 'inherit',
                   outline: 'none',
                                   }}
@@ -172,7 +172,7 @@ export default function Login() {
                 color: theme.colors.black,
                 border: 'none',
                 borderRadius: '10px',
-                fontSize: '14px',
+                fontSize: '20px',
                 fontWeight: theme.weight.medium,
                 cursor: loading ? 'not-allowed' : 'pointer',
                                 fontFamily: 'inherit',
@@ -189,7 +189,7 @@ export default function Login() {
           textAlign: 'center',
           marginTop: '24px',
           color: theme.colors.text.secondary,
-          fontSize: '13px',
+          fontSize: '19px',
           lineHeight: '1.5'
         }}>
           Don't have an account?{' '}

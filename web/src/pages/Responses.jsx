@@ -116,7 +116,7 @@ function Responses() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '28px',
+              fontSize: '42px',
               fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
@@ -125,7 +125,7 @@ function Responses() {
               Responses
             </h1>
             <p style={{
-              fontSize: '15px',
+              fontSize: '22px',
               color: theme.colors.text.secondary,
               margin: '12px 0 0 0',
               lineHeight: '1.6'
@@ -149,7 +149,7 @@ function Responses() {
               boxShadow: theme.shadows.md,
                           }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '18px',
                 color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px',
@@ -176,7 +176,7 @@ function Responses() {
               boxShadow: theme.shadows.md,
                           }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '18px',
                 color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px',
@@ -215,7 +215,7 @@ function Responses() {
                 No responses yet
               </h3>
               <p style={{
-                fontSize: '15px',
+                fontSize: '22px',
                 color: theme.colors.text.secondary,
                 margin: 0,
                 lineHeight: '1.6'
@@ -243,7 +243,7 @@ function Responses() {
                       <th style={{
                         padding: theme.spacing[6],
                         textAlign: 'left',
-                        fontSize: '12px',
+                        fontSize: '18px',
                         fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
@@ -254,7 +254,7 @@ function Responses() {
                       <th style={{
                         padding: theme.spacing[6],
                         textAlign: 'left',
-                        fontSize: '12px',
+                        fontSize: '18px',
                         fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
@@ -265,7 +265,7 @@ function Responses() {
                       <th style={{
                         padding: theme.spacing[6],
                         textAlign: 'left',
-                        fontSize: '12px',
+                        fontSize: '18px',
                         fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
@@ -276,7 +276,7 @@ function Responses() {
                       <th style={{
                         padding: theme.spacing[6],
                         textAlign: 'left',
-                        fontSize: '12px',
+                        fontSize: '18px',
                         fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
@@ -287,7 +287,7 @@ function Responses() {
                       <th style={{
                         padding: theme.spacing[6],
                         textAlign: 'left',
-                        fontSize: '12px',
+                        fontSize: '18px',
                         fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
@@ -298,7 +298,7 @@ function Responses() {
                       <th style={{
                         padding: theme.spacing[6],
                         textAlign: 'right',
-                        fontSize: '12px',
+                        fontSize: '18px',
                         fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
@@ -324,7 +324,7 @@ function Responses() {
                           padding: theme.spacing[6]
                         }}>
                           <div style={{
-                            fontSize: '15px',
+                            fontSize: '22px',
                             fontWeight: theme.weight.medium,
                             color: theme.colors.text.primary
                           }}>
@@ -335,7 +335,7 @@ function Responses() {
                           padding: theme.spacing[6]
                         }}>
                           <div style={{
-                            fontSize: '14px',
+                            fontSize: '20px',
                             color: theme.colors.text.secondary
                           }}>
                             {response.requestTitle}
@@ -345,7 +345,7 @@ function Responses() {
                           padding: theme.spacing[6]
                         }}>
                           <div style={{
-                            fontSize: '14px',
+                            fontSize: '20px',
                             color: theme.colors.text.primary,
                             marginBottom: theme.spacing[1]
                           }}>
@@ -353,7 +353,7 @@ function Responses() {
                           </div>
                           {response.uploaderEmail && (
                             <div style={{
-                              fontSize: '13px',
+                              fontSize: '19px',
                               color: theme.colors.text.tertiary
                             }}>
                               {response.uploaderEmail}
@@ -364,7 +364,7 @@ function Responses() {
                           padding: theme.spacing[6]
                         }}>
                           <div style={{
-                            fontSize: '14px',
+                            fontSize: '20px',
                             color: theme.colors.text.secondary
                           }}>
                             {formatBytes(response.fileSize)}
@@ -374,7 +374,7 @@ function Responses() {
                           padding: theme.spacing[6]
                         }}>
                           <div style={{
-                            fontSize: '14px',
+                            fontSize: '20px',
                             color: theme.colors.text.secondary
                           }}>
                             {formatDate(response.uploadedAt)}
@@ -392,7 +392,7 @@ function Responses() {
                               border: 'none',
                               borderRadius: '12px',
                               color: theme.colors.black,
-                              fontSize: '14px',
+                              fontSize: '20px',
                               fontWeight: '500',
                               cursor: 'pointer',
                                                             fontFamily: 'inherit',

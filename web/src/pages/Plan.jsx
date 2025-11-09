@@ -205,7 +205,7 @@ function Plan() {
 
                 {/* Plan Name */}
                 <div style={{
-                  fontSize: '13px',
+                  fontSize: '19px',
                   color: theme.colors.text.tertiary,
                   marginBottom: theme.spacing[2],
                   textTransform: 'uppercase',
@@ -283,7 +283,7 @@ function Plan() {
                     color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
                     border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
                     borderRadius: '12px',
-                    fontSize: '14px',
+                    fontSize: '20px',
                     fontWeight: '500',
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
@@ -331,7 +331,7 @@ function Plan() {
                   Can I change my plan at any time?
                 </div>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '20px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -355,7 +355,7 @@ function Plan() {
                   What happens if I hit my upload limit?
                 </div>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '20px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -379,7 +379,7 @@ function Plan() {
                   Do you offer refunds?
                 </div>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '20px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
