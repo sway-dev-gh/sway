@@ -313,9 +313,9 @@ function Requests() {
         marginTop: '72px'
       }}>
         <div style={{
-          maxWidth: '1400px',
+          maxWidth: '1600px',
           margin: '0 auto',
-          padding: theme.spacing[12]
+          padding: '48px 60px'
         }}>
 
           {/* Header */}
@@ -403,8 +403,9 @@ function Requests() {
                 {/* Table Header */}
                 <div style={{
                   display: 'grid',
-                  gridTemplateColumns: '2fr 1fr 100px 140px 220px',
-                  padding: theme.spacing[6],
+                  gridTemplateColumns: '3fr 2fr 120px 180px 280px',
+                  gap: '24px',
+                  padding: '24px 32px',
                   borderBottom: `1px solid ${theme.colors.border.light}`,
                   background: theme.colors.bg.secondary
                 }}>
@@ -465,17 +466,16 @@ function Requests() {
                       key={req.id}
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: '2fr 1fr 100px 140px 220px',
-                        padding: theme.spacing[6],
+                        gridTemplateColumns: '3fr 2fr 120px 180px 280px',
+                        gap: '24px',
+                        padding: '24px 32px',
                         borderBottom: index < requests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                         transition: `background ${theme.transition.fast}`,
                         cursor: 'pointer',
                         alignItems: 'center'
                       }}
                       onClick={() => navigate(`/requests/${req.id}`)}
-
-
-                                      >
+                    >
                       {/* Title */}
                       <div style={{
                         fontSize: '18px',
