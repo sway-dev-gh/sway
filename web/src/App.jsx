@@ -5,7 +5,6 @@ import Responses from './pages/Responses'
 import Uploads from './pages/Uploads'
 import Plan from './pages/Plan'
 import Settings from './pages/Settings'
-import Customization from './pages/Customization'
 import RequestView from './pages/RequestView'
 import Upload from './pages/Upload'
 import Login from './pages/Login'
@@ -25,7 +24,6 @@ function App() {
         <Route path="/requests/:id" element={<RequestView />} />
         <Route path="/responses" element={<Responses />} />
         <Route path="/uploads" element={<Uploads />} />
-        <Route path="/customization" element={<Customization />} />
         <Route path="/plan" element={<Plan />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
