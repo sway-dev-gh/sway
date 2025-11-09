@@ -316,7 +316,7 @@ function Customization() {
               </p>
             </div>
 
-            {/* Preview Box */}
+            {/* Preview Box - Full Interface Preview */}
             <div style={{ marginBottom: theme.spacing[8] }}>
               <label style={{
                 display: 'block',
@@ -328,30 +328,113 @@ function Customization() {
                 Preview
               </label>
               <div style={{
-                padding: theme.spacing[8],
+                padding: theme.spacing[10],
                 background: customization.backgroundColor,
                 border: `1px solid ${theme.colors.border.medium}`,
                 borderRadius: '10px',
-                textAlign: 'center'
+                fontFamily: customization.fontFamily
               }}>
-                <p style={{
-                  fontFamily: customization.fontFamily,
-                  color: customization.fontColor,
-                  fontSize: '16px',
-                  margin: 0,
-                  lineHeight: '1.6'
+                {/* Mock Upload Page Header */}
+                <div style={{ textAlign: 'center', marginBottom: theme.spacing[8] }}>
+                  <h1 style={{
+                    fontSize: '28px',
+                    fontWeight: '500',
+                    margin: '0 0 12px 0',
+                    color: customization.fontColor,
+                    letterSpacing: '-0.02em',
+                    fontFamily: customization.fontFamily
+                  }}>
+                    Share Your Files
+                  </h1>
+                  <p style={{
+                    fontSize: '15px',
+                    color: customization.fontColor,
+                    opacity: 0.7,
+                    margin: 0,
+                    lineHeight: '1.6',
+                    fontFamily: customization.fontFamily
+                  }}>
+                    Upload your files to this request
+                  </p>
+                </div>
+
+                {/* Mock Form Card */}
+                <div style={{
+                  background: `color-mix(in srgb, ${customization.backgroundColor} 95%, white 5%)`,
+                  padding: theme.spacing[8],
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid color-mix(in srgb, ${customization.fontColor} 20%, transparent 80%)`,
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
                 }}>
-                  The quick brown fox jumps over the lazy dog
-                </p>
-                <p style={{
-                  fontFamily: customization.fontFamily,
-                  color: customization.fontColor,
-                  fontSize: '14px',
-                  margin: '8px 0 0 0',
-                  opacity: 0.7
-                }}>
-                  This is how your customization will look
-                </p>
+                  {/* Mock Input */}
+                  <div style={{ marginBottom: theme.spacing[6] }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '13px',
+                      color: customization.fontColor,
+                      opacity: 0.7,
+                      marginBottom: theme.spacing[2],
+                      fontWeight: '500',
+                      fontFamily: customization.fontFamily
+                    }}>
+                      Your Name
+                    </label>
+                    <div style={{
+                      width: '100%',
+                      height: '44px',
+                      padding: '0 14px',
+                      background: customization.backgroundColor,
+                      border: `1px solid color-mix(in srgb, ${customization.fontColor} 30%, transparent 70%)`,
+                      borderRadius: '10px',
+                      color: customization.fontColor,
+                      fontSize: '14px',
+                      fontFamily: customization.fontFamily,
+                      display: 'flex',
+                      alignItems: 'center',
+                      opacity: 0.6
+                    }}>
+                      John Doe
+                    </div>
+                  </div>
+
+                  {/* Mock Upload Zone */}
+                  <div style={{
+                    border: `2px dashed color-mix(in srgb, ${customization.fontColor} 30%, transparent 70%)`,
+                    borderRadius: '10px',
+                    padding: theme.spacing[8],
+                    textAlign: 'center',
+                    marginBottom: theme.spacing[6]
+                  }}>
+                    <p style={{
+                      fontSize: '14px',
+                      color: customization.fontColor,
+                      opacity: 0.7,
+                      margin: 0,
+                      fontFamily: customization.fontFamily
+                    }}>
+                      Drag & drop files here
+                    </p>
+                  </div>
+
+                  {/* Mock Submit Button */}
+                  <div style={{
+                    width: '100%',
+                    height: '44px',
+                    padding: '0 24px',
+                    background: customization.fontColor,
+                    color: customization.backgroundColor,
+                    border: 'none',
+                    borderRadius: '10px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    fontFamily: customization.fontFamily,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    Upload Files
+                  </div>
+                </div>
               </div>
             </div>
 
