@@ -89,12 +89,18 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
 
     const request = result.rows[0]
 
-    // Get branding information for the user
-    const brandingResult = await pool.query(
-      'SELECT custom_domain, branding_elements FROM users WHERE id = $1',
-      [request.user_id]
-    )
-    const brandingData = brandingResult.rows[0] || {}
+    // Get branding information for the user (if available)
+    let brandingData = {}
+    try {
+      const brandingResult = await pool.query(
+        'SELECT custom_domain, branding_elements FROM users WHERE id = $1',
+        [request.user_id]
+      )
+      brandingData = brandingResult.rows[0] || {}
+    } catch (brandingError) {
+      console.log('[Uploads] Branding query failed (columns may not exist yet):', brandingError.message)
+      // Continue without branding data
+    }
 
     res.json({
       request: {
@@ -108,7 +114,7 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
         expiresAt: request.expires_at
       },
       branding: {
-        customDomain: brandingData.custom_domain,
+        customDomain: brandingData.custom_domain || null,
         elements: brandingData.branding_elements || []
       }
     })
