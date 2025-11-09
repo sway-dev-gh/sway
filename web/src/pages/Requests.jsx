@@ -977,41 +977,43 @@ function Requests() {
                                 {field.label}
                               </label>
 
-                              {/* Required Toggle Switch */}
-                              <label style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                cursor: 'pointer',
-                                gap: theme.spacing[2]
-                              }}>
-                                <span style={{
-                                  fontSize: theme.fontSize.sm,
-                                  color: fieldRequirements[field.id] ? theme.colors.text.primary : theme.colors.text.tertiary,
-                                  fontWeight: theme.weight.medium
+                              {/* Required Toggle Switch - Only show for Custom type */}
+                              {requestType === 'custom' && (
+                                <label style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  cursor: 'pointer',
+                                  gap: theme.spacing[2]
                                 }}>
-                                  {fieldRequirements[field.id] ? 'Required' : 'Optional'}
-                                </span>
-                                <input
-                                  type="checkbox"
-                                  checked={fieldRequirements[field.id] || false}
-                                  onChange={(e) => setFieldRequirements(prev => ({
-                                    ...prev,
-                                    [field.id]: e.target.checked
-                                  }))}
-                                  style={{
-                                    appearance: 'none',
-                                    width: '44px',
-                                    height: '24px',
-                                    background: fieldRequirements[field.id] ? theme.colors.white : theme.colors.bg.page,
-                                    borderRadius: '12px',
-                                    border: `1px solid ${theme.colors.border.medium}`,
-                                    position: 'relative',
-                                    cursor: 'pointer',
-                                    transition: `all ${theme.transition.fast}`,
-                                    outline: 'none'
-                                  }}
-                                />
-                              </label>
+                                  <span style={{
+                                    fontSize: theme.fontSize.sm,
+                                    color: fieldRequirements[field.id] ? theme.colors.text.primary : theme.colors.text.tertiary,
+                                    fontWeight: theme.weight.medium
+                                  }}>
+                                    {fieldRequirements[field.id] ? 'Required' : 'Optional'}
+                                  </span>
+                                  <input
+                                    type="checkbox"
+                                    checked={fieldRequirements[field.id] || false}
+                                    onChange={(e) => setFieldRequirements(prev => ({
+                                      ...prev,
+                                      [field.id]: e.target.checked
+                                    }))}
+                                    style={{
+                                      appearance: 'none',
+                                      width: '44px',
+                                      height: '24px',
+                                      background: fieldRequirements[field.id] ? theme.colors.white : theme.colors.bg.page,
+                                      borderRadius: '12px',
+                                      border: `1px solid ${theme.colors.border.medium}`,
+                                      position: 'relative',
+                                      cursor: 'pointer',
+                                      transition: `all ${theme.transition.fast}`,
+                                      outline: 'none'
+                                    }}
+                                  />
+                                </label>
+                              )}
                             </div>
 
                             {field.type === 'select' ? (
