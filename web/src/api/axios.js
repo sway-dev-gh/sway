@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+// In development, use Vite proxy (empty baseURL = relative URLs)
+// In production, use production API
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://api.swayfiles.com'
+  baseURL: import.meta.env.MODE === 'production' ? 'https://api.swayfiles.com' : ''
 })
 
 // Add request interceptor to include admin key if available

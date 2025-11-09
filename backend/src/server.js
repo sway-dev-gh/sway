@@ -24,7 +24,7 @@ app.set('trust proxy', 1)
 
 // Middleware
 app.use(cors({
-  origin: ['https://swayfiles.com', 'https://www.swayfiles.com', 'http://localhost:5173'],
+  origin: ['https://swayfiles.com', 'https://www.swayfiles.com', 'http://localhost:3001', 'http://localhost:5173'],
   credentials: true
 }))
 
