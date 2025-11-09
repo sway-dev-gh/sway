@@ -158,7 +158,16 @@ router.get('/', authenticateToken, async (req, res) => {
     res.json(basicStats)
   } catch (error) {
     console.error('Analytics error:', error)
-    res.status(500).json({ error: 'Failed to fetch analytics' })
+    console.error('Error details:', {
+      message: error.message,
+      code: error.code,
+      hint: error.hint,
+      position: error.position
+    })
+    res.status(500).json({
+      error: 'Failed to fetch analytics',
+      details: process.env.NODE_ENV === 'production' ? undefined : error.message
+    })
   }
 })
 
