@@ -534,10 +534,10 @@ function Requests() {
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                padding: '12px 28px',
+                padding: '16px 32px',
                 borderRadius: '8px',
-                fontSize: '14px',
-                fontWeight: theme.weight.medium,
+                fontSize: '15px',
+                fontWeight: theme.weight.semibold,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
                 transition: `all ${theme.transition.normal}`
@@ -663,7 +663,7 @@ function Requests() {
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
-                          navigate(`/requests/${req.id}`)
+                          window.open(`https://swayfiles.com/r/${req.shortCode}`, '_blank')
                         }}
                         style={{
                           padding: '10px 20px',
@@ -830,16 +830,47 @@ function Requests() {
                     {/* Buttons */}
                     <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
                       <button
-                        onClick={() => copyToClipboard(createdLink)}
+                        onClick={() => window.open(createdLink, '_blank')}
                         style={{
                           padding: '12px 24px',
                           background: theme.colors.white,
                           color: theme.colors.black,
                           border: 'none',
                           fontSize: '14px',
+                          fontWeight: theme.weight.semibold,
+                          cursor: 'pointer',
+                          fontFamily: 'inherit',
+                          transition: `all ${theme.transition.fast}`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = theme.colors.text.secondary
+                          e.currentTarget.style.transform = 'scale(1.02)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = theme.colors.white
+                          e.currentTarget.style.transform = 'scale(1)'
+                        }}
+                      >
+                        Open Link
+                      </button>
+                      <button
+                        onClick={() => copyToClipboard(createdLink)}
+                        style={{
+                          padding: '12px 24px',
+                          background: 'transparent',
+                          color: theme.colors.text.primary,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          fontSize: '14px',
                           fontWeight: '400',
                           cursor: 'pointer',
-                          fontFamily: 'inherit'
+                          fontFamily: 'inherit',
+                          transition: `all ${theme.transition.fast}`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent'
                         }}
                       >
                         Copy Link
@@ -854,7 +885,14 @@ function Requests() {
                           fontSize: '14px',
                           fontWeight: '400',
                           cursor: 'pointer',
-                          fontFamily: 'inherit'
+                          fontFamily: 'inherit',
+                          transition: `all ${theme.transition.fast}`
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = 'transparent'
                         }}
                       >
                         Close
