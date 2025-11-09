@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 
-// Force cache bust
+const CACHE_VERSION = '2.0.1'
 
 const REQUEST_TYPES = [
   {
