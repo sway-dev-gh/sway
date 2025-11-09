@@ -3,6 +3,17 @@ const router = express.Router()
 const path = require('path')
 const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
+const rateLimit = require('express-rate-limit')
+const fs = require('fs')
+
+// Rate limiter for file downloads
+const downloadLimiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 10, // 10 downloads per minute per IP
+  message: { error: 'Too many download requests. Please try again in a minute.' },
+  standardHeaders: true,
+  legacyHeaders: false
+})
 
 // GET /api/files - Get all files for user (protected)
 router.get('/', authenticateToken, async (req, res) => {
@@ -36,7 +47,7 @@ router.get('/', authenticateToken, async (req, res) => {
 })
 
 // GET /api/files/:id - Download file (protected)
-router.get('/:id', authenticateToken, async (req, res) => {
+router.get('/:id', authenticateToken, downloadLimiter, async (req, res) => {
   try {
     const { id } = req.params
 
@@ -60,8 +71,24 @@ router.get('/:id', authenticateToken, async (req, res) => {
       return res.status(403).json({ error: 'Access denied' })
     }
 
+    // SECURITY: Sanitize and validate storage_path to prevent path traversal
+    const sanitizedPath = path.normalize(upload.storage_path).replace(/^(\.\.(\/|\\|$))+/, '')
+    const uploadsDir = path.resolve(__dirname, '../uploads')
+    const filePath = path.resolve(uploadsDir, sanitizedPath)
+
+    // SECURITY: Ensure resolved path is within uploads directory
+    if (!filePath.startsWith(uploadsDir)) {
+      console.error('Path traversal attempt detected:', { userId: req.userId, storagePath: upload.storage_path })
+      return res.status(400).json({ error: 'Invalid file path' })
+    }
+
+    // SECURITY: Verify file actually exists before downloading
+    if (!fs.existsSync(filePath)) {
+      console.error('File not found on disk:', filePath)
+      return res.status(404).json({ error: 'File not found on server' })
+    }
+
     // Send file
-    const filePath = path.join(__dirname, '../uploads', upload.storage_path)
     res.download(filePath, upload.file_name)
   } catch (error) {
     console.error('Download error:', error)

@@ -125,6 +125,23 @@ const checkFileSize = (req, res, next) => {
   next()
 }
 
+// SECURITY: Validate user input
+function validateName(name) {
+  if (!name || typeof name !== 'string') return false
+  const trimmed = name.trim()
+  if (trimmed.length < 1 || trimmed.length > 100) return false
+  // Remove potential XSS characters
+  if (/<|>|&|"|'|script/i.test(trimmed)) return false
+  return true
+}
+
+function validateEmail(email) {
+  if (!email) return true // Email is optional
+  if (typeof email !== 'string') return false
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email) && email.length <= 254
+}
+
 // POST /api/r/:code/upload - Submit files (public)
 router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files', 10), async (req, res) => {
   try {
@@ -132,8 +149,13 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
     const { name, email } = req.body
     const files = req.files
 
-    if (!name || !name.trim()) {
-      return res.status(400).json({ error: 'Name is required' })
+    // SECURITY: Validate inputs
+    if (!validateName(name)) {
+      return res.status(400).json({ error: 'Invalid name. Must be 1-100 characters, no HTML/scripts.' })
+    }
+
+    if (email && !validateEmail(email)) {
+      return res.status(400).json({ error: 'Invalid email format' })
     }
 
     if (!files || files.length === 0) {

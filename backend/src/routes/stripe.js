@@ -3,6 +3,7 @@ const router = express.Router()
 const { authenticateToken } = require('../middleware/auth')
 const pool = require('../db/pool')
 const { createNotification } = require('./notifications')
+const rateLimit = require('express-rate-limit')
 
 // Lazy-load Stripe only when needed
 let stripe = null
@@ -13,8 +14,17 @@ const getStripe = () => {
   return stripe
 }
 
+// Rate limiter for Stripe checkout/subscription operations
+const stripeLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 checkout attempts per 15 minutes
+  message: { error: 'Too many checkout attempts. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false
+})
+
 // Create checkout session for plan upgrade
-router.post('/create-checkout-session', authenticateToken, async (req, res) => {
+router.post('/create-checkout-session', authenticateToken, stripeLimiter, async (req, res) => {
   try {
     const stripe = getStripe()
     if (!stripe) {
