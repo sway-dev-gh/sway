@@ -245,38 +245,40 @@ function Upload() {
     <div style={{
       minHeight: '100vh',
       background: '#000000',
-      padding: '60px 20px',
+      padding: '40px 20px',
       display: 'flex',
       justifyContent: 'center',
+      alignItems: 'center',
       position: 'relative'
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '480px',
+        maxWidth: '540px',
         position: 'relative',
         zIndex: 1
       }}>
         {/* Small Branding/Domain at Top */}
         <div style={{
-          fontSize: theme.fontSize.xs,
-          color: '#a1a1a1',
-          marginBottom: '40px',
+          fontSize: '11px',
+          color: '#666',
+          marginBottom: '32px',
           textAlign: 'center',
           textTransform: 'uppercase',
-          letterSpacing: '1px'
+          letterSpacing: '1.5px',
+          fontWeight: 500
         }}>
-          {brandingData?.customDomain || 'Sway'}
+          {brandingData?.customDomain || 'SWAY'}
         </div>
 
         {/* Large Title */}
         <h1 style={{
-          fontSize: theme.fontSize['2xl'],
-          fontWeight: 700,
+          fontSize: '42px',
+          fontWeight: 600,
           color: '#ffffff',
-          margin: '0 0 16px 0',
+          margin: '0 0 12px 0',
           textAlign: 'center',
-          letterSpacing: '-0.03em',
-          lineHeight: '1.2'
+          letterSpacing: '-0.04em',
+          lineHeight: '1.1'
         }}>
           {requestData.title}
         </h1>
@@ -284,11 +286,14 @@ function Upload() {
         {/* Subtitle with Instructions */}
         {requestData.description && (
           <p style={{
-            fontSize: theme.fontSize.base,
-            color: '#a1a1a1',
-            margin: '0 0 48px 0',
+            fontSize: '17px',
+            color: '#999',
+            margin: '0 0 56px 0',
             textAlign: 'center',
-            lineHeight: '1.5'
+            lineHeight: '1.6',
+            maxWidth: '440px',
+            marginLeft: 'auto',
+            marginRight: 'auto'
           }}>
             {requestData.description}
           </p>
@@ -296,24 +301,31 @@ function Upload() {
 
         <form onSubmit={handleSubmit}>
           {/* Upload Dropzone */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: '28px' }}>
             <label style={{
-              display: 'block',
-              width: '100%',
-              minHeight: '180px',
-              border: '2px dashed #333333',
-              borderRadius: '12px',
-              background: 'transparent',
-              cursor: 'pointer',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              padding: '40px 20px',
-              transition: 'border-color 0.2s ease'
+              width: '100%',
+              minHeight: '220px',
+              border: '1px dashed #2a2a2a',
+              borderRadius: '16px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              cursor: 'pointer',
+              padding: '48px 24px',
+              transition: 'all 0.2s ease',
+              position: 'relative',
+              overflow: 'hidden'
             }}
-            onMouseEnter={(e) => e.currentTarget.style.borderColor = '#666666'}
-            onMouseLeave={(e) => e.currentTarget.style.borderColor = '#333333'}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = '#444'
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = '#2a2a2a'
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+            }}
             >
               <input
                 type="file"
@@ -324,28 +336,32 @@ function Upload() {
                   position: 'absolute',
                   opacity: 0,
                   width: '1px',
-                  height: '1px'
+                  height: '1px',
+                  pointerEvents: 'none'
                 }}
               />
               <div style={{
-                fontSize: '48px',
-                color: '#ffffff',
-                marginBottom: '16px',
-                lineHeight: '1'
+                fontSize: '56px',
+                color: '#fff',
+                marginBottom: '20px',
+                lineHeight: '1',
+                opacity: 0.9
               }}>
                 ↑
               </div>
               <div style={{
-                fontSize: theme.fontSize.base,
-                fontWeight: 600,
+                fontSize: '17px',
+                fontWeight: 500,
                 color: '#ffffff',
-                marginBottom: '8px'
+                marginBottom: '8px',
+                letterSpacing: '-0.01em'
               }}>
                 Click to browse or drag files here
               </div>
               <div style={{
-                fontSize: theme.fontSize.sm,
-                color: '#666666'
+                fontSize: '15px',
+                color: '#666',
+                fontWeight: 400
               }}>
                 Multiple files supported
               </div>
@@ -591,28 +607,38 @@ function Upload() {
             disabled={uploading || files.length === 0}
             style={{
               width: '100%',
-              padding: '16px',
+              padding: '18px 24px',
               background: '#ffffff',
               color: '#000000',
               border: 'none',
-              borderRadius: '8px',
-              fontSize: '15px',
+              borderRadius: '12px',
+              fontSize: '16px',
               fontWeight: 600,
               cursor: (uploading || files.length === 0) ? 'not-allowed' : 'pointer',
               fontFamily: 'inherit',
-              opacity: (uploading || files.length === 0) ? 0.5 : 1,
-              transition: 'opacity 0.2s ease'
+              opacity: (uploading || files.length === 0) ? 0.4 : 1,
+              transition: 'all 0.2s ease',
+              letterSpacing: '-0.01em'
+            }}
+            onMouseEnter={(e) => {
+              if (!uploading && files.length > 0) {
+                e.currentTarget.style.background = '#f5f5f5'
+              }
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#ffffff'
             }}
           >
             {uploading ? 'Uploading...' : 'Upload Files'}
           </button>
 
-          {/* Microtrust Text at Bottom */}
+          {/* Powered by Text at Bottom */}
           <div style={{
-            fontSize: '11px',
-            color: '#666666',
+            fontSize: '13px',
+            color: '#555',
             textAlign: 'center',
-            marginTop: '32px'
+            marginTop: '40px',
+            fontWeight: 400
           }}>
             Powered by Sway
           </div>
