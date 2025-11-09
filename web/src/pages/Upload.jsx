@@ -24,11 +24,15 @@ function Upload() {
 
   const fetchRequest = async () => {
     try {
+      console.log('[Upload] Fetching request with shortCode:', shortCode)
       const { data } = await api.get(`/api/r/${shortCode}`)
+      console.log('[Upload] Received data:', data)
       setRequestData(data.request)
       setBrandingData(data.branding)
     } catch (error) {
-      console.error('Failed to fetch request:', error)
+      console.error('[Upload] Failed to fetch request:', error)
+      console.error('[Upload] Error response:', error.response?.data)
+      console.error('[Upload] Error status:', error.response?.status)
     } finally {
       setLoading(false)
     }

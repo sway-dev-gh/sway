@@ -155,10 +155,13 @@ function Requests() {
   useEffect(() => {
     fetchRequests()
     const userStr = localStorage.getItem('user')
+    const adminKey = localStorage.getItem('adminKey')
     if (userStr) {
       const userData = JSON.parse(userStr)
-      const plan = userData.plan || 'free'
+      // If admin key exists, set plan to 'business' (highest level)
+      const plan = adminKey ? 'business' : (userData.plan || 'free')
       console.log('[Requests] User data from localStorage:', userData)
+      console.log('[Requests] Admin key present:', !!adminKey)
       console.log('[Requests] Setting userPlan to:', plan)
       setUserPlan(plan)
     }
