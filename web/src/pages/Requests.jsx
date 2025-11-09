@@ -11,6 +11,8 @@ const REQUEST_TYPES = [
     id: 'general-upload',
     name: 'General Upload',
     description: 'Simple file collection',
+    titleLabel: 'Request Title',
+    descriptionLabel: 'Instructions (optional)',
     fields: [],
     planRequired: 'free'
   },
@@ -18,6 +20,8 @@ const REQUEST_TYPES = [
     id: 'photos',
     name: 'Photos',
     description: 'Collect images',
+    titleLabel: 'Event or Shoot Name',
+    descriptionLabel: 'Photo Guidelines (optional)',
     fields: [
       { id: 'resolution', label: 'Preferred Resolution', type: 'select', options: ['Any', '4K', '1080p', '720p'] },
       { id: 'count', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 10' }
@@ -28,6 +32,8 @@ const REQUEST_TYPES = [
     id: 'videos',
     name: 'Videos',
     description: 'Collect video files',
+    titleLabel: 'Video Project Name',
+    descriptionLabel: 'Video Requirements (optional)',
     fields: [
       { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 5' },
       { id: 'orientation', label: 'Orientation', type: 'select', options: ['Landscape', 'Portrait', 'Square', 'Any'] }
@@ -38,6 +44,8 @@ const REQUEST_TYPES = [
     id: 'documents',
     name: 'Documents',
     description: 'PDFs, Word docs, spreadsheets',
+    titleLabel: 'Document Collection Name',
+    descriptionLabel: 'Document Guidelines (optional)',
     fields: [
       { id: 'docType', label: 'Document Type', type: 'select', options: ['PDF', 'Word', 'Excel', 'PowerPoint', 'Any'] },
       { id: 'pageLimit', label: 'Max Pages (optional)', type: 'number', placeholder: 'e.g., 20' }
@@ -48,6 +56,8 @@ const REQUEST_TYPES = [
     id: 'code-submission',
     name: 'Code',
     description: 'Code files or repositories',
+    titleLabel: 'Project or Assignment Name',
+    descriptionLabel: 'Code Submission Instructions (optional)',
     fields: [
       { id: 'language', label: 'Programming Language', type: 'text', placeholder: 'e.g., JavaScript, Python, Java' },
       { id: 'repo', label: 'GitHub/GitLab URL (optional)', type: 'text', placeholder: 'https://github.com/...' }
@@ -58,6 +68,8 @@ const REQUEST_TYPES = [
     id: 'design-assets',
     name: 'Design',
     description: 'Logos, mockups, design files',
+    titleLabel: 'Design Project Name',
+    descriptionLabel: 'Design Specifications (optional)',
     fields: [
       { id: 'format', label: 'Preferred Format', type: 'select', options: ['PNG', 'SVG', 'AI', 'PSD', 'Figma', 'Any'] },
       { id: 'dimensions', label: 'Dimensions (optional)', type: 'text', placeholder: 'e.g., 1920x1080' }
@@ -68,6 +80,8 @@ const REQUEST_TYPES = [
     id: 'event-photos',
     name: 'Event Photos',
     description: 'Photos from events',
+    titleLabel: 'Event Name',
+    descriptionLabel: 'Photo Instructions (optional)',
     fields: [
       { id: 'eventDate', label: 'Event Date', type: 'date' },
       { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 20' }
@@ -78,6 +92,8 @@ const REQUEST_TYPES = [
     id: 'application-materials',
     name: 'Applications',
     description: 'Resumes, portfolios',
+    titleLabel: 'Position Title',
+    descriptionLabel: 'Application Requirements (optional)',
     fields: [
       { id: 'position', label: 'Position Applying For', type: 'text', placeholder: 'e.g., Software Engineer' },
       { id: 'deadline', label: 'Application Deadline', type: 'date' }
@@ -88,6 +104,8 @@ const REQUEST_TYPES = [
     id: 'invoices',
     name: 'Invoices',
     description: 'Billing documents',
+    titleLabel: 'Invoice Collection Name',
+    descriptionLabel: 'Payment Instructions (optional)',
     fields: [
       { id: 'invoiceNumber', label: 'Invoice Number', type: 'text', placeholder: 'e.g., INV-001' },
       { id: 'amount', label: 'Amount', type: 'text', placeholder: 'e.g., $150.00' }
@@ -98,6 +116,8 @@ const REQUEST_TYPES = [
     id: 'forms',
     name: 'Forms',
     description: 'Form responses',
+    titleLabel: 'Form Collection Name',
+    descriptionLabel: 'Form Instructions (optional)',
     fields: [
       { id: 'formName', label: 'Form Name', type: 'text', placeholder: 'e.g., Customer Survey' },
       { id: 'submissionCount', label: 'Expected Submissions', type: 'number', placeholder: 'e.g., 50' }
@@ -108,6 +128,8 @@ const REQUEST_TYPES = [
     id: 'client-deliverables',
     name: 'Deliverables',
     description: 'Final work files',
+    titleLabel: 'Project or Client Name',
+    descriptionLabel: 'Deliverable Requirements (optional)',
     fields: [
       { id: 'projectName', label: 'Project Name', type: 'text', placeholder: 'e.g., Website Redesign' },
       { id: 'dueDate', label: 'Due Date', type: 'date' }
@@ -118,6 +140,8 @@ const REQUEST_TYPES = [
     id: 'feedback',
     name: 'Feedback',
     description: 'Reviews, testimonials',
+    titleLabel: 'Feedback Collection Name',
+    descriptionLabel: 'Feedback Guidelines (optional)',
     fields: [
       { id: 'feedbackType', label: 'Feedback Type', type: 'select', options: ['Review', 'Testimonial', 'Bug Report', 'Feature Request', 'Other'] },
       { id: 'topic', label: 'Topic', type: 'text', placeholder: 'What is this feedback about?' }
@@ -128,6 +152,8 @@ const REQUEST_TYPES = [
     id: 'content',
     name: 'Content',
     description: 'Articles, written content',
+    titleLabel: 'Content Project Name',
+    descriptionLabel: 'Content Requirements (optional)',
     fields: [
       { id: 'contentType', label: 'Content Type', type: 'select', options: ['Article', 'Blog Post', 'Script', 'Copy', 'Other'] },
       { id: 'wordCount', label: 'Target Word Count', type: 'number', placeholder: 'e.g., 1000' }
@@ -138,6 +164,8 @@ const REQUEST_TYPES = [
     id: 'assignments',
     name: 'Assignments',
     description: 'Homework, projects',
+    titleLabel: 'Assignment Name',
+    descriptionLabel: 'Submission Instructions (optional)',
     fields: [
       { id: 'course', label: 'Course Name', type: 'text', placeholder: 'e.g., CS 101' },
       { id: 'dueDate', label: 'Due Date', type: 'date' }
@@ -148,6 +176,8 @@ const REQUEST_TYPES = [
     id: 'contracts',
     name: 'Contracts',
     description: 'Signed documents',
+    titleLabel: 'Contract Name or ID',
+    descriptionLabel: 'Contract Instructions (optional)',
     fields: [
       { id: 'contractType', label: 'Contract Type', type: 'text', placeholder: 'e.g., NDA, Service Agreement' },
       { id: 'parties', label: 'Number of Parties', type: 'number', placeholder: 'e.g., 2' }
@@ -158,6 +188,8 @@ const REQUEST_TYPES = [
     id: 'audio',
     name: 'Audio',
     description: 'Podcasts, recordings',
+    titleLabel: 'Audio Project Name',
+    descriptionLabel: 'Audio Requirements (optional)',
     fields: [
       { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 30' },
       { id: 'format', label: 'Preferred Format', type: 'select', options: ['MP3', 'WAV', 'AAC', 'Any'] }
@@ -168,6 +200,8 @@ const REQUEST_TYPES = [
     id: 'spreadsheets',
     name: 'Spreadsheets',
     description: 'Excel, CSV data',
+    titleLabel: 'Spreadsheet Collection Name',
+    descriptionLabel: 'Data Guidelines (optional)',
     fields: [
       { id: 'dataType', label: 'Data Type', type: 'text', placeholder: 'e.g., Sales Data, Customer List' },
       { id: 'rowCount', label: 'Expected Rows (optional)', type: 'number', placeholder: 'e.g., 500' }
@@ -178,6 +212,8 @@ const REQUEST_TYPES = [
     id: 'presentations',
     name: 'Presentations',
     description: 'PowerPoint, Keynote',
+    titleLabel: 'Presentation Name',
+    descriptionLabel: 'Presentation Requirements (optional)',
     fields: [
       { id: 'topic', label: 'Presentation Topic', type: 'text', placeholder: 'e.g., Q4 Results' },
       { id: 'slides', label: 'Expected Slides', type: 'number', placeholder: 'e.g., 15' }
@@ -188,6 +224,8 @@ const REQUEST_TYPES = [
     id: 'legal',
     name: 'Legal Docs',
     description: 'Legal forms',
+    titleLabel: 'Legal Document Name',
+    descriptionLabel: 'Document Instructions (optional)',
     fields: [
       { id: 'documentType', label: 'Document Type', type: 'text', placeholder: 'e.g., Power of Attorney' },
       { id: 'jurisdiction', label: 'Jurisdiction', type: 'text', placeholder: 'e.g., California' }
@@ -198,6 +236,8 @@ const REQUEST_TYPES = [
     id: 'id-verification',
     name: 'ID Verification',
     description: 'Identification docs',
+    titleLabel: 'Verification Purpose',
+    descriptionLabel: 'ID Requirements (optional)',
     fields: [
       { id: 'idType', label: 'ID Type', type: 'select', options: ['Passport', 'Driver License', 'State ID', 'Other'] },
       { id: 'country', label: 'Country', type: 'text', placeholder: 'e.g., USA' }
@@ -208,6 +248,8 @@ const REQUEST_TYPES = [
     id: 'medical',
     name: 'Medical Records',
     description: 'Health documentation',
+    titleLabel: 'Medical Record Request Name',
+    descriptionLabel: 'Record Guidelines (optional)',
     fields: [
       { id: 'recordType', label: 'Record Type', type: 'select', options: ['Lab Results', 'Prescription', 'X-Ray/Imaging', 'Medical History', 'Other'] },
       { id: 'dateOfService', label: 'Date of Service', type: 'date' }
@@ -218,6 +260,8 @@ const REQUEST_TYPES = [
     id: 'tax-documents',
     name: 'Tax Docs',
     description: 'W2s, 1099s',
+    titleLabel: 'Tax Document Collection',
+    descriptionLabel: 'Submission Guidelines (optional)',
     fields: [
       { id: 'taxYear', label: 'Tax Year', type: 'number', placeholder: 'e.g., 2024' },
       { id: 'docType', label: 'Document Type', type: 'select', options: ['W2', '1099', '1040', 'Receipt', 'Other'] }
@@ -228,6 +272,8 @@ const REQUEST_TYPES = [
     id: 'property',
     name: 'Property Photos',
     description: 'Real estate images',
+    titleLabel: 'Property Address or Name',
+    descriptionLabel: 'Photo Requirements (optional)',
     fields: [
       { id: 'propertyType', label: 'Property Type', type: 'select', options: ['House', 'Apartment', 'Commercial', 'Land', 'Other'] },
       { id: 'photoCount', label: 'Expected Number of Photos', type: 'number', placeholder: 'e.g., 25' }
@@ -238,6 +284,8 @@ const REQUEST_TYPES = [
     id: 'products',
     name: 'Product Images',
     description: 'E-commerce photos',
+    titleLabel: 'Product Line or SKU',
+    descriptionLabel: 'Image Specifications (optional)',
     fields: [
       { id: 'productCategory', label: 'Product Category', type: 'text', placeholder: 'e.g., Electronics, Clothing' },
       { id: 'backgroundType', label: 'Background', type: 'select', options: ['White', 'Transparent', 'Lifestyle', 'Any'] }
@@ -248,6 +296,8 @@ const REQUEST_TYPES = [
     id: 'marketing',
     name: 'Marketing',
     description: 'Promotional content',
+    titleLabel: 'Campaign Name',
+    descriptionLabel: 'Asset Requirements (optional)',
     fields: [
       { id: 'campaignName', label: 'Campaign Name', type: 'text', placeholder: 'e.g., Spring Sale 2024' },
       { id: 'platform', label: 'Platform', type: 'select', options: ['Email', 'Social Media', 'Print', 'Digital Ads', 'All'] }
@@ -258,6 +308,8 @@ const REQUEST_TYPES = [
     id: 'social-media',
     name: 'Social Media',
     description: 'Posts, stories',
+    titleLabel: 'Content Campaign Name',
+    descriptionLabel: 'Posting Guidelines (optional)',
     fields: [
       { id: 'platform', label: 'Platform', type: 'select', options: ['Instagram', 'TikTok', 'Twitter/X', 'Facebook', 'LinkedIn', 'Multiple'] },
       { id: 'contentType', label: 'Content Type', type: 'select', options: ['Post', 'Story', 'Reel', 'Video', 'Image'] }
@@ -268,6 +320,8 @@ const REQUEST_TYPES = [
     id: 'surveys',
     name: 'Surveys',
     description: 'Survey responses',
+    titleLabel: 'Survey Name',
+    descriptionLabel: 'Survey Instructions (optional)',
     fields: [
       { id: 'surveyName', label: 'Survey Name', type: 'text', placeholder: 'e.g., Customer Satisfaction' },
       { id: 'expectedResponses', label: 'Expected Responses', type: 'number', placeholder: 'e.g., 100' }
@@ -278,6 +332,8 @@ const REQUEST_TYPES = [
     id: 'research',
     name: 'Research Data',
     description: 'Research findings',
+    titleLabel: 'Research Project Name',
+    descriptionLabel: 'Data Requirements (optional)',
     fields: [
       { id: 'researchTopic', label: 'Research Topic', type: 'text', placeholder: 'e.g., Climate Change Impact' },
       { id: 'dataFormat', label: 'Data Format', type: 'select', options: ['CSV', 'JSON', 'Excel', 'PDF', 'Other'] }
@@ -288,6 +344,8 @@ const REQUEST_TYPES = [
     id: 'screenshots',
     name: 'Screenshots',
     description: 'Proof, verification images',
+    titleLabel: 'Screenshot Collection Name',
+    descriptionLabel: 'Screenshot Guidelines (optional)',
     fields: [
       { id: 'purpose', label: 'Purpose', type: 'text', placeholder: 'e.g., Bug Report, Tutorial' },
       { id: 'count', label: 'Expected Number', type: 'number', placeholder: 'e.g., 5' }
@@ -1113,7 +1171,7 @@ function Requests() {
                           marginBottom: theme.spacing[2],
                           fontWeight: theme.weight.medium
                         }}>
-                          Title
+                          {REQUEST_TYPES.find(t => t.id === requestType)?.titleLabel || 'Title'}
                         </label>
                         <input
                           type="text"
@@ -1132,7 +1190,7 @@ function Requests() {
                             fontFamily: 'inherit',
                             outline: 'none'
                           }}
-                          placeholder="Enter request title"
+                          placeholder={`Enter ${REQUEST_TYPES.find(t => t.id === requestType)?.titleLabel?.toLowerCase() || 'title'}`}
                         />
                       </div>
 
@@ -1144,7 +1202,7 @@ function Requests() {
                           marginBottom: theme.spacing[2],
                           fontWeight: theme.weight.medium
                         }}>
-                          Description (optional)
+                          {REQUEST_TYPES.find(t => t.id === requestType)?.descriptionLabel || 'Description (optional)'}
                         </label>
                         <textarea
                           value={formData.description}
@@ -1162,7 +1220,7 @@ function Requests() {
                             outline: 'none',
                             resize: 'vertical'
                           }}
-                          placeholder="Enter description"
+                          placeholder={`Enter ${REQUEST_TYPES.find(t => t.id === requestType)?.descriptionLabel?.toLowerCase().replace(' (optional)', '') || 'description'}`}
                         />
                       </div>
 
