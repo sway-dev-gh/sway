@@ -122,20 +122,17 @@ function Plan() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '60px 40px'
+          padding: theme.spacing[20]
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '60px', textAlign: 'center' }}>
+          <div style={{ marginBottom: theme.spacing[16], textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: '400',
+              fontSize: '56px',
+              fontWeight: theme.weight.normal,
               margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              background: 'linear-gradient(to right, #ffffff, #a3a3a3)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+              letterSpacing: '-0.03em'
             }}>
               Simple, Predictable Pricing
             </h1>
@@ -146,32 +143,32 @@ function Plan() {
               maxWidth: '600px',
               marginLeft: 'auto',
               marginRight: 'auto',
-              lineHeight: '1.6'
+              lineHeight: '1.7'
             }}>
               Start free. Upgrade when you need more. Cancel anytime.
             </p>
           </div>
 
-          {/* Plans Grid - Modern 2025 Style */}
+          {/* Plans Grid */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '24px',
-            marginBottom: '80px',
-            maxWidth: '900px',
-            margin: '0 auto 80px auto'
+            gap: theme.spacing[8],
+            marginBottom: theme.spacing[20],
+            maxWidth: '1000px',
+            margin: '0 auto 120px auto'
           }}>
             {plans.map((plan) => (
               <div
                 key={plan.id}
                 style={{
                   background: theme.colors.bg.secondary,
-                  padding: '40px 32px',
-                  borderRadius: '16px',
+                  padding: theme.spacing[12],
+                  borderRadius: theme.radius.xl,
                   border: plan.popular ? `2px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
                   position: 'relative',
                   transition: `all ${theme.transition.normal}`,
-                  transform: plan.popular ? 'scale(1.05)' : 'scale(1)'
+                  transform: plan.popular ? 'scale(1.03)' : 'scale(1)'
                 }}
                 onMouseEnter={(e) => {
                   if (!plan.popular) {
@@ -190,17 +187,17 @@ function Plan() {
                 {plan.popular && (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-14px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     background: theme.colors.white,
                     color: theme.colors.black,
-                    padding: '4px 16px',
-                    borderRadius: '100px',
+                    padding: '6px 20px',
+                    borderRadius: theme.radius.full,
                     fontSize: '11px',
-                    fontWeight: '600',
+                    fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '0.8px'
                   }}>
                     Most Popular
                   </div>
@@ -210,16 +207,16 @@ function Plan() {
                 {plan.id === currentPlan && (
                   <div style={{
                     position: 'absolute',
-                    top: '16px',
-                    right: '16px',
+                    top: theme.spacing[6],
+                    right: theme.spacing[6],
                     background: 'rgba(255, 255, 255, 0.1)',
                     color: theme.colors.text.secondary,
-                    padding: '4px 12px',
-                    borderRadius: '6px',
-                    fontSize: '10px',
-                    fontWeight: '600',
+                    padding: '6px 14px',
+                    borderRadius: theme.radius.md,
+                    fontSize: '11px',
+                    fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '0.8px'
                   }}>
                     Current
                   </div>
@@ -227,9 +224,9 @@ function Plan() {
 
                 {/* Plan Name */}
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '13px',
                   color: theme.colors.text.tertiary,
-                  marginBottom: '8px',
+                  marginBottom: theme.spacing[2],
                   textTransform: 'uppercase',
                   letterSpacing: '1.5px',
                   fontWeight: theme.weight.semibold
@@ -237,70 +234,57 @@ function Plan() {
                   {plan.name}
                 </div>
 
-                {/* Tagline */}
-                <div style={{
-                  fontSize: '13px',
-                  color: theme.colors.text.muted,
-                  marginBottom: '8px',
-                  minHeight: '20px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  fontWeight: '500'
-                }}>
-                  {plan.tagline}
-                </div>
-
-                {/* Description */}
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.secondary,
-                  marginBottom: '24px',
-                  lineHeight: '1.5',
-                  minHeight: '42px'
-                }}>
-                  {plan.description}
-                </div>
-
                 {/* Price */}
-                <div style={{ marginBottom: '32px' }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <div style={{ marginBottom: theme.spacing[6] }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[1] }}>
                     <div style={{
-                      fontSize: '56px',
-                      fontWeight: '300',
+                      fontSize: '64px',
+                      fontWeight: theme.weight.light,
                       color: theme.colors.text.primary,
-                      letterSpacing: '-0.04em',
+                      letterSpacing: '-0.05em',
                       lineHeight: '1'
                     }}>
                       {plan.price}
                     </div>
                     <div style={{
-                      fontSize: '16px',
+                      fontSize: '18px',
                       color: theme.colors.text.muted,
-                      marginBottom: '4px'
+                      marginBottom: theme.spacing[2]
                     }}>
                       {plan.period}
                     </div>
                   </div>
                 </div>
 
+                {/* Description */}
+                <div style={{
+                  fontSize: '15px',
+                  color: theme.colors.text.secondary,
+                  marginBottom: theme.spacing[10],
+                  lineHeight: '1.6',
+                  minHeight: '48px'
+                }}>
+                  {plan.description}
+                </div>
+
                 {/* Features */}
-                <div style={{ marginBottom: '32px', minHeight: '200px' }}>
+                <div style={{ marginBottom: theme.spacing[10], minHeight: '180px' }}>
                   {plan.features.map((feature, index) => (
                     <div
                       key={index}
                       style={{
-                        fontSize: '14px',
+                        fontSize: '15px',
                         color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
-                        marginBottom: '12px',
+                        marginBottom: theme.spacing[4],
                         display: 'flex',
                         alignItems: 'flex-start',
-                        gap: '12px',
-                        fontWeight: feature.highlight ? '500' : '400'
+                        gap: theme.spacing[3],
+                        fontWeight: feature.highlight ? theme.weight.medium : theme.weight.normal
                       }}
                     >
                       <span style={{
                         color: theme.colors.text.primary,
-                        fontSize: '16px',
+                        fontSize: '18px',
                         lineHeight: '1'
                       }}>✓</span>
                       <span style={{ flex: 1 }}>{feature.text}</span>
@@ -314,17 +298,18 @@ function Plan() {
                   disabled={plan.id === currentPlan || upgrading}
                   style={{
                     width: '100%',
-                    padding: '14px 28px',
+                    padding: '16px 32px',
                     background: plan.id === currentPlan ? 'transparent' : (plan.popular ? theme.colors.white : 'transparent'),
                     color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
                     border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
-                    borderRadius: '10px',
-                    fontSize: '14px',
-                    fontWeight: '600',
+                    borderRadius: theme.radius.lg,
+                    fontSize: '15px',
+                    fontWeight: theme.weight.semibold,
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
                     transition: `all ${theme.transition.normal}`,
-                    opacity: upgrading ? 0.6 : 1
+                    opacity: upgrading ? 0.6 : 1,
+                    height: '56px'
                   }}
                   onMouseEnter={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
@@ -332,7 +317,7 @@ function Plan() {
                         e.currentTarget.style.background = theme.colors.text.secondary
                         e.currentTarget.style.transform = 'translateY(-2px)'
                       } else {
-                        e.currentTarget.style.background = theme.colors.bg.card
+                        e.currentTarget.style.background = theme.colors.bg.hover
                       }
                     }
                   }}
@@ -352,9 +337,9 @@ function Plan() {
           {/* FAQ Section */}
           <div>
             <h2 style={{
-              fontSize: '32px',
-              fontWeight: '400',
-              margin: '0 0 40px 0',
+              fontSize: '40px',
+              fontWeight: theme.weight.normal,
+              margin: '0 0 48px 0',
               letterSpacing: '-0.02em',
               textAlign: 'center'
             }}>
@@ -363,74 +348,101 @@ function Plan() {
 
             <div style={{
               display: 'grid',
-              gap: '16px',
-              maxWidth: '800px',
+              gap: theme.spacing[5],
+              maxWidth: '900px',
               margin: '0 auto'
             }}>
               <div style={{
-                background: 'rgba(255, 255, 255, 0.02)',
-                padding: '28px 32px',
-                borderRadius: '12px',
-                border: `1px solid ${theme.colors.border.light}`
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[10],
+                borderRadius: theme.radius.xl,
+                border: `1px solid ${theme.colors.border.light}`,
+                transition: `all ${theme.transition.normal}`
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.hover
+                e.currentTarget.style.borderColor = theme.colors.border.medium
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: '18px',
                   color: theme.colors.text.primary,
-                  marginBottom: '12px',
-                  fontWeight: '500'
+                  marginBottom: theme.spacing[3],
+                  fontWeight: theme.weight.medium
                 }}>
                   Can I change my plan at any time?
                 </div>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '15px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.6'
+                  lineHeight: '1.7'
                 }}>
                   Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately, and we'll prorate your billing.
                 </div>
               </div>
 
               <div style={{
-                background: 'rgba(255, 255, 255, 0.02)',
-                padding: '28px 32px',
-                borderRadius: '12px',
-                border: `1px solid ${theme.colors.border.light}`
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[10],
+                borderRadius: theme.radius.xl,
+                border: `1px solid ${theme.colors.border.light}`,
+                transition: `all ${theme.transition.normal}`
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.hover
+                e.currentTarget.style.borderColor = theme.colors.border.medium
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: '18px',
                   color: theme.colors.text.primary,
-                  marginBottom: '12px',
-                  fontWeight: '500'
+                  marginBottom: theme.spacing[3],
+                  fontWeight: theme.weight.medium
                 }}>
                   What happens if I hit my upload limit?
                 </div>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '15px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.6'
+                  lineHeight: '1.7'
                 }}>
                   On the Free plan, you can have up to 20 active requests with 2GB total storage. You'll need to upgrade to Pro for 200 active requests and 50GB storage.
                 </div>
               </div>
 
               <div style={{
-                background: 'rgba(255, 255, 255, 0.02)',
-                padding: '28px 32px',
-                borderRadius: '12px',
-                border: `1px solid ${theme.colors.border.light}`
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[10],
+                borderRadius: theme.radius.xl,
+                border: `1px solid ${theme.colors.border.light}`,
+                transition: `all ${theme.transition.normal}`
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.hover
+                e.currentTarget.style.borderColor = theme.colors.border.medium
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: '18px',
                   color: theme.colors.text.primary,
-                  marginBottom: '12px',
-                  fontWeight: '500'
+                  marginBottom: theme.spacing[3],
+                  fontWeight: theme.weight.medium
                 }}>
                   Do you offer refunds?
                 </div>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '15px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.6'
+                  lineHeight: '1.7'
                 }}>
                   Yes, we offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, we'll refund you in full. No questions asked.
                 </div>

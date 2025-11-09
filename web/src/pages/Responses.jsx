@@ -110,23 +110,25 @@ function Responses() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '40px 40px 80px'
+          padding: theme.spacing[20]
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '32px' }}>
+          <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '32px',
-              fontWeight: theme.weight.medium,
-              margin: '0 0 8px 0',
-              color: theme.colors.text.primary
+              fontSize: '48px',
+              fontWeight: theme.weight.normal,
+              margin: 0,
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em'
             }}>
               Responses
             </h1>
             <p style={{
               fontSize: '15px',
               color: theme.colors.text.secondary,
-              margin: 0
+              margin: '12px 0 0 0',
+              lineHeight: '1.6'
             }}>
               All files uploaded to your requests
             </p>
@@ -135,55 +137,77 @@ function Responses() {
           {/* Stats */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '16px',
-            marginBottom: '32px'
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: theme.spacing[6],
+            marginBottom: theme.spacing[10]
           }}>
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '12px',
-              padding: '20px'
+              borderRadius: theme.radius.xl,
+              padding: theme.spacing[10],
+              transition: `all ${theme.transition.normal}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.hover
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.secondary
+              e.currentTarget.style.borderColor = theme.colors.border.light
             }}>
               <div style={{
-                fontSize: '28px',
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
-                marginBottom: '4px'
-              }}>
-                {responses.length}
-              </div>
-              <div style={{
-                fontSize: '13px',
+                fontSize: '12px',
                 color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '1.5px',
+                marginBottom: theme.spacing[4],
+                fontWeight: theme.weight.medium
               }}>
                 Total Uploads
+              </div>
+              <div style={{
+                fontSize: '56px',
+                fontWeight: theme.weight.light,
+                color: theme.colors.text.primary,
+                lineHeight: '1'
+              }}>
+                {responses.length}
               </div>
             </div>
 
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '12px',
-              padding: '20px'
+              borderRadius: theme.radius.xl,
+              padding: theme.spacing[10],
+              transition: `all ${theme.transition.normal}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.hover
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.secondary
+              e.currentTarget.style.borderColor = theme.colors.border.light
             }}>
               <div style={{
-                fontSize: '28px',
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
-                marginBottom: '4px'
-              }}>
-                {formatBytes(responses.reduce((sum, r) => sum + (r.fileSize || 0), 0))}
-              </div>
-              <div style={{
-                fontSize: '13px',
+                fontSize: '12px',
                 color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '1.5px',
+                marginBottom: theme.spacing[4],
+                fontWeight: theme.weight.medium
               }}>
                 Total Size
+              </div>
+              <div style={{
+                fontSize: '56px',
+                fontWeight: theme.weight.light,
+                color: theme.colors.text.primary,
+                lineHeight: '1'
+              }}>
+                {formatBytes(responses.reduce((sum, r) => sum + (r.fileSize || 0), 0))}
               </div>
             </div>
           </div>
@@ -193,26 +217,23 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '12px',
-              padding: '60px 20px',
-              textAlign: 'center',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center'
+              borderRadius: theme.radius.xl,
+              padding: '120px 60px',
+              textAlign: 'center'
             }}>
               <h3 style={{
-                fontSize: '18px',
+                fontSize: '20px',
                 fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary,
-                margin: '0 0 8px 0'
+                margin: '0 0 12px 0'
               }}>
                 No responses yet
               </h3>
               <p style={{
-                fontSize: '14px',
+                fontSize: '15px',
                 color: theme.colors.text.secondary,
-                margin: 0
+                margin: 0,
+                lineHeight: '1.6'
               }}>
                 Files uploaded to your requests will appear here
               </p>
@@ -221,7 +242,7 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '12px',
+              borderRadius: theme.radius.xl,
               overflow: 'hidden'
             }}>
               <div style={{ overflowX: 'auto' }}>
@@ -234,68 +255,68 @@ function Responses() {
                       borderBottom: `1px solid ${theme.colors.border.light}`
                     }}>
                       <th style={{
-                        padding: '16px 20px',
+                        padding: theme.spacing[6],
                         textAlign: 'left',
                         fontSize: '12px',
-                        fontWeight: theme.weight.semibold,
+                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '1.2px'
                       }}>
                         File Name
                       </th>
                       <th style={{
-                        padding: '16px 20px',
+                        padding: theme.spacing[6],
                         textAlign: 'left',
                         fontSize: '12px',
-                        fontWeight: theme.weight.semibold,
+                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '1.2px'
                       }}>
                         Request
                       </th>
                       <th style={{
-                        padding: '16px 20px',
+                        padding: theme.spacing[6],
                         textAlign: 'left',
                         fontSize: '12px',
-                        fontWeight: theme.weight.semibold,
+                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '1.2px'
                       }}>
                         Uploader
                       </th>
                       <th style={{
-                        padding: '16px 20px',
+                        padding: theme.spacing[6],
                         textAlign: 'left',
                         fontSize: '12px',
-                        fontWeight: theme.weight.semibold,
+                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '1.2px'
                       }}>
                         Size
                       </th>
                       <th style={{
-                        padding: '16px 20px',
+                        padding: theme.spacing[6],
                         textAlign: 'left',
                         fontSize: '12px',
-                        fontWeight: theme.weight.semibold,
+                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '1.2px'
                       }}>
                         Uploaded
                       </th>
                       <th style={{
-                        padding: '16px 20px',
+                        padding: theme.spacing[6],
                         textAlign: 'right',
                         fontSize: '12px',
-                        fontWeight: theme.weight.semibold,
+                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
+                        letterSpacing: '1.2px'
                       }}>
                         Actions
                       </th>
@@ -306,23 +327,25 @@ function Responses() {
                       <tr
                         key={response.id}
                         style={{
-                          borderBottom: index < responses.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
+                          borderBottom: index < responses.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                          transition: `background ${theme.transition.fast}`
                         }}
+                        onMouseEnter={(e) => e.currentTarget.style.background = theme.colors.bg.hover}
+                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                       >
                         <td style={{
-                          padding: '16px 20px'
+                          padding: theme.spacing[6]
                         }}>
                           <div style={{
-                            fontSize: '14px',
+                            fontSize: '15px',
                             fontWeight: theme.weight.medium,
-                            color: theme.colors.text.primary,
-                            marginBottom: '2px'
+                            color: theme.colors.text.primary
                           }}>
                             {response.fileName}
                           </div>
                         </td>
                         <td style={{
-                          padding: '16px 20px'
+                          padding: theme.spacing[6]
                         }}>
                           <div style={{
                             fontSize: '14px',
@@ -332,18 +355,18 @@ function Responses() {
                           </div>
                         </td>
                         <td style={{
-                          padding: '16px 20px'
+                          padding: theme.spacing[6]
                         }}>
                           <div style={{
                             fontSize: '14px',
                             color: theme.colors.text.primary,
-                            marginBottom: '2px'
+                            marginBottom: theme.spacing[1]
                           }}>
                             {response.uploaderName}
                           </div>
                           {response.uploaderEmail && (
                             <div style={{
-                              fontSize: '12px',
+                              fontSize: '13px',
                               color: theme.colors.text.tertiary
                             }}>
                               {response.uploaderEmail}
@@ -351,7 +374,7 @@ function Responses() {
                           )}
                         </td>
                         <td style={{
-                          padding: '16px 20px'
+                          padding: theme.spacing[6]
                         }}>
                           <div style={{
                             fontSize: '14px',
@@ -361,7 +384,7 @@ function Responses() {
                           </div>
                         </td>
                         <td style={{
-                          padding: '16px 20px'
+                          padding: theme.spacing[6]
                         }}>
                           <div style={{
                             fontSize: '14px',
@@ -371,30 +394,31 @@ function Responses() {
                           </div>
                         </td>
                         <td style={{
-                          padding: '16px 20px',
+                          padding: theme.spacing[6],
                           textAlign: 'right'
                         }}>
                           <button
                             onClick={() => handleDownload(response.id)}
                             style={{
-                              padding: '8px 16px',
+                              padding: '10px 20px',
                               background: theme.colors.white,
                               border: 'none',
-                              borderRadius: '6px',
+                              borderRadius: theme.radius.md,
                               color: theme.colors.black,
-                              fontSize: '13px',
+                              fontSize: '14px',
                               fontWeight: theme.weight.medium,
                               cursor: 'pointer',
                               transition: `all ${theme.transition.fast}`,
-                              fontFamily: 'inherit'
+                              fontFamily: 'inherit',
+                              height: '44px'
                             }}
                             onMouseEnter={(e) => {
                               e.currentTarget.style.background = theme.colors.text.secondary
-                              e.currentTarget.style.transform = 'scale(1.05)'
+                              e.currentTarget.style.transform = 'translateY(-1px)'
                             }}
                             onMouseLeave={(e) => {
                               e.currentTarget.style.background = theme.colors.white
-                              e.currentTarget.style.transform = 'scale(1)'
+                              e.currentTarget.style.transform = 'translateY(0)'
                             }}
                           >
                             Download

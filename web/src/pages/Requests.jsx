@@ -511,21 +511,23 @@ function Requests() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            marginBottom: '40px'
+            marginBottom: theme.spacing[12]
           }}>
             <div>
               <h1 style={{
-                fontSize: '32px',
-                fontWeight: '400',
+                fontSize: '48px',
+                fontWeight: theme.weight.normal,
                 margin: 0,
-                color: theme.colors.text.primary
+                color: theme.colors.text.primary,
+                letterSpacing: '-0.02em'
               }}>
                 Requests
               </h1>
               <p style={{
-                fontSize: '14px',
-                color: theme.colors.text.muted,
-                margin: '8px 0 0 0'
+                fontSize: '15px',
+                color: theme.colors.text.secondary,
+                margin: '12px 0 0 0',
+                lineHeight: '1.6'
               }}>
                 Create and manage file upload requests
               </p>
@@ -536,17 +538,18 @@ function Requests() {
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                padding: '10px 20px',
-                borderRadius: '6px',
-                fontSize: '14px',
+                padding: '14px 28px',
+                borderRadius: theme.radius.md,
+                fontSize: '15px',
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                transition: `all ${theme.transition.normal}`
+                transition: `all ${theme.transition.normal}`,
+                height: '48px'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = theme.colors.text.secondary
-                e.currentTarget.style.transform = 'translateY(-1px)'
+                e.currentTarget.style.transform = 'translateY(-2px)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.white
@@ -562,24 +565,32 @@ function Requests() {
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '80px 40px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                borderRadius: '12px',
+                padding: '120px 60px',
+                background: theme.colors.bg.secondary,
+                borderRadius: theme.radius.xl,
                 border: `1px solid ${theme.colors.border.light}`
               }}>
+                <h3 style={{
+                  fontSize: '20px',
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.primary,
+                  margin: '0 0 12px 0'
+                }}>
+                  No requests yet
+                </h3>
                 <p style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.muted,
+                  fontSize: '15px',
+                  color: theme.colors.text.secondary,
                   margin: 0,
                   lineHeight: '1.6'
                 }}>
-                  No requests yet. Click "+ New Request" to create your first request.
+                  Click "+ New Request" to create your first request.
                 </p>
               </div>
             ) : (
               <div style={{
                 display: 'grid',
-                gap: '12px'
+                gap: theme.spacing[4]
               }}>
                 {requests
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -587,48 +598,52 @@ function Requests() {
                   <div
                     key={req.id}
                     style={{
-                      padding: '24px',
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      borderRadius: '12px',
+                      padding: theme.spacing[8],
+                      background: theme.colors.bg.secondary,
+                      borderRadius: theme.radius.xl,
                       border: `1px solid ${theme.colors.border.light}`,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '24px',
-                      transition: `all ${theme.transition.fast}`
+                      gap: theme.spacing[6],
+                      transition: `all ${theme.transition.normal}`
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                      e.currentTarget.style.background = theme.colors.bg.hover
                       e.currentTarget.style.borderColor = theme.colors.border.medium
+                      e.currentTarget.style.transform = 'translateY(-2px)'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                      e.currentTarget.style.background = theme.colors.bg.secondary
                       e.currentTarget.style.borderColor = theme.colors.border.light
+                      e.currentTarget.style.transform = 'translateY(0)'
                     }}
                   >
                     {/* File Count Badge */}
                     <div
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: '8px',
-                        background: theme.colors.bg.secondary,
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: theme.radius.lg,
+                        background: theme.colors.bg.page,
                         border: `1px solid ${theme.colors.border.medium}`,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        fontSize: '18px',
-                        fontWeight: '500',
+                        fontSize: '24px',
+                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.primary,
                         flexShrink: 0,
                         cursor: 'pointer',
                         transition: `all ${theme.transition.fast}`
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                        e.currentTarget.style.background = theme.colors.bg.hover
+                        e.currentTarget.style.borderColor = theme.colors.border.dark
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.background = theme.colors.bg.secondary
+                        e.currentTarget.style.background = theme.colors.bg.page
+                        e.currentTarget.style.borderColor = theme.colors.border.medium
                       }}>
                       {req.uploadCount || 0}
                     </div>
@@ -638,9 +653,9 @@ function Requests() {
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
                       <div style={{
-                        fontSize: '15px',
-                        fontWeight: '500',
-                        marginBottom: '4px',
+                        fontSize: '18px',
+                        fontWeight: theme.weight.medium,
+                        marginBottom: theme.spacing[1],
                         color: theme.colors.text.primary,
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
@@ -649,7 +664,7 @@ function Requests() {
                         {req.title}
                       </div>
                       <div style={{
-                        fontSize: '13px',
+                        fontSize: '14px',
                         color: theme.colors.text.tertiary
                       }}>
                         {req.uploadCount || 0} {req.uploadCount === 1 ? 'file' : 'files'} • {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -659,7 +674,7 @@ function Requests() {
                     {/* Action Buttons */}
                     <div style={{
                       display: 'flex',
-                      gap: '8px',
+                      gap: theme.spacing[3],
                       flexShrink: 0
                     }}>
                       <button
@@ -668,16 +683,17 @@ function Requests() {
                           window.open(`https://swayfiles.com/r/${req.shortCode}`, '_blank')
                         }}
                         style={{
-                          padding: '10px 20px',
+                          padding: '12px 24px',
                           background: theme.colors.white,
                           color: theme.colors.black,
                           border: 'none',
-                          borderRadius: '8px',
-                          fontSize: '13px',
-                          fontWeight: '500',
+                          borderRadius: theme.radius.md,
+                          fontSize: '14px',
+                          fontWeight: theme.weight.medium,
                           cursor: 'pointer',
                           fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`
+                          transition: `all ${theme.transition.fast}`,
+                          height: '44px'
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = theme.colors.text.secondary
@@ -696,19 +712,20 @@ function Requests() {
                           handleDelete(req.id)
                         }}
                         style={{
-                          padding: '10px 20px',
+                          padding: '12px 24px',
                           background: 'transparent',
                           color: theme.colors.text.secondary,
                           border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: '8px',
-                          fontSize: '13px',
-                          fontWeight: '500',
+                          borderRadius: theme.radius.md,
+                          fontSize: '14px',
+                          fontWeight: theme.weight.medium,
                           cursor: 'pointer',
                           fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`
+                          transition: `all ${theme.transition.fast}`,
+                          height: '44px'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                          e.currentTarget.style.background = theme.colors.bg.hover
                           e.currentTarget.style.borderColor = theme.colors.border.dark
                         }}
                         onMouseLeave={(e) => {

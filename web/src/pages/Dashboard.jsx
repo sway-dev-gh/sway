@@ -218,22 +218,24 @@ function Dashboard() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '60px 40px'
+          padding: theme.spacing[20]
         }}>
           {/* Header */}
-          <div style={{ marginBottom: '48px' }}>
+          <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '32px',
-              fontWeight: '400',
+              fontSize: '48px',
+              fontWeight: theme.weight.normal,
               margin: 0,
-              color: theme.colors.text.primary
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em'
             }}>
               Dashboard
             </h1>
             <p style={{
-              fontSize: '14px',
-              color: theme.colors.text.muted,
-              margin: '8px 0 0 0'
+              fontSize: '15px',
+              color: theme.colors.text.secondary,
+              margin: '12px 0 0 0',
+              lineHeight: '1.6'
             }}>
               Overview of your file requests and uploads
             </p>
@@ -243,64 +245,91 @@ function Dashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '16px',
-            marginBottom: '32px'
+            gap: theme.spacing[6],
+            marginBottom: theme.spacing[10]
           }}>
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '28px 24px',
-              borderRadius: '12px',
-              border: `1px solid ${theme.colors.border.light}`
+              padding: theme.spacing[10],
+              borderRadius: theme.radius.xl,
+              border: `1px solid ${theme.colors.border.light}`,
+              transition: `all ${theme.transition.normal}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.hover
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.secondary
+              e.currentTarget.style.borderColor = theme.colors.border.light
             }}>
-              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Requests</div>
-              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.activeRequests}</div>
-              <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, marginTop: '8px' }}>
-                of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'}
+              <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Active Requests</div>
+              <div style={{ fontSize: '56px', fontWeight: theme.weight.light, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
+              <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
+                of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'} available
               </div>
             </div>
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '28px 24px',
-              borderRadius: '12px',
-              border: `1px solid ${theme.colors.border.light}`
+              padding: theme.spacing[10],
+              borderRadius: theme.radius.xl,
+              border: `1px solid ${theme.colors.border.light}`,
+              transition: `all ${theme.transition.normal}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.hover
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.secondary
+              e.currentTarget.style.borderColor = theme.colors.border.light
             }}>
-              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Total Uploads</div>
-              <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>{stats.totalUploads}</div>
-              <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, marginTop: '8px' }}>
+              <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Uploads</div>
+              <div style={{ fontSize: '56px', fontWeight: theme.weight.light, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
+              <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
                 {stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
               </div>
             </div>
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '28px 24px',
-              borderRadius: '12px',
+              padding: theme.spacing[10],
+              borderRadius: theme.radius.xl,
               border: `1px solid ${theme.colors.border.light}`,
-              gridColumn: 'span 2'
+              gridColumn: 'span 2',
+              transition: `all ${theme.transition.normal}`
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.hover
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = theme.colors.bg.secondary
+              e.currentTarget.style.borderColor = theme.colors.border.light
             }}>
-              <div style={{ fontSize: '11px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: '12px', fontWeight: theme.weight.medium }}>Storage Used</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px', marginBottom: '16px' }}>
-                <div style={{ fontSize: '40px', fontWeight: '300', color: theme.colors.white, lineHeight: '1' }}>
+              <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Storage Used</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[3], marginBottom: theme.spacing[5] }}>
+                <div style={{ fontSize: '56px', fontWeight: theme.weight.light, color: theme.colors.white, lineHeight: '1' }}>
                   {formatStorageMB(stats.storageUsed)}
                 </div>
-                <div style={{ fontSize: '14px', color: theme.colors.text.tertiary }}>
+                <div style={{ fontSize: '15px', color: theme.colors.text.muted }}>
                   of {user.storage_limit_gb} GB
                 </div>
               </div>
               {/* Storage Bar */}
               <div style={{
                 width: '100%',
-                height: '6px',
-                background: theme.colors.bg.secondary,
-                borderRadius: '3px',
+                height: '8px',
+                background: theme.colors.bg.page,
+                borderRadius: theme.radius.sm,
                 overflow: 'hidden'
               }}>
                 <div style={{
                   width: `${getStoragePercentage()}%`,
                   height: '100%',
                   background: getStoragePercentage() > 80 ? '#ef4444' : theme.colors.white,
-                  transition: 'width 0.3s ease'
+                  transition: `width ${theme.transition.slow}`
                 }} />
               </div>
             </div>
@@ -310,24 +339,24 @@ function Dashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '2fr 1fr',
-            gap: '16px',
-            marginBottom: '32px'
+            gap: theme.spacing[6],
+            marginBottom: theme.spacing[10]
           }}>
             {/* Upload Trend Chart */}
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '28px 24px',
-              borderRadius: '12px',
+              padding: theme.spacing[10],
+              borderRadius: theme.radius.xl,
               border: `1px solid ${theme.colors.border.light}`
             }}>
-              <div style={{ fontSize: '14px', color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: '24px' }}>
+              <div style={{ fontSize: '16px', color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[8] }}>
                 Upload Trend (Last 7 Days)
               </div>
               <div style={{
                 display: 'flex',
                 alignItems: 'flex-end',
-                gap: '8px',
-                height: '160px'
+                gap: theme.spacing[3],
+                height: '200px'
               }}>
                 {stats.uploadsByDay.map((day, index) => (
                   <div key={index} style={{
@@ -335,7 +364,7 @@ function Dashboard() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    gap: '8px'
+                    gap: theme.spacing[2]
                   }}>
                     <div style={{
                       width: '100%',
@@ -348,20 +377,20 @@ function Dashboard() {
                         width: '100%',
                         height: `${(day.count / maxUploadsInWeek) * 100}%`,
                         background: theme.colors.white,
-                        borderRadius: '4px 4px 0 0',
-                        minHeight: day.count > 0 ? '4px' : '0',
-                        transition: 'height 0.3s ease'
+                        borderRadius: `${theme.radius.sm} ${theme.radius.sm} 0 0`,
+                        minHeight: day.count > 0 ? '6px' : '0',
+                        transition: `height ${theme.transition.slow}`
                       }} />
                     </div>
                     <div style={{
-                      fontSize: '10px',
+                      fontSize: '11px',
                       color: theme.colors.text.tertiary,
                       textAlign: 'center'
                     }}>
                       {day.date}
                     </div>
                     <div style={{
-                      fontSize: '12px',
+                      fontSize: '13px',
                       color: theme.colors.text.secondary,
                       fontWeight: theme.weight.medium
                     }}>
@@ -375,14 +404,14 @@ function Dashboard() {
             {/* Request Types Breakdown */}
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '28px 24px',
-              borderRadius: '12px',
+              padding: theme.spacing[10],
+              borderRadius: theme.radius.xl,
               border: `1px solid ${theme.colors.border.light}`
             }}>
-              <div style={{ fontSize: '14px', color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: '20px' }}>
+              <div style={{ fontSize: '16px', color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[6] }}>
                 Request Types
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[4] }}>
                 {Object.entries(stats.requestsByType)
                   .sort((a, b) => b[1] - a[1])
                   .slice(0, 5)
@@ -394,26 +423,26 @@ function Dashboard() {
                           display: 'flex',
                           justifyContent: 'space-between',
                           alignItems: 'center',
-                          marginBottom: '6px'
+                          marginBottom: theme.spacing[2]
                         }}>
-                          <div style={{ fontSize: '12px', color: theme.colors.text.secondary }}>
+                          <div style={{ fontSize: '13px', color: theme.colors.text.secondary }}>
                             {type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                           </div>
-                          <div style={{ fontSize: '12px', color: theme.colors.text.tertiary }}>{count}</div>
+                          <div style={{ fontSize: '13px', color: theme.colors.text.tertiary, fontWeight: theme.weight.medium }}>{count}</div>
                         </div>
                         <div style={{
                           width: '100%',
-                          height: '4px',
-                          background: theme.colors.bg.secondary,
-                          borderRadius: '2px',
+                          height: '6px',
+                          background: theme.colors.bg.page,
+                          borderRadius: theme.radius.sm,
                           overflow: 'hidden'
                         }}>
                           <div style={{
                             width: `${percentage}%`,
                             height: '100%',
                             background: theme.colors.white,
-                            opacity: 1 - (index * 0.15),
-                            transition: 'width 0.3s ease'
+                            opacity: 1 - (index * 0.12),
+                            transition: `width ${theme.transition.slow}`
                           }} />
                         </div>
                       </div>
@@ -427,29 +456,29 @@ function Dashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: '16px'
+            gap: theme.spacing[6]
           }}>
             {/* Recent Requests */}
             <div style={{
               background: theme.colors.bg.secondary,
-              borderRadius: '12px',
+              borderRadius: theme.radius.xl,
               border: `1px solid ${theme.colors.border.light}`,
               overflow: 'hidden'
             }}>
               <div style={{
-                padding: '20px 24px',
+                padding: theme.spacing[8],
                 borderBottom: `1px solid ${theme.colors.border.light}`,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
               }}>
-                <div style={{ fontSize: '14px', color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
+                <div style={{ fontSize: '16px', color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
                   Recent Requests
                 </div>
                 <Link
                   to="/requests"
                   style={{
-                    fontSize: '12px',
+                    fontSize: '13px',
                     color: theme.colors.text.secondary,
                     textDecoration: 'none',
                     transition: `color ${theme.transition.fast}`
@@ -463,10 +492,10 @@ function Dashboard() {
               <div>
                 {stats.recentRequests.length === 0 ? (
                   <div style={{
-                    padding: '40px 24px',
+                    padding: theme.spacing[16],
                     textAlign: 'center',
                     color: theme.colors.text.muted,
-                    fontSize: '13px'
+                    fontSize: '14px'
                   }}>
                     No requests yet
                   </div>
@@ -475,7 +504,7 @@ function Dashboard() {
                     <div
                       key={req.id}
                       style={{
-                        padding: '16px 24px',
+                        padding: theme.spacing[6],
                         borderBottom: index < stats.recentRequests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                         transition: `background ${theme.transition.fast}`,
                         cursor: 'pointer'
@@ -485,15 +514,15 @@ function Dashboard() {
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
                       <div style={{
-                        fontSize: '13px',
+                        fontSize: '14px',
                         color: theme.colors.text.primary,
                         fontWeight: theme.weight.medium,
-                        marginBottom: '4px'
+                        marginBottom: theme.spacing[1]
                       }}>
                         {req.title}
                       </div>
                       <div style={{
-                        fontSize: '12px',
+                        fontSize: '13px',
                         color: theme.colors.text.tertiary
                       }}>
                         {req.uploadCount || 0} uploads • {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -507,24 +536,24 @@ function Dashboard() {
             {/* Recent Responses */}
             <div style={{
               background: theme.colors.bg.secondary,
-              borderRadius: '12px',
+              borderRadius: theme.radius.xl,
               border: `1px solid ${theme.colors.border.light}`,
               overflow: 'hidden'
             }}>
               <div style={{
-                padding: '20px 24px',
+                padding: theme.spacing[8],
                 borderBottom: `1px solid ${theme.colors.border.light}`,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
               }}>
-                <div style={{ fontSize: '14px', color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
+                <div style={{ fontSize: '16px', color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
                   Recent Responses
                 </div>
                 <Link
                   to="/responses"
                   style={{
-                    fontSize: '12px',
+                    fontSize: '13px',
                     color: theme.colors.text.secondary,
                     textDecoration: 'none',
                     transition: `color ${theme.transition.fast}`
@@ -538,10 +567,10 @@ function Dashboard() {
               <div>
                 {stats.recentUploads.length === 0 ? (
                   <div style={{
-                    padding: '40px 24px',
+                    padding: theme.spacing[16],
                     textAlign: 'center',
                     color: theme.colors.text.muted,
-                    fontSize: '13px'
+                    fontSize: '14px'
                   }}>
                     No uploads yet
                   </div>
@@ -550,15 +579,15 @@ function Dashboard() {
                     <div
                       key={file.id}
                       style={{
-                        padding: '16px 24px',
+                        padding: theme.spacing[6],
                         borderBottom: index < stats.recentUploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
                       }}
                     >
                       <div style={{
-                        fontSize: '13px',
+                        fontSize: '14px',
                         color: theme.colors.text.primary,
                         fontWeight: theme.weight.medium,
-                        marginBottom: '4px',
+                        marginBottom: theme.spacing[1],
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
@@ -566,7 +595,7 @@ function Dashboard() {
                         {file.fileName}
                       </div>
                       <div style={{
-                        fontSize: '12px',
+                        fontSize: '13px',
                         color: theme.colors.text.tertiary
                       }}>
                         {formatFileSize(file.fileSize)} • {new Date(file.uploadedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}

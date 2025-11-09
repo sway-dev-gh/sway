@@ -57,23 +57,25 @@ function Settings() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '60px 40px'
+          padding: theme.spacing[20]
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '40px' }}>
+          <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '32px',
-              fontWeight: '400',
+              fontSize: '48px',
+              fontWeight: theme.weight.normal,
               margin: 0,
-              color: theme.colors.text.primary
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em'
             }}>
               Settings
             </h1>
             <p style={{
-              fontSize: '14px',
-              color: theme.colors.text.muted,
-              margin: '8px 0 0 0'
+              fontSize: '15px',
+              color: theme.colors.text.secondary,
+              margin: '12px 0 0 0',
+              lineHeight: '1.6'
             }}>
               Manage your account preferences and settings
             </p>
@@ -86,32 +88,36 @@ function Settings() {
 
             {/* Account Information */}
             <div style={{
-              background: theme.colors.bg.page,
-              padding: '0 0 40px 0'
+              background: theme.colors.bg.secondary,
+              padding: theme.spacing[10],
+              borderRadius: theme.radius.xl,
+              border: `1px solid ${theme.colors.border.light}`,
+              marginBottom: theme.spacing[10]
             }}>
               <div style={{
-                fontSize: '9px',
+                fontSize: '12px',
                 color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[4],
+                marginBottom: theme.spacing[8],
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px',
                 fontWeight: theme.weight.semibold
               }}>
-                Account
+                Account Information
               </div>
 
-              <div style={{ marginBottom: theme.spacing[6] }}>
+              <div style={{ marginBottom: theme.spacing[10] }}>
                 <div style={{
-                  fontSize: '13px',
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[2]
+                  marginBottom: theme.spacing[3],
+                  fontWeight: theme.weight.medium
                 }}>
                   Email Address
                 </div>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: '18px',
                   color: theme.colors.text.primary,
-                  fontWeight: '400'
+                  fontWeight: theme.weight.normal
                 }}>
                   {user.email}
                 </div>
@@ -124,23 +130,27 @@ function Settings() {
                   }
                 }}
                 style={{
-                  padding: '12px 24px',
+                  padding: '14px 28px',
                   background: 'transparent',
                   color: theme.colors.text.secondary,
                   border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: theme.radius.md,
                   fontSize: '14px',
-                  fontWeight: '400',
+                  fontWeight: theme.weight.medium,
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: `all ${theme.transition.fast}`
+                  transition: `all ${theme.transition.fast}`,
+                  height: '48px'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.white
-                  e.currentTarget.style.color = theme.colors.white
+                  e.currentTarget.style.borderColor = '#ef4444'
+                  e.currentTarget.style.color = '#ef4444'
+                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.05)'
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = theme.colors.border.medium
                   e.currentTarget.style.color = theme.colors.text.secondary
+                  e.currentTarget.style.background = 'transparent'
                 }}
               >
                 Delete Account
