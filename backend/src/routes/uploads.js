@@ -76,7 +76,7 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
     const { code } = req.params
 
     const result = await pool.query(
-      `SELECT fr.id, fr.title, fr.description, fr.is_active, fr.request_type, fr.custom_fields, fr.expires_at, fr.user_id
+      `SELECT fr.id, fr.title, fr.description, fr.is_active, fr.request_type, fr.custom_fields, fr.field_requirements, fr.expires_at, fr.user_id
        FROM file_requests fr
        WHERE fr.short_code = $1`,
       [code]
@@ -95,6 +95,7 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
       isActive: request.is_active,
       requestType: request.request_type,
       customFields: request.custom_fields,
+      fieldRequirements: request.field_requirements,
       expiresAt: request.expires_at
     })
   } catch (error) {
