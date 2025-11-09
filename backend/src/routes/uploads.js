@@ -7,6 +7,7 @@ const pool = require('../db/pool')
 const { createNotification } = require('./notifications')
 const rateLimit = require('express-rate-limit')
 const { validateFileUpload, moderateText, detectSuspiciousActivity } = require('../utils/security')
+const bcrypt = require('bcryptjs')
 
 // Rate limiters for public endpoints
 const getRequestLimiter = rateLimit({
@@ -78,7 +79,7 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
     console.log(`[Uploads] Fetching request with code: ${code}`)
 
     const result = await pool.query(
-      `SELECT fr.id, fr.title, fr.description, fr.is_active, fr.request_type, fr.custom_fields, fr.field_requirements, fr.expires_at, fr.user_id
+      `SELECT fr.id, fr.title, fr.description, fr.is_active, fr.request_type, fr.custom_fields, fr.field_requirements, fr.expires_at, fr.user_id, fr.password_hash, fr.require_email, fr.require_name
        FROM file_requests fr
        WHERE fr.short_code = $1`,
       [code]
@@ -112,7 +113,10 @@ router.get('/:code', getRequestLimiter, async (req, res) => {
         requestType: request.request_type,
         customFields: request.custom_fields,
         fieldRequirements: request.field_requirements,
-        expiresAt: request.expires_at
+        expiresAt: request.expires_at,
+        requiresPassword: !!request.password_hash,
+        requireEmail: request.require_email,
+        requireName: request.require_name
       },
       branding: {
         customDomain: brandingData.custom_domain || null,
@@ -160,7 +164,7 @@ function validateEmail(email) {
 router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files', 10), async (req, res) => {
   try {
     const { code } = req.params
-    const { name, email } = req.body
+    const { name, email, password } = req.body
     const files = req.files
 
     // SECURITY: Validate inputs
@@ -204,9 +208,9 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
       }
     }
 
-    // Get request with user info
+    // Get request with user info and password hash
     const requestResult = await pool.query(
-      `SELECT fr.id, fr.is_active, fr.user_id, u.storage_limit_gb, u.plan
+      `SELECT fr.id, fr.is_active, fr.user_id, fr.password_hash, u.storage_limit_gb, u.plan
        FROM file_requests fr
        JOIN users u ON fr.user_id = u.id
        WHERE fr.short_code = $1`,
@@ -221,6 +225,18 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
 
     if (!request.is_active) {
       return res.status(403).json({ error: 'This request is no longer accepting uploads' })
+    }
+
+    // Check password if required
+    if (request.password_hash) {
+      if (!password) {
+        return res.status(401).json({ error: 'Password required' })
+      }
+
+      const passwordMatch = await bcrypt.compare(password, request.password_hash)
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Incorrect password' })
+      }
     }
 
     // Pro plan has unlimited uploads - no upload count check needed
