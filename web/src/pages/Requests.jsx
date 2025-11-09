@@ -140,7 +140,7 @@ function Requests() {
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
   const [creating, setCreating] = useState(false)
-  const [formData, setFormData] = useState({ title: '', description: '', customFields: {} })
+  const [formData, setFormData] = useState({ title: '', description: '', customFields: {}, password: '', requireEmail: false, requireName: false })
   const [requestType, setRequestType] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [expiryType, setExpiryType] = useState('preset')
@@ -211,7 +211,7 @@ function Requests() {
   const closeModal = () => {
     setShowModal(false)
     setRequestType('')
-    setFormData({ title: '', description: '', customFields: {} })
+    setFormData({ title: '', description: '', customFields: {}, password: '', requireEmail: false, requireName: false })
     setExpiryType('preset')
     setCustomExpiryValue('')
     setCustomExpiryUnit('days')
@@ -265,7 +265,10 @@ function Requests() {
         type: requestType,
         timeLimit: timeLimit,
         customFields: formData.customFields || {},
-        fieldRequirements: fieldRequirements
+        fieldRequirements: fieldRequirements,
+        password: formData.password || null,
+        requireEmail: formData.requireEmail,
+        requireName: formData.requireName
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -1087,6 +1090,60 @@ function Requests() {
                           </div>
                         ))
                       })()}
+
+                      {/* Pro-only: Password Protection */}
+                      {userPlan === 'pro' && (
+                        <div style={{ marginBottom: theme.spacing[6] }}>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: theme.spacing[2],
+                            marginBottom: theme.spacing[2]
+                          }}>
+                            <label style={{
+                              fontSize: theme.fontSize.sm,
+                              color: theme.colors.text.secondary,
+                              fontWeight: theme.weight.medium
+                            }}>
+                              Password Protection
+                            </label>
+                            <span style={{
+                              fontSize: '11px',
+                              background: theme.colors.white,
+                              color: theme.colors.black,
+                              padding: '2px 8px',
+                              borderRadius: '4px',
+                              fontWeight: 600,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.5px'
+                            }}>PRO</span>
+                          </div>
+                          <input
+                            type="password"
+                            value={formData.password}
+                            onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
+                            placeholder="Leave blank for no password"
+                            style={{
+                              width: '100%',
+                              padding: '12px 16px',
+                              background: theme.colors.bg.page,
+                              border: `1px solid ${theme.colors.border.medium}`,
+                              borderRadius: '10px',
+                              color: theme.colors.text.primary,
+                              fontSize: theme.fontSize.base,
+                              fontFamily: 'inherit',
+                              outline: 'none'
+                            }}
+                          />
+                          <div style={{
+                            fontSize: '13px',
+                            color: theme.colors.text.tertiary,
+                            marginTop: '8px'
+                          }}>
+                            Require uploaders to enter a password before accessing this request
+                          </div>
+                        </div>
+                      )}
 
                       <div style={{ marginBottom: theme.spacing[6] }}>
                         <label style={{
