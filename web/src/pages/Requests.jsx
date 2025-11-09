@@ -517,8 +517,9 @@ function Requests() {
                       {/* Actions */}
                       <div style={{
                         display: 'flex',
-                        gap: theme.spacing[2],
-                        justifyContent: 'flex-end'
+                        gap: '12px',
+                        justifyContent: 'flex-end',
+                        alignItems: 'center'
                       }}>
                         <button
                           onClick={(e) => {
@@ -526,16 +527,17 @@ function Requests() {
                             navigate(`/requests/${req.id}`)
                           }}
                           style={{
-                            padding: '10px 20px',
+                            padding: '12px 24px',
                             background: theme.colors.white,
                             color: theme.colors.black,
                             border: 'none',
-                            borderRadius: '10px',
-                            fontSize: '22px',
-                            fontWeight: '500',
+                            borderRadius: '8px',
+                            fontSize: '16px',
+                            fontWeight: theme.weight.medium,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            height: '40px'
+                            height: '44px',
+                            minWidth: '80px'
                           }}
                         >
                           View
@@ -546,16 +548,17 @@ function Requests() {
                             handleDelete(req.id)
                           }}
                           style={{
-                            padding: '10px 20px',
+                            padding: '12px 24px',
                             background: 'transparent',
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: '10px',
-                            fontSize: '19px',
+                            borderRadius: '8px',
+                            fontSize: '16px',
                             fontWeight: theme.weight.medium,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                                                        height: '36px'
+                            height: '44px',
+                            minWidth: '80px'
                           }}
                         >
                           Delete
