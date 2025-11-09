@@ -6,6 +6,7 @@ const fs = require('fs')
 const pool = require('../db/pool')
 const { createNotification } = require('./notifications')
 const rateLimit = require('express-rate-limit')
+const { validateFileUpload, moderateText, detectSuspiciousActivity } = require('../utils/security')
 
 // Rate limiters for public endpoints
 const getRequestLimiter = rateLimit({
@@ -173,6 +174,34 @@ router.post('/:code/upload', uploadLimiter, checkFileSize, upload.array('files',
 
     if (!files || files.length === 0) {
       return res.status(400).json({ error: 'At least one file is required' })
+    }
+
+    // SECURITY: Check for suspicious uploader activity
+    const suspiciousCheck = detectSuspiciousActivity({ name, email })
+    if (suspiciousCheck.suspicious) {
+      console.warn(`[Security] Suspicious upload attempt from ${name} <${email}>:`, suspiciousCheck.flags)
+      // Log but don't block - just flag for review
+    }
+
+    // SECURITY: Comprehensive file validation
+    for (const file of files) {
+      const fileValidation = await validateFileUpload(file)
+      if (!fileValidation.safe) {
+        // Delete the uploaded file immediately
+        try {
+          fs.unlinkSync(file.path)
+        } catch (unlinkError) {
+          console.error('[Security] Error deleting malicious file:', unlinkError)
+        }
+
+        console.error(`[Security] Blocked malicious upload: ${file.originalname}`, fileValidation.issues)
+        return res.status(403).json({
+          error: 'File upload blocked for security reasons',
+          message: 'Your file was flagged by our security system.',
+          details: fileValidation.issues[0], // Show first issue only to user
+          fileName: file.originalname
+        })
+      }
     }
 
     // Get request with user info

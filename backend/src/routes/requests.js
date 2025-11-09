@@ -4,6 +4,7 @@ const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
 const fs = require('fs')
 const path = require('path')
+const { moderateText } = require('../utils/security')
 
 // Helper to generate short code
 function generateShortCode() {
@@ -22,6 +23,25 @@ router.post('/', authenticateToken, async (req, res) => {
 
     if (!title || !title.trim()) {
       return res.status(400).json({ error: 'Title is required' })
+    }
+
+    // SECURITY: Moderate title and description for inappropriate content
+    const titleModeration = moderateText(title)
+    if (!titleModeration.safe) {
+      return res.status(400).json({
+        error: 'Request title contains inappropriate content',
+        reason: titleModeration.reason
+      })
+    }
+
+    if (description) {
+      const descriptionModeration = moderateText(description)
+      if (!descriptionModeration.safe) {
+        return res.status(400).json({
+          error: 'Request description contains inappropriate content',
+          reason: descriptionModeration.reason
+        })
+      }
     }
 
     // Check user's plan and enforce request limits (skip for admin)
