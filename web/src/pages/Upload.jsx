@@ -293,7 +293,14 @@ export default function Upload() {
 
   const getRequestTypeFields = () => {
     // Use custom fields from the database instead of hardcoded REQUEST_TYPES
-    return requestData?.customFields || []
+    const customFields = requestData?.customFields
+
+    // Ensure customFields is always an array
+    if (!customFields) return []
+    if (Array.isArray(customFields)) return customFields
+
+    // If customFields is an object (legacy format), convert to empty array
+    return []
   }
 
   const handleFileChange = (e) => {
