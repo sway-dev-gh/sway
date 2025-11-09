@@ -553,7 +553,7 @@ function Requests() {
                 e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
-              + New Request
+              <span style={{ fontSize: '12px', marginRight: '4px' }}>+</span> New Request
             </button>
           </div>
 
