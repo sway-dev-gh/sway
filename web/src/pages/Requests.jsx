@@ -922,7 +922,7 @@ function Requests() {
                               key={type.id}
                               onClick={() => {
                                 if (isLocked) {
-                                  alert(`This request type requires ${type.planRequired === 'pro' ? 'Pro' : 'Business'} plan. Please upgrade to use this feature.`)
+                                  alert(`This request type requires Pro plan. Please upgrade to use this feature.`)
                                 } else {
                                   setRequestType(type.id)
                                   setSearchQuery('')
