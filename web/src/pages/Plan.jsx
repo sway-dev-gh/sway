@@ -126,7 +126,7 @@ function Plan() {
           {/* Header - BIG AND BOLD */}
           <div style={{ marginBottom: '100px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '56px',
+              fontSize: theme.fontSize['3xl'],
               fontWeight: theme.weight.bold,
               margin: '0 0 20px 0',
               color: theme.colors.text.primary,
@@ -135,7 +135,7 @@ function Plan() {
               Simple Pricing
             </h1>
             <p style={{
-              fontSize: '20px',
+              fontSize: theme.fontSize.base,
               color: theme.colors.text.secondary,
               margin: 0,
               lineHeight: '1.7'
@@ -175,7 +175,7 @@ function Plan() {
                     color: theme.colors.black,
                     padding: '6px 20px',
                     borderRadius: theme.radius.full,
-                    fontSize: '11px',
+                    fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
@@ -194,7 +194,7 @@ function Plan() {
                     color: theme.colors.text.secondary,
                     padding: '4px 12px',
                     borderRadius: theme.radius.md,
-                    fontSize: '11px',
+                    fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
                     letterSpacing: '0.8px'
@@ -205,7 +205,7 @@ function Plan() {
 
                 {/* Plan Name */}
                 <div style={{
-                  fontSize: '19px',
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.tertiary,
                   marginBottom: theme.spacing[2],
                   textTransform: 'uppercase',
@@ -228,7 +228,7 @@ function Plan() {
                       {plan.price}
                     </div>
                     <div style={{
-                      fontSize: '16px',
+                      fontSize: theme.fontSize.base,
                       color: theme.colors.text.muted,
                       marginBottom: '6px'
                     }}>
@@ -239,7 +239,7 @@ function Plan() {
 
                 {/* Description */}
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.secondary,
                   marginBottom: theme.spacing[8],
                   lineHeight: '1.5'
@@ -253,7 +253,7 @@ function Plan() {
                     <div
                       key={index}
                       style={{
-                        fontSize: '16px',
+                        fontSize: theme.fontSize.base,
                         color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
                         marginBottom: theme.spacing[3],
                         display: 'flex',
@@ -264,7 +264,7 @@ function Plan() {
                     >
                       <span style={{
                         color: theme.colors.text.primary,
-                        fontSize: '18px',
+                        fontSize: theme.fontSize.sm,
                         lineHeight: '1'
                       }}>✓</span>
                       <span>{feature.text}</span>
@@ -283,7 +283,7 @@ function Plan() {
                     color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
                     border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
                     borderRadius: '12px',
-                    fontSize: '20px',
+                    fontSize: theme.fontSize.base,
                     fontWeight: '500',
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
@@ -299,7 +299,7 @@ function Plan() {
           {/* FAQ Section */}
           <div style={{ marginTop: theme.spacing[16] }}>
             <h2 style={{
-              fontSize: '24px',
+              fontSize: theme.fontSize.xl,
               fontWeight: theme.weight.medium,
               margin: '0 0 32px 0',
               letterSpacing: '-0.02em',
@@ -323,7 +323,7 @@ function Plan() {
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -331,7 +331,7 @@ function Plan() {
                   Can I change my plan at any time?
                 </div>
                 <div style={{
-                  fontSize: '20px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -347,7 +347,7 @@ function Plan() {
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -355,7 +355,7 @@ function Plan() {
                   What happens if I hit my upload limit?
                 </div>
                 <div style={{
-                  fontSize: '20px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -371,7 +371,7 @@ function Plan() {
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -379,7 +379,7 @@ function Plan() {
                   Do you offer refunds?
                 </div>
                 <div style={{
-                  fontSize: '20px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>

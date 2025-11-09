@@ -115,7 +115,7 @@ function Upload() {
             Request Not Found
           </div>
           <div style={{
-            fontSize: '16px',
+            fontSize: theme.fontSize.base,
             color: '#a1a1a1'
           }}>
             This upload link is invalid or has expired.
@@ -158,7 +158,7 @@ function Upload() {
 
           {/* Success Title */}
           <h1 style={{
-            fontSize: '32px',
+            fontSize: theme.fontSize['2xl'],
             fontWeight: 700,
             color: '#ffffff',
             margin: '0 0 16px 0',
@@ -169,7 +169,7 @@ function Upload() {
 
           {/* Subtitle */}
           <p style={{
-            fontSize: '16px',
+            fontSize: theme.fontSize.base,
             color: '#a1a1a1',
             margin: '0 0 40px 0',
             lineHeight: '1.5'
@@ -191,7 +191,7 @@ function Upload() {
               color: '#ffffff',
               cursor: 'pointer',
               padding: '12px 24px',
-              fontSize: '14px',
+              fontSize: theme.fontSize.sm,
               fontWeight: 500,
               fontFamily: 'inherit'
             }}
@@ -221,7 +221,7 @@ function Upload() {
       }}>
         {/* Small Branding/Domain at Top */}
         <div style={{
-          fontSize: '12px',
+          fontSize: theme.fontSize.xs,
           color: '#a1a1a1',
           marginBottom: '40px',
           textAlign: 'center',
@@ -233,7 +233,7 @@ function Upload() {
 
         {/* Large Title */}
         <h1 style={{
-          fontSize: '36px',
+          fontSize: theme.fontSize['2xl'],
           fontWeight: 700,
           color: '#ffffff',
           margin: '0 0 16px 0',
@@ -247,7 +247,7 @@ function Upload() {
         {/* Subtitle with Instructions */}
         {requestData.description && (
           <p style={{
-            fontSize: '16px',
+            fontSize: theme.fontSize.base,
             color: '#a1a1a1',
             margin: '0 0 48px 0',
             textAlign: 'center',
@@ -299,7 +299,7 @@ function Upload() {
                 ↑
               </div>
               <div style={{
-                fontSize: '16px',
+                fontSize: theme.fontSize.base,
                 fontWeight: 600,
                 color: '#ffffff',
                 marginBottom: '8px'
@@ -307,7 +307,7 @@ function Upload() {
                 Click to browse or drag files here
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: theme.fontSize.sm,
                 color: '#666666'
               }}>
                 Multiple files supported
@@ -319,7 +319,7 @@ function Upload() {
           {files.length > 0 && (
             <div style={{ marginBottom: '32px' }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: theme.fontSize.xs,
                 fontWeight: 600,
                 color: '#a1a1a1',
                 marginBottom: '12px',
@@ -349,7 +349,7 @@ function Upload() {
                       flex: 1
                     }}>
                       <div style={{
-                        fontSize: '14px',
+                        fontSize: theme.fontSize.sm,
                         fontWeight: 500,
                         color: '#ffffff',
                         marginBottom: '4px',
@@ -360,7 +360,7 @@ function Upload() {
                         {file.name}
                       </div>
                       <div style={{
-                        fontSize: '12px',
+                        fontSize: theme.fontSize.xs,
                         color: '#666666'
                       }}>
                         {(file.size / 1024 / 1024).toFixed(2)} MB
@@ -413,7 +413,7 @@ function Upload() {
                   border: '1px solid #1a1a1a',
                   borderRadius: '8px',
                   color: '#ffffff',
-                  fontSize: '14px',
+                  fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
                   outline: 'none'
                 }}
@@ -448,7 +448,7 @@ function Upload() {
                   border: '1px solid #1a1a1a',
                   borderRadius: '8px',
                   color: '#ffffff',
-                  fontSize: '14px',
+                  fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
                   outline: 'none'
                 }}
@@ -485,7 +485,7 @@ function Upload() {
                       border: '1px solid #1a1a1a',
                       borderRadius: '8px',
                       color: '#ffffff',
-                      fontSize: '14px',
+                      fontSize: theme.fontSize.sm,
                       fontFamily: 'inherit',
                       outline: 'none',
                       cursor: 'pointer'
@@ -514,7 +514,7 @@ function Upload() {
                       border: '1px solid #1a1a1a',
                       borderRadius: '8px',
                       color: '#ffffff',
-                      fontSize: '14px',
+                      fontSize: theme.fontSize.sm,
                       fontFamily: 'inherit',
                       outline: 'none'
                     }}

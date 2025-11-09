@@ -63,7 +63,7 @@ function Settings() {
           {/* Header - BIG */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '48px',
+              fontSize: theme.fontSize['3xl'],
               fontWeight: theme.weight.bold,
               margin: 0,
               color: theme.colors.text.primary,
@@ -72,7 +72,7 @@ function Settings() {
               Settings
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: theme.fontSize.lg,
               color: theme.colors.text.secondary,
               margin: '16px 0 0 0',
               lineHeight: '1.6'
@@ -95,7 +95,7 @@ function Settings() {
               boxShadow: theme.shadows.lg
             }}>
               <div style={{
-                fontSize: '20px',
+                fontSize: theme.fontSize.base,
                 color: theme.colors.text.tertiary,
                 marginBottom: theme.spacing[8],
                 textTransform: 'uppercase',
@@ -107,7 +107,7 @@ function Settings() {
 
               <div style={{ marginBottom: theme.spacing[10] }}>
                 <div style={{
-                  fontSize: '16px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.secondary,
                   marginBottom: theme.spacing[3],
                   fontWeight: theme.weight.semibold
@@ -115,7 +115,7 @@ function Settings() {
                   Email Address
                 </div>
                 <div style={{
-                  fontSize: '22px',
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.primary,
                   fontWeight: theme.weight.medium
                 }}>
@@ -135,7 +135,7 @@ function Settings() {
                   color: theme.colors.error,
                   border: `2px solid ${theme.colors.error}`,
                   borderRadius: '12px',
-                  fontSize: '16px',
+                  fontSize: theme.fontSize.base,
                   fontWeight: theme.weight.bold,
                   cursor: 'pointer',
                   fontFamily: 'inherit',
