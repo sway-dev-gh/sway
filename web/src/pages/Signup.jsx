@@ -45,23 +45,29 @@ export default function Signup() {
       }}>
         {/* Header */}
         <div style={{
-          marginBottom: '48px',
+          marginBottom: '40px',
           textAlign: 'center'
         }}>
-          <h1 style={{
-            fontSize: '32px',
-            fontWeight: '500',
-            margin: '0 0 12px 0',
-            color: theme.colors.text.primary,
-            letterSpacing: '-0.02em'
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '8px'
           }}>
-            Sway
-          </h1>
+            <img
+              src="/logo.svg"
+              alt="Sway"
+              style={{
+                width: '50px',
+                height: '50px'
+              }}
+            />
+          </div>
           <p style={{
-            fontSize: '22px',
+            fontSize: '20px',
             color: theme.colors.text.secondary,
             margin: 0,
-            lineHeight: '1.6'
+            lineHeight: '1.5'
           }}>
             Create your account
           </p>
