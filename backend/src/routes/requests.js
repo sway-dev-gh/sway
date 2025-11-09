@@ -18,7 +18,7 @@ function generateShortCode() {
 // POST /api/requests - Create new request
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { title, description, type, timeLimit, fields, customFields } = req.body
+    const { title, description, type, timeLimit, fields, customFields, fieldRequirements } = req.body
 
     if (!title || !title.trim()) {
       return res.status(400).json({ error: 'Title is required' })
@@ -77,9 +77,9 @@ router.post('/', authenticateToken, async (req, res) => {
 
     // Create request
     const result = await pool.query(
-      `INSERT INTO file_requests (user_id, short_code, title, description, request_type, time_limit_days, custom_fields, expires_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       RETURNING id, short_code, title, description, request_type, time_limit_days, custom_fields, expires_at, created_at`,
+      `INSERT INTO file_requests (user_id, short_code, title, description, request_type, time_limit_days, custom_fields, field_requirements, expires_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+       RETURNING id, short_code, title, description, request_type, time_limit_days, custom_fields, field_requirements, expires_at, created_at`,
       [
         req.userId,
         shortCode,
@@ -88,6 +88,7 @@ router.post('/', authenticateToken, async (req, res) => {
         type || null,
         timeLimit ? parseInt(timeLimit) : null,
         customFields ? JSON.stringify(customFields) : null,
+        fieldRequirements ? JSON.stringify(fieldRequirements) : null,
         expiresAt
       ]
     )
