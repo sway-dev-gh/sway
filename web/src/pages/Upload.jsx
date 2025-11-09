@@ -675,29 +675,70 @@ export default function Upload() {
               display: 'block',
               fontSize: '13px',
               color: theme.colors.text.secondary,
-              marginBottom: '8px',
-              fontWeight: theme.weight.medium
+              marginBottom: '12px',
+              fontWeight: theme.weight.medium,
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
             }}>
               Files
             </label>
-            <input
-              type="file"
-              onChange={handleFileChange}
-              multiple
-              required
-              style={{
-                width: '100%',
-                padding: '12px 16px',
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
+            <label style={{
+              display: 'block',
+              padding: '48px 24px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `2px dashed ${theme.colors.border.medium}`,
+              borderRadius: '12px',
+              textAlign: 'center',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              position: 'relative'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = theme.colors.white
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+            }}
+            >
+              <input
+                type="file"
+                onChange={handleFileChange}
+                multiple
+                required
+                style={{
+                  position: 'absolute',
+                  opacity: 0,
+                  width: '100%',
+                  height: '100%',
+                  top: 0,
+                  left: 0,
+                  cursor: 'pointer'
+                }}
+              />
+              <div style={{
+                fontSize: '48px',
+                marginBottom: '16px',
+                opacity: 0.4
+              }}>
+                ↑
+              </div>
+              <div style={{
+                fontSize: '15px',
+                fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary,
-                fontSize: '14px',
-                fontFamily: 'inherit',
-                outline: 'none',
-                cursor: 'pointer'
-              }}
-            />
+                marginBottom: '8px'
+              }}>
+                Click to upload or drag and drop
+              </div>
+              <div style={{
+                fontSize: '13px',
+                color: theme.colors.text.tertiary
+              }}>
+                Multiple files supported • Max 50MB per file
+              </div>
+            </label>
             {files.length > 0 && (
               <div style={{
                 marginTop: '12px',
@@ -753,15 +794,16 @@ export default function Upload() {
             disabled={uploading}
             style={{
               width: '100%',
-              padding: '12px 24px',
+              padding: '16px 32px',
               background: theme.colors.white,
               color: theme.colors.black,
               border: 'none',
-              borderRadius: theme.radius.md,
-              fontSize: '14px',
-              fontWeight: theme.weight.medium,
+              borderRadius: '8px',
+              fontSize: '15px',
+              fontWeight: theme.weight.semibold,
               cursor: uploading ? 'not-allowed' : 'pointer',
               transition: `all ${theme.transition.fast}`,
+              letterSpacing: '0.3px',
               fontFamily: 'inherit',
               opacity: uploading ? 0.6 : 1
             }}
