@@ -960,10 +960,10 @@ function Requests() {
                               }}>
                                 <span style={{
                                   fontSize: theme.fontSize.sm,
-                                  color: theme.colors.text.tertiary,
+                                  color: fieldRequirements[field.id] ? theme.colors.text.primary : theme.colors.text.tertiary,
                                   fontWeight: theme.weight.medium
                                 }}>
-                                  Required
+                                  {fieldRequirements[field.id] ? 'Required' : 'Optional'}
                                 </span>
                                 <input
                                   type="checkbox"
