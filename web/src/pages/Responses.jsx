@@ -105,18 +105,18 @@ function Responses() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '60px'
+        marginTop: '72px'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[20]
+          padding: theme.spacing[12]
         }}>
 
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '40px',
+              fontSize: '28px',
               fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
@@ -172,7 +172,7 @@ function Responses() {
                 Total Uploads
               </div>
               <div style={{
-                fontSize: theme.fontSize['5xl'],
+                fontSize: '48px',
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
                 lineHeight: '1'
@@ -212,7 +212,7 @@ function Responses() {
                 Total Size
               </div>
               <div style={{
-                fontSize: theme.fontSize['5xl'],
+                fontSize: '48px',
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
                 lineHeight: '1'

@@ -52,18 +52,18 @@ function Settings() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '60px'
+        marginTop: '72px'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[20]
+          padding: theme.spacing[12]
         }}>
 
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '40px',
+              fontSize: '28px',
               fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,

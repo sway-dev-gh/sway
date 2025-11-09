@@ -113,29 +113,29 @@ function Sidebar() {
     top: 0,
     left: 0,
     right: 0,
-    height: '60px',
+    height: '72px',
     background: theme.colors.bg.sidebar,
     borderBottom: `1px solid ${theme.colors.border.medium}`,
     zIndex: 100,
     display: 'flex',
     alignItems: 'center',
-    padding: '0 24px',
-    gap: '32px'
+    padding: '0 32px',
+    gap: '40px'
   }
 
   const navLinkStyle = (isActive) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: `6px 12px`,
+    padding: `8px 16px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
-    fontSize: '14px',
+    fontSize: '15px',
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
-    borderRadius: theme.radius.sm,
+    borderRadius: theme.radius.md,
     transition: `all ${theme.transition.fast}`,
     whiteSpace: 'nowrap',
-    height: '32px'
+    height: '40px'
   })
 
   return (
@@ -143,7 +143,7 @@ function Sidebar() {
     <div style={topBarStyle}>
       {/* Logo/Brand */}
       <div style={{
-        fontSize: '20px',
+        fontSize: '24px',
         fontWeight: theme.weight.semibold,
         color: theme.colors.text.primary,
         flexShrink: 0

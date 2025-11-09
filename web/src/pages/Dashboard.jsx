@@ -213,17 +213,17 @@ function Dashboard() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '60px'
+        marginTop: '72px'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[20]
+          padding: theme.spacing[12]
         }}>
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '40px',
+              fontSize: '28px',
               fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
@@ -269,7 +269,7 @@ function Dashboard() {
               e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Active Requests</div>
-              <div style={{ fontSize: theme.fontSize['5xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
+              <div style={{ fontSize: '48px', fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
               <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
                 of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'} available
               </div>
@@ -296,7 +296,7 @@ function Dashboard() {
               e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Uploads</div>
-              <div style={{ fontSize: theme.fontSize['5xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
+              <div style={{ fontSize: '48px', fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
               <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
                 {stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
               </div>
@@ -325,7 +325,7 @@ function Dashboard() {
             }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Storage Used</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[3], marginBottom: theme.spacing[5] }}>
-                <div style={{ fontSize: theme.fontSize['5xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1' }}>
+                <div style={{ fontSize: '48px', fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1' }}>
                   {formatStorageMB(stats.storageUsed)}
                 </div>
                 <div style={{ fontSize: '15px', color: theme.colors.text.muted }}>

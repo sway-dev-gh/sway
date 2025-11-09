@@ -498,12 +498,12 @@ function Requests() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '60px'
+        marginTop: '72px'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: '60px 40px'
+          padding: theme.spacing[12]
         }}>
 
           {/* Header */}
@@ -515,7 +515,7 @@ function Requests() {
           }}>
             <div>
               <h1 style={{
-                fontSize: '40px',
+                fontSize: '28px',
                 fontWeight: '500',
                 margin: 0,
                 color: theme.colors.text.primary,
