@@ -239,7 +239,7 @@ function Plan() {
 
                 {/* Description */}
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '16px',
                   color: theme.colors.text.secondary,
                   marginBottom: theme.spacing[8],
                   lineHeight: '1.5'
@@ -253,7 +253,7 @@ function Plan() {
                     <div
                       key={index}
                       style={{
-                        fontSize: '14px',
+                        fontSize: '16px',
                         color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
                         marginBottom: theme.spacing[3],
                         display: 'flex',
@@ -264,7 +264,7 @@ function Plan() {
                     >
                       <span style={{
                         color: theme.colors.text.primary,
-                        fontSize: '16px',
+                        fontSize: '18px',
                         lineHeight: '1'
                       }}>✓</span>
                       <span>{feature.text}</span>

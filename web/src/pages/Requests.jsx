@@ -715,7 +715,7 @@ function Requests() {
                                       >
                       {/* Title */}
                       <div style={{
-                        fontSize: '15px',
+                        fontSize: '18px',
                         fontWeight: theme.weight.medium,
                         color: theme.colors.text.primary,
                         overflow: 'hidden',
@@ -727,7 +727,7 @@ function Requests() {
 
                       {/* Type */}
                       <div style={{
-                        fontSize: '14px',
+                        fontSize: '16px',
                         color: theme.colors.text.secondary
                       }}>
                         {req.requestType ? req.requestType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'General Upload'}
@@ -735,7 +735,7 @@ function Requests() {
 
                       {/* File Count */}
                       <div style={{
-                        fontSize: '14px',
+                        fontSize: '16px',
                         color: theme.colors.text.primary,
                         fontWeight: theme.weight.medium,
                         textAlign: 'center'
@@ -745,7 +745,7 @@ function Requests() {
 
                       {/* Created Date */}
                       <div style={{
-                        fontSize: '14px',
+                        fontSize: '16px',
                         color: theme.colors.text.secondary
                       }}>
                         {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -768,11 +768,11 @@ function Requests() {
                             color: theme.colors.black,
                             border: 'none',
                             borderRadius: '10px',
-                            fontSize: '13px',
+                            fontSize: '15px',
                             fontWeight: '500',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                                                        height: '36px'
+                            height: '40px'
                           }}
                         >
                           View

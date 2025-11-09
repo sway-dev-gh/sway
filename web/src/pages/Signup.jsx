@@ -88,7 +88,7 @@ export default function Signup() {
           <div style={{ marginBottom: '16px' }}>
             <label style={{
               display: 'block',
-              fontSize: '13px',
+              fontSize: '15px',
               color: theme.colors.text.secondary,
               marginBottom: '8px',
               fontWeight: theme.weight.medium
@@ -102,13 +102,13 @@ export default function Signup() {
               required
               style={{
                 width: '100%',
-                height: '52px',
+                height: '56px',
                 padding: '16px',
                 background: theme.colors.bg.page,
                 border: `1px solid ${theme.colors.border.medium}`,
                 borderRadius: '12px',
                 color: theme.colors.text.primary,
-                fontSize: '15px',
+                fontSize: '16px',
                 fontFamily: 'inherit',
                 outline: 'none',
                               }}

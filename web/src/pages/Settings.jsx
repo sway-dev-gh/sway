@@ -92,8 +92,7 @@ function Settings() {
               padding: '48px',
               borderRadius: '24px',
               border: `2px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.lg,
-              marginBottom: theme.spacing[10]
+              boxShadow: theme.shadows.lg
             }}>
               <div style={{
                 fontSize: '14px',
@@ -108,7 +107,7 @@ function Settings() {
 
               <div style={{ marginBottom: theme.spacing[10] }}>
                 <div style={{
-                  fontSize: '15px',
+                  fontSize: '16px',
                   color: theme.colors.text.secondary,
                   marginBottom: theme.spacing[3],
                   fontWeight: theme.weight.semibold
@@ -116,7 +115,7 @@ function Settings() {
                   Email Address
                 </div>
                 <div style={{
-                  fontSize: '20px',
+                  fontSize: '22px',
                   color: theme.colors.text.primary,
                   fontWeight: theme.weight.medium
                 }}>
@@ -145,132 +144,6 @@ function Settings() {
                 }}
               >
                 Delete Account
-              </button>
-            </div>
-
-            {/* Notifications */}
-            <div style={{
-              background: theme.colors.bg.secondary,
-              padding: '48px',
-              borderRadius: '24px',
-              border: `2px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.lg,
-              marginBottom: theme.spacing[10]
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[8],
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.bold
-              }}>
-                Notifications
-              </div>
-
-              <div style={{ marginBottom: theme.spacing[8] }}>
-                <div style={{
-                  fontSize: '17px',
-                  color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[2],
-                  fontWeight: theme.weight.semibold
-                }}>
-                  Email Notifications
-                </div>
-                <div style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[4]
-                }}>
-                  Receive email alerts when someone uploads files to your requests
-                </div>
-                <label style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  cursor: 'pointer'
-                }}>
-                  <input type="checkbox" defaultChecked style={{ marginRight: '12px', width: '20px', height: '20px', cursor: 'pointer' }} />
-                  <span style={{ fontSize: '15px', color: theme.colors.text.primary }}>Enable email notifications</span>
-                </label>
-              </div>
-            </div>
-
-            {/* Storage */}
-            <div style={{
-              background: theme.colors.bg.secondary,
-              padding: '48px',
-              borderRadius: '24px',
-              border: `2px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.lg
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[8],
-                textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.bold
-              }}>
-                Storage Usage
-              </div>
-
-              <div style={{ marginBottom: theme.spacing[6] }}>
-                <div style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[3],
-                  fontWeight: theme.weight.semibold
-                }}>
-                  Current Plan
-                </div>
-                <div style={{
-                  fontSize: '24px',
-                  color: theme.colors.text.primary,
-                  fontWeight: theme.weight.bold,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  Free Plan
-                </div>
-                <div style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary
-                }}>
-                  2GB of 2GB used
-                </div>
-              </div>
-
-              <div style={{
-                height: '12px',
-                background: theme.colors.bg.page,
-                borderRadius: '12px',
-                overflow: 'hidden',
-                marginBottom: theme.spacing[6]
-              }}>
-                <div style={{
-                  height: '100%',
-                  width: '100%',
-                  background: theme.colors.white,
-                  borderRadius: '12px'
-                }} />
-              </div>
-
-              <button
-                onClick={() => window.location.href = '/plan'}
-                style={{
-                  padding: '16px 32px',
-                  background: theme.colors.white,
-                  color: theme.colors.black,
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: '16px',
-                  fontWeight: theme.weight.bold,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  height: '56px',
-                  boxShadow: theme.shadows.lg
-                }}
-              >
-                Upgrade Plan
               </button>
             </div>
 
