@@ -560,7 +560,7 @@ function Requests() {
             </button>
           </div>
 
-          {/* Request List - Modern 2025 Style */}
+          {/* Request List - Table Style */}
           <div>
             {requests.length === 0 ? (
               <div style={{
@@ -590,158 +590,193 @@ function Requests() {
               </div>
             ) : (
               <div style={{
-                display: 'grid',
-                gap: theme.spacing[4]
+                background: theme.colors.bg.secondary,
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md,
+                overflow: 'hidden'
               }}>
+                {/* Table Header */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '2fr 1fr 100px 140px 220px',
+                  padding: theme.spacing[6],
+                  borderBottom: `1px solid ${theme.colors.border.light}`,
+                  background: theme.colors.bg.secondary
+                }}>
+                  <div style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    Title
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    Type
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    fontWeight: theme.weight.medium,
+                    textAlign: 'center'
+                  }}>
+                    Files
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    Created
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    fontWeight: theme.weight.medium,
+                    textAlign: 'right'
+                  }}>
+                    Actions
+                  </div>
+                </div>
+
+                {/* Table Body */}
                 {requests
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                   .map((req, index) => (
-                  <div
-                    key={req.id}
-                    style={{
-                      padding: theme.spacing[8],
-                      background: theme.colors.bg.secondary,
-                      borderRadius: theme.radius['2xl'],
-                      border: `1px solid ${theme.colors.border.light}`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: theme.spacing[6],
-                      boxShadow: theme.shadows.md,
-                      transition: `all ${theme.transition.normal}`
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = theme.colors.bg.hover
-                      e.currentTarget.style.borderColor = theme.colors.border.medium
-                      e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-                      e.currentTarget.style.transform = 'translateY(-2px)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = theme.colors.bg.secondary
-                      e.currentTarget.style.borderColor = theme.colors.border.light
-                      e.currentTarget.style.boxShadow = theme.shadows.md
-                      e.currentTarget.style.transform = 'translateY(0)'
-                    }}
-                  >
-                    {/* File Count Badge */}
                     <div
-                      onClick={() => navigate(`/requests/${req.id}`)}
+                      key={req.id}
                       style={{
-                        width: '72px',
-                        height: '72px',
-                        borderRadius: '12px',
-                        background: theme.colors.white,
-                        border: 'none',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '28px',
-                        fontWeight: theme.weight.bold,
-                        color: theme.colors.black,
-                        flexShrink: 0,
+                        display: 'grid',
+                        gridTemplateColumns: '2fr 1fr 100px 140px 220px',
+                        padding: theme.spacing[6],
+                        borderBottom: index < requests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                        transition: `background ${theme.transition.fast}`,
                         cursor: 'pointer',
-                        transition: `all ${theme.transition.fast}`
+                        alignItems: 'center'
                       }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'scale(1.05)'
-                        e.currentTarget.style.background = theme.colors.text.secondary
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'scale(1)'
-                        e.currentTarget.style.background = theme.colors.white
-                      }}>
-                      {req.uploadCount || 0}
-                    </div>
-
-                    {/* Content */}
-                    <div
                       onClick={() => navigate(`/requests/${req.id}`)}
-                      style={{ flex: 1, minWidth: 0, cursor: 'pointer' }}>
+                      onMouseEnter={(e) => e.currentTarget.style.background = theme.colors.bg.hover}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    >
+                      {/* Title */}
                       <div style={{
-                        fontSize: '18px',
+                        fontSize: '15px',
                         fontWeight: theme.weight.medium,
-                        marginBottom: theme.spacing[1],
                         color: theme.colors.text.primary,
-                        whiteSpace: 'nowrap',
                         overflow: 'hidden',
-                        textOverflow: 'ellipsis'
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
                       }}>
                         {req.title}
                       </div>
+
+                      {/* Type */}
                       <div style={{
                         fontSize: '14px',
-                        color: theme.colors.text.tertiary
+                        color: theme.colors.text.secondary
                       }}>
-                        {req.uploadCount || 0} {req.uploadCount === 1 ? 'file' : 'files'} • {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        {req.requestType ? req.requestType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'General Upload'}
+                      </div>
+
+                      {/* File Count */}
+                      <div style={{
+                        fontSize: '14px',
+                        color: theme.colors.text.primary,
+                        fontWeight: theme.weight.medium,
+                        textAlign: 'center'
+                      }}>
+                        {req.uploadCount || 0}
+                      </div>
+
+                      {/* Created Date */}
+                      <div style={{
+                        fontSize: '14px',
+                        color: theme.colors.text.secondary
+                      }}>
+                        {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </div>
+
+                      {/* Actions */}
+                      <div style={{
+                        display: 'flex',
+                        gap: theme.spacing[2],
+                        justifyContent: 'flex-end'
+                      }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            navigate(`/requests/${req.id}`)
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            background: theme.colors.white,
+                            color: theme.colors.black,
+                            border: 'none',
+                            borderRadius: '12px',
+                            fontSize: '13px',
+                            fontWeight: '500',
+                            cursor: 'pointer',
+                            fontFamily: 'inherit',
+                            transition: `all ${theme.transition.fast}`,
+                            height: '36px'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = theme.colors.text.secondary
+                            e.currentTarget.style.transform = 'translateY(-1px)'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = theme.colors.white
+                            e.currentTarget.style.transform = 'translateY(0)'
+                          }}
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDelete(req.id)
+                          }}
+                          style={{
+                            padding: '10px 20px',
+                            background: 'transparent',
+                            color: theme.colors.text.secondary,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '12px',
+                            fontSize: '13px',
+                            fontWeight: theme.weight.medium,
+                            cursor: 'pointer',
+                            fontFamily: 'inherit',
+                            transition: `all ${theme.transition.fast}`,
+                            height: '36px'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = theme.colors.bg.hover
+                            e.currentTarget.style.borderColor = theme.colors.border.dark
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent'
+                            e.currentTarget.style.borderColor = theme.colors.border.medium
+                          }}
+                        >
+                          Delete
+                        </button>
                       </div>
                     </div>
-
-                    {/* Action Buttons */}
-                    <div style={{
-                      display: 'flex',
-                      gap: theme.spacing[3],
-                      flexShrink: 0
-                    }}>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          window.open(`https://swayfiles.com/r/${req.shortCode}`, '_blank')
-                        }}
-                        style={{
-                          padding: '12px 24px',
-                          background: theme.colors.white,
-                          color: theme.colors.black,
-                          border: 'none',
-                          borderRadius: '12px',
-                          fontSize: '14px',
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                          fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`,
-                          height: '44px'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = theme.colors.text.secondary
-                          e.currentTarget.style.transform = 'translateY(-1px)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = theme.colors.white
-                          e.currentTarget.style.transform = 'translateY(0)'
-                        }}
-                      >
-                        View
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleDelete(req.id)
-                        }}
-                        style={{
-                          padding: '12px 24px',
-                          background: 'transparent',
-                          color: theme.colors.text.secondary,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: theme.radius.md,
-                          fontSize: '14px',
-                          fontWeight: theme.weight.medium,
-                          cursor: 'pointer',
-                          fontFamily: 'inherit',
-                          transition: `all ${theme.transition.fast}`,
-                          height: '44px'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = theme.colors.bg.hover
-                          e.currentTarget.style.borderColor = theme.colors.border.dark
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.borderColor = theme.colors.border.medium
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>
