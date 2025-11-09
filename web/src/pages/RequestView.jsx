@@ -103,6 +103,23 @@ function RequestView() {
     }
   }
 
+  const downloadAll = async () => {
+    if (!data.uploads || data.uploads.length === 0) {
+      alert('No files to download')
+      return
+    }
+
+    if (!confirm(`Download all ${data.uploads.length} files? They will download one by one.`)) {
+      return
+    }
+
+    for (const upload of data.uploads) {
+      await downloadFile(upload.id, upload.fileName)
+      // Small delay between downloads to avoid browser blocking
+      await new Promise(resolve => setTimeout(resolve, 500))
+    }
+  }
+
   if (loading) {
     return (
       <div style={{
@@ -244,6 +261,22 @@ function RequestView() {
               >
                 {data.request.isActive ? 'Close Request' : 'Reactivate Request'}
               </button>
+              {data.uploads && data.uploads.length > 0 && (
+                <button
+                  onClick={downloadAll}
+                  style={{
+                    padding: '8px 16px',
+                    background: 'transparent',
+                    color: '#fff',
+                    border: '1px solid #fff',
+                    fontSize: '19px',
+                    fontWeight: '400',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Download All ({data.uploads.length})
+                </button>
+              )}
               <button
                 onClick={handleDelete}
                 style={{
