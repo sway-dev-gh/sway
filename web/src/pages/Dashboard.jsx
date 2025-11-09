@@ -223,11 +223,15 @@ function Dashboard() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: theme.weight.normal,
+              fontSize: theme.fontSize['4xl'],
+              fontWeight: theme.weight.semibold,
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
             }}>
               Dashboard
             </h1>
@@ -250,21 +254,27 @@ function Dashboard() {
           }}>
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[10],
-              borderRadius: theme.radius.xl,
+              padding: theme.spacing[12],
+              borderRadius: theme.radius['2xl'],
               border: `1px solid ${theme.colors.border.light}`,
+              borderLeft: `4px solid ${theme.colors.accent}`,
+              boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+              e.currentTarget.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = theme.colors.bg.secondary
               e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.boxShadow = theme.shadows.md
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Active Requests</div>
-              <div style={{ fontSize: '56px', fontWeight: theme.weight.light, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
+              <div style={{ fontSize: theme.fontSize['5xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
               <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
                 of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'} available
               </div>
@@ -272,21 +282,27 @@ function Dashboard() {
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[10],
-              borderRadius: theme.radius.xl,
+              padding: theme.spacing[12],
+              borderRadius: theme.radius['2xl'],
               border: `1px solid ${theme.colors.border.light}`,
+              borderLeft: `4px solid ${theme.colors.success}`,
+              boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+              e.currentTarget.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = theme.colors.bg.secondary
               e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.boxShadow = theme.shadows.md
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Uploads</div>
-              <div style={{ fontSize: '56px', fontWeight: theme.weight.light, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
+              <div style={{ fontSize: theme.fontSize['5xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
               <div style={{ fontSize: '13px', color: theme.colors.text.muted }}>
                 {stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
               </div>
@@ -294,23 +310,29 @@ function Dashboard() {
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[10],
-              borderRadius: theme.radius.xl,
+              padding: theme.spacing[12],
+              borderRadius: theme.radius['2xl'],
               border: `1px solid ${theme.colors.border.light}`,
+              borderLeft: `4px solid ${getStoragePercentage() > 80 ? theme.colors.error : theme.colors.warning}`,
               gridColumn: 'span 2',
+              boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+              e.currentTarget.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = theme.colors.bg.secondary
               e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.boxShadow = theme.shadows.md
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{ fontSize: '12px', color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Storage Used</div>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[3], marginBottom: theme.spacing[5] }}>
-                <div style={{ fontSize: '56px', fontWeight: theme.weight.light, color: theme.colors.white, lineHeight: '1' }}>
+                <div style={{ fontSize: theme.fontSize['5xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1' }}>
                   {formatStorageMB(stats.storageUsed)}
                 </div>
                 <div style={{ fontSize: '15px', color: theme.colors.text.muted }}>
@@ -320,15 +342,15 @@ function Dashboard() {
               {/* Storage Bar */}
               <div style={{
                 width: '100%',
-                height: '8px',
+                height: '12px',
                 background: theme.colors.bg.page,
-                borderRadius: theme.radius.sm,
+                borderRadius: theme.radius.full,
                 overflow: 'hidden'
               }}>
                 <div style={{
                   width: `${getStoragePercentage()}%`,
                   height: '100%',
-                  background: getStoragePercentage() > 80 ? '#ef4444' : theme.colors.white,
+                  background: getStoragePercentage() > 80 ? `linear-gradient(90deg, ${theme.colors.error} 0%, ${theme.colors.warning} 100%)` : `linear-gradient(90deg, ${theme.colors.accent} 0%, ${theme.colors.success} 100%)`,
                   transition: `width ${theme.transition.slow}`
                 }} />
               </div>
@@ -345,9 +367,10 @@ function Dashboard() {
             {/* Upload Trend Chart */}
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[10],
-              borderRadius: theme.radius.xl,
-              border: `1px solid ${theme.colors.border.light}`
+              padding: theme.spacing[12],
+              borderRadius: theme.radius['2xl'],
+              border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.md
             }}>
               <div style={{ fontSize: '16px', color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[8] }}>
                 Upload Trend (Last 7 Days)
@@ -376,7 +399,7 @@ function Dashboard() {
                       <div style={{
                         width: '100%',
                         height: `${(day.count / maxUploadsInWeek) * 100}%`,
-                        background: theme.colors.white,
+                        background: `linear-gradient(180deg, ${theme.colors.accent} 0%, ${theme.colors.white} 100%)`,
                         borderRadius: `${theme.radius.sm} ${theme.radius.sm} 0 0`,
                         minHeight: day.count > 0 ? '6px' : '0',
                         transition: `height ${theme.transition.slow}`
@@ -404,9 +427,10 @@ function Dashboard() {
             {/* Request Types Breakdown */}
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[10],
-              borderRadius: theme.radius.xl,
-              border: `1px solid ${theme.colors.border.light}`
+              padding: theme.spacing[12],
+              borderRadius: theme.radius['2xl'],
+              border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.md
             }}>
               <div style={{ fontSize: '16px', color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[6] }}>
                 Request Types
@@ -461,8 +485,9 @@ function Dashboard() {
             {/* Recent Requests */}
             <div style={{
               background: theme.colors.bg.secondary,
-              borderRadius: theme.radius.xl,
+              borderRadius: theme.radius['2xl'],
               border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.md,
               overflow: 'hidden'
             }}>
               <div style={{
@@ -536,8 +561,9 @@ function Dashboard() {
             {/* Recent Responses */}
             <div style={{
               background: theme.colors.bg.secondary,
-              borderRadius: theme.radius.xl,
+              borderRadius: theme.radius['2xl'],
               border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.md,
               overflow: 'hidden'
             }}>
               <div style={{

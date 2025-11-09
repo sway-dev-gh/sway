@@ -116,11 +116,15 @@ function Responses() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: theme.weight.normal,
+              fontSize: theme.fontSize['4xl'],
+              fontWeight: theme.weight.semibold,
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
             }}>
               Responses
             </h1>
@@ -144,17 +148,23 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.xl,
-              padding: theme.spacing[10],
+              borderLeft: `4px solid ${theme.colors.success}`,
+              borderRadius: theme.radius['2xl'],
+              padding: theme.spacing[12],
+              boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+              e.currentTarget.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = theme.colors.bg.secondary
               e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.boxShadow = theme.shadows.md
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{
                 fontSize: '12px',
@@ -167,8 +177,8 @@ function Responses() {
                 Total Uploads
               </div>
               <div style={{
-                fontSize: '56px',
-                fontWeight: theme.weight.light,
+                fontSize: theme.fontSize['5xl'],
+                fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
                 lineHeight: '1'
               }}>
@@ -179,17 +189,23 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.xl,
-              padding: theme.spacing[10],
+              borderLeft: `4px solid ${theme.colors.accent}`,
+              borderRadius: theme.radius['2xl'],
+              padding: theme.spacing[12],
+              boxShadow: theme.shadows.md,
               transition: `all ${theme.transition.normal}`
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.background = theme.colors.bg.hover
               e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+              e.currentTarget.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.background = theme.colors.bg.secondary
               e.currentTarget.style.borderColor = theme.colors.border.light
+              e.currentTarget.style.boxShadow = theme.shadows.md
+              e.currentTarget.style.transform = 'translateY(0)'
             }}>
               <div style={{
                 fontSize: '12px',
@@ -202,8 +218,8 @@ function Responses() {
                 Total Size
               </div>
               <div style={{
-                fontSize: '56px',
-                fontWeight: theme.weight.light,
+                fontSize: theme.fontSize['5xl'],
+                fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
                 lineHeight: '1'
               }}>
@@ -217,8 +233,9 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.xl,
+              borderRadius: theme.radius['2xl'],
               padding: '120px 60px',
+              boxShadow: theme.shadows.md,
               textAlign: 'center'
             }}>
               <h3 style={{
@@ -242,7 +259,8 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.xl,
+              borderRadius: theme.radius['2xl'],
+              boxShadow: theme.shadows.md,
               overflow: 'hidden'
             }}>
               <div style={{ overflowX: 'auto' }}>
@@ -328,10 +346,11 @@ function Responses() {
                         key={response.id}
                         style={{
                           borderBottom: index < responses.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                          background: index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.02)',
                           transition: `background ${theme.transition.fast}`
                         }}
                         onMouseEnter={(e) => e.currentTarget.style.background = theme.colors.bg.hover}
-                        onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                        onMouseLeave={(e) => e.currentTarget.style.background = index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.02)'}
                       >
                         <td style={{
                           padding: theme.spacing[6]
@@ -401,24 +420,25 @@ function Responses() {
                             onClick={() => handleDownload(response.id)}
                             style={{
                               padding: '10px 20px',
-                              background: theme.colors.white,
+                              background: `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.text.secondary} 100%)`,
                               border: 'none',
-                              borderRadius: theme.radius.md,
+                              borderRadius: theme.radius.lg,
                               color: theme.colors.black,
                               fontSize: '14px',
-                              fontWeight: theme.weight.medium,
+                              fontWeight: theme.weight.semibold,
                               cursor: 'pointer',
+                              boxShadow: theme.shadows.md,
                               transition: `all ${theme.transition.fast}`,
                               fontFamily: 'inherit',
                               height: '44px'
                             }}
                             onMouseEnter={(e) => {
-                              e.currentTarget.style.background = theme.colors.text.secondary
-                              e.currentTarget.style.transform = 'translateY(-1px)'
+                              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+                              e.currentTarget.style.transform = 'translateY(-1px) scale(1.05)'
                             }}
                             onMouseLeave={(e) => {
-                              e.currentTarget.style.background = theme.colors.white
-                              e.currentTarget.style.transform = 'translateY(0)'
+                              e.currentTarget.style.boxShadow = theme.shadows.md
+                              e.currentTarget.style.transform = 'translateY(0) scale(1)'
                             }}
                           >
                             Download

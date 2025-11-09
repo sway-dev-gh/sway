@@ -63,11 +63,15 @@ function Settings() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: theme.weight.normal,
+              fontSize: theme.fontSize['4xl'],
+              fontWeight: theme.weight.semibold,
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
             }}>
               Settings
             </h1>
@@ -89,9 +93,10 @@ function Settings() {
             {/* Account Information */}
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: theme.spacing[10],
-              borderRadius: theme.radius.xl,
+              padding: theme.spacing[12],
+              borderRadius: theme.radius['2xl'],
               border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.md,
               marginBottom: theme.spacing[10]
             }}>
               <div style={{
@@ -132,25 +137,28 @@ function Settings() {
                 style={{
                   padding: '14px 28px',
                   background: 'transparent',
-                  color: theme.colors.text.secondary,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  borderRadius: theme.radius.md,
+                  color: theme.colors.error,
+                  border: `2px solid ${theme.colors.error}`,
+                  borderRadius: theme.radius.lg,
                   fontSize: '14px',
-                  fontWeight: theme.weight.medium,
+                  fontWeight: theme.weight.semibold,
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: `all ${theme.transition.fast}`,
+                  boxShadow: `0 0 0 0 ${theme.colors.error}`,
+                  transition: `all ${theme.transition.normal}`,
                   height: '48px'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = '#ef4444'
-                  e.currentTarget.style.color = '#ef4444'
-                  e.currentTarget.style.background = 'rgba(239, 68, 68, 0.05)'
+                  e.currentTarget.style.background = theme.colors.error
+                  e.currentTarget.style.color = theme.colors.white
+                  e.currentTarget.style.boxShadow = `0 0 20px rgba(239, 68, 68, 0.4)`
+                  e.currentTarget.style.transform = 'scale(1.02)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.medium
-                  e.currentTarget.style.color = theme.colors.text.secondary
                   e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = theme.colors.error
+                  e.currentTarget.style.boxShadow = `0 0 0 0 ${theme.colors.error}`
+                  e.currentTarget.style.transform = 'scale(1)'
                 }}
               >
                 Delete Account

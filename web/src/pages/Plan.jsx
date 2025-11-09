@@ -128,11 +128,15 @@ function Plan() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[16], textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '56px',
-              fontWeight: theme.weight.normal,
+              fontSize: theme.fontSize['4xl'],
+              fontWeight: theme.weight.semibold,
               margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.03em'
+              letterSpacing: '-0.03em',
+              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text'
             }}>
               Simple, Predictable Pricing
             </h1>
@@ -164,22 +168,31 @@ function Plan() {
                 style={{
                   background: theme.colors.bg.secondary,
                   padding: theme.spacing[12],
-                  borderRadius: theme.radius.xl,
+                  borderRadius: theme.radius['2xl'],
                   border: plan.popular ? `2px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
                   position: 'relative',
+                  boxShadow: plan.popular ? theme.shadows.glowStrong : theme.shadows.md,
                   transition: `all ${theme.transition.normal}`,
-                  transform: plan.popular ? 'scale(1.03)' : 'scale(1)'
+                  transform: plan.popular ? 'scale(1.05)' : 'scale(1)'
                 }}
                 onMouseEnter={(e) => {
                   if (!plan.popular) {
                     e.currentTarget.style.background = theme.colors.bg.hover
                     e.currentTarget.style.borderColor = theme.colors.border.medium
+                    e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+                    e.currentTarget.style.transform = 'scale(1.02)'
+                  } else {
+                    e.currentTarget.style.transform = 'scale(1.07)'
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!plan.popular) {
                     e.currentTarget.style.background = theme.colors.bg.secondary
                     e.currentTarget.style.borderColor = theme.colors.border.light
+                    e.currentTarget.style.boxShadow = theme.shadows.md
+                    e.currentTarget.style.transform = 'scale(1)'
+                  } else {
+                    e.currentTarget.style.transform = 'scale(1.05)'
                   }
                 }}
               >
@@ -190,14 +203,15 @@ function Plan() {
                     top: '-14px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    background: theme.colors.white,
+                    background: `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.accent} 100%)`,
                     color: theme.colors.black,
-                    padding: '6px 20px',
+                    padding: '8px 24px',
                     borderRadius: theme.radius.full,
-                    fontSize: '11px',
-                    fontWeight: theme.weight.semibold,
+                    fontSize: '12px',
+                    fontWeight: theme.weight.bold,
                     textTransform: 'uppercase',
-                    letterSpacing: '0.8px'
+                    letterSpacing: '1px',
+                    boxShadow: theme.shadows.md
                   }}>
                     Most Popular
                   </div>
@@ -238,8 +252,8 @@ function Plan() {
                 <div style={{ marginBottom: theme.spacing[6] }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[1] }}>
                     <div style={{
-                      fontSize: '64px',
-                      fontWeight: theme.weight.light,
+                      fontSize: plan.popular ? '80px' : '64px',
+                      fontWeight: theme.weight.bold,
                       color: theme.colors.text.primary,
                       letterSpacing: '-0.05em',
                       lineHeight: '1'
@@ -299,14 +313,15 @@ function Plan() {
                   style={{
                     width: '100%',
                     padding: '16px 32px',
-                    background: plan.id === currentPlan ? 'transparent' : (plan.popular ? theme.colors.white : 'transparent'),
+                    background: plan.id === currentPlan ? 'transparent' : (plan.popular ? `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.text.secondary} 100%)` : 'transparent'),
                     color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
                     border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
-                    borderRadius: theme.radius.lg,
+                    borderRadius: theme.radius.xl,
                     fontSize: '15px',
-                    fontWeight: theme.weight.semibold,
+                    fontWeight: theme.weight.bold,
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
+                    boxShadow: plan.popular && plan.id !== currentPlan ? theme.shadows.md : 'none',
                     transition: `all ${theme.transition.normal}`,
                     opacity: upgrading ? 0.6 : 1,
                     height: '56px'
@@ -314,8 +329,8 @@ function Plan() {
                   onMouseEnter={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
                       if (plan.popular) {
-                        e.currentTarget.style.background = theme.colors.text.secondary
-                        e.currentTarget.style.transform = 'translateY(-2px)'
+                        e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+                        e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)'
                       } else {
                         e.currentTarget.style.background = theme.colors.bg.hover
                       }
@@ -323,8 +338,12 @@ function Plan() {
                   }}
                   onMouseLeave={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
-                      e.currentTarget.style.background = plan.popular ? theme.colors.white : 'transparent'
-                      e.currentTarget.style.transform = 'translateY(0)'
+                      if (plan.popular) {
+                        e.currentTarget.style.boxShadow = theme.shadows.md
+                        e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                      } else {
+                        e.currentTarget.style.background = 'transparent'
+                      }
                     }
                   }}
                 >
@@ -355,17 +374,20 @@ function Plan() {
               <div style={{
                 background: theme.colors.bg.secondary,
                 padding: theme.spacing[10],
-                borderRadius: theme.radius.xl,
+                borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md,
                 transition: `all ${theme.transition.normal}`
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.hover
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.secondary
                 e.currentTarget.style.borderColor = theme.colors.border.light
+                e.currentTarget.style.boxShadow = theme.shadows.md
               }}>
                 <div style={{
                   fontSize: '18px',
@@ -387,17 +409,20 @@ function Plan() {
               <div style={{
                 background: theme.colors.bg.secondary,
                 padding: theme.spacing[10],
-                borderRadius: theme.radius.xl,
+                borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md,
                 transition: `all ${theme.transition.normal}`
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.hover
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.secondary
                 e.currentTarget.style.borderColor = theme.colors.border.light
+                e.currentTarget.style.boxShadow = theme.shadows.md
               }}>
                 <div style={{
                   fontSize: '18px',
@@ -419,17 +444,20 @@ function Plan() {
               <div style={{
                 background: theme.colors.bg.secondary,
                 padding: theme.spacing[10],
-                borderRadius: theme.radius.xl,
+                borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md,
                 transition: `all ${theme.transition.normal}`
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.hover
                 e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.secondary
                 e.currentTarget.style.borderColor = theme.colors.border.light
+                e.currentTarget.style.boxShadow = theme.shadows.md
               }}>
                 <div style={{
                   fontSize: '18px',

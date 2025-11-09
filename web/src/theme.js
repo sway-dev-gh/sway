@@ -20,7 +20,20 @@ const theme = {
       dark: '#404040'
     },
     white: '#ffffff',
-    black: '#000000'
+    black: '#000000',
+    accent: '#3b82f6',
+    success: '#10b981',
+    warning: '#f59e0b',
+    error: '#ef4444'
+  },
+  shadows: {
+    none: 'none',
+    sm: '0 1px 3px 0 rgba(0, 0, 0, 0.2)',
+    md: '0 4px 8px 0 rgba(0, 0, 0, 0.3)',
+    lg: '0 10px 20px 0 rgba(0, 0, 0, 0.4)',
+    xl: '0 20px 30px 0 rgba(0, 0, 0, 0.5)',
+    glow: '0 0 30px rgba(255, 255, 255, 0.1)',
+    glowStrong: '0 0 40px rgba(255, 255, 255, 0.15)'
   },
   spacing: {
     1: '4px',
@@ -34,7 +47,8 @@ const theme = {
     10: '40px',
     12: '48px',
     16: '64px',
-    20: '80px'
+    20: '80px',
+    24: '96px'
   },
   fontSize: {
     xs: '12px',
@@ -44,7 +58,8 @@ const theme = {
     xl: '24px',
     '2xl': '32px',
     '3xl': '48px',
-    '4xl': '72px'
+    '4xl': '64px',
+    '5xl': '72px'
   },
   weight: {
     light: 300,
@@ -54,17 +69,18 @@ const theme = {
     bold: 700
   },
   radius: {
-    sm: '4px',
-    md: '8px',
-    lg: '12px',
-    xl: '16px',
-    '2xl': '20px',
+    sm: '6px',
+    md: '10px',
+    lg: '14px',
+    xl: '18px',
+    '2xl': '24px',
+    '3xl': '32px',
     full: '9999px'
   },
   transition: {
-    fast: '0.15s ease',
-    normal: '0.2s ease',
-    slow: '0.3s ease'
+    fast: '0.15s cubic-bezier(0.4, 0, 0.2, 1)',
+    normal: '0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+    slow: '0.3s cubic-bezier(0.4, 0, 0.2, 1)'
   }
 }
 
