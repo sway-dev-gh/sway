@@ -94,10 +94,12 @@ function Dashboard() {
         .slice(0, 5)
 
       setStats({
-        totalRequests: analytics.totalRequests,
-        totalUploads: analytics.totalUploads,
-        storageUsed: analytics.totalStorageGB * 1024, // Convert GB to MB for consistency
-        activeRequests: analytics.activeRequests,
+        totalRequests: analytics.totalRequests || 0,
+        totalUploads: analytics.totalUploads || 0,
+        storageUsed: (analytics.totalStorageGB || 0) * 1024, // Convert GB to MB for consistency
+        activeRequests: analytics.activeRequests || 0,
+        uploadsByDay: analytics.uploadsByDay || [],
+        requestsByType: analytics.requestsByType || {},
         recentRequests,
         // Pro-only analytics
         recentActivity: analytics.advanced?.recentActivity || [],
@@ -159,7 +161,9 @@ function Dashboard() {
     )
   }
 
-  const maxUploadsInWeek = Math.max(...stats.uploadsByDay.map(d => d.count), 1)
+  const maxUploadsInWeek = stats.uploadsByDay && stats.uploadsByDay.length > 0
+    ? Math.max(...stats.uploadsByDay.map(d => d.count), 1)
+    : 1
 
   return (
     <>
