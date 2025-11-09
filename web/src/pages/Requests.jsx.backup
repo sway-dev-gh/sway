@@ -529,25 +529,27 @@ function Requests() {
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                padding: '12px 24px',
-                borderRadius: '8px',
-                fontSize: '14px',
+                padding: '14px 28px',
+                borderRadius: '12px',
+                fontSize: '15px',
                 fontWeight: '500',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                transition: `all ${theme.transition.fast}`,
-                height: '40px'
+                transition: `all ${theme.transition.normal}`,
+                boxShadow: theme.shadows.md
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = '#e5e5e5'
-                e.currentTarget.style.transform = 'translateY(-1px)'
+                e.currentTarget.style.background = theme.colors.text.secondary
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.white
                 e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = theme.shadows.md
               }}
             >
-              New Request
+              + New Request
             </button>
           </div>
 

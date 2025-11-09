@@ -242,18 +242,18 @@ function Plan() {
                 <div style={{ marginBottom: theme.spacing[5] }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[1] }}>
                     <div style={{
-                      fontSize: '48px',
+                      fontSize: '56px',
                       fontWeight: theme.weight.semibold,
                       color: theme.colors.text.primary,
-                      letterSpacing: '-0.02em',
+                      letterSpacing: '-0.04em',
                       lineHeight: '1'
                     }}>
                       {plan.price}
                     </div>
                     <div style={{
-                      fontSize: '16px',
+                      fontSize: '15px',
                       color: theme.colors.text.muted,
-                      marginBottom: '6px'
+                      marginBottom: theme.spacing[2]
                     }}>
                       {plan.period}
                     </div>
