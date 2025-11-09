@@ -7,7 +7,7 @@ const pool = require('../db/pool')
 const { createNotification } = require('./notifications')
 const rateLimit = require('express-rate-limit')
 const { validateFileUpload, moderateText, detectSuspiciousActivity } = require('../utils/security')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 // Rate limiters for public endpoints
 const getRequestLimiter = rateLimit({

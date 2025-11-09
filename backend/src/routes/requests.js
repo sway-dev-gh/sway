@@ -5,7 +5,7 @@ const { authenticateToken } = require('../middleware/auth')
 const fs = require('fs')
 const path = require('path')
 const { moderateText } = require('../utils/security')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 // Helper to generate short code
 function generateShortCode() {
