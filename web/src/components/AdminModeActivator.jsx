@@ -96,17 +96,12 @@ function AdminModeActivator({ onActivate }) {
     e.preventDefault()
 
     if (isAdminMode) {
-      // Exiting admin mode - verify password
-      if (password === ADMIN_PASSWORD) {
-        localStorage.removeItem('adminKey')
-        localStorage.removeItem('adminPlanOverride')
-        setIsAdminMode(false)
-        closeModal()
-        window.location.reload() // Refresh to apply changes
-      } else {
-        setError('Incorrect password')
-        setPassword('')
-      }
+      // Exiting admin mode - no password required
+      localStorage.removeItem('adminKey')
+      localStorage.removeItem('adminPlanOverride')
+      setIsAdminMode(false)
+      closeModal()
+      window.location.reload() // Refresh to apply changes
     } else {
       // Entering admin mode - verify password
       if (password === ADMIN_PASSWORD) {
@@ -196,7 +191,7 @@ function AdminModeActivator({ onActivate }) {
           margin: '0 0 32px 0'
         }}>
           {isAdminMode
-            ? 'Currently in admin mode. Enter password to exit.'
+            ? 'Currently in admin mode. Click below to exit.'
             : 'You are about to enter admin mode'}
         </p>
 
@@ -292,49 +287,52 @@ function AdminModeActivator({ onActivate }) {
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '24px' }}>
-            <label style={{
-              display: 'block',
-              fontSize: '13px',
-              fontWeight: theme.weight.medium,
-              color: theme.colors.text.secondary,
-              marginBottom: '8px'
-            }}>
-              Enter Admin Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value)
-                setError('')
-              }}
-              onFocus={() => setIsTyping(true)}
-              autoFocus
-              placeholder="Enter password..."
-              style={{
-                width: '100%',
-                padding: '14px 16px',
-                background: theme.colors.bg.page,
-                border: `2px solid ${error ? '#ff4444' : theme.colors.border.medium}`,
-                borderRadius: '8px',
-                color: theme.colors.text.primary,
-                fontSize: '16px',
-                fontFamily: 'monospace',
-                outline: 'none',
-                transition: 'border-color 0.2s'
-              }}
-            />
-            {error && (
-              <div style={{
-                marginTop: '8px',
+          {/* Only show password field when entering admin mode, not when exiting */}
+          {!isAdminMode && (
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{
+                display: 'block',
                 fontSize: '13px',
-                color: '#ff4444'
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.secondary,
+                marginBottom: '8px'
               }}>
-                {error}
-              </div>
-            )}
-          </div>
+                Enter Admin Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                  setError('')
+                }}
+                onFocus={() => setIsTyping(true)}
+                autoFocus
+                placeholder="Enter password..."
+                style={{
+                  width: '100%',
+                  padding: '14px 16px',
+                  background: theme.colors.bg.page,
+                  border: `2px solid ${error ? '#ff4444' : theme.colors.border.medium}`,
+                  borderRadius: '8px',
+                  color: theme.colors.text.primary,
+                  fontSize: '16px',
+                  fontFamily: 'monospace',
+                  outline: 'none',
+                  transition: 'border-color 0.2s'
+                }}
+              />
+              {error && (
+                <div style={{
+                  marginTop: '8px',
+                  fontSize: '13px',
+                  color: '#ff4444'
+                }}>
+                  {error}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Buttons */}
           <div style={{
