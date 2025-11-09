@@ -289,18 +289,6 @@ function Plan() {
                     fontFamily: 'inherit',
                     opacity: upgrading ? 0.6 : 1
                   }}
-                  else {
-                        e.currentTarget.style.background = theme.colors.bg.hover
-                        e.currentTarget.style.borderColor = theme.colors.border.dark
-                      }
-                    }
-                  }}
-                  else {
-                        e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.borderColor = theme.colors.border.medium
-                      }
-                    }
-                  }}
                 >
                   {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? 'Get Started' : 'Upgrade to Pro'))}
                 </button>
@@ -332,10 +320,8 @@ function Plan() {
                 padding: theme.spacing[8],
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md,
-                }}
-                  }
-                  }>
+                boxShadow: theme.shadows.md
+              }}>
                 <div style={{
                   fontSize: '16px',
                   color: theme.colors.text.primary,
@@ -358,10 +344,8 @@ function Plan() {
                 padding: theme.spacing[8],
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md,
-                }}
-                  }
-                  }>
+                boxShadow: theme.shadows.md
+              }}>
                 <div style={{
                   fontSize: '16px',
                   color: theme.colors.text.primary,
@@ -384,10 +368,8 @@ function Plan() {
                 padding: theme.spacing[8],
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md,
-                }}
-                  }
-                  }>
+                boxShadow: theme.shadows.md
+              }}>
                 <div style={{
                   fontSize: '16px',
                   color: theme.colors.text.primary,
