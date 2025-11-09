@@ -116,15 +116,11 @@ function Responses() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: theme.fontSize['4xl'],
-              fontWeight: theme.weight.semibold,
+              fontSize: '40px',
+              fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
+              letterSpacing: '-0.02em'
             }}>
               Responses
             </h1>
@@ -148,7 +144,6 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderLeft: `4px solid ${theme.colors.success}`,
               borderRadius: theme.radius['2xl'],
               padding: theme.spacing[12],
               boxShadow: theme.shadows.md,
@@ -189,7 +184,6 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderLeft: `4px solid ${theme.colors.accent}`,
               borderRadius: theme.radius['2xl'],
               padding: theme.spacing[12],
               boxShadow: theme.shadows.md,
@@ -420,25 +414,24 @@ function Responses() {
                             onClick={() => handleDownload(response.id)}
                             style={{
                               padding: '10px 20px',
-                              background: `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.text.secondary} 100%)`,
+                              background: theme.colors.white,
                               border: 'none',
-                              borderRadius: theme.radius.lg,
+                              borderRadius: '12px',
                               color: theme.colors.black,
                               fontSize: '14px',
-                              fontWeight: theme.weight.semibold,
+                              fontWeight: '500',
                               cursor: 'pointer',
-                              boxShadow: theme.shadows.md,
                               transition: `all ${theme.transition.fast}`,
                               fontFamily: 'inherit',
                               height: '44px'
                             }}
                             onMouseEnter={(e) => {
-                              e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-                              e.currentTarget.style.transform = 'translateY(-1px) scale(1.05)'
+                              e.currentTarget.style.background = theme.colors.text.secondary
+                              e.currentTarget.style.transform = 'translateY(-1px)'
                             }}
                             onMouseLeave={(e) => {
-                              e.currentTarget.style.boxShadow = theme.shadows.md
-                              e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                              e.currentTarget.style.background = theme.colors.white
+                              e.currentTarget.style.transform = 'translateY(0)'
                             }}
                           >
                             Download

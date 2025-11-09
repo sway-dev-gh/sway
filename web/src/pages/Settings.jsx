@@ -63,15 +63,11 @@ function Settings() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[12] }}>
             <h1 style={{
-              fontSize: theme.fontSize['4xl'],
-              fontWeight: theme.weight.semibold,
+              fontSize: '40px',
+              fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
+              letterSpacing: '-0.02em'
             }}>
               Settings
             </h1>

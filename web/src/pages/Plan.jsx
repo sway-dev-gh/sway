@@ -128,15 +128,11 @@ function Plan() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[16], textAlign: 'center' }}>
             <h1 style={{
-              fontSize: theme.fontSize['4xl'],
-              fontWeight: theme.weight.semibold,
+              fontSize: '40px',
+              fontWeight: '500',
               margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.03em',
-              background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text'
+              letterSpacing: '-0.03em'
             }}>
               Simple, Predictable Pricing
             </h1>
@@ -203,15 +199,14 @@ function Plan() {
                     top: '-14px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    background: `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.accent} 100%)`,
+                    background: theme.colors.white,
                     color: theme.colors.black,
                     padding: '8px 24px',
                     borderRadius: theme.radius.full,
                     fontSize: '12px',
                     fontWeight: theme.weight.bold,
                     textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    boxShadow: theme.shadows.md
+                    letterSpacing: '1px'
                   }}>
                     Most Popular
                   </div>
@@ -313,15 +308,14 @@ function Plan() {
                   style={{
                     width: '100%',
                     padding: '16px 32px',
-                    background: plan.id === currentPlan ? 'transparent' : (plan.popular ? `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.text.secondary} 100%)` : 'transparent'),
+                    background: plan.id === currentPlan ? 'transparent' : (plan.popular ? theme.colors.white : 'transparent'),
                     color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
                     border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
-                    borderRadius: theme.radius.xl,
+                    borderRadius: '12px',
                     fontSize: '15px',
-                    fontWeight: theme.weight.bold,
+                    fontWeight: '500',
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
-                    boxShadow: plan.popular && plan.id !== currentPlan ? theme.shadows.md : 'none',
                     transition: `all ${theme.transition.normal}`,
                     opacity: upgrading ? 0.6 : 1,
                     height: '56px'
@@ -329,8 +323,8 @@ function Plan() {
                   onMouseEnter={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
                       if (plan.popular) {
-                        e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-                        e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)'
+                        e.currentTarget.style.background = theme.colors.text.secondary
+                        e.currentTarget.style.transform = 'translateY(-1px)'
                       } else {
                         e.currentTarget.style.background = theme.colors.bg.hover
                       }
@@ -339,8 +333,8 @@ function Plan() {
                   onMouseLeave={(e) => {
                     if (plan.id !== currentPlan && !upgrading) {
                       if (plan.popular) {
-                        e.currentTarget.style.boxShadow = theme.shadows.md
-                        e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                        e.currentTarget.style.background = theme.colors.white
+                        e.currentTarget.style.transform = 'translateY(0)'
                       } else {
                         e.currentTarget.style.background = 'transparent'
                       }

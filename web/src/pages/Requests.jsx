@@ -515,15 +515,11 @@ function Requests() {
           }}>
             <div>
               <h1 style={{
-                fontSize: theme.fontSize['4xl'],
-                fontWeight: theme.weight.semibold,
+                fontSize: '40px',
+                fontWeight: '500',
                 margin: 0,
                 color: theme.colors.text.primary,
-                letterSpacing: '-0.02em',
-                background: 'linear-gradient(135deg, #ffffff 0%, #a3a3a3 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                letterSpacing: '-0.02em'
               }}>
                 Requests
               </h1>
@@ -539,26 +535,25 @@ function Requests() {
             <button
               onClick={openModal}
               style={{
-                background: `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.text.secondary} 100%)`,
+                background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
                 padding: '14px 28px',
-                borderRadius: theme.radius.lg,
+                borderRadius: '12px',
                 fontSize: '15px',
-                fontWeight: theme.weight.semibold,
+                fontWeight: '500',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
                 transition: `all ${theme.transition.normal}`,
-                height: '48px',
-                boxShadow: theme.shadows.md
+                height: '52px'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)'
+                e.currentTarget.style.background = theme.colors.text.secondary
+                e.currentTarget.style.transform = 'translateY(-1px)'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = theme.shadows.md
-                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                e.currentTarget.style.background = theme.colors.white
+                e.currentTarget.style.transform = 'translateY(0)'
               }}
             >
               + New Request
@@ -608,7 +603,6 @@ function Requests() {
                       background: theme.colors.bg.secondary,
                       borderRadius: theme.radius['2xl'],
                       border: `1px solid ${theme.colors.border.light}`,
-                      borderLeft: `4px solid ${theme.colors.accent}`,
                       display: 'flex',
                       alignItems: 'center',
                       gap: theme.spacing[6],
@@ -634,9 +628,9 @@ function Requests() {
                       style={{
                         width: '72px',
                         height: '72px',
-                        borderRadius: theme.radius.xl,
-                        background: `linear-gradient(135deg, ${theme.colors.accent} 0%, ${theme.colors.white} 100%)`,
-                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: '12px',
+                        background: theme.colors.white,
+                        border: 'none',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -645,16 +639,15 @@ function Requests() {
                         color: theme.colors.black,
                         flexShrink: 0,
                         cursor: 'pointer',
-                        boxShadow: theme.shadows.md,
                         transition: `all ${theme.transition.fast}`
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'scale(1.1)'
-                        e.currentTarget.style.boxShadow = theme.shadows.glowStrong
+                        e.currentTarget.style.transform = 'scale(1.05)'
+                        e.currentTarget.style.background = theme.colors.text.secondary
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'scale(1)'
-                        e.currentTarget.style.boxShadow = theme.shadows.md
+                        e.currentTarget.style.background = theme.colors.white
                       }}>
                       {req.uploadCount || 0}
                     </div>
@@ -695,25 +688,24 @@ function Requests() {
                         }}
                         style={{
                           padding: '12px 24px',
-                          background: `linear-gradient(135deg, ${theme.colors.white} 0%, ${theme.colors.text.secondary} 100%)`,
+                          background: theme.colors.white,
                           color: theme.colors.black,
                           border: 'none',
-                          borderRadius: theme.radius.lg,
+                          borderRadius: '12px',
                           fontSize: '14px',
-                          fontWeight: theme.weight.semibold,
+                          fontWeight: '500',
                           cursor: 'pointer',
                           fontFamily: 'inherit',
-                          boxShadow: theme.shadows.md,
                           transition: `all ${theme.transition.fast}`,
                           height: '44px'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.boxShadow = theme.shadows.glowStrong
-                          e.currentTarget.style.transform = 'translateY(-1px) scale(1.05)'
+                          e.currentTarget.style.background = theme.colors.text.secondary
+                          e.currentTarget.style.transform = 'translateY(-1px)'
                         }}
                         onMouseLeave={(e) => {
-                          e.currentTarget.style.boxShadow = theme.shadows.md
-                          e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                          e.currentTarget.style.background = theme.colors.white
+                          e.currentTarget.style.transform = 'translateY(0)'
                         }}
                       >
                         View
