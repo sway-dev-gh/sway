@@ -504,7 +504,7 @@ function Dashboard() {
               </div>
             </div>
 
-            {/* Recent Uploads */}
+            {/* Recent Responses */}
             <div style={{
               background: 'rgba(255, 255, 255, 0.02)',
               borderRadius: '12px',
@@ -513,11 +513,27 @@ function Dashboard() {
             }}>
               <div style={{
                 padding: '20px 24px',
-                borderBottom: `1px solid ${theme.colors.border.light}`
+                borderBottom: `1px solid ${theme.colors.border.light}`,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center'
               }}>
                 <div style={{ fontSize: '14px', color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
-                  Recent Uploads
+                  Recent Responses
                 </div>
+                <Link
+                  to="/responses"
+                  style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.secondary,
+                    textDecoration: 'none',
+                    transition: `color ${theme.transition.fast}`
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
+                  onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.secondary}
+                >
+                  View all →
+                </Link>
               </div>
               <div>
                 {stats.recentUploads.length === 0 ? (
