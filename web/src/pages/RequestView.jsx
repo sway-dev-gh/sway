@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import api from '../api/axios'
 
 function RequestView() {
   const { id } = useParams()
@@ -20,14 +21,11 @@ function RequestView() {
         return
       }
 
-      const response = await fetch(`/api/requests/${id}`, {
+      const response = await api.get(`/api/requests/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      if (response.ok) {
-        const result = await response.json()
-        setData(result)
-      }
+      setData(response.data)
     } catch (error) {
       console.error('Error fetching request:', error)
     } finally {
@@ -46,8 +44,7 @@ function RequestView() {
 
     try {
       const token = localStorage.getItem('token')
-      await fetch(`/api/requests/${id}`, {
-        method: 'DELETE',
+      await api.delete(`/api/requests/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
@@ -66,18 +63,17 @@ function RequestView() {
 
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`/api/requests/${id}/toggle-active`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ isActive: newStatus })
-      })
+      await api.patch(`/api/requests/${id}/toggle-active`,
+        { isActive: newStatus },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      )
 
-      if (response.ok) {
-        fetchRequest() // Reload the data
-      }
+      fetchRequest() // Reload the data
     } catch (error) {
       console.error('Toggle active error:', error)
       alert(`Failed to ${action} request`)
@@ -87,22 +83,20 @@ function RequestView() {
   const downloadFile = async (uploadId, filename) => {
     try {
       const token = localStorage.getItem('token')
-      const response = await fetch(`/api/files/${uploadId}`, {
+      const response = await api.get(`/api/files/${uploadId}`, {
         headers: { Authorization: `Bearer ${token}` },
         responseType: 'blob'
       })
 
-      if (response.ok) {
-        const blob = await response.blob()
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', filename)
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
-        window.URL.revokeObjectURL(url)
-      }
+      const blob = response.data
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', filename)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Download error:', error)
       alert('Failed to download file')
