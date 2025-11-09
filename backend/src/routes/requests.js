@@ -5,6 +5,7 @@ const { authenticateToken } = require('../middleware/auth')
 const fs = require('fs')
 const path = require('path')
 const { moderateText } = require('../utils/security')
+const bcrypt = require('bcryptjs')
 
 // Helper to generate short code
 function generateShortCode() {
@@ -19,7 +20,7 @@ function generateShortCode() {
 // POST /api/requests - Create new request
 router.post('/', authenticateToken, async (req, res) => {
   try {
-    const { title, description, type, timeLimit, fields, customFields, fieldRequirements } = req.body
+    const { title, description, type, timeLimit, fields, customFields, fieldRequirements, password, requireEmail, requireName } = req.body
 
     if (!title || !title.trim()) {
       return res.status(400).json({ error: 'Title is required' })
@@ -95,11 +96,17 @@ router.post('/', authenticateToken, async (req, res) => {
       }
     }
 
+    // Hash password if provided (Pro feature)
+    let passwordHash = null
+    if (password && password.trim()) {
+      passwordHash = await bcrypt.hash(password.trim(), 10)
+    }
+
     // Create request
     const result = await pool.query(
-      `INSERT INTO file_requests (user_id, short_code, title, description, request_type, time_limit_days, custom_fields, field_requirements, expires_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-       RETURNING id, short_code, title, description, request_type, time_limit_days, custom_fields, field_requirements, expires_at, created_at`,
+      `INSERT INTO file_requests (user_id, short_code, title, description, request_type, time_limit_days, custom_fields, field_requirements, expires_at, password_hash, require_email, require_name)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+       RETURNING id, short_code, title, description, request_type, time_limit_days, custom_fields, field_requirements, expires_at, created_at, require_email, require_name`,
       [
         req.userId,
         shortCode,
@@ -109,7 +116,10 @@ router.post('/', authenticateToken, async (req, res) => {
         timeLimit ? parseInt(timeLimit) : null,
         customFields ? JSON.stringify(customFields) : null,
         fieldRequirements ? JSON.stringify(fieldRequirements) : null,
-        expiresAt
+        expiresAt,
+        passwordHash,
+        requireEmail || false,
+        requireName || false
       ]
     )
 
