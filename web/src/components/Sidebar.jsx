@@ -129,7 +129,7 @@ function Sidebar() {
     padding: `8px 16px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
-    fontSize: '15px',
+    fontSize: '20px',
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.md,
@@ -142,7 +142,7 @@ function Sidebar() {
     <div style={topBarStyle}>
       {/* Logo/Brand */}
       <div style={{
-        fontSize: '24px',
+        fontSize: '32px',
         fontWeight: theme.weight.semibold,
         color: theme.colors.text.primary,
         flexShrink: 0
@@ -182,7 +182,7 @@ function Sidebar() {
                     >
                       <span>{item.label}</span>
                       <span style={{
-                        fontSize: '8px',
+                        fontSize: '11px',
                         fontWeight: theme.weight.semibold,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
@@ -246,7 +246,7 @@ function Sidebar() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '12px',
+              fontSize: '16px',
               fontWeight: theme.weight.semibold,
               color: theme.colors.white,
               border: `2px solid ${theme.colors.border.medium}`
@@ -255,14 +255,14 @@ function Sidebar() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[2] }}>
               <div style={{
-                fontSize: theme.fontSize.sm,
+                fontSize: '18px',
                 fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary
               }}>
                 {user.email?.split('@')[0] || 'User'}
               </div>
               <div style={{
-                fontSize: '9px',
+                fontSize: '12px',
                 fontWeight: theme.weight.bold,
                 color: effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
                        theme.colors.text.tertiary,
@@ -278,7 +278,7 @@ function Sidebar() {
               </div>
               {isAdminMode && (
                 <div style={{
-                  fontSize: '9px',
+                  fontSize: '12px',
                   fontWeight: theme.weight.bold,
                   color: theme.colors.black,
                   textTransform: 'uppercase',
@@ -303,7 +303,7 @@ function Sidebar() {
               color: theme.colors.text.secondary,
               cursor: 'pointer',
               padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
-              fontSize: theme.fontSize.sm,
+              fontSize: '16px',
               fontWeight: theme.weight.medium,
                           }}
           >
