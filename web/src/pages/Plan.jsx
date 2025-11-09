@@ -69,7 +69,7 @@ function Plan() {
       features: [
         { text: '20 active requests', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Basic file types only (images, PDFs, docs)', highlight: false }
+        { text: '5 basic request types', highlight: false }
       ]
     },
     {
@@ -83,7 +83,7 @@ function Plan() {
       features: [
         { text: '200 active requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'ALL file types supported', highlight: true }
+        { text: '15 request types (Videos, Code, Design & more)', highlight: true }
       ]
     }
   ]
