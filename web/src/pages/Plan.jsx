@@ -165,7 +165,7 @@ function Plan() {
               <div
                 key={plan.id}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.02)',
+                  background: theme.colors.bg.secondary,
                   padding: '40px 32px',
                   borderRadius: '16px',
                   border: plan.popular ? `2px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
@@ -175,13 +175,13 @@ function Plan() {
                 }}
                 onMouseEnter={(e) => {
                   if (!plan.popular) {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                    e.currentTarget.style.background = theme.colors.bg.hover
                     e.currentTarget.style.borderColor = theme.colors.border.medium
                   }
                 }}
                 onMouseLeave={(e) => {
                   if (!plan.popular) {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+                    e.currentTarget.style.background = theme.colors.bg.secondary
                     e.currentTarget.style.borderColor = theme.colors.border.light
                   }
                 }}
@@ -332,7 +332,7 @@ function Plan() {
                         e.currentTarget.style.background = theme.colors.text.secondary
                         e.currentTarget.style.transform = 'translateY(-2px)'
                       } else {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'
+                        e.currentTarget.style.background = theme.colors.bg.card
                       }
                     }
                   }}

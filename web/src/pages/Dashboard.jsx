@@ -247,7 +247,7 @@ function Dashboard() {
             marginBottom: '32px'
           }}>
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               padding: '28px 24px',
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`
@@ -260,7 +260,7 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               padding: '28px 24px',
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`
@@ -273,7 +273,7 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               padding: '28px 24px',
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`,
@@ -315,7 +315,7 @@ function Dashboard() {
           }}>
             {/* Upload Trend Chart */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               padding: '28px 24px',
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`
@@ -374,7 +374,7 @@ function Dashboard() {
 
             {/* Request Types Breakdown */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               padding: '28px 24px',
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`
@@ -431,7 +431,7 @@ function Dashboard() {
           }}>
             {/* Recent Requests */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`,
               overflow: 'hidden'
@@ -481,7 +481,7 @@ function Dashboard() {
                         cursor: 'pointer'
                       }}
                       onClick={() => navigate('/requests')}
-                      onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'}
+                      onMouseEnter={(e) => e.currentTarget.style.background = theme.colors.bg.hover}
                       onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
                       <div style={{
@@ -506,7 +506,7 @@ function Dashboard() {
 
             {/* Recent Responses */}
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`,
               overflow: 'hidden'
