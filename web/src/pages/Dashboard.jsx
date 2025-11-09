@@ -114,6 +114,22 @@ function Dashboard() {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         navigate('/login')
+      } else {
+        // Set default empty stats on error so UI still renders
+        setStats({
+          totalRequests: 0,
+          totalUploads: 0,
+          storageUsed: 0,
+          activeRequests: 0,
+          uploadsByDay: [],
+          requestsByType: {},
+          recentRequests: [],
+          recentActivity: [],
+          topRequests: [],
+          fileTypeBreakdown: [],
+          avgUploadsPerRequest: 0,
+          plan: 'free'
+        })
       }
     } finally {
       setLoading(false)
