@@ -8,6 +8,23 @@ const CACHE_VERSION = '2.0.1'
 
 const REQUEST_TYPES = [
   {
+    id: 'custom',
+    name: 'Custom',
+    description: 'Create your own request',
+    titleLabel: 'Request Title',
+    descriptionLabel: 'Request Description (optional)',
+    fields: [
+      { id: 'fileType', label: 'Accepted File Types', type: 'text', placeholder: 'e.g., PDF, PNG, JPG' },
+      { id: 'maxFileSize', label: 'Max File Size (MB)', type: 'number', placeholder: 'e.g., 10' },
+      { id: 'maxFiles', label: 'Max Number of Files', type: 'number', placeholder: 'e.g., 5' },
+      { id: 'customField1', label: 'Custom Field 1', type: 'text', placeholder: 'Enter custom field name' },
+      { id: 'customField2', label: 'Custom Field 2', type: 'text', placeholder: 'Enter custom field name' },
+      { id: 'customField3', label: 'Custom Field 3', type: 'text', placeholder: 'Enter custom field name' },
+      { id: 'instructions', label: 'Additional Instructions', type: 'textarea', placeholder: 'Any special instructions for uploaders...' }
+    ],
+    planRequired: 'free'
+  },
+  {
     id: 'documents',
     name: 'Documents',
     description: 'PDFs, Word docs, spreadsheets',
@@ -114,15 +131,6 @@ const REQUEST_TYPES = [
       { id: 'format', label: 'Preferred Format', type: 'select', options: ['MP3', 'WAV', 'AAC', 'Any'] }
     ],
     planRequired: 'pro'
-  },
-  {
-    id: 'custom',
-    name: 'Custom',
-    description: 'Create your own request',
-    titleLabel: 'Request Title',
-    descriptionLabel: 'Request Description (optional)',
-    fields: [],
-    planRequired: 'free'
   }
 ]
 
