@@ -19,6 +19,9 @@ const pool = require('./db/pool')
 const app = express()
 const PORT = process.env.PORT || 5001
 
+// Trust proxy - required for Render and rate limiting
+app.set('trust proxy', 1)
+
 // Middleware
 app.use(cors({
   origin: ['https://swayfiles.com', 'https://www.swayfiles.com', 'http://localhost:5173'],
