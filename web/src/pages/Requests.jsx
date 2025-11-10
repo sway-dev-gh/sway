@@ -405,7 +405,7 @@ function Requests() {
                 color: theme.colors.text.primary,
                 letterSpacing: '-0.02em'
               }}>
-                Requests
+                Builder
               </h1>
               <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
                 <button
@@ -433,7 +433,7 @@ function Requests() {
               lineHeight: '1.6',
               textAlign: 'center'
             }}>
-              Create and manage file upload requests
+              Build custom file upload forms
             </p>
           </div>
 

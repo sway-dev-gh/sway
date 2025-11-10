@@ -121,7 +121,7 @@ function Responses() {
               letterSpacing: '-0.02em',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
             }}>
-              Responses
+              Tracking
             </h1>
             <p style={{
               fontSize: '18px',
@@ -129,7 +129,7 @@ function Responses() {
               margin: '12px 0 0 0',
               lineHeight: '1.6'
             }}>
-              All files uploaded to your requests
+              Track your forms and file uploads
             </p>
           </div>
 
