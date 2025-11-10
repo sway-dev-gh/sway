@@ -10,6 +10,7 @@ function Plan() {
   const [loading, setLoading] = useState(true)
   const [currentPlan, setCurrentPlan] = useState('free')
   const [upgrading, setUpgrading] = useState(false)
+  const [showDowngradeModal, setShowDowngradeModal] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -53,8 +54,28 @@ function Plan() {
     window.location.reload()
   }
 
+  const handleDowngradeToFree = () => {
+    // Admin users can switch instantly
+    const adminKey = localStorage.getItem('adminKey')
+    if (adminKey) {
+      handleAdminPlanSwitch('free')
+      return
+    }
+
+    // For real users, cancel their subscription (to be implemented)
+    // For now, just show a message
+    alert('Downgrade feature coming soon! Contact support to downgrade your plan.')
+    setShowDowngradeModal(false)
+  }
+
   const handleUpgrade = async (planId) => {
-    if (planId === 'free' || planId === currentPlan) {
+    if (planId === currentPlan) {
+      return
+    }
+
+    // If downgrading to free, show confirmation modal
+    if (planId === 'free' && currentPlan === 'pro') {
+      setShowDowngradeModal(true)
       return
     }
 
@@ -418,6 +439,118 @@ function Plan() {
           </div>
         </div>
       </div>
+
+      {/* Downgrade Confirmation Modal */}
+      {showDowngradeModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
+        }}
+        onClick={() => setShowDowngradeModal(false)}
+        >
+          <div style={{
+            background: theme.colors.bg.secondary,
+            borderRadius: theme.radius['2xl'],
+            padding: theme.spacing[12],
+            maxWidth: '500px',
+            width: '90%',
+            border: `1px solid ${theme.colors.border.light}`,
+            boxShadow: theme.shadows['2xl']
+          }}
+          onClick={(e) => e.stopPropagation()}
+          >
+            <div style={{
+              fontSize: theme.fontSize['2xl'],
+              fontWeight: theme.weight.bold,
+              color: theme.colors.text.primary,
+              marginBottom: theme.spacing[4]
+            }}>
+              Switch to Free Plan?
+            </div>
+
+            <div style={{
+              fontSize: theme.fontSize.base,
+              color: theme.colors.text.secondary,
+              marginBottom: theme.spacing[6],
+              lineHeight: '1.6'
+            }}>
+              You'll lose access to these Pro features:
+            </div>
+
+            <div style={{
+              background: theme.colors.bg.tertiary,
+              padding: theme.spacing[6],
+              borderRadius: theme.radius.xl,
+              marginBottom: theme.spacing[8]
+            }}>
+              <ul style={{
+                margin: 0,
+                paddingLeft: theme.spacing[6],
+                color: theme.colors.text.primary,
+                fontSize: theme.fontSize.sm,
+                lineHeight: '1.8'
+              }}>
+                <li>Advanced analytics & insights</li>
+                <li>Password-protected requests</li>
+                <li>Custom request builder</li>
+                <li>Bulk download (Download All)</li>
+                <li>File type breakdown</li>
+                <li>Top performing requests</li>
+                <li>200 active requests → 20 active requests</li>
+                <li>50GB storage → 2GB storage</li>
+              </ul>
+            </div>
+
+            <div style={{
+              display: 'flex',
+              gap: theme.spacing[4]
+            }}>
+              <button
+                onClick={() => setShowDowngradeModal(false)}
+                style={{
+                  flex: 1,
+                  padding: theme.spacing[4],
+                  background: theme.colors.bg.tertiary,
+                  color: theme.colors.text.primary,
+                  border: 'none',
+                  borderRadius: theme.radius.lg,
+                  fontSize: theme.fontSize.base,
+                  fontWeight: theme.weight.medium,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDowngradeToFree}
+                style={{
+                  flex: 1,
+                  padding: theme.spacing[4],
+                  background: theme.colors.accent.red,
+                  color: theme.colors.white,
+                  border: 'none',
+                  borderRadius: theme.radius.lg,
+                  fontSize: theme.fontSize.base,
+                  fontWeight: theme.weight.semibold,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
+                }}
+              >
+                Yes, Switch to Free
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
