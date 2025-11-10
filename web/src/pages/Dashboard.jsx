@@ -729,73 +729,172 @@ function Dashboard() {
           {/* Pro-Only Advanced Analytics */}
           {(user.plan || 'free').toLowerCase() === 'pro' && (
             <>
-              {/* Top Performing Requests */}
+              {/* Section Header */}
+              <div style={{
+                marginTop: theme.spacing[10],
+                marginBottom: theme.spacing[6],
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize['3xl'],
+                  fontWeight: theme.weight.bold,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  background: `linear-gradient(135deg, ${theme.colors.accent.blue}, ${theme.colors.accent.purple})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}>
+                  Pro Analytics Suite
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.tertiary
+                }}>
+                  Advanced insights and performance metrics
+                </div>
+              </div>
+
+              {/* Request Performance Leaderboard */}
               {stats.topRequests && stats.topRequests.length > 0 && (
                 <div style={{
-                  background: theme.colors.bg.secondary,
+                  background: `linear-gradient(135deg, rgba(59, 130, 246, 0.05), rgba(147, 51, 234, 0.05))`,
                   borderRadius: theme.radius['2xl'],
                   border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md,
+                  boxShadow: theme.shadows.lg,
                   overflow: 'hidden',
-                  marginTop: theme.spacing[6]
+                  marginBottom: theme.spacing[6]
                 }}>
                   <div style={{
                     padding: theme.spacing[8],
-                    borderBottom: `1px solid ${theme.colors.border.light}`
+                    borderBottom: `1px solid ${theme.colors.border.light}`,
+                    background: theme.colors.bg.secondary
                   }}>
                     <div style={{
-                      fontSize: theme.fontSize.lg,
-                      color: theme.colors.text.primary,
-                      fontWeight: theme.weight.semibold,
-                      marginBottom: theme.spacing[1]
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
                     }}>
-                      Top Performing Requests
-                    </div>
-                    <div style={{
-                      fontSize: theme.fontSize.sm,
-                      color: theme.colors.text.tertiary
-                    }}>
-                      Requests with the most uploads
+                      <div>
+                        <div style={{
+                          fontSize: theme.fontSize.xl,
+                          color: theme.colors.text.primary,
+                          fontWeight: theme.weight.bold,
+                          marginBottom: theme.spacing[1]
+                        }}>
+                          Request Performance Leaderboard
+                        </div>
+                        <div style={{
+                          fontSize: theme.fontSize.sm,
+                          color: theme.colors.text.tertiary
+                        }}>
+                          Your top-performing requests ranked by engagement
+                        </div>
+                      </div>
+                      <div style={{
+                        padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
+                        background: `linear-gradient(135deg, ${theme.colors.accent.blue}, ${theme.colors.accent.purple})`,
+                        borderRadius: theme.radius.lg,
+                        color: 'white',
+                        fontSize: theme.fontSize.xs,
+                        fontWeight: theme.weight.semibold,
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                      }}>
+                        Top {stats.topRequests.length}
+                      </div>
                     </div>
                   </div>
-                  <div style={{ padding: theme.spacing[8] }}>
+                  <div style={{ padding: theme.spacing[8], background: theme.colors.bg.secondary }}>
                     {stats.topRequests.map((req, index) => {
                       const maxUploads = Math.max(...stats.topRequests.map(r => parseInt(r.upload_count)), 1)
                       const percentage = (parseInt(req.upload_count) / maxUploads) * 100
+                      const medalColors = ['#FFD700', '#C0C0C0', '#CD7F32']
+                      const medalEmojis = ['🥇', '🥈', '🥉']
 
                       return (
-                        <div key={index} style={{ marginBottom: index < stats.topRequests.length - 1 ? theme.spacing[6] : 0 }}>
+                        <div key={index} style={{
+                          marginBottom: index < stats.topRequests.length - 1 ? theme.spacing[6] : 0,
+                          padding: theme.spacing[6],
+                          background: theme.colors.bg.primary,
+                          borderRadius: theme.radius.xl,
+                          border: index < 3 ? `2px solid ${medalColors[index]}` : `1px solid ${theme.colors.border.light}`,
+                          transition: `all ${theme.transition.normal}`,
+                          cursor: 'pointer'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.transform = 'translateY(-2px)'
+                          e.currentTarget.style.boxShadow = theme.shadows.lg
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = 'translateY(0)'
+                          e.currentTarget.style.boxShadow = 'none'
+                        }}>
                           <div style={{
                             display: 'flex',
+                            alignItems: 'center',
                             justifyContent: 'space-between',
-                            marginBottom: theme.spacing[2]
+                            marginBottom: theme.spacing[3]
                           }}>
-                            <div style={{
-                              fontSize: theme.fontSize.sm,
-                              color: theme.colors.text.primary,
-                              fontWeight: theme.weight.medium
-                            }}>
-                              {req.title}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3] }}>
+                              <div style={{
+                                fontSize: theme.fontSize['2xl'],
+                                fontWeight: theme.weight.bold,
+                                color: index < 3 ? medalColors[index] : theme.colors.text.tertiary,
+                                minWidth: '32px',
+                                textAlign: 'center'
+                              }}>
+                                {index < 3 ? medalEmojis[index] : `#${index + 1}`}
+                              </div>
+                              <div>
+                                <div style={{
+                                  fontSize: theme.fontSize.base,
+                                  color: theme.colors.text.primary,
+                                  fontWeight: theme.weight.semibold
+                                }}>
+                                  {req.title}
+                                </div>
+                                <div style={{
+                                  fontSize: theme.fontSize.xs,
+                                  color: theme.colors.text.tertiary,
+                                  marginTop: theme.spacing[1]
+                                }}>
+                                  Created {new Date(req.created_at).toLocaleDateString()}
+                                </div>
+                              </div>
                             </div>
-                            <div style={{
-                              fontSize: theme.fontSize.sm,
-                              color: theme.colors.text.tertiary
-                            }}>
-                              {req.upload_count} uploads
+                            <div style={{ textAlign: 'right' }}>
+                              <div style={{
+                                fontSize: theme.fontSize['2xl'],
+                                fontWeight: theme.weight.bold,
+                                color: theme.colors.accent.blue
+                              }}>
+                                {req.upload_count}
+                              </div>
+                              <div style={{
+                                fontSize: theme.fontSize.xs,
+                                color: theme.colors.text.tertiary
+                              }}>
+                                uploads
+                              </div>
                             </div>
                           </div>
                           <div style={{
                             width: '100%',
-                            height: '8px',
+                            height: '12px',
                             background: theme.colors.bg.tertiary,
                             borderRadius: theme.radius.full,
-                            overflow: 'hidden'
+                            overflow: 'hidden',
+                            position: 'relative'
                           }}>
                             <div style={{
                               width: `${percentage}%`,
                               height: '100%',
-                              background: theme.colors.accent.blue,
-                              transition: `width ${theme.transition.normal}`
+                              background: index < 3
+                                ? `linear-gradient(90deg, ${medalColors[index]}, ${medalColors[index]}dd)`
+                                : `linear-gradient(90deg, ${theme.colors.accent.blue}, ${theme.colors.accent.purple})`,
+                              transition: `width ${theme.transition.slow}`,
+                              boxShadow: '0 0 10px rgba(59, 130, 246, 0.5)'
                             }} />
                           </div>
                         </div>
@@ -805,20 +904,20 @@ function Dashboard() {
                 </div>
               )}
 
-              {/* File Type Breakdown & Average Stats */}
+              {/* File Type Intelligence & Activity Heatmap */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: '2fr 1fr',
+                gridTemplateColumns: '1fr 1fr',
                 gap: theme.spacing[6],
-                marginTop: theme.spacing[6]
+                marginBottom: theme.spacing[6]
               }}>
-                {/* File Type Breakdown */}
+                {/* File Type Intelligence */}
                 {stats.fileTypeBreakdown && stats.fileTypeBreakdown.length > 0 && (
                   <div style={{
                     background: theme.colors.bg.secondary,
                     borderRadius: theme.radius['2xl'],
                     border: `1px solid ${theme.colors.border.light}`,
-                    boxShadow: theme.shadows.md,
+                    boxShadow: theme.shadows.lg,
                     overflow: 'hidden'
                   }}>
                     <div style={{
@@ -826,18 +925,18 @@ function Dashboard() {
                       borderBottom: `1px solid ${theme.colors.border.light}`
                     }}>
                       <div style={{
-                        fontSize: theme.fontSize.lg,
+                        fontSize: theme.fontSize.xl,
                         color: theme.colors.text.primary,
-                        fontWeight: theme.weight.semibold,
+                        fontWeight: theme.weight.bold,
                         marginBottom: theme.spacing[1]
                       }}>
-                        File Type Breakdown
+                        File Type Intelligence
                       </div>
                       <div style={{
                         fontSize: theme.fontSize.sm,
                         color: theme.colors.text.tertiary
                       }}>
-                        Distribution of uploaded file types
+                        Distribution and trends across file types
                       </div>
                     </div>
                     <div style={{ padding: theme.spacing[8] }}>
@@ -845,41 +944,71 @@ function Dashboard() {
                         const totalFiles = stats.fileTypeBreakdown.reduce((sum, t) => sum + parseInt(t.count), 0)
                         const percentage = ((parseInt(type.count) / totalFiles) * 100).toFixed(1)
 
-                        const colors = {
-                          'PDF': theme.colors.accent.red,
-                          'Image': theme.colors.accent.blue,
-                          'Document': theme.colors.accent.green,
-                          'Spreadsheet': theme.colors.accent.yellow,
-                          'Video': theme.colors.accent.purple,
-                          'Other': theme.colors.text.tertiary
+                        const fileTypeData = {
+                          'PDF': { color: theme.colors.accent.red, icon: '📄', gradient: 'linear-gradient(135deg, #EF4444, #DC2626)' },
+                          'Image': { color: theme.colors.accent.blue, icon: '🖼️', gradient: 'linear-gradient(135deg, #3B82F6, #2563EB)' },
+                          'Document': { color: theme.colors.accent.green, icon: '📝', gradient: 'linear-gradient(135deg, #10B981, #059669)' },
+                          'Spreadsheet': { color: theme.colors.accent.yellow, icon: '📊', gradient: 'linear-gradient(135deg, #F59E0B, #D97706)' },
+                          'Video': { color: theme.colors.accent.purple, icon: '🎥', gradient: 'linear-gradient(135deg, #9333EA, #7C3AED)' },
+                          'Other': { color: theme.colors.text.tertiary, icon: '📦', gradient: 'linear-gradient(135deg, #6B7280, #4B5563)' }
                         }
+
+                        const typeInfo = fileTypeData[type.file_type] || fileTypeData['Other']
 
                         return (
                           <div key={index} style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            marginBottom: index < stats.fileTypeBreakdown.length - 1 ? theme.spacing[4] : 0
+                            marginBottom: index < stats.fileTypeBreakdown.length - 1 ? theme.spacing[6] : 0
                           }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3] }}>
+                            <div style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              marginBottom: theme.spacing[2]
+                            }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3] }}>
+                                <div style={{
+                                  fontSize: theme.fontSize.xl
+                                }}>
+                                  {typeInfo.icon}
+                                </div>
+                                <div>
+                                  <div style={{
+                                    fontSize: theme.fontSize.sm,
+                                    color: theme.colors.text.primary,
+                                    fontWeight: theme.weight.semibold
+                                  }}>
+                                    {type.file_type}
+                                  </div>
+                                  <div style={{
+                                    fontSize: theme.fontSize.xs,
+                                    color: theme.colors.text.tertiary
+                                  }}>
+                                    {type.count} files
+                                  </div>
+                                </div>
+                              </div>
                               <div style={{
-                                width: '12px',
-                                height: '12px',
-                                borderRadius: theme.radius.full,
-                                background: colors[type.file_type] || theme.colors.text.tertiary
-                              }} />
-                              <div style={{
-                                fontSize: theme.fontSize.sm,
-                                color: theme.colors.text.primary
+                                fontSize: theme.fontSize.lg,
+                                fontWeight: theme.weight.bold,
+                                color: typeInfo.color
                               }}>
-                                {type.file_type}
+                                {percentage}%
                               </div>
                             </div>
                             <div style={{
-                              fontSize: theme.fontSize.sm,
-                              color: theme.colors.text.tertiary
+                              width: '100%',
+                              height: '10px',
+                              background: theme.colors.bg.tertiary,
+                              borderRadius: theme.radius.full,
+                              overflow: 'hidden'
                             }}>
-                              {type.count} ({percentage}%)
+                              <div style={{
+                                width: `${percentage}%`,
+                                height: '100%',
+                                background: typeInfo.gradient,
+                                transition: `width ${theme.transition.slow}`,
+                                boxShadow: `0 0 8px ${typeInfo.color}40`
+                              }} />
                             </div>
                           </div>
                         )
@@ -888,54 +1017,279 @@ function Dashboard() {
                   </div>
                 )}
 
-                {/* Average Stats Card */}
-                {stats.avgUploadsPerRequest > 0 && (
+                {/* Activity Pulse */}
+                {stats.uploadsByDay && stats.uploadsByDay.length > 0 && (
                   <div style={{
                     background: theme.colors.bg.secondary,
                     borderRadius: theme.radius['2xl'],
                     border: `1px solid ${theme.colors.border.light}`,
-                    boxShadow: theme.shadows.md,
-                    overflow: 'hidden',
-                    display: 'flex',
-                    flexDirection: 'column'
+                    boxShadow: theme.shadows.lg,
+                    overflow: 'hidden'
                   }}>
                     <div style={{
                       padding: theme.spacing[8],
                       borderBottom: `1px solid ${theme.colors.border.light}`
                     }}>
                       <div style={{
-                        fontSize: theme.fontSize.lg,
+                        fontSize: theme.fontSize.xl,
                         color: theme.colors.text.primary,
-                        fontWeight: theme.weight.semibold
-                      }}>
-                        Performance
-                      </div>
-                    </div>
-                    <div style={{
-                      padding: theme.spacing[8],
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      flex: 1
-                    }}>
-                      <div style={{
-                        fontSize: '48px',
                         fontWeight: theme.weight.bold,
-                        color: theme.colors.accent.blue,
-                        marginBottom: theme.spacing[2],
-                        lineHeight: 1
+                        marginBottom: theme.spacing[1]
                       }}>
-                        {stats.avgUploadsPerRequest}
+                        Activity Pulse
                       </div>
                       <div style={{
                         fontSize: theme.fontSize.sm,
                         color: theme.colors.text.tertiary
                       }}>
-                        Avg uploads per request
+                        Upload activity over the past week
+                      </div>
+                    </div>
+                    <div style={{ padding: theme.spacing[8] }}>
+                      {/* Activity Heatmap */}
+                      <div style={{
+                        display: 'flex',
+                        gap: theme.spacing[2],
+                        marginBottom: theme.spacing[6]
+                      }}>
+                        {stats.uploadsByDay.slice(-7).map((day, index) => {
+                          const maxCount = Math.max(...stats.uploadsByDay.slice(-7).map(d => d.count), 1)
+                          const intensity = (day.count / maxCount) * 100
+                          const height = Math.max((intensity / 100) * 120, 20)
+
+                          return (
+                            <div key={index} style={{
+                              flex: 1,
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              gap: theme.spacing[2]
+                            }}>
+                              <div
+                                style={{
+                                  width: '100%',
+                                  height: `${height}px`,
+                                  background: intensity > 0
+                                    ? `linear-gradient(180deg, ${theme.colors.accent.blue}, ${theme.colors.accent.purple})`
+                                    : theme.colors.bg.tertiary,
+                                  borderRadius: theme.radius.lg,
+                                  position: 'relative',
+                                  transition: `all ${theme.transition.normal}`,
+                                  cursor: 'pointer',
+                                  boxShadow: intensity > 50 ? `0 0 12px ${theme.colors.accent.blue}60` : 'none'
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.currentTarget.style.transform = 'translateY(-4px)'
+                                  e.currentTarget.style.filter = 'brightness(1.2)'
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.currentTarget.style.transform = 'translateY(0)'
+                                  e.currentTarget.style.filter = 'brightness(1)'
+                                }}
+                                title={`${day.count} uploads on ${new Date(day.date).toLocaleDateString()}`}
+                              >
+                                <div style={{
+                                  position: 'absolute',
+                                  top: '-24px',
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  fontSize: theme.fontSize.xs,
+                                  fontWeight: theme.weight.bold,
+                                  color: theme.colors.text.primary
+                                }}>
+                                  {day.count}
+                                </div>
+                              </div>
+                              <div style={{
+                                fontSize: theme.fontSize.xs,
+                                color: theme.colors.text.tertiary,
+                                fontWeight: theme.weight.medium
+                              }}>
+                                {new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' })}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+
+                      {/* Summary Stats */}
+                      <div style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: theme.spacing[4],
+                        marginTop: theme.spacing[6],
+                        padding: theme.spacing[6],
+                        background: theme.colors.bg.primary,
+                        borderRadius: theme.radius.xl
+                      }}>
+                        <div>
+                          <div style={{
+                            fontSize: theme.fontSize.xs,
+                            color: theme.colors.text.tertiary,
+                            marginBottom: theme.spacing[1],
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em'
+                          }}>
+                            Peak Day
+                          </div>
+                          <div style={{
+                            fontSize: theme.fontSize.xl,
+                            fontWeight: theme.weight.bold,
+                            color: theme.colors.accent.blue
+                          }}>
+                            {stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).count}
+                          </div>
+                        </div>
+                        <div>
+                          <div style={{
+                            fontSize: theme.fontSize.xs,
+                            color: theme.colors.text.tertiary,
+                            marginBottom: theme.spacing[1],
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.05em'
+                          }}>
+                            Avg/Day
+                          </div>
+                          <div style={{
+                            fontSize: theme.fontSize.xl,
+                            fontWeight: theme.weight.bold,
+                            color: theme.colors.accent.purple
+                          }}>
+                            {(stats.uploadsByDay.reduce((sum, day) => sum + day.count, 0) / stats.uploadsByDay.length).toFixed(1)}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 )}
+              </div>
+
+              {/* Storage Intelligence & Engagement Metrics */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                gap: theme.spacing[6],
+                marginBottom: theme.spacing[6]
+              }}>
+                {/* Storage Efficiency */}
+                <div style={{
+                  background: `linear-gradient(135deg, ${theme.colors.accent.green}10, ${theme.colors.accent.blue}10)`,
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md,
+                  padding: theme.spacing[8]
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize['4xl'],
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    💾
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.xs,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: theme.spacing[2],
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: theme.weight.semibold
+                  }}>
+                    Storage Efficiency
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize['3xl'],
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.accent.green,
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    {((stats.storageUsed / user.storage_limit_gb) * 100).toFixed(1)}%
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary
+                  }}>
+                    {stats.storageUsed.toFixed(2)} GB of {user.storage_limit_gb} GB used
+                  </div>
+                </div>
+
+                {/* Engagement Rate */}
+                <div style={{
+                  background: `linear-gradient(135deg, ${theme.colors.accent.blue}10, ${theme.colors.accent.purple}10)`,
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md,
+                  padding: theme.spacing[8]
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize['4xl'],
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    📈
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.xs,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: theme.spacing[2],
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: theme.weight.semibold
+                  }}>
+                    Engagement Rate
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize['3xl'],
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.accent.blue,
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    {stats.avgUploadsPerRequest || 0}
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary
+                  }}>
+                    Avg uploads per request
+                  </div>
+                </div>
+
+                {/* Response Rate */}
+                <div style={{
+                  background: `linear-gradient(135deg, ${theme.colors.accent.purple}10, ${theme.colors.accent.red}10)`,
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md,
+                  padding: theme.spacing[8]
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize['4xl'],
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    ⚡
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.xs,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: theme.spacing[2],
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: theme.weight.semibold
+                  }}>
+                    Response Rate
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize['3xl'],
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.accent.purple,
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    {stats.totalRequests > 0 ? ((stats.totalRequests - (stats.recentRequests || []).filter(r => (r.upload_count || 0) === 0).length) / stats.totalRequests * 100).toFixed(0) : 0}%
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary
+                  }}>
+                    Requests with responses
+                  </div>
+                </div>
               </div>
             </>
           )}
