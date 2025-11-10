@@ -122,14 +122,6 @@ function Responses() {
             }}>
               Responses
             </h1>
-            <p style={{
-              fontSize: theme.fontSize.sm,
-              color: theme.colors.text.secondary,
-              margin: '6px 0 0 0',
-              lineHeight: '1.6'
-            }}>
-              All files uploaded to your requests
-            </p>
           </div>
 
           {/* Stats */}

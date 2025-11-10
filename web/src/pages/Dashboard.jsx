@@ -215,14 +215,6 @@ function Dashboard() {
             }}>
               Dashboard
             </h1>
-            <p style={{
-              fontSize: theme.fontSize.sm,
-              color: theme.colors.text.secondary,
-              margin: '6px 0 0 0',
-              lineHeight: '1.6'
-            }}>
-              Overview of your file requests and uploads
-            </p>
           </div>
 
           {/* Primary Stats Grid */}

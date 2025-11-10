@@ -362,14 +362,6 @@ function Requests() {
               }}>
                 Requests
               </h1>
-              <p style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.secondary,
-                margin: '6px 0 0 0',
-                lineHeight: '1.6'
-              }}>
-                Create and manage file upload requests
-              </p>
             </div>
             <button
               onClick={openModal}
