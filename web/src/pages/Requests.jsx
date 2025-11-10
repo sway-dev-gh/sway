@@ -2114,12 +2114,13 @@ function Requests() {
       <Sidebar />
       <div
         style={{
-          minHeight: '100vh',
+          height: '100vh',
           background: '#0a0a0a',
           color: '#ffffff',
           paddingTop: '54px',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          overflow: 'hidden'
         }}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
