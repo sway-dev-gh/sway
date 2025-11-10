@@ -2906,9 +2906,9 @@ function Requests() {
               background: '#0a0a0a',
               border: '1px solid #2a2a2a',
               borderRadius: '8px',
-              padding: '24px',
+              padding: '0',
               marginBottom: '24px',
-              height: '350px',
+              height: '400px',
               overflow: 'hidden',
               position: 'relative',
               display: 'flex',
@@ -2917,13 +2917,11 @@ function Requests() {
             }}>
               {selectedTemplate.elements.length > 0 ? (
                 <div style={{
-                  width: '1000px',
-                  height: '600px',
+                  width: '600px',
+                  height: '400px',
                   background: '#000',
-                  borderRadius: '6px',
-                  border: '1px solid #1a1a1a',
                   position: 'relative',
-                  transform: 'scale(0.5)',
+                  transform: 'scale(1)',
                   transformOrigin: 'center'
                 }}>
                   {selectedTemplate.elements.map((element) => (
@@ -2931,10 +2929,10 @@ function Requests() {
                       key={element.id}
                       style={{
                         position: 'absolute',
-                        left: `${element.x}px`,
-                        top: `${element.y}px`,
-                        width: `${element.width}px`,
-                        height: `${element.height}px`,
+                        left: `${element.x * 0.5}px`,
+                        top: `${element.y * 0.5}px`,
+                        width: `${element.width * 0.5}px`,
+                        height: `${element.height * 0.5}px`,
                         border: '1px solid #333',
                         borderRadius: '4px',
                         background: element.type === 'button' ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
