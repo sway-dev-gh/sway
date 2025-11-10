@@ -346,13 +346,14 @@ function Requests() {
         }}>
 
           {/* Header */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: theme.spacing[6]
-          }}>
-            <div style={{ flex: 1, textAlign: 'center' }}>
+          <div style={{ marginBottom: theme.spacing[6] }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: theme.spacing[2]
+            }}>
+              <div style={{ flex: 1 }}></div>
               <h1 style={{
                 fontSize: theme.fontSize.xl,
                 fontWeight: '500',
@@ -362,32 +363,35 @@ function Requests() {
               }}>
                 Requests
               </h1>
-              <p style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.secondary,
-                margin: '6px 0 0 0',
-                lineHeight: '1.6'
-              }}>
-                Create and manage file upload requests
-              </p>
+              <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                <button
+                  onClick={openModal}
+                  style={{
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    border: 'none',
+                    padding: '12px 24px',
+                    borderRadius: '10px',
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    boxShadow: theme.shadows.md
+                  }}
+                >
+                  New Request
+                </button>
+              </div>
             </div>
-            <button
-              onClick={openModal}
-              style={{
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '10px',
-                fontSize: theme.fontSize.sm,
-                fontWeight: '500',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                boxShadow: theme.shadows.md
-              }}
-            >
-              New Request
-            </button>
+            <p style={{
+              fontSize: theme.fontSize.sm,
+              color: theme.colors.text.secondary,
+              margin: 0,
+              lineHeight: '1.6',
+              textAlign: 'center'
+            }}>
+              Create and manage file upload requests
+            </p>
           </div>
 
           {/* Request List - Card Grid */}
