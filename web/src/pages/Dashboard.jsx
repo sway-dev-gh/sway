@@ -412,67 +412,52 @@ function Dashboard() {
             </div>
           )}
 
-          {/* Pro Upgrade Banner for Free Users OR Advanced Insights for Pro */}
-          {(user.plan || 'free').toLowerCase() === 'free' ? (
-            <div style={{
-              background: `linear-gradient(135deg, ${theme.colors.accent.blue} 0%, ${theme.colors.accent.purple} 100%)`,
-              padding: theme.spacing[12],
-              borderRadius: theme.radius['2xl'],
-              border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.lg,
-              marginBottom: theme.spacing[10],
-              textAlign: 'center'
-            }}>
+          {/* Advanced Insights Grid - Blurred for Free, Full for Pro */}
+          <div style={{
+            position: 'relative',
+            marginBottom: theme.spacing[10]
+          }}>
+            {/* Blur overlay for Free users */}
+            {(user.plan || 'free').toLowerCase() === 'free' && (
               <div style={{
-                fontSize: theme.fontSize['2xl'],
-                fontWeight: theme.weight.bold,
-                color: theme.colors.white,
-                marginBottom: theme.spacing[4]
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0, 0, 0, 0.7)',
+                backdropFilter: 'blur(8px)',
+                borderRadius: theme.radius['2xl'],
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10
               }}>
-                Unlock Advanced Analytics
+                <Link
+                  to="/plan"
+                  style={{
+                    padding: '12px 32px',
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    borderRadius: theme.radius.lg,
+                    fontSize: theme.fontSize.base,
+                    fontWeight: theme.weight.semibold,
+                    textDecoration: 'none',
+                    boxShadow: theme.shadows.xl
+                  }}
+                >
+                  Upgrade to Pro for Advanced Insights
+                </Link>
               </div>
-              <div style={{
-                fontSize: theme.fontSize.lg,
-                color: 'rgba(255, 255, 255, 0.9)',
-                marginBottom: theme.spacing[8],
-                maxWidth: '600px',
-                margin: `0 auto ${theme.spacing[8]}px auto`
-              }}>
-                Upgrade to Pro to access file type breakdowns, top performing requests, advanced insights, and more
-              </div>
-              <Link
-                to="/plan"
-                style={{
-                  display: 'inline-block',
-                  padding: '16px 48px',
-                  background: theme.colors.white,
-                  color: theme.colors.accent.blue,
-                  borderRadius: theme.radius.xl,
-                  fontSize: theme.fontSize.lg,
-                  fontWeight: theme.weight.semibold,
-                  textDecoration: 'none',
-                  boxShadow: theme.shadows.xl,
-                  transition: `all ${theme.transition.fast}`
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = theme.shadows['2xl']
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = theme.shadows.xl
-                }}
-              >
-                Upgrade to Pro
-              </Link>
-            </div>
-          ) : (
-            /* Pro-Only Advanced Insights Grid */
+            )}
+
+            {/* Advanced Insights Grid */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
               gap: theme.spacing[6],
-              marginBottom: theme.spacing[10]
+              filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
+              pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
             }}>
               {/* Average Uploads Per Request */}
               <div style={{
@@ -582,7 +567,7 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
           {/* Recent Activity */}
           <div style={{

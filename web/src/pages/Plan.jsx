@@ -318,7 +318,7 @@ function Plan() {
                     opacity: upgrading ? 0.6 : 1
                   }}
                 >
-                  {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? 'Get Started' : 'Upgrade to Pro'))}
+                  {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? (currentPlan === 'pro' ? 'Switch to Free' : 'Get Started') : 'Upgrade to Pro'))}
                 </button>
               </div>
             ))}
