@@ -342,7 +342,7 @@ function Requests() {
         <div style={{
           maxWidth: '1600px',
           margin: '0 auto',
-          padding: '48px 60px'
+          padding: theme.spacing[6]
         }}>
 
           {/* Header */}
@@ -350,22 +350,22 @@ function Requests() {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
-            marginBottom: theme.spacing[12]
+            marginBottom: theme.spacing[6]
           }}>
             <div>
               <h1 style={{
-                fontSize: '48px',
+                fontSize: theme.fontSize.xl,
                 fontWeight: theme.weight.bold,
                 margin: 0,
                 color: theme.colors.text.primary,
-                letterSpacing: '-0.03em'
+                letterSpacing: '-0.02em'
               }}>
                 Requests
               </h1>
               <p style={{
-                fontSize: theme.fontSize.lg,
+                fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                margin: '16px 0 0 0',
+                margin: '6px 0 0 0',
                 lineHeight: '1.6'
               }}>
                 Create and manage file upload requests

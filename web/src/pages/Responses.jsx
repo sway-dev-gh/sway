@@ -108,13 +108,13 @@ function Responses() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[12]
+          padding: theme.spacing[6]
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[12] }}>
+          <div style={{ marginBottom: theme.spacing[6] }}>
             <h1 style={{
-              fontSize: theme.fontSize['3xl'],
+              fontSize: theme.fontSize.xl,
               fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
@@ -123,9 +123,9 @@ function Responses() {
               Responses
             </h1>
             <p style={{
-              fontSize: theme.fontSize.lg,
+              fontSize: theme.fontSize.sm,
               color: theme.colors.text.secondary,
-              margin: '12px 0 0 0',
+              margin: '6px 0 0 0',
               lineHeight: '1.6'
             }}>
               All files uploaded to your requests
@@ -136,32 +136,32 @@ function Responses() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: theme.spacing[6],
-            marginBottom: theme.spacing[10]
+            gap: theme.spacing[3],
+            marginBottom: theme.spacing[6]
           }}>
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius['2xl'],
-              padding: theme.spacing[12],
-              boxShadow: theme.shadows.md,
-                          }}>
+              borderRadius: '10px',
+              padding: '20px',
+              boxShadow: theme.shadows.md
+            }}>
               <div style={{
-                fontSize: theme.fontSize.sm,
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                marginBottom: theme.spacing[4],
+                letterSpacing: '1px',
+                marginBottom: theme.spacing[2],
                 fontWeight: theme.weight.medium
               }}>
                 Total Uploads
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: theme.fontSize.xl,
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[2]
+                marginBottom: theme.spacing[1]
               }}>
                 {responses.length}
               </div>
@@ -170,26 +170,26 @@ function Responses() {
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius['2xl'],
-              padding: theme.spacing[12],
-              boxShadow: theme.shadows.md,
-                          }}>
+              borderRadius: '10px',
+              padding: '20px',
+              boxShadow: theme.shadows.md
+            }}>
               <div style={{
-                fontSize: theme.fontSize.sm,
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                marginBottom: theme.spacing[4],
+                letterSpacing: '1px',
+                marginBottom: theme.spacing[2],
                 fontWeight: theme.weight.medium
               }}>
                 Total Size
               </div>
               <div style={{
-                fontSize: '48px',
+                fontSize: theme.fontSize.xl,
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[2]
+                marginBottom: theme.spacing[1]
               }}>
                 {formatBytes(responses.reduce((sum, r) => sum + (r.fileSize || 0), 0))}
               </div>

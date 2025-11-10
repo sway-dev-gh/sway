@@ -57,24 +57,24 @@ function Settings() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[12]
+          padding: theme.spacing[6]
         }}>
 
-          {/* Header - BIG */}
-          <div style={{ marginBottom: theme.spacing[12] }}>
+          {/* Header */}
+          <div style={{ marginBottom: theme.spacing[6] }}>
             <h1 style={{
-              fontSize: theme.fontSize['3xl'],
+              fontSize: theme.fontSize.xl,
               fontWeight: theme.weight.bold,
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.03em'
+              letterSpacing: '-0.02em'
             }}>
               Settings
             </h1>
             <p style={{
-              fontSize: theme.fontSize.lg,
+              fontSize: theme.fontSize.sm,
               color: theme.colors.text.secondary,
-              margin: '16px 0 0 0',
+              margin: '6px 0 0 0',
               lineHeight: '1.6'
             }}>
               Manage your account preferences and settings
@@ -89,18 +89,18 @@ function Settings() {
             {/* Account Information */}
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '48px',
-              borderRadius: '24px',
-              border: `2px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.lg
+              padding: '20px',
+              borderRadius: '10px',
+              border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.md
             }}>
               <div style={{
-                fontSize: theme.fontSize.base,
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[8],
+                marginBottom: theme.spacing[6],
                 textTransform: 'uppercase',
-                letterSpacing: '1.5px',
-                fontWeight: theme.weight.bold
+                letterSpacing: '1px',
+                fontWeight: theme.weight.medium
               }}>
                 Account Information
               </div>

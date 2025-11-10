@@ -169,25 +169,25 @@ function Plan() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[12]
+          padding: theme.spacing[6]
         }}>
 
-          {/* Header - BIG AND BOLD */}
-          <div style={{ marginBottom: '100px', textAlign: 'center' }}>
+          {/* Header */}
+          <div style={{ marginBottom: theme.spacing[12], textAlign: 'center' }}>
             <h1 style={{
-              fontSize: theme.fontSize['3xl'],
+              fontSize: theme.fontSize.xl,
               fontWeight: theme.weight.bold,
-              margin: '0 0 20px 0',
+              margin: '0 0 6px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.03em'
+              letterSpacing: '-0.02em'
             }}>
               Simple Pricing
             </h1>
             <p style={{
-              fontSize: theme.fontSize.base,
+              fontSize: theme.fontSize.sm,
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.7'
+              lineHeight: '1.6'
             }}>
               Start free. Upgrade when you need more. Cancel anytime.
             </p>
@@ -207,8 +207,8 @@ function Plan() {
                 key={plan.id}
                 style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[10],
-                  borderRadius: theme.radius['2xl'],
+                  padding: '20px',
+                  borderRadius: '10px',
                   border: plan.popular ? `1px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
                   position: 'relative',
                   boxShadow: plan.popular ? theme.shadows.glowStrong : theme.shadows.md
@@ -267,7 +267,7 @@ function Plan() {
                 <div style={{ marginBottom: theme.spacing[5] }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[1] }}>
                     <div style={{
-                      fontSize: '48px',
+                      fontSize: theme.fontSize.xl,
                       fontWeight: theme.weight.semibold,
                       color: theme.colors.text.primary,
                       letterSpacing: '-0.02em',
@@ -276,9 +276,9 @@ function Plan() {
                       {plan.price}
                     </div>
                     <div style={{
-                      fontSize: theme.fontSize.base,
+                      fontSize: theme.fontSize.sm,
                       color: theme.colors.text.muted,
-                      marginBottom: '6px'
+                      marginBottom: '4px'
                     }}>
                       {plan.period}
                     </div>
