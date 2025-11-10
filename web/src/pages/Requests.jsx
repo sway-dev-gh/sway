@@ -2291,7 +2291,7 @@ function Requests() {
           </div>
         </div>
 
-        {/* Three Column Layout */}
+        {/* Workspace Layout - Sidebar + Canvas */}
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
           {/* LEFT SIDEBAR */}
           <div style={{
@@ -2551,318 +2551,361 @@ function Requests() {
             </div>
           </div>
 
-          {/* RIGHT SIDEBAR - Properties */}
+        </div>
+
+        {/* BOTTOM PROPERTIES BAR */}
+        {selectedElement ? (
           <div style={{
-            width: '280px',
-            borderLeft: '1px solid #2a2a2a',
+            height: '180px',
+            borderTop: '1px solid #2a2a2a',
             background: '#0a0a0a',
-            overflowY: 'auto',
-            padding: '20px',
-            paddingBottom: '40px',
-            boxSizing: 'border-box'
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden'
           }}>
-            {selectedElement ? (
-              <>
-                <div style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  marginBottom: '20px'
-                }}>
-                  <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                    {COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label}
-                  </div>
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button
-                      onClick={handleDuplicateElement}
-                      style={{
-                        background: 'transparent',
-                        border: '1px solid #2a2a2a',
-                        borderRadius: '4px',
-                        padding: '6px 12px',
-                        fontSize: '12px',
-                        color: '#888',
-                        cursor: 'pointer',
-                        fontFamily: 'inherit'
-                      }}
-                    >
-                      Duplicate
-                    </button>
-                    <button
-                      onClick={handleDeleteElement}
-                      style={{
-                        background: 'transparent',
-                        border: '1px solid #2a2a2a',
-                        borderRadius: '4px',
-                        padding: '6px 12px',
-                        fontSize: '12px',
-                        color: '#ff4444',
-                        cursor: 'pointer',
-                        fontFamily: 'inherit'
-                      }}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </div>
-
-                {/* Dynamic Properties */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {/* Position */}
-                  <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '11px',
-                      color: '#888',
-                      marginBottom: '8px',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}>
-                      Position
-                    </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                      <input
-                        type="number"
-                        value={Math.round(selectedElement.x)}
-                        onChange={(e) => {
-                          const newElements = canvasElements.map(el => {
-                            if (el.id === selectedElement.id) {
-                              const updated = { ...el, x: parseInt(e.target.value) || 0 }
-                              setSelectedElement(updated)
-                              return updated
-                            }
-                            return el
-                          })
-                          setCanvasElements(newElements)
-                        }}
-                        style={{
-                          padding: '8px',
-                          fontSize: '13px',
-                          border: '1px solid #2a2a2a',
-                          borderRadius: '4px',
-                          background: '#1a1a1a',
-                          color: '#ffffff',
-                          fontFamily: 'inherit'
-                        }}
-                        placeholder="X"
-                      />
-                      <input
-                        type="number"
-                        value={Math.round(selectedElement.y)}
-                        onChange={(e) => {
-                          const newElements = canvasElements.map(el => {
-                            if (el.id === selectedElement.id) {
-                              const updated = { ...el, y: parseInt(e.target.value) || 0 }
-                              setSelectedElement(updated)
-                              return updated
-                            }
-                            return el
-                          })
-                          setCanvasElements(newElements)
-                        }}
-                        style={{
-                          padding: '8px',
-                          fontSize: '13px',
-                          border: '1px solid #2a2a2a',
-                          borderRadius: '4px',
-                          background: '#1a1a1a',
-                          color: '#ffffff',
-                          fontFamily: 'inherit'
-                        }}
-                        placeholder="Y"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Size */}
-                  <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '11px',
-                      color: '#888',
-                      marginBottom: '8px',
-                      fontWeight: '600',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px'
-                    }}>
-                      Size
-                    </label>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                      <input
-                        type="number"
-                        value={Math.round(selectedElement.width)}
-                        onChange={(e) => {
-                          const newElements = canvasElements.map(el => {
-                            if (el.id === selectedElement.id) {
-                              const updated = { ...el, width: parseInt(e.target.value) || 100 }
-                              setSelectedElement(updated)
-                              return updated
-                            }
-                            return el
-                          })
-                          setCanvasElements(newElements)
-                        }}
-                        style={{
-                          padding: '8px',
-                          fontSize: '13px',
-                          border: '1px solid #2a2a2a',
-                          borderRadius: '4px',
-                          background: '#1a1a1a',
-                          color: '#ffffff',
-                          fontFamily: 'inherit'
-                        }}
-                        placeholder="Width"
-                      />
-                      <input
-                        type="number"
-                        value={Math.round(selectedElement.height)}
-                        onChange={(e) => {
-                          const newElements = canvasElements.map(el => {
-                            if (el.id === selectedElement.id) {
-                              const updated = { ...el, height: parseInt(e.target.value) || 100 }
-                              setSelectedElement(updated)
-                              return updated
-                            }
-                            return el
-                          })
-                          setCanvasElements(newElements)
-                        }}
-                        style={{
-                          padding: '8px',
-                          fontSize: '13px',
-                          border: '1px solid #2a2a2a',
-                          borderRadius: '4px',
-                          background: '#1a1a1a',
-                          color: '#ffffff',
-                          fontFamily: 'inherit'
-                        }}
-                        placeholder="Height"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Element-specific properties */}
-                  {Object.entries(selectedElement.properties).map(([key, value]) => (
-                    <div key={key}>
-                      <label style={{
-                        display: 'block',
-                        fontSize: '11px',
-                        color: '#888',
-                        marginBottom: '8px',
-                        fontWeight: '600',
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px'
-                      }}>
-                        {key.replace(/([A-Z])/g, ' $1').trim()}
-                      </label>
-                      {typeof value === 'boolean' ? (
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <input
-                            type="checkbox"
-                            checked={value}
-                            onChange={(e) => handlePropertyChange(key, e.target.checked)}
-                            style={{ width: '18px', height: '18px' }}
-                          />
-                          <span style={{ fontSize: '13px', color: '#ccc' }}>Enabled</span>
-                        </label>
-                      ) : key.toLowerCase().includes('color') ? (
-                        <input
-                          type="color"
-                          value={value}
-                          onChange={(e) => handlePropertyChange(key, e.target.value)}
-                          style={{
-                            width: '100%',
-                            height: '40px',
-                            padding: '4px',
-                            border: '1px solid #2a2a2a',
-                            borderRadius: '6px',
-                            background: '#1a1a1a',
-                            cursor: 'pointer'
-                          }}
-                        />
-                      ) : typeof value === 'number' ? (
-                        <input
-                          type="number"
-                          value={value}
-                          onChange={(e) => handlePropertyChange(key, parseInt(e.target.value) || 0)}
-                          style={{
-                            width: '100%',
-                            padding: '10px',
-                            fontSize: '13px',
-                            border: '1px solid #2a2a2a',
-                            borderRadius: '6px',
-                            background: '#1a1a1a',
-                            color: '#ffffff',
-                            fontFamily: 'inherit'
-                          }}
-                        />
-                      ) : key === 'content' && selectedElement.type === 'text' ? (
-                        <textarea
-                          value={value}
-                          onChange={(e) => handlePropertyChange(key, e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '10px',
-                            fontSize: '13px',
-                            border: '1px solid #2a2a2a',
-                            borderRadius: '6px',
-                            background: '#1a1a1a',
-                            color: '#ffffff',
-                            fontFamily: 'inherit',
-                            resize: 'vertical',
-                            minHeight: '80px'
-                          }}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          value={value}
-                          onChange={(e) => handlePropertyChange(key, e.target.value)}
-                          style={{
-                            width: '100%',
-                            padding: '10px',
-                            fontSize: '13px',
-                            border: '1px solid #2a2a2a',
-                            borderRadius: '6px',
-                            background: '#1a1a1a',
-                            color: '#ffffff',
-                            fontFamily: 'inherit'
-                          }}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </>
-            ) : (
+            {/* Properties Header */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              padding: '12px 24px',
+              borderBottom: '1px solid #2a2a2a'
+            }}>
               <div style={{
-                textAlign: 'center',
-                color: '#666',
-                padding: '60px 20px'
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px'
               }}>
-                <div style={{ fontSize: '36px', marginBottom: '16px', opacity: 0.3 }}>◇</div>
-                <div style={{ fontSize: '13px' }}>
-                  Select an element to edit its properties
+                <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                  {COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label}
                 </div>
-                <div style={{ fontSize: '11px', marginTop: '16px', color: '#444', lineHeight: '1.6' }}>
-                  {userPlan === 'pro' ? (
-                    <>
-                      Delete: Del/Backspace<br/>
-                      Duplicate: Cmd+D<br/>
-                      Copy: Cmd+C<br/>
-                      Paste: Cmd+V<br/>
-                      Undo: Cmd+Z<br/>
-                      Redo: Cmd+Shift+Z
-                    </>
-                  ) : (
-                    'Upgrade to Pro for keyboard shortcuts'
-                  )}
+                <div style={{ fontSize: '11px', color: '#666' }}>
+                  Properties
                 </div>
               </div>
-            )}
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={handleDuplicateElement}
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid #2a2a2a',
+                    borderRadius: '4px',
+                    padding: '6px 16px',
+                    fontSize: '12px',
+                    color: '#888',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  Duplicate
+                </button>
+                <button
+                  onClick={handleDeleteElement}
+                  style={{
+                    background: 'transparent',
+                    border: '1px solid #2a2a2a',
+                    borderRadius: '4px',
+                    padding: '6px 16px',
+                    fontSize: '12px',
+                    color: '#ff4444',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+
+            {/* Properties Content - Horizontal Scroll */}
+            <div style={{
+              flex: 1,
+              overflowX: 'auto',
+              overflowY: 'hidden',
+              padding: '16px 24px'
+            }}>
+              <div style={{
+                display: 'flex',
+                gap: '24px',
+                alignItems: 'flex-start',
+                minWidth: 'max-content'
+              }}>
+                {/* Position Group */}
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '10px',
+                      color: '#888',
+                      marginBottom: '6px',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      X
+                    </label>
+                    <input
+                      type="number"
+                      value={Math.round(selectedElement.x)}
+                      onChange={(e) => {
+                        const newElements = canvasElements.map(el => {
+                          if (el.id === selectedElement.id) {
+                            const updated = { ...el, x: parseInt(e.target.value) || 0 }
+                            setSelectedElement(updated)
+                            return updated
+                          }
+                          return el
+                        })
+                        setCanvasElements(newElements)
+                      }}
+                      style={{
+                        width: '70px',
+                        padding: '8px',
+                        fontSize: '13px',
+                        border: '1px solid #2a2a2a',
+                        borderRadius: '4px',
+                        background: '#1a1a1a',
+                        color: '#ffffff',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '10px',
+                      color: '#888',
+                      marginBottom: '6px',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      Y
+                    </label>
+                    <input
+                      type="number"
+                      value={Math.round(selectedElement.y)}
+                      onChange={(e) => {
+                        const newElements = canvasElements.map(el => {
+                          if (el.id === selectedElement.id) {
+                            const updated = { ...el, y: parseInt(e.target.value) || 0 }
+                            setSelectedElement(updated)
+                            return updated
+                          }
+                          return el
+                        })
+                        setCanvasElements(newElements)
+                      }}
+                      style={{
+                        width: '70px',
+                        padding: '8px',
+                        fontSize: '13px',
+                        border: '1px solid #2a2a2a',
+                        borderRadius: '4px',
+                        background: '#1a1a1a',
+                        color: '#ffffff',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Size Group */}
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '10px',
+                      color: '#888',
+                      marginBottom: '6px',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      Width
+                    </label>
+                    <input
+                      type="number"
+                      value={Math.round(selectedElement.width)}
+                      onChange={(e) => {
+                        const newElements = canvasElements.map(el => {
+                          if (el.id === selectedElement.id) {
+                            const updated = { ...el, width: parseInt(e.target.value) || 100 }
+                            setSelectedElement(updated)
+                            return updated
+                          }
+                          return el
+                        })
+                        setCanvasElements(newElements)
+                      }}
+                      style={{
+                        width: '80px',
+                        padding: '8px',
+                        fontSize: '13px',
+                        border: '1px solid #2a2a2a',
+                        borderRadius: '4px',
+                        background: '#1a1a1a',
+                        color: '#ffffff',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '10px',
+                      color: '#888',
+                      marginBottom: '6px',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      Height
+                    </label>
+                    <input
+                      type="number"
+                      value={Math.round(selectedElement.height)}
+                      onChange={(e) => {
+                        const newElements = canvasElements.map(el => {
+                          if (el.id === selectedElement.id) {
+                            const updated = { ...el, height: parseInt(e.target.value) || 100 }
+                            setSelectedElement(updated)
+                            return updated
+                          }
+                          return el
+                        })
+                        setCanvasElements(newElements)
+                      }}
+                      style={{
+                        width: '80px',
+                        padding: '8px',
+                        fontSize: '13px',
+                        border: '1px solid #2a2a2a',
+                        borderRadius: '4px',
+                        background: '#1a1a1a',
+                        color: '#ffffff',
+                        fontFamily: 'inherit'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* Vertical Divider */}
+                <div style={{
+                  width: '1px',
+                  height: '60px',
+                  background: '#2a2a2a',
+                  margin: '10px 0'
+                }} />
+
+                {/* Dynamic Properties - Horizontal */}
+                {Object.entries(selectedElement.properties).map(([key, value]) => (
+                  <div key={key} style={{ minWidth: typeof value === 'boolean' ? '120px' : '180px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '10px',
+                      color: '#888',
+                      marginBottom: '6px',
+                      fontWeight: '600',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      {key.replace(/([A-Z])/g, ' $1').trim()}
+                    </label>
+                    {typeof value === 'boolean' ? (
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '36px' }}>
+                        <input
+                          type="checkbox"
+                          checked={value}
+                          onChange={(e) => handlePropertyChange(key, e.target.checked)}
+                          style={{ width: '18px', height: '18px' }}
+                        />
+                        <span style={{ fontSize: '12px', color: '#ccc' }}>Enabled</span>
+                      </label>
+                    ) : key.toLowerCase().includes('color') ? (
+                      <input
+                        type="color"
+                        value={value}
+                        onChange={(e) => handlePropertyChange(key, e.target.value)}
+                        style={{
+                          width: '80px',
+                          height: '36px',
+                          padding: '2px',
+                          border: '1px solid #2a2a2a',
+                          borderRadius: '4px',
+                          background: '#1a1a1a',
+                          cursor: 'pointer'
+                        }}
+                      />
+                    ) : typeof value === 'number' ? (
+                      <input
+                        type="number"
+                        value={value}
+                        onChange={(e) => handlePropertyChange(key, parseInt(e.target.value) || 0)}
+                        style={{
+                          width: '100px',
+                          padding: '8px',
+                          fontSize: '13px',
+                          border: '1px solid #2a2a2a',
+                          borderRadius: '4px',
+                          background: '#1a1a1a',
+                          color: '#ffffff',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                    ) : key === 'content' || key.toLowerCase().includes('text') || key.toLowerCase().includes('label') ? (
+                      <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => handlePropertyChange(key, e.target.value)}
+                        style={{
+                          width: '200px',
+                          padding: '8px',
+                          fontSize: '13px',
+                          border: '1px solid #2a2a2a',
+                          borderRadius: '4px',
+                          background: '#1a1a1a',
+                          color: '#ffffff',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        value={value}
+                        onChange={(e) => handlePropertyChange(key, e.target.value)}
+                        style={{
+                          width: '150px',
+                          padding: '8px',
+                          fontSize: '13px',
+                          border: '1px solid #2a2a2a',
+                          borderRadius: '4px',
+                          background: '#1a1a1a',
+                          color: '#ffffff',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div style={{
+            height: '60px',
+            borderTop: '1px solid #2a2a2a',
+            background: '#0a0a0a',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#666',
+            fontSize: '12px'
+          }}>
+            <span style={{ marginRight: '8px', fontSize: '16px', opacity: 0.3 }}>◇</span>
+            Select an element to edit its properties
+          </div>
+        )}
       </div>
 
       {/* TEMPLATE MODAL */}
