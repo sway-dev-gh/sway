@@ -578,6 +578,222 @@ function Plan() {
                   Files are stored indefinitely as long as you stay within your storage limit. You can delete requests and files anytime to free up space.
                 </div>
               </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Why is Sway better than email attachments?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Email has size limits (usually 25MB), gets lost in inboxes, and lacks organization. Sway gives you a dedicated link, unlimited file types, up to 50MB per file, automatic notifications, and all uploads in one organized dashboard.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Can people upload without creating an account?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Yes! Recipients just click your link and upload - no signup required. They can optionally provide their name and email, making it incredibly easy for anyone to send you files.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  What happens when someone uploads a file?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  You get an instant notification, and the file appears in your dashboard. You can download individual files or use the bulk download feature (Pro) to get everything at once as a zip file.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Can I try Pro features before paying?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Start with Free to test the core features. When you're ready for password protection, custom fields, advanced analytics, and bulk downloads, upgrade to Pro. Plus, we offer a 30-day money-back guarantee.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  How do I get my files out if I cancel?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  You keep full access to download all your files even after canceling. No lock-in, no hostage situations - your data is always yours. Just download everything before your storage limit decreases.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Do you sell my data or show ads?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Never. We make money from Pro subscriptions, not from your data. No ads, no tracking, no selling your information to third parties. Your files and privacy are sacred.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  What makes Sway different from Dropbox or Google Drive?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Sway is purpose-built for collecting files FROM others, not sharing files TO others. No folders to navigate, no permissions to manage - just send a link and receive. It's the reverse of traditional file sharing.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Can I set expiration dates on requests?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Yes! Every request can have a custom expiration date. After the date passes, the upload link stops accepting new files. Perfect for deadlines, time-sensitive collections, or limiting exposure.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Is there a mobile app?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Sway works perfectly in any mobile browser - no app needed. The interface is fully responsive, and uploaders can send files from their phones just as easily as desktop. Simple and universal.
+                </div>
+              </div>
             </div>
           </div>
         </div>
