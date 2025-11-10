@@ -7,10 +7,6 @@ function Uploads() {
   const [uploads, setUploads] = useState([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchUploads()
-  }, [])
-
   const fetchUploads = async () => {
     try {
       setLoading(true)
@@ -58,6 +54,11 @@ function Uploads() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchUploads()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const downloadFile = async (uploadId, filename) => {
     try {

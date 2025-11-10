@@ -21,10 +21,6 @@ function Upload() {
   const [passwordVerified, setPasswordVerified] = useState(false)
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false)
 
-  useEffect(() => {
-    fetchRequest()
-  }, [shortCode])
-
   const fetchRequest = async () => {
     try {
       console.log('[Upload] Fetching request with shortCode:', shortCode)
@@ -47,6 +43,11 @@ function Upload() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shortCode])
 
   const handleFileChange = (e) => {
     setFiles(Array.from(e.target.files))

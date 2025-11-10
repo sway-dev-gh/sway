@@ -9,10 +9,6 @@ function RequestView() {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    fetchRequest()
-  }, [id])
-
   const fetchRequest = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -32,6 +28,11 @@ function RequestView() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    fetchRequest()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id])
 
   const copyLink = () => {
     const link = `${window.location.origin}/r/${data.request.shortCode}`
