@@ -6,7 +6,7 @@ import api from '../api/axios'
 
 function Dashboard() {
   const navigate = useNavigate()
-  // FORCE REBUILD - Version 2
+  // FORCE REBUILD - Version 3 - Nov 9 2025
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalRequests: 0,
