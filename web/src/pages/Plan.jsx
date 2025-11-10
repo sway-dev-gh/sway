@@ -62,7 +62,9 @@ function Plan() {
       features: [
         { text: '20 active requests', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Limited request types', highlight: false }
+        { text: 'Limited request types', highlight: false },
+        { text: 'Basic analytics', highlight: false },
+        { text: 'Standard support', highlight: false }
       ]
     },
     {
@@ -75,7 +77,14 @@ function Plan() {
       features: [
         { text: '200 active requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'All request types', highlight: true }
+        { text: 'All request types', highlight: true },
+        { text: 'Password-protected requests', highlight: true },
+        { text: 'Custom request builder', highlight: true },
+        { text: 'Bulk download (Download All)', highlight: true },
+        { text: 'Advanced analytics & insights', highlight: true },
+        { text: 'File type breakdown', highlight: true },
+        { text: 'Top performing requests', highlight: true },
+        { text: 'Priority support', highlight: true }
       ]
     }
   ]
