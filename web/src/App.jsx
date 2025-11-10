@@ -4,6 +4,7 @@ import Requests from './pages/Requests'
 import Responses from './pages/Responses'
 import Uploads from './pages/Uploads'
 import Plan from './pages/Plan'
+import FAQ from './pages/FAQ'
 import Settings from './pages/Settings'
 import RequestView from './pages/RequestView'
 import Upload from './pages/Upload'
@@ -25,6 +26,7 @@ function App() {
         <Route path="/responses" element={<Responses />} />
         <Route path="/uploads" element={<Uploads />} />
         <Route path="/plan" element={<Plan />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>

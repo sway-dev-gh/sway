@@ -89,6 +89,7 @@ function Sidebar() {
         { path: '/requests', label: 'Requests', planRequired: null },
         { path: '/responses', label: 'Responses', planRequired: null },
         { path: '/plan', label: 'Plan', planRequired: null },
+        { path: '/faq', label: 'FAQ', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
       ]
     }
