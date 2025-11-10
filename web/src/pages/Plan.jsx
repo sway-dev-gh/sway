@@ -109,7 +109,9 @@ function Plan() {
       features: [
         { text: '5 file requests', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Basic visual builder', highlight: false },
+        { text: 'Basic visual builder (5 elements max)', highlight: false },
+        { text: 'Basic templates (Blank, Simple, Contact)', highlight: false },
+        { text: 'Basic elements (Text, Input, File Upload)', highlight: false },
         { text: 'Basic analytics', highlight: false }
       ]
     },
@@ -123,11 +125,16 @@ function Plan() {
       features: [
         { text: 'Unlimited requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'Advanced visual builder', highlight: true },
+        { text: 'Advanced visual builder (unlimited elements)', highlight: true },
+        { text: 'Pro templates (Onboarding, Product, Event, Job)', highlight: true },
+        { text: 'Advanced elements (Dropdowns, Multi-file, Gallery)', highlight: true },
+        { text: 'Rich inputs (Date, Color, Slider, Rating)', highlight: true },
+        { text: 'Rich text editor & Email validation', highlight: true },
+        { text: 'Keyboard shortcuts enabled', highlight: true },
         { text: 'Password protect pages', highlight: true },
-        { text: 'Download everything', highlight: true },
+        { text: 'Download everything (bulk downloads)', highlight: true },
         { text: 'Advanced analytics', highlight: true },
-        { text: 'Priority support', highlight: true }
+        { text: 'Priority support (4hr response)', highlight: true }
       ]
     }
   ]

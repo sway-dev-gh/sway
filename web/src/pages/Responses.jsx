@@ -222,7 +222,7 @@ function Responses() {
               color: theme.colors.text.primary,
               letterSpacing: '-0.03em'
             }}>
-              Your Requests
+              Tracking Insights
             </h1>
             <p style={{
               fontSize: '20px',
@@ -230,7 +230,7 @@ function Responses() {
               margin: 0,
               lineHeight: '1.5'
             }}>
-              See all your file requests and download everything
+              Monitor all your requests, uploads, and download everything
             </p>
           </div>
 

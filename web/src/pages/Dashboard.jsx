@@ -80,7 +80,7 @@ function Dashboard() {
 
       // If user has created forms, redirect them to Tracking (their real dashboard)
       if (analytics.totalRequests > 0) {
-        navigate('/tracking')
+        navigate('/responses')
         return
       }
 
@@ -269,7 +269,7 @@ function Dashboard() {
               </div>
             </Link>
 
-            <Link to="/tracking" style={{ textDecoration: 'none' }}>
+            <Link to="/responses" style={{ textDecoration: 'none' }}>
               <div style={{
                 padding: '40px',
                 border: `1px solid ${theme.colors.border.light}`,
