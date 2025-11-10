@@ -176,7 +176,7 @@ function Sidebar() {
             width: '48px',
             height: '48px',
             flexShrink: 0,
-            background: 'transparent'
+            filter: 'invert(1) brightness(2)'
           }}
         />
       </Link>
