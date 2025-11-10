@@ -202,26 +202,116 @@ function Responses() {
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
               borderRadius: theme.radius['2xl'],
-              padding: '120px 60px',
+              padding: '80px 60px',
               boxShadow: theme.shadows.md,
               textAlign: 'center'
             }}>
-              <h3 style={{
-                fontSize: theme.fontSize.base,
-                fontWeight: theme.weight.medium,
-                color: theme.colors.text.primary,
-                margin: '0 0 12px 0'
+              {/* Icon */}
+              <div style={{
+                width: '80px',
+                height: '80px',
+                margin: '0 auto 24px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '36px',
+                border: `2px solid ${theme.colors.border.medium}`
               }}>
-                No responses yet
+                📥
+              </div>
+
+              <h3 style={{
+                fontSize: theme.fontSize.lg,
+                fontWeight: theme.weight.semibold,
+                color: theme.colors.text.primary,
+                margin: '0 0 12px 0',
+                letterSpacing: '-0.02em'
+              }}>
+                Waiting for uploads
               </h3>
               <p style={{
-                fontSize: theme.fontSize.lg,
+                fontSize: theme.fontSize.base,
                 color: theme.colors.text.secondary,
-                margin: 0,
-                lineHeight: '1.6'
+                margin: '0 0 32px 0',
+                lineHeight: '1.6',
+                maxWidth: '420px',
+                marginLeft: 'auto',
+                marginRight: 'auto'
               }}>
-                Files uploaded to your requests will appear here
+                When someone uploads a file to your requests, you'll see it here. You'll also get an instant notification.
               </p>
+
+              {/* Quick workflow */}
+              <div style={{
+                marginTop: '48px',
+                padding: '28px',
+                background: 'rgba(255, 255, 255, 0.02)',
+                borderRadius: theme.radius.xl,
+                border: `1px solid ${theme.colors.border.light}`,
+                maxWidth: '520px',
+                marginLeft: 'auto',
+                marginRight: 'auto'
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.tertiary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                  marginBottom: '20px',
+                  fontWeight: theme.weight.medium,
+                  textAlign: 'center'
+                }}>
+                  How it works
+                </div>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(3, 1fr)',
+                  gap: '24px',
+                  textAlign: 'center'
+                }}>
+                  <div>
+                    <div style={{
+                      fontSize: '28px',
+                      marginBottom: '8px'
+                    }}>🔗</div>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Share your request link
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{
+                      fontSize: '28px',
+                      marginBottom: '8px'
+                    }}>📤</div>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      They upload files
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{
+                      fontSize: '28px',
+                      marginBottom: '8px'
+                    }}>✨</div>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Files appear here
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           ) : (
             <div style={{

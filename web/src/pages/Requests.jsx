@@ -396,28 +396,110 @@ function Requests() {
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '120px 60px',
+                padding: '80px 60px',
                 background: theme.colors.bg.secondary,
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
-                <h3 style={{
-                  fontSize: theme.fontSize.base,
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.primary,
-                  margin: '0 0 12px 0'
+                {/* Icon */}
+                <div style={{
+                  width: '80px',
+                  height: '80px',
+                  margin: '0 auto 24px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '36px',
+                  border: `2px solid ${theme.colors.border.medium}`
                 }}>
-                  No requests yet
+                  📬
+                </div>
+
+                <h3 style={{
+                  fontSize: theme.fontSize.lg,
+                  fontWeight: theme.weight.semibold,
+                  color: theme.colors.text.primary,
+                  margin: '0 0 12px 0',
+                  letterSpacing: '-0.02em'
+                }}>
+                  Ready to collect files?
                 </h3>
                 <p style={{
-                  fontSize: theme.fontSize.lg,
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.secondary,
-                  margin: 0,
-                  lineHeight: '1.6'
+                  margin: '0 0 32px 0',
+                  lineHeight: '1.6',
+                  maxWidth: '400px',
+                  marginLeft: 'auto',
+                  marginRight: 'auto'
                 }}>
-                  Click "+ New Request" to create your first request.
+                  Create your first request and get a shareable link. Recipients can upload files instantly - no signup required.
                 </p>
+
+                {/* CTA */}
+                <button
+                  onClick={openModal}
+                  style={{
+                    padding: '14px 32px',
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    border: 'none',
+                    borderRadius: theme.radius.lg,
+                    fontSize: theme.fontSize.base,
+                    fontWeight: theme.weight.semibold,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    boxShadow: theme.shadows.md
+                  }}
+                >
+                  Create Your First Request
+                </button>
+
+                {/* Quick tips */}
+                <div style={{
+                  marginTop: '48px',
+                  padding: '24px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  borderRadius: theme.radius.xl,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  textAlign: 'left',
+                  maxWidth: '500px',
+                  marginLeft: 'auto',
+                  marginRight: 'auto'
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px',
+                    marginBottom: '12px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    What you can do
+                  </div>
+                  <div style={{ display: 'grid', gap: '8px' }}>
+                    {[
+                      'Collect files from clients, vendors, or team members',
+                      'Set expiration dates and password protection',
+                      'Get instant notifications when files are uploaded',
+                      'Download everything as a zip file'
+                    ].map((tip, i) => (
+                      <div key={i} style={{
+                        fontSize: theme.fontSize.sm,
+                        color: theme.colors.text.secondary,
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '8px'
+                      }}>
+                        <span style={{ color: theme.colors.white, opacity: 0.6 }}>•</span>
+                        <span>{tip}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             ) : (
               <div style={{
