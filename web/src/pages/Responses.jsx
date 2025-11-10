@@ -201,23 +201,23 @@ function Responses() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '54px'
+        paddingTop: '54px'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[6]
+          padding: '48px 32px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[6] }}>
+          <div style={{ marginBottom: '48px' }}>
             <h1 style={{
               fontSize: '48px',
               fontWeight: '600',
-              margin: '0 0 12px 0',
+              margin: '0 0 8px 0',
               color: theme.colors.text.primary,
               letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
             }}>
               Tracking
             </h1>
@@ -261,7 +261,7 @@ function Responses() {
                 color: theme.colors.text.primary,
                 lineHeight: '1',
                 marginBottom: theme.spacing[1],
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                 fontVariantNumeric: 'tabular-nums'
               }}>
                 {forms.length}
@@ -297,7 +297,7 @@ function Responses() {
                 color: '#ffffff',
                 lineHeight: '1',
                 marginBottom: theme.spacing[1],
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                 fontVariantNumeric: 'tabular-nums'
               }}>
                 {forms.filter(f => getFormStatus(f) === 'Live').length}
@@ -333,7 +333,7 @@ function Responses() {
                 color: theme.colors.text.primary,
                 lineHeight: '1',
                 marginBottom: theme.spacing[1],
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                 fontVariantNumeric: 'tabular-nums'
               }}>
                 {uploads.length}
@@ -369,7 +369,7 @@ function Responses() {
                 color: theme.colors.text.primary,
                 lineHeight: '1',
                 marginBottom: theme.spacing[2],
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                 fontVariantNumeric: 'tabular-nums'
               }}>
                 {storageStats.used.toFixed(2)} GB

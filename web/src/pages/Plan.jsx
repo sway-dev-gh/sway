@@ -162,31 +162,31 @@ function Plan() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '54px'
+        paddingTop: '54px'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[6],
+          padding: '48px 32px',
           paddingBottom: '120px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[6], textAlign: 'center' }}>
+          <div style={{ marginBottom: '48px', textAlign: 'center' }}>
             <h1 style={{
               fontSize: '48px',
               fontWeight: '600',
-              margin: 0,
+              margin: '0 0 8px 0',
               color: theme.colors.text.primary,
               letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
             }}>
               Pricing
             </h1>
             <p style={{
               fontSize: '18px',
               color: theme.colors.text.secondary,
-              margin: '12px 0 0 0',
+              margin: 0,
               lineHeight: '1.6'
             }}>
               Simple, transparent pricing for everyone
@@ -271,7 +271,7 @@ function Plan() {
                       color: theme.colors.text.primary,
                       letterSpacing: '-0.02em',
                       lineHeight: '1',
-                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                       fontVariantNumeric: 'tabular-nums'
                     }}>
                       {plan.price}

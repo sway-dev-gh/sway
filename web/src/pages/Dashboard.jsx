@@ -194,28 +194,29 @@ function Dashboard() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '54px'
+        paddingTop: '54px'
       }}>
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[6]
+          padding: '48px 32px'
         }}>
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[6] }}>
+          <div style={{ marginBottom: '48px' }}>
             <h1 style={{
-              fontSize: theme.fontSize.xl,
-              fontWeight: '500',
-              margin: 0,
+              fontSize: '48px',
+              fontWeight: '600',
+              margin: '0 0 8px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
             }}>
               Dashboard
             </h1>
             <p style={{
-              fontSize: theme.fontSize.sm,
+              fontSize: '18px',
               color: theme.colors.text.secondary,
-              margin: '6px 0 0 0',
+              margin: 0,
               lineHeight: '1.6'
             }}>
               Analytics and insights for your forms
@@ -656,45 +657,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Quick Actions */}
-          <div style={{
-            display: 'flex',
-            gap: theme.spacing[3],
-            justifyContent: 'center'
-          }}>
-            <Link
-              to="/requests"
-              style={{
-                padding: '12px 24px',
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
-                borderRadius: theme.radius.md,
-                fontSize: theme.fontSize.sm,
-                fontWeight: theme.weight.medium,
-                textDecoration: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              Create New Form
-            </Link>
-            <Link
-              to="/requests"
-              style={{
-                padding: '12px 24px',
-                background: 'transparent',
-                color: theme.colors.text.primary,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
-                fontSize: theme.fontSize.sm,
-                fontWeight: theme.weight.medium,
-                textDecoration: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              View All Forms
-            </Link>
-          </div>
         </div>
       </div>
     </>
