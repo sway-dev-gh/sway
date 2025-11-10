@@ -1,4 +1,10 @@
 const theme = {
+  breakpoints: {
+    mobile: '640px',
+    tablet: '768px',
+    desktop: '1024px',
+    wide: '1280px'
+  },
   colors: {
     bg: {
       page: '#000000',
@@ -69,6 +75,38 @@ const theme = {
     cardPadding: '24px',
     // Standard form field gap
     formFieldGap: '16px'
+  },
+  alerts: {
+    error: {
+      padding: '12px 16px',
+      background: 'rgba(239, 68, 68, 0.1)',
+      border: '1px solid rgba(239, 68, 68, 0.3)',
+      borderRadius: '8px',
+      color: '#ef4444',
+      fontSize: '14px',
+      lineHeight: '1.5',
+      marginBottom: '16px'
+    },
+    success: {
+      padding: '12px 16px',
+      background: 'rgba(255, 255, 255, 0.1)',
+      border: '1px solid rgba(255, 255, 255, 0.2)',
+      borderRadius: '8px',
+      color: '#ffffff',
+      fontSize: '14px',
+      lineHeight: '1.5',
+      marginBottom: '16px'
+    },
+    info: {
+      padding: '12px 16px',
+      background: 'rgba(255, 255, 255, 0.05)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+      borderRadius: '8px',
+      color: '#a3a3a3',
+      fontSize: '14px',
+      lineHeight: '1.5',
+      marginBottom: '16px'
+    }
   },
   fontSize: {
     xs: '12px',

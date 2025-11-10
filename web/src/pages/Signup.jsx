@@ -81,16 +81,7 @@ export default function Signup() {
         }}>
           {/* Error Message */}
           {error && (
-            <div style={{
-              padding: theme.spacing[3],
-              background: 'rgba(255, 59, 48, 0.1)',
-              border: `1px solid rgba(255, 59, 48, 0.2)`,
-              borderRadius: theme.radius.md,
-              color: theme.colors.error,
-              fontSize: theme.fontSize.xs,
-              marginBottom: theme.spacing[4],
-              lineHeight: '1.4'
-            }}>
+            <div style={theme.alerts.error}>
               {error}
             </div>
           )}

@@ -390,3 +390,49 @@ tbody tr:hover {
   align-items: center;
   justify-content: center;
 }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: var(--space-6);
+  }
+
+  h1 {
+    font-size: var(--text-xl);
+  }
+
+  h2 {
+    font-size: var(--text-lg);
+  }
+
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px 20px;
+  }
+
+  input,
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    padding: var(--space-4);
+  }
+
+  h1 {
+    font-size: var(--text-lg);
+  }
+}
