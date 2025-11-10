@@ -2366,9 +2366,9 @@ function Requests() {
                         style={{
                           padding: '14px',
                           marginBottom: '10px',
-                          background: '#1a1a1a',
-                          border: '1px solid #2a2a2a',
-                          borderRadius: '8px',
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          border: `1px solid ${theme.colors.border.light}`,
+                          borderRadius: theme.radius.md,
                           cursor: isLocked ? 'not-allowed' : 'pointer',
                           opacity: isLocked ? 0.6 : 1,
                           position: 'relative'
@@ -2431,9 +2431,9 @@ function Requests() {
                         style={{
                           padding: '12px',
                           marginBottom: '8px',
-                          background: '#1a1a1a',
-                          border: '1px solid #2a2a2a',
-                          borderRadius: '6px',
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          border: `1px solid ${theme.colors.border.light}`,
+                          borderRadius: theme.radius.sm,
                           cursor: isLocked ? 'not-allowed' : 'grab',
                           userSelect: 'none',
                           opacity: isLocked ? 0.6 : 1

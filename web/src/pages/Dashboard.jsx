@@ -235,8 +235,8 @@ function Dashboard() {
               <div style={{
                 padding: '40px',
                 border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+                borderRadius: theme.radius.lg,
+                background: 'rgba(255, 255, 255, 0.02)',
                 cursor: 'pointer',
                 height: '100%'
               }}>
@@ -273,8 +273,8 @@ function Dashboard() {
               <div style={{
                 padding: '40px',
                 border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px',
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
+                borderRadius: theme.radius.lg,
+                background: 'rgba(255, 255, 255, 0.02)',
                 cursor: 'pointer',
                 height: '100%'
               }}>

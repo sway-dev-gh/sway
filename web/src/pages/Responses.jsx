@@ -246,7 +246,7 @@ function Responses() {
               padding: '28px',
               background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '16px',
+              borderRadius: theme.radius.lg,
               transition: 'all 0.2s ease'
             }}>
               <div style={{
@@ -285,7 +285,7 @@ function Responses() {
               padding: '28px',
               background: 'rgba(255, 255, 255, 0.05)',
               border: `1px solid ${theme.colors.white}`,
-              borderRadius: '16px',
+              borderRadius: theme.radius.lg,
               transition: 'all 0.2s ease'
             }}>
               <div style={{
@@ -324,7 +324,7 @@ function Responses() {
               padding: '28px',
               background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '16px',
+              borderRadius: theme.radius.lg,
               transition: 'all 0.2s ease'
             }}>
               <div style={{
@@ -363,7 +363,7 @@ function Responses() {
               padding: '28px',
               background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '16px',
+              borderRadius: theme.radius.lg,
               transition: 'all 0.2s ease'
             }}>
               <div style={{
