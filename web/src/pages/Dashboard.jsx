@@ -211,7 +211,7 @@ function Dashboard() {
               color: theme.colors.text.primary,
               letterSpacing: '-0.03em'
             }}>
-              Get Files From Anyone
+              Stop Asking For Files
             </h1>
             <p style={{
               fontSize: '20px',
@@ -219,7 +219,7 @@ function Dashboard() {
               margin: 0,
               lineHeight: '1.5'
             }}>
-              Build your upload page, share the link, download files. That's it.
+              Build a page. Share the link. Get their files. Done.
             </p>
           </div>
 
