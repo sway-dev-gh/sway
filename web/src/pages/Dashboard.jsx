@@ -6,11 +6,11 @@ import api from '../api/axios'
 
 function Dashboard() {
   const navigate = useNavigate()
-  // FORCE REBUILD - Version 3 - Nov 9 2025
+  // FORCE REBUILD - Version 4 - Nov 9 2025 - Fixed Pro sections layout
   const [loading, setLoading] = useState(true)
   // Build version for cache busting
-  if (window.__BUILD_VERSION__ !== '1.0.5-20251109') {
-    window.__BUILD_VERSION__ = '1.0.5-20251109'
+  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v4') {
+    window.__BUILD_VERSION__ = '1.0.5-20251109-v4'
   }
   const [stats, setStats] = useState({
     totalRequests: 0,
@@ -290,326 +290,12 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Charts Section */}
-          <div style={{
-            position: 'relative',
-            marginBottom: theme.spacing[10]
-          }}>
-            {/* Blur overlay for Free users */}
-            {(user.plan || 'free').toLowerCase() === 'free' && (
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.7)',
-                backdropFilter: 'blur(8px)',
-                borderRadius: theme.radius['2xl'],
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 10
-              }}>
-                <Link
-                  to="/plan"
-                  style={{
-                    padding: '12px 32px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    borderRadius: theme.radius.lg,
-                    fontSize: theme.fontSize.base,
-                    fontWeight: theme.weight.semibold,
-                    textDecoration: 'none',
-                    boxShadow: theme.shadows.xl
-                  }}
-                >
-                  Upgrade to Pro for Advanced Insights
-                </Link>
-              </div>
-            )}
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '2fr 1fr',
-              gap: theme.spacing[6],
-              filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
-              pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
-            }}>
-            {/* Upload Trend Chart */}
-            <div style={{
-              background: theme.colors.bg.secondary,
-              padding: theme.spacing[12],
-              borderRadius: theme.radius['2xl'],
-              border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md
-            }}>
-              <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[8] }}>
-                Upload Trend (Last 7 Days)
-              </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'flex-end',
-                gap: theme.spacing[3],
-                height: '200px'
-              }}>
-                {(stats.uploadsByDay || []).map((day, index) => (
-                  <div key={index} style={{
-                    flex: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: theme.spacing[2]
-                  }}>
-                    <div style={{
-                      width: '100%',
-                      height: '100%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'flex-end'
-                    }}>
-                      <div style={{
-                        width: '100%',
-                        height: `${(day.count / maxUploadsInWeek) * 100}%`,
-                        background: theme.colors.white,
-                        borderRadius: `${theme.radius.sm} ${theme.radius.sm} 0 0`,
-                        minHeight: day.count > 0 ? '6px' : '0',
-                        transition: `height ${theme.transition.slow}`
-                      }} />
-                    </div>
-                    <div style={{
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.tertiary,
-                      textAlign: 'center'
-                    }}>
-                      {day.date}
-                    </div>
-                    <div style={{
-                      fontSize: theme.fontSize.sm,
-                      color: theme.colors.text.secondary,
-                      fontWeight: theme.weight.medium
-                    }}>
-                      {day.count}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Request Types Breakdown */}
-            <div style={{
-              background: theme.colors.bg.secondary,
-              padding: theme.spacing[12],
-              borderRadius: theme.radius['2xl'],
-              border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md
-            }}>
-              <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[6] }}>
-                Request Types
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[4] }}>
-                {Object.entries(stats.requestsByType || {})
-                  .sort((a, b) => b[1] - a[1])
-                  .slice(0, 5)
-                  .map(([type, count], index) => {
-                    const percentage = (count / stats.totalRequests) * 100
-                    return (
-                      <div key={type}>
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          marginBottom: theme.spacing[2]
-                        }}>
-                          <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.secondary }}>
-                            {type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
-                          </div>
-                          <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, fontWeight: theme.weight.medium }}>{count}</div>
-                        </div>
-                        <div style={{
-                          width: '100%',
-                          height: '6px',
-                          background: theme.colors.bg.page,
-                          borderRadius: theme.radius.sm,
-                          overflow: 'hidden'
-                        }}>
-                          <div style={{
-                            width: `${percentage}%`,
-                            height: '100%',
-                            background: theme.colors.white,
-                            opacity: 1 - (index * 0.12),
-                            transition: `width ${theme.transition.slow}`
-                          }} />
-                        </div>
-                      </div>
-                    )
-                  })}
-              </div>
-            </div>
-            </div>
-          </div>
-
-          {/* Advanced Insights Grid */}
-          <div style={{
-            position: 'relative',
-            marginBottom: theme.spacing[10]
-          }}>
-            {/* Blur overlay for Free users */}
-            {(user.plan || 'free').toLowerCase() === 'free' && (
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.7)',
-                backdropFilter: 'blur(8px)',
-                borderRadius: theme.radius['2xl'],
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 10
-              }}>
-                <Link
-                  to="/plan"
-                  style={{
-                    padding: '12px 32px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    borderRadius: theme.radius.lg,
-                    fontSize: theme.fontSize.base,
-                    fontWeight: theme.weight.semibold,
-                    textDecoration: 'none',
-                    boxShadow: theme.shadows.xl
-                  }}
-                >
-                  Upgrade to Pro for Advanced Insights
-                </Link>
-              </div>
-            )}
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: theme.spacing[6],
-              filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
-              pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
-            }}>
-              {/* Average Uploads Per Request */}
-              <div style={{
-                background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
-                border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.tertiary,
-                  marginBottom: theme.spacing[3],
-                  textTransform: 'uppercase',
-                  letterSpacing: '1.2px',
-                  fontWeight: theme.weight.medium
-                }}>
-                  Avg Uploads/Request
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize['2xl'],
-                  fontWeight: theme.weight.bold,
-                  color: theme.colors.accent.green,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  {stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '0.0'}
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.muted
-                }}>
-                  Engagement metric
-                </div>
-              </div>
-
-              {/* Most Active Day */}
-              <div style={{
-                background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
-                border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.tertiary,
-                  marginBottom: theme.spacing[3],
-                  textTransform: 'uppercase',
-                  letterSpacing: '1.2px',
-                  fontWeight: theme.weight.medium
-                }}>
-                  Most Active Day
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize['2xl'],
-                  fontWeight: theme.weight.bold,
-                  color: theme.colors.accent.blue,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  {stats.uploadsByDay && stats.uploadsByDay.length > 0
-                    ? stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).date
-                    : 'N/A'}
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.muted
-                }}>
-                  {stats.uploadsByDay && stats.uploadsByDay.length > 0
-                    ? `${stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).count} uploads`
-                    : 'No data yet'}
-                </div>
-              </div>
-
-              {/* Storage Efficiency */}
-              <div style={{
-                background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
-                border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.tertiary,
-                  marginBottom: theme.spacing[3],
-                  textTransform: 'uppercase',
-                  letterSpacing: '1.2px',
-                  fontWeight: theme.weight.medium
-                }}>
-                  Avg File Size
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize['2xl'],
-                  fontWeight: theme.weight.bold,
-                  color: theme.colors.accent.purple,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  {stats.totalUploads > 0
-                    ? formatFileSize((stats.storageUsed * 1024 * 1024) / stats.totalUploads)
-                    : '0 B'}
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.muted
-                }}>
-                  Per uploaded file
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Activity */}
+          {/* Recent Activity - FREE CONTENT */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: theme.spacing[6]
+            gap: theme.spacing[6],
+            marginBottom: theme.spacing[10]
           }}>
             {/* Recent Requests */}
             <div style={{
@@ -762,12 +448,11 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Pro Advanced Analytics */}
+          {/* PRO CONTENT - All Pro Features in ONE Blurred Section */}
           <div style={{
-            position: 'relative',
-            marginTop: theme.spacing[6]
+            position: 'relative'
           }}>
-            {/* Blur overlay for Free users */}
+            {/* Single Blur overlay for Free users */}
             {(user.plan || 'free').toLowerCase() === 'free' && (
               <div style={{
                 position: 'absolute',
@@ -796,7 +481,7 @@ function Dashboard() {
                     boxShadow: theme.shadows.xl
                   }}
                 >
-                  Upgrade to Pro for Advanced Analytics
+                  Upgrade to Pro for Advanced Insights
                 </Link>
               </div>
             )}
@@ -805,6 +490,242 @@ function Dashboard() {
               filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
               pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
             }}>
+              {/* Charts Section */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 1fr',
+                gap: theme.spacing[6],
+                marginBottom: theme.spacing[10]
+              }}>
+                {/* Upload Trend Chart */}
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  padding: theme.spacing[12],
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md
+                }}>
+                  <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[8] }}>
+                    Upload Trend (Last 7 Days)
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    gap: theme.spacing[3],
+                    height: '200px'
+                  }}>
+                    {(stats.uploadsByDay || []).map((day, index) => (
+                      <div key={index} style={{
+                        flex: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: theme.spacing[2]
+                      }}>
+                        <div style={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'flex-end'
+                        }}>
+                          <div style={{
+                            width: '100%',
+                            height: `${(day.count / maxUploadsInWeek) * 100}%`,
+                            background: theme.colors.white,
+                            borderRadius: `${theme.radius.sm} ${theme.radius.sm} 0 0`,
+                            minHeight: day.count > 0 ? '6px' : '0',
+                            transition: `height ${theme.transition.slow}`
+                          }} />
+                        </div>
+                        <div style={{
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.tertiary,
+                          textAlign: 'center'
+                        }}>
+                          {day.date}
+                        </div>
+                        <div style={{
+                          fontSize: theme.fontSize.sm,
+                          color: theme.colors.text.secondary,
+                          fontWeight: theme.weight.medium
+                        }}>
+                          {day.count}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Request Types Breakdown */}
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  padding: theme.spacing[12],
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md
+                }}>
+                  <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[6] }}>
+                    Request Types
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[4] }}>
+                    {Object.entries(stats.requestsByType || {})
+                      .sort((a, b) => b[1] - a[1])
+                      .slice(0, 5)
+                      .map(([type, count], index) => {
+                        const percentage = (count / stats.totalRequests) * 100
+                        return (
+                          <div key={type}>
+                            <div style={{
+                              display: 'flex',
+                              justifyContent: 'space-between',
+                              alignItems: 'center',
+                              marginBottom: theme.spacing[2]
+                            }}>
+                              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.secondary }}>
+                                {type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
+                              </div>
+                              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, fontWeight: theme.weight.medium }}>{count}</div>
+                            </div>
+                            <div style={{
+                              width: '100%',
+                              height: '6px',
+                              background: theme.colors.bg.page,
+                              borderRadius: theme.radius.sm,
+                              overflow: 'hidden'
+                            }}>
+                              <div style={{
+                                width: `${percentage}%`,
+                                height: '100%',
+                                background: theme.colors.white,
+                                opacity: 1 - (index * 0.12),
+                                transition: `width ${theme.transition.slow}`
+                              }} />
+                            </div>
+                          </div>
+                        )
+                      })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Advanced Insights Grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: theme.spacing[6],
+                marginBottom: theme.spacing[10]
+              }}>
+                {/* Average Uploads Per Request */}
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  padding: theme.spacing[8],
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: theme.spacing[3],
+                    textTransform: 'uppercase',
+                    letterSpacing: '1.2px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    Avg Uploads/Request
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize['2xl'],
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.accent.green,
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    {stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '0.0'}
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.muted
+                  }}>
+                    Engagement metric
+                  </div>
+                </div>
+
+                {/* Most Active Day */}
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  padding: theme.spacing[8],
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: theme.spacing[3],
+                    textTransform: 'uppercase',
+                    letterSpacing: '1.2px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    Most Active Day
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize['2xl'],
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.accent.blue,
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    {stats.uploadsByDay && stats.uploadsByDay.length > 0
+                      ? stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).date
+                      : 'N/A'}
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.muted
+                  }}>
+                    {stats.uploadsByDay && stats.uploadsByDay.length > 0
+                      ? `${stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).count} uploads`
+                      : 'No data yet'}
+                  </div>
+                </div>
+
+                {/* Storage Efficiency */}
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  padding: theme.spacing[8],
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: theme.spacing[3],
+                    textTransform: 'uppercase',
+                    letterSpacing: '1.2px',
+                    fontWeight: theme.weight.medium
+                  }}>
+                    Avg File Size
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize['2xl'],
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.accent.purple,
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    {stats.totalUploads > 0
+                      ? formatFileSize((stats.storageUsed * 1024 * 1024) / stats.totalUploads)
+                      : '0 B'}
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.muted
+                  }}>
+                    Per uploaded file
+                  </div>
+                </div>
+              </div>
+
+              {/* Pro Advanced Analytics */}
               {/* Section Header */}
               <div style={{
                 marginBottom: theme.spacing[6]
