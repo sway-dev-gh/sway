@@ -210,7 +210,7 @@ function Responses() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '48px' }}>
+          <div style={{ marginBottom: '48px', textAlign: 'center' }}>
             <h1 style={{
               fontSize: '48px',
               fontWeight: '600',
