@@ -119,7 +119,7 @@ function Plan() {
       name: 'Pro',
       price: '$15',
       period: '/month',
-      description: 'Everything you need to scale',
+      description: 'For power users',
       popular: true,
       features: [
         { text: '200 active requests', highlight: true },
