@@ -2512,7 +2512,6 @@ function Requests() {
                 width: '1200px',
                 height: '800px',
                 background: '#000000',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
                 borderRadius: '8px',
                 position: 'relative',
                 border: isDragging ? '2px dashed #3b82f6' : '1px solid #2a2a2a',
@@ -2894,8 +2893,7 @@ function Requests() {
               borderRadius: '12px',
               maxWidth: '600px',
               width: '100%',
-              padding: '32px',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)'
+              padding: '32px'
             }}
           >
             <div style={{
@@ -3114,8 +3112,7 @@ function Requests() {
               borderRadius: '12px',
               maxWidth: '500px',
               width: '100%',
-              padding: '32px',
-              boxShadow: '0 20px 60px rgba(255, 255, 255, 0.1)'
+              padding: '32px'
             }}
           >
             <div style={{

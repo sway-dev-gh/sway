@@ -216,22 +216,21 @@ function Responses() {
           {/* Header */}
           <div style={{ marginBottom: '48px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 8px 0',
+              fontSize: '56px',
+              fontWeight: '700',
+              margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              letterSpacing: '-0.03em'
             }}>
-              Tracking
+              Your Requests
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '20px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6'
+              lineHeight: '1.5'
             }}>
-              Comprehensive operational dashboard for all your forms and uploads
+              See all your file requests and download everything
             </p>
           </div>
 
@@ -250,14 +249,14 @@ function Responses() {
               borderRadius: theme.radius.lg
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: '12px',
                 color: theme.colors.text.secondary,
                 marginBottom: theme.spacing[2],
                 fontWeight: '600',
                 textTransform: 'uppercase',
-                letterSpacing: '1px'
+                letterSpacing: '1.2px'
               }}>
-                Total Forms
+                Requests
               </div>
               <div style={{
                 fontSize: '40px',
@@ -274,7 +273,7 @@ function Responses() {
                 fontSize: '13px',
                 color: theme.colors.text.tertiary
               }}>
-                All time
+                Total created
               </div>
             </div>
 
@@ -286,14 +285,14 @@ function Responses() {
               borderRadius: theme.radius.lg
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: '12px',
                 color: theme.colors.text.secondary,
                 marginBottom: theme.spacing[2],
                 fontWeight: '600',
                 textTransform: 'uppercase',
-                letterSpacing: '1px'
+                letterSpacing: '1.2px'
               }}>
-                Live Forms
+                Live
               </div>
               <div style={{
                 fontSize: '40px',
@@ -310,7 +309,7 @@ function Responses() {
                 fontSize: '13px',
                 color: theme.colors.text.tertiary
               }}>
-                Active now
+                Collecting files
               </div>
             </div>
 
@@ -322,14 +321,14 @@ function Responses() {
               borderRadius: theme.radius.lg
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: '12px',
                 color: theme.colors.text.secondary,
                 marginBottom: theme.spacing[2],
                 fontWeight: '600',
                 textTransform: 'uppercase',
-                letterSpacing: '1px'
+                letterSpacing: '1.2px'
               }}>
-                Total Uploads
+                Files
               </div>
               <div style={{
                 fontSize: '40px',
@@ -346,7 +345,7 @@ function Responses() {
                 fontSize: '13px',
                 color: theme.colors.text.tertiary
               }}>
-                Files received
+                Total received
               </div>
             </div>
 
@@ -358,14 +357,14 @@ function Responses() {
               borderRadius: theme.radius.lg
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: '12px',
                 color: theme.colors.text.secondary,
                 marginBottom: theme.spacing[2],
                 fontWeight: '600',
                 textTransform: 'uppercase',
-                letterSpacing: '1px'
+                letterSpacing: '1.2px'
               }}>
-                Storage Used
+                Storage
               </div>
               <div style={{
                 fontSize: '40px',
@@ -474,7 +473,7 @@ function Responses() {
               <option value="name-az">Name A-Z</option>
             </select>
 
-            {/* New Form Button */}
+            {/* New Request Button */}
             <button
               onClick={() => navigate('/requests')}
               style={{
@@ -490,7 +489,7 @@ function Responses() {
                 whiteSpace: 'nowrap'
               }}
             >
-              + New Form
+              + New Request
             </button>
           </div>
 
@@ -509,7 +508,7 @@ function Responses() {
                 color: theme.colors.text.primary,
                 margin: '0 0 8px 0'
               }}>
-                {forms.length === 0 ? 'No forms' : 'No forms match your filters'}
+                {forms.length === 0 ? 'No requests yet' : 'No requests match your filters'}
               </h3>
               <p style={{
                 fontSize: theme.fontSize.sm,
@@ -535,7 +534,7 @@ function Responses() {
                     fontFamily: 'inherit'
                   }}
                 >
-                  Create First Form
+                  Create First Request
                 </button>
               )}
             </div>
@@ -559,13 +558,13 @@ function Responses() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>
-                <div>Form Name</div>
+                <div>Request</div>
                 <div>Status</div>
                 <div>Template</div>
-                <div>Responses</div>
+                <div>Files</div>
                 <div>Storage</div>
                 <div>Created</div>
-                <div>Last Upload</div>
+                <div>Last File</div>
                 <div>Actions</div>
               </div>
 

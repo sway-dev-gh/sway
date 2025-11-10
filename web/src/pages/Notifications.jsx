@@ -101,24 +101,23 @@ function Notifications() {
           padding: '48px 32px'
         }}>
           {/* Header */}
-          <div style={{ marginBottom: '48px', maxWidth: '900px', margin: '0 auto 48px' }}>
+          <div style={{ marginBottom: '48px', maxWidth: '900px', margin: '0 auto 48px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 8px 0',
+              fontSize: '56px',
+              fontWeight: '700',
+              margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              letterSpacing: '-0.03em'
             }}>
-              Notifications
+              Activity
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '20px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6'
+              lineHeight: '1.5'
             }}>
-              Stay updated on all file uploads and activity
+              Every file that comes in
             </p>
           </div>
 
@@ -141,14 +140,14 @@ function Notifications() {
                   color: theme.colors.text.primary,
                   margin: '0 0 8px 0'
                 }}>
-                  No notifications
+                  No activity yet
                 </h3>
                 <p style={{
                   fontSize: theme.fontSize.sm,
                   color: theme.colors.text.secondary,
                   margin: '0'
                 }}>
-                  You'll see notifications here when files are uploaded
+                  Files uploaded to your requests will show up here
                 </p>
               </div>
             ) : (
