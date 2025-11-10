@@ -1143,6 +1143,7 @@ function Requests() {
   const navigate = useNavigate()
   const [canvasElements, setCanvasElements] = useState([])
   const [selectedElement, setSelectedElement] = useState(null)
+  const [selectedElements, setSelectedElements] = useState([])
   const [isDragging, setIsDragging] = useState(false)
   const [draggedComponent, setDraggedComponent] = useState(null)
   const [formTitle, setFormTitle] = useState('Untitled Form')
@@ -1204,6 +1205,50 @@ function Requests() {
       setHistoryIndex(historyIndex + 1)
       setCanvasElements(JSON.parse(JSON.stringify(history[historyIndex + 1])))
       setSelectedElement(null)
+    }
+  }
+
+  // Save form as draft
+  const handleSave = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const formData = {
+        title: formTitle,
+        elements: canvasElements,
+        status: 'draft'
+      }
+
+      const response = await api.post('/api/requests', formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      alert('Form saved as draft!')
+      navigate('/tracking')
+    } catch (error) {
+      console.error('Save error:', error)
+      alert('Failed to save form. Please try again.')
+    }
+  }
+
+  // Publish form (make it live)
+  const handlePublish = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const formData = {
+        title: formTitle,
+        elements: canvasElements,
+        status: 'live'
+      }
+
+      const response = await api.post('/api/requests', formData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      alert('Form published successfully!')
+      navigate('/tracking')
+    } catch (error) {
+      console.error('Publish error:', error)
+      alert('Failed to publish form. Please try again.')
     }
   }
 
@@ -1365,7 +1410,21 @@ function Requests() {
 
   const handleElementSelect = (element, e) => {
     e.stopPropagation()
-    setSelectedElement(element)
+
+    // Shift+click for multi-select
+    if (e.shiftKey) {
+      if (selectedElements.find(el => el.id === element.id)) {
+        // Deselect if already selected
+        setSelectedElements(selectedElements.filter(el => el.id !== element.id))
+      } else {
+        // Add to selection
+        setSelectedElements([...selectedElements, element])
+      }
+    } else {
+      // Normal click - single select
+      setSelectedElement(element)
+      setSelectedElements([])
+    }
   }
 
   const handleDeleteElement = () => {
@@ -2173,6 +2232,22 @@ function Requests() {
             </button>
             <button
               style={{
+                background: 'transparent',
+                color: '#ffffff',
+                border: '1px solid #2a2a2a',
+                padding: '10px 20px',
+                borderRadius: '6px',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                fontFamily: 'inherit'
+              }}
+              onClick={handleSave}
+            >
+              Save
+            </button>
+            <button
+              style={{
                 background: '#ffffff',
                 color: '#000000',
                 border: 'none',
@@ -2183,7 +2258,7 @@ function Requests() {
                 cursor: 'pointer',
                 fontFamily: 'inherit'
               }}
-              onClick={() => alert('Publishing feature coming soon!')}
+              onClick={handlePublish}
             >
               Publish
             </button>
@@ -2396,8 +2471,8 @@ function Requests() {
             overflow: 'hidden',
             background: '#1a1a1a',
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: 'flex-start',
+            justifyContent: 'flex-start',
             padding: '40px'
           }}>
             <div
@@ -2414,7 +2489,8 @@ function Requests() {
                 boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
                 borderRadius: '8px',
                 position: 'relative',
-                border: isDragging ? '2px dashed #3b82f6' : '1px solid #2a2a2a'
+                border: isDragging ? '2px dashed #3b82f6' : '1px solid #2a2a2a',
+                overflow: 'hidden'
               }}
             >
               {canvasElements.length === 0 && !isDragging && (

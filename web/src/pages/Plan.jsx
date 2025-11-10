@@ -213,15 +213,16 @@ function Plan() {
                   // boxShadow removed: theme.shadows.md
                 }}
               >
-                {/* Badge - Show CURRENT if on this plan, otherwise show MOST POPULAR for Pro */}
+                {/* Badge - Show CURRENT if on this plan, otherwise show PRO badge */}
                 {plan.id === currentPlan ? (
                   <div style={{
                     position: 'absolute',
                     top: '-12px',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
+                    background: 'transparent',
+                    color: theme.colors.white,
+                    border: `2px solid ${theme.colors.white}`,
                     padding: '6px 20px',
                     borderRadius: theme.radius.full,
                     fontSize: theme.fontSize.xs,
@@ -246,7 +247,7 @@ function Plan() {
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    Most Popular
+                    PRO
                   </div>
                 )}
 
