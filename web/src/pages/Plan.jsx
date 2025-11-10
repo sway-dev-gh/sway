@@ -105,11 +105,11 @@ function Plan() {
       name: 'Free',
       price: '$0',
       period: '',
-      description: 'Perfect for getting started',
+      description: 'Try it out, no credit card',
       features: [
-        { text: '5 active forms', highlight: false },
+        { text: '5 file requests', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Basic file upload', highlight: false }
+        { text: 'Basic uploads', highlight: false }
       ]
     },
     {
@@ -117,15 +117,15 @@ function Plan() {
       name: 'Pro',
       price: '$15',
       period: '/month',
-      description: 'For power users',
+      description: 'For serious file collection',
       popular: true,
       features: [
-        { text: 'Unlimited forms', highlight: true },
+        { text: 'Unlimited requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'Visual form builder', highlight: true },
-        { text: 'Password protection', highlight: true },
-        { text: 'Bulk download', highlight: true },
-        { text: 'Advanced analytics', highlight: true },
+        { text: 'Advanced builder', highlight: true },
+        { text: 'Password protect pages', highlight: true },
+        { text: 'Download everything', highlight: true },
+        { text: 'See analytics', highlight: true },
         { text: 'Priority support', highlight: true }
       ]
     }

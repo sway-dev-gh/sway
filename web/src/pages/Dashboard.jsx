@@ -211,7 +211,7 @@ function Dashboard() {
               color: theme.colors.text.primary,
               letterSpacing: '-0.03em'
             }}>
-              Start Collecting Files
+              Get Files From Anyone
             </h1>
             <p style={{
               fontSize: '20px',
@@ -219,7 +219,7 @@ function Dashboard() {
               margin: 0,
               lineHeight: '1.5'
             }}>
-              Create your first file request in under a minute
+              Build your upload page, share the link, download files. That's it.
             </p>
           </div>
 
@@ -248,7 +248,7 @@ function Dashboard() {
                   fontWeight: '600',
                   marginBottom: '16px'
                 }}>
-                  New Request
+                  Start Here
                 </div>
                 <div style={{
                   fontSize: '24px',
@@ -257,14 +257,14 @@ function Dashboard() {
                   marginBottom: '8px',
                   letterSpacing: '-0.01em'
                 }}>
-                  Create File Request
+                  New Request
                 </div>
                 <div style={{
                   fontSize: '15px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.5'
                 }}>
-                  Build a custom upload page to collect files from anyone
+                  Build your upload page in 30 seconds
                 </div>
               </div>
             </Link>
@@ -286,7 +286,7 @@ function Dashboard() {
                   fontWeight: '600',
                   marginBottom: '16px'
                 }}>
-                  Your Files
+                  Your Work
                 </div>
                 <div style={{
                   fontSize: '24px',
@@ -295,14 +295,14 @@ function Dashboard() {
                   marginBottom: '8px',
                   letterSpacing: '-0.01em'
                 }}>
-                  View All Requests
+                  All Requests
                 </div>
                 <div style={{
                   fontSize: '15px',
                   color: theme.colors.text.secondary,
                   lineHeight: '1.5'
                 }}>
-                  Manage requests and download all uploaded files
+                  Track uploads and download everything
                 </div>
               </div>
             </Link>

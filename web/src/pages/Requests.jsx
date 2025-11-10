@@ -856,64 +856,64 @@ const COMPONENT_LIBRARY = [
     id: 'heading',
     label: 'Heading',
     icon: 'HEAD',
-    description: 'Form title',
+    description: 'Big title text',
     plan: 'free'
   },
   {
     id: 'text',
-    label: 'Instructions',
+    label: 'Text',
     icon: 'TEXT',
-    description: 'Upload instructions',
+    description: 'Instructions or descriptions',
     plan: 'free'
   },
   {
     id: 'file-upload',
     label: 'File Upload',
     icon: 'FILE',
-    description: 'Single file upload',
+    description: 'Drag & drop zone',
     plan: 'free'
   },
   {
     id: 'text-input',
     label: 'Text Field',
     icon: 'INPUT',
-    description: 'Name or email field',
+    description: 'Get their name or email',
     plan: 'free'
   },
   {
     id: 'button',
-    label: 'Submit Button',
+    label: 'Button',
     icon: 'BTN',
-    description: 'Submit files',
+    description: 'Submit button',
     plan: 'free'
   },
   // PRO ELEMENTS - Advanced file collection
   {
     id: 'multi-file',
-    label: 'Multi-File Upload',
+    label: 'Multi-File',
     icon: 'MF',
-    description: 'Multiple files at once',
+    description: 'Upload multiple files',
     plan: 'pro'
   },
   {
     id: 'image-gallery',
     label: 'Image Upload',
     icon: 'GAL',
-    description: 'Image-specific upload',
+    description: 'Image-only uploader',
     plan: 'pro'
   },
   {
     id: 'divider',
     label: 'Divider',
     icon: 'DIV',
-    description: 'Section separator',
+    description: 'Horizontal line',
     plan: 'pro'
   },
   {
     id: 'spacer',
     label: 'Spacer',
     icon: 'SPACE',
-    description: 'Add vertical space',
+    description: 'Empty space',
     plan: 'pro'
   },
   {
