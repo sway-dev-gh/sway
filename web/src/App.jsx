@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Requests from './pages/Requests'
 import Responses from './pages/Responses'
+import Notifications from './pages/Notifications'
 import Uploads from './pages/Uploads'
 import Plan from './pages/Plan'
 import FAQ from './pages/FAQ'
@@ -24,6 +25,7 @@ function App() {
         <Route path="/requests" element={<Requests />} />
         <Route path="/requests/:id" element={<RequestView />} />
         <Route path="/responses" element={<Responses />} />
+        <Route path="/notifications" element={<Notifications />} />
         <Route path="/uploads" element={<Uploads />} />
         <Route path="/plan" element={<Plan />} />
         <Route path="/faq" element={<FAQ />} />

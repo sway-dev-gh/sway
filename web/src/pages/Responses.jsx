@@ -29,6 +29,12 @@ function Responses() {
     try {
       const token = localStorage.getItem('token')
 
+      // Get user plan
+      const userStr = localStorage.getItem('user')
+      const user = userStr ? JSON.parse(userStr) : { plan: 'free' }
+      const userPlan = (user.plan || 'free').toLowerCase()
+      const storageLimit = userPlan === 'pro' ? 50 : 2
+
       // Fetch forms/requests
       const requestsResponse = await api.get('/api/requests', {
         headers: { Authorization: `Bearer ${token}` }
@@ -44,7 +50,7 @@ function Responses() {
 
       // Calculate storage
       const totalStorage = (uploadsResponse.data.files || []).reduce((sum, file) => sum + (file.fileSize || 0), 0)
-      setStorageStats({ used: totalStorage / (1024 * 1024 * 1024), limit: 2 }) // Convert to GB
+      setStorageStats({ used: totalStorage / (1024 * 1024 * 1024), limit: storageLimit }) // Convert to GB
     } catch (err) {
       console.error('Failed to fetch data:', err)
     } finally {
