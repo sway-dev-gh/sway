@@ -230,7 +230,8 @@ function Dashboard() {
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: theme.spacing[6],
-            marginBottom: theme.spacing[10]
+            marginBottom: theme.spacing[10],
+            width: '100%'
           }}>
             <div style={{
               background: theme.colors.bg.secondary,
