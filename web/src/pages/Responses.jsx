@@ -506,18 +506,18 @@ function Responses() {
                 color: theme.colors.text.primary,
                 margin: '0 0 8px 0'
               }}>
-                {forms.length === 0 ? 'No forms yet' : 'No forms match your filters'}
+                {forms.length === 0 ? 'No forms' : 'No forms match your filters'}
               </h3>
               <p style={{
                 fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                margin: '0 0 20px 0'
+                margin: '0'
               }}>
                 {forms.length === 0
-                  ? 'Create your first form in Builder to start collecting files'
+                  ? ''
                   : 'Try adjusting your search or filters'}
               </p>
-              {forms.length === 0 && (
+              {forms.length !== 0 && (
                 <button
                   onClick={() => navigate('/requests')}
                   style={{

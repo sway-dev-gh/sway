@@ -109,7 +109,7 @@ function Sidebar() {
   const navSections = [
     {
       items: [
-        { path: '/dashboard', label: 'Get Started', planRequired: null },
+        { path: '/dashboard', label: 'Dashboard', planRequired: null },
         { path: '/requests', label: 'Builder', planRequired: null },
         { path: '/responses', label: 'Tracking', planRequired: null },
         { path: '/plan', label: 'Plan', planRequired: null },
