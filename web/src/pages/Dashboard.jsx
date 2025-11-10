@@ -291,13 +291,14 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Charts Section */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
-            gap: theme.spacing[6],
-            marginBottom: theme.spacing[10]
-          }}>
+          {/* Charts Section - PRO ONLY */}
+          {(user.plan || 'free').toLowerCase() === 'pro' && (
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '2fr 1fr',
+              gap: theme.spacing[6],
+              marginBottom: theme.spacing[10]
+            }}>
             {/* Upload Trend Chart */}
             <div style={{
               background: theme.colors.bg.secondary,
@@ -408,7 +409,8 @@ function Dashboard() {
                   })}
               </div>
             </div>
-          </div>
+            </div>
+          )}
 
           {/* Pro Upgrade Banner for Free Users OR Advanced Insights for Pro */}
           {(user.plan || 'free').toLowerCase() === 'free' ? (
