@@ -467,14 +467,14 @@ function Dashboard() {
               </Link>
             </div>
           ) : (
-            /* Pro-Only Quick Stats Grid */
+            /* Pro-Only Advanced Insights Grid */
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, 1fr)',
               gap: theme.spacing[6],
               marginBottom: theme.spacing[10]
             }}>
-              {/* Total Storage Used */}
+              {/* Average Uploads Per Request */}
               <div style={{
                 background: theme.colors.bg.secondary,
                 padding: theme.spacing[8],
@@ -490,7 +490,7 @@ function Dashboard() {
                   letterSpacing: '1.2px',
                   fontWeight: theme.weight.medium
                 }}>
-                  Total Storage
+                  Avg Uploads/Request
                 </div>
                 <div style={{
                   fontSize: theme.fontSize['2xl'],
@@ -498,17 +498,17 @@ function Dashboard() {
                   color: theme.colors.accent.green,
                   marginBottom: theme.spacing[2]
                 }}>
-                  {formatStorageMB(stats.storageUsed)}
+                  {stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '0.0'}
                 </div>
                 <div style={{
                   fontSize: theme.fontSize.sm,
                   color: theme.colors.text.muted
                 }}>
-                  {getStoragePercentage().toFixed(1)}% of {user.storage_limit_gb}GB used
+                  Engagement metric
                 </div>
               </div>
 
-              {/* Total Requests */}
+              {/* Most Active Day */}
               <div style={{
                 background: theme.colors.bg.secondary,
                 padding: theme.spacing[8],
@@ -524,7 +524,7 @@ function Dashboard() {
                   letterSpacing: '1.2px',
                   fontWeight: theme.weight.medium
                 }}>
-                  Total Requests
+                  Most Active Day
                 </div>
                 <div style={{
                   fontSize: theme.fontSize['2xl'],
@@ -532,17 +532,21 @@ function Dashboard() {
                   color: theme.colors.accent.blue,
                   marginBottom: theme.spacing[2]
                 }}>
-                  {stats.totalRequests}
+                  {stats.uploadsByDay && stats.uploadsByDay.length > 0
+                    ? stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).date
+                    : 'N/A'}
                 </div>
                 <div style={{
                   fontSize: theme.fontSize.sm,
                   color: theme.colors.text.muted
                 }}>
-                  {stats.activeRequests} currently active
+                  {stats.uploadsByDay && stats.uploadsByDay.length > 0
+                    ? `${stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).count} uploads`
+                    : 'No data yet'}
                 </div>
               </div>
 
-              {/* Total Uploads */}
+              {/* Storage Efficiency */}
               <div style={{
                 background: theme.colors.bg.secondary,
                 padding: theme.spacing[8],
@@ -558,7 +562,7 @@ function Dashboard() {
                   letterSpacing: '1.2px',
                   fontWeight: theme.weight.medium
                 }}>
-                  Total Uploads
+                  Avg File Size
                 </div>
                 <div style={{
                   fontSize: theme.fontSize['2xl'],
@@ -566,13 +570,15 @@ function Dashboard() {
                   color: theme.colors.accent.purple,
                   marginBottom: theme.spacing[2]
                 }}>
-                  {stats.totalUploads}
+                  {stats.totalUploads > 0
+                    ? formatFileSize((stats.storageUsed * 1024 * 1024) / stats.totalUploads)
+                    : '0 B'}
                 </div>
                 <div style={{
                   fontSize: theme.fontSize.sm,
                   color: theme.colors.text.muted
                 }}>
-                  {stats.uploadsByDay && stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
+                  Per uploaded file
                 </div>
               </div>
             </div>
