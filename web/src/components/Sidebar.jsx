@@ -173,8 +173,8 @@ function Sidebar() {
           src="/logo.png"
           alt="Sway"
           style={{
-            width: '30px',
-            height: '30px',
+            width: '48px',
+            height: '48px',
             flexShrink: 0
           }}
         />
