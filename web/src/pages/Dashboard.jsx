@@ -203,177 +203,106 @@ function Dashboard() {
           padding: '48px 32px'
         }}>
           {/* Header */}
-          <div style={{ marginBottom: '48px', maxWidth: '900px', margin: '0 auto 48px' }}>
+          <div style={{ marginBottom: '64px', maxWidth: '680px', margin: '0 auto 64px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 8px 0',
+              fontSize: '56px',
+              fontWeight: '700',
+              margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              letterSpacing: '-0.03em'
             }}>
-              Get Started
+              Start Collecting Files
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '20px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6'
+              lineHeight: '1.5'
             }}>
-              Create your first form to start collecting files
+              Create your first file request in under a minute
             </p>
           </div>
 
-          {/* Quick Actions */}
-          <div style={{
-            maxWidth: '900px',
-            margin: '0 auto',
-            display: 'grid',
-            gap: theme.spacing[5]
-          }}>
-            <div style={{
-              padding: '32px',
-              borderRadius: theme.radius.lg,
-              border: `1px solid ${theme.colors.border.light}`,
-              background: 'rgba(255, 255, 255, 0.02)'
-            }}>
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: theme.colors.text.primary,
-                marginBottom: '8px'
-              }}>
-                Create a Form
-              </h2>
-              <p style={{
-                fontSize: '14px',
-                color: theme.colors.text.secondary,
-                marginBottom: '20px',
-                lineHeight: '1.6'
-              }}>
-                Use the visual builder to create a custom upload form
-              </p>
-              <Link to="/requests" style={{
-                ...theme.buttons.primary.base,
-                textDecoration: 'none',
-                display: 'inline-block'
-              }}>
-                Go to Builder
-              </Link>
-            </div>
-
-            <div style={{
-              padding: '32px',
-              borderRadius: theme.radius.lg,
-              border: `1px solid ${theme.colors.border.light}`,
-              background: 'rgba(255, 255, 255, 0.02)'
-            }}>
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: theme.colors.text.primary,
-                marginBottom: '8px'
-              }}>
-                View Your Forms
-              </h2>
-              <p style={{
-                fontSize: '14px',
-                color: theme.colors.text.secondary,
-                marginBottom: '20px',
-                lineHeight: '1.6'
-              }}>
-                Track all your forms and uploaded files
-              </p>
-              <Link to="/tracking" style={{
-                ...theme.buttons.secondary.base,
-                textDecoration: 'none',
-                display: 'inline-block'
-              }}>
-                Go to Tracking
-              </Link>
-            </div>
-          </div>
+          {/* Actions */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: theme.spacing[5],
-            maxWidth: '900px',
+            gap: '24px',
+            maxWidth: '840px',
             margin: '0 auto'
           }}>
             <Link to="/requests" style={{ textDecoration: 'none' }}>
               <div style={{
-                padding: theme.spacing[8],
-                border: `2px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.xl,
-                background: theme.colors.bg.secondary,
+                padding: '40px',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
                 cursor: 'pointer',
-                position: 'relative',
-                overflow: 'hidden'
+                height: '100%'
               }}>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '12px',
                   color: theme.colors.text.tertiary,
                   textTransform: 'uppercase',
-                  letterSpacing: '1.5px',
+                  letterSpacing: '1.2px',
                   fontWeight: '600',
                   marginBottom: '16px'
                 }}>
-                  Start Here
+                  New Request
                 </div>
                 <div style={{
-                  fontSize: '28px',
+                  fontSize: '24px',
                   color: theme.colors.text.primary,
                   fontWeight: '600',
-                  marginBottom: '12px',
-                  letterSpacing: '-0.02em'
+                  marginBottom: '8px',
+                  letterSpacing: '-0.01em'
                 }}>
-                  Create New Form
+                  Create File Request
                 </div>
                 <div style={{
                   fontSize: '15px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.6'
+                  lineHeight: '1.5'
                 }}>
-                  Launch the Builder to create your first upload form in minutes
+                  Build a custom upload page to collect files from anyone
                 </div>
               </div>
             </Link>
 
             <Link to="/tracking" style={{ textDecoration: 'none' }}>
               <div style={{
-                padding: theme.spacing[8],
-                border: `2px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.xl,
-                background: theme.colors.bg.secondary,
+                padding: '40px',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '12px',
+                background: 'linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)',
                 cursor: 'pointer',
-                position: 'relative',
-                overflow: 'hidden'
+                height: '100%'
               }}>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '12px',
                   color: theme.colors.text.tertiary,
                   textTransform: 'uppercase',
-                  letterSpacing: '1.5px',
+                  letterSpacing: '1.2px',
                   fontWeight: '600',
                   marginBottom: '16px'
                 }}>
-                  Your Work
+                  Your Files
                 </div>
                 <div style={{
-                  fontSize: '28px',
+                  fontSize: '24px',
                   color: theme.colors.text.primary,
                   fontWeight: '600',
-                  marginBottom: '12px',
-                  letterSpacing: '-0.02em'
+                  marginBottom: '8px',
+                  letterSpacing: '-0.01em'
                 }}>
-                  View All Forms
+                  View All Requests
                 </div>
                 <div style={{
                   fontSize: '15px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.6'
+                  lineHeight: '1.5'
                 }}>
-                  Manage existing forms and see all uploaded files in one place
+                  Manage requests and download all uploaded files
                 </div>
               </div>
             </Link>
