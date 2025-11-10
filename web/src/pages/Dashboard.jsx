@@ -224,7 +224,7 @@ function Dashboard() {
           </div>
 
           {/* Actions */}
-          <div style={{
+          <div className="dashboard-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: '24px',

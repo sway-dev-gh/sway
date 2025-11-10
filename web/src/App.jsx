@@ -13,6 +13,7 @@ import Upload from './pages/Upload'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import './App.css'
+import './styles/mobile.css'
 
 function App() {
   return (

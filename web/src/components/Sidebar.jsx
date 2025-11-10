@@ -13,6 +13,7 @@ function Sidebar() {
   const [loading, setLoading] = useState(true)
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [showMoreDropdown, setShowMoreDropdown] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   // Calculate effective plan using centralized utility
   const effectivePlan = getEffectivePlan()
@@ -168,6 +169,40 @@ function Sidebar() {
   return (
     <>
     <div style={topBarStyle}>
+      {/* Mobile Hamburger Menu */}
+      <button
+        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        style={{
+          display: 'none',
+          background: 'transparent',
+          border: 'none',
+          color: theme.colors.white,
+          fontSize: '24px',
+          cursor: 'pointer',
+          padding: '8px',
+          marginRight: '12px',
+          '@media (max-width: 768px)': {
+            display: 'block'
+          }
+        }}
+        className="mobile-menu-btn"
+      >
+        ☰
+      </button>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .mobile-menu-btn {
+            display: block !important;
+          }
+          .desktop-nav {
+            display: none !important;
+          }
+          .mobile-nav {
+            display: flex !important;
+          }
+        }
+      `}</style>
       {/* Logo/Brand */}
       <Link to="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
         <img
@@ -182,7 +217,7 @@ function Sidebar() {
       </Link>
 
       {/* Navigation Links */}
-      <nav style={{
+      <nav className="desktop-nav" style={{
         display: 'flex',
         alignItems: 'center',
         gap: '12px'
@@ -338,6 +373,101 @@ function Sidebar() {
         </div>
       </div>
     </div>
+
+    {/* Mobile Navigation Menu */}
+    {mobileMenuOpen && (
+      <div className="mobile-nav" style={{
+        display: 'none',
+        position: 'fixed',
+        top: '54px',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: theme.colors.bg.page,
+        zIndex: 99,
+        padding: '20px',
+        overflowY: 'auto'
+      }}>
+        {navSections.map((section, sectionIndex) => (
+          <div key={sectionIndex} style={{ marginBottom: '24px' }}>
+            {section.items.map((item) => {
+              const isActive = location.pathname === item.path
+              const locked = !hasAccess(item.planRequired)
+              const upgradePlan = locked ? getUpgradePlan(item.planRequired) : null
+
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setMobileMenuOpen(false)}
+                  style={{
+                    display: 'block',
+                    padding: '16px',
+                    marginBottom: '8px',
+                    color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
+                    textDecoration: 'none',
+                    fontSize: '16px',
+                    fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
+                    background: isActive ? theme.colors.bg.hover : 'transparent',
+                    borderRadius: theme.radius.md,
+                    opacity: locked ? 0.5 : 1
+                  }}
+                >
+                  {item.label}
+                  {locked && (
+                    <span style={{
+                      marginLeft: '8px',
+                      fontSize: '10px',
+                      fontWeight: theme.weight.bold,
+                      color: theme.colors.text.tertiary,
+                      textTransform: 'uppercase',
+                      padding: '2px 6px',
+                      background: theme.colors.bg.secondary,
+                      border: `1px solid ${theme.colors.border.medium}`,
+                      borderRadius: '3px'
+                    }}>
+                      {upgradePlan}
+                    </span>
+                  )}
+                </Link>
+              )
+            })}
+          </div>
+        ))}
+
+        {/* Mobile User Section */}
+        <div style={{
+          padding: '20px',
+          marginTop: '24px',
+          borderTop: `1px solid ${theme.colors.border.light}`
+        }}>
+          <div style={{
+            fontSize: '14px',
+            color: theme.colors.text.secondary,
+            marginBottom: '12px'
+          }}>
+            {user.email?.split('@')[0] || 'User'}
+          </div>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: theme.weight.bold,
+            color: theme.colors.text.tertiary,
+            marginBottom: '16px'
+          }}>
+            {effectivePlan || 'Free'} Plan
+          </div>
+          <button
+            onClick={handleLogout}
+            style={{
+              ...theme.buttons.secondary.base,
+              width: '100%'
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    )}
 
     {/* Admin Mode Activator */}
     <AdminModeActivator onActivate={handleAdminActivate} />

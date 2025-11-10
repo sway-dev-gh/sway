@@ -235,7 +235,7 @@ function Responses() {
           </div>
 
           {/* Top Stats - 4 Cards with improved design */}
-          <div style={{
+          <div className="stats-grid" style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: '20px',
