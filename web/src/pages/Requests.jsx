@@ -849,162 +849,78 @@ const TEMPLATES = [
   }
 ]
 
-// Component Library - Elements that can be dragged onto canvas
+// Component Library - File Collection Elements Only
 const COMPONENT_LIBRARY = [
-  // FREE ELEMENTS
-  {
-    id: 'text',
-    label: 'Text Block',
-    icon: 'TEXT',
-    description: 'Paragraph text',
-    plan: 'free'
-  },
+  // FREE ELEMENTS - Core file collection
   {
     id: 'heading',
     label: 'Heading',
     icon: 'HEAD',
-    description: 'Title or heading',
+    description: 'Form title',
     plan: 'free'
   },
   {
-    id: 'text-input',
-    label: 'Text Input',
-    icon: 'INPUT',
-    description: 'Single line input',
-    plan: 'free'
-  },
-  {
-    id: 'textarea',
-    label: 'Text Area',
-    icon: 'AREA',
-    description: 'Multi-line text input',
+    id: 'text',
+    label: 'Instructions',
+    icon: 'TEXT',
+    description: 'Upload instructions',
     plan: 'free'
   },
   {
     id: 'file-upload',
     label: 'File Upload',
     icon: 'FILE',
-    description: 'File upload zone',
+    description: 'Single file upload',
+    plan: 'free'
+  },
+  {
+    id: 'text-input',
+    label: 'Text Field',
+    icon: 'INPUT',
+    description: 'Name or email field',
     plan: 'free'
   },
   {
     id: 'button',
-    label: 'Button',
+    label: 'Submit Button',
     icon: 'BTN',
-    description: 'Action button',
+    description: 'Submit files',
     plan: 'free'
   },
-  // PRO ELEMENTS
-  {
-    id: 'rich-text',
-    label: 'Rich Text',
-    icon: 'RICH',
-    description: 'Formatted text editor',
-    plan: 'pro'
-  },
+  // PRO ELEMENTS - Advanced file collection
   {
     id: 'multi-file',
-    label: 'Multi-File',
+    label: 'Multi-File Upload',
     icon: 'MF',
-    description: 'Multiple file uploads',
+    description: 'Multiple files at once',
     plan: 'pro'
   },
   {
     id: 'image-gallery',
-    label: 'Image Gallery',
+    label: 'Image Upload',
     icon: 'GAL',
-    description: 'Image upload grid',
-    plan: 'pro'
-  },
-  {
-    id: 'date-picker',
-    label: 'Date Picker',
-    icon: 'DATE',
-    description: 'Calendar selector',
-    plan: 'pro'
-  },
-  {
-    id: 'time-picker',
-    label: 'Time Picker',
-    icon: 'TIME',
-    description: 'Time selector',
-    plan: 'pro'
-  },
-  {
-    id: 'color-picker',
-    label: 'Color Picker',
-    icon: 'COLOR',
-    description: 'Color input',
-    plan: 'pro'
-  },
-  {
-    id: 'range-slider',
-    label: 'Range Slider',
-    icon: 'RANGE',
-    description: 'Numeric slider',
-    plan: 'pro'
-  },
-  {
-    id: 'star-rating',
-    label: 'Star Rating',
-    icon: 'STAR',
-    description: '1-5 star rating',
-    plan: 'pro'
-  },
-  {
-    id: 'signature',
-    label: 'Signature',
-    icon: 'SIG',
-    description: 'Signature pad',
+    description: 'Image-specific upload',
     plan: 'pro'
   },
   {
     id: 'divider',
     label: 'Divider',
     icon: 'DIV',
-    description: 'Horizontal line',
+    description: 'Section separator',
     plan: 'pro'
   },
   {
     id: 'spacer',
     label: 'Spacer',
     icon: 'SPACE',
-    description: 'Vertical spacing',
-    plan: 'pro'
-  },
-  {
-    id: 'select',
-    label: 'Dropdown',
-    icon: 'SELECT',
-    description: 'Select menu',
-    plan: 'pro'
-  },
-  {
-    id: 'checkbox',
-    label: 'Checkbox',
-    icon: 'CHECK',
-    description: 'Checkbox field',
-    plan: 'pro'
-  },
-  {
-    id: 'image',
-    label: 'Image',
-    icon: 'IMG',
-    description: 'Image placeholder',
+    description: 'Add vertical space',
     plan: 'pro'
   },
   {
     id: 'two-column',
     label: 'Two Columns',
     icon: '2COL',
-    description: '2-column layout',
-    plan: 'pro'
-  },
-  {
-    id: 'three-column',
-    label: 'Three Columns',
-    icon: '3COL',
-    description: '3-column layout',
+    description: 'Side-by-side layout',
     plan: 'pro'
   }
 ]

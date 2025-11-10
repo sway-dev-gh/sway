@@ -142,26 +142,23 @@ function Settings() {
 
             {/* Email Address */}
             <div style={{
-              padding: '32px',
+              padding: '24px 32px',
               borderRadius: theme.radius.lg,
               border: `1px solid ${theme.colors.border.light}`,
               background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[2],
-                fontWeight: '600',
-                textTransform: 'uppercase',
-                letterSpacing: '1px'
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                marginBottom: '8px',
+                fontWeight: '500'
               }}>
-                Email Address
+                Email
               </div>
               <div style={{
                 fontSize: '16px',
                 color: theme.colors.text.primary,
-                fontWeight: '500',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                fontWeight: '400'
               }}>
                 {user.email}
               </div>
@@ -175,20 +172,12 @@ function Settings() {
               background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <div style={{
-                fontSize: '20px',
+                fontSize: '18px',
                 color: theme.colors.text.primary,
                 fontWeight: '600',
-                marginBottom: '4px',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+                marginBottom: '24px'
               }}>
                 Change Password
-              </div>
-              <div style={{
-                fontSize: '14px',
-                color: theme.colors.text.tertiary,
-                marginBottom: theme.spacing[6]
-              }}>
-                Update your account password
               </div>
 
               <form onSubmit={handleChangePassword}>
@@ -331,23 +320,12 @@ function Settings() {
               background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <div style={{
-                marginBottom: theme.spacing[6]
+                fontSize: '18px',
+                color: theme.colors.text.primary,
+                fontWeight: '600',
+                marginBottom: '24px'
               }}>
-                <div style={{
-                  fontSize: '20px',
-                  color: theme.colors.text.primary,
-                  fontWeight: '600',
-                  marginBottom: '4px',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                }}>
-                  Danger Zone
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.tertiary
-                }}>
-                  Irreversible and destructive actions
-                </div>
+                Danger Zone
               </div>
 
               <div style={{
