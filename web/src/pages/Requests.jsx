@@ -1211,6 +1211,17 @@ function Requests() {
 
   // Save form as draft
   const handleSave = async () => {
+    // Validation
+    if (!formTitle || formTitle.trim() === '') {
+      alert('Please add a form title before saving')
+      return
+    }
+
+    if (canvasElements.length === 0) {
+      alert('Please add at least one element to your form before saving')
+      return
+    }
+
     try {
       const token = localStorage.getItem('token')
       const formData = {
@@ -1233,6 +1244,17 @@ function Requests() {
 
   // Publish form (make it live)
   const handlePublish = async () => {
+    // Validation
+    if (!formTitle || formTitle.trim() === '') {
+      alert('Please add a form title before publishing')
+      return
+    }
+
+    if (canvasElements.length === 0) {
+      alert('Please add at least one element to your form before publishing')
+      return
+    }
+
     try {
       const token = localStorage.getItem('token')
       const formData = {
