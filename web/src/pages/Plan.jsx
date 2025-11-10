@@ -34,6 +34,23 @@ function Plan() {
     setLoading(false)
   }, [navigate])
 
+  const handleAdminPlanSwitch = (planId) => {
+    // Check if user is admin
+    const adminKey = localStorage.getItem('adminKey')
+    if (!adminKey) return
+
+    // Set the plan override
+    localStorage.setItem('adminPlanOverride', planId)
+
+    // Update state
+    setCurrentPlan(planId)
+    const userData = { ...user, plan: planId }
+    setUser(userData)
+
+    // Reload to apply changes
+    window.location.reload()
+  }
+
   const handleUpgrade = async (planId) => {
     if (planId === 'free' || planId === currentPlan) {
       return
@@ -153,6 +170,94 @@ function Plan() {
               Start free. Upgrade when you need more. Cancel anytime.
             </p>
           </div>
+
+          {/* Admin Plan Switcher */}
+          {localStorage.getItem('adminKey') && (
+            <div style={{
+              background: theme.colors.bg.secondary,
+              border: `2px solid ${theme.colors.accent.yellow}`,
+              borderRadius: theme.radius.xl,
+              padding: theme.spacing[8],
+              marginBottom: theme.spacing[12],
+              maxWidth: '600px',
+              margin: `0 auto ${theme.spacing[12]}px auto`
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: theme.spacing[4]
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.lg,
+                  fontWeight: theme.weight.semibold,
+                  color: theme.colors.text.primary
+                }}>
+                  Admin Plan Switcher
+                </div>
+                <div style={{
+                  padding: '4px 12px',
+                  background: theme.colors.accent.yellow,
+                  borderRadius: theme.radius.full,
+                  fontSize: theme.fontSize.xs,
+                  fontWeight: theme.weight.bold,
+                  color: theme.colors.bg.page,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  ADMIN
+                </div>
+              </div>
+              <div style={{
+                fontSize: theme.fontSize.sm,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[6]
+              }}>
+                Current plan: <span style={{ fontWeight: theme.weight.semibold, color: theme.colors.accent.blue }}>{currentPlan.toUpperCase()}</span>
+              </div>
+              <div style={{
+                display: 'flex',
+                gap: theme.spacing[4]
+              }}>
+                <button
+                  onClick={() => handleAdminPlanSwitch('free')}
+                  style={{
+                    flex: 1,
+                    padding: theme.spacing[4],
+                    background: currentPlan === 'free' ? theme.colors.accent.blue : theme.colors.bg.tertiary,
+                    color: currentPlan === 'free' ? theme.colors.white : theme.colors.text.secondary,
+                    border: 'none',
+                    borderRadius: theme.radius.lg,
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: theme.weight.medium,
+                    cursor: 'pointer',
+                    transition: `all ${theme.transition.fast}`,
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  Switch to Free
+                </button>
+                <button
+                  onClick={() => handleAdminPlanSwitch('pro')}
+                  style={{
+                    flex: 1,
+                    padding: theme.spacing[4],
+                    background: currentPlan === 'pro' ? theme.colors.accent.blue : theme.colors.bg.tertiary,
+                    color: currentPlan === 'pro' ? theme.colors.white : theme.colors.text.secondary,
+                    border: 'none',
+                    borderRadius: theme.radius.lg,
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: theme.weight.medium,
+                    cursor: 'pointer',
+                    transition: `all ${theme.transition.fast}`,
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  Switch to Pro
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Plans Grid */}
           <div style={{
