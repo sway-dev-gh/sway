@@ -197,7 +197,7 @@ function Dashboard() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '72px'
+        marginTop: '54px'
       }}>
         <div style={{
           maxWidth: '1400px',

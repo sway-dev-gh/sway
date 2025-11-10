@@ -113,28 +113,28 @@ function Sidebar() {
     top: 0,
     left: 0,
     right: 0,
-    height: '72px',
+    height: '54px',
     background: theme.colors.bg.sidebar,
     borderBottom: `1px solid ${theme.colors.border.medium}`,
     zIndex: 100,
     display: 'flex',
     alignItems: 'center',
-    padding: '0 32px',
-    gap: '40px'
+    padding: '0 24px',
+    gap: '30px'
   }
 
   const navLinkStyle = (isActive) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: `8px 16px`,
+    padding: `6px 12px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
-    fontSize: '20px',
+    fontSize: '15px',
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? theme.colors.bg.hover : 'transparent',
     borderRadius: theme.radius.md,
         whiteSpace: 'nowrap',
-    height: '40px'
+    height: '30px'
   })
 
   return (
@@ -146,8 +146,8 @@ function Sidebar() {
           src="/logo.svg"
           alt="Sway"
           style={{
-            width: '40px',
-            height: '40px',
+            width: '30px',
+            height: '30px',
             flexShrink: 0
           }}
         />
