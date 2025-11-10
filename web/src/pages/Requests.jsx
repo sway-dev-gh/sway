@@ -134,6 +134,44 @@ const REQUEST_TYPES = [
   }
 ]
 
+const UI_THEMES = [
+  {
+    id: 'minimal',
+    name: 'Minimal',
+    description: 'Clean white with subtle accents',
+    preview: { bg: '#ffffff', accent: '#000000', text: '#333333' },
+    planRequired: 'free'
+  },
+  {
+    id: 'modern-dark',
+    name: 'Modern Dark',
+    description: 'Sleek dark with blue accents',
+    preview: { bg: '#1a1a1a', accent: '#3b82f6', text: '#ffffff' },
+    planRequired: 'free'
+  },
+  {
+    id: 'professional',
+    name: 'Professional',
+    description: 'Corporate blue and white',
+    preview: { bg: '#f8fafc', accent: '#2563eb', text: '#1e293b' },
+    planRequired: 'free'
+  },
+  {
+    id: 'warm',
+    name: 'Warm',
+    description: 'Soft cream with orange accents',
+    preview: { bg: '#fef3c7', accent: '#f97316', text: '#78350f' },
+    planRequired: 'free'
+  },
+  {
+    id: 'custom',
+    name: 'Custom Theme',
+    description: 'Full customization control',
+    preview: { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', accent: '#ffffff', text: '#ffffff' },
+    planRequired: 'pro'
+  }
+]
+
 function Requests() {
   const navigate = useNavigate()
   const [requests, setRequests] = useState([])
@@ -142,6 +180,8 @@ function Requests() {
   const [creating, setCreating] = useState(false)
   const [formData, setFormData] = useState({ title: '', description: '', customFields: {}, password: '', requireEmail: false, requireName: false })
   const [requestType, setRequestType] = useState('')
+  const [selectedTheme, setSelectedTheme] = useState('')
+  const [customTheme, setCustomTheme] = useState({ bgColor: '#ffffff', accentColor: '#000000', fontFamily: 'Arial', layoutStyle: 'centered' })
   const [searchQuery, setSearchQuery] = useState('')
   const [expiryType, setExpiryType] = useState('preset')
   const [customExpiryValue, setCustomExpiryValue] = useState('')
@@ -211,6 +251,8 @@ function Requests() {
   const closeModal = () => {
     setShowModal(false)
     setRequestType('')
+    setSelectedTheme('')
+    setCustomTheme({ bgColor: '#ffffff', accentColor: '#000000', fontFamily: 'Arial', layoutStyle: 'centered' })
     setFormData({ title: '', description: '', customFields: {}, password: '', requireEmail: false, requireName: false })
     setExpiryType('preset')
     setCustomExpiryValue('')
@@ -268,7 +310,9 @@ function Requests() {
         fieldRequirements: fieldRequirements,
         password: formData.password || null,
         requireEmail: formData.requireEmail,
-        requireName: formData.requireName
+        requireName: formData.requireName,
+        uiTheme: selectedTheme,
+        customTheme: selectedTheme === 'custom' ? customTheme : null
       }, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -608,7 +652,7 @@ function Requests() {
                     letterSpacing: '-0.01em',
                     color: theme.colors.text.primary
                   }}>
-                    {createdLink ? 'Request Created' : (requestType ? 'Create Request' : 'Choose Request Type')}
+                    {createdLink ? 'Request Created' : (requestType ? 'Create Request' : (selectedTheme ? 'Choose Request Type' : 'Choose UI Theme'))}
                   </h2>
                   <button
                     onClick={closeModal}
@@ -710,8 +754,169 @@ function Requests() {
                       </button>
                     </div>
                   </div>
-                ) : !requestType ? (
+                ) : !selectedTheme ? (
+                  /* Theme Selection */
                   <div style={{ padding: '24px 32px' }}>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                      marginBottom: theme.spacing[4],
+                      textAlign: 'center'
+                    }}>
+                      Choose how your upload page will look
+                    </div>
+
+                    {/* Theme Grid */}
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(2, 1fr)',
+                      gap: '12px',
+                      maxHeight: '420px',
+                      overflowY: 'auto'
+                    }}
+                    className="custom-scrollbar"
+                    >
+                      {UI_THEMES.map((themeOption) => {
+                        const planLevels = { 'free': 0, 'pro': 1 }
+                        const currentPlanLevel = planLevels[userPlan] || 0
+                        const requiredPlanLevel = planLevels[themeOption.planRequired] || 0
+                        const isLocked = currentPlanLevel < requiredPlanLevel
+
+                        return (
+                          <div
+                            key={themeOption.id}
+                            onClick={() => {
+                              if (isLocked) {
+                                setUpgradeMessage(`Custom themes require Pro. Upgrade to unlock full theme customization.`)
+                                setShowUpgradeModal(true)
+                              } else {
+                                setSelectedTheme(themeOption.id)
+                              }
+                            }}
+                            style={{
+                              padding: '16px',
+                              background: theme.colors.bg.page,
+                              border: `1px solid ${isLocked ? theme.colors.border.light : theme.colors.border.medium}`,
+                              borderRadius: '12px',
+                              cursor: isLocked ? 'not-allowed' : 'pointer',
+                              opacity: isLocked ? 0.5 : 1,
+                              position: 'relative',
+                              transition: `all ${theme.transition.fast}`
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!isLocked) {
+                                e.currentTarget.style.borderColor = theme.colors.border.dark
+                                e.currentTarget.style.transform = 'translateY(-2px)'
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!isLocked) {
+                                e.currentTarget.style.borderColor = theme.colors.border.medium
+                                e.currentTarget.style.transform = 'translateY(0)'
+                              }
+                            }}
+                          >
+                            {isLocked && (
+                              <div style={{
+                                position: 'absolute',
+                                top: '8px',
+                                right: '8px',
+                                fontSize: '9px',
+                                color: theme.colors.text.tertiary,
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                fontWeight: '600',
+                                background: theme.colors.bg.tertiary,
+                                padding: '2px 6px',
+                                borderRadius: '4px'
+                              }}>
+                                PRO
+                              </div>
+                            )}
+
+                            {/* Color Preview */}
+                            <div style={{
+                              height: '80px',
+                              background: themeOption.preview.bg,
+                              borderRadius: '8px',
+                              marginBottom: '12px',
+                              border: `1px solid ${theme.colors.border.light}`,
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              gap: '6px',
+                              overflow: 'hidden'
+                            }}>
+                              <div style={{
+                                width: '40px',
+                                height: '4px',
+                                background: themeOption.preview.accent,
+                                borderRadius: '2px'
+                              }} />
+                              <div style={{
+                                width: '60px',
+                                height: '3px',
+                                background: themeOption.preview.text,
+                                borderRadius: '2px',
+                                opacity: 0.5
+                              }} />
+                              <div style={{
+                                width: '50px',
+                                height: '3px',
+                                background: themeOption.preview.text,
+                                borderRadius: '2px',
+                                opacity: 0.3
+                              }} />
+                            </div>
+
+                            {/* Theme Name */}
+                            <div style={{
+                              fontSize: theme.fontSize.sm,
+                              fontWeight: '500',
+                              color: theme.colors.text.primary,
+                              marginBottom: theme.spacing[1]
+                            }}>
+                              {themeOption.name}
+                            </div>
+
+                            {/* Theme Description */}
+                            <div style={{
+                              fontSize: theme.fontSize.xs,
+                              color: theme.colors.text.tertiary,
+                              lineHeight: '1.4'
+                            }}>
+                              {themeOption.description}
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                ) : !requestType ? (
+                  /* Request Type Selection */
+                  <div style={{ padding: '24px 32px' }}>
+                    {/* Back Button */}
+                    <button
+                      onClick={() => setSelectedTheme('')}
+                      style={{
+                        background: 'transparent',
+                        border: 'none',
+                        color: theme.colors.text.secondary,
+                        cursor: 'pointer',
+                        fontSize: theme.fontSize.sm,
+                        padding: '8px 0',
+                        marginBottom: theme.spacing[3],
+                        fontWeight: '500',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '4px',
+                        fontFamily: 'inherit'
+                      }}
+                    >
+                      ← Back to themes
+                    </button>
+
                     {/* Search Bar */}
                     <input
                       type="text"
@@ -828,6 +1033,239 @@ function Requests() {
                 ) : (
                   <form onSubmit={handleCreateRequest}>
                     <div style={{ padding: '24px 32px' }}>
+                      {/* UI Theme Display */}
+                      <div style={{ marginBottom: theme.spacing[5] }}>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.sm,
+                          color: theme.colors.text.secondary,
+                          marginBottom: theme.spacing[2],
+                          fontWeight: theme.weight.medium
+                        }}>
+                          UI Theme
+                        </label>
+                        <div style={{
+                          padding: '12px 16px',
+                          background: theme.colors.bg.page,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          borderRadius: '10px',
+                          fontSize: theme.fontSize.base,
+                          color: theme.colors.text.primary,
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center'
+                        }}>
+                          {UI_THEMES.find(t => t.id === selectedTheme)?.name || selectedTheme}
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedTheme('')
+                              setRequestType('')
+                            }}
+                            style={{
+                              background: 'transparent',
+                              border: 'none',
+                              color: theme.colors.text.secondary,
+                              cursor: 'pointer',
+                              fontSize: theme.fontSize.sm,
+                              padding: 0,
+                              fontWeight: '500',
+                              transition: `color ${theme.transition.fast}`,
+                              fontFamily: 'inherit'
+                            }}
+                          >
+                            Change
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Custom Theme Customization Panel - Pro Only */}
+                      {selectedTheme === 'custom' && userPlan === 'pro' && (
+                        <div style={{
+                          marginBottom: theme.spacing[5],
+                          padding: '16px',
+                          background: theme.colors.bg.page,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          borderRadius: '10px'
+                        }}>
+                          <div style={{
+                            fontSize: theme.fontSize.sm,
+                            fontWeight: theme.weight.medium,
+                            color: theme.colors.text.primary,
+                            marginBottom: theme.spacing[3],
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: theme.spacing[2]
+                          }}>
+                            Custom Theme Settings
+                            <span style={{
+                              fontSize: '11px',
+                              background: theme.colors.white,
+                              color: theme.colors.black,
+                              padding: '2px 8px',
+                              borderRadius: '4px',
+                              fontWeight: 600,
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.5px'
+                            }}>PRO</span>
+                          </div>
+
+                          {/* Background Color */}
+                          <div style={{ marginBottom: theme.spacing[3] }}>
+                            <label style={{
+                              display: 'block',
+                              fontSize: theme.fontSize.xs,
+                              color: theme.colors.text.secondary,
+                              marginBottom: theme.spacing[2]
+                            }}>
+                              Background Color
+                            </label>
+                            <div style={{ display: 'flex', gap: theme.spacing[2], alignItems: 'center' }}>
+                              <input
+                                type="color"
+                                value={customTheme.bgColor}
+                                onChange={(e) => setCustomTheme(prev => ({ ...prev, bgColor: e.target.value }))}
+                                style={{
+                                  width: '50px',
+                                  height: '36px',
+                                  border: `1px solid ${theme.colors.border.medium}`,
+                                  borderRadius: '6px',
+                                  cursor: 'pointer'
+                                }}
+                              />
+                              <input
+                                type="text"
+                                value={customTheme.bgColor}
+                                onChange={(e) => setCustomTheme(prev => ({ ...prev, bgColor: e.target.value }))}
+                                style={{
+                                  flex: 1,
+                                  padding: '8px 12px',
+                                  background: theme.colors.bg.secondary,
+                                  border: `1px solid ${theme.colors.border.medium}`,
+                                  borderRadius: '6px',
+                                  color: theme.colors.text.primary,
+                                  fontSize: theme.fontSize.sm,
+                                  fontFamily: 'monospace',
+                                  outline: 'none'
+                                }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Accent Color */}
+                          <div style={{ marginBottom: theme.spacing[3] }}>
+                            <label style={{
+                              display: 'block',
+                              fontSize: theme.fontSize.xs,
+                              color: theme.colors.text.secondary,
+                              marginBottom: theme.spacing[2]
+                            }}>
+                              Accent Color
+                            </label>
+                            <div style={{ display: 'flex', gap: theme.spacing[2], alignItems: 'center' }}>
+                              <input
+                                type="color"
+                                value={customTheme.accentColor}
+                                onChange={(e) => setCustomTheme(prev => ({ ...prev, accentColor: e.target.value }))}
+                                style={{
+                                  width: '50px',
+                                  height: '36px',
+                                  border: `1px solid ${theme.colors.border.medium}`,
+                                  borderRadius: '6px',
+                                  cursor: 'pointer'
+                                }}
+                              />
+                              <input
+                                type="text"
+                                value={customTheme.accentColor}
+                                onChange={(e) => setCustomTheme(prev => ({ ...prev, accentColor: e.target.value }))}
+                                style={{
+                                  flex: 1,
+                                  padding: '8px 12px',
+                                  background: theme.colors.bg.secondary,
+                                  border: `1px solid ${theme.colors.border.medium}`,
+                                  borderRadius: '6px',
+                                  color: theme.colors.text.primary,
+                                  fontSize: theme.fontSize.sm,
+                                  fontFamily: 'monospace',
+                                  outline: 'none'
+                                }}
+                              />
+                            </div>
+                          </div>
+
+                          {/* Font Family */}
+                          <div style={{ marginBottom: theme.spacing[3] }}>
+                            <label style={{
+                              display: 'block',
+                              fontSize: theme.fontSize.xs,
+                              color: theme.colors.text.secondary,
+                              marginBottom: theme.spacing[2]
+                            }}>
+                              Font Family
+                            </label>
+                            <select
+                              value={customTheme.fontFamily}
+                              onChange={(e) => setCustomTheme(prev => ({ ...prev, fontFamily: e.target.value }))}
+                              style={{
+                                width: '100%',
+                                padding: '8px 12px',
+                                background: theme.colors.bg.secondary,
+                                border: `1px solid ${theme.colors.border.medium}`,
+                                borderRadius: '6px',
+                                color: theme.colors.text.primary,
+                                fontSize: theme.fontSize.sm,
+                                fontFamily: 'inherit',
+                                outline: 'none',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <option value="Arial">Arial</option>
+                              <option value="Helvetica">Helvetica</option>
+                              <option value="Georgia">Georgia</option>
+                              <option value="Times New Roman">Times New Roman</option>
+                              <option value="Courier New">Courier New</option>
+                              <option value="Verdana">Verdana</option>
+                              <option value="Inter">Inter</option>
+                              <option value="Roboto">Roboto</option>
+                            </select>
+                          </div>
+
+                          {/* Layout Style */}
+                          <div>
+                            <label style={{
+                              display: 'block',
+                              fontSize: theme.fontSize.xs,
+                              color: theme.colors.text.secondary,
+                              marginBottom: theme.spacing[2]
+                            }}>
+                              Layout Style
+                            </label>
+                            <select
+                              value={customTheme.layoutStyle}
+                              onChange={(e) => setCustomTheme(prev => ({ ...prev, layoutStyle: e.target.value }))}
+                              style={{
+                                width: '100%',
+                                padding: '8px 12px',
+                                background: theme.colors.bg.secondary,
+                                border: `1px solid ${theme.colors.border.medium}`,
+                                borderRadius: '6px',
+                                color: theme.colors.text.primary,
+                                fontSize: theme.fontSize.sm,
+                                fontFamily: 'inherit',
+                                outline: 'none',
+                                cursor: 'pointer'
+                              }}
+                            >
+                              <option value="centered">Centered</option>
+                              <option value="left-aligned">Left Aligned</option>
+                              <option value="full-width">Full Width</option>
+                              <option value="compact">Compact</option>
+                            </select>
+                          </div>
+                        </div>
+                      )}
+
                       <div style={{ marginBottom: theme.spacing[5] }}>
                         <label style={{
                           display: 'block',
@@ -861,11 +1299,10 @@ function Requests() {
                               fontSize: theme.fontSize.sm,
                               padding: 0,
                               fontWeight: '500',
-                              transition: `color ${theme.transition.fast}`
+                              transition: `color ${theme.transition.fast}`,
+                              fontFamily: 'inherit'
                             }}
-
-
-                                            >
+                          >
                             Change
                           </button>
                         </div>

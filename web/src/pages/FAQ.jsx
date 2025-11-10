@@ -132,18 +132,19 @@ function FAQ() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[6], textAlign: 'center' }}>
             <h1 style={{
-              fontSize: theme.fontSize.xl,
-              fontWeight: '500',
+              fontSize: '48px',
+              fontWeight: '600',
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
             }}>
               Frequently Asked Questions
             </h1>
             <p style={{
-              fontSize: theme.fontSize.sm,
+              fontSize: '18px',
               color: theme.colors.text.secondary,
-              margin: '6px 0 0 0',
+              margin: '12px 0 0 0',
               lineHeight: '1.6'
             }}>
               Everything you need to know about Sway
@@ -167,17 +168,18 @@ function FAQ() {
                 }}
               >
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: '18px',
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[3],
-                  fontWeight: theme.weight.medium
+                  fontWeight: '600',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
                 }}>
                   {faq.question}
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.xs,
+                  fontSize: '15px',
                   color: theme.colors.text.secondary,
-                  lineHeight: '1.6'
+                  lineHeight: '1.7'
                 }}>
                   {faq.answer}
                 </div>

@@ -174,18 +174,19 @@ function Plan() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[6], textAlign: 'center' }}>
             <h1 style={{
-              fontSize: theme.fontSize.xl,
-              fontWeight: '500',
+              fontSize: '48px',
+              fontWeight: '600',
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
             }}>
               Pricing
             </h1>
             <p style={{
-              fontSize: theme.fontSize.sm,
+              fontSize: '18px',
               color: theme.colors.text.secondary,
-              margin: '6px 0 0 0',
+              margin: '12px 0 0 0',
               lineHeight: '1.6'
             }}>
               Simple, transparent pricing for everyone
@@ -251,12 +252,12 @@ function Plan() {
 
                 {/* Plan Name */}
                 <div style={{
-                  fontSize: theme.fontSize.sm,
+                  fontSize: '11px',
                   color: theme.colors.text.tertiary,
                   marginBottom: theme.spacing[2],
                   textTransform: 'uppercase',
                   letterSpacing: '1.2px',
-                  fontWeight: theme.weight.medium
+                  fontWeight: '600'
                 }}>
                   {plan.name}
                 </div>
@@ -265,11 +266,13 @@ function Plan() {
                 <div style={{ marginBottom: theme.spacing[5] }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[1] }}>
                     <div style={{
-                      fontSize: theme.fontSize.xl,
-                      fontWeight: theme.weight.semibold,
+                      fontSize: '42px',
+                      fontWeight: '700',
                       color: theme.colors.text.primary,
                       letterSpacing: '-0.02em',
-                      lineHeight: '1'
+                      lineHeight: '1',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                      fontVariantNumeric: 'tabular-nums'
                     }}>
                       {plan.price}
                     </div>
@@ -299,7 +302,7 @@ function Plan() {
                     <div
                       key={index}
                       style={{
-                        fontSize: theme.fontSize.xs,
+                        fontSize: '14px',
                         color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
                         marginBottom: theme.spacing[2],
                         display: 'flex',

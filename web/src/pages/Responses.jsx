@@ -114,18 +114,19 @@ function Responses() {
           {/* Header */}
           <div style={{ marginBottom: theme.spacing[6], textAlign: 'center' }}>
             <h1 style={{
-              fontSize: theme.fontSize.xl,
-              fontWeight: '500',
+              fontSize: '48px',
+              fontWeight: '600',
               margin: 0,
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
+              letterSpacing: '-0.02em',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
             }}>
               Responses
             </h1>
             <p style={{
-              fontSize: theme.fontSize.sm,
+              fontSize: '18px',
               color: theme.colors.text.secondary,
-              margin: '6px 0 0 0',
+              margin: '12px 0 0 0',
               lineHeight: '1.6'
             }}>
               All files uploaded to your requests
@@ -141,50 +142,94 @@ function Responses() {
             width: '100%'
           }}>
             <div style={{
-              padding: theme.spacing[5],
+              padding: '32px',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg
+              borderRadius: theme.radius.lg,
+              position: 'relative',
+              overflow: 'hidden'
             }}>
               <div style={{
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[3],
-                fontWeight: theme.weight.medium
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                fontSize: '48px',
+                opacity: 0.1
               }}>
-                Uploads
+                📁
               </div>
               <div style={{
-                fontSize: theme.fontSize['3xl'],
-                fontWeight: theme.weight.medium,
+                fontSize: '12px',
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[3],
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+              }}>
+                Total Uploads
+              </div>
+              <div style={{
+                fontSize: '56px',
+                fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[2]
+                marginBottom: theme.spacing[2],
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontVariantNumeric: 'tabular-nums'
               }}>
                 {responses.length}
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: theme.colors.text.tertiary
+              }}>
+                Files received
               </div>
             </div>
 
             <div style={{
-              padding: theme.spacing[5],
+              padding: '32px',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg
+              borderRadius: theme.radius.lg,
+              position: 'relative',
+              overflow: 'hidden'
             }}>
               <div style={{
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[3],
-                fontWeight: theme.weight.medium
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                fontSize: '48px',
+                opacity: 0.1
               }}>
-                Storage
+                💾
               </div>
               <div style={{
-                fontSize: theme.fontSize['3xl'],
-                fontWeight: theme.weight.medium,
+                fontSize: '12px',
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[3],
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+              }}>
+                Storage Used
+              </div>
+              <div style={{
+                fontSize: '56px',
+                fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[2]
+                marginBottom: theme.spacing[2],
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontVariantNumeric: 'tabular-nums'
               }}>
                 {formatBytes(responses.reduce((sum, r) => sum + (r.fileSize || 0), 0))}
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: theme.colors.text.tertiary
+              }}>
+                Across all uploads
               </div>
             </div>
           </div>
@@ -227,14 +272,19 @@ function Responses() {
                     border: `1px solid ${theme.colors.border.light}`,
                     borderRadius: theme.radius.lg,
                     padding: theme.spacing[5],
-                    transition: `transform ${theme.transition.fast}`,
-                    cursor: 'pointer'
+                    transition: 'all 0.2s ease',
+                    cursor: 'pointer',
+                    background: 'rgba(255, 255, 255, 0.02)'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.transform = 'translateY(-4px)'
+                    e.currentTarget.style.borderColor = theme.colors.border.medium
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.borderColor = theme.colors.border.light
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
                   }}
                 >
                   {/* File Name */}
