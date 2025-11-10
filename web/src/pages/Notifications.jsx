@@ -170,8 +170,6 @@ function Notifications() {
                       gap: '16px',
                       cursor: 'pointer'
                     }}
-}
-}
                     onClick={() => navigate('/responses')}
                   >
                     {/* Icon */}

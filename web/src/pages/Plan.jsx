@@ -332,8 +332,6 @@ function Plan() {
                         : { ...theme.buttons.secondary.base, ...(upgrading && theme.buttons.secondary.disabled) }
                     )
                   }}
-}}
-}}
                 >
                   {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? (currentPlan === 'pro' ? 'Switch to Free' : 'Get Started') : 'Upgrade to Pro'))}
                 </button>
@@ -501,8 +499,6 @@ function Plan() {
                 padding: '12px 32px',
                 fontSize: '16px'
               }}
-}
-}
             >
               Get Started
             </button>
@@ -590,9 +586,6 @@ function Plan() {
                   flex: 1,
                   padding: '12px 24px'
                 }}
-}
-)
-                }}
               >
                 Cancel
               </button>
@@ -602,9 +595,6 @@ function Plan() {
                   ...theme.buttons.danger.base,
                   flex: 1,
                   padding: '12px 24px'
-                }}
-}
-)
                 }}
               >
                 Yes, Switch to Free

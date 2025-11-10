@@ -429,11 +429,9 @@ function Upload() {
               borderRadius: '10px',
               background: theme.colors.bg.page,
               cursor: 'pointer',
-              padding: '40px 24px'
+              padding: '40px 24px',
               position: 'relative'
             }}
-}
-}
             >
               <input
                 type="file"
