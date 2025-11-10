@@ -88,6 +88,34 @@ function FAQ() {
     {
       question: "Is there a mobile app?",
       answer: "Sway works perfectly in any mobile browser - no app needed. The interface is fully responsive, and uploaders can send files from their phones just as easily as desktop. Simple and universal."
+    },
+    {
+      question: "How does the visual Builder work?",
+      answer: "The Builder is a drag-and-drop canvas where you design custom upload forms. Drag elements from the left sidebar onto the canvas, customize their properties in the right panel, and arrange everything visually. It's like Canva meets Typeform - no coding required."
+    },
+    {
+      question: "What's the difference between Save and Publish?",
+      answer: "Save creates a draft that you can continue editing later - it appears in your Tracking page but isn't live yet. Publish makes your form live and generates a shareable link that people can use to upload files. You can edit published forms anytime."
+    },
+    {
+      question: "Can I use templates to start building?",
+      answer: "Yes! Free users get 3 professional templates (Simple Contact, Quick Feedback, Basic File Request). Pro users get 5 additional advanced templates (Client Onboarding, Event Registration, Job Application, Survey Form, Document Collection). Just click a template to start customizing."
+    },
+    {
+      question: "What elements can I use in Free vs Pro?",
+      answer: "Free gives you 6 essential elements: Text Block, Heading, Text Input, Text Area, File Upload, and Button. Pro unlocks 16 additional elements including Multi-File Upload, Image Gallery, Date Picker, Rich Text Editor, Star Rating, Signature Pad, and more - 22 elements total."
+    },
+    {
+      question: "What keyboard shortcuts are available in the Builder?",
+      answer: "Delete key removes selected elements. Cmd+Z/Cmd+Y (or Ctrl+Z/Ctrl+Y on Windows) for undo/redo. Cmd+C/Cmd+V/Cmd+D for copy/paste/duplicate. Arrow keys move selected elements. Shift+click to select multiple elements at once."
+    },
+    {
+      question: "How do I customize form elements?",
+      answer: "Click any element on the canvas to select it. The right panel shows all customizable properties - change labels, placeholders, colors, sizes, required fields, and more. Changes apply instantly. Different element types have different properties available."
+    },
+    {
+      question: "Can I move multiple elements at once?",
+      answer: "Yes! Hold Shift and click multiple elements to select them together. Once selected, you can drag them as a group or delete them all at once. Click anywhere on the canvas to deselect."
     }
   ]
 
@@ -185,50 +213,6 @@ function FAQ() {
                 </div>
               </div>
             ))}
-          </div>
-
-          {/* Still have questions CTA */}
-          <div style={{
-            marginTop: theme.spacing[7],
-            textAlign: 'center',
-            padding: theme.spacing[5],
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: theme.radius.lg,
-            maxWidth: '600px',
-            margin: `${theme.spacing[7]} auto 0`
-          }}>
-            <h3 style={{
-              fontSize: theme.fontSize.base,
-              fontWeight: theme.weight.medium,
-              color: theme.colors.text.primary,
-              margin: `0 0 ${theme.spacing[2]} 0`
-            }}>
-              Still have questions?
-            </h3>
-            <p style={{
-              fontSize: theme.fontSize.xs,
-              color: theme.colors.text.secondary,
-              margin: `0 0 ${theme.spacing[4]} 0`,
-              lineHeight: '1.6'
-            }}>
-              Can't find the answer you're looking for? Feel free to reach out.
-            </p>
-            <a
-              href="mailto:support@swayfiles.com"
-              style={{
-                display: 'inline-block',
-                padding: '6px 12px',
-                background: theme.colors.white,
-                color: theme.colors.black,
-                borderRadius: theme.radius.md,
-                fontSize: theme.fontSize.xs,
-                fontWeight: theme.weight.medium,
-                textDecoration: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              Contact Support
-            </a>
           </div>
         </div>
       </div>
