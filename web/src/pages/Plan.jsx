@@ -173,94 +173,6 @@ function Plan() {
             </p>
           </div>
 
-          {/* Admin Plan Switcher */}
-          {localStorage.getItem('adminKey') && (
-            <div style={{
-              background: theme.colors.bg.secondary,
-              border: `2px solid ${theme.colors.accent.yellow}`,
-              borderRadius: theme.radius.xl,
-              padding: theme.spacing[8],
-              marginBottom: theme.spacing[12],
-              maxWidth: '600px',
-              margin: `0 auto ${theme.spacing[12]}px auto`
-            }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginBottom: theme.spacing[4]
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.lg,
-                  fontWeight: theme.weight.semibold,
-                  color: theme.colors.text.primary
-                }}>
-                  Admin Plan Switcher
-                </div>
-                <div style={{
-                  padding: '4px 12px',
-                  background: theme.colors.accent.yellow,
-                  borderRadius: theme.radius.full,
-                  fontSize: theme.fontSize.xs,
-                  fontWeight: theme.weight.bold,
-                  color: theme.colors.bg.page,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px'
-                }}>
-                  ADMIN
-                </div>
-              </div>
-              <div style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[6]
-              }}>
-                Current plan: <span style={{ fontWeight: theme.weight.semibold, color: theme.colors.accent.blue }}>{currentPlan.toUpperCase()}</span>
-              </div>
-              <div style={{
-                display: 'flex',
-                gap: theme.spacing[4]
-              }}>
-                <button
-                  onClick={() => handleAdminPlanSwitch('free')}
-                  style={{
-                    flex: 1,
-                    padding: theme.spacing[4],
-                    background: currentPlan === 'free' ? theme.colors.accent.blue : theme.colors.bg.tertiary,
-                    color: currentPlan === 'free' ? theme.colors.white : theme.colors.text.secondary,
-                    border: 'none',
-                    borderRadius: theme.radius.lg,
-                    fontSize: theme.fontSize.sm,
-                    fontWeight: theme.weight.medium,
-                    cursor: 'pointer',
-                    transition: `all ${theme.transition.fast}`,
-                    fontFamily: 'inherit'
-                  }}
-                >
-                  Switch to Free
-                </button>
-                <button
-                  onClick={() => handleAdminPlanSwitch('pro')}
-                  style={{
-                    flex: 1,
-                    padding: theme.spacing[4],
-                    background: currentPlan === 'pro' ? theme.colors.accent.blue : theme.colors.bg.tertiary,
-                    color: currentPlan === 'pro' ? theme.colors.white : theme.colors.text.secondary,
-                    border: 'none',
-                    borderRadius: theme.radius.lg,
-                    fontSize: theme.fontSize.sm,
-                    fontWeight: theme.weight.medium,
-                    cursor: 'pointer',
-                    transition: `all ${theme.transition.fast}`,
-                    fontFamily: 'inherit'
-                  }}
-                >
-                  Switch to Pro
-                </button>
-              </div>
-            </div>
-          )}
-
           {/* Plans Grid */}
           <div style={{
             display: 'grid',
@@ -282,12 +194,30 @@ function Plan() {
                   boxShadow: plan.popular ? theme.shadows.glowStrong : theme.shadows.md
                 }}
               >
-                {/* Popular Badge */}
-                {plan.popular && (
+                {/* Badge - Show CURRENT if on this plan, otherwise show MOST POPULAR for Pro */}
+                {plan.id === currentPlan ? (
                   <div style={{
                     position: 'absolute',
                     top: '-12px',
                     left: '50%',
+                    transform: 'translateX(-50%)',
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    padding: '6px 20px',
+                    borderRadius: theme.radius.full,
+                    fontSize: theme.fontSize.xs,
+                    fontWeight: theme.weight.semibold,
+                    textTransform: 'uppercase',
+                    letterSpacing: '1px'
+                  }}>
+                    Current
+                  </div>
+                ) : plan.popular && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '-12px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
                     background: theme.colors.white,
                     color: theme.colors.black,
                     padding: '6px 20px',
@@ -298,25 +228,6 @@ function Plan() {
                     letterSpacing: '1px'
                   }}>
                     Most Popular
-                  </div>
-                )}
-
-                {/* Current Plan Badge */}
-                {plan.id === currentPlan && (
-                  <div style={{
-                    position: 'absolute',
-                    top: theme.spacing[5],
-                    right: theme.spacing[5],
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    color: theme.colors.text.secondary,
-                    padding: '4px 12px',
-                    borderRadius: theme.radius.md,
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.semibold,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.8px'
-                  }}>
-                    Current
                   </div>
                 )}
 
