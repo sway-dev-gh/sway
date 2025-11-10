@@ -371,10 +371,9 @@ function Plan() {
               overflow: 'hidden'
             }}>
               {[
-                { feature: 'Active Requests', free: '20', pro: '200' },
+                { feature: 'Active Forms', free: '5', pro: 'Unlimited' },
                 { feature: 'Storage', free: '2GB', pro: '50GB' },
-                { feature: 'Visual Request Builder', free: '✓', pro: '✓' },
-                { feature: 'Custom Upload Pages', free: '✓', pro: '✓' },
+                { feature: 'Visual Builder', free: '—', pro: '✓' },
                 { feature: 'Password Protection', free: '—', pro: '✓' },
                 { feature: 'Bulk Download', free: '—', pro: '✓' },
                 { feature: 'Advanced Analytics', free: '—', pro: '✓' },
@@ -440,7 +439,7 @@ function Plan() {
                 },
                 {
                   q: 'What happens if I exceed my limits?',
-                  a: 'We\'ll notify you when you\'re approaching your limits. You can upgrade to Pro for more requests and storage.'
+                  a: 'We\'ll notify you when you\'re approaching your limits. You can upgrade to Pro for unlimited forms and more storage.'
                 },
                 {
                   q: 'Do you offer refunds?',
@@ -501,7 +500,7 @@ function Plan() {
               marginBottom: '24px',
               lineHeight: '1.6'
             }}>
-              Start collecting files today with our Free plan. Upgrade to Pro anytime for advanced features.
+              Start sharing files today with our Free plan. Upgrade to Pro anytime for unlimited forms and advanced features.
             </p>
             <button
               onClick={() => navigate('/requests')}
@@ -517,7 +516,7 @@ function Plan() {
                 e.currentTarget.style.background = theme.buttons.primary.base.background
               }}
             >
-              Create Your First Form
+              Get Started
             </button>
           </div>
         </div>
