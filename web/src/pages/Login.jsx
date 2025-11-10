@@ -33,7 +33,7 @@ export default function Login() {
       alignItems: 'center',
       justifyContent: 'center',
       background: theme.colors.bg.page,
-      padding: '24px'
+      padding: theme.spacing[5]
     }}>
       <div style={{
         width: '100%',
@@ -41,26 +41,26 @@ export default function Login() {
       }}>
         {/* Header */}
         <div style={{
-          marginBottom: '40px',
+          marginBottom: theme.spacing[6],
           textAlign: 'center'
         }}>
           <div style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            marginBottom: '8px'
+            marginBottom: theme.spacing[2]
           }}>
             <img
               src="/logo.svg"
               alt="Sway"
               style={{
-                width: '50px',
-                height: '50px'
+                width: '40px',
+                height: '40px'
               }}
             />
           </div>
           <p style={{
-            fontSize: '20px',
+            fontSize: theme.fontSize.sm,
             color: theme.colors.text.secondary,
             margin: 0,
             lineHeight: '1.5'
@@ -71,22 +71,20 @@ export default function Login() {
 
         {/* Form Container */}
         <div style={{
-          background: theme.colors.bg.secondary,
-          padding: '32px',
-          borderRadius: theme.radius['2xl'],
-          border: `1px solid ${theme.colors.border.light}`,
-          boxShadow: theme.shadows.md
+          padding: theme.spacing[6],
+          borderRadius: theme.radius.lg,
+          border: `1px solid ${theme.colors.border.light}`
         }}>
           {/* Error Message */}
           {error && (
             <div style={{
-              padding: '12px 16px',
+              padding: theme.spacing[3],
               background: 'rgba(255, 59, 48, 0.1)',
               border: `1px solid rgba(255, 59, 48, 0.2)`,
               borderRadius: theme.radius.md,
-              color: '#FF3B30',
-              fontSize: '19px',
-              marginBottom: '20px',
+              color: theme.colors.error,
+              fontSize: theme.fontSize.xs,
+              marginBottom: theme.spacing[4],
               lineHeight: '1.4'
             }}>
               {error}
@@ -95,12 +93,12 @@ export default function Login() {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '16px' }}>
+            <div style={{ marginBottom: theme.spacing[4] }}>
               <label style={{
                 display: 'block',
-                fontSize: '19px',
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.secondary,
-                marginBottom: '8px',
+                marginBottom: theme.spacing[2],
                 fontWeight: theme.weight.medium
               }}>
                 Email
@@ -112,31 +110,31 @@ export default function Login() {
                 required
                 style={{
                   width: '100%',
-                  height: '44px',
-                  padding: '0 14px',
+                  height: '36px',
+                  padding: `0 ${theme.spacing[3]}`,
                   background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  borderRadius: '10px',
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: theme.radius.md,
                   color: theme.colors.text.primary,
-                  fontSize: '20px',
+                  fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
-                  outline: 'none',
-                                  }}
+                  outline: 'none'
+                }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = theme.colors.border.dark
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                  e.currentTarget.style.borderColor = theme.colors.border.light
                 }}
               />
             </div>
 
-            <div style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: theme.spacing[5] }}>
               <label style={{
                 display: 'block',
-                fontSize: '19px',
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.secondary,
-                marginBottom: '8px',
+                marginBottom: theme.spacing[2],
                 fontWeight: theme.weight.medium
               }}>
                 Password
@@ -148,21 +146,21 @@ export default function Login() {
                 required
                 style={{
                   width: '100%',
-                  height: '44px',
-                  padding: '0 14px',
+                  height: '36px',
+                  padding: `0 ${theme.spacing[3]}`,
                   background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  borderRadius: '10px',
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: theme.radius.md,
                   color: theme.colors.text.primary,
-                  fontSize: '20px',
+                  fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
-                  outline: 'none',
-                                  }}
+                  outline: 'none'
+                }}
                 onFocus={(e) => {
                   e.currentTarget.style.borderColor = theme.colors.border.dark
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                  e.currentTarget.style.borderColor = theme.colors.border.light
                 }}
               />
             </div>
@@ -172,16 +170,15 @@ export default function Login() {
               disabled={loading}
               style={{
                 width: '100%',
-                height: '44px',
-                padding: '0 24px',
+                padding: '8px 16px',
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                borderRadius: '10px',
-                fontSize: '20px',
+                borderRadius: theme.radius.md,
+                fontSize: theme.fontSize.xs,
                 fontWeight: theme.weight.medium,
                 cursor: loading ? 'not-allowed' : 'pointer',
-                                fontFamily: 'inherit',
+                fontFamily: 'inherit',
                 opacity: loading ? 0.6 : 1
               }}
             >
@@ -193,9 +190,9 @@ export default function Login() {
         {/* Footer */}
         <p style={{
           textAlign: 'center',
-          marginTop: '24px',
+          marginTop: theme.spacing[5],
           color: theme.colors.text.secondary,
-          fontSize: '19px',
+          fontSize: theme.fontSize.xs,
           lineHeight: '1.5'
         }}>
           Don't have an account?{' '}

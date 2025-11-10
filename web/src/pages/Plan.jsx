@@ -105,13 +105,13 @@ function Plan() {
       name: 'Free',
       price: '$0',
       period: '',
-      description: 'Perfect for trying out Sway',
+      description: 'Perfect for getting started',
       features: [
         { text: '20 active requests', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Limited request types', highlight: false },
-        { text: 'Basic analytics', highlight: false },
-        { text: 'Standard support', highlight: false }
+        { text: 'Visual request builder', highlight: false },
+        { text: 'Custom upload pages', highlight: false },
+        { text: 'Basic analytics', highlight: false }
       ]
     },
     {
@@ -119,18 +119,16 @@ function Plan() {
       name: 'Pro',
       price: '$15',
       period: '/month',
-      description: 'Unlimited power for professionals',
+      description: 'Everything you need to scale',
       popular: true,
       features: [
         { text: '200 active requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'All request types', highlight: true },
+        { text: 'Visual request builder', highlight: true },
         { text: 'Password-protected requests', highlight: true },
-        { text: 'Custom request builder', highlight: true },
         { text: 'Bulk download (Download All)', highlight: true },
         { text: 'Advanced analytics & insights', highlight: true },
-        { text: 'File type breakdown', highlight: true },
-        { text: 'Top performing requests', highlight: true }
+        { text: 'Priority support', highlight: true }
       ]
     }
   ]

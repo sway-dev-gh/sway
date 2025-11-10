@@ -394,31 +394,27 @@ function Requests() {
             </p>
           </div>
 
-          {/* Request List - Card Grid */}
+          {/* Request List - Canva-Style Grid */}
           <div>
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '60px 40px',
-                background: theme.colors.bg.secondary,
-                borderRadius: '10px',
+                padding: '80px 40px',
                 border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md
+                borderRadius: theme.radius.lg
               }}>
                 <h3 style={{
                   fontSize: theme.fontSize.lg,
                   fontWeight: theme.weight.medium,
                   color: theme.colors.text.primary,
-                  margin: '0 0 6px 0',
-                  letterSpacing: '-0.02em'
+                  margin: '0 0 8px 0'
                 }}>
                   No requests yet
                 </h3>
                 <p style={{
                   fontSize: theme.fontSize.sm,
                   color: theme.colors.text.secondary,
-                  margin: '0',
-                  lineHeight: '1.6'
+                  margin: 0
                 }}>
                   Click "New Request" to create your first request
                 </p>
@@ -426,8 +422,8 @@ function Requests() {
             ) : (
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
-                gap: theme.spacing[4],
+                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                gap: theme.spacing[5],
                 width: '100%'
               }}>
                 {requests
@@ -437,90 +433,82 @@ function Requests() {
                       key={req.id}
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{
-                        background: theme.colors.bg.secondary,
-                        border: `1px solid ${theme.colors.border.light}`,
-                        borderRadius: '10px',
-                        padding: '20px',
                         cursor: 'pointer',
-                        transition: `all ${theme.transition.fast}`,
-                        boxShadow: theme.shadows.md
+                        transition: `transform ${theme.transition.fast}`
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = theme.colors.border.medium
-                        e.currentTarget.style.background = theme.colors.bg.hover
+                        e.currentTarget.style.transform = 'translateY(-2px)'
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = theme.colors.border.light
-                        e.currentTarget.style.background = theme.colors.bg.secondary
+                        e.currentTarget.style.transform = 'translateY(0)'
                       }}
                     >
-                      {/* Header */}
+                      {/* Visual Preview */}
                       <div style={{
+                        aspectRatio: '16 / 10',
+                        background: theme.colors.bg.card,
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: theme.radius.lg,
                         marginBottom: theme.spacing[3],
-                        paddingBottom: theme.spacing[3],
-                        borderBottom: `1px solid ${theme.colors.border.light}`
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        padding: theme.spacing[5],
+                        overflow: 'hidden'
                       }}>
-                        <h3 style={{
-                          fontSize: theme.fontSize.base,
+                        <div style={{
+                          fontSize: theme.fontSize.xl,
                           fontWeight: theme.weight.medium,
                           color: theme.colors.text.primary,
-                          margin: '0 0 4px 0',
-                          letterSpacing: '-0.01em'
+                          marginBottom: theme.spacing[2],
+                          textAlign: 'center',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          display: '-webkit-box',
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: 'vertical'
                         }}>
                           {req.title}
-                        </h3>
+                        </div>
                         <div style={{
                           fontSize: theme.fontSize.xs,
-                          color: theme.colors.text.tertiary
+                          color: theme.colors.text.tertiary,
+                          textAlign: 'center'
                         }}>
-                          {req.requestType ? req.requestType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'General Upload'}
+                          {req.uploadCount || 0} files uploaded
                         </div>
                       </div>
 
-                      {/* Stats */}
+                      {/* Request Info */}
                       <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
-                        marginBottom: theme.spacing[3]
+                        alignItems: 'center',
+                        marginBottom: theme.spacing[2]
                       }}>
-                        <div>
-                          <div style={{
-                            fontSize: theme.fontSize.xs,
-                            color: theme.colors.text.tertiary,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px',
-                            marginBottom: theme.spacing[1]
-                          }}>
-                            Files
-                          </div>
-                          <div style={{
-                            fontSize: theme.fontSize.lg,
-                            fontWeight: theme.weight.semibold,
-                            color: theme.colors.text.primary
-                          }}>
-                            {req.uploadCount || 0}
-                          </div>
-                        </div>
-                        <div style={{ textAlign: 'right' }}>
-                          <div style={{
-                            fontSize: theme.fontSize.xs,
-                            color: theme.colors.text.tertiary,
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.5px',
-                            marginBottom: theme.spacing[1]
-                          }}>
-                            Created
-                          </div>
-                          <div style={{
-                            fontSize: theme.fontSize.xs,
-                            color: theme.colors.text.secondary
-                          }}>
-                            {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                          </div>
+                        <div style={{
+                          fontSize: theme.fontSize.sm,
+                          fontWeight: theme.weight.medium,
+                          color: theme.colors.text.primary,
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          flex: 1
+                        }}>
+                          {req.title}
                         </div>
                       </div>
 
-                      {/* Actions */}
+                      <div style={{
+                        fontSize: theme.fontSize.xs,
+                        color: theme.colors.text.secondary,
+                        marginBottom: theme.spacing[3]
+                      }}>
+                        {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      </div>
+
+                      {/* Action Buttons */}
                       <div style={{
                         display: 'flex',
                         gap: theme.spacing[2]
@@ -532,25 +520,18 @@ function Requests() {
                           }}
                           style={{
                             flex: 1,
-                            padding: '8px 16px',
+                            padding: '6px 12px',
                             background: theme.colors.white,
                             color: theme.colors.black,
                             border: 'none',
-                            borderRadius: '8px',
+                            borderRadius: theme.radius.md,
                             fontSize: theme.fontSize.xs,
-                            fontWeight: '500',
+                            fontWeight: theme.weight.medium,
                             cursor: 'pointer',
-                            fontFamily: 'inherit',
-                            transition: `opacity ${theme.transition.fast}`
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.opacity = '0.9'
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.opacity = '1'
+                            fontFamily: 'inherit'
                           }}
                         >
-                          View
+                          Open
                         </button>
                         <button
                           onClick={(e) => {
@@ -558,24 +539,15 @@ function Requests() {
                             handleDelete(req.id)
                           }}
                           style={{
-                            padding: '8px 16px',
+                            padding: '6px 12px',
                             background: 'transparent',
                             color: theme.colors.text.secondary,
-                            border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: '8px',
+                            border: `1px solid ${theme.colors.border.light}`,
+                            borderRadius: theme.radius.md,
                             fontSize: theme.fontSize.xs,
-                            fontWeight: '500',
+                            fontWeight: theme.weight.medium,
                             cursor: 'pointer',
-                            fontFamily: 'inherit',
-                            transition: `all ${theme.transition.fast}`
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = theme.colors.border.dark
-                            e.currentTarget.style.color = theme.colors.text.primary
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = theme.colors.border.medium
-                            e.currentTarget.style.color = theme.colors.text.secondary
+                            fontFamily: 'inherit'
                           }}
                         >
                           Delete
@@ -744,27 +716,28 @@ function Requests() {
                     {/* Search Bar */}
                     <input
                       type="text"
-                      placeholder="Search request types..."
+                      placeholder="Search templates..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       style={{
                         width: '100%',
-                        padding: '12px 16px',
+                        padding: '10px 14px',
                         background: theme.colors.bg.page,
                         border: `1px solid ${theme.colors.border.medium}`,
-                        borderRadius: '10px',
+                        borderRadius: '8px',
                         color: theme.colors.text.primary,
-                        fontSize: theme.fontSize.base,
+                        fontSize: theme.fontSize.sm,
                         fontFamily: 'inherit',
                         outline: 'none',
-                        marginBottom: theme.spacing[5]
+                        marginBottom: theme.spacing[4]
                       }}
                     />
 
+                    {/* Templates Grid */}
                     <div style={{
                       display: 'grid',
                       gridTemplateColumns: 'repeat(2, 1fr)',
-                      gap: '12px',
+                      gap: '10px',
                       maxHeight: '420px',
                       overflowY: 'auto'
                     }}
@@ -781,27 +754,39 @@ function Requests() {
                           const requiredPlanLevel = planLevels[type.planRequired] || 0
                           const isLocked = currentPlanLevel < requiredPlanLevel
 
-                          console.log(`[Requests] Type: ${type.name}, userPlan: ${userPlan}, currentLevel: ${currentPlanLevel}, requiredLevel: ${requiredPlanLevel}, isLocked: ${isLocked}`)
-
                           return (
                             <div
                               key={type.id}
                               onClick={() => {
                                 if (isLocked) {
-                                  alert(`This request type requires Pro plan. Please upgrade to use this feature.`)
+                                  setUpgradeMessage(`${type.name} templates require Pro. Upgrade to unlock all templates and field customization.`)
+                                  setShowUpgradeModal(true)
                                 } else {
                                   setRequestType(type.id)
                                   setSearchQuery('')
                                 }
                               }}
                               style={{
-                                padding: '16px',
-                                background: isLocked ? theme.colors.bg.page : theme.colors.bg.page,
-                                border: `1px solid ${theme.colors.border.medium}`,
-                                borderRadius: '10px',
+                                padding: '14px',
+                                background: theme.colors.bg.page,
+                                border: `1px solid ${isLocked ? theme.colors.border.light : theme.colors.border.medium}`,
+                                borderRadius: '8px',
                                 cursor: isLocked ? 'not-allowed' : 'pointer',
-                                                                opacity: isLocked ? 0.5 : 1,
-                                position: 'relative'
+                                opacity: isLocked ? 0.5 : 1,
+                                position: 'relative',
+                                transition: `all ${theme.transition.fast}`
+                              }}
+                              onMouseEnter={(e) => {
+                                if (!isLocked) {
+                                  e.currentTarget.style.borderColor = theme.colors.border.dark
+                                  e.currentTarget.style.background = theme.colors.bg.secondary
+                                }
+                              }}
+                              onMouseLeave={(e) => {
+                                if (!isLocked) {
+                                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                                  e.currentTarget.style.background = theme.colors.bg.page
+                                }
                               }}
                             >
                               {isLocked && (
@@ -809,17 +794,20 @@ function Requests() {
                                   position: 'absolute',
                                   top: '8px',
                                   right: '8px',
-                                  fontSize: '10px',
+                                  fontSize: '9px',
                                   color: theme.colors.text.tertiary,
                                   textTransform: 'uppercase',
-                                  letterSpacing: '1px',
-                                  fontWeight: '500'
+                                  letterSpacing: '0.5px',
+                                  fontWeight: '600',
+                                  background: theme.colors.bg.tertiary,
+                                  padding: '2px 6px',
+                                  borderRadius: '4px'
                                 }}>
                                   PRO
                                 </div>
                               )}
                               <div style={{
-                                fontSize: theme.fontSize.base,
+                                fontSize: theme.fontSize.sm,
                                 fontWeight: '500',
                                 color: theme.colors.text.primary,
                                 marginBottom: theme.spacing[1]
@@ -827,7 +815,7 @@ function Requests() {
                                 {type.name}
                               </div>
                               <div style={{
-                                fontSize: theme.fontSize.lg,
+                                fontSize: theme.fontSize.xs,
                                 color: theme.colors.text.tertiary,
                                 lineHeight: '1.4'
                               }}>
@@ -969,8 +957,8 @@ function Requests() {
                                 {field.label}
                               </label>
 
-                              {/* Required Toggle Switch - Only show for Custom type */}
-                              {requestType === 'custom' && (
+                              {/* Required Toggle Switch - Show for Pro users */}
+                              {userPlan === 'pro' && (
                                 <label style={{
                                   display: 'flex',
                                   alignItems: 'center',
@@ -978,7 +966,7 @@ function Requests() {
                                   gap: theme.spacing[2]
                                 }}>
                                   <span style={{
-                                    fontSize: theme.fontSize.sm,
+                                    fontSize: theme.fontSize.xs,
                                     color: fieldRequirements[field.id] ? theme.colors.text.primary : theme.colors.text.tertiary,
                                     fontWeight: theme.weight.medium
                                   }}>
@@ -993,10 +981,10 @@ function Requests() {
                                     }))}
                                     style={{
                                       appearance: 'none',
-                                      width: '44px',
-                                      height: '24px',
+                                      width: '40px',
+                                      height: '22px',
                                       background: fieldRequirements[field.id] ? theme.colors.white : theme.colors.bg.page,
-                                      borderRadius: '12px',
+                                      borderRadius: '11px',
                                       border: `1px solid ${theme.colors.border.medium}`,
                                       position: 'relative',
                                       cursor: 'pointer',
@@ -1409,8 +1397,8 @@ function Requests() {
         input[type="checkbox"][style*="appearance: none"]::before {
           content: '';
           position: absolute;
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
           border-radius: 50%;
           background: ${theme.colors.black};
           top: 2px;
@@ -1419,7 +1407,7 @@ function Requests() {
         }
 
         input[type="checkbox"][style*="appearance: none"]:checked::before {
-          transform: translateX(20px);
+          transform: translateX(18px);
           background: ${theme.colors.black};
         }
       `}</style>

@@ -136,60 +136,53 @@ function Responses() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: theme.spacing[3],
-            marginBottom: theme.spacing[6]
+            gap: theme.spacing[4],
+            marginBottom: theme.spacing[7],
+            width: '100%'
           }}>
             <div style={{
-              background: theme.colors.bg.secondary,
+              padding: theme.spacing[5],
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '10px',
-              padding: '20px',
-              boxShadow: theme.shadows.md
+              borderRadius: theme.radius.lg
             }}>
               <div style={{
                 fontSize: theme.fontSize.xs,
-                color: theme.colors.text.tertiary,
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                marginBottom: theme.spacing[2],
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[3],
                 fontWeight: theme.weight.medium
               }}>
-                Total Uploads
+                Uploads
               </div>
               <div style={{
-                fontSize: theme.fontSize.xl,
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.white,
+                fontSize: theme.fontSize['3xl'],
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[1]
+                marginBottom: theme.spacing[2]
               }}>
                 {responses.length}
               </div>
             </div>
 
             <div style={{
-              background: theme.colors.bg.secondary,
+              padding: theme.spacing[5],
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '10px',
-              padding: '20px',
-              boxShadow: theme.shadows.md
+              borderRadius: theme.radius.lg
             }}>
               <div style={{
                 fontSize: theme.fontSize.xs,
-                color: theme.colors.text.tertiary,
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
-                marginBottom: theme.spacing[2],
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[3],
                 fontWeight: theme.weight.medium
               }}>
-                Total Size
+                Storage
               </div>
               <div style={{
-                fontSize: theme.fontSize.xl,
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.white,
+                fontSize: theme.fontSize['3xl'],
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[1]
+                marginBottom: theme.spacing[2]
               }}>
                 {formatBytes(responses.reduce((sum, r) => sum + (r.fileSize || 0), 0))}
               </div>
@@ -200,26 +193,22 @@ function Responses() {
           {responses.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '60px 40px',
-              background: theme.colors.bg.secondary,
-              borderRadius: '10px',
+              padding: '80px 40px',
               border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md
+              borderRadius: theme.radius.lg
             }}>
               <h3 style={{
                 fontSize: theme.fontSize.lg,
                 fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary,
-                margin: '0 0 6px 0',
-                letterSpacing: '-0.02em'
+                margin: '0 0 8px 0'
               }}>
                 No uploads yet
               </h3>
               <p style={{
                 fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                margin: '0',
-                lineHeight: '1.6'
+                margin: 0
               }}>
                 When someone uploads a file to your requests, it will appear here
               </p>
@@ -227,7 +216,7 @@ function Responses() {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
               gap: theme.spacing[4],
               width: '100%'
             }}>
@@ -235,133 +224,90 @@ function Responses() {
                 <div
                   key={response.id}
                   style={{
-                    background: theme.colors.bg.secondary,
                     border: `1px solid ${theme.colors.border.light}`,
-                    borderRadius: '10px',
-                    padding: '20px',
-                    transition: `all ${theme.transition.fast}`,
-                    boxShadow: theme.shadows.md
+                    borderRadius: theme.radius.lg,
+                    padding: theme.spacing[5],
+                    transition: `transform ${theme.transition.fast}`,
+                    cursor: 'pointer'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
-                    e.currentTarget.style.background = theme.colors.bg.hover
+                    e.currentTarget.style.transform = 'translateY(-2px)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.border.light
-                    e.currentTarget.style.background = theme.colors.bg.secondary
+                    e.currentTarget.style.transform = 'translateY(0)'
                   }}
                 >
-                  {/* Header */}
-                  <div style={{
-                    marginBottom: theme.spacing[3],
-                    paddingBottom: theme.spacing[3],
-                    borderBottom: `1px solid ${theme.colors.border.light}`
+                  {/* File Name */}
+                  <h3 style={{
+                    fontSize: theme.fontSize.base,
+                    fontWeight: theme.weight.medium,
+                    color: theme.colors.text.primary,
+                    margin: `0 0 ${theme.spacing[3]}`,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
                   }}>
-                    <h3 style={{
-                      fontSize: theme.fontSize.base,
-                      fontWeight: theme.weight.medium,
-                      color: theme.colors.text.primary,
-                      margin: '0 0 4px 0',
-                      letterSpacing: '-0.01em',
+                    {response.fileName}
+                  </h3>
+
+                  {/* File Size & Request */}
+                  <div style={{
+                    fontSize: theme.fontSize.xs,
+                    color: theme.colors.text.secondary,
+                    marginBottom: theme.spacing[4]
+                  }}>
+                    {formatBytes(response.fileSize)} • {response.requestTitle}
+                  </div>
+
+                  {/* Uploader Name */}
+                  <div style={{
+                    fontSize: theme.fontSize.xs,
+                    color: theme.colors.text.secondary,
+                    marginBottom: theme.spacing[1]
+                  }}>
+                    {response.uploaderName}
+                  </div>
+
+                  {/* Uploader Email */}
+                  {response.uploaderEmail && (
+                    <div style={{
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.tertiary,
+                      marginBottom: theme.spacing[4],
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap'
                     }}>
-                      {response.fileName}
-                    </h3>
-                    <div style={{
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.tertiary,
-                      marginBottom: theme.spacing[1]
-                    }}>
-                      {formatBytes(response.fileSize)}
+                      {response.uploaderEmail}
                     </div>
-                    <div style={{
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary
-                    }}>
-                      {response.requestTitle}
-                    </div>
-                  </div>
+                  )}
 
-                  {/* Info */}
+                  {/* Date */}
                   <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    marginBottom: theme.spacing[3]
+                    fontSize: theme.fontSize.xs,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: theme.spacing[5]
                   }}>
-                    <div style={{ flex: 1, minWidth: 0, marginRight: theme.spacing[3] }}>
-                      <div style={{
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.tertiary,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        marginBottom: theme.spacing[1]
-                      }}>
-                        Uploader
-                      </div>
-                      <div style={{
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.primary,
-                        marginBottom: theme.spacing[1],
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}>
-                        {response.uploaderName}
-                      </div>
-                      {response.uploaderEmail && (
-                        <div style={{
-                          fontSize: theme.fontSize.xs,
-                          color: theme.colors.text.tertiary,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}>
-                          {response.uploaderEmail}
-                        </div>
-                      )}
-                    </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.tertiary,
-                        textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        marginBottom: theme.spacing[1]
-                      }}>
-                        Uploaded
-                      </div>
-                      <div style={{
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.secondary
-                      }}>
-                        {formatDate(response.uploadedAt)}
-                      </div>
-                    </div>
+                    {formatDate(response.uploadedAt)}
                   </div>
 
                   {/* Download Button */}
                   <button
-                    onClick={() => handleDownload(response.id)}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleDownload(response.id)
+                    }}
                     style={{
                       width: '100%',
-                      padding: '8px 16px',
+                      padding: '6px 12px',
                       background: theme.colors.white,
                       color: theme.colors.black,
                       border: 'none',
-                      borderRadius: '8px',
+                      borderRadius: theme.radius.md,
                       fontSize: theme.fontSize.xs,
-                      fontWeight: '500',
+                      fontWeight: theme.weight.medium,
                       cursor: 'pointer',
-                      fontFamily: 'inherit',
-                      transition: `opacity ${theme.transition.fast}`
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.opacity = '0.9'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.opacity = '1'
+                      fontFamily: 'inherit'
                     }}
                   >
                     Download

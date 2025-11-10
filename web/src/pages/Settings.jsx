@@ -83,39 +83,36 @@ function Settings() {
 
           {/* Settings Sections */}
           <div style={{
-            maxWidth: '900px'
+            maxWidth: '900px',
+            margin: '0 auto'
           }}>
 
             {/* Account Information */}
             <div style={{
-              background: theme.colors.bg.secondary,
-              padding: '20px',
-              borderRadius: '10px',
-              border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md
+              padding: theme.spacing[5],
+              borderRadius: theme.radius.lg,
+              border: `1px solid ${theme.colors.border.light}`
             }}>
               <div style={{
                 fontSize: theme.fontSize.xs,
-                color: theme.colors.text.tertiary,
+                color: theme.colors.text.secondary,
                 marginBottom: theme.spacing[6],
-                textTransform: 'uppercase',
-                letterSpacing: '1px',
                 fontWeight: theme.weight.medium
               }}>
-                Account Information
+                Account
               </div>
 
-              <div style={{ marginBottom: theme.spacing[10] }}>
+              <div style={{ marginBottom: theme.spacing[8] }}>
                 <div style={{
                   fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[3],
-                  fontWeight: theme.weight.semibold
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
                 }}>
-                  Email Address
+                  Email
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.sm,
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.primary,
                   fontWeight: theme.weight.medium
                 }}>
@@ -130,16 +127,15 @@ function Settings() {
                   }
                 }}
                 style={{
-                  padding: '8px 16px',
+                  padding: '6px 12px',
                   background: 'transparent',
                   color: theme.colors.error,
-                  border: `2px solid ${theme.colors.error}`,
-                  borderRadius: '8px',
+                  border: `1px solid ${theme.colors.error}`,
+                  borderRadius: theme.radius.md,
                   fontSize: theme.fontSize.xs,
-                  fontWeight: '500',
+                  fontWeight: theme.weight.medium,
                   cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  boxShadow: `0 0 0 0 ${theme.colors.error}`
+                  fontFamily: 'inherit'
                 }}
               >
                 Delete Account

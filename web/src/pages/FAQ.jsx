@@ -153,7 +153,7 @@ function FAQ() {
           {/* FAQ Grid */}
           <div style={{
             display: 'grid',
-            gap: theme.spacing[4],
+            gap: theme.spacing[3],
             maxWidth: '900px',
             margin: '0 auto'
           }}>
@@ -161,17 +161,15 @@ function FAQ() {
               <div
                 key={index}
                 style={{
-                  background: theme.colors.bg.secondary,
-                  padding: '20px',
-                  borderRadius: '10px',
-                  border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md
+                  padding: theme.spacing[5],
+                  borderRadius: theme.radius.lg,
+                  border: `1px solid ${theme.colors.border.light}`
                 }}
               >
                 <div style={{
-                  fontSize: theme.fontSize.sm,
+                  fontSize: theme.fontSize.base,
                   color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[2],
+                  marginBottom: theme.spacing[3],
                   fontWeight: theme.weight.medium
                 }}>
                   {faq.question}
@@ -189,27 +187,26 @@ function FAQ() {
 
           {/* Still have questions CTA */}
           <div style={{
-            marginTop: theme.spacing[6],
+            marginTop: theme.spacing[7],
             textAlign: 'center',
-            padding: '20px',
-            background: theme.colors.bg.secondary,
+            padding: theme.spacing[5],
             border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '10px',
+            borderRadius: theme.radius.lg,
             maxWidth: '600px',
-            margin: `${theme.spacing[6]} auto 0`
+            margin: `${theme.spacing[7]} auto 0`
           }}>
             <h3 style={{
               fontSize: theme.fontSize.base,
               fontWeight: theme.weight.medium,
               color: theme.colors.text.primary,
-              margin: '0 0 8px 0'
+              margin: `0 0 ${theme.spacing[2]} 0`
             }}>
               Still have questions?
             </h3>
             <p style={{
               fontSize: theme.fontSize.xs,
               color: theme.colors.text.secondary,
-              margin: '0 0 20px 0',
+              margin: `0 0 ${theme.spacing[4]} 0`,
               lineHeight: '1.6'
             }}>
               Can't find the answer you're looking for? Feel free to reach out.
@@ -218,12 +215,12 @@ function FAQ() {
               href="mailto:support@swayfiles.com"
               style={{
                 display: 'inline-block',
-                padding: '8px 16px',
+                padding: '6px 12px',
                 background: theme.colors.white,
                 color: theme.colors.black,
-                borderRadius: '8px',
+                borderRadius: theme.radius.md,
                 fontSize: theme.fontSize.xs,
-                fontWeight: '500',
+                fontWeight: theme.weight.medium,
                 textDecoration: 'none',
                 cursor: 'pointer'
               }}

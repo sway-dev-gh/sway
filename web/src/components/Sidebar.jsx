@@ -23,19 +23,43 @@ function Sidebar() {
     setIsAdminMode(!!adminKey)
     fetchData()
 
-    // Listen for Control+Tab to exit admin mode
+    // Listen for keyboard shortcuts
     const handleKeyDown = (e) => {
+      // Control+Tab to exit admin mode
       if (e.ctrlKey && e.key === 'Tab') {
         e.preventDefault()
         if (localStorage.getItem('adminKey')) {
           localStorage.removeItem('adminKey')
           window.location.reload()
         }
+        return
+      }
+
+      // Arrow keys for navigation (only when not typing in an input)
+      const activeElement = document.activeElement
+      const isTyping = activeElement && (
+        activeElement.tagName === 'INPUT' ||
+        activeElement.tagName === 'TEXTAREA' ||
+        activeElement.isContentEditable
+      )
+
+      if (isTyping) return
+
+      const pages = ['/dashboard', '/requests', '/responses', '/plan', '/faq', '/settings']
+      const currentIndex = pages.indexOf(location.pathname)
+
+      if (e.key === 'ArrowLeft' && currentIndex > 0) {
+        e.preventDefault()
+        navigate(pages[currentIndex - 1])
+      } else if (e.key === 'ArrowRight' && currentIndex < pages.length - 1) {
+        e.preventDefault()
+        navigate(pages[currentIndex + 1])
       }
     }
+
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
+  }, [location.pathname, navigate])
 
   const fetchData = async () => {
     try {

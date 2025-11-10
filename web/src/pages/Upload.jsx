@@ -189,27 +189,34 @@ function Upload() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000000',
+        background: theme.colors.bg.page,
         padding: '40px 20px'
       }}>
         <div style={{
           maxWidth: '400px',
-          width: '100%'
+          width: '100%',
+          background: theme.colors.bg.secondary,
+          border: `1px solid ${theme.colors.border.light}`,
+          borderRadius: '12px',
+          padding: '40px',
+          boxShadow: theme.shadows.lg
         }}>
           <h1 style={{
-            fontSize: '32px',
-            fontWeight: 600,
-            color: '#ffffff',
-            marginBottom: '12px',
-            textAlign: 'center'
+            fontSize: theme.fontSize['2xl'],
+            fontWeight: '500',
+            color: theme.colors.text.primary,
+            marginBottom: '8px',
+            textAlign: 'center',
+            letterSpacing: '-0.02em'
           }}>
             Password Required
           </h1>
           <p style={{
-            fontSize: '16px',
-            color: '#999',
-            marginBottom: '32px',
-            textAlign: 'center'
+            fontSize: theme.fontSize.sm,
+            color: theme.colors.text.secondary,
+            marginBottom: theme.spacing[6],
+            textAlign: 'center',
+            lineHeight: '1.6'
           }}>
             This request is password-protected
           </p>
@@ -229,28 +236,28 @@ function Upload() {
               autoFocus
               style={{
                 width: '100%',
-                padding: '16px 20px',
-                background: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid #2a2a2a',
-                borderRadius: '12px',
-                color: '#ffffff',
-                fontSize: '16px',
+                padding: '12px 16px',
+                background: theme.colors.bg.page,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: '8px',
+                color: theme.colors.text.primary,
+                fontSize: theme.fontSize.sm,
                 fontFamily: 'inherit',
                 outline: 'none',
-                marginBottom: '16px'
+                marginBottom: theme.spacing[4]
               }}
             />
             <button
               type="submit"
               style={{
                 width: '100%',
-                padding: '16px',
-                background: '#ffffff',
-                color: '#000000',
+                padding: '12px 20px',
+                background: theme.colors.white,
+                color: theme.colors.black,
                 border: 'none',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: 600,
+                borderRadius: '8px',
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.medium,
                 cursor: 'pointer',
                 fontFamily: 'inherit'
               }}
@@ -271,25 +278,30 @@ function Upload() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000000',
+        background: theme.colors.bg.page,
         padding: '40px 20px'
       }}>
         <div style={{
           textAlign: 'center',
-          maxWidth: '480px'
+          maxWidth: '480px',
+          background: theme.colors.bg.secondary,
+          border: `1px solid ${theme.colors.border.light}`,
+          borderRadius: '12px',
+          padding: '60px 40px',
+          boxShadow: theme.shadows.lg
         }}>
           {/* Checkmark Icon */}
           <div style={{
-            width: '80px',
-            height: '80px',
+            width: '60px',
+            height: '60px',
             borderRadius: '50%',
-            border: '3px solid #ffffff',
+            border: `2px solid ${theme.colors.text.primary}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '48px',
-            color: '#ffffff',
-            margin: '0 auto 32px auto'
+            fontSize: '32px',
+            color: theme.colors.text.primary,
+            margin: '0 auto 24px auto'
           }}>
             ✓
           </div>
@@ -297,9 +309,9 @@ function Upload() {
           {/* Success Title */}
           <h1 style={{
             fontSize: theme.fontSize['2xl'],
-            fontWeight: 700,
-            color: '#ffffff',
-            margin: '0 0 16px 0',
+            fontWeight: '500',
+            color: theme.colors.text.primary,
+            margin: '0 0 8px 0',
             letterSpacing: '-0.02em'
           }}>
             Files uploaded successfully
@@ -307,10 +319,10 @@ function Upload() {
 
           {/* Subtitle */}
           <p style={{
-            fontSize: theme.fontSize.base,
-            color: '#a1a1a1',
-            margin: '0 0 40px 0',
-            lineHeight: '1.5'
+            fontSize: theme.fontSize.sm,
+            color: theme.colors.text.secondary,
+            margin: '0 0 32px 0',
+            lineHeight: '1.6'
           }}>
             You can now close this tab
           </p>
@@ -324,13 +336,13 @@ function Upload() {
             }}
             style={{
               background: 'transparent',
-              border: '1px solid #333333',
+              border: `1px solid ${theme.colors.border.medium}`,
               borderRadius: '8px',
-              color: '#ffffff',
+              color: theme.colors.text.primary,
               cursor: 'pointer',
-              padding: '12px 24px',
+              padding: '10px 20px',
               fontSize: theme.fontSize.sm,
-              fontWeight: 500,
+              fontWeight: theme.weight.medium,
               fontFamily: 'inherit'
             }}
           >
@@ -345,87 +357,88 @@ function Upload() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: '#000000',
-      padding: '40px 20px',
+      background: theme.colors.bg.page,
+      padding: '60px 20px',
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center',
-      position: 'relative'
+      alignItems: 'flex-start'
     }}>
       <div style={{
         width: '100%',
-        maxWidth: '540px',
-        position: 'relative',
-        zIndex: 1
+        maxWidth: '600px'
       }}>
         {/* Small Branding/Domain at Top */}
         <div style={{
-          fontSize: '11px',
-          color: '#666',
-          marginBottom: '32px',
+          fontSize: theme.fontSize.xs,
+          color: theme.colors.text.tertiary,
+          marginBottom: theme.spacing[8],
           textAlign: 'center',
           textTransform: 'uppercase',
-          letterSpacing: '1.5px',
-          fontWeight: 500
+          letterSpacing: '1.2px',
+          fontWeight: theme.weight.medium
         }}>
           {brandingData?.customDomain || 'SWAY'}
         </div>
 
-        {/* Large Title */}
-        <h1 style={{
-          fontSize: '42px',
-          fontWeight: 600,
-          color: '#ffffff',
-          margin: '0 0 12px 0',
-          textAlign: 'center',
-          letterSpacing: '-0.04em',
-          lineHeight: '1.1'
+        {/* Card Container */}
+        <div style={{
+          background: theme.colors.bg.secondary,
+          border: `1px solid ${theme.colors.border.light}`,
+          borderRadius: '12px',
+          padding: '32px',
+          boxShadow: theme.shadows.lg
         }}>
-          {requestData.title}
-        </h1>
-
-        {/* Subtitle with Instructions */}
-        {requestData.description && (
-          <p style={{
-            fontSize: '17px',
-            color: '#999',
-            margin: '0 0 56px 0',
+          {/* Title */}
+          <h1 style={{
+            fontSize: theme.fontSize['2xl'],
+            fontWeight: '500',
+            color: theme.colors.text.primary,
+            margin: '0 0 8px 0',
             textAlign: 'center',
-            lineHeight: '1.6',
-            maxWidth: '440px',
-            marginLeft: 'auto',
-            marginRight: 'auto'
+            letterSpacing: '-0.02em',
+            lineHeight: '1.2'
           }}>
-            {requestData.description}
-          </p>
-        )}
+            {requestData.title}
+          </h1>
+
+          {/* Subtitle with Instructions */}
+          {requestData.description && (
+            <p style={{
+              fontSize: theme.fontSize.sm,
+              color: theme.colors.text.secondary,
+              margin: '0 0 32px 0',
+              textAlign: 'center',
+              lineHeight: '1.6'
+            }}>
+              {requestData.description}
+            </p>
+          )}
 
         <form onSubmit={handleSubmit}>
           {/* Upload Dropzone */}
-          <div style={{ marginBottom: '28px' }}>
+          <div style={{ marginBottom: theme.spacing[5] }}>
             <label style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
               width: '100%',
-              minHeight: '220px',
-              border: '1px dashed #2a2a2a',
-              borderRadius: '16px',
-              background: 'rgba(255, 255, 255, 0.02)',
+              minHeight: '180px',
+              border: `2px dashed ${theme.colors.border.medium}`,
+              borderRadius: '10px',
+              background: theme.colors.bg.page,
               cursor: 'pointer',
-              padding: '48px 24px',
-              transition: 'all 0.2s ease',
-              position: 'relative',
-              overflow: 'hidden'
+              padding: '40px 24px',
+              transition: `all ${theme.transition.fast}`,
+              position: 'relative'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = '#444'
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+              e.currentTarget.style.borderColor = theme.colors.border.dark
+              e.currentTarget.style.background = theme.colors.bg.hover
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = '#2a2a2a'
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+              e.currentTarget.style.background = theme.colors.bg.page
             }}
             >
               <input
@@ -442,27 +455,26 @@ function Upload() {
                 }}
               />
               <div style={{
-                fontSize: '56px',
-                color: '#fff',
-                marginBottom: '20px',
+                fontSize: '40px',
+                color: theme.colors.text.primary,
+                marginBottom: '16px',
                 lineHeight: '1',
-                opacity: 0.9
+                opacity: 0.8
               }}>
                 ↑
               </div>
               <div style={{
-                fontSize: '17px',
-                fontWeight: 500,
-                color: '#ffffff',
-                marginBottom: '8px',
-                letterSpacing: '-0.01em'
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.primary,
+                marginBottom: '4px'
               }}>
                 Click to browse or drag files here
               </div>
               <div style={{
-                fontSize: '15px',
-                color: '#666',
-                fontWeight: 400
+                fontSize: theme.fontSize.xs,
+                color: theme.colors.text.tertiary,
+                fontWeight: theme.weight.normal
               }}>
                 Multiple files supported
               </div>
@@ -471,12 +483,12 @@ function Upload() {
 
           {/* File Preview List */}
           {files.length > 0 && (
-            <div style={{ marginBottom: '32px' }}>
+            <div style={{ marginBottom: theme.spacing[5] }}>
               <div style={{
                 fontSize: theme.fontSize.xs,
-                fontWeight: 600,
-                color: '#a1a1a1',
-                marginBottom: '12px',
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.tertiary,
+                marginBottom: theme.spacing[2],
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>
@@ -490,8 +502,8 @@ function Upload() {
                 {files.map((file, idx) => (
                   <div key={idx} style={{
                     padding: '12px 16px',
-                    background: '#0a0a0a',
-                    border: '1px solid #1a1a1a',
+                    background: theme.colors.bg.page,
+                    border: `1px solid ${theme.colors.border.light}`,
                     borderRadius: '8px',
                     display: 'flex',
                     justifyContent: 'space-between',
@@ -504,9 +516,9 @@ function Upload() {
                     }}>
                       <div style={{
                         fontSize: theme.fontSize.sm,
-                        fontWeight: 500,
-                        color: '#ffffff',
-                        marginBottom: '4px',
+                        fontWeight: theme.weight.medium,
+                        color: theme.colors.text.primary,
+                        marginBottom: '2px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
@@ -515,7 +527,7 @@ function Upload() {
                       </div>
                       <div style={{
                         fontSize: theme.fontSize.xs,
-                        color: '#666666'
+                        color: theme.colors.text.tertiary
                       }}>
                         {(file.size / 1024 / 1024).toFixed(2)} MB
                       </div>
@@ -526,13 +538,16 @@ function Upload() {
                       style={{
                         background: 'transparent',
                         border: 'none',
-                        color: '#666666',
+                        color: theme.colors.text.tertiary,
                         cursor: 'pointer',
                         fontSize: '20px',
                         padding: '4px 8px',
                         lineHeight: '1',
-                        fontFamily: 'inherit'
+                        fontFamily: 'inherit',
+                        transition: `color ${theme.transition.fast}`
                       }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
+                      onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.tertiary}
                     >
                       ×
                     </button>
@@ -544,13 +559,13 @@ function Upload() {
 
           {/* Optional Name Input - Only if required */}
           {requestData.requireName && (
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: theme.spacing[4] }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
-                fontWeight: 500,
-                color: '#a1a1a1',
-                marginBottom: '8px'
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[2]
               }}>
                 Name
               </label>
@@ -562,30 +577,31 @@ function Upload() {
                 placeholder="Enter your name"
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
-                  background: '#0a0a0a',
-                  border: '1px solid #1a1a1a',
+                  padding: '10px 14px',
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.medium}`,
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: theme.colors.text.primary,
                   fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
-                  outline: 'none'
+                  outline: 'none',
+                  transition: `border-color ${theme.transition.fast}`
                 }}
-                onFocus={(e) => e.currentTarget.style.borderColor = '#333333'}
-                onBlur={(e) => e.currentTarget.style.borderColor = '#1a1a1a'}
+                onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
+                onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
               />
             </div>
           )}
 
           {/* Optional Email Input - Only if required */}
           {requestData.requireEmail && (
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: theme.spacing[4] }}>
               <label style={{
                 display: 'block',
-                fontSize: '13px',
-                fontWeight: 500,
-                color: '#a1a1a1',
-                marginBottom: '8px'
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.medium,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[2]
               }}>
                 Email
               </label>
@@ -597,17 +613,18 @@ function Upload() {
                 placeholder="Enter your email"
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
-                  background: '#0a0a0a',
-                  border: '1px solid #1a1a1a',
+                  padding: '10px 14px',
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.medium}`,
                   borderRadius: '8px',
-                  color: '#ffffff',
+                  color: theme.colors.text.primary,
                   fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
-                  outline: 'none'
+                  outline: 'none',
+                  transition: `border-color ${theme.transition.fast}`
                 }}
-                onFocus={(e) => e.currentTarget.style.borderColor = '#333333'}
-                onBlur={(e) => e.currentTarget.style.borderColor = '#1a1a1a'}
+                onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
+                onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
               />
             </div>
           )}
@@ -617,13 +634,13 @@ function Upload() {
             requestData.customFields.map((field) => {
               const isRequired = requestData.fieldRequirements?.[field.id] === true
               return (
-                <div key={field.id} style={{ marginBottom: '20px' }}>
+                <div key={field.id} style={{ marginBottom: theme.spacing[4] }}>
                   <label style={{
                     display: 'block',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: '#a1a1a1',
-                    marginBottom: '8px'
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: theme.weight.medium,
+                    color: theme.colors.text.secondary,
+                    marginBottom: theme.spacing[2]
                   }}>
                     {field.label}
                     {isRequired && (
@@ -639,22 +656,23 @@ function Upload() {
                     }))}
                     style={{
                       width: '100%',
-                      padding: '12px 16px',
-                      background: '#0a0a0a',
-                      border: '1px solid #1a1a1a',
+                      padding: '10px 14px',
+                      background: theme.colors.bg.page,
+                      border: `1px solid ${theme.colors.border.medium}`,
                       borderRadius: '8px',
-                      color: '#ffffff',
+                      color: theme.colors.text.primary,
                       fontSize: theme.fontSize.sm,
                       fontFamily: 'inherit',
                       outline: 'none',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      transition: `border-color ${theme.transition.fast}`
                     }}
-                    onFocus={(e) => e.currentTarget.style.borderColor = '#333333'}
-                    onBlur={(e) => e.currentTarget.style.borderColor = '#1a1a1a'}
+                    onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
+                    onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
                   >
-                    <option value="" style={{ background: '#0a0a0a' }}>Select {field.label}</option>
+                    <option value="">Select {field.label}</option>
                     {field.options.map(opt => (
-                      <option key={opt} value={opt} style={{ background: '#0a0a0a' }}>{opt}</option>
+                      <option key={opt} value={opt}>{opt}</option>
                     ))}
                   </select>
                 ) : (
@@ -668,17 +686,18 @@ function Upload() {
                     placeholder={field.placeholder}
                     style={{
                       width: '100%',
-                      padding: '12px 16px',
-                      background: '#0a0a0a',
-                      border: '1px solid #1a1a1a',
+                      padding: '10px 14px',
+                      background: theme.colors.bg.page,
+                      border: `1px solid ${theme.colors.border.medium}`,
                       borderRadius: '8px',
-                      color: '#ffffff',
+                      color: theme.colors.text.primary,
                       fontSize: theme.fontSize.sm,
                       fontFamily: 'inherit',
-                      outline: 'none'
+                      outline: 'none',
+                      transition: `border-color ${theme.transition.fast}`
                     }}
-                    onFocus={(e) => e.currentTarget.style.borderColor = '#333333'}
-                    onBlur={(e) => e.currentTarget.style.borderColor = '#1a1a1a'}
+                    onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
+                    onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
                   />
                 )}
               </div>
@@ -689,10 +708,10 @@ function Upload() {
           {/* Validation Error Message */}
           {validationError && (
             <div style={{
-              marginBottom: '20px',
+              marginBottom: theme.spacing[4],
               padding: '12px 16px',
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
+              background: theme.colors.bg.page,
+              border: `1px solid ${theme.colors.error}`,
               borderRadius: '8px',
               color: theme.colors.error,
               fontSize: theme.fontSize.sm,
@@ -708,26 +727,16 @@ function Upload() {
             disabled={uploading || files.length === 0}
             style={{
               width: '100%',
-              padding: '18px 24px',
-              background: '#ffffff',
-              color: '#000000',
+              padding: '12px 20px',
+              background: theme.colors.white,
+              color: theme.colors.black,
               border: 'none',
-              borderRadius: '12px',
-              fontSize: '16px',
-              fontWeight: 600,
+              borderRadius: '8px',
+              fontSize: theme.fontSize.sm,
+              fontWeight: theme.weight.medium,
               cursor: (uploading || files.length === 0) ? 'not-allowed' : 'pointer',
               fontFamily: 'inherit',
-              opacity: (uploading || files.length === 0) ? 0.4 : 1,
-              transition: 'all 0.2s ease',
-              letterSpacing: '-0.01em'
-            }}
-            onMouseEnter={(e) => {
-              if (!uploading && files.length > 0) {
-                e.currentTarget.style.background = '#f5f5f5'
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#ffffff'
+              opacity: (uploading || files.length === 0) ? 0.5 : 1
             }}
           >
             {uploading ? 'Uploading...' : 'Upload Files'}
@@ -735,15 +744,16 @@ function Upload() {
 
           {/* Powered by Text at Bottom */}
           <div style={{
-            fontSize: '13px',
-            color: '#555',
+            fontSize: theme.fontSize.xs,
+            color: theme.colors.text.tertiary,
             textAlign: 'center',
-            marginTop: '40px',
-            fontWeight: 400
+            marginTop: theme.spacing[6],
+            fontWeight: theme.weight.normal
           }}>
             Powered by Sway
           </div>
         </form>
+        </div>
       </div>
 
       {/* Branded Elements (positioned absolutely, behind main content) */}

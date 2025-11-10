@@ -229,62 +229,54 @@ function Dashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: theme.spacing[3],
-            marginBottom: theme.spacing[6],
+            gap: theme.spacing[4],
+            marginBottom: theme.spacing[7],
             width: '100%'
           }}>
             <div style={{
-              background: theme.colors.bg.secondary,
-              padding: '20px',
-              borderRadius: '10px',
+              padding: theme.spacing[5],
               border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md,
-                          }}>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: theme.spacing[2], fontWeight: theme.weight.medium }}>Active Requests</div>
-              <div style={{ fontSize: theme.fontSize.xl, fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{stats.activeRequests}</div>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
-                of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'} available
+              borderRadius: theme.radius.lg
+            }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Active</div>
+              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.medium, color: theme.colors.text.primary, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary }}>
+                of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'}
               </div>
             </div>
 
             <div style={{
-              background: theme.colors.bg.secondary,
-              padding: '20px',
-              borderRadius: '10px',
+              padding: theme.spacing[5],
               border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md,
-                          }}>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: theme.spacing[2], fontWeight: theme.weight.medium }}>Total Uploads</div>
-              <div style={{ fontSize: theme.fontSize.xl, fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{stats.totalUploads}</div>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
+              borderRadius: theme.radius.lg
+            }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Uploads</div>
+              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.medium, color: theme.colors.text.primary, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary }}>
                 {stats.uploadsByDay && stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
               </div>
             </div>
 
             <div style={{
-              background: theme.colors.bg.secondary,
-              padding: '20px',
-              borderRadius: '10px',
+              padding: theme.spacing[5],
               border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md,
-                          }}>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: theme.spacing[2], fontWeight: theme.weight.medium }}>Storage Used</div>
-              <div style={{ fontSize: theme.fontSize.xl, fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{formatStorageMB(stats.storageUsed)}</div>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
+              borderRadius: theme.radius.lg
+            }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Storage</div>
+              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.medium, color: theme.colors.text.primary, lineHeight: '1', marginBottom: theme.spacing[2] }}>{formatStorageMB(stats.storageUsed)}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary }}>
                 of {user.storage_limit_gb} GB
               </div>
             </div>
 
             <div style={{
-              background: theme.colors.bg.secondary,
-              padding: '20px',
-              borderRadius: '10px',
+              padding: theme.spacing[5],
               border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md,
-                          }}>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1px', marginBottom: theme.spacing[2], fontWeight: theme.weight.medium }}>Total Requests</div>
-              <div style={{ fontSize: theme.fontSize.xl, fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{stats.totalRequests}</div>
-              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
+              borderRadius: theme.radius.lg
+            }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Requests</div>
+              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.medium, color: theme.colors.text.primary, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalRequests}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary }}>
                 All time
               </div>
             </div>
