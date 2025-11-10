@@ -2904,57 +2904,135 @@ function Requests() {
               borderRadius: '8px',
               padding: '0',
               marginBottom: '24px',
-              height: '400px',
-              overflow: 'hidden',
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              height: '500px',
+              overflow: 'auto',
+              position: 'relative'
             }}>
               {selectedTemplate.elements.length > 0 ? (
                 <div style={{
-                  width: '600px',
-                  height: '400px',
-                  background: '#000',
-                  position: 'relative',
-                  transform: 'scale(1)',
-                  transformOrigin: 'center'
+                  width: '100%',
+                  minHeight: '500px',
+                  background: '#0a0a0a',
+                  padding: '40px',
+                  position: 'relative'
                 }}>
-                  {selectedTemplate.elements.map((element) => (
-                    <div
-                      key={element.id}
-                      style={{
-                        position: 'absolute',
-                        left: `${element.x * 0.5}px`,
-                        top: `${element.y * 0.5}px`,
-                        width: `${element.width * 0.5}px`,
-                        height: `${element.height * 0.5}px`,
-                        border: '1px solid #333',
-                        borderRadius: '4px',
-                        background: element.type === 'button' ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '8px',
-                        fontSize: element.properties?.fontSize || '14px',
-                        color: element.type === 'button' ? '#000' : '#fff',
-                        fontWeight: element.properties?.fontWeight || '400',
-                        textAlign: element.properties?.textAlign || 'left',
-                        overflow: 'hidden',
-                        pointerEvents: 'none'
-                      }}
-                    >
-                      {element.type === 'heading' && element.properties?.content}
-                      {element.type === 'text' && element.properties?.content}
-                      {element.type === 'button' && element.properties?.label}
-                      {element.type === 'file-upload' && <div style={{ fontSize: '12px', color: '#666' }}>File Upload</div>}
-                      {element.type === 'text-input' && <div style={{ fontSize: '12px', color: '#666' }}>{element.properties?.label || 'Text Input'}</div>}
-                      {element.type === 'textarea' && <div style={{ fontSize: '12px', color: '#666' }}>Text Area</div>}
-                      {!['heading', 'text', 'button', 'file-upload', 'text-input', 'textarea'].includes(element.type) && (
-                        <div style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase' }}>{element.type}</div>
-                      )}
-                    </div>
-                  ))}
+                  {selectedTemplate.elements.map((element) => {
+                    const props = element.properties || {}
+
+                    if (element.type === 'heading') {
+                      return (
+                        <div key={element.id} style={{
+                          fontSize: props.fontSize || '32px',
+                          fontWeight: props.fontWeight || '600',
+                          color: props.color || '#ffffff',
+                          textAlign: props.textAlign || 'left',
+                          marginBottom: '16px'
+                        }}>
+                          {props.content || 'Heading'}
+                        </div>
+                      )
+                    }
+
+                    if (element.type === 'text') {
+                      return (
+                        <div key={element.id} style={{
+                          fontSize: props.fontSize || '16px',
+                          fontWeight: props.fontWeight || '400',
+                          color: props.color || '#b0b0b0',
+                          textAlign: props.textAlign || 'left',
+                          marginBottom: '16px',
+                          lineHeight: '1.6'
+                        }}>
+                          {props.content || 'Text content'}
+                        </div>
+                      )
+                    }
+
+                    if (element.type === 'file-upload') {
+                      return (
+                        <div key={element.id} style={{
+                          border: '2px dashed #3a3a3a',
+                          borderRadius: '8px',
+                          padding: '32px',
+                          textAlign: 'center',
+                          marginBottom: '16px',
+                          background: 'rgba(255, 255, 255, 0.02)'
+                        }}>
+                          <div style={{ fontSize: '14px', color: '#888', marginBottom: '8px' }}>
+                            📁 Click or drag files here
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#666' }}>
+                            {props.label || 'File Upload'}
+                          </div>
+                        </div>
+                      )
+                    }
+
+                    if (element.type === 'text-input') {
+                      return (
+                        <div key={element.id} style={{ marginBottom: '16px' }}>
+                          {props.label && (
+                            <div style={{ fontSize: '14px', color: '#b0b0b0', marginBottom: '8px', fontWeight: '500' }}>
+                              {props.label}
+                            </div>
+                          )}
+                          <input
+                            type="text"
+                            placeholder={props.placeholder || 'Enter text'}
+                            disabled
+                            style={{
+                              width: '100%',
+                              padding: '12px 16px',
+                              background: 'rgba(255, 255, 255, 0.05)',
+                              border: '1px solid #2a2a2a',
+                              borderRadius: '6px',
+                              color: '#666',
+                              fontSize: '15px',
+                              fontFamily: 'inherit'
+                            }}
+                          />
+                        </div>
+                      )
+                    }
+
+                    if (element.type === 'button') {
+                      return (
+                        <div key={element.id} style={{
+                          marginTop: '24px',
+                          textAlign: props.textAlign || 'center'
+                        }}>
+                          <button disabled style={{
+                            padding: '12px 32px',
+                            background: '#ffffff',
+                            color: '#000000',
+                            border: 'none',
+                            borderRadius: '6px',
+                            fontSize: '15px',
+                            fontWeight: '600',
+                            cursor: 'pointer'
+                          }}>
+                            {props.label || 'Submit'}
+                          </button>
+                        </div>
+                      )
+                    }
+
+                    if (element.type === 'divider') {
+                      return (
+                        <div key={element.id} style={{
+                          height: '1px',
+                          background: '#2a2a2a',
+                          margin: '24px 0'
+                        }} />
+                      )
+                    }
+
+                    if (element.type === 'spacer') {
+                      return <div key={element.id} style={{ height: props.height || '40px' }} />
+                    }
+
+                    return null
+                  })}
                 </div>
               ) : (
                 <div style={{
