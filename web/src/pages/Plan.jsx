@@ -21,6 +21,13 @@ function Plan() {
     const userStr = localStorage.getItem('user')
     if (userStr) {
       const userData = JSON.parse(userStr)
+
+      // Check for admin plan override
+      const adminPlanOverride = localStorage.getItem('adminPlanOverride')
+      if (adminPlanOverride) {
+        userData.plan = adminPlanOverride
+      }
+
       setUser(userData)
       setCurrentPlan(userData.plan || 'free')
     }
