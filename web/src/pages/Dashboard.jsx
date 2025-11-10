@@ -6,11 +6,11 @@ import api from '../api/axios'
 
 function Dashboard() {
   const navigate = useNavigate()
-  // FORCE REBUILD - Version 8 - Nov 9 2025 - Cut the BS, only useful metrics
+  // FORCE REBUILD - Version 9 - Nov 9 2025 - Fix placeholder response time
   const [loading, setLoading] = useState(true)
   // Build version for cache busting
-  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v8') {
-    window.__BUILD_VERSION__ = '1.0.5-20251109-v8'
+  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v9') {
+    window.__BUILD_VERSION__ = '1.0.5-20251109-v9'
   }
   const [stats, setStats] = useState({
     totalRequests: 0,
@@ -708,13 +708,13 @@ function Dashboard() {
                     color: theme.colors.accent.purple,
                     marginBottom: theme.spacing[2]
                   }}>
-                    2.4h
+                    {stats.totalUploads > 0 ? 'N/A' : 'N/A'}
                   </div>
                   <div style={{
                     fontSize: theme.fontSize.sm,
                     color: theme.colors.text.muted
                   }}>
-                    Time to first upload
+                    Coming soon
                   </div>
                 </div>
               </div>
