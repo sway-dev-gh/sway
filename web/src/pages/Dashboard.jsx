@@ -410,6 +410,172 @@ function Dashboard() {
             </div>
           </div>
 
+          {/* Pro Upgrade Banner for Free Users OR Advanced Insights for Pro */}
+          {(user.plan || 'free').toLowerCase() === 'free' ? (
+            <div style={{
+              background: `linear-gradient(135deg, ${theme.colors.accent.blue} 0%, ${theme.colors.accent.purple} 100%)`,
+              padding: theme.spacing[12],
+              borderRadius: theme.radius['2xl'],
+              border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.lg,
+              marginBottom: theme.spacing[10],
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: theme.fontSize['2xl'],
+                fontWeight: theme.weight.bold,
+                color: theme.colors.white,
+                marginBottom: theme.spacing[4]
+              }}>
+                Unlock Advanced Analytics
+              </div>
+              <div style={{
+                fontSize: theme.fontSize.lg,
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginBottom: theme.spacing[8],
+                maxWidth: '600px',
+                margin: `0 auto ${theme.spacing[8]}px auto`
+              }}>
+                Upgrade to Pro to access file type breakdowns, top performing requests, advanced insights, and more
+              </div>
+              <Link
+                to="/plan"
+                style={{
+                  display: 'inline-block',
+                  padding: '16px 48px',
+                  background: theme.colors.white,
+                  color: theme.colors.accent.blue,
+                  borderRadius: theme.radius.xl,
+                  fontSize: theme.fontSize.lg,
+                  fontWeight: theme.weight.semibold,
+                  textDecoration: 'none',
+                  boxShadow: theme.shadows.xl,
+                  transition: `all ${theme.transition.fast}`
+                }}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.boxShadow = theme.shadows['2xl']
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = theme.shadows.xl
+                }}
+              >
+                Upgrade to Pro
+              </Link>
+            </div>
+          ) : (
+            /* Pro-Only Quick Stats Grid */
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: theme.spacing[6],
+              marginBottom: theme.spacing[10]
+            }}>
+              {/* Total Storage Used */}
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.tertiary,
+                  marginBottom: theme.spacing[3],
+                  textTransform: 'uppercase',
+                  letterSpacing: '1.2px',
+                  fontWeight: theme.weight.medium
+                }}>
+                  Total Storage
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize['2xl'],
+                  fontWeight: theme.weight.bold,
+                  color: theme.colors.accent.green,
+                  marginBottom: theme.spacing[2]
+                }}>
+                  {formatStorageMB(stats.storageUsed)}
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.muted
+                }}>
+                  {getStoragePercentage().toFixed(1)}% of {user.storage_limit_gb}GB used
+                </div>
+              </div>
+
+              {/* Total Requests */}
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.tertiary,
+                  marginBottom: theme.spacing[3],
+                  textTransform: 'uppercase',
+                  letterSpacing: '1.2px',
+                  fontWeight: theme.weight.medium
+                }}>
+                  Total Requests
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize['2xl'],
+                  fontWeight: theme.weight.bold,
+                  color: theme.colors.accent.blue,
+                  marginBottom: theme.spacing[2]
+                }}>
+                  {stats.totalRequests}
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.muted
+                }}>
+                  {stats.activeRequests} currently active
+                </div>
+              </div>
+
+              {/* Total Uploads */}
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.tertiary,
+                  marginBottom: theme.spacing[3],
+                  textTransform: 'uppercase',
+                  letterSpacing: '1.2px',
+                  fontWeight: theme.weight.medium
+                }}>
+                  Total Uploads
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize['2xl'],
+                  fontWeight: theme.weight.bold,
+                  color: theme.colors.accent.purple,
+                  marginBottom: theme.spacing[2]
+                }}>
+                  {stats.totalUploads}
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.muted
+                }}>
+                  {stats.uploadsByDay && stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Recent Activity */}
           <div style={{
             display: 'grid',
