@@ -566,6 +566,220 @@ function Dashboard() {
               </div>
             </div>
           </div>
+
+          {/* Pro-Only Advanced Analytics */}
+          {(user.plan || 'free').toLowerCase() === 'pro' && (
+            <>
+              {/* Top Performing Requests */}
+              {stats.topRequests && stats.topRequests.length > 0 && (
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md,
+                  overflow: 'hidden',
+                  marginTop: theme.spacing[6]
+                }}>
+                  <div style={{
+                    padding: theme.spacing[8],
+                    borderBottom: `1px solid ${theme.colors.border.light}`
+                  }}>
+                    <div style={{
+                      fontSize: theme.fontSize.lg,
+                      color: theme.colors.text.primary,
+                      fontWeight: theme.weight.semibold,
+                      marginBottom: theme.spacing[1]
+                    }}>
+                      Top Performing Requests
+                    </div>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.tertiary
+                    }}>
+                      Requests with the most uploads
+                    </div>
+                  </div>
+                  <div style={{ padding: theme.spacing[8] }}>
+                    {stats.topRequests.map((req, index) => {
+                      const maxUploads = Math.max(...stats.topRequests.map(r => parseInt(r.upload_count)), 1)
+                      const percentage = (parseInt(req.upload_count) / maxUploads) * 100
+
+                      return (
+                        <div key={index} style={{ marginBottom: index < stats.topRequests.length - 1 ? theme.spacing[6] : 0 }}>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginBottom: theme.spacing[2]
+                          }}>
+                            <div style={{
+                              fontSize: theme.fontSize.sm,
+                              color: theme.colors.text.primary,
+                              fontWeight: theme.weight.medium
+                            }}>
+                              {req.title}
+                            </div>
+                            <div style={{
+                              fontSize: theme.fontSize.sm,
+                              color: theme.colors.text.tertiary
+                            }}>
+                              {req.upload_count} uploads
+                            </div>
+                          </div>
+                          <div style={{
+                            width: '100%',
+                            height: '8px',
+                            background: theme.colors.bg.tertiary,
+                            borderRadius: theme.radius.full,
+                            overflow: 'hidden'
+                          }}>
+                            <div style={{
+                              width: `${percentage}%`,
+                              height: '100%',
+                              background: theme.colors.accent.blue,
+                              transition: `width ${theme.transition.normal}`
+                            }} />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* File Type Breakdown & Average Stats */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 1fr',
+                gap: theme.spacing[6],
+                marginTop: theme.spacing[6]
+              }}>
+                {/* File Type Breakdown */}
+                {stats.fileTypeBreakdown && stats.fileTypeBreakdown.length > 0 && (
+                  <div style={{
+                    background: theme.colors.bg.secondary,
+                    borderRadius: theme.radius['2xl'],
+                    border: `1px solid ${theme.colors.border.light}`,
+                    boxShadow: theme.shadows.md,
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      padding: theme.spacing[8],
+                      borderBottom: `1px solid ${theme.colors.border.light}`
+                    }}>
+                      <div style={{
+                        fontSize: theme.fontSize.lg,
+                        color: theme.colors.text.primary,
+                        fontWeight: theme.weight.semibold,
+                        marginBottom: theme.spacing[1]
+                      }}>
+                        File Type Breakdown
+                      </div>
+                      <div style={{
+                        fontSize: theme.fontSize.sm,
+                        color: theme.colors.text.tertiary
+                      }}>
+                        Distribution of uploaded file types
+                      </div>
+                    </div>
+                    <div style={{ padding: theme.spacing[8] }}>
+                      {stats.fileTypeBreakdown.map((type, index) => {
+                        const totalFiles = stats.fileTypeBreakdown.reduce((sum, t) => sum + parseInt(t.count), 0)
+                        const percentage = ((parseInt(type.count) / totalFiles) * 100).toFixed(1)
+
+                        const colors = {
+                          'PDF': theme.colors.accent.red,
+                          'Image': theme.colors.accent.blue,
+                          'Document': theme.colors.accent.green,
+                          'Spreadsheet': theme.colors.accent.yellow,
+                          'Video': theme.colors.accent.purple,
+                          'Other': theme.colors.text.tertiary
+                        }
+
+                        return (
+                          <div key={index} style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            marginBottom: index < stats.fileTypeBreakdown.length - 1 ? theme.spacing[4] : 0
+                          }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3] }}>
+                              <div style={{
+                                width: '12px',
+                                height: '12px',
+                                borderRadius: theme.radius.full,
+                                background: colors[type.file_type] || theme.colors.text.tertiary
+                              }} />
+                              <div style={{
+                                fontSize: theme.fontSize.sm,
+                                color: theme.colors.text.primary
+                              }}>
+                                {type.file_type}
+                              </div>
+                            </div>
+                            <div style={{
+                              fontSize: theme.fontSize.sm,
+                              color: theme.colors.text.tertiary
+                            }}>
+                              {type.count} ({percentage}%)
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Average Stats Card */}
+                {stats.avgUploadsPerRequest > 0 && (
+                  <div style={{
+                    background: theme.colors.bg.secondary,
+                    borderRadius: theme.radius['2xl'],
+                    border: `1px solid ${theme.colors.border.light}`,
+                    boxShadow: theme.shadows.md,
+                    overflow: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}>
+                    <div style={{
+                      padding: theme.spacing[8],
+                      borderBottom: `1px solid ${theme.colors.border.light}`
+                    }}>
+                      <div style={{
+                        fontSize: theme.fontSize.lg,
+                        color: theme.colors.text.primary,
+                        fontWeight: theme.weight.semibold
+                      }}>
+                        Performance
+                      </div>
+                    </div>
+                    <div style={{
+                      padding: theme.spacing[8],
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      flex: 1
+                    }}>
+                      <div style={{
+                        fontSize: '48px',
+                        fontWeight: theme.weight.bold,
+                        color: theme.colors.accent.blue,
+                        marginBottom: theme.spacing[2],
+                        lineHeight: 1
+                      }}>
+                        {stats.avgUploadsPerRequest}
+                      </div>
+                      <div style={{
+                        fontSize: theme.fontSize.sm,
+                        color: theme.colors.text.tertiary
+                      }}>
+                        Avg uploads per request
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
