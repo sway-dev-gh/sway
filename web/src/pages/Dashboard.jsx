@@ -211,7 +211,7 @@ function Dashboard() {
               letterSpacing: '-0.03em',
               lineHeight: '1.1'
             }}>
-              Collect files from anyone,<br />no signup required
+              Request files from anyone,<br />securely
             </h1>
             <p style={{
               fontSize: '20px',
@@ -221,7 +221,7 @@ function Dashboard() {
               maxWidth: '700px',
               margin: '0 auto 48px'
             }}>
-              Create custom upload forms in seconds. Share a link. Get files. It's that simple.
+              Create custom upload forms. Share a link. Receive files. Simple and secure.
             </p>
             <div style={{ display: 'flex', gap: theme.spacing[4], justifyContent: 'center' }}>
               <Link to="/requests" style={{
