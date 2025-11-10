@@ -1,377 +1,402 @@
 import { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
-import api from '../api/axios'
 
-const CACHE_VERSION = '2.0.1'
-
-const REQUEST_TYPES = [
-  {
-    id: 'custom',
-    name: 'Custom',
-    description: 'Create your own request',
-    titleLabel: 'Request Title',
-    descriptionLabel: 'Request Description (optional)',
-    fields: [
-      { id: 'fileType', label: 'Accepted File Types', type: 'text', placeholder: 'e.g., PDF, PNG, JPG' },
-      { id: 'maxFileSize', label: 'Max File Size (MB)', type: 'number', placeholder: 'e.g., 10' },
-      { id: 'maxFiles', label: 'Max Number of Files', type: 'number', placeholder: 'e.g., 5' },
-      { id: 'customField1', label: 'Custom Field 1', type: 'text', placeholder: 'Enter custom field name' },
-      { id: 'customField2', label: 'Custom Field 2', type: 'text', placeholder: 'Enter custom field name' },
-      { id: 'customField3', label: 'Custom Field 3', type: 'text', placeholder: 'Enter custom field name' },
-      { id: 'instructions', label: 'Additional Instructions', type: 'textarea', placeholder: 'Any special instructions for uploaders...' }
-    ],
-    planRequired: 'pro'
-  },
-  {
-    id: 'documents',
-    name: 'Documents',
-    description: 'PDFs, Word docs, spreadsheets',
-    titleLabel: 'Document Collection Name',
-    descriptionLabel: 'Document Guidelines (optional)',
-    fields: [
-      { id: 'docType', label: 'Document Type', type: 'select', options: ['PDF', 'Word', 'Excel', 'PowerPoint', 'Any'] },
-      { id: 'pageLimit', label: 'Max Pages (optional)', type: 'number', placeholder: 'e.g., 20' }
-    ],
-    planRequired: 'free'
-  },
-  {
-    id: 'design-assets',
-    name: 'Design',
-    description: 'Logos, mockups, design files',
-    titleLabel: 'Design Project Name',
-    descriptionLabel: 'Design Specifications (optional)',
-    fields: [
-      { id: 'format', label: 'Preferred Format', type: 'select', options: ['PNG', 'SVG', 'AI', 'PSD', 'Figma', 'Any'] },
-      { id: 'dimensions', label: 'Dimensions (optional)', type: 'text', placeholder: 'e.g., 1920x1080' }
-    ],
-    planRequired: 'free'
-  },
-  {
-    id: 'forms',
-    name: 'Forms',
-    description: 'Form responses',
-    titleLabel: 'Form Collection Name',
-    descriptionLabel: 'Form Instructions (optional)',
-    fields: [
-      { id: 'formName', label: 'Form Name', type: 'text', placeholder: 'e.g., Customer Survey' },
-      { id: 'submissionCount', label: 'Expected Submissions', type: 'number', placeholder: 'e.g., 50' }
-    ],
-    planRequired: 'free'
-  },
-  {
-    id: 'feedback',
-    name: 'Feedback',
-    description: 'Reviews, testimonials',
-    titleLabel: 'Feedback Collection Name',
-    descriptionLabel: 'Feedback Guidelines (optional)',
-    fields: [
-      { id: 'feedbackType', label: 'Feedback Type', type: 'select', options: ['Review', 'Testimonial', 'Bug Report', 'Feature Request', 'Other'] },
-      { id: 'topic', label: 'Topic', type: 'text', placeholder: 'What is this feedback about?' }
-    ],
-    planRequired: 'free'
-  },
-  {
-    id: 'videos',
-    name: 'Videos',
-    description: 'Collect video files',
-    titleLabel: 'Video Project Name',
-    descriptionLabel: 'Video Requirements (optional)',
-    fields: [
-      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 5' },
-      { id: 'orientation', label: 'Orientation', type: 'select', options: ['Landscape', 'Portrait', 'Square', 'Any'] }
-    ],
-    planRequired: 'pro'
-  },
-  {
-    id: 'invoices',
-    name: 'Invoices',
-    description: 'Billing documents',
-    titleLabel: 'Invoice Collection Name',
-    descriptionLabel: 'Payment Instructions (optional)',
-    fields: [
-      { id: 'invoiceNumber', label: 'Invoice Number', type: 'text', placeholder: 'e.g., INV-001' },
-      { id: 'amount', label: 'Amount', type: 'text', placeholder: 'e.g., $150.00' }
-    ],
-    planRequired: 'pro'
-  },
-  {
-    id: 'contracts',
-    name: 'Contracts',
-    description: 'Signed documents',
-    titleLabel: 'Contract Name or ID',
-    descriptionLabel: 'Contract Instructions (optional)',
-    fields: [
-      { id: 'contractType', label: 'Contract Type', type: 'text', placeholder: 'e.g., NDA, Service Agreement' },
-      { id: 'parties', label: 'Number of Parties', type: 'number', placeholder: 'e.g., 2' }
-    ],
-    planRequired: 'pro'
-  },
-  {
-    id: 'presentations',
-    name: 'Presentations',
-    description: 'PowerPoint, Keynote',
-    titleLabel: 'Presentation Name',
-    descriptionLabel: 'Presentation Requirements (optional)',
-    fields: [
-      { id: 'topic', label: 'Presentation Topic', type: 'text', placeholder: 'e.g., Q4 Results' },
-      { id: 'slides', label: 'Expected Slides', type: 'number', placeholder: 'e.g., 15' }
-    ],
-    planRequired: 'pro'
-  },
-  {
-    id: 'audio',
-    name: 'Audio',
-    description: 'Podcasts, recordings',
-    titleLabel: 'Audio Project Name',
-    descriptionLabel: 'Audio Requirements (optional)',
-    fields: [
-      { id: 'duration', label: 'Max Duration (minutes)', type: 'number', placeholder: 'e.g., 30' },
-      { id: 'format', label: 'Preferred Format', type: 'select', options: ['MP3', 'WAV', 'AAC', 'Any'] }
-    ],
-    planRequired: 'pro'
-  }
+// Component Library - Elements that can be dragged onto canvas
+const COMPONENT_LIBRARY = [
+  { id: 'text', label: 'Text Block', icon: 'T', description: 'Paragraph text' },
+  { id: 'heading', label: 'Heading', icon: 'H', description: 'Title or heading' },
+  { id: 'file-upload', label: 'File Upload', icon: '↑', description: 'File upload zone' },
+  { id: 'text-input', label: 'Text Input', icon: 'I', description: 'Single line input' },
+  { id: 'select', label: 'Dropdown', icon: '▼', description: 'Select menu' },
+  { id: 'checkbox', label: 'Checkbox', icon: '☑', description: 'Checkbox field' },
+  { id: 'image', label: 'Image', icon: '◇', description: 'Image placeholder' },
+  { id: 'button', label: 'Button', icon: 'B', description: 'Action button' }
 ]
 
-const UI_THEMES = [
-  {
-    id: 'minimal',
-    name: 'Minimal',
-    description: 'Clean white with subtle accents',
-    preview: { bg: '#ffffff', accent: '#000000', text: '#333333' },
-    planRequired: 'free'
+// Default properties for each component type
+const DEFAULT_PROPERTIES = {
+  'text': {
+    content: 'Enter your text here',
+    fontSize: '16px',
+    color: '#333333',
+    fontWeight: '400',
+    textAlign: 'left',
+    padding: '12px',
+    width: '100%'
   },
-  {
-    id: 'modern-dark',
-    name: 'Modern Dark',
-    description: 'Sleek dark with blue accents',
-    preview: { bg: '#1a1a1a', accent: '#3b82f6', text: '#ffffff' },
-    planRequired: 'free'
+  'heading': {
+    content: 'Heading Text',
+    fontSize: '32px',
+    color: '#000000',
+    fontWeight: '600',
+    textAlign: 'center',
+    padding: '16px',
+    width: '100%'
   },
-  {
-    id: 'professional',
-    name: 'Professional',
-    description: 'Corporate blue and white',
-    preview: { bg: '#f8fafc', accent: '#2563eb', text: '#1e293b' },
-    planRequired: 'free'
+  'file-upload': {
+    label: 'Upload your files',
+    accept: '*',
+    multiple: true,
+    backgroundColor: '#f5f5f5',
+    borderColor: '#cccccc',
+    borderStyle: 'dashed',
+    padding: '40px',
+    width: '100%'
   },
-  {
-    id: 'warm',
-    name: 'Warm',
-    description: 'Soft cream with orange accents',
-    preview: { bg: '#fef3c7', accent: '#f97316', text: '#78350f' },
-    planRequired: 'free'
+  'text-input': {
+    placeholder: 'Enter text',
+    label: 'Input Field',
+    width: '100%',
+    padding: '10px',
+    fontSize: '14px',
+    borderColor: '#cccccc'
   },
-  {
-    id: 'custom',
-    name: 'Custom Theme',
-    description: 'Full customization control',
-    preview: { bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', accent: '#ffffff', text: '#ffffff' },
-    planRequired: 'pro'
+  'select': {
+    label: 'Select Option',
+    options: 'Option 1,Option 2,Option 3',
+    width: '100%',
+    padding: '10px',
+    fontSize: '14px',
+    borderColor: '#cccccc'
+  },
+  'checkbox': {
+    label: 'I agree to the terms',
+    fontSize: '14px',
+    padding: '8px'
+  },
+  'image': {
+    src: '',
+    alt: 'Image placeholder',
+    width: '300px',
+    height: '200px',
+    objectFit: 'cover',
+    borderRadius: '8px'
+  },
+  'button': {
+    label: 'Submit',
+    backgroundColor: '#000000',
+    color: '#ffffff',
+    fontSize: '16px',
+    fontWeight: '500',
+    padding: '12px 32px',
+    borderRadius: '8px',
+    width: 'auto'
   }
-]
+}
 
 function Requests() {
   const navigate = useNavigate()
-  const [requests, setRequests] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [showModal, setShowModal] = useState(false)
-  const [creating, setCreating] = useState(false)
-  const [formData, setFormData] = useState({ title: '', description: '', customFields: {}, password: '', requireEmail: false, requireName: false })
-  const [requestType, setRequestType] = useState('')
-  const [selectedTheme, setSelectedTheme] = useState('')
-  const [customTheme, setCustomTheme] = useState({ bgColor: '#ffffff', accentColor: '#000000', fontFamily: 'Arial', layoutStyle: 'centered' })
-  const [searchQuery, setSearchQuery] = useState('')
-  const [expiryType, setExpiryType] = useState('preset')
-  const [customExpiryValue, setCustomExpiryValue] = useState('')
-  const [customExpiryUnit, setCustomExpiryUnit] = useState('days')
-  const [createdLink, setCreatedLink] = useState(null)
-  const [userPlan, setUserPlan] = useState('free')
-  const [showUpgradeModal, setShowUpgradeModal] = useState(false)
-  const [upgradeMessage, setUpgradeMessage] = useState('')
-  const [fieldRequirements, setFieldRequirements] = useState({})
+  const [canvasElements, setCanvasElements] = useState([])
+  const [selectedElement, setSelectedElement] = useState(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [draggedComponent, setDraggedComponent] = useState(null)
+  const [canvasBackground, setCanvasBackground] = useState('#ffffff')
 
   useEffect(() => {
-    fetchRequests()
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      const userData = JSON.parse(userStr)
-      // Admin mode does NOT bypass plan restrictions
-      // User must have actual Pro plan to access Pro features
-      const plan = userData.plan || 'free'
-      console.log('[Requests] User data from localStorage:', userData)
-      console.log('[Requests] Setting userPlan to:', plan)
-      setUserPlan(plan)
+    // Check authentication
+    const token = localStorage.getItem('token')
+    if (!token) {
+      navigate('/login')
     }
-  }, [])
+  }, [navigate])
 
-  useEffect(() => {
-    if (showModal) {
-      document.body.style.overflow = 'hidden'
-    } else {
-      document.body.style.overflow = 'unset'
-    }
-    return () => {
-      document.body.style.overflow = 'unset'
-    }
-  }, [showModal])
+  // Generate unique ID for elements
+  const generateId = () => `element-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
-  const fetchRequests = async () => {
-    try {
-      setLoading(true)
-      const token = localStorage.getItem('token')
-      if (!token) {
-        navigate('/login')
-        return
-      }
-
-      const { data } = await api.get('/api/requests', {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-
-      const requestsList = data.requests || []
-      setRequests(requestsList)
-    } catch (err) {
-      console.error('Failed to fetch requests:', err)
-      if (err.response?.status === 401) {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        navigate('/login')
-      }
-    } finally {
-      setLoading(false)
-    }
+  // Handle drag start from component library
+  const handleDragStart = (component) => {
+    setDraggedComponent(component)
+    setIsDragging(true)
   }
 
-  const openModal = () => {
-    setShowModal(true)
-  }
-
-  const closeModal = () => {
-    setShowModal(false)
-    setRequestType('')
-    setSelectedTheme('')
-    setCustomTheme({ bgColor: '#ffffff', accentColor: '#000000', fontFamily: 'Arial', layoutStyle: 'centered' })
-    setFormData({ title: '', description: '', customFields: {}, password: '', requireEmail: false, requireName: false })
-    setExpiryType('preset')
-    setCustomExpiryValue('')
-    setCustomExpiryUnit('days')
-    setCreatedLink(null)
-    setFieldRequirements({})
-  }
-
-  const copyToClipboard = (text) => {
-    navigator.clipboard.writeText(text).then(() => {
-      alert('Link copied to clipboard!')
-    }).catch(() => {
-      alert('Failed to copy. Please copy manually.')
-    })
-  }
-
-  const handleCreateRequest = async (e) => {
+  // Handle drop on canvas
+  const handleCanvasDrop = (e) => {
     e.preventDefault()
-    if (!formData.title.trim() || !requestType) return
+    setIsDragging(false)
 
-    if (expiryType === 'custom') {
-      const value = parseInt(customExpiryValue)
-      if (!value || value < 1) {
-        alert('Please enter a valid expiry time')
-        return
-      }
-      if (customExpiryUnit === 'minutes' && value < 5) {
-        alert('Minimum expiry time is 5 minutes')
-        return
-      }
+    if (!draggedComponent) return
+
+    const canvasRect = e.currentTarget.getBoundingClientRect()
+    const x = e.clientX - canvasRect.left
+    const y = e.clientY - canvasRect.top
+
+    const newElement = {
+      id: generateId(),
+      type: draggedComponent.id,
+      x: x - 100, // Center on cursor
+      y: y - 25,
+      properties: { ...DEFAULT_PROPERTIES[draggedComponent.id] }
     }
 
-    try {
-      setCreating(true)
-      const token = localStorage.getItem('token')
+    setCanvasElements([...canvasElements, newElement])
+    setDraggedComponent(null)
+  }
 
-      let timeLimit = formData.timeLimit || '7'
-      if (expiryType === 'custom') {
-        const value = parseInt(customExpiryValue)
-        let minutes = value
-        if (customExpiryUnit === 'hours') {
-          minutes = value * 60
-        } else if (customExpiryUnit === 'days') {
-          minutes = value * 60 * 24
+  // Handle element selection
+  const handleElementClick = (element, e) => {
+    e.stopPropagation()
+    setSelectedElement(element)
+  }
+
+  // Handle element deletion
+  const handleDeleteElement = () => {
+    if (selectedElement) {
+      setCanvasElements(canvasElements.filter(el => el.id !== selectedElement.id))
+      setSelectedElement(null)
+    }
+  }
+
+  // Handle property changes
+  const handlePropertyChange = (propertyName, value) => {
+    if (!selectedElement) return
+
+    setCanvasElements(canvasElements.map(el => {
+      if (el.id === selectedElement.id) {
+        const updatedElement = {
+          ...el,
+          properties: {
+            ...el.properties,
+            [propertyName]: value
+          }
         }
-        timeLimit = `custom:${minutes}`
+        setSelectedElement(updatedElement)
+        return updatedElement
       }
-
-      const { data } = await api.post('/api/requests', {
-        title: formData.title,
-        description: formData.description,
-        type: requestType,
-        timeLimit: timeLimit,
-        customFields: formData.customFields || {},
-        fieldRequirements: fieldRequirements,
-        password: formData.password || null,
-        requireEmail: formData.requireEmail,
-        requireName: formData.requireName,
-        uiTheme: selectedTheme,
-        customTheme: selectedTheme === 'custom' ? customTheme : null
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-
-      const shareableLink = `${window.location.origin}/r/${data.shortCode}`
-      setCreatedLink(shareableLink)
-
-      await fetchRequests()
-    } catch (err) {
-      console.error('Failed to create request:', err)
-      const errorData = err.response?.data
-
-      if (errorData?.limitReached) {
-        setUpgradeMessage(errorData.error)
-        setShowUpgradeModal(true)
-      } else {
-        alert(errorData?.error || 'Failed to create request')
-      }
-    } finally {
-      setCreating(false)
-    }
+      return el
+    }))
   }
 
-  const handleDelete = async (requestId) => {
-    if (!confirm('Delete this request? This cannot be undone.')) return
-
-    try {
-      const token = localStorage.getItem('token')
-      await api.delete(`/api/requests/${requestId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-
-      setRequests(prev => prev.filter(r => r.id !== requestId))
-    } catch (err) {
-      console.error('Failed to delete:', err)
-      alert('Failed to delete')
-    }
+  // Handle canvas click (deselect)
+  const handleCanvasClick = () => {
+    setSelectedElement(null)
   }
 
-  if (loading) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: theme.colors.bg.page
-      }}>
-        <div style={{
-          width: '32px',
-          height: '32px',
-          border: `2px solid ${theme.colors.border.medium}`,
-          borderTopColor: theme.colors.white,
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-      </div>
-    )
+  // Render element on canvas
+  const renderCanvasElement = (element) => {
+    const { type, properties } = element
+    const isSelected = selectedElement?.id === element.id
+
+    const elementStyle = {
+      position: 'absolute',
+      left: `${element.x}px`,
+      top: `${element.y}px`,
+      cursor: 'move',
+      border: isSelected ? '2px solid #3b82f6' : '1px solid transparent',
+      outline: isSelected ? '2px solid rgba(59, 130, 246, 0.2)' : 'none',
+      outlineOffset: '2px',
+      transition: 'all 0.15s ease'
+    }
+
+    switch (type) {
+      case 'text':
+        return (
+          <div
+            key={element.id}
+            style={{
+              ...elementStyle,
+              fontSize: properties.fontSize,
+              color: properties.color,
+              fontWeight: properties.fontWeight,
+              textAlign: properties.textAlign,
+              padding: properties.padding,
+              width: properties.width === '100%' ? '600px' : properties.width,
+              maxWidth: '100%'
+            }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            {properties.content}
+          </div>
+        )
+
+      case 'heading':
+        return (
+          <div
+            key={element.id}
+            style={{
+              ...elementStyle,
+              fontSize: properties.fontSize,
+              color: properties.color,
+              fontWeight: properties.fontWeight,
+              textAlign: properties.textAlign,
+              padding: properties.padding,
+              width: properties.width === '100%' ? '600px' : properties.width,
+              maxWidth: '100%'
+            }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            {properties.content}
+          </div>
+        )
+
+      case 'file-upload':
+        return (
+          <div
+            key={element.id}
+            style={{
+              ...elementStyle,
+              backgroundColor: properties.backgroundColor,
+              border: `2px ${properties.borderStyle} ${properties.borderColor}`,
+              padding: properties.padding,
+              width: properties.width === '100%' ? '600px' : properties.width,
+              maxWidth: '100%',
+              textAlign: 'center',
+              borderRadius: '8px'
+            }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            <div style={{ fontSize: '48px', marginBottom: '8px' }}>↑</div>
+            <div style={{ fontSize: '16px', fontWeight: '500' }}>{properties.label}</div>
+            <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+              {properties.multiple ? 'Multiple files' : 'Single file'} • {properties.accept || 'All types'}
+            </div>
+          </div>
+        )
+
+      case 'text-input':
+        return (
+          <div
+            key={element.id}
+            style={{ ...elementStyle, width: properties.width === '100%' ? '600px' : properties.width }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            {properties.label && (
+              <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#333' }}>
+                {properties.label}
+              </div>
+            )}
+            <input
+              type="text"
+              placeholder={properties.placeholder}
+              readOnly
+              style={{
+                width: '100%',
+                padding: properties.padding,
+                fontSize: properties.fontSize,
+                border: `1px solid ${properties.borderColor}`,
+                borderRadius: '4px',
+                outline: 'none',
+                pointerEvents: 'none'
+              }}
+            />
+          </div>
+        )
+
+      case 'select':
+        return (
+          <div
+            key={element.id}
+            style={{ ...elementStyle, width: properties.width === '100%' ? '600px' : properties.width }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            {properties.label && (
+              <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '6px', color: '#333' }}>
+                {properties.label}
+              </div>
+            )}
+            <select
+              disabled
+              style={{
+                width: '100%',
+                padding: properties.padding,
+                fontSize: properties.fontSize,
+                border: `1px solid ${properties.borderColor}`,
+                borderRadius: '4px',
+                outline: 'none',
+                pointerEvents: 'none',
+                backgroundColor: '#ffffff'
+              }}
+            >
+              <option>Select option...</option>
+            </select>
+          </div>
+        )
+
+      case 'checkbox':
+        return (
+          <div
+            key={element.id}
+            style={{
+              ...elementStyle,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: properties.padding
+            }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            <input
+              type="checkbox"
+              readOnly
+              style={{ width: '18px', height: '18px', pointerEvents: 'none' }}
+            />
+            <span style={{ fontSize: properties.fontSize }}>{properties.label}</span>
+          </div>
+        )
+
+      case 'image':
+        return (
+          <div
+            key={element.id}
+            style={{
+              ...elementStyle,
+              width: properties.width,
+              height: properties.height,
+              backgroundColor: '#f0f0f0',
+              border: '1px solid #ddd',
+              borderRadius: properties.borderRadius,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden'
+            }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            {properties.src ? (
+              <img
+                src={properties.src}
+                alt={properties.alt}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: properties.objectFit
+                }}
+              />
+            ) : (
+              <div style={{ textAlign: 'center', color: '#999' }}>
+                <div style={{ fontSize: '48px' }}>◇</div>
+                <div style={{ fontSize: '12px' }}>Image Placeholder</div>
+              </div>
+            )}
+          </div>
+        )
+
+      case 'button':
+        return (
+          <button
+            key={element.id}
+            style={{
+              ...elementStyle,
+              backgroundColor: properties.backgroundColor,
+              color: properties.color,
+              fontSize: properties.fontSize,
+              fontWeight: properties.fontWeight,
+              padding: properties.padding,
+              borderRadius: properties.borderRadius,
+              border: 'none',
+              cursor: 'pointer',
+              width: properties.width === 'auto' ? 'auto' : properties.width
+            }}
+            onClick={(e) => handleElementClick(element, e)}
+          >
+            {properties.label}
+          </button>
+        )
+
+      default:
+        return null
+    }
   }
 
   return (
@@ -381,1472 +406,653 @@ function Requests() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '54px'
+        marginTop: '54px',
+        display: 'flex',
+        flexDirection: 'column'
       }}>
+        {/* Top Bar */}
         <div style={{
-          maxWidth: '1600px',
-          margin: '0 auto',
-          padding: theme.spacing[6]
+          height: '60px',
+          borderBottom: `1px solid ${theme.colors.border.light}`,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 24px',
+          background: theme.colors.bg.secondary
         }}>
-
-          {/* Header */}
-          <div style={{ marginBottom: theme.spacing[6] }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: theme.spacing[2]
-            }}>
-              <div style={{ flex: 1 }}></div>
-              <h1 style={{
-                fontSize: theme.fontSize.xl,
-                fontWeight: '500',
-                margin: 0,
-                color: theme.colors.text.primary,
-                letterSpacing: '-0.02em'
-              }}>
-                Builder
-              </h1>
-              <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-                <button
-                  onClick={openModal}
-                  style={{
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    border: 'none',
-                    padding: '8px 16px',
-                    borderRadius: theme.radius.md,
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.medium,
-                    cursor: 'pointer',
-                    fontFamily: 'inherit'
-                  }}
-                >
-                  New Request
-                </button>
-              </div>
-            </div>
-            <p style={{
-              fontSize: theme.fontSize.sm,
-              color: theme.colors.text.secondary,
+          <div>
+            <h1 style={{
+              fontSize: theme.fontSize.lg,
+              fontWeight: '500',
               margin: 0,
-              lineHeight: '1.6',
-              textAlign: 'center'
+              color: theme.colors.text.primary
+            }}>
+              Builder
+            </h1>
+            <p style={{
+              fontSize: theme.fontSize.xs,
+              color: theme.colors.text.secondary,
+              margin: '2px 0 0 0'
             }}>
               Build custom file upload forms
             </p>
           </div>
+          <button
+            style={{
+              background: theme.colors.white,
+              color: theme.colors.black,
+              border: 'none',
+              padding: '10px 24px',
+              borderRadius: theme.radius.md,
+              fontSize: theme.fontSize.sm,
+              fontWeight: theme.weight.medium,
+              cursor: 'pointer',
+              fontFamily: 'inherit'
+            }}
+            onClick={() => alert('Publishing feature coming soon!')}
+          >
+            Publish
+          </button>
+        </div>
 
-          {/* Request List - Canva-Style Grid */}
-          <div>
-            {requests.length === 0 ? (
-              <div style={{
-                textAlign: 'center',
-                padding: '80px 40px',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg
-              }}>
-                <h3 style={{
-                  fontSize: theme.fontSize.lg,
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.primary,
-                  margin: '0 0 8px 0'
+        {/* Three Column Layout */}
+        <div style={{
+          flex: 1,
+          display: 'flex',
+          overflow: 'hidden'
+        }}>
+          {/* LEFT SIDEBAR - Component Library */}
+          <div style={{
+            width: '220px',
+            borderRight: `1px solid ${theme.colors.border.light}`,
+            background: theme.colors.bg.secondary,
+            overflowY: 'auto',
+            padding: '20px 12px'
+          }}>
+            <div style={{
+              fontSize: theme.fontSize.xs,
+              fontWeight: theme.weight.medium,
+              color: theme.colors.text.secondary,
+              marginBottom: '12px',
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              Elements
+            </div>
+
+            {COMPONENT_LIBRARY.map((component) => (
+              <div
+                key={component.id}
+                draggable
+                onDragStart={() => handleDragStart(component)}
+                style={{
+                  padding: '12px',
+                  marginBottom: '8px',
+                  background: theme.colors.bg.page,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: theme.radius.md,
+                  cursor: 'grab',
+                  transition: 'all 0.15s ease',
+                  userSelect: 'none'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.border.medium
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = theme.colors.border.light
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+              >
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px',
+                  marginBottom: '4px'
                 }}>
-                  No requests yet
-                </h3>
-                <p style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.secondary,
-                  margin: 0
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    background: theme.colors.bg.tertiary,
+                    border: `1px solid ${theme.colors.border.light}`,
+                    borderRadius: '6px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '16px',
+                    fontWeight: '600'
+                  }}>
+                    {component.icon}
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: theme.weight.medium,
+                    color: theme.colors.text.primary
+                  }}>
+                    {component.label}
+                  </div>
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.xs,
+                  color: theme.colors.text.tertiary,
+                  marginLeft: '42px'
                 }}>
-                  Click "New Request" to create your first request
-                </p>
+                  {component.description}
+                </div>
               </div>
-            ) : (
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-                gap: theme.spacing[5],
-                width: '100%'
-              }}>
-                {requests
-                  .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                  .map((req) => (
-                    <div
-                      key={req.id}
-                      onClick={() => navigate(`/requests/${req.id}`)}
-                      style={{
-                        cursor: 'pointer',
-                        transition: `transform ${theme.transition.fast}`
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-2px)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)'
-                      }}
-                    >
-                      {/* Visual Preview */}
-                      <div style={{
-                        aspectRatio: '16 / 10',
-                        background: theme.colors.bg.card,
-                        border: `1px solid ${theme.colors.border.light}`,
-                        borderRadius: theme.radius.lg,
-                        marginBottom: theme.spacing[3],
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'column',
-                        padding: theme.spacing[5],
-                        overflow: 'hidden'
-                      }}>
-                        <div style={{
-                          fontSize: theme.fontSize.xl,
-                          fontWeight: theme.weight.medium,
-                          color: theme.colors.text.primary,
-                          marginBottom: theme.spacing[2],
-                          textAlign: 'center',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical'
-                        }}>
-                          {req.title}
-                        </div>
-                        <div style={{
-                          fontSize: theme.fontSize.xs,
-                          color: theme.colors.text.tertiary,
-                          textAlign: 'center'
-                        }}>
-                          {req.uploadCount || 0} files uploaded
-                        </div>
-                      </div>
-
-                      {/* Request Info */}
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        marginBottom: theme.spacing[2]
-                      }}>
-                        <div style={{
-                          fontSize: theme.fontSize.sm,
-                          fontWeight: theme.weight.medium,
-                          color: theme.colors.text.primary,
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap',
-                          flex: 1
-                        }}>
-                          {req.title}
-                        </div>
-                      </div>
-
-                      <div style={{
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.secondary,
-                        marginBottom: theme.spacing[3]
-                      }}>
-                        {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div style={{
-                        display: 'flex',
-                        gap: theme.spacing[2]
-                      }}>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            navigate(`/requests/${req.id}`)
-                          }}
-                          style={{
-                            flex: 1,
-                            padding: '6px 12px',
-                            background: theme.colors.white,
-                            color: theme.colors.black,
-                            border: 'none',
-                            borderRadius: theme.radius.md,
-                            fontSize: theme.fontSize.xs,
-                            fontWeight: theme.weight.medium,
-                            cursor: 'pointer',
-                            fontFamily: 'inherit'
-                          }}
-                        >
-                          Open
-                        </button>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleDelete(req.id)
-                          }}
-                          style={{
-                            padding: '6px 12px',
-                            background: 'transparent',
-                            color: theme.colors.text.secondary,
-                            border: `1px solid ${theme.colors.border.light}`,
-                            borderRadius: theme.radius.md,
-                            fontSize: theme.fontSize.xs,
-                            fontWeight: theme.weight.medium,
-                            cursor: 'pointer',
-                            fontFamily: 'inherit'
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
+            ))}
           </div>
 
-          {/* Create Request Modal - Simplified */}
-          {showModal && (
+          {/* CENTER - Canvas */}
+          <div style={{
+            flex: 1,
+            overflowY: 'auto',
+            background: theme.colors.bg.tertiary,
+            position: 'relative'
+          }}>
             <div
               style={{
-                position: 'fixed',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.8)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 1000,
+                minHeight: '100%',
                 padding: '40px',
-                overflowY: 'auto',
-                backdropFilter: 'blur(8px)'
+                display: 'flex',
+                justifyContent: 'center'
               }}
-              onClick={closeModal}
             >
               <div
+                onDrop={handleCanvasDrop}
+                onDragOver={(e) => e.preventDefault()}
+                onClick={handleCanvasClick}
                 style={{
-                  background: theme.colors.bg.secondary,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius['2xl'],
-                  maxWidth: '540px',
-                  width: '100%',
-                  maxHeight: '90vh',
-                  overflowY: 'auto',
-                  margin: 'auto',
-                  // boxShadow removed
+                  width: '800px',
+                  minHeight: '1000px',
+                  background: canvasBackground,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                  borderRadius: '8px',
+                  position: 'relative',
+                  border: isDragging ? `2px dashed ${theme.colors.border.medium}` : 'none'
                 }}
-                className="custom-scrollbar"
-                onClick={(e) => e.stopPropagation()}
               >
-                {/* Modal Header */}
+                {canvasElements.length === 0 && !isDragging && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    textAlign: 'center',
+                    color: theme.colors.text.tertiary,
+                    pointerEvents: 'none'
+                  }}>
+                    <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>↓</div>
+                    <div style={{ fontSize: theme.fontSize.base }}>Drag elements here to start building</div>
+                  </div>
+                )}
+
+                {canvasElements.map(renderCanvasElement)}
+
+                {isDragging && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    fontSize: theme.fontSize.lg,
+                    color: theme.colors.text.secondary,
+                    pointerEvents: 'none'
+                  }}>
+                    Drop here to add element
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDEBAR - Properties Panel */}
+          <div style={{
+            width: '300px',
+            borderLeft: `1px solid ${theme.colors.border.light}`,
+            background: theme.colors.bg.secondary,
+            overflowY: 'auto',
+            padding: '20px'
+          }}>
+            {selectedElement ? (
+              <>
                 <div style={{
-                  padding: '28px 32px',
-                  borderBottom: `1px solid ${theme.colors.border.light}`,
+                  fontSize: theme.fontSize.sm,
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.primary,
+                  marginBottom: '16px',
                   display: 'flex',
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
-                  <h2 style={{
-                    fontSize: theme.fontSize.base,
-                    fontWeight: '500',
-                    margin: 0,
-                    letterSpacing: '-0.01em',
-                    color: theme.colors.text.primary
-                  }}>
-                    {createdLink ? 'Request Created' : (requestType ? 'Create Request' : (selectedTheme ? 'Choose Request Type' : 'Choose UI Theme'))}
-                  </h2>
+                  <span>
+                    {COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label}
+                  </span>
                   <button
-                    onClick={closeModal}
+                    onClick={handleDeleteElement}
                     style={{
                       background: 'transparent',
-                      border: 'none',
-                      fontSize: '36px',
-                      color: theme.colors.text.muted,
+                      border: `1px solid ${theme.colors.border.medium}`,
+                      borderRadius: '4px',
+                      padding: '4px 12px',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
                       cursor: 'pointer',
-                      padding: '8px 12px',
-                      lineHeight: '1',
-                      fontFamily: 'inherit',
-                      transition: `color ${theme.transition.fast}`
+                      fontFamily: 'inherit'
                     }}
-
-
-                                    >
-                    ×
+                  >
+                    Delete
                   </button>
                 </div>
 
-                {/* Modal Content */}
-                {createdLink ? (
-                  /* Success Screen */
-                  <div style={{ padding: '40px 32px' }}>
-                    <div style={{
-                      fontSize: theme.fontSize.lg,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '24px',
-                      textAlign: 'center'
-                    }}>
-                      Share this link with people to collect files
-                    </div>
-
-                    {/* Link Display */}
-                    <div style={{
-                      padding: '16px 20px',
-                      background: theme.colors.bg.page,
-                      border: `1px solid ${theme.colors.border.medium}`,
-                      borderRadius: '12px',
-                      marginBottom: '24px',
-                      wordBreak: 'break-all',
-                      fontSize: theme.fontSize.base,
-                      color: theme.colors.text.primary,
-                      fontFamily: 'monospace'
-                    }}>
-                      {createdLink}
-                    </div>
-
-                    {/* Buttons */}
-                    <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-                      <button
-                        onClick={() => window.open(createdLink, '_blank')}
-                        style={{
-                          padding: '14px 28px',
-                          background: theme.colors.white,
-                          color: theme.colors.black,
-                          border: 'none',
-                          borderRadius: '12px',
-                          fontSize: theme.fontSize.base,
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                          fontFamily: 'inherit',
-                                                  }}
-                      >
-                        Open Link
-                      </button>
-                      <button
-                        onClick={() => copyToClipboard(createdLink)}
-                        style={{
-                          padding: '14px 28px',
-                          background: 'transparent',
-                          color: theme.colors.text.primary,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: '12px',
-                          fontSize: theme.fontSize.base,
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                          fontFamily: 'inherit',
-                                                  }}
-                      >
-                        Copy Link
-                      </button>
-                      <button
-                        onClick={closeModal}
-                        style={{
-                          padding: '14px 28px',
-                          background: 'transparent',
-                          color: theme.colors.text.secondary,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: '12px',
-                          fontSize: theme.fontSize.base,
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                          fontFamily: 'inherit',
-                                                  }}
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                ) : !selectedTheme ? (
-                  /* Theme Selection */
-                  <div style={{ padding: '24px 32px' }}>
-                    <div style={{
-                      fontSize: theme.fontSize.sm,
-                      color: theme.colors.text.secondary,
-                      marginBottom: theme.spacing[4],
-                      textAlign: 'center'
-                    }}>
-                      Choose how your upload page will look
-                    </div>
-
-                    {/* Theme Grid */}
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(2, 1fr)',
-                      gap: '12px',
-                      maxHeight: '420px',
-                      overflowY: 'auto'
-                    }}
-                    className="custom-scrollbar"
-                    >
-                      {UI_THEMES.map((themeOption) => {
-                        const planLevels = { 'free': 0, 'pro': 1 }
-                        const currentPlanLevel = planLevels[userPlan] || 0
-                        const requiredPlanLevel = planLevels[themeOption.planRequired] || 0
-                        const isLocked = currentPlanLevel < requiredPlanLevel
-
-                        return (
-                          <div
-                            key={themeOption.id}
-                            onClick={() => {
-                              if (isLocked) {
-                                setUpgradeMessage(`Custom themes require Pro. Upgrade to unlock full theme customization.`)
-                                setShowUpgradeModal(true)
-                              } else {
-                                setSelectedTheme(themeOption.id)
-                              }
-                            }}
-                            style={{
-                              padding: '16px',
-                              background: theme.colors.bg.page,
-                              border: `1px solid ${isLocked ? theme.colors.border.light : theme.colors.border.medium}`,
-                              borderRadius: '12px',
-                              cursor: isLocked ? 'not-allowed' : 'pointer',
-                              opacity: isLocked ? 0.5 : 1,
-                              position: 'relative',
-                              transition: `all ${theme.transition.fast}`
-                            }}
-                            onMouseEnter={(e) => {
-                              if (!isLocked) {
-                                e.currentTarget.style.borderColor = theme.colors.border.dark
-                                e.currentTarget.style.transform = 'translateY(-2px)'
-                              }
-                            }}
-                            onMouseLeave={(e) => {
-                              if (!isLocked) {
-                                e.currentTarget.style.borderColor = theme.colors.border.medium
-                                e.currentTarget.style.transform = 'translateY(0)'
-                              }
-                            }}
-                          >
-                            {isLocked && (
-                              <div style={{
-                                position: 'absolute',
-                                top: '8px',
-                                right: '8px',
-                                fontSize: '9px',
-                                color: theme.colors.text.tertiary,
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.5px',
-                                fontWeight: '600',
-                                background: theme.colors.bg.tertiary,
-                                padding: '2px 6px',
-                                borderRadius: '4px'
-                              }}>
-                                PRO
-                              </div>
-                            )}
-
-                            {/* Color Preview */}
-                            <div style={{
-                              height: '80px',
-                              background: themeOption.preview.bg,
-                              borderRadius: '8px',
-                              marginBottom: '12px',
-                              border: `1px solid ${theme.colors.border.light}`,
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              gap: '6px',
-                              overflow: 'hidden'
-                            }}>
-                              <div style={{
-                                width: '40px',
-                                height: '4px',
-                                background: themeOption.preview.accent,
-                                borderRadius: '2px'
-                              }} />
-                              <div style={{
-                                width: '60px',
-                                height: '3px',
-                                background: themeOption.preview.text,
-                                borderRadius: '2px',
-                                opacity: 0.5
-                              }} />
-                              <div style={{
-                                width: '50px',
-                                height: '3px',
-                                background: themeOption.preview.text,
-                                borderRadius: '2px',
-                                opacity: 0.3
-                              }} />
-                            </div>
-
-                            {/* Theme Name */}
-                            <div style={{
-                              fontSize: theme.fontSize.sm,
-                              fontWeight: '500',
-                              color: theme.colors.text.primary,
-                              marginBottom: theme.spacing[1]
-                            }}>
-                              {themeOption.name}
-                            </div>
-
-                            {/* Theme Description */}
-                            <div style={{
-                              fontSize: theme.fontSize.xs,
-                              color: theme.colors.text.tertiary,
-                              lineHeight: '1.4'
-                            }}>
-                              {themeOption.description}
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                ) : !requestType ? (
-                  /* Request Type Selection */
-                  <div style={{ padding: '24px 32px' }}>
-                    {/* Back Button */}
-                    <button
-                      onClick={() => setSelectedTheme('')}
-                      style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: theme.colors.text.secondary,
-                        cursor: 'pointer',
-                        fontSize: theme.fontSize.sm,
-                        padding: '8px 0',
-                        marginBottom: theme.spacing[3],
-                        fontWeight: '500',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '4px',
-                        fontFamily: 'inherit'
-                      }}
-                    >
-                      ← Back to themes
-                    </button>
-
-                    {/* Search Bar */}
-                    <input
-                      type="text"
-                      placeholder="Search templates..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '10px 14px',
-                        background: theme.colors.bg.page,
-                        border: `1px solid ${theme.colors.border.medium}`,
-                        borderRadius: '8px',
-                        color: theme.colors.text.primary,
-                        fontSize: theme.fontSize.sm,
-                        fontFamily: 'inherit',
-                        outline: 'none',
-                        marginBottom: theme.spacing[4]
-                      }}
-                    />
-
-                    {/* Templates Grid */}
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(2, 1fr)',
-                      gap: '10px',
-                      maxHeight: '420px',
-                      overflowY: 'auto'
-                    }}
-                    className="custom-scrollbar"
-                    >
-                      {REQUEST_TYPES
-                        .filter(type =>
-                          type.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          type.description.toLowerCase().includes(searchQuery.toLowerCase())
-                        )
-                        .map((type) => {
-                          const planLevels = { 'free': 0, 'pro': 1 }
-                          const currentPlanLevel = planLevels[userPlan] || 0
-                          const requiredPlanLevel = planLevels[type.planRequired] || 0
-                          const isLocked = currentPlanLevel < requiredPlanLevel
-
-                          return (
-                            <div
-                              key={type.id}
-                              onClick={() => {
-                                if (isLocked) {
-                                  setUpgradeMessage(`${type.name} templates require Pro. Upgrade to unlock all templates and field customization.`)
-                                  setShowUpgradeModal(true)
-                                } else {
-                                  setRequestType(type.id)
-                                  setSearchQuery('')
-                                }
-                              }}
-                              style={{
-                                padding: '14px',
-                                background: theme.colors.bg.page,
-                                border: `1px solid ${isLocked ? theme.colors.border.light : theme.colors.border.medium}`,
-                                borderRadius: '8px',
-                                cursor: isLocked ? 'not-allowed' : 'pointer',
-                                opacity: isLocked ? 0.5 : 1,
-                                position: 'relative',
-                                transition: `all ${theme.transition.fast}`
-                              }}
-                              onMouseEnter={(e) => {
-                                if (!isLocked) {
-                                  e.currentTarget.style.borderColor = theme.colors.border.dark
-                                  e.currentTarget.style.background = theme.colors.bg.secondary
-                                }
-                              }}
-                              onMouseLeave={(e) => {
-                                if (!isLocked) {
-                                  e.currentTarget.style.borderColor = theme.colors.border.medium
-                                  e.currentTarget.style.background = theme.colors.bg.page
-                                }
-                              }}
-                            >
-                              {isLocked && (
-                                <div style={{
-                                  position: 'absolute',
-                                  top: '8px',
-                                  right: '8px',
-                                  fontSize: '9px',
-                                  color: theme.colors.text.tertiary,
-                                  textTransform: 'uppercase',
-                                  letterSpacing: '0.5px',
-                                  fontWeight: '600',
-                                  background: theme.colors.bg.tertiary,
-                                  padding: '2px 6px',
-                                  borderRadius: '4px'
-                                }}>
-                                  PRO
-                                </div>
-                              )}
-                              <div style={{
-                                fontSize: theme.fontSize.sm,
-                                fontWeight: '500',
-                                color: theme.colors.text.primary,
-                                marginBottom: theme.spacing[1]
-                              }}>
-                                {type.name}
-                              </div>
-                              <div style={{
-                                fontSize: theme.fontSize.xs,
-                                color: theme.colors.text.tertiary,
-                                lineHeight: '1.4'
-                              }}>
-                                {type.description}
-                              </div>
-                            </div>
-                          )
-                        })}
-                    </div>
-                  </div>
-                ) : (
-                  <form onSubmit={handleCreateRequest}>
-                    <div style={{ padding: '24px 32px' }}>
-                      {/* UI Theme Display */}
-                      <div style={{ marginBottom: theme.spacing[5] }}>
+                {/* Dynamic Properties Based on Element Type */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {selectedElement.type === 'text' && (
+                    <>
+                      <div>
                         <label style={{
                           display: 'block',
-                          fontSize: theme.fontSize.sm,
+                          fontSize: theme.fontSize.xs,
                           color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[2],
+                          marginBottom: '6px',
                           fontWeight: theme.weight.medium
                         }}>
-                          UI Theme
+                          Content
                         </label>
-                        <div style={{
-                          padding: '12px 16px',
-                          background: theme.colors.bg.page,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: '10px',
-                          fontSize: theme.fontSize.base,
-                          color: theme.colors.text.primary,
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center'
-                        }}>
-                          {UI_THEMES.find(t => t.id === selectedTheme)?.name || selectedTheme}
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedTheme('')
-                              setRequestType('')
-                            }}
-                            style={{
-                              background: 'transparent',
-                              border: 'none',
-                              color: theme.colors.text.secondary,
-                              cursor: 'pointer',
-                              fontSize: theme.fontSize.sm,
-                              padding: 0,
-                              fontWeight: '500',
-                              transition: `color ${theme.transition.fast}`,
-                              fontFamily: 'inherit'
-                            }}
-                          >
-                            Change
-                          </button>
-                        </div>
-                      </div>
-
-                      {/* Custom Theme Customization Panel - Pro Only */}
-                      {selectedTheme === 'custom' && userPlan === 'pro' && (
-                        <div style={{
-                          marginBottom: theme.spacing[5],
-                          padding: '16px',
-                          background: theme.colors.bg.page,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: '10px'
-                        }}>
-                          <div style={{
+                        <textarea
+                          value={selectedElement.properties.content}
+                          onChange={(e) => handlePropertyChange('content', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
                             fontSize: theme.fontSize.sm,
-                            fontWeight: theme.weight.medium,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
                             color: theme.colors.text.primary,
-                            marginBottom: theme.spacing[3],
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: theme.spacing[2]
-                          }}>
-                            Custom Theme Settings
-                            <span style={{
-                              fontSize: '11px',
-                              background: theme.colors.white,
-                              color: theme.colors.black,
-                              padding: '2px 8px',
-                              borderRadius: '4px',
-                              fontWeight: 600,
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px'
-                            }}>PRO</span>
-                          </div>
-
-                          {/* Background Color */}
-                          <div style={{ marginBottom: theme.spacing[3] }}>
-                            <label style={{
-                              display: 'block',
-                              fontSize: theme.fontSize.xs,
-                              color: theme.colors.text.secondary,
-                              marginBottom: theme.spacing[2]
-                            }}>
-                              Background Color
-                            </label>
-                            <div style={{ display: 'flex', gap: theme.spacing[2], alignItems: 'center' }}>
-                              <input
-                                type="color"
-                                value={customTheme.bgColor}
-                                onChange={(e) => setCustomTheme(prev => ({ ...prev, bgColor: e.target.value }))}
-                                style={{
-                                  width: '50px',
-                                  height: '36px',
-                                  border: `1px solid ${theme.colors.border.medium}`,
-                                  borderRadius: '6px',
-                                  cursor: 'pointer'
-                                }}
-                              />
-                              <input
-                                type="text"
-                                value={customTheme.bgColor}
-                                onChange={(e) => setCustomTheme(prev => ({ ...prev, bgColor: e.target.value }))}
-                                style={{
-                                  flex: 1,
-                                  padding: '8px 12px',
-                                  background: theme.colors.bg.secondary,
-                                  border: `1px solid ${theme.colors.border.medium}`,
-                                  borderRadius: '6px',
-                                  color: theme.colors.text.primary,
-                                  fontSize: theme.fontSize.sm,
-                                  fontFamily: 'monospace',
-                                  outline: 'none'
-                                }}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Accent Color */}
-                          <div style={{ marginBottom: theme.spacing[3] }}>
-                            <label style={{
-                              display: 'block',
-                              fontSize: theme.fontSize.xs,
-                              color: theme.colors.text.secondary,
-                              marginBottom: theme.spacing[2]
-                            }}>
-                              Accent Color
-                            </label>
-                            <div style={{ display: 'flex', gap: theme.spacing[2], alignItems: 'center' }}>
-                              <input
-                                type="color"
-                                value={customTheme.accentColor}
-                                onChange={(e) => setCustomTheme(prev => ({ ...prev, accentColor: e.target.value }))}
-                                style={{
-                                  width: '50px',
-                                  height: '36px',
-                                  border: `1px solid ${theme.colors.border.medium}`,
-                                  borderRadius: '6px',
-                                  cursor: 'pointer'
-                                }}
-                              />
-                              <input
-                                type="text"
-                                value={customTheme.accentColor}
-                                onChange={(e) => setCustomTheme(prev => ({ ...prev, accentColor: e.target.value }))}
-                                style={{
-                                  flex: 1,
-                                  padding: '8px 12px',
-                                  background: theme.colors.bg.secondary,
-                                  border: `1px solid ${theme.colors.border.medium}`,
-                                  borderRadius: '6px',
-                                  color: theme.colors.text.primary,
-                                  fontSize: theme.fontSize.sm,
-                                  fontFamily: 'monospace',
-                                  outline: 'none'
-                                }}
-                              />
-                            </div>
-                          </div>
-
-                          {/* Font Family */}
-                          <div style={{ marginBottom: theme.spacing[3] }}>
-                            <label style={{
-                              display: 'block',
-                              fontSize: theme.fontSize.xs,
-                              color: theme.colors.text.secondary,
-                              marginBottom: theme.spacing[2]
-                            }}>
-                              Font Family
-                            </label>
-                            <select
-                              value={customTheme.fontFamily}
-                              onChange={(e) => setCustomTheme(prev => ({ ...prev, fontFamily: e.target.value }))}
-                              style={{
-                                width: '100%',
-                                padding: '8px 12px',
-                                background: theme.colors.bg.secondary,
-                                border: `1px solid ${theme.colors.border.medium}`,
-                                borderRadius: '6px',
-                                color: theme.colors.text.primary,
-                                fontSize: theme.fontSize.sm,
-                                fontFamily: 'inherit',
-                                outline: 'none',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              <option value="Arial">Arial</option>
-                              <option value="Helvetica">Helvetica</option>
-                              <option value="Georgia">Georgia</option>
-                              <option value="Times New Roman">Times New Roman</option>
-                              <option value="Courier New">Courier New</option>
-                              <option value="Verdana">Verdana</option>
-                              <option value="Inter">Inter</option>
-                              <option value="Roboto">Roboto</option>
-                            </select>
-                          </div>
-
-                          {/* Layout Style */}
-                          <div>
-                            <label style={{
-                              display: 'block',
-                              fontSize: theme.fontSize.xs,
-                              color: theme.colors.text.secondary,
-                              marginBottom: theme.spacing[2]
-                            }}>
-                              Layout Style
-                            </label>
-                            <select
-                              value={customTheme.layoutStyle}
-                              onChange={(e) => setCustomTheme(prev => ({ ...prev, layoutStyle: e.target.value }))}
-                              style={{
-                                width: '100%',
-                                padding: '8px 12px',
-                                background: theme.colors.bg.secondary,
-                                border: `1px solid ${theme.colors.border.medium}`,
-                                borderRadius: '6px',
-                                color: theme.colors.text.primary,
-                                fontSize: theme.fontSize.sm,
-                                fontFamily: 'inherit',
-                                outline: 'none',
-                                cursor: 'pointer'
-                              }}
-                            >
-                              <option value="centered">Centered</option>
-                              <option value="left-aligned">Left Aligned</option>
-                              <option value="full-width">Full Width</option>
-                              <option value="compact">Compact</option>
-                            </select>
-                          </div>
-                        </div>
-                      )}
-
-                      <div style={{ marginBottom: theme.spacing[5] }}>
-                        <label style={{
-                          display: 'block',
-                          fontSize: theme.fontSize.sm,
-                          color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[2],
-                          fontWeight: theme.weight.medium
-                        }}>
-                          Request Type
-                        </label>
-                        <div style={{
-                          padding: '12px 16px',
-                          background: theme.colors.bg.page,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          borderRadius: '10px',
-                          fontSize: theme.fontSize.base,
-                          color: theme.colors.text.primary,
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center'
-                        }}>
-                          {REQUEST_TYPES.find(t => t.id === requestType)?.name || requestType}
-                          <button
-                            type="button"
-                            onClick={() => setRequestType('')}
-                            style={{
-                              background: 'transparent',
-                              border: 'none',
-                              color: theme.colors.text.secondary,
-                              cursor: 'pointer',
-                              fontSize: theme.fontSize.sm,
-                              padding: 0,
-                              fontWeight: '500',
-                              transition: `color ${theme.transition.fast}`,
-                              fontFamily: 'inherit'
-                            }}
-                          >
-                            Change
-                          </button>
-                        </div>
+                            fontFamily: 'inherit',
+                            resize: 'vertical',
+                            minHeight: '60px'
+                          }}
+                        />
                       </div>
-
-                      <div style={{ marginBottom: theme.spacing[5] }}>
+                      <div>
                         <label style={{
                           display: 'block',
-                          fontSize: theme.fontSize.sm,
+                          fontSize: theme.fontSize.xs,
                           color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[2],
+                          marginBottom: '6px',
                           fontWeight: theme.weight.medium
                         }}>
-                          {REQUEST_TYPES.find(t => t.id === requestType)?.titleLabel || 'Title'}
+                          Font Size
                         </label>
                         <input
                           type="text"
-                          value={formData.title}
-                          onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                          autoFocus
-                          required
+                          value={selectedElement.properties.fontSize}
+                          onChange={(e) => handlePropertyChange('fontSize', e.target.value)}
                           style={{
                             width: '100%',
-                            padding: '12px 16px',
-                            background: theme.colors.bg.page,
+                            padding: '8px',
+                            fontSize: theme.fontSize.sm,
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: '10px',
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
                             color: theme.colors.text.primary,
-                            fontSize: theme.fontSize.base,
-                            fontFamily: 'inherit',
-                            outline: 'none'
+                            fontFamily: 'inherit'
                           }}
-                          placeholder={`Enter ${REQUEST_TYPES.find(t => t.id === requestType)?.titleLabel?.toLowerCase() || 'title'}`}
                         />
                       </div>
-
-                      <div style={{ marginBottom: theme.spacing[6] }}>
+                      <div>
                         <label style={{
                           display: 'block',
-                          fontSize: theme.fontSize.sm,
+                          fontSize: theme.fontSize.xs,
                           color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[2],
+                          marginBottom: '6px',
                           fontWeight: theme.weight.medium
                         }}>
-                          {REQUEST_TYPES.find(t => t.id === requestType)?.descriptionLabel || 'Description (optional)'}
+                          Color
                         </label>
-                        <textarea
-                          value={formData.description}
-                          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                          rows={3}
+                        <input
+                          type="color"
+                          value={selectedElement.properties.color}
+                          onChange={(e) => handlePropertyChange('color', e.target.value)}
                           style={{
                             width: '100%',
-                            padding: '12px 16px',
-                            background: theme.colors.bg.page,
+                            height: '40px',
+                            padding: '4px',
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: '10px',
-                            color: theme.colors.text.primary,
-                            fontSize: theme.fontSize.base,
-                            fontFamily: 'inherit',
-                            outline: 'none',
-                            resize: 'vertical'
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            cursor: 'pointer'
                           }}
-                          placeholder={`Enter ${REQUEST_TYPES.find(t => t.id === requestType)?.descriptionLabel?.toLowerCase().replace(' (optional)', '') || 'description'}`}
                         />
                       </div>
+                    </>
+                  )}
 
-                      {/* Custom Fields based on Request Type */}
-                      {(() => {
-                        const selectedType = REQUEST_TYPES.find(t => t.id === requestType)
-                        const customFields = selectedType?.fields || []
-
-                        if (customFields.length === 0) return null
-
-                        return customFields.map((field) => (
-                          <div key={field.id} style={{ marginBottom: theme.spacing[5] }}>
-                            <div style={{
-                              display: 'flex',
-                              justifyContent: 'space-between',
-                              alignItems: 'center',
-                              marginBottom: theme.spacing[2]
-                            }}>
-                              <label style={{
-                                display: 'block',
-                                fontSize: theme.fontSize.sm,
-                                color: theme.colors.text.secondary,
-                                fontWeight: theme.weight.medium
-                              }}>
-                                {field.label}
-                              </label>
-
-                              {/* Required Toggle Switch - Show for Pro users */}
-                              {userPlan === 'pro' && (
-                                <label style={{
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  cursor: 'pointer',
-                                  gap: theme.spacing[2]
-                                }}>
-                                  <span style={{
-                                    fontSize: theme.fontSize.xs,
-                                    color: fieldRequirements[field.id] ? theme.colors.text.primary : theme.colors.text.tertiary,
-                                    fontWeight: theme.weight.medium
-                                  }}>
-                                    {fieldRequirements[field.id] ? 'Required' : 'Optional'}
-                                  </span>
-                                  <input
-                                    type="checkbox"
-                                    checked={fieldRequirements[field.id] || false}
-                                    onChange={(e) => setFieldRequirements(prev => ({
-                                      ...prev,
-                                      [field.id]: e.target.checked
-                                    }))}
-                                    style={{
-                                      appearance: 'none',
-                                      width: '40px',
-                                      height: '22px',
-                                      background: fieldRequirements[field.id] ? theme.colors.white : theme.colors.bg.page,
-                                      borderRadius: '11px',
-                                      border: `1px solid ${theme.colors.border.medium}`,
-                                      position: 'relative',
-                                      cursor: 'pointer',
-                                      transition: `all ${theme.transition.fast}`,
-                                      outline: 'none'
-                                    }}
-                                  />
-                                </label>
-                              )}
-                            </div>
-
-                            {field.type === 'select' ? (
-                              <select
-                                value={formData.customFields[field.id] || ''}
-                                onChange={(e) => setFormData(prev => ({
-                                  ...prev,
-                                  customFields: { ...prev.customFields, [field.id]: e.target.value }
-                                }))}
-                                style={{
-                                  width: '100%',
-                                  padding: '12px 16px',
-                                  background: theme.colors.bg.page,
-                                  border: `1px solid ${theme.colors.border.medium}`,
-                                  borderRadius: '10px',
-                                  color: theme.colors.text.primary,
-                                  fontSize: theme.fontSize.base,
-                                  fontFamily: 'inherit',
-                                  outline: 'none',
-                                  cursor: 'pointer'
-                                }}
-                              >
-                                <option value="">Select...</option>
-                                {field.options.map(opt => (
-                                  <option key={opt} value={opt}>{opt}</option>
-                                ))}
-                              </select>
-                            ) : field.type === 'textarea' ? (
-                              <textarea
-                                value={formData.customFields[field.id] || ''}
-                                onChange={(e) => setFormData(prev => ({
-                                  ...prev,
-                                  customFields: { ...prev.customFields, [field.id]: e.target.value }
-                                }))}
-                                placeholder={field.placeholder || ''}
-                                rows={3}
-                                style={{
-                                  width: '100%',
-                                  padding: '12px 16px',
-                                  background: theme.colors.bg.page,
-                                  border: `1px solid ${theme.colors.border.medium}`,
-                                  borderRadius: '10px',
-                                  color: theme.colors.text.primary,
-                                  fontSize: theme.fontSize.base,
-                                  fontFamily: 'inherit',
-                                  outline: 'none',
-                                  resize: 'vertical'
-                                }}
-                              />
-                            ) : (
-                              <input
-                                type={field.type}
-                                value={formData.customFields[field.id] || ''}
-                                onChange={(e) => setFormData(prev => ({
-                                  ...prev,
-                                  customFields: { ...prev.customFields, [field.id]: e.target.value }
-                                }))}
-                                placeholder={field.placeholder || ''}
-                                style={{
-                                  width: '100%',
-                                  padding: '12px 16px',
-                                  background: theme.colors.bg.page,
-                                  border: `1px solid ${theme.colors.border.medium}`,
-                                  borderRadius: '10px',
-                                  color: theme.colors.text.primary,
-                                  fontSize: theme.fontSize.base,
-                                  fontFamily: 'inherit',
-                                  outline: 'none'
-                                }}
-                              />
-                            )}
-                          </div>
-                        ))
-                      })()}
-
-                      {/* Pro-only: Password Protection */}
-                      {userPlan === 'pro' && (
-                        <div style={{ marginBottom: theme.spacing[6] }}>
-                          <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: theme.spacing[2],
-                            marginBottom: theme.spacing[2]
-                          }}>
-                            <label style={{
-                              fontSize: theme.fontSize.sm,
-                              color: theme.colors.text.secondary,
-                              fontWeight: theme.weight.medium
-                            }}>
-                              Password Protection
-                            </label>
-                            <span style={{
-                              fontSize: '11px',
-                              background: theme.colors.white,
-                              color: theme.colors.black,
-                              padding: '2px 8px',
-                              borderRadius: '4px',
-                              fontWeight: 600,
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px'
-                            }}>PRO</span>
-                          </div>
-                          <input
-                            type="password"
-                            value={formData.password}
-                            onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                            placeholder="Leave blank for no password"
-                            style={{
-                              width: '100%',
-                              padding: '12px 16px',
-                              background: theme.colors.bg.page,
-                              border: `1px solid ${theme.colors.border.medium}`,
-                              borderRadius: '10px',
-                              color: theme.colors.text.primary,
-                              fontSize: theme.fontSize.base,
-                              fontFamily: 'inherit',
-                              outline: 'none'
-                            }}
-                          />
-                          <div style={{
-                            fontSize: '13px',
-                            color: theme.colors.text.tertiary,
-                            marginTop: '8px'
-                          }}>
-                            Require uploaders to enter a password before accessing this request
-                          </div>
-                        </div>
-                      )}
-
-                      <div style={{ marginBottom: theme.spacing[6] }}>
+                  {selectedElement.type === 'heading' && (
+                    <>
+                      <div>
                         <label style={{
                           display: 'block',
-                          fontSize: theme.fontSize.sm,
+                          fontSize: theme.fontSize.xs,
                           color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[2],
+                          marginBottom: '6px',
                           fontWeight: theme.weight.medium
                         }}>
-                          Link Expires In
+                          Content
                         </label>
-
-                        {/* Expiry Type Selection */}
-                        <div style={{ marginBottom: theme.spacing[3] }}>
-                          <label style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            marginBottom: theme.spacing[2],
-                            cursor: 'pointer'
-                          }}>
-                            <input
-                              type="radio"
-                              name="expiryType"
-                              value="preset"
-                              checked={expiryType === 'preset'}
-                              onChange={(e) => setExpiryType(e.target.value)}
-                              style={{
-                                marginRight: theme.spacing[2],
-                                accentColor: theme.colors.white,
-                                filter: 'grayscale(1)'
-                              }}
-                            />
-                            <span style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary }}>Preset time</span>
-                          </label>
-                          <label style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            cursor: 'pointer'
-                          }}>
-                            <input
-                              type="radio"
-                              name="expiryType"
-                              value="custom"
-                              checked={expiryType === 'custom'}
-                              onChange={(e) => setExpiryType(e.target.value)}
-                              style={{
-                                marginRight: theme.spacing[2],
-                                accentColor: theme.colors.white,
-                                filter: 'grayscale(1)'
-                              }}
-                            />
-                            <span style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary }}>Custom time</span>
-                          </label>
-                        </div>
-
-                        {expiryType === 'preset' ? (
-                          <select
-                            value={formData.timeLimit || '7'}
-                            onChange={(e) => setFormData(prev => ({ ...prev, timeLimit: e.target.value }))}
-                            style={{
-                              width: '100%',
-                              padding: '12px 16px',
-                              background: theme.colors.bg.page,
-                              border: `1px solid ${theme.colors.border.medium}`,
-                              borderRadius: '10px',
-                              color: theme.colors.text.primary,
-                              fontSize: theme.fontSize.base,
-                              fontFamily: 'inherit',
-                              outline: 'none',
-                              cursor: 'pointer'
-                            }}
-                          >
-                            <option value="1">1 day</option>
-                            <option value="3">3 days</option>
-                            <option value="7">7 days</option>
-                            <option value="14">14 days</option>
-                            <option value="30">30 days</option>
-                            <option value="never">Never</option>
-                          </select>
-                        ) : (
-                          <div style={{ display: 'flex', gap: theme.spacing[2] }}>
-                            <input
-                              type="number"
-                              min={customExpiryUnit === 'minutes' ? '5' : '1'}
-                              value={customExpiryValue}
-                              onChange={(e) => setCustomExpiryValue(e.target.value)}
-                              placeholder="Enter time"
-                              style={{
-                                flex: 1,
-                                padding: '12px 16px',
-                                background: theme.colors.bg.page,
-                                border: `1px solid ${theme.colors.border.medium}`,
-                                borderRadius: '10px',
-                                color: theme.colors.text.primary,
-                                fontSize: theme.fontSize.base,
-                                fontFamily: 'inherit',
-                                outline: 'none'
-                              }}
-                            />
-                            <select
-                              value={customExpiryUnit}
-                              onChange={(e) => {
-                                setCustomExpiryUnit(e.target.value)
-                                if (e.target.value === 'minutes' && parseInt(customExpiryValue) < 5) {
-                                  setCustomExpiryValue('5')
-                                }
-                              }}
-                              style={{
-                                padding: '12px 16px',
-                                background: theme.colors.bg.page,
-                                border: `1px solid ${theme.colors.border.medium}`,
-                                borderRadius: '10px',
-                                color: theme.colors.text.primary,
-                                fontSize: theme.fontSize.base,
-                                fontFamily: 'inherit',
-                                outline: 'none',
-                                cursor: 'pointer',
-                                minWidth: '120px'
-                              }}
-                            >
-                              <option value="minutes">Minutes</option>
-                              <option value="hours">Hours</option>
-                              <option value="days">Days</option>
-                            </select>
-                          </div>
-                        )}
-                      </div>
-
-                      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-                        <button
-                          type="button"
-                          onClick={closeModal}
+                        <input
+                          type="text"
+                          value={selectedElement.properties.content}
+                          onChange={(e) => handlePropertyChange('content', e.target.value)}
                           style={{
-                            padding: '12px 24px',
-                            background: 'transparent',
-                            color: theme.colors.text.secondary,
+                            width: '100%',
+                            padding: '8px',
+                            fontSize: theme.fontSize.sm,
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: '10px',
-                            fontSize: theme.fontSize.base,
-                            fontWeight: '500',
-                            cursor: 'pointer',
-                            fontFamily: 'inherit',
-                                                      }}
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          disabled={creating}
-                          style={{
-                            padding: '12px 24px',
-                            background: theme.colors.white,
-                            color: theme.colors.black,
-                            border: 'none',
-                            borderRadius: '10px',
-                            fontSize: theme.fontSize.base,
-                            fontWeight: '500',
-                            cursor: creating ? 'not-allowed' : 'pointer',
-                            opacity: creating ? 0.5 : 1,
-                            fontFamily: 'inherit',
-                                                      }}
-                        >
-                          {creating ? 'Creating...' : 'Create Request'}
-                        </button>
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            color: theme.colors.text.primary,
+                            fontFamily: 'inherit'
+                          }}
+                        />
                       </div>
-                    </div>
-                  </form>
-                )}
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Font Size
+                        </label>
+                        <input
+                          type="text"
+                          value={selectedElement.properties.fontSize}
+                          onChange={(e) => handlePropertyChange('fontSize', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            fontSize: theme.fontSize.sm,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            color: theme.colors.text.primary,
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Color
+                        </label>
+                        <input
+                          type="color"
+                          value={selectedElement.properties.color}
+                          onChange={(e) => handlePropertyChange('color', e.target.value)}
+                          style={{
+                            width: '100%',
+                            height: '40px',
+                            padding: '4px',
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            cursor: 'pointer'
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {selectedElement.type === 'file-upload' && (
+                    <>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Label
+                        </label>
+                        <input
+                          type="text"
+                          value={selectedElement.properties.label}
+                          onChange={(e) => handlePropertyChange('label', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            fontSize: theme.fontSize.sm,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            color: theme.colors.text.primary,
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Background Color
+                        </label>
+                        <input
+                          type="color"
+                          value={selectedElement.properties.backgroundColor}
+                          onChange={(e) => handlePropertyChange('backgroundColor', e.target.value)}
+                          style={{
+                            width: '100%',
+                            height: '40px',
+                            padding: '4px',
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            cursor: 'pointer'
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {selectedElement.type === 'text-input' && (
+                    <>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Label
+                        </label>
+                        <input
+                          type="text"
+                          value={selectedElement.properties.label}
+                          onChange={(e) => handlePropertyChange('label', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            fontSize: theme.fontSize.sm,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            color: theme.colors.text.primary,
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Placeholder
+                        </label>
+                        <input
+                          type="text"
+                          value={selectedElement.properties.placeholder}
+                          onChange={(e) => handlePropertyChange('placeholder', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            fontSize: theme.fontSize.sm,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            color: theme.colors.text.primary,
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {selectedElement.type === 'button' && (
+                    <>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Label
+                        </label>
+                        <input
+                          type="text"
+                          value={selectedElement.properties.label}
+                          onChange={(e) => handlePropertyChange('label', e.target.value)}
+                          style={{
+                            width: '100%',
+                            padding: '8px',
+                            fontSize: theme.fontSize.sm,
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            color: theme.colors.text.primary,
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Background Color
+                        </label>
+                        <input
+                          type="color"
+                          value={selectedElement.properties.backgroundColor}
+                          onChange={(e) => handlePropertyChange('backgroundColor', e.target.value)}
+                          style={{
+                            width: '100%',
+                            height: '40px',
+                            padding: '4px',
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            cursor: 'pointer'
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label style={{
+                          display: 'block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontWeight: theme.weight.medium
+                        }}>
+                          Text Color
+                        </label>
+                        <input
+                          type="color"
+                          value={selectedElement.properties.color}
+                          onChange={(e) => handlePropertyChange('color', e.target.value)}
+                          style={{
+                            width: '100%',
+                            height: '40px',
+                            padding: '4px',
+                            border: `1px solid ${theme.colors.border.medium}`,
+                            borderRadius: '4px',
+                            background: theme.colors.bg.page,
+                            cursor: 'pointer'
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
+
+                  {/* Canvas Background Control */}
+                  <div style={{
+                    marginTop: '24px',
+                    paddingTop: '24px',
+                    borderTop: `1px solid ${theme.colors.border.light}`
+                  }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '6px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Canvas Background
+                    </label>
+                    <input
+                      type="color"
+                      value={canvasBackground}
+                      onChange={(e) => setCanvasBackground(e.target.value)}
+                      style={{
+                        width: '100%',
+                        height: '40px',
+                        padding: '4px',
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: '4px',
+                        background: theme.colors.bg.page,
+                        cursor: 'pointer'
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div style={{
+                textAlign: 'center',
+                color: theme.colors.text.tertiary,
+                padding: '40px 20px'
+              }}>
+                <div style={{ fontSize: '36px', marginBottom: '12px', opacity: 0.3 }}>◇</div>
+                <div style={{ fontSize: theme.fontSize.sm }}>
+                  Select an element to edit its properties
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Upgrade Modal */}
-      {showUpgradeModal && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(0, 0, 0, 0.85)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 10000,
-            backdropFilter: 'blur(8px)'
-          }}
-          onClick={() => setShowUpgradeModal(false)}
-        >
-          <div
-            style={{
-              background: theme.colors.bg.secondary,
-              borderRadius: theme.radius['2xl'],
-              padding: '48px',
-              maxWidth: '480px',
-              width: 'calc(100% - 32px)',
-              border: `1px solid ${theme.colors.border.light}`,
-              textAlign: 'center',
-              // boxShadow removed
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 style={{
-              fontSize: '24px',
-              fontWeight: '500',
-              margin: '0 0 16px 0',
-              color: theme.colors.text.primary,
-              letterSpacing: '-0.02em'
-            }}>
-              Upgrade to Pro
-            </h2>
-            <p style={{
-              fontSize: theme.fontSize.lg,
-              color: theme.colors.text.secondary,
-              margin: '0 0 32px 0',
-              lineHeight: '1.6'
-            }}>
-              {upgradeMessage}
-            </p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-              <Link
-                to="/plan"
-                style={{
-                  padding: '14px 32px',
-                  background: theme.colors.white,
-                  color: theme.colors.black,
-                  border: 'none',
-                  borderRadius: '12px',
-                  fontSize: theme.fontSize.lg,
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                                    textDecoration: 'none',
-                  display: 'inline-block'
-                }}
-              >
-                View Plans
-              </Link>
-              <button
-                onClick={() => setShowUpgradeModal(false)}
-                style={{
-                  padding: '14px 32px',
-                  background: 'transparent',
-                  color: theme.colors.text.secondary,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  borderRadius: '12px',
-                  fontSize: theme.fontSize.lg,
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                                    fontFamily: 'inherit'
-                }}
-              >
-                Maybe Later
-              </button>
-            </div>
+            )}
           </div>
         </div>
-      )}
-
-      {/* Custom Scrollbar Styles */}
-      <style>{`
-        .custom-scrollbar {
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-        .custom-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-
-        /* Toggle Switch Styles */
-        input[type="checkbox"][style*="appearance: none"]::before {
-          content: '';
-          position: absolute;
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          background: ${theme.colors.black};
-          top: 2px;
-          left: 2px;
-          transition: transform 0.2s ease;
-        }
-
-        input[type="checkbox"][style*="appearance: none"]:checked::before {
-          transform: translateX(18px);
-          background: ${theme.colors.black};
-        }
-      `}</style>
+      </div>
     </>
   )
 }
