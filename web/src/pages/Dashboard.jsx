@@ -207,33 +207,59 @@ function Dashboard() {
           margin: '0 auto',
           padding: '48px 32px'
         }}>
-          {/* Hero Section */}
-          <div style={{ marginBottom: '80px', textAlign: 'center', maxWidth: '900px', margin: '0 auto 80px' }}>
+          {/* Header */}
+          <div style={{ marginBottom: '48px', maxWidth: '900px', margin: '0 auto 48px' }}>
             <h1 style={{
-              fontSize: '64px',
-              fontWeight: '700',
-              margin: '0 0 20px 0',
+              fontSize: '48px',
+              fontWeight: '600',
+              margin: '0 0 8px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.03em',
-              lineHeight: '1.1'
+              letterSpacing: '-0.02em',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
             }}>
-              Request files from anyone,<br />securely
+              Get Started
             </h1>
             <p style={{
-              fontSize: '20px',
+              fontSize: '18px',
               color: theme.colors.text.secondary,
-              lineHeight: '1.6',
-              maxWidth: '700px',
-              margin: '0 auto 48px'
+              margin: 0,
+              lineHeight: '1.6'
             }}>
-              Create custom upload forms. Share a link. Receive files. Simple and secure.
+              Create your first form to start collecting files
             </p>
-            <div style={{ display: 'flex', gap: theme.spacing[4], justifyContent: 'center' }}>
+          </div>
+
+          {/* Quick Actions */}
+          <div style={{
+            maxWidth: '900px',
+            margin: '0 auto',
+            display: 'grid',
+            gap: theme.spacing[5]
+          }}>
+            <div style={{
+              padding: '32px',
+              borderRadius: theme.radius.lg,
+              border: `1px solid ${theme.colors.border.light}`,
+              background: 'rgba(255, 255, 255, 0.02)'
+            }}>
+              <h2 style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                marginBottom: '8px'
+              }}>
+                Create a Form
+              </h2>
+              <p style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                marginBottom: '20px',
+                lineHeight: '1.6'
+              }}>
+                Use the visual builder to create a custom upload form
+              </p>
               <Link to="/requests" style={{
                 ...theme.buttons.primary.base,
-                padding: '14px 36px',
-                fontSize: theme.fontSize.base,
-                fontWeight: theme.weight.semibold,
                 textDecoration: 'none',
                 display: 'inline-block'
               }}
@@ -243,12 +269,34 @@ function Dashboard() {
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.buttons.primary.base.background
               }}>
-                Create Your First Form
+                Go to Builder
               </Link>
+            </div>
+
+            <div style={{
+              padding: '32px',
+              borderRadius: theme.radius.lg,
+              border: `1px solid ${theme.colors.border.light}`,
+              background: 'rgba(255, 255, 255, 0.02)'
+            }}>
+              <h2 style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                marginBottom: '8px'
+              }}>
+                View Your Forms
+              </h2>
+              <p style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                marginBottom: '20px',
+                lineHeight: '1.6'
+              }}>
+                Track all your forms and uploaded files
+              </p>
               <Link to="/tracking" style={{
                 ...theme.buttons.secondary.base,
-                padding: '14px 36px',
-                fontSize: theme.fontSize.base,
                 textDecoration: 'none',
                 display: 'inline-block'
               }}
@@ -256,162 +304,12 @@ function Dashboard() {
                 Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
               }}
               onMouseLeave={(e) => {
-                Object.assign(e.currentTarget.style, {
-                  ...theme.buttons.secondary.base,
-                  padding: '14px 36px',
-                  fontSize: theme.fontSize.base,
-                  textDecoration: 'none',
-                  display: 'inline-block'
-                })
+                Object.assign(e.currentTarget.style, theme.buttons.secondary.base)
               }}>
-                View All Forms
+                Go to Tracking
               </Link>
             </div>
           </div>
-
-          {/* How It Works */}
-          <div style={{ marginBottom: '80px', maxWidth: '1200px', margin: '0 auto 80px' }}>
-            <h2 style={{
-              fontSize: '32px',
-              fontWeight: '600',
-              color: theme.colors.text.primary,
-              textAlign: 'center',
-              marginBottom: '56px',
-              letterSpacing: '-0.02em'
-            }}>
-              How it works
-            </h2>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: theme.spacing[6]
-            }}>
-              {/* Step 1 */}
-              <div style={{
-                padding: theme.spacing[7],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.xl,
-                background: theme.colors.bg.secondary,
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  background: theme.colors.white,
-                  color: theme.colors.black,
-                  borderRadius: theme.radius.full,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                  margin: '0 auto 24px'
-                }}>
-                  1
-                </div>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: '600',
-                  color: theme.colors.text.primary,
-                  marginBottom: '12px'
-                }}>
-                  Create a Form
-                </h3>
-                <p style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  lineHeight: '1.6',
-                  margin: 0
-                }}>
-                  Use the visual Builder to drag and drop elements, or choose from pre-made templates
-                </p>
-              </div>
-
-              {/* Step 2 */}
-              <div style={{
-                padding: theme.spacing[7],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.xl,
-                background: theme.colors.bg.secondary,
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  background: theme.colors.white,
-                  color: theme.colors.black,
-                  borderRadius: theme.radius.full,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                  margin: '0 auto 24px'
-                }}>
-                  2
-                </div>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: '600',
-                  color: theme.colors.text.primary,
-                  marginBottom: '12px'
-                }}>
-                  Share Your Link
-                </h3>
-                <p style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  lineHeight: '1.6',
-                  margin: 0
-                }}>
-                  Send your unique upload link to anyone via email, text, or social media
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div style={{
-                padding: theme.spacing[7],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.xl,
-                background: theme.colors.bg.secondary,
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  background: theme.colors.white,
-                  color: theme.colors.black,
-                  borderRadius: theme.radius.full,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                  margin: '0 auto 24px'
-                }}>
-                  3
-                </div>
-                <h3 style={{
-                  fontSize: '20px',
-                  fontWeight: '600',
-                  color: theme.colors.text.primary,
-                  marginBottom: '12px'
-                }}>
-                  Receive Files
-                </h3>
-                <p style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  lineHeight: '1.6',
-                  margin: 0
-                }}>
-                  Files appear instantly in your dashboard. Download individually or in bulk
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
