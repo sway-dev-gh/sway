@@ -243,14 +243,14 @@ function Sidebar() {
             gap: theme.spacing[2]
           }}>
             <div style={{
-              width: '32px',
-              height: '32px',
+              width: '28px',
+              height: '28px',
               borderRadius: theme.radius.full,
               background: theme.colors.black,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '16px',
+              fontSize: '14px',
               fontWeight: theme.weight.semibold,
               color: theme.colors.white,
               border: `2px solid ${theme.colors.border.medium}`
@@ -259,38 +259,38 @@ function Sidebar() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[2] }}>
               <div style={{
-                fontSize: '18px',
+                fontSize: '15px',
                 fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary
               }}>
                 {user.email?.split('@')[0] || 'User'}
               </div>
               <div style={{
-                fontSize: '12px',
+                fontSize: '11px',
                 fontWeight: theme.weight.bold,
                 color: effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
                        theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '0.6px',
-                padding: '3px 8px',
+                letterSpacing: '0.5px',
+                padding: '2px 6px',
                 background: effectivePlan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
                            theme.colors.bg.secondary,
                 border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: '4px'
+                borderRadius: '3px'
               }}>
                 {effectivePlan || 'Free'}
               </div>
               {isAdminMode && (
                 <div style={{
-                  fontSize: '12px',
+                  fontSize: '11px',
                   fontWeight: theme.weight.bold,
                   color: theme.colors.black,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.6px',
-                  padding: '3px 8px',
+                  letterSpacing: '0.5px',
+                  padding: '2px 6px',
                   background: theme.colors.white,
                   border: `1px solid ${theme.colors.white}`,
-                  borderRadius: '4px'
+                  borderRadius: '3px'
                 }}>
                   ADMIN
                 </div>
@@ -306,8 +306,8 @@ function Sidebar() {
               borderRadius: theme.radius.sm,
               color: theme.colors.text.secondary,
               cursor: 'pointer',
-              padding: `${theme.spacing[2]} ${theme.spacing[4]}`,
-              fontSize: '16px',
+              padding: `6px 12px`,
+              fontSize: '14px',
               fontWeight: theme.weight.medium,
                           }}
           >
