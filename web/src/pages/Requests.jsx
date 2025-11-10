@@ -1898,7 +1898,7 @@ function Requests() {
               )}
               <div style={{ display: 'flex', gap: '4px', fontSize: '24px' }}>
                 {Array.from({ length: properties.maxStars }).map((_, i) => (
-                  <span key={i} style={{ color: '#fbbf24' }}>★</span>
+                  <span key={i} style={{ color: '#ffffff' }}>★</span>
                 ))}
               </div>
             </div>
@@ -2165,8 +2165,8 @@ function Requests() {
             <div style={{
               fontSize: '11px',
               fontWeight: '600',
-              color: userPlan === 'pro' ? '#fbbf24' : '#888',
-              background: userPlan === 'pro' ? 'rgba(251, 191, 36, 0.15)' : '#1a1a1a',
+              color: userPlan === 'pro' ? '#ffffff' : '#888',
+              background: userPlan === 'pro' ? 'rgba(255, 255, 255, 0.1)' : '#1a1a1a',
               padding: '4px 10px',
               borderRadius: '4px',
               textTransform: 'uppercase',
@@ -2361,8 +2361,8 @@ function Requests() {
                             <div style={{
                               fontSize: '10px',
                               fontWeight: '700',
-                              color: isLocked ? '#888' : '#fbbf24',
-                              background: isLocked ? '#2a2a2a' : 'rgba(251, 191, 36, 0.15)',
+                              color: isLocked ? '#888' : '#ffffff',
+                              background: isLocked ? '#2a2a2a' : 'rgba(255, 255, 255, 0.1)',
                               padding: '3px 8px',
                               borderRadius: '4px',
                               textTransform: 'uppercase',
@@ -2441,8 +2441,8 @@ function Requests() {
                                 <div style={{
                                   fontSize: '9px',
                                   fontWeight: '700',
-                                  color: isLocked ? '#888' : '#fbbf24',
-                                  background: isLocked ? '#2a2a2a' : 'rgba(251, 191, 36, 0.15)',
+                                  color: isLocked ? '#888' : '#ffffff',
+                                  background: isLocked ? '#2a2a2a' : 'rgba(255, 255, 255, 0.1)',
                                   padding: '2px 6px',
                                   borderRadius: '3px',
                                   textTransform: 'uppercase',
@@ -2961,18 +2961,18 @@ function Requests() {
             onClick={(e) => e.stopPropagation()}
             style={{
               background: '#1a1a1a',
-              border: '1px solid #fbbf24',
+              border: '1px solid #ffffff',
               borderRadius: '12px',
               maxWidth: '500px',
               width: '100%',
               padding: '32px',
-              boxShadow: '0 20px 60px rgba(251, 191, 36, 0.2)'
+              boxShadow: '0 20px 60px rgba(255, 255, 255, 0.1)'
             }}
           >
             <div style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: '#fbbf24',
+              color: '#ffffff',
               marginBottom: '16px',
               textAlign: 'center'
             }}>
@@ -2995,7 +2995,7 @@ function Requests() {
               padding: '20px',
               marginBottom: '24px'
             }}>
-              <div style={{ fontSize: '12px', fontWeight: '600', color: '#fbbf24', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <div style={{ fontSize: '12px', fontWeight: '600', color: '#ffffff', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Pro Features Include:
               </div>
               <ul style={{ margin: 0, paddingLeft: '20px', color: '#999', fontSize: '14px', lineHeight: '2' }}>
@@ -3034,7 +3034,7 @@ function Requests() {
                 }}
                 style={{
                   flex: 1,
-                  background: '#fbbf24',
+                  background: '#ffffff',
                   border: 'none',
                   color: '#000000',
                   padding: '14px',
