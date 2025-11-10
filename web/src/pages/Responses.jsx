@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
+import { getStorageLimit, formatStorageDisplay, getEffectivePlan } from '../utils/planUtils'
 
 function Responses() {
   const navigate = useNavigate()
@@ -29,15 +30,8 @@ function Responses() {
     try {
       const token = localStorage.getItem('token')
 
-      // Get user plan
-      const userStr = localStorage.getItem('user')
-      const user = userStr ? JSON.parse(userStr) : { plan: 'free' }
-
-      // Check for admin plan override
-      const adminPlanOverride = localStorage.getItem('adminPlanOverride')
-      const effectivePlan = adminPlanOverride || user.plan || 'free'
-      const userPlan = effectivePlan.toLowerCase()
-      const storageLimit = userPlan === 'pro' ? 50 : 2
+      // Use centralized plan utility
+      const storageLimit = getStorageLimit()
 
       // Fetch forms/requests
       const requestsResponse = await api.get('/api/requests', {

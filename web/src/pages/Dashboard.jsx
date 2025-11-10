@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
+import { getStorageLimit, getEffectivePlan } from '../utils/planUtils'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -63,15 +64,9 @@ function Dashboard() {
       if (userStr) {
         const userData = JSON.parse(userStr)
 
-        // Check for admin plan override
-        const adminPlanOverride = localStorage.getItem('adminPlanOverride')
-        if (adminPlanOverride) {
-          userData.plan = adminPlanOverride
-        }
-
-        // Set storage limit based on plan
-        const plan = (userData.plan || 'free').toLowerCase()
-        userData.storage_limit_gb = plan === 'pro' ? 50 : 2
+        // Use centralized plan utility
+        userData.plan = getEffectivePlan()
+        userData.storage_limit_gb = getStorageLimit()
 
         setUser(userData)
       }

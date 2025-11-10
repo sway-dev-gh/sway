@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import theme from '../theme'
 import api from '../api/axios'
 import AdminModeActivator from './AdminModeActivator'
+import { getEffectivePlan, getPlanInfo } from '../utils/planUtils'
 
 function Sidebar() {
   const location = useLocation()
@@ -13,9 +14,9 @@ function Sidebar() {
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [showMoreDropdown, setShowMoreDropdown] = useState(false)
 
-  // Calculate effective plan (admin override or user plan)
-  const adminPlanOverride = localStorage.getItem('adminPlanOverride')
-  const effectivePlan = isAdminMode && adminPlanOverride ? adminPlanOverride : (user.plan || 'free')
+  // Calculate effective plan using centralized utility
+  const effectivePlan = getEffectivePlan()
+  const planInfo = getPlanInfo()
 
   useEffect(() => {
     // Check for admin mode

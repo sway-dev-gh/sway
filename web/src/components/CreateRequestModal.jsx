@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import api from '../api/axios'
 import './CreateRequestModal.css'
+import { canCreateForm, getMaxActiveForms } from '../utils/planUtils'
 
 export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
   const [requestType, setRequestType] = useState('document')
@@ -9,6 +10,26 @@ export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
   const [fileTypes, setFileTypes] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [currentFormCount, setCurrentFormCount] = useState(0)
+
+  // Fetch current form count when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      fetchFormCount()
+    }
+  }, [isOpen])
+
+  const fetchFormCount = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const { data } = await api.get('/api/requests', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      setCurrentFormCount(data.requests?.length || 0)
+    } catch (err) {
+      console.error('Failed to fetch form count:', err)
+    }
+  }
 
   const requestTypes = [
     { id: 'document', label: 'Document Request', icon: '📄' },
@@ -30,6 +51,14 @@ export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+
+    // Check if user can create a new form based on their plan
+    const validation = canCreateForm(currentFormCount)
+    if (!validation.allowed) {
+      setError(validation.reason)
+      return
+    }
+
     setLoading(true)
 
     try {
