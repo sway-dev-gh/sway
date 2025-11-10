@@ -396,23 +396,17 @@ function Requests() {
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '100px 60px',
+                padding: '80px 40px',
                 background: theme.colors.bg.secondary,
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
-                <div style={{
-                  fontSize: '48px',
-                  marginBottom: '20px'
-                }}>
-                  📬
-                </div>
                 <h3 style={{
                   fontSize: theme.fontSize.xl,
-                  fontWeight: theme.weight.semibold,
+                  fontWeight: theme.weight.medium,
                   color: theme.colors.text.primary,
-                  margin: '0 0 10px 0',
+                  margin: '0 0 8px 0',
                   letterSpacing: '-0.02em'
                 }}>
                   No requests yet
@@ -429,7 +423,7 @@ function Requests() {
             ) : (
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
                 gap: theme.spacing[4],
                 width: '100%'
               }}>
@@ -440,120 +434,83 @@ function Requests() {
                       key={req.id}
                       onClick={() => navigate(`/requests/${req.id}`)}
                       style={{
-                        background: `linear-gradient(135deg, ${theme.colors.bg.secondary} 0%, rgba(10, 10, 10, 0.8) 100%)`,
+                        background: theme.colors.bg.secondary,
                         border: `1px solid ${theme.colors.border.light}`,
-                        borderRadius: theme.radius['2xl'],
+                        borderRadius: theme.radius.xl,
                         padding: theme.spacing[6],
                         cursor: 'pointer',
-                        transition: `all ${theme.transition.normal}`,
-                        boxShadow: theme.shadows.md,
-                        position: 'relative',
-                        overflow: 'hidden'
+                        transition: `all ${theme.transition.fast}`,
+                        boxShadow: 'none'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = 'translateY(-4px)'
-                        e.currentTarget.style.boxShadow = theme.shadows.lg
                         e.currentTarget.style.borderColor = theme.colors.border.medium
+                        e.currentTarget.style.background = theme.colors.bg.hover
                       }}
                       onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = 'translateY(0)'
-                        e.currentTarget.style.boxShadow = theme.shadows.md
                         e.currentTarget.style.borderColor = theme.colors.border.light
+                        e.currentTarget.style.background = theme.colors.bg.secondary
                       }}
                     >
-                      {/* Subtle gradient overlay */}
+                      {/* Header */}
                       <div style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 0,
-                        width: '200px',
-                        height: '200px',
-                        background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)',
-                        pointerEvents: 'none'
-                      }} />
-
-                      {/* Title & Type */}
-                      <div style={{ marginBottom: theme.spacing[4], position: 'relative' }}>
+                        marginBottom: theme.spacing[5],
+                        paddingBottom: theme.spacing[4],
+                        borderBottom: `1px solid ${theme.colors.border.light}`
+                      }}>
                         <h3 style={{
                           fontSize: theme.fontSize.lg,
-                          fontWeight: theme.weight.semibold,
+                          fontWeight: theme.weight.medium,
                           color: theme.colors.text.primary,
-                          margin: '0 0 8px 0',
-                          letterSpacing: '-0.01em',
-                          lineHeight: '1.3'
+                          margin: '0 0 6px 0',
+                          letterSpacing: '-0.01em'
                         }}>
                           {req.title}
                         </h3>
                         <div style={{
-                          display: 'inline-block',
-                          fontSize: theme.fontSize.xs,
-                          color: theme.colors.text.tertiary,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px',
-                          padding: '4px 10px',
-                          background: 'rgba(255, 255, 255, 0.05)',
-                          borderRadius: theme.radius.sm,
-                          border: `1px solid ${theme.colors.border.medium}`,
-                          fontWeight: theme.weight.medium
+                          fontSize: theme.fontSize.sm,
+                          color: theme.colors.text.tertiary
                         }}>
                           {req.requestType ? req.requestType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'General Upload'}
                         </div>
                       </div>
 
-                      {/* Stats Row */}
+                      {/* Stats */}
                       <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(2, 1fr)',
-                        gap: theme.spacing[3],
-                        marginBottom: theme.spacing[5],
-                        position: 'relative'
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginBottom: theme.spacing[5]
                       }}>
-                        <div style={{
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          padding: theme.spacing[3],
-                          borderRadius: theme.radius.lg,
-                          border: `1px solid ${theme.colors.border.light}`
-                        }}>
+                        <div>
                           <div style={{
                             fontSize: theme.fontSize.xs,
                             color: theme.colors.text.tertiary,
                             textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            marginBottom: theme.spacing[1],
-                            fontWeight: theme.weight.medium
+                            letterSpacing: '0.5px',
+                            marginBottom: theme.spacing[1]
                           }}>
                             Files
                           </div>
                           <div style={{
                             fontSize: theme.fontSize.xl,
-                            fontWeight: theme.weight.bold,
-                            color: theme.colors.white,
-                            lineHeight: '1'
+                            fontWeight: theme.weight.semibold,
+                            color: theme.colors.text.primary
                           }}>
                             {req.uploadCount || 0}
                           </div>
                         </div>
-                        <div style={{
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          padding: theme.spacing[3],
-                          borderRadius: theme.radius.lg,
-                          border: `1px solid ${theme.colors.border.light}`
-                        }}>
+                        <div style={{ textAlign: 'right' }}>
                           <div style={{
                             fontSize: theme.fontSize.xs,
                             color: theme.colors.text.tertiary,
                             textTransform: 'uppercase',
-                            letterSpacing: '1px',
-                            marginBottom: theme.spacing[1],
-                            fontWeight: theme.weight.medium
+                            letterSpacing: '0.5px',
+                            marginBottom: theme.spacing[1]
                           }}>
                             Created
                           </div>
                           <div style={{
                             fontSize: theme.fontSize.sm,
-                            fontWeight: theme.weight.medium,
-                            color: theme.colors.text.secondary,
-                            lineHeight: '1.3'
+                            color: theme.colors.text.secondary
                           }}>
                             {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </div>
@@ -563,8 +520,7 @@ function Requests() {
                       {/* Actions */}
                       <div style={{
                         display: 'flex',
-                        gap: theme.spacing[2],
-                        position: 'relative'
+                        gap: theme.spacing[2]
                       }}>
                         <button
                           onClick={(e) => {
@@ -573,25 +529,22 @@ function Requests() {
                           }}
                           style={{
                             flex: 1,
-                            padding: '12px 20px',
+                            padding: '10px 20px',
                             background: theme.colors.white,
                             color: theme.colors.black,
                             border: 'none',
-                            borderRadius: theme.radius.lg,
-                            fontSize: theme.fontSize.base,
-                            fontWeight: theme.weight.semibold,
+                            borderRadius: theme.radius.md,
+                            fontSize: theme.fontSize.sm,
+                            fontWeight: theme.weight.medium,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            transition: `all ${theme.transition.fast}`,
-                            boxShadow: '0 2px 8px rgba(255, 255, 255, 0.1)'
+                            transition: `opacity ${theme.transition.fast}`
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'scale(1.02)'
-                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.15)'
+                            e.currentTarget.style.opacity = '0.9'
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'scale(1)'
-                            e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 255, 255, 0.1)'
+                            e.currentTarget.style.opacity = '1'
                           }}
                         >
                           View
@@ -602,24 +555,22 @@ function Requests() {
                             handleDelete(req.id)
                           }}
                           style={{
-                            padding: '12px 20px',
-                            background: 'rgba(255, 255, 255, 0.05)',
+                            padding: '10px 20px',
+                            background: 'transparent',
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: theme.radius.lg,
-                            fontSize: theme.fontSize.base,
+                            borderRadius: theme.radius.md,
+                            fontSize: theme.fontSize.sm,
                             fontWeight: theme.weight.medium,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
                             transition: `all ${theme.transition.fast}`
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
                             e.currentTarget.style.borderColor = theme.colors.border.dark
                             e.currentTarget.style.color = theme.colors.text.primary
                           }}
                           onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
                             e.currentTarget.style.borderColor = theme.colors.border.medium
                             e.currentTarget.style.color = theme.colors.text.secondary
                           }}

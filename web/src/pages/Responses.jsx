@@ -200,18 +200,17 @@ function Responses() {
           {responses.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '100px 60px',
+              padding: '80px 40px',
               background: theme.colors.bg.secondary,
               borderRadius: theme.radius['2xl'],
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md
             }}>
-              <div style={{ fontSize: '48px', marginBottom: '20px' }}>📥</div>
               <h3 style={{
                 fontSize: theme.fontSize.xl,
-                fontWeight: theme.weight.semibold,
+                fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary,
-                margin: '0 0 10px 0',
+                margin: '0 0 8px 0',
                 letterSpacing: '-0.02em'
               }}>
                 No uploads yet
@@ -228,7 +227,7 @@ function Responses() {
           ) : (
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(400px, 1fr))',
               gap: theme.spacing[4],
               width: '100%'
             }}>
@@ -236,134 +235,78 @@ function Responses() {
                 <div
                   key={response.id}
                   style={{
-                    background: `linear-gradient(135deg, ${theme.colors.bg.secondary} 0%, rgba(10, 10, 10, 0.8) 100%)`,
+                    background: theme.colors.bg.secondary,
                     border: `1px solid ${theme.colors.border.light}`,
-                    borderRadius: theme.radius['2xl'],
+                    borderRadius: theme.radius.xl,
                     padding: theme.spacing[6],
-                    transition: `all ${theme.transition.normal}`,
-                    boxShadow: theme.shadows.md,
-                    position: 'relative',
-                    overflow: 'hidden'
+                    transition: `all ${theme.transition.fast}`,
+                    boxShadow: 'none'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)'
-                    e.currentTarget.style.boxShadow = theme.shadows.lg
                     e.currentTarget.style.borderColor = theme.colors.border.medium
+                    e.currentTarget.style.background = theme.colors.bg.hover
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)'
-                    e.currentTarget.style.boxShadow = theme.shadows.md
                     e.currentTarget.style.borderColor = theme.colors.border.light
+                    e.currentTarget.style.background = theme.colors.bg.secondary
                   }}
                 >
-                  {/* Subtle gradient overlay */}
+                  {/* Header */}
                   <div style={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
-                    width: '200px',
-                    height: '200px',
-                    background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)',
-                    pointerEvents: 'none'
-                  }} />
-
-                  {/* File Name & Icon */}
-                  <div style={{ marginBottom: theme.spacing[4], position: 'relative' }}>
-                    <div style={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: theme.spacing[3],
-                      marginBottom: theme.spacing[2]
-                    }}>
-                      <div style={{
-                        width: '48px',
-                        height: '48px',
-                        borderRadius: theme.radius.lg,
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: `1px solid ${theme.colors.border.medium}`,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '24px',
-                        flexShrink: 0
-                      }}>
-                        📄
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <h3 style={{
-                          fontSize: theme.fontSize.base,
-                          fontWeight: theme.weight.semibold,
-                          color: theme.colors.text.primary,
-                          margin: '0 0 6px 0',
-                          letterSpacing: '-0.01em',
-                          lineHeight: '1.3',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}>
-                          {response.fileName}
-                        </h3>
-                        <div style={{
-                          fontSize: theme.fontSize.xs,
-                          color: theme.colors.text.tertiary,
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px',
-                          fontWeight: theme.weight.medium
-                        }}>
-                          {formatBytes(response.fileSize)}
-                        </div>
-                      </div>
-                    </div>
-                    <div style={{
-                      display: 'inline-block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.tertiary,
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.5px',
-                      padding: '4px 10px',
-                      background: 'rgba(255, 255, 255, 0.05)',
-                      borderRadius: theme.radius.sm,
-                      border: `1px solid ${theme.colors.border.medium}`,
+                    marginBottom: theme.spacing[5],
+                    paddingBottom: theme.spacing[4],
+                    borderBottom: `1px solid ${theme.colors.border.light}`
+                  }}>
+                    <h3 style={{
+                      fontSize: theme.fontSize.lg,
                       fontWeight: theme.weight.medium,
-                      maxWidth: '100%',
+                      color: theme.colors.text.primary,
+                      margin: '0 0 4px 0',
+                      letterSpacing: '-0.01em',
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap'
+                    }}>
+                      {response.fileName}
+                    </h3>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.tertiary,
+                      marginBottom: theme.spacing[2]
+                    }}>
+                      {formatBytes(response.fileSize)}
+                    </div>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.secondary
                     }}>
                       {response.requestTitle}
                     </div>
                   </div>
 
-                  {/* Uploader & Date Info */}
+                  {/* Info */}
                   <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(2, 1fr)',
-                    gap: theme.spacing[3],
-                    marginBottom: theme.spacing[5],
-                    position: 'relative'
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: theme.spacing[5]
                   }}>
-                    <div style={{
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      padding: theme.spacing[3],
-                      borderRadius: theme.radius.lg,
-                      border: `1px solid ${theme.colors.border.light}`
-                    }}>
+                    <div style={{ flex: 1, minWidth: 0, marginRight: theme.spacing[3] }}>
                       <div style={{
                         fontSize: theme.fontSize.xs,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        marginBottom: theme.spacing[1],
-                        fontWeight: theme.weight.medium
+                        letterSpacing: '0.5px',
+                        marginBottom: theme.spacing[1]
                       }}>
                         Uploader
                       </div>
                       <div style={{
                         fontSize: theme.fontSize.sm,
-                        fontWeight: theme.weight.medium,
                         color: theme.colors.text.primary,
-                        lineHeight: '1.3',
-                        marginBottom: theme.spacing[1]
+                        marginBottom: theme.spacing[1],
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
                       }}>
                         {response.uploaderName}
                       </div>
@@ -379,27 +322,19 @@ function Responses() {
                         </div>
                       )}
                     </div>
-                    <div style={{
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      padding: theme.spacing[3],
-                      borderRadius: theme.radius.lg,
-                      border: `1px solid ${theme.colors.border.light}`
-                    }}>
+                    <div style={{ textAlign: 'right' }}>
                       <div style={{
                         fontSize: theme.fontSize.xs,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '1px',
-                        marginBottom: theme.spacing[1],
-                        fontWeight: theme.weight.medium
+                        letterSpacing: '0.5px',
+                        marginBottom: theme.spacing[1]
                       }}>
                         Uploaded
                       </div>
                       <div style={{
                         fontSize: theme.fontSize.sm,
-                        fontWeight: theme.weight.medium,
-                        color: theme.colors.text.secondary,
-                        lineHeight: '1.3'
+                        color: theme.colors.text.secondary
                       }}>
                         {formatDate(response.uploadedAt)}
                       </div>
@@ -411,26 +346,22 @@ function Responses() {
                     onClick={() => handleDownload(response.id)}
                     style={{
                       width: '100%',
-                      padding: '12px 20px',
+                      padding: '10px 20px',
                       background: theme.colors.white,
                       color: theme.colors.black,
                       border: 'none',
-                      borderRadius: theme.radius.lg,
-                      fontSize: theme.fontSize.base,
-                      fontWeight: theme.weight.semibold,
+                      borderRadius: theme.radius.md,
+                      fontSize: theme.fontSize.sm,
+                      fontWeight: theme.weight.medium,
                       cursor: 'pointer',
                       fontFamily: 'inherit',
-                      transition: `all ${theme.transition.fast}`,
-                      boxShadow: '0 2px 8px rgba(255, 255, 255, 0.1)',
-                      position: 'relative'
+                      transition: `opacity ${theme.transition.fast}`
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.02)'
-                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.15)'
+                      e.currentTarget.style.opacity = '0.9'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)'
-                      e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 255, 255, 0.1)'
+                      e.currentTarget.style.opacity = '1'
                     }}
                   >
                     Download
