@@ -2908,23 +2908,23 @@ function Requests() {
               borderRadius: '8px',
               padding: '24px',
               marginBottom: '24px',
-              minHeight: '300px',
-              maxHeight: '400px',
-              overflow: 'auto',
-              position: 'relative'
+              height: '350px',
+              overflow: 'hidden',
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}>
               {selectedTemplate.elements.length > 0 ? (
                 <div style={{
-                  width: '100%',
-                  minHeight: '280px',
+                  width: '1000px',
+                  height: '600px',
                   background: '#000',
                   borderRadius: '6px',
                   border: '1px solid #1a1a1a',
                   position: 'relative',
-                  transform: 'scale(0.4)',
-                  transformOrigin: 'top left',
-                  width: '250%',
-                  height: '600px'
+                  transform: 'scale(0.5)',
+                  transformOrigin: 'center'
                 }}>
                   {selectedTemplate.elements.map((element) => (
                     <div
