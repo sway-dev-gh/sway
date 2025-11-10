@@ -130,8 +130,7 @@ function Plan() {
         { text: 'Bulk download (Download All)', highlight: true },
         { text: 'Advanced analytics & insights', highlight: true },
         { text: 'File type breakdown', highlight: true },
-        { text: 'Top performing requests', highlight: true },
-        { text: 'Priority support', highlight: true }
+        { text: 'Top performing requests', highlight: true }
       ]
     }
   ]
