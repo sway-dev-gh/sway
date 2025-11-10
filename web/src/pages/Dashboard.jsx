@@ -201,29 +201,31 @@ function Dashboard() {
           margin: '0 auto',
           padding: '48px 32px'
         }}>
-          {/* Welcome Header */}
-          <div style={{ marginBottom: '60px', textAlign: 'center', maxWidth: '800px', margin: '0 auto 60px' }}>
+          {/* Hero Section */}
+          <div style={{ marginBottom: '80px', textAlign: 'center', maxWidth: '900px', margin: '0 auto 80px' }}>
             <h1 style={{
-              fontSize: '56px',
-              fontWeight: '600',
-              margin: '0 0 16px 0',
+              fontSize: '64px',
+              fontWeight: '700',
+              margin: '0 0 20px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              letterSpacing: '-0.03em',
+              lineHeight: '1.1'
             }}>
-              Welcome back
+              Collect files from anyone,<br />no signup required
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '20px',
               color: theme.colors.text.secondary,
-              margin: '0 0 40px 0',
-              lineHeight: '1.6'
+              margin: '0 0 48px 0',
+              lineHeight: '1.6',
+              maxWidth: '700px',
+              margin: '0 auto 48px'
             }}>
-              Create and manage your file upload forms
+              Create custom upload forms in seconds. Share a link. Get files. It's that simple.
             </p>
-            <div style={{ display: 'flex', gap: theme.spacing[3], justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: theme.spacing[4], justifyContent: 'center' }}>
               <Link to="/requests" style={{
-                padding: '14px 32px',
+                padding: '16px 40px',
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
@@ -232,12 +234,21 @@ function Dashboard() {
                 fontWeight: theme.weight.semibold,
                 cursor: 'pointer',
                 textDecoration: 'none',
-                display: 'inline-block'
+                display: 'inline-block',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 255, 255, 0.15)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = 'none'
               }}>
-                Create New Form
+                Create Your First Form
               </Link>
               <Link to="/tracking" style={{
-                padding: '14px 32px',
+                padding: '16px 40px',
                 background: 'transparent',
                 color: theme.colors.white,
                 border: `1px solid ${theme.colors.border.medium}`,
@@ -246,279 +257,268 @@ function Dashboard() {
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer',
                 textDecoration: 'none',
-                display: 'inline-block'
+                display: 'inline-block',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = theme.colors.white
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = theme.colors.border.medium
+                e.currentTarget.style.background = 'transparent'
               }}>
                 View All Forms
               </Link>
             </div>
           </div>
 
-          {/* Quick Stats */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: theme.spacing[4],
-            marginBottom: theme.spacing[8],
-            maxWidth: '1100px',
-            margin: '0 auto'
-          }}>
-            {/* Total Forms Created */}
-            <Link to="/tracking" style={{ textDecoration: 'none' }}>
-              <div style={{
-                padding: theme.spacing[5],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: theme.colors.bg.secondary,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                e.currentTarget.style.borderColor = theme.colors.white
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.xs,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[2],
-                  fontWeight: theme.weight.medium
-                }}>
-                  Total Forms
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize['3xl'],
-                  fontWeight: theme.weight.semibold,
-                  color: theme.colors.text.primary,
-                  lineHeight: '1'
-                }}>
-                  {stats.totalRequests}
-                </div>
-              </div>
-            </Link>
-
-            {/* Total Files Received */}
-            <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
+          {/* How It Works */}
+          <div style={{ marginBottom: '80px', maxWidth: '1200px', margin: '0 auto 80px' }}>
+            <h2 style={{
+              fontSize: '32px',
+              fontWeight: '600',
+              color: theme.colors.text.primary,
+              textAlign: 'center',
+              marginBottom: '56px',
+              letterSpacing: '-0.02em'
             }}>
-              <div style={{
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
-              }}>
-                Files Received
-              </div>
-              <div style={{
-                fontSize: theme.fontSize['3xl'],
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
-                lineHeight: '1'
-              }}>
-                {stats.totalUploads}
-              </div>
-            </div>
-
-            {/* Storage Used */}
-            <Link to="/plan" style={{ textDecoration: 'none' }}>
-              <div style={{
-                padding: theme.spacing[5],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: theme.colors.bg.secondary,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                e.currentTarget.style.borderColor = theme.colors.white
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.xs,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[2],
-                  fontWeight: theme.weight.medium
-                }}>
-                  Storage Used
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize['3xl'],
-                  fontWeight: theme.weight.semibold,
-                  color: theme.colors.text.primary,
-                  lineHeight: '1',
-                  marginBottom: theme.spacing[2]
-                }}>
-                  {formatStorageMB(stats.storageUsed)}
-                </div>
-                {/* Storage Progress Bar */}
-                <div style={{
-                  width: '100%',
-                  height: '6px',
-                  background: theme.colors.bg.page,
-                  borderRadius: theme.radius.sm,
-                  overflow: 'hidden',
-                  marginBottom: theme.spacing[1]
-                }}>
-                  <div style={{
-                    width: `${getStoragePercentage()}%`,
-                    height: '100%',
-                    background: getStoragePercentage() > 80 ? '#ef4444' : theme.colors.white,
-                    transition: 'width 0.3s ease'
-                  }} />
-                </div>
-                <div style={{
-                  fontSize: '11px',
-                  color: theme.colors.text.tertiary
-                }}>
-                  {getStoragePercentage().toFixed(1)}% of {user.storage_limit_gb} GB
-                </div>
-              </div>
-            </Link>
-
-            {/* Active Forms */}
+              How it works
+            </h2>
             <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: theme.spacing[6]
             }}>
+              {/* Step 1 */}
               <div style={{
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
+                padding: theme.spacing[7],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.xl,
+                background: theme.colors.bg.secondary,
+                textAlign: 'center'
               }}>
-                Active Forms
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  borderRadius: theme.radius.full,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  margin: '0 auto 24px'
+                }}>
+                  1
+                </div>
+                <h3 style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: theme.colors.text.primary,
+                  marginBottom: '12px'
+                }}>
+                  Create a Form
+                </h3>
+                <p style={{
+                  fontSize: '15px',
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6',
+                  margin: 0
+                }}>
+                  Use the visual Builder to drag and drop elements, or choose from pre-made templates
+                </p>
               </div>
+
+              {/* Step 2 */}
               <div style={{
-                fontSize: theme.fontSize['3xl'],
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
-                lineHeight: '1'
+                padding: theme.spacing[7],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.xl,
+                background: theme.colors.bg.secondary,
+                textAlign: 'center'
               }}>
-                {stats.activeRequests}
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  borderRadius: theme.radius.full,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  margin: '0 auto 24px'
+                }}>
+                  2
+                </div>
+                <h3 style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: theme.colors.text.primary,
+                  marginBottom: '12px'
+                }}>
+                  Share Your Link
+                </h3>
+                <p style={{
+                  fontSize: '15px',
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6',
+                  margin: 0
+                }}>
+                  Send your unique upload link to anyone via email, text, or social media
+                </p>
+              </div>
+
+              {/* Step 3 */}
+              <div style={{
+                padding: theme.spacing[7],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.xl,
+                background: theme.colors.bg.secondary,
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  borderRadius: theme.radius.full,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  margin: '0 auto 24px'
+                }}>
+                  3
+                </div>
+                <h3 style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: theme.colors.text.primary,
+                  marginBottom: '12px'
+                }}>
+                  Receive Files
+                </h3>
+                <p style={{
+                  fontSize: '15px',
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6',
+                  margin: 0
+                }}>
+                  Files appear instantly in your dashboard. Download individually or in bulk
+                </p>
               </div>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Quick Actions */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
-            gap: theme.spacing[4],
-            maxWidth: '1100px',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: theme.spacing[5],
+            maxWidth: '900px',
             margin: '0 auto'
           }}>
+            <Link to="/requests" style={{ textDecoration: 'none' }}>
+              <div style={{
+                padding: theme.spacing[8],
+                border: `2px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.xl,
+                background: theme.colors.bg.secondary,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
+                e.currentTarget.style.borderColor = theme.colors.white
+                e.currentTarget.style.transform = 'translateY(-4px)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
+                e.currentTarget.style.transform = 'translateY(0)'
+              }}>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.tertiary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1.5px',
+                  fontWeight: '600',
+                  marginBottom: '16px'
+                }}>
+                  Start Here
+                </div>
+                <div style={{
+                  fontSize: '28px',
+                  color: theme.colors.text.primary,
+                  fontWeight: '600',
+                  marginBottom: '12px',
+                  letterSpacing: '-0.02em'
+                }}>
+                  Create New Form
+                </div>
+                <div style={{
+                  fontSize: '15px',
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Launch the Builder to create your first upload form in minutes
+                </div>
+              </div>
+            </Link>
+
             <Link to="/tracking" style={{ textDecoration: 'none' }}>
               <div style={{
-                padding: theme.spacing[6],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
+                padding: theme.spacing[8],
+                border: `2px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.xl,
                 background: theme.colors.bg.secondary,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease',
-                textAlign: 'center'
+                position: 'relative',
+                overflow: 'hidden'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
                 e.currentTarget.style.borderColor = theme.colors.white
+                e.currentTarget.style.transform = 'translateY(-4px)'
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = theme.colors.bg.secondary
                 e.currentTarget.style.borderColor = theme.colors.border.light
+                e.currentTarget.style.transform = 'translateY(0)'
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.lg,
+                  fontSize: '14px',
+                  color: theme.colors.text.tertiary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1.5px',
+                  fontWeight: '600',
+                  marginBottom: '16px'
+                }}>
+                  Your Work
+                </div>
+                <div style={{
+                  fontSize: '28px',
                   color: theme.colors.text.primary,
-                  fontWeight: theme.weight.semibold,
-                  marginBottom: theme.spacing[2]
+                  fontWeight: '600',
+                  marginBottom: '12px',
+                  letterSpacing: '-0.02em'
                 }}>
-                  Manage Forms
+                  View All Forms
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.secondary
+                  fontSize: '15px',
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
                 }}>
-                  View, edit, and track all your forms
-                </div>
-              </div>
-            </Link>
-
-            <Link to="/plan" style={{ textDecoration: 'none' }}>
-              <div style={{
-                padding: theme.spacing[6],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: theme.colors.bg.secondary,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                textAlign: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                e.currentTarget.style.borderColor = theme.colors.white
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.lg,
-                  color: theme.colors.text.primary,
-                  fontWeight: theme.weight.semibold,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  {isPro ? 'Pro Plan' : 'Upgrade to Pro'}
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.secondary
-                }}>
-                  {isPro ? 'Manage your subscription' : 'Unlock advanced features'}
-                </div>
-              </div>
-            </Link>
-
-            <Link to="/faq" style={{ textDecoration: 'none' }}>
-              <div style={{
-                padding: theme.spacing[6],
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: theme.colors.bg.secondary,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                textAlign: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                e.currentTarget.style.borderColor = theme.colors.white
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-              }}>
-                <div style={{
-                  fontSize: theme.fontSize.lg,
-                  color: theme.colors.text.primary,
-                  fontWeight: theme.weight.semibold,
-                  marginBottom: theme.spacing[2]
-                }}>
-                  Help & FAQs
-                </div>
-                <div style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.secondary
-                }}>
-                  Get answers to common questions
+                  Manage existing forms and see all uploaded files in one place
                 </div>
               </div>
             </Link>
