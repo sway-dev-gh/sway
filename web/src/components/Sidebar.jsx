@@ -175,7 +175,8 @@ function Sidebar() {
           style={{
             width: '48px',
             height: '48px',
-            flexShrink: 0
+            flexShrink: 0,
+            background: 'transparent'
           }}
         />
       </Link>
