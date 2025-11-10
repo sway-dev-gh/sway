@@ -853,42 +853,42 @@ const COMPONENT_LIBRARY = [
   {
     id: 'text',
     label: 'Text Block',
-    icon: 'T',
+    icon: 'TEXT',
     description: 'Paragraph text',
     plan: 'free'
   },
   {
     id: 'heading',
     label: 'Heading',
-    icon: 'H1',
+    icon: 'HEAD',
     description: 'Title or heading',
     plan: 'free'
   },
   {
     id: 'text-input',
     label: 'Text Input',
-    icon: '[ ]',
+    icon: 'INPUT',
     description: 'Single line input',
     plan: 'free'
   },
   {
     id: 'textarea',
     label: 'Text Area',
-    icon: '[=]',
+    icon: 'AREA',
     description: 'Multi-line text input',
     plan: 'free'
   },
   {
     id: 'file-upload',
     label: 'File Upload',
-    icon: '↑',
+    icon: 'FILE',
     description: 'File upload zone',
     plan: 'free'
   },
   {
     id: 'button',
     label: 'Button',
-    icon: '[•]',
+    icon: 'BTN',
     description: 'Action button',
     plan: 'free'
   },
@@ -896,28 +896,28 @@ const COMPONENT_LIBRARY = [
   {
     id: 'rich-text',
     label: 'Rich Text',
-    icon: 'Aa',
+    icon: 'RICH',
     description: 'Formatted text editor',
     plan: 'pro'
   },
   {
     id: 'multi-file',
     label: 'Multi-File',
-    icon: '↑↑',
+    icon: 'MF',
     description: 'Multiple file uploads',
     plan: 'pro'
   },
   {
     id: 'image-gallery',
     label: 'Image Gallery',
-    icon: '⊞',
+    icon: 'GAL',
     description: 'Image upload grid',
     plan: 'pro'
   },
   {
     id: 'date-picker',
     label: 'Date Picker',
-    icon: 'CAL',
+    icon: 'DATE',
     description: 'Calendar selector',
     plan: 'pro'
   },
@@ -931,56 +931,56 @@ const COMPONENT_LIBRARY = [
   {
     id: 'color-picker',
     label: 'Color Picker',
-    icon: 'CLR',
+    icon: 'COLOR',
     description: 'Color input',
     plan: 'pro'
   },
   {
     id: 'range-slider',
     label: 'Range Slider',
-    icon: '⟷',
+    icon: 'RANGE',
     description: 'Numeric slider',
     plan: 'pro'
   },
   {
     id: 'star-rating',
     label: 'Star Rating',
-    icon: '★',
+    icon: 'STAR',
     description: '1-5 star rating',
     plan: 'pro'
   },
   {
     id: 'signature',
     label: 'Signature',
-    icon: '✍',
+    icon: 'SIG',
     description: 'Signature pad',
     plan: 'pro'
   },
   {
     id: 'divider',
     label: 'Divider',
-    icon: '—',
+    icon: 'DIV',
     description: 'Horizontal line',
     plan: 'pro'
   },
   {
     id: 'spacer',
     label: 'Spacer',
-    icon: '⬍',
+    icon: 'SPACE',
     description: 'Vertical spacing',
     plan: 'pro'
   },
   {
     id: 'select',
     label: 'Dropdown',
-    icon: '▼',
+    icon: 'SELECT',
     description: 'Select menu',
     plan: 'pro'
   },
   {
     id: 'checkbox',
     label: 'Checkbox',
-    icon: '☑',
+    icon: 'CHECK',
     description: 'Checkbox field',
     plan: 'pro'
   },
@@ -994,14 +994,14 @@ const COMPONENT_LIBRARY = [
   {
     id: 'two-column',
     label: 'Two Columns',
-    icon: '| |',
+    icon: '2COL',
     description: '2-column layout',
     plan: 'pro'
   },
   {
     id: 'three-column',
     label: 'Three Columns',
-    icon: '|||',
+    icon: '3COL',
     description: '3-column layout',
     plan: 'pro'
   }
@@ -1165,9 +1165,20 @@ function Requests() {
     const token = localStorage.getItem('token')
     if (!token) {
       navigate('/login')
+      return
     }
-    const plan = localStorage.getItem('userPlan') || 'free'
-    setUserPlan(plan)
+
+    const userStr = localStorage.getItem('user')
+    if (userStr) {
+      const userData = JSON.parse(userStr)
+      const adminOverride = localStorage.getItem('adminPlanOverride')
+      const plan = (adminOverride || userData.plan || 'free').toLowerCase()
+      setUserPlan(plan)
+      console.log('[Builder] Plan detected:', plan, '| Admin Override:', adminOverride, '| User Plan:', userData.plan)
+    } else {
+      setUserPlan('free')
+      console.log('[Builder] No user data found, defaulting to free')
+    }
   }, [navigate])
 
   // Save to history
@@ -1660,7 +1671,7 @@ function Requests() {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <div style={{ fontSize: '28px', marginBottom: '8px' }}>↑↑</div>
+                <div style={{ fontSize: '14px', marginBottom: '8px', fontWeight: '600', color: '#888' }}>MULTI FILE</div>
                 <div style={{ fontSize: '13px', color: '#888' }}>
                   Upload up to {properties.maxFiles} files
                 </div>
@@ -2382,8 +2393,7 @@ function Requests() {
           {/* CENTER - Canvas */}
           <div style={{
             flex: 1,
-            overflowY: 'auto',
-            overflowX: 'auto',
+            overflow: 'hidden',
             background: '#1a1a1a',
             display: 'flex',
             alignItems: 'center',
@@ -2395,6 +2405,8 @@ function Requests() {
               onDrop={handleCanvasDrop}
               onDragOver={(e) => e.preventDefault()}
               onClick={handleCanvasClick}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
               style={{
                 width: '1200px',
                 height: '800px',
@@ -2444,7 +2456,9 @@ function Requests() {
             borderLeft: '1px solid #2a2a2a',
             background: '#0a0a0a',
             overflowY: 'auto',
-            padding: '20px'
+            padding: '20px',
+            paddingBottom: '40px',
+            boxSizing: 'border-box'
           }}>
             {selectedElement ? (
               <>
