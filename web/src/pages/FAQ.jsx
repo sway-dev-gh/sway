@@ -130,11 +130,11 @@ function FAQ() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[12], textAlign: 'center' }}>
+          <div style={{ marginBottom: theme.spacing[6] }}>
             <h1 style={{
               fontSize: theme.fontSize.xl,
-              fontWeight: theme.weight.bold,
-              margin: '0 0 6px 0',
+              fontWeight: '500',
+              margin: 0,
               color: theme.colors.text.primary,
               letterSpacing: '-0.02em'
             }}>
@@ -143,7 +143,7 @@ function FAQ() {
             <p style={{
               fontSize: theme.fontSize.sm,
               color: theme.colors.text.secondary,
-              margin: 0,
+              margin: '6px 0 0 0',
               lineHeight: '1.6'
             }}>
               Everything you need to know about Sway
@@ -162,14 +162,14 @@ function FAQ() {
                 key={index}
                 style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[8],
-                  borderRadius: theme.radius['2xl'],
+                  padding: '20px',
+                  borderRadius: '10px',
                   border: `1px solid ${theme.colors.border.light}`,
                   boxShadow: theme.shadows.md
                 }}
               >
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -177,7 +177,7 @@ function FAQ() {
                   {faq.question}
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -189,17 +189,17 @@ function FAQ() {
 
           {/* Still have questions CTA */}
           <div style={{
-            marginTop: theme.spacing[12],
+            marginTop: theme.spacing[6],
             textAlign: 'center',
-            padding: theme.spacing[8],
+            padding: '20px',
             background: theme.colors.bg.secondary,
             border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: theme.radius['2xl'],
+            borderRadius: '10px',
             maxWidth: '600px',
-            margin: `${theme.spacing[12]} auto 0`
+            margin: `${theme.spacing[6]} auto 0`
           }}>
             <h3 style={{
-              fontSize: theme.fontSize.lg,
+              fontSize: theme.fontSize.base,
               fontWeight: theme.weight.medium,
               color: theme.colors.text.primary,
               margin: '0 0 8px 0'
@@ -207,7 +207,7 @@ function FAQ() {
               Still have questions?
             </h3>
             <p style={{
-              fontSize: theme.fontSize.base,
+              fontSize: theme.fontSize.xs,
               color: theme.colors.text.secondary,
               margin: '0 0 20px 0',
               lineHeight: '1.6'
@@ -218,12 +218,12 @@ function FAQ() {
               href="mailto:support@swayfiles.com"
               style={{
                 display: 'inline-block',
-                padding: '12px 28px',
+                padding: '8px 16px',
                 background: theme.colors.white,
                 color: theme.colors.black,
-                borderRadius: theme.radius.lg,
-                fontSize: theme.fontSize.base,
-                fontWeight: theme.weight.medium,
+                borderRadius: '8px',
+                fontSize: theme.fontSize.xs,
+                fontWeight: '500',
                 textDecoration: 'none',
                 cursor: 'pointer'
               }}

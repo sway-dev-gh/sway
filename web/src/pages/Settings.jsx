@@ -64,7 +64,7 @@ function Settings() {
           <div style={{ marginBottom: theme.spacing[6] }}>
             <h1 style={{
               fontSize: theme.fontSize.xl,
-              fontWeight: theme.weight.bold,
+              fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
               letterSpacing: '-0.02em'
@@ -107,7 +107,7 @@ function Settings() {
 
               <div style={{ marginBottom: theme.spacing[10] }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   marginBottom: theme.spacing[3],
                   fontWeight: theme.weight.semibold
@@ -115,7 +115,7 @@ function Settings() {
                   Email Address
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   fontWeight: theme.weight.medium
                 }}>
@@ -130,17 +130,16 @@ function Settings() {
                   }
                 }}
                 style={{
-                  padding: '16px 32px',
+                  padding: '8px 16px',
                   background: 'transparent',
                   color: theme.colors.error,
                   border: `2px solid ${theme.colors.error}`,
-                  borderRadius: '12px',
-                  fontSize: theme.fontSize.base,
-                  fontWeight: theme.weight.bold,
+                  borderRadius: '8px',
+                  fontSize: theme.fontSize.xs,
+                  fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  boxShadow: `0 0 0 0 ${theme.colors.error}`,
-                  height: '56px'
+                  boxShadow: `0 0 0 0 ${theme.colors.error}`
                 }}
               >
                 Delete Account

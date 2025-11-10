@@ -174,11 +174,11 @@ function Plan() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[12], textAlign: 'center' }}>
+          <div style={{ marginBottom: theme.spacing[6] }}>
             <h1 style={{
               fontSize: theme.fontSize.xl,
-              fontWeight: theme.weight.bold,
-              margin: '0 0 6px 0',
+              fontWeight: '500',
+              margin: 0,
               color: theme.colors.text.primary,
               letterSpacing: '-0.02em'
             }}>
@@ -187,7 +187,7 @@ function Plan() {
             <p style={{
               fontSize: theme.fontSize.sm,
               color: theme.colors.text.secondary,
-              margin: 0,
+              margin: '6px 0 0 0',
               lineHeight: '1.6'
             }}>
               Start free. Upgrade when you need more. Cancel anytime.
@@ -287,23 +287,23 @@ function Plan() {
 
                 {/* Description */}
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[8],
+                  marginBottom: theme.spacing[5],
                   lineHeight: '1.5'
                 }}>
                   {plan.description}
                 </div>
 
                 {/* Features */}
-                <div style={{ marginBottom: theme.spacing[8] }}>
+                <div style={{ marginBottom: theme.spacing[5] }}>
                   {plan.features.map((feature, index) => (
                     <div
                       key={index}
                       style={{
-                        fontSize: theme.fontSize.base,
+                        fontSize: theme.fontSize.xs,
                         color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
-                        marginBottom: theme.spacing[3],
+                        marginBottom: theme.spacing[2],
                         display: 'flex',
                         alignItems: 'center',
                         gap: theme.spacing[2],
@@ -312,7 +312,7 @@ function Plan() {
                     >
                       <span style={{
                         color: theme.colors.text.primary,
-                        fontSize: theme.fontSize.sm,
+                        fontSize: theme.fontSize.xs,
                         lineHeight: '1'
                       }}>✓</span>
                       <span>{feature.text}</span>
@@ -326,12 +326,12 @@ function Plan() {
                   disabled={plan.id === currentPlan || upgrading}
                   style={{
                     width: '100%',
-                    padding: '14px 28px',
+                    padding: '8px 16px',
                     background: plan.id === currentPlan ? 'transparent' : (plan.popular ? theme.colors.white : 'transparent'),
                     color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
                     border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
-                    borderRadius: '12px',
-                    fontSize: theme.fontSize.base,
+                    borderRadius: '8px',
+                    fontSize: theme.fontSize.xs,
                     fontWeight: '500',
                     cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
                     fontFamily: 'inherit',
@@ -345,13 +345,12 @@ function Plan() {
           </div>
 
           {/* FAQ Section */}
-          <div style={{ marginTop: theme.spacing[16] }}>
+          <div style={{ marginTop: theme.spacing[6] }}>
             <h2 style={{
-              fontSize: theme.fontSize.xl,
-              fontWeight: theme.weight.medium,
-              margin: '0 0 32px 0',
+              fontSize: theme.fontSize.lg,
+              fontWeight: '500',
+              margin: '0 0 20px 0',
               letterSpacing: '-0.02em',
-              textAlign: 'center',
               color: theme.colors.text.primary
             }}>
               Frequently Asked Questions
@@ -365,13 +364,13 @@ function Plan() {
             }}>
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -379,7 +378,7 @@ function Plan() {
                   Can I change my plan at any time?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -389,13 +388,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -403,7 +402,7 @@ function Plan() {
                   What happens if I hit my upload limit?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -413,13 +412,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -427,7 +426,7 @@ function Plan() {
                   Do you offer refunds?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -437,13 +436,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -451,7 +450,7 @@ function Plan() {
                   Is my data secure?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -461,13 +460,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -475,7 +474,7 @@ function Plan() {
                   What file types can I request?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -485,13 +484,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -499,7 +498,7 @@ function Plan() {
                   How does password protection work?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -509,13 +508,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -523,7 +522,7 @@ function Plan() {
                   Can I use Sway for business?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -533,13 +532,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -547,7 +546,7 @@ function Plan() {
                   What's the difference between Free and Pro analytics?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -557,13 +556,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -571,7 +570,7 @@ function Plan() {
                   How long are files stored?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -581,13 +580,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -595,7 +594,7 @@ function Plan() {
                   Why is Sway better than email attachments?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -605,13 +604,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -619,7 +618,7 @@ function Plan() {
                   Can people upload without creating an account?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -629,13 +628,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -643,7 +642,7 @@ function Plan() {
                   What happens when someone uploads a file?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -653,13 +652,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -667,7 +666,7 @@ function Plan() {
                   Can I try Pro features before paying?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -677,13 +676,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -691,7 +690,7 @@ function Plan() {
                   How do I get my files out if I cancel?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -701,13 +700,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -715,7 +714,7 @@ function Plan() {
                   Do you sell my data or show ads?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -725,13 +724,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -739,7 +738,7 @@ function Plan() {
                   What makes Sway different from Dropbox or Google Drive?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -749,13 +748,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -763,7 +762,7 @@ function Plan() {
                   Can I set expiration dates on requests?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
@@ -773,13 +772,13 @@ function Plan() {
 
               <div style={{
                 background: theme.colors.bg.secondary,
-                padding: theme.spacing[8],
-                borderRadius: theme.radius['2xl'],
+                padding: '20px',
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.primary,
                   marginBottom: theme.spacing[2],
                   fontWeight: theme.weight.medium
@@ -787,7 +786,7 @@ function Plan() {
                   Is there a mobile app?
                 </div>
                 <div style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.xs,
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
