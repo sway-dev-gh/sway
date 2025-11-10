@@ -261,32 +261,26 @@ function Dashboard() {
               padding: '32px',
               borderRadius: '16px',
               border: `1px solid ${theme.colors.border.light}`,
-              gridColumn: 'span 2',
               boxShadow: theme.shadows.md,
                           }}>
               <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Storage Used</div>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[3], marginBottom: theme.spacing[5] }}>
-                <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1' }}>
-                  {formatStorageMB(stats.storageUsed)}
-                </div>
-                <div style={{ fontSize: theme.fontSize.lg, color: theme.colors.text.muted }}>
-                  of {user.storage_limit_gb} GB
-                </div>
+              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{formatStorageMB(stats.storageUsed)}</div>
+              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.muted }}>
+                of {user.storage_limit_gb} GB
               </div>
-              {/* Storage Bar */}
-              <div style={{
-                width: '100%',
-                height: '12px',
-                background: theme.colors.bg.page,
-                borderRadius: theme.radius.full,
-                overflow: 'hidden'
-              }}>
-                <div style={{
-                  width: `${getStoragePercentage()}%`,
-                  height: '100%',
-                  background: theme.colors.white,
-                  transition: `width ${theme.transition.slow}`
-                }} />
+            </div>
+
+            <div style={{
+              background: theme.colors.bg.secondary,
+              padding: '32px',
+              borderRadius: '16px',
+              border: `1px solid ${theme.colors.border.light}`,
+              boxShadow: theme.shadows.md,
+                          }}>
+              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Requests</div>
+              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalRequests}</div>
+              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.muted }}>
+                All time
               </div>
             </div>
           </div>
