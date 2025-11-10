@@ -201,26 +201,58 @@ function Dashboard() {
           margin: '0 auto',
           padding: '48px 32px'
         }}>
-          {/* Header */}
-          <div style={{ marginBottom: '48px' }}>
-            <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 8px 0',
-              color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-            }}>
-              Dashboard
-            </h1>
-            <p style={{
-              fontSize: '18px',
-              color: theme.colors.text.secondary,
-              margin: 0,
-              lineHeight: '1.6'
-            }}>
-              Analytics and insights for your forms
-            </p>
+          {/* Header with Quick Actions */}
+          <div style={{ marginBottom: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <h1 style={{
+                fontSize: '48px',
+                fontWeight: '600',
+                margin: '0 0 8px 0',
+                color: theme.colors.text.primary,
+                letterSpacing: '-0.02em',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              }}>
+                Dashboard
+              </h1>
+              <p style={{
+                fontSize: '18px',
+                color: theme.colors.text.secondary,
+                margin: 0,
+                lineHeight: '1.6'
+              }}>
+                Analytics and insights for your forms
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: theme.spacing[3] }}>
+              <Link to="/requests" style={{
+                padding: '12px 24px',
+                background: theme.colors.white,
+                color: theme.colors.black,
+                border: 'none',
+                borderRadius: theme.radius.md,
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.semibold,
+                cursor: 'pointer',
+                textDecoration: 'none',
+                display: 'inline-block'
+              }}>
+                Create Form
+              </Link>
+              <Link to="/tracking" style={{
+                padding: '12px 24px',
+                background: 'transparent',
+                color: theme.colors.white,
+                border: `1px solid ${theme.colors.border.medium}`,
+                borderRadius: theme.radius.md,
+                fontSize: theme.fontSize.sm,
+                fontWeight: theme.weight.medium,
+                cursor: 'pointer',
+                textDecoration: 'none',
+                display: 'inline-block'
+              }}>
+                View All Forms
+              </Link>
+            </div>
           </div>
 
           {/* Top Stats Row */}
@@ -231,29 +263,41 @@ function Dashboard() {
             marginBottom: theme.spacing[6]
           }}>
             {/* Total Forms Created */}
-            <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
-            }}>
+            <Link to="/tracking" style={{ textDecoration: 'none' }}>
               <div style={{
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
+                padding: theme.spacing[5],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.lg,
+                background: theme.colors.bg.secondary,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.borderColor = theme.colors.white
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
-                Total Forms
+                <div style={{
+                  fontSize: theme.fontSize.xs,
+                  color: theme.colors.text.secondary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Total Forms
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize['3xl'],
+                  fontWeight: theme.weight.semibold,
+                  color: theme.colors.text.primary,
+                  lineHeight: '1'
+                }}>
+                  {stats.totalRequests}
+                </div>
               </div>
-              <div style={{
-                fontSize: theme.fontSize['3xl'],
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
-                lineHeight: '1'
-              }}>
-                {stats.totalRequests}
-              </div>
-            </div>
+            </Link>
 
             {/* Total Files Received */}
             <div style={{
@@ -281,52 +325,64 @@ function Dashboard() {
             </div>
 
             {/* Storage Used */}
-            <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
-            }}>
+            <Link to="/plan" style={{ textDecoration: 'none' }}>
               <div style={{
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
-              }}>
-                Storage Used
-              </div>
-              <div style={{
-                fontSize: theme.fontSize['3xl'],
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
-                lineHeight: '1',
-                marginBottom: theme.spacing[2]
-              }}>
-                {formatStorageMB(stats.storageUsed)}
-              </div>
-              {/* Storage Progress Bar */}
-              <div style={{
-                width: '100%',
-                height: '6px',
-                background: theme.colors.bg.page,
-                borderRadius: theme.radius.sm,
-                overflow: 'hidden',
-                marginBottom: theme.spacing[1]
+                padding: theme.spacing[5],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.lg,
+                background: theme.colors.bg.secondary,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.borderColor = theme.colors.white
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
                 <div style={{
-                  width: `${getStoragePercentage()}%`,
-                  height: '100%',
-                  background: getStoragePercentage() > 80 ? '#ef4444' : theme.colors.white,
-                  transition: 'width 0.3s ease'
-                }} />
+                  fontSize: theme.fontSize.xs,
+                  color: theme.colors.text.secondary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Storage Used
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize['3xl'],
+                  fontWeight: theme.weight.semibold,
+                  color: theme.colors.text.primary,
+                  lineHeight: '1',
+                  marginBottom: theme.spacing[2]
+                }}>
+                  {formatStorageMB(stats.storageUsed)}
+                </div>
+                {/* Storage Progress Bar */}
+                <div style={{
+                  width: '100%',
+                  height: '6px',
+                  background: theme.colors.bg.page,
+                  borderRadius: theme.radius.sm,
+                  overflow: 'hidden',
+                  marginBottom: theme.spacing[1]
+                }}>
+                  <div style={{
+                    width: `${getStoragePercentage()}%`,
+                    height: '100%',
+                    background: getStoragePercentage() > 80 ? '#ef4444' : theme.colors.white,
+                    transition: 'width 0.3s ease'
+                  }} />
+                </div>
+                <div style={{
+                  fontSize: '11px',
+                  color: theme.colors.text.tertiary
+                }}>
+                  {getStoragePercentage().toFixed(1)}% of {user.storage_limit_gb} GB
+                </div>
               </div>
-              <div style={{
-                fontSize: '11px',
-                color: theme.colors.text.tertiary
-              }}>
-                {getStoragePercentage().toFixed(1)}% of {user.storage_limit_gb} GB
-              </div>
-            </div>
+            </Link>
 
             {/* Active Forms */}
             <div style={{
