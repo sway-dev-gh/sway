@@ -434,6 +434,150 @@ function Plan() {
                   Yes, we offer a 30-day money-back guarantee on all paid plans. If you're not satisfied, we'll refund you in full. No questions asked.
                 </div>
               </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Is my data secure?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Absolutely. All files are encrypted in transit and at rest. We use industry-standard security practices and never share your data with third parties.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  What file types can I request?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  You can request any file type - documents, images, videos, PDFs, and more. Pro users can create custom request types and specify exactly what they need.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  How does password protection work?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Pro users can add password protection to any request. Recipients will need to enter the password before they can upload files, adding an extra layer of security.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  Can I use Sway for business?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Yes! Many businesses use Sway to collect client documents, vendor files, and team submissions. Pro gives you the tools you need for professional use.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  What's the difference between Free and Pro analytics?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Free users get basic stats like total requests and uploads. Pro users get advanced insights including file type breakdown, top performing requests, upload trends, and detailed analytics per request.
+                </div>
+              </div>
+
+              <div style={{
+                background: theme.colors.bg.secondary,
+                padding: theme.spacing[8],
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md
+              }}>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                  fontWeight: theme.weight.medium
+                }}>
+                  How long are files stored?
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  lineHeight: '1.6'
+                }}>
+                  Files are stored indefinitely as long as you stay within your storage limit. You can delete requests and files anytime to free up space.
+                </div>
+              </div>
             </div>
           </div>
         </div>
