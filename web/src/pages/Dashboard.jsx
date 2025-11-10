@@ -291,10 +291,9 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Charts Section */}
+          {/* Pro Content Section - Everything below basic stats */}
           <div style={{
-            position: 'relative',
-            marginBottom: theme.spacing[10]
+            position: 'relative'
           }}>
             {/* Blur overlay for Free users */}
             {(user.plan || 'free').toLowerCase() === 'free' && (
@@ -331,12 +330,16 @@ function Dashboard() {
             )}
 
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: '2fr 1fr',
-              gap: theme.spacing[6],
               filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
               pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
             }}>
+              {/* Charts Section */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 1fr',
+                gap: theme.spacing[6],
+                marginBottom: theme.spacing[10]
+              }}>
             {/* Upload Trend Chart */}
             <div style={{
               background: theme.colors.bg.secondary,
@@ -448,54 +451,15 @@ function Dashboard() {
               </div>
             </div>
             </div>
-          </div>
-
-          {/* Advanced Insights Grid */}
-          <div style={{
-            position: 'relative',
-            marginBottom: theme.spacing[10]
-          }}>
-            {/* Blur overlay for Free users */}
-            {(user.plan || 'free').toLowerCase() === 'free' && (
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.7)',
-                backdropFilter: 'blur(8px)',
-                borderRadius: theme.radius['2xl'],
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 10
-              }}>
-                <Link
-                  to="/plan"
-                  style={{
-                    padding: '12px 32px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    borderRadius: theme.radius.lg,
-                    fontSize: theme.fontSize.base,
-                    fontWeight: theme.weight.semibold,
-                    textDecoration: 'none',
-                    boxShadow: theme.shadows.xl
-                  }}
-                >
-                  Upgrade to Pro for Advanced Insights
-                </Link>
               </div>
-            )}
 
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(3, 1fr)',
-              gap: theme.spacing[6],
-              filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
-              pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
-            }}>
+              {/* Advanced Insights Grid */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: theme.spacing[6],
+                marginBottom: theme.spacing[10]
+              }}>
               {/* Average Uploads Per Request */}
               <div style={{
                 background: theme.colors.bg.secondary,
@@ -763,51 +727,12 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Pro Advanced Analytics */}
-          <div style={{
-            position: 'relative',
-            marginTop: theme.spacing[6]
-          }}>
-            {/* Blur overlay for Free users */}
-            {(user.plan || 'free').toLowerCase() === 'free' && (
+              {/* Pro Advanced Analytics */}
               <div style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'rgba(0, 0, 0, 0.7)',
-                backdropFilter: 'blur(8px)',
-                borderRadius: theme.radius['2xl'],
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 10
+                marginTop: theme.spacing[6]
               }}>
-                <Link
-                  to="/plan"
-                  style={{
-                    padding: '12px 32px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    borderRadius: theme.radius.lg,
-                    fontSize: theme.fontSize.base,
-                    fontWeight: theme.weight.semibold,
-                    textDecoration: 'none',
-                    boxShadow: theme.shadows.xl
-                  }}
-                >
-                  Upgrade to Pro for Advanced Analytics
-                </Link>
-              </div>
-            )}
-
-            <div style={{
-              filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
-              pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
-            }}>
-              {/* Section Header */}
-              <div style={{
+                {/* Section Header */}
+                <div style={{
                 marginBottom: theme.spacing[6]
               }}>
                 <div style={{
