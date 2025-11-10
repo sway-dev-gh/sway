@@ -370,13 +370,12 @@ function Requests() {
                     background: theme.colors.white,
                     color: theme.colors.black,
                     border: 'none',
-                    padding: '12px 24px',
-                    borderRadius: '10px',
-                    fontSize: theme.fontSize.sm,
-                    fontWeight: '500',
+                    padding: '8px 16px',
+                    borderRadius: theme.radius.md,
+                    fontSize: theme.fontSize.xs,
+                    fontWeight: theme.weight.medium,
                     cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    boxShadow: theme.shadows.md
+                    fontFamily: 'inherit'
                   }}
                 >
                   New Request
@@ -589,7 +588,7 @@ function Requests() {
                   maxHeight: '90vh',
                   overflowY: 'auto',
                   margin: 'auto',
-                  boxShadow: theme.shadows.lg
+                  // boxShadow removed
                 }}
                 className="custom-scrollbar"
                 onClick={(e) => e.stopPropagation()}
@@ -1323,7 +1322,7 @@ function Requests() {
               width: 'calc(100% - 32px)',
               border: `1px solid ${theme.colors.border.light}`,
               textAlign: 'center',
-              boxShadow: theme.shadows.lg
+              // boxShadow removed
             }}
             onClick={(e) => e.stopPropagation()}
           >
