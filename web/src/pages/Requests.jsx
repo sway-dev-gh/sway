@@ -2491,11 +2491,11 @@ function Requests() {
           {/* CENTER - Canvas */}
           <div style={{
             flex: 1,
-            overflow: 'hidden',
+            overflow: 'auto',
             background: '#1a1a1a',
             display: 'flex',
             alignItems: 'flex-start',
-            justifyContent: 'flex-start',
+            justifyContent: 'center',
             padding: '40px'
           }}>
             <div
@@ -2895,13 +2895,6 @@ function Requests() {
               boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)'
             }}
           >
-            <div style={{ fontSize: '24px', fontWeight: '600', color: '#ffffff', marginBottom: '12px' }}>
-              {selectedTemplate.name}
-            </div>
-            <div style={{ fontSize: '15px', color: '#999', marginBottom: '24px', lineHeight: '1.6' }}>
-              {selectedTemplate.preview}
-            </div>
-
             <div style={{
               background: '#0a0a0a',
               border: '1px solid #2a2a2a',
