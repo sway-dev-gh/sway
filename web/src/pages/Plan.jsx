@@ -107,11 +107,9 @@ function Plan() {
       period: '',
       description: 'Perfect for getting started',
       features: [
-        { text: '20 active requests', highlight: false },
+        { text: '5 active forms', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Visual request builder', highlight: false },
-        { text: 'Custom upload pages', highlight: false },
-        { text: 'Basic analytics', highlight: false }
+        { text: 'Basic file upload', highlight: false }
       ]
     },
     {
@@ -122,12 +120,12 @@ function Plan() {
       description: 'For power users',
       popular: true,
       features: [
-        { text: '200 active requests', highlight: true },
+        { text: 'Unlimited forms', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'Visual request builder', highlight: true },
-        { text: 'Password-protected requests', highlight: true },
-        { text: 'Bulk download (Download All)', highlight: true },
-        { text: 'Advanced analytics & insights', highlight: true },
+        { text: 'Visual form builder', highlight: true },
+        { text: 'Password protection', highlight: true },
+        { text: 'Bulk download', highlight: true },
+        { text: 'Advanced analytics', highlight: true },
         { text: 'Priority support', highlight: true }
       ]
     }
