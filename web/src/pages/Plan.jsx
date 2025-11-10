@@ -169,7 +169,8 @@ function Plan() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[6]
+          padding: theme.spacing[6],
+          paddingBottom: '120px'
         }}>
 
           {/* Header */}
@@ -198,9 +199,8 @@ function Plan() {
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: theme.spacing[6],
-            marginBottom: theme.spacing[16],
             maxWidth: '900px',
-            margin: '0 auto 80px auto'
+            margin: '0 auto 60px auto'
           }}>
             {plans.map((plan) => (
               <div
@@ -455,7 +455,7 @@ function Plan() {
                   color: theme.colors.text.secondary,
                   lineHeight: '1.6'
                 }}>
-                  Absolutely. All files are encrypted in transit and at rest. We use industry-standard security practices and never share your data with third parties.
+                  Yes. All uploads are protected with HTTPS encryption, malware scanning, filename sanitization, magic byte validation, and rate limiting. We block executable files (.exe, .sh, .bat) and scan for malicious content. Your data is never shared with third parties.
                 </div>
               </div>
 
