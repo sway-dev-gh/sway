@@ -2,11 +2,18 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import api from '../api/axios'
 
 function Settings() {
   const navigate = useNavigate()
   const [user, setUser] = useState({ email: '' })
   const [loading, setLoading] = useState(true)
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [passwordSuccess, setPasswordSuccess] = useState('')
+  const [changingPassword, setChangingPassword] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -22,6 +29,49 @@ function Settings() {
 
     setLoading(false)
   }, [navigate])
+
+  const handleChangePassword = async (e) => {
+    e.preventDefault()
+    setPasswordError('')
+    setPasswordSuccess('')
+
+    // Validation
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      setPasswordError('All fields are required')
+      return
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('New passwords do not match')
+      return
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordError('New password must be at least 6 characters')
+      return
+    }
+
+    setChangingPassword(true)
+
+    try {
+      const token = localStorage.getItem('token')
+      await api.post('/api/auth/change-password', {
+        currentPassword,
+        newPassword
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setPasswordSuccess('Password changed successfully!')
+      setCurrentPassword('')
+      setNewPassword('')
+      setConfirmPassword('')
+    } catch (error) {
+      setPasswordError(error.response?.data?.message || 'Failed to change password')
+    } finally {
+      setChangingPassword(false)
+    }
+  }
 
   if (loading) {
     return (
@@ -115,6 +165,162 @@ function Settings() {
               }}>
                 {user.email}
               </div>
+            </div>
+
+            {/* Change Password */}
+            <div style={{
+              padding: '32px',
+              borderRadius: theme.radius.lg,
+              border: `1px solid ${theme.colors.border.light}`,
+              background: 'rgba(255, 255, 255, 0.02)'
+            }}>
+              <div style={{
+                fontSize: '20px',
+                color: theme.colors.text.primary,
+                fontWeight: '600',
+                marginBottom: '4px',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              }}>
+                Change Password
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: theme.colors.text.tertiary,
+                marginBottom: theme.spacing[6]
+              }}>
+                Update your account password
+              </div>
+
+              <form onSubmit={handleChangePassword}>
+                {passwordError && (
+                  <div style={{
+                    padding: '12px 16px',
+                    background: 'rgba(239, 68, 68, 0.1)',
+                    border: '1px solid rgba(239, 68, 68, 0.3)',
+                    borderRadius: theme.radius.md,
+                    color: '#ef4444',
+                    fontSize: '14px',
+                    marginBottom: theme.spacing[4]
+                  }}>
+                    {passwordError}
+                  </div>
+                )}
+
+                {passwordSuccess && (
+                  <div style={{
+                    padding: '12px 16px',
+                    background: 'rgba(34, 197, 94, 0.1)',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    borderRadius: theme.radius.md,
+                    color: '#22c55e',
+                    fontSize: '14px',
+                    marginBottom: theme.spacing[4]
+                  }}>
+                    {passwordSuccess}
+                  </div>
+                )}
+
+                <div style={{ display: 'grid', gap: theme.spacing[4] }}>
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '14px',
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: '500'
+                    }}>
+                      Current Password
+                    </label>
+                    <input
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        background: 'rgba(0, 0, 0, 0.2)',
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: '15px',
+                        fontFamily: 'inherit',
+                        outline: 'none'
+                      }}
+                      placeholder="Enter current password"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '14px',
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: '500'
+                    }}>
+                      New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        background: 'rgba(0, 0, 0, 0.2)',
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: '15px',
+                        fontFamily: 'inherit',
+                        outline: 'none'
+                      }}
+                      placeholder="Enter new password"
+                    />
+                  </div>
+
+                  <div>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '14px',
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: '500'
+                    }}>
+                      Confirm New Password
+                    </label>
+                    <input
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 16px',
+                        background: 'rgba(0, 0, 0, 0.2)',
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: '15px',
+                        fontFamily: 'inherit',
+                        outline: 'none'
+                      }}
+                      placeholder="Confirm new password"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={changingPassword}
+                    style={{
+                      ...theme.buttons.primary.base,
+                      opacity: changingPassword ? 0.5 : 1,
+                      cursor: changingPassword ? 'not-allowed' : 'pointer'
+                    }}
+                  >
+                    {changingPassword ? 'Changing Password...' : 'Change Password'}
+                  </button>
+                </div>
+              </form>
             </div>
 
             {/* Danger Zone */}
