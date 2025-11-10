@@ -130,8 +130,6 @@ export default function Login() {
                 width: '100%',
                 ...(loading && theme.buttons.primary.disabled)
               }}
-}}
-}}
             >
               {loading ? 'Signing in...' : 'Sign In'}
             </button>

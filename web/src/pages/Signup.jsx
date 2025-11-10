@@ -155,8 +155,6 @@ export default function Signup() {
                 width: '100%',
                 ...(loading && theme.buttons.primary.disabled)
               }}
-}}
-}}
             >
               {loading ? 'Creating account...' : 'Sign Up'}
             </button>
