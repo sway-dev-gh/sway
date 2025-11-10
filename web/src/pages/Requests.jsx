@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import { canCreateForm } from '../utils/planUtils'
+import api from '../api/axios'
 
 // TEMPLATES - Pre-configured form layouts
 const TEMPLATES = [
@@ -1257,6 +1259,21 @@ function Requests() {
 
     try {
       const token = localStorage.getItem('token')
+
+      // Check current form count for plan validation
+      const formsResponse = await api.get('/api/requests', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      const currentFormCount = formsResponse.data.requests?.length || 0
+
+      // Validate if user can create a new form
+      const validation = canCreateForm(currentFormCount)
+      if (!validation.allowed) {
+        alert(validation.reason)
+        navigate('/plan')
+        return
+      }
+
       const formData = {
         title: formTitle,
         elements: canvasElements,
@@ -1271,7 +1288,8 @@ function Requests() {
       navigate('/tracking')
     } catch (error) {
       console.error('Publish error:', error)
-      alert('Failed to publish form. Please try again.')
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to publish form. Please try again.'
+      alert(errorMessage)
     }
   }
 
