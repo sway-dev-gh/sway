@@ -175,8 +175,7 @@ function Sidebar() {
           style={{
             width: '48px',
             height: '48px',
-            flexShrink: 0,
-            filter: 'invert(1) brightness(2)'
+            flexShrink: 0
           }}
         />
       </Link>
