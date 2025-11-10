@@ -2883,20 +2883,74 @@ function Requests() {
               background: '#0a0a0a',
               border: '1px solid #2a2a2a',
               borderRadius: '8px',
-              padding: '40px',
+              padding: '24px',
               marginBottom: '24px',
-              textAlign: 'center',
-              minHeight: '200px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              minHeight: '300px',
+              maxHeight: '400px',
+              overflow: 'auto',
+              position: 'relative'
             }}>
-              <div style={{ color: '#666', fontSize: '14px' }}>
-                {selectedTemplate.elements.length > 0
-                  ? `Contains ${selectedTemplate.elements.length} pre-configured elements`
-                  : 'Empty canvas - start from scratch'
-                }
-              </div>
+              {selectedTemplate.elements.length > 0 ? (
+                <div style={{
+                  width: '100%',
+                  minHeight: '280px',
+                  background: '#000',
+                  borderRadius: '6px',
+                  border: '1px solid #1a1a1a',
+                  position: 'relative',
+                  transform: 'scale(0.4)',
+                  transformOrigin: 'top left',
+                  width: '250%',
+                  height: '600px'
+                }}>
+                  {selectedTemplate.elements.map((element) => (
+                    <div
+                      key={element.id}
+                      style={{
+                        position: 'absolute',
+                        left: `${element.x}px`,
+                        top: `${element.y}px`,
+                        width: `${element.width}px`,
+                        height: `${element.height}px`,
+                        border: '1px solid #333',
+                        borderRadius: '4px',
+                        background: element.type === 'button' ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '8px',
+                        fontSize: element.properties?.fontSize || '14px',
+                        color: element.type === 'button' ? '#000' : '#fff',
+                        fontWeight: element.properties?.fontWeight || '400',
+                        textAlign: element.properties?.textAlign || 'left',
+                        overflow: 'hidden',
+                        pointerEvents: 'none'
+                      }}
+                    >
+                      {element.type === 'heading' && element.properties?.content}
+                      {element.type === 'text' && element.properties?.content}
+                      {element.type === 'button' && element.properties?.label}
+                      {element.type === 'file-upload' && <div style={{ fontSize: '12px', color: '#666' }}>File Upload</div>}
+                      {element.type === 'text-input' && <div style={{ fontSize: '12px', color: '#666' }}>{element.properties?.label || 'Text Input'}</div>}
+                      {element.type === 'textarea' && <div style={{ fontSize: '12px', color: '#666' }}>Text Area</div>}
+                      {!['heading', 'text', 'button', 'file-upload', 'text-input', 'textarea'].includes(element.type) && (
+                        <div style={{ fontSize: '11px', color: '#666', textTransform: 'uppercase' }}>{element.type}</div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '280px',
+                  color: '#666',
+                  fontSize: '14px'
+                }}>
+                  Empty canvas - start from scratch
+                </div>
+              )}
             </div>
 
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
