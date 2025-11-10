@@ -1320,6 +1320,59 @@ function Requests() {
         handleUndo()
       }
 
+      // Cmd/Ctrl + A - Select All
+      if ((e.metaKey || e.ctrlKey) && e.key === 'a') {
+        e.preventDefault()
+        setSelectedElements(canvasElements)
+        setSelectedElement(null)
+      }
+
+      // Escape - Deselect All
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        setSelectedElement(null)
+        setSelectedElements([])
+      }
+
+      // Arrow keys - Move selected element(s)
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+        if (selectedElement || selectedElements.length > 0) {
+          e.preventDefault()
+          const moveAmount = e.shiftKey ? 10 : 1
+          let deltaX = 0
+          let deltaY = 0
+
+          if (e.key === 'ArrowUp') deltaY = -moveAmount
+          if (e.key === 'ArrowDown') deltaY = moveAmount
+          if (e.key === 'ArrowLeft') deltaX = -moveAmount
+          if (e.key === 'ArrowRight') deltaX = moveAmount
+
+          const newElements = canvasElements.map(el => {
+            // Move single selected element
+            if (selectedElement && el.id === selectedElement.id) {
+              const updated = { ...el, x: el.x + deltaX, y: el.y + deltaY }
+              setSelectedElement(updated)
+              return updated
+            }
+            // Move all selected elements in multi-select
+            if (selectedElements.some(sel => sel.id === el.id)) {
+              return { ...el, x: el.x + deltaX, y: el.y + deltaY }
+            }
+            return el
+          })
+
+          // Update selectedElements array with new positions
+          const updatedSelectedElements = selectedElements.map(sel => {
+            const updated = newElements.find(el => el.id === sel.id)
+            return updated || sel
+          })
+          setSelectedElements(updatedSelectedElements)
+
+          setCanvasElements(newElements)
+          saveToHistory(newElements)
+        }
+      }
+
       // Cmd/Ctrl + Shift + Z or Cmd/Ctrl + Y - Redo
       if (((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'z') ||
           ((e.metaKey || e.ctrlKey) && e.key === 'y')) {
@@ -1362,7 +1415,7 @@ function Requests() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedElement, canvasElements, clipboard, historyIndex, history])
+  }, [selectedElement, selectedElements, canvasElements, clipboard, historyIndex, history])
 
   const generateId = () => `element-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
 
@@ -1523,14 +1576,31 @@ function Requests() {
       const newX = e.clientX - canvasRect.left - dragOffset.x
       const newY = e.clientY - canvasRect.top - dragOffset.y
 
+      // Calculate delta for group move
+      const deltaX = newX - selectedElement.x
+      const deltaY = newY - selectedElement.y
+
       const newElements = canvasElements.map(el => {
+        // Move the primary selected element
         if (el.id === selectedElement.id) {
           const updated = { ...el, x: newX, y: newY }
           setSelectedElement(updated)
           return updated
         }
+        // Move all other selected elements by the same delta
+        if (selectedElements.some(sel => sel.id === el.id)) {
+          return { ...el, x: el.x + deltaX, y: el.y + deltaY }
+        }
         return el
       })
+
+      // Update selectedElements array with new positions
+      const updatedSelectedElements = selectedElements.map(sel => {
+        const updated = newElements.find(el => el.id === sel.id)
+        return updated || sel
+      })
+      setSelectedElements(updatedSelectedElements)
+
       setCanvasElements(newElements)
     }
   }
@@ -1545,7 +1615,7 @@ function Requests() {
   // Render element on canvas
   const renderCanvasElement = (element) => {
     const { type, properties, x, y, width, height } = element
-    const isSelected = selectedElement?.id === element.id
+    const isSelected = selectedElement?.id === element.id || selectedElements.some(el => el.id === element.id)
 
     const elementStyle = {
       position: 'absolute',
