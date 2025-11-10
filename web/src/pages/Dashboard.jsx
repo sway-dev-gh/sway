@@ -201,50 +201,48 @@ function Dashboard() {
           margin: '0 auto',
           padding: '48px 32px'
         }}>
-          {/* Header with Quick Actions */}
-          <div style={{ marginBottom: '48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <h1 style={{
-                fontSize: '48px',
-                fontWeight: '600',
-                margin: '0 0 8px 0',
-                color: theme.colors.text.primary,
-                letterSpacing: '-0.02em',
-                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-              }}>
-                Dashboard
-              </h1>
-              <p style={{
-                fontSize: '18px',
-                color: theme.colors.text.secondary,
-                margin: 0,
-                lineHeight: '1.6'
-              }}>
-                Analytics and insights for your forms
-              </p>
-            </div>
-            <div style={{ display: 'flex', gap: theme.spacing[3] }}>
+          {/* Welcome Header */}
+          <div style={{ marginBottom: '60px', textAlign: 'center', maxWidth: '800px', margin: '0 auto 60px' }}>
+            <h1 style={{
+              fontSize: '56px',
+              fontWeight: '600',
+              margin: '0 0 16px 0',
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+            }}>
+              Welcome back
+            </h1>
+            <p style={{
+              fontSize: '18px',
+              color: theme.colors.text.secondary,
+              margin: '0 0 40px 0',
+              lineHeight: '1.6'
+            }}>
+              Create and manage your file upload forms
+            </p>
+            <div style={{ display: 'flex', gap: theme.spacing[3], justifyContent: 'center' }}>
               <Link to="/requests" style={{
-                padding: '12px 24px',
+                padding: '14px 32px',
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
                 borderRadius: theme.radius.md,
-                fontSize: theme.fontSize.sm,
+                fontSize: theme.fontSize.base,
                 fontWeight: theme.weight.semibold,
                 cursor: 'pointer',
                 textDecoration: 'none',
                 display: 'inline-block'
               }}>
-                Create Form
+                Create New Form
               </Link>
               <Link to="/tracking" style={{
-                padding: '12px 24px',
+                padding: '14px 32px',
                 background: 'transparent',
                 color: theme.colors.white,
                 border: `1px solid ${theme.colors.border.medium}`,
                 borderRadius: theme.radius.md,
-                fontSize: theme.fontSize.sm,
+                fontSize: theme.fontSize.base,
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer',
                 textDecoration: 'none',
@@ -255,12 +253,14 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Top Stats Row */}
+          {/* Quick Stats */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
             gap: theme.spacing[4],
-            marginBottom: theme.spacing[6]
+            marginBottom: theme.spacing[8],
+            maxWidth: '1100px',
+            margin: '0 auto'
           }}>
             {/* Total Forms Created */}
             <Link to="/tracking" style={{ textDecoration: 'none' }}>
@@ -410,307 +410,118 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* Charts Row */}
+          {/* Quick Links */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
+            gridTemplateColumns: 'repeat(3, 1fr)',
             gap: theme.spacing[4],
-            marginBottom: theme.spacing[6]
+            maxWidth: '1100px',
+            margin: '0 auto'
           }}>
-            {/* Upload Activity Chart */}
-            <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
-            }}>
+            <Link to="/tracking" style={{ textDecoration: 'none' }}>
               <div style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.primary,
-                fontWeight: theme.weight.medium,
-                marginBottom: theme.spacing[4]
+                padding: theme.spacing[6],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.lg,
+                background: theme.colors.bg.secondary,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                textAlign: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.borderColor = theme.colors.white
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
-                Upload Activity (Last 7 Days)
+                <div style={{
+                  fontSize: theme.fontSize.lg,
+                  color: theme.colors.text.primary,
+                  fontWeight: theme.weight.semibold,
+                  marginBottom: theme.spacing[2]
+                }}>
+                  Manage Forms
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.secondary
+                }}>
+                  View, edit, and track all your forms
+                </div>
               </div>
-              <div style={{
-                display: 'flex',
-                alignItems: 'flex-end',
-                gap: theme.spacing[2],
-                height: '160px'
-              }}>
-                {(stats.uploadsByDay || []).length === 0 ? (
-                  <div style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: theme.colors.text.tertiary,
-                    fontSize: theme.fontSize.sm
-                  }}>
-                    No upload data yet
-                  </div>
-                ) : (
-                  (stats.uploadsByDay || []).map((day, index) => (
-                    <div key={index} style={{
-                      flex: 1,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: theme.spacing[2],
-                      height: '100%'
-                    }}>
-                      <div style={{
-                        width: '100%',
-                        height: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-end'
-                      }}>
-                        <div style={{
-                          width: '100%',
-                          height: `${(day.count / maxUploadsInWeek) * 100}%`,
-                          background: theme.colors.white,
-                          borderRadius: `${theme.radius.sm} ${theme.radius.sm} 0 0`,
-                          minHeight: day.count > 0 ? '8px' : '0',
-                          transition: 'height 0.3s ease'
-                        }} />
-                      </div>
-                      <div style={{
-                        fontSize: '11px',
-                        color: theme.colors.text.tertiary,
-                        textAlign: 'center'
-                      }}>
-                        {day.date}
-                      </div>
-                      <div style={{
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.primary,
-                        fontWeight: theme.weight.medium
-                      }}>
-                        {day.count}
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+            </Link>
 
-            {/* Most Active Forms */}
-            <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
-            }}>
+            <Link to="/plan" style={{ textDecoration: 'none' }}>
               <div style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.primary,
-                fontWeight: theme.weight.medium,
-                marginBottom: theme.spacing[4]
+                padding: theme.spacing[6],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.lg,
+                background: theme.colors.bg.secondary,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                textAlign: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.borderColor = theme.colors.white
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
-                Most Active Forms
+                <div style={{
+                  fontSize: theme.fontSize.lg,
+                  color: theme.colors.text.primary,
+                  fontWeight: theme.weight.semibold,
+                  marginBottom: theme.spacing[2]
+                }}>
+                  {isPro ? 'Pro Plan' : 'Upgrade to Pro'}
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.secondary
+                }}>
+                  {isPro ? 'Manage your subscription' : 'Unlock advanced features'}
+                </div>
               </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: theme.spacing[3]
-              }}>
-                {(!stats.topRequests || stats.topRequests.length === 0) ? (
-                  <div style={{
-                    textAlign: 'center',
-                    color: theme.colors.text.tertiary,
-                    fontSize: theme.fontSize.sm,
-                    padding: theme.spacing[4]
-                  }}>
-                    No forms yet
-                  </div>
-                ) : (
-                  stats.topRequests.slice(0, 5).map((req, index) => (
-                    <div key={req.id || index} style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
-                      <div style={{
-                        flex: 1,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        fontSize: theme.fontSize.sm,
-                        color: theme.colors.text.primary
-                      }}>
-                        {req.title || 'Untitled Form'}
-                      </div>
-                      <div style={{
-                        fontSize: theme.fontSize.sm,
-                        color: theme.colors.text.tertiary,
-                        fontWeight: theme.weight.medium,
-                        marginLeft: theme.spacing[2]
-                      }}>
-                        {req.uploadCount || 0}
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
-          </div>
+            </Link>
 
-          {/* File Type Breakdown & Recent Activity */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 2fr',
-            gap: theme.spacing[4],
-            marginBottom: theme.spacing[6]
-          }}>
-            {/* File Type Breakdown */}
-            <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
-            }}>
+            <Link to="/faq" style={{ textDecoration: 'none' }}>
               <div style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.primary,
-                fontWeight: theme.weight.medium,
-                marginBottom: theme.spacing[4]
+                padding: theme.spacing[6],
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.lg,
+                background: theme.colors.bg.secondary,
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                textAlign: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                e.currentTarget.style.borderColor = theme.colors.white
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.colors.bg.secondary
+                e.currentTarget.style.borderColor = theme.colors.border.light
               }}>
-                File Types
+                <div style={{
+                  fontSize: theme.fontSize.lg,
+                  color: theme.colors.text.primary,
+                  fontWeight: theme.weight.semibold,
+                  marginBottom: theme.spacing[2]
+                }}>
+                  Help & FAQs
+                </div>
+                <div style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.secondary
+                }}>
+                  Get answers to common questions
+                </div>
               </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: theme.spacing[3]
-              }}>
-                {(!stats.fileTypeBreakdown || stats.fileTypeBreakdown.length === 0) ? (
-                  <div style={{
-                    textAlign: 'center',
-                    color: theme.colors.text.tertiary,
-                    fontSize: theme.fontSize.sm,
-                    padding: theme.spacing[4]
-                  }}>
-                    No files yet
-                  </div>
-                ) : (
-                  stats.fileTypeBreakdown.slice(0, 5).map((type, index) => {
-                    const total = stats.fileTypeBreakdown.reduce((sum, t) => sum + t.count, 0)
-                    const percentage = total > 0 ? (type.count / total) * 100 : 0
-                    return (
-                      <div key={type.type || index}>
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                          marginBottom: '6px'
-                        }}>
-                          <div style={{
-                            fontSize: theme.fontSize.sm,
-                            color: theme.colors.text.primary
-                          }}>
-                            {type.type || 'Unknown'}
-                          </div>
-                          <div style={{
-                            fontSize: theme.fontSize.xs,
-                            color: theme.colors.text.tertiary,
-                            fontWeight: theme.weight.medium
-                          }}>
-                            {percentage.toFixed(0)}%
-                          </div>
-                        </div>
-                        <div style={{
-                          width: '100%',
-                          height: '6px',
-                          background: theme.colors.bg.page,
-                          borderRadius: theme.radius.sm,
-                          overflow: 'hidden'
-                        }}>
-                          <div style={{
-                            width: `${percentage}%`,
-                            height: '100%',
-                            background: theme.colors.white,
-                            opacity: 1 - (index * 0.15),
-                            transition: 'width 0.3s ease'
-                          }} />
-                        </div>
-                      </div>
-                    )
-                  })
-                )}
-              </div>
-            </div>
-
-            {/* Recent Activity */}
-            <div style={{
-              padding: theme.spacing[5],
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: theme.colors.bg.secondary
-            }}>
-              <div style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.primary,
-                fontWeight: theme.weight.medium,
-                marginBottom: theme.spacing[4]
-              }}>
-                Recent Activity
-              </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: theme.spacing[3]
-              }}>
-                {(!stats.recentActivity || stats.recentActivity.length === 0) ? (
-                  <div style={{
-                    textAlign: 'center',
-                    color: theme.colors.text.tertiary,
-                    fontSize: theme.fontSize.sm,
-                    padding: theme.spacing[4]
-                  }}>
-                    No recent activity
-                  </div>
-                ) : (
-                  stats.recentActivity.slice(0, 8).map((activity, index) => (
-                    <div key={activity.id || index} style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start',
-                      paddingBottom: theme.spacing[3],
-                      borderBottom: index < Math.min(stats.recentActivity.length - 1, 7) ? `1px solid ${theme.colors.border.light}` : 'none'
-                    }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{
-                          fontSize: theme.fontSize.sm,
-                          color: theme.colors.text.primary,
-                          fontWeight: theme.weight.medium,
-                          marginBottom: '4px',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}>
-                          {activity.fileName}
-                        </div>
-                        <div style={{
-                          fontSize: theme.fontSize.xs,
-                          color: theme.colors.text.tertiary
-                        }}>
-                          {activity.formName} • {activity.uploaderName}
-                        </div>
-                      </div>
-                      <div style={{
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.tertiary,
-                        whiteSpace: 'nowrap',
-                        marginLeft: theme.spacing[2]
-                      }}>
-                        {getTimeAgo(activity.uploadedAt)}
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </div>
+            </Link>
           </div>
 
         </div>
