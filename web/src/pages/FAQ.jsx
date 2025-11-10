@@ -130,7 +130,7 @@ function FAQ() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[6] }}>
+          <div style={{ marginBottom: theme.spacing[6], textAlign: 'center' }}>
             <h1 style={{
               fontSize: theme.fontSize.xl,
               fontWeight: '500',
@@ -140,6 +140,14 @@ function FAQ() {
             }}>
               Frequently Asked Questions
             </h1>
+            <p style={{
+              fontSize: theme.fontSize.sm,
+              color: theme.colors.text.secondary,
+              margin: '6px 0 0 0',
+              lineHeight: '1.6'
+            }}>
+              Everything you need to know about Sway
+            </p>
           </div>
 
           {/* FAQ Grid */}

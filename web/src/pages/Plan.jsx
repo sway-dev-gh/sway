@@ -174,7 +174,7 @@ function Plan() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[6] }}>
+          <div style={{ marginBottom: theme.spacing[6], textAlign: 'center' }}>
             <h1 style={{
               fontSize: theme.fontSize.xl,
               fontWeight: '500',
@@ -184,6 +184,14 @@ function Plan() {
             }}>
               Pricing
             </h1>
+            <p style={{
+              fontSize: theme.fontSize.sm,
+              color: theme.colors.text.secondary,
+              margin: '6px 0 0 0',
+              lineHeight: '1.6'
+            }}>
+              Simple, transparent pricing for everyone
+            </p>
           </div>
 
           {/* Plans Grid */}
