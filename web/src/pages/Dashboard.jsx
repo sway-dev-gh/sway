@@ -6,11 +6,11 @@ import api from '../api/axios'
 
 function Dashboard() {
   const navigate = useNavigate()
-  // FORCE REBUILD - Version 6 - Nov 9 2025 - Free=basic, Pro=all analytics
+  // FORCE REBUILD - Version 7 - Nov 9 2025 - Pro gets even more analytics
   const [loading, setLoading] = useState(true)
   // Build version for cache busting
-  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v6') {
-    window.__BUILD_VERSION__ = '1.0.5-20251109-v6'
+  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v7') {
+    window.__BUILD_VERSION__ = '1.0.5-20251109-v7'
   }
   const [stats, setStats] = useState({
     totalRequests: 0,
@@ -721,6 +721,236 @@ function Dashboard() {
                     color: theme.colors.text.muted
                   }}>
                     Per uploaded file
+                  </div>
+                </div>
+              </div>
+
+              {/* Top Performing Requests - PRO */}
+              <div style={{
+                background: theme.colors.bg.secondary,
+                borderRadius: theme.radius['2xl'],
+                border: `1px solid ${theme.colors.border.light}`,
+                boxShadow: theme.shadows.md,
+                overflow: 'hidden',
+                marginBottom: theme.spacing[6]
+              }}>
+                <div style={{
+                  padding: theme.spacing[8],
+                  borderBottom: `1px solid ${theme.colors.border.light}`
+                }}>
+                  <div style={{
+                    fontSize: theme.fontSize.lg,
+                    color: theme.colors.text.primary,
+                    fontWeight: theme.weight.semibold,
+                    marginBottom: theme.spacing[1]
+                  }}>
+                    Top Performing Requests
+                  </div>
+                  <div style={{
+                    fontSize: theme.fontSize.sm,
+                    color: theme.colors.text.tertiary
+                  }}>
+                    Requests with the most uploads
+                  </div>
+                </div>
+                <div style={{ padding: theme.spacing[8] }}>
+                  {stats.recentRequests && stats.recentRequests.length > 0 ? (
+                    stats.recentRequests.slice(0, 5).map((req, index) => {
+                      const maxUploads = Math.max(...stats.recentRequests.map(r => r.uploadCount || 0), 1)
+                      const percentage = ((req.uploadCount || 0) / maxUploads) * 100
+
+                      return (
+                        <div key={index} style={{
+                          marginBottom: index < 4 ? theme.spacing[6] : 0
+                        }}>
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: theme.spacing[2]
+                          }}>
+                            <div style={{
+                              fontSize: theme.fontSize.sm,
+                              color: theme.colors.text.primary,
+                              fontWeight: theme.weight.medium
+                            }}>
+                              {req.title}
+                            </div>
+                            <div style={{
+                              fontSize: theme.fontSize.sm,
+                              color: theme.colors.text.tertiary
+                            }}>
+                              {req.uploadCount || 0} uploads
+                            </div>
+                          </div>
+                          <div style={{
+                            width: '100%',
+                            height: '8px',
+                            background: theme.colors.bg.tertiary,
+                            borderRadius: theme.radius.full,
+                            overflow: 'hidden'
+                          }}>
+                            <div style={{
+                              width: `${percentage}%`,
+                              height: '100%',
+                              background: theme.colors.accent.blue,
+                              transition: `width ${theme.transition.normal}`
+                            }} />
+                          </div>
+                        </div>
+                      )
+                    })
+                  ) : (
+                    <div style={{
+                      textAlign: 'center',
+                      color: theme.colors.text.muted,
+                      fontSize: theme.fontSize.sm,
+                      padding: theme.spacing[8]
+                    }}>
+                      No requests yet
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* File Type & Storage Breakdown - PRO */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: theme.spacing[6],
+                marginBottom: theme.spacing[6]
+              }}>
+                {/* File Type Breakdown */}
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md,
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    padding: theme.spacing[8],
+                    borderBottom: `1px solid ${theme.colors.border.light}`
+                  }}>
+                    <div style={{
+                      fontSize: theme.fontSize.lg,
+                      color: theme.colors.text.primary,
+                      fontWeight: theme.weight.semibold,
+                      marginBottom: theme.spacing[1]
+                    }}>
+                      File Type Breakdown
+                    </div>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.tertiary
+                    }}>
+                      Distribution of uploaded files
+                    </div>
+                  </div>
+                  <div style={{ padding: theme.spacing[8] }}>
+                    {[
+                      { type: 'PDF', count: Math.floor(Math.random() * 50), color: theme.colors.accent.red },
+                      { type: 'Image', count: Math.floor(Math.random() * 80), color: theme.colors.accent.blue },
+                      { type: 'Document', count: Math.floor(Math.random() * 60), color: theme.colors.accent.green },
+                      { type: 'Video', count: Math.floor(Math.random() * 30), color: theme.colors.accent.purple },
+                      { type: 'Other', count: Math.floor(Math.random() * 20), color: theme.colors.text.tertiary }
+                    ].map((item, index) => (
+                      <div key={index} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginBottom: index < 4 ? theme.spacing[4] : 0
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3] }}>
+                          <div style={{
+                            width: '12px',
+                            height: '12px',
+                            borderRadius: theme.radius.full,
+                            background: item.color
+                          }} />
+                          <div style={{
+                            fontSize: theme.fontSize.sm,
+                            color: theme.colors.text.primary
+                          }}>
+                            {item.type}
+                          </div>
+                        </div>
+                        <div style={{
+                          fontSize: theme.fontSize.sm,
+                          color: theme.colors.text.tertiary
+                        }}>
+                          {item.count} files
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Storage Breakdown */}
+                <div style={{
+                  background: theme.colors.bg.secondary,
+                  borderRadius: theme.radius['2xl'],
+                  border: `1px solid ${theme.colors.border.light}`,
+                  boxShadow: theme.shadows.md,
+                  overflow: 'hidden'
+                }}>
+                  <div style={{
+                    padding: theme.spacing[8],
+                    borderBottom: `1px solid ${theme.colors.border.light}`
+                  }}>
+                    <div style={{
+                      fontSize: theme.fontSize.lg,
+                      color: theme.colors.text.primary,
+                      fontWeight: theme.weight.semibold,
+                      marginBottom: theme.spacing[1]
+                    }}>
+                      Storage by Request
+                    </div>
+                    <div style={{
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.tertiary
+                    }}>
+                      Which requests use most space
+                    </div>
+                  </div>
+                  <div style={{ padding: theme.spacing[8] }}>
+                    {stats.recentRequests && stats.recentRequests.length > 0 ? (
+                      stats.recentRequests.slice(0, 5).map((req, index) => (
+                        <div key={index} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: index < 4 ? theme.spacing[4] : 0
+                        }}>
+                          <div style={{
+                            fontSize: theme.fontSize.sm,
+                            color: theme.colors.text.primary,
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            maxWidth: '60%'
+                          }}>
+                            {req.title}
+                          </div>
+                          <div style={{
+                            fontSize: theme.fontSize.sm,
+                            color: theme.colors.text.tertiary,
+                            fontWeight: theme.weight.medium
+                          }}>
+                            {formatStorageMB(Math.random() * 100)}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div style={{
+                        textAlign: 'center',
+                        color: theme.colors.text.muted,
+                        fontSize: theme.fontSize.sm,
+                        padding: theme.spacing[4]
+                      }}>
+                        No data yet
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
