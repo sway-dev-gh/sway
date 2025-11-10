@@ -2126,12 +2126,12 @@ function Requests() {
       >
         {/* Top Toolbar */}
         <div style={{
-          height: '64px',
+          height: '50px',
           borderBottom: '1px solid #2a2a2a',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 32px',
+          padding: '0 20px',
           background: '#0a0a0a'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -2341,14 +2341,14 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ padding: '20px 16px' }}>
+            <div style={{ padding: '12px 12px' }}>
               {activeTab === 'templates' ? (
                 <>
                   <div style={{
-                    fontSize: '11px',
+                    fontSize: '10px',
                     fontWeight: '600',
                     color: '#666',
-                    marginBottom: '16px',
+                    marginBottom: '10px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -2364,8 +2364,8 @@ function Requests() {
                         key={template.id}
                         onClick={() => handleTemplateClick(template)}
                         style={{
-                          padding: '14px',
-                          marginBottom: '10px',
+                          padding: '10px',
+                          marginBottom: '8px',
                           background: 'rgba(255, 255, 255, 0.02)',
                           border: `1px solid ${theme.colors.border.light}`,
                           borderRadius: theme.radius.md,
@@ -2499,7 +2499,7 @@ function Requests() {
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            padding: '40px'
+            padding: '20px'
           }}>
             <div
               ref={canvasRef}
@@ -2509,8 +2509,8 @@ function Requests() {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               style={{
-                width: '1200px',
-                height: '800px',
+                width: '1000px',
+                height: '500px',
                 background: '#000000',
                 borderRadius: '8px',
                 position: 'relative',
@@ -2556,7 +2556,7 @@ function Requests() {
         {/* BOTTOM PROPERTIES BAR */}
         {selectedElement ? (
           <div style={{
-            height: '180px',
+            height: '140px',
             borderTop: '1px solid #2a2a2a',
             background: '#0a0a0a',
             display: 'flex',
@@ -2568,7 +2568,7 @@ function Requests() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              padding: '12px 24px',
+              padding: '8px 20px',
               borderBottom: '1px solid #2a2a2a'
             }}>
               <div style={{
@@ -2622,7 +2622,7 @@ function Requests() {
               flex: 1,
               overflowX: 'auto',
               overflowY: 'hidden',
-              padding: '16px 24px'
+              padding: '10px 20px'
             }}>
               <div style={{
                 display: 'flex',
@@ -2893,16 +2893,16 @@ function Requests() {
           </div>
         ) : (
           <div style={{
-            height: '60px',
+            height: '50px',
             borderTop: '1px solid #2a2a2a',
             background: '#0a0a0a',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: '#666',
-            fontSize: '12px'
+            fontSize: '11px'
           }}>
-            <span style={{ marginRight: '8px', fontSize: '16px', opacity: 0.3 }}>◇</span>
+            <span style={{ marginRight: '8px', fontSize: '14px', opacity: 0.3 }}>◇</span>
             Select an element to edit its properties
           </div>
         )}
