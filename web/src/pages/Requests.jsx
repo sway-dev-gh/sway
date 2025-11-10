@@ -3216,79 +3216,24 @@ function Requests() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'rgba(0, 0, 0, 0.9)',
+          background: '#000',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 10000,
-          padding: '40px'
+          zIndex: 10000
         }}
         onClick={() => setShowPreviewModal(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: '#000',
-              border: '1px solid #2a2a2a',
-              borderRadius: '12px',
-              maxWidth: '1400px',
-              width: '100%',
-              maxHeight: '90vh',
-              overflow: 'auto',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8)'
+              width: '1200px',
+              height: '800px',
+              background: '#0a0a0a',
+              position: 'relative',
+              overflow: 'hidden'
             }}
           >
-            {/* Header */}
-            <div style={{
-              padding: '24px 32px',
-              borderBottom: '1px solid #2a2a2a',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center'
-            }}>
-              <div>
-                <div style={{ fontSize: '24px', fontWeight: '600', color: '#ffffff', marginBottom: '4px' }}>
-                  Form Preview
-                </div>
-                <div style={{ fontSize: '14px', color: '#666' }}>
-                  {formTitle}
-                </div>
-              </div>
-              <button
-                onClick={() => setShowPreviewModal(false)}
-                style={{
-                  background: 'transparent',
-                  border: '1px solid #2a2a2a',
-                  color: '#ffffff',
-                  padding: '8px 16px',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
-                }}
-              >
-                Close Preview
-              </button>
-            </div>
-
-            {/* Canvas Preview */}
-            <div style={{
-              padding: '40px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              minHeight: '600px'
-            }}>
-              <div style={{
-                width: '1200px',
-                height: '800px',
-                background: '#0a0a0a',
-                border: '1px solid #2a2a2a',
-                borderRadius: '8px',
-                position: 'relative',
-                overflow: 'hidden'
-              }}>
                 {canvasElements.length === 0 ? (
                   <div style={{
                     display: 'flex',
@@ -3336,8 +3281,6 @@ function Requests() {
                     </div>
                   ))
                 )}
-              </div>
-            </div>
           </div>
         </div>
       )}

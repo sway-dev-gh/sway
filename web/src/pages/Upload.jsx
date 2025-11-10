@@ -433,14 +433,8 @@ function Upload() {
               transition: `all ${theme.transition.fast}`,
               position: 'relative'
             }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = theme.colors.border.dark
-              e.currentTarget.style.background = theme.colors.bg.hover
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-              e.currentTarget.style.background = theme.colors.bg.page
-            }}
+}
+}
             >
               <input
                 type="file"
@@ -547,9 +541,8 @@ function Upload() {
                         fontFamily: 'inherit',
                         transition: `color ${theme.transition.fast}`
                       }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = theme.colors.text.primary}
-                      onMouseLeave={(e) => e.currentTarget.style.color = theme.colors.text.tertiary}
-                    >
+
+>
                       ×
                     </button>
                   </div>

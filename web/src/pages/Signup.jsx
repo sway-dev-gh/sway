@@ -155,16 +155,8 @@ export default function Signup() {
                 width: '100%',
                 ...(loading && theme.buttons.primary.disabled)
               }}
-              onMouseEnter={(e) => {
-                if (!loading) {
-                  Object.assign(e.currentTarget.style, theme.buttons.primary.hover)
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!loading) {
-                  e.currentTarget.style.background = theme.buttons.primary.base.background
-                }
-              }}
+}}
+}}
             >
               {loading ? 'Creating account...' : 'Sign Up'}
             </button>

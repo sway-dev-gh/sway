@@ -90,7 +90,7 @@ function Settings() {
             gap: theme.spacing[5]
           }}>
 
-            {/* Profile Section */}
+            {/* Email Address */}
             <div style={{
               padding: '32px',
               borderRadius: theme.radius.lg,
@@ -98,112 +98,22 @@ function Settings() {
               background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <div style={{
-                marginBottom: theme.spacing[6]
+                fontSize: '11px',
+                color: theme.colors.text.tertiary,
+                marginBottom: theme.spacing[2],
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
               }}>
-                <div style={{
-                  fontSize: '20px',
-                  color: theme.colors.text.primary,
-                  fontWeight: '600',
-                  marginBottom: '4px',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                }}>
-                  Profile
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.tertiary
-                }}>
-                  Your account information
-                </div>
+                Email Address
               </div>
-
               <div style={{
-                padding: '20px',
-                background: 'rgba(0, 0, 0, 0.2)',
-                borderRadius: theme.radius.md,
-                border: `1px solid ${theme.colors.border.light}`
+                fontSize: '16px',
+                color: theme.colors.text.primary,
+                fontWeight: '500',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
               }}>
-                <div style={{
-                  fontSize: '11px',
-                  color: theme.colors.text.tertiary,
-                  marginBottom: theme.spacing[2],
-                  fontWeight: '600',
-                  textTransform: 'uppercase',
-                  letterSpacing: '1px'
-                }}>
-                  Email Address
-                </div>
-                <div style={{
-                  fontSize: '16px',
-                  color: theme.colors.text.primary,
-                  fontWeight: '500',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                }}>
-                  {user.email}
-                </div>
-              </div>
-            </div>
-
-            {/* Security Section */}
-            <div style={{
-              padding: '32px',
-              borderRadius: theme.radius.lg,
-              border: `1px solid ${theme.colors.border.light}`,
-              background: 'rgba(255, 255, 255, 0.02)'
-            }}>
-              <div style={{
-                marginBottom: theme.spacing[6]
-              }}>
-                <div style={{
-                  fontSize: '20px',
-                  color: theme.colors.text.primary,
-                  fontWeight: '600',
-                  marginBottom: '4px',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                }}>
-                  Security
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.tertiary
-                }}>
-                  Manage your account security
-                </div>
-              </div>
-
-              <div style={{
-                padding: '20px',
-                background: 'rgba(0, 0, 0, 0.2)',
-                borderRadius: theme.radius.md,
-                border: `1px solid ${theme.colors.border.light}`,
-                marginBottom: theme.spacing[4]
-              }}>
-                <div style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.primary,
-                  marginBottom: '8px',
-                  fontWeight: '500'
-                }}>
-                  Password
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.tertiary,
-                  marginBottom: theme.spacing[4]
-                }}>
-                  Last changed: Never
-                </div>
-                <button
-                  style={theme.buttons.secondary.base}
-                  onMouseEnter={(e) => {
-                    Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
-                  }}
-                  onMouseLeave={(e) => {
-                    Object.assign(e.currentTarget.style, theme.buttons.secondary.base)
-                  }}
-                >
-                  Change Password
-                </button>
+                {user.email}
               </div>
             </div>
 
@@ -269,12 +179,6 @@ function Settings() {
                   style={{
                     ...theme.buttons.danger.base,
                     whiteSpace: 'nowrap'
-                  }}
-                  onMouseEnter={(e) => {
-                    Object.assign(e.currentTarget.style, theme.buttons.danger.hover)
-                  }}
-                  onMouseLeave={(e) => {
-                    Object.assign(e.currentTarget.style, theme.buttons.danger.base)
                   }}
                 >
                   Delete Account

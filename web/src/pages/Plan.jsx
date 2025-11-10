@@ -332,16 +332,8 @@ function Plan() {
                         : { ...theme.buttons.secondary.base, ...(upgrading && theme.buttons.secondary.disabled) }
                     )
                   }}
-                  onMouseEnter={(e) => {
-                    if (plan.id !== currentPlan && !upgrading) {
-                      Object.assign(e.currentTarget.style, plan.popular ? theme.buttons.primary.hover : theme.buttons.secondary.hover)
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (plan.id !== currentPlan && !upgrading) {
-                      Object.assign(e.currentTarget.style, plan.popular ? theme.buttons.primary.base : theme.buttons.secondary.base)
-                    }
-                  }}
+}}
+}}
                 >
                   {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? (currentPlan === 'pro' ? 'Switch to Free' : 'Get Started') : 'Upgrade to Pro'))}
                 </button>
@@ -509,12 +501,8 @@ function Plan() {
                 padding: '12px 32px',
                 fontSize: '16px'
               }}
-              onMouseEnter={(e) => {
-                Object.assign(e.currentTarget.style, theme.buttons.primary.hover)
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.buttons.primary.base.background
-              }}
+}
+}
             >
               Get Started
             </button>
@@ -602,15 +590,8 @@ function Plan() {
                   flex: 1,
                   padding: '12px 24px'
                 }}
-                onMouseEnter={(e) => {
-                  Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
-                }}
-                onMouseLeave={(e) => {
-                  Object.assign(e.currentTarget.style, {
-                    ...theme.buttons.secondary.base,
-                    flex: 1,
-                    padding: '12px 24px'
-                  })
+}
+)
                 }}
               >
                 Cancel
@@ -622,15 +603,8 @@ function Plan() {
                   flex: 1,
                   padding: '12px 24px'
                 }}
-                onMouseEnter={(e) => {
-                  Object.assign(e.currentTarget.style, theme.buttons.danger.hover)
-                }}
-                onMouseLeave={(e) => {
-                  Object.assign(e.currentTarget.style, {
-                    ...theme.buttons.danger.base,
-                    flex: 1,
-                    padding: '12px 24px'
-                  })
+}
+)
                 }}
               >
                 Yes, Switch to Free

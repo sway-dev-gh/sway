@@ -596,12 +596,6 @@ function Responses() {
                         transition: 'background 0.15s ease'
                       }}
                       onClick={() => setSelectedFormId(isExpanded ? null : form.id)}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = index % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent'
-                      }}
                     >
                       <div style={{ fontWeight: '500' }}>{form.title}</div>
                       <div>

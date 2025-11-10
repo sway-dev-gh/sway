@@ -171,14 +171,8 @@ function Notifications() {
                       cursor: 'pointer',
                       transition: 'all 0.2s ease'
                     }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-                      e.currentTarget.style.borderColor = theme.colors.border.medium
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-                      e.currentTarget.style.borderColor = theme.colors.border.light
-                    }}
+}
+}
                     onClick={() => navigate('/responses')}
                   >
                     {/* Icon */}

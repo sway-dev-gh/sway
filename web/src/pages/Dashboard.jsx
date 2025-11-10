@@ -257,12 +257,6 @@ function Dashboard() {
                 ...theme.buttons.primary.base,
                 textDecoration: 'none',
                 display: 'inline-block'
-              }}
-              onMouseEnter={(e) => {
-                Object.assign(e.currentTarget.style, theme.buttons.primary.hover)
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.buttons.primary.base.background
               }}>
                 Go to Builder
               </Link>
@@ -294,12 +288,6 @@ function Dashboard() {
                 ...theme.buttons.secondary.base,
                 textDecoration: 'none',
                 display: 'inline-block'
-              }}
-              onMouseEnter={(e) => {
-                Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
-              }}
-              onMouseLeave={(e) => {
-                Object.assign(e.currentTarget.style, theme.buttons.secondary.base)
               }}>
                 Go to Tracking
               </Link>
@@ -322,16 +310,6 @@ function Dashboard() {
                 transition: 'all 0.2s ease',
                 position: 'relative',
                 overflow: 'hidden'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
-                e.currentTarget.style.borderColor = theme.colors.white
-                e.currentTarget.style.transform = 'translateY(-4px)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-                e.currentTarget.style.transform = 'translateY(0)'
               }}>
                 <div style={{
                   fontSize: '14px',
@@ -372,16 +350,6 @@ function Dashboard() {
                 transition: 'all 0.2s ease',
                 position: 'relative',
                 overflow: 'hidden'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.03)'
-                e.currentTarget.style.borderColor = theme.colors.white
-                e.currentTarget.style.transform = 'translateY(-4px)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = theme.colors.bg.secondary
-                e.currentTarget.style.borderColor = theme.colors.border.light
-                e.currentTarget.style.transform = 'translateY(0)'
               }}>
                 <div style={{
                   fontSize: '14px',

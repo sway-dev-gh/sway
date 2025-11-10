@@ -331,16 +331,6 @@ function Sidebar() {
               padding: '6px 12px',
               fontSize: '13px'
             }}
-            onMouseEnter={(e) => {
-              Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
-            }}
-            onMouseLeave={(e) => {
-              Object.assign(e.currentTarget.style, {
-                ...theme.buttons.secondary.base,
-                padding: '6px 12px',
-                fontSize: '13px'
-              })
-            }}
           >
             Sign Out
           </button>
