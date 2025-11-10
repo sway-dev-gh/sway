@@ -8,7 +8,10 @@ function Dashboard() {
   const navigate = useNavigate()
   // FORCE REBUILD - Version 3 - Nov 9 2025
   const [loading, setLoading] = useState(true)
-  const BUILD_VERSION = '1.0.5-20251109' // Force new build hash
+  // Build version for cache busting
+  if (window.__BUILD_VERSION__ !== '1.0.5-20251109') {
+    window.__BUILD_VERSION__ = '1.0.5-20251109'
+  }
   const [stats, setStats] = useState({
     totalRequests: 0,
     totalUploads: 0,
