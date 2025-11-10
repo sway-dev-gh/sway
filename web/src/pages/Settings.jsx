@@ -128,7 +128,7 @@ function Settings() {
               margin: 0,
               lineHeight: '1.6'
             }}>
-              Manage your account preferences
+              Manage your account settings
             </p>
           </div>
 
