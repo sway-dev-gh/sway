@@ -32,7 +32,11 @@ function Responses() {
       // Get user plan
       const userStr = localStorage.getItem('user')
       const user = userStr ? JSON.parse(userStr) : { plan: 'free' }
-      const userPlan = (user.plan || 'free').toLowerCase()
+
+      // Check for admin plan override
+      const adminPlanOverride = localStorage.getItem('adminPlanOverride')
+      const effectivePlan = adminPlanOverride || user.plan || 'free'
+      const userPlan = effectivePlan.toLowerCase()
       const storageLimit = userPlan === 'pro' ? 50 : 2
 
       // Fetch forms/requests
