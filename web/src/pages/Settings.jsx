@@ -95,43 +95,25 @@ function Settings() {
               padding: '32px',
               borderRadius: theme.radius.lg,
               border: `1px solid ${theme.colors.border.light}`,
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)'
+              background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: theme.spacing[3],
                 marginBottom: theme.spacing[6]
               }}>
                 <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  border: `1px solid ${theme.colors.border.light}`
+                  fontSize: '20px',
+                  color: theme.colors.text.primary,
+                  fontWeight: '600',
+                  marginBottom: '4px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
                 }}>
-                  👤
+                  Profile
                 </div>
-                <div>
-                  <div style={{
-                    fontSize: '20px',
-                    color: theme.colors.text.primary,
-                    fontWeight: '600',
-                    marginBottom: '4px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-                  }}>
-                    Profile
-                  </div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: theme.colors.text.tertiary
-                  }}>
-                    Your account information
-                  </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.tertiary
+                }}>
+                  Your account information
                 </div>
               </div>
 
@@ -167,43 +149,25 @@ function Settings() {
               padding: '32px',
               borderRadius: theme.radius.lg,
               border: `1px solid ${theme.colors.border.light}`,
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%)'
+              background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: theme.spacing[3],
                 marginBottom: theme.spacing[6]
               }}>
                 <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  border: `1px solid ${theme.colors.border.light}`
+                  fontSize: '20px',
+                  color: theme.colors.text.primary,
+                  fontWeight: '600',
+                  marginBottom: '4px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
                 }}>
-                  🔒
+                  Security
                 </div>
-                <div>
-                  <div style={{
-                    fontSize: '20px',
-                    color: theme.colors.text.primary,
-                    fontWeight: '600',
-                    marginBottom: '4px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-                  }}>
-                    Security
-                  </div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: theme.colors.text.tertiary
-                  }}>
-                    Manage your account security
-                  </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.tertiary
+                }}>
+                  Manage your account security
                 </div>
               </div>
 
@@ -261,51 +225,33 @@ function Settings() {
               padding: '32px',
               borderRadius: theme.radius.lg,
               border: `1px solid rgba(239, 68, 68, 0.3)`,
-              background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.05) 0%, rgba(239, 68, 68, 0.02) 100%)'
+              background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: theme.spacing[3],
                 marginBottom: theme.spacing[6]
               }}>
                 <div style={{
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '50%',
-                  background: 'rgba(239, 68, 68, 0.1)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '24px',
-                  border: '1px solid rgba(239, 68, 68, 0.3)'
+                  fontSize: '20px',
+                  color: theme.colors.text.primary,
+                  fontWeight: '600',
+                  marginBottom: '4px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
                 }}>
-                  ⚠️
+                  Danger Zone
                 </div>
-                <div>
-                  <div style={{
-                    fontSize: '20px',
-                    color: theme.colors.text.primary,
-                    fontWeight: '600',
-                    marginBottom: '4px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-                  }}>
-                    Danger Zone
-                  </div>
-                  <div style={{
-                    fontSize: '14px',
-                    color: theme.colors.text.tertiary
-                  }}>
-                    Irreversible and destructive actions
-                  </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.tertiary
+                }}>
+                  Irreversible and destructive actions
                 </div>
               </div>
 
               <div style={{
                 padding: '20px',
-                background: 'rgba(239, 68, 68, 0.05)',
+                background: 'rgba(0, 0, 0, 0.2)',
                 borderRadius: theme.radius.md,
-                border: '1px solid rgba(239, 68, 68, 0.2)',
+                border: `1px solid ${theme.colors.border.light}`,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',

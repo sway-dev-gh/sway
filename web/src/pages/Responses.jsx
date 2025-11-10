@@ -143,21 +143,10 @@ function Responses() {
           }}>
             <div style={{
               padding: '32px',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+              background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              position: 'relative',
-              overflow: 'hidden'
+              borderRadius: theme.radius.lg
             }}>
-              <div style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                fontSize: '48px',
-                opacity: 0.1
-              }}>
-                📁
-              </div>
               <div style={{
                 fontSize: '12px',
                 color: theme.colors.text.secondary,
@@ -189,21 +178,10 @@ function Responses() {
 
             <div style={{
               padding: '32px',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+              background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              position: 'relative',
-              overflow: 'hidden'
+              borderRadius: theme.radius.lg
             }}>
-              <div style={{
-                position: 'absolute',
-                top: '10px',
-                right: '10px',
-                fontSize: '48px',
-                opacity: 0.1
-              }}>
-                💾
-              </div>
               <div style={{
                 fontSize: '12px',
                 color: theme.colors.text.secondary,
@@ -277,12 +255,10 @@ function Responses() {
                     background: 'rgba(255, 255, 255, 0.02)'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-4px)'
                     e.currentTarget.style.borderColor = theme.colors.border.medium
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)'
                     e.currentTarget.style.borderColor = theme.colors.border.light
                     e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
                   }}
