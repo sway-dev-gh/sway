@@ -7,7 +7,13 @@ import api from '../api/axios'
 function Responses() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
-  const [responses, setResponses] = useState([])
+  const [forms, setForms] = useState([])
+  const [uploads, setUploads] = useState([])
+  const [selectedFormId, setSelectedFormId] = useState(null)
+  const [filterStatus, setFilterStatus] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
+  const [storageStats, setStorageStats] = useState({ used: 0, limit: 2 })
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -16,19 +22,31 @@ function Responses() {
       return
     }
 
-    fetchResponses()
+    fetchData()
   }, [navigate])
 
-  const fetchResponses = async () => {
+  const fetchData = async () => {
     try {
       const token = localStorage.getItem('token')
-      const { data } = await api.get('/api/files', {
+
+      // Fetch forms/requests
+      const requestsResponse = await api.get('/api/requests', {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      setResponses(data.files || [])
+      // Fetch all uploads
+      const uploadsResponse = await api.get('/api/files', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setForms(requestsResponse.data.requests || [])
+      setUploads(uploadsResponse.data.files || [])
+
+      // Calculate storage
+      const totalStorage = (uploadsResponse.data.files || []).reduce((sum, file) => sum + (file.fileSize || 0), 0)
+      setStorageStats({ used: totalStorage / (1024 * 1024 * 1024), limit: 2 }) // Convert to GB
     } catch (err) {
-      console.error('Failed to fetch responses:', err)
+      console.error('Failed to fetch data:', err)
     } finally {
       setLoading(false)
     }
@@ -45,7 +63,7 @@ function Responses() {
       const url = window.URL.createObjectURL(response.data)
       const a = document.createElement('a')
       a.href = url
-      a.download = responses.find(r => r.id === id)?.fileName || 'download'
+      a.download = uploads.find(u => u.id === id)?.fileName || 'download'
       document.body.appendChild(a)
       a.click()
       window.URL.revokeObjectURL(url)
@@ -73,6 +91,86 @@ function Responses() {
       minute: '2-digit'
     })
   }
+
+  const getTimeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000)
+    if (seconds < 60) return 'Just now'
+    const minutes = Math.floor(seconds / 60)
+    if (minutes < 60) return `${minutes}m ago`
+    const hours = Math.floor(minutes / 60)
+    if (hours < 24) return `${hours}h ago`
+    const days = Math.floor(hours / 24)
+    if (days < 7) return `${days}d ago`
+    return formatDate(date)
+  }
+
+  const getFormStatus = (form) => {
+    // TODO: Add actual status logic when backend supports it
+    // For now, all forms are "Live"
+    return 'Live'
+  }
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Live': return '#10b981'
+      case 'Draft': return '#6b7280'
+      case 'Paused': return '#f59e0b'
+      case 'Expired': return '#ef4444'
+      default: return '#6b7280'
+    }
+  }
+
+  const getFormUploads = (formId) => {
+    return uploads.filter(upload => {
+      const form = forms.find(f => f.id === formId)
+      return form && upload.requestCode === form.shortCode
+    })
+  }
+
+  const getFormStorageUsed = (formId) => {
+    const formUploads = getFormUploads(formId)
+    return formUploads.reduce((sum, upload) => sum + (upload.fileSize || 0), 0)
+  }
+
+  const getLastUploadTime = (formId) => {
+    const formUploads = getFormUploads(formId)
+    if (formUploads.length === 0) return null
+    const latest = formUploads.reduce((latest, upload) => {
+      return new Date(upload.uploadedAt) > new Date(latest.uploadedAt) ? upload : latest
+    }, formUploads[0])
+    return latest.uploadedAt
+  }
+
+  // Filter and sort forms
+  const filteredForms = forms
+    .filter(form => {
+      // Search filter
+      if (searchQuery && !form.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false
+      }
+      // Status filter
+      if (filterStatus !== 'all') {
+        const status = getFormStatus(form)
+        if (status.toLowerCase() !== filterStatus.toLowerCase()) {
+          return false
+        }
+      }
+      return true
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'newest':
+          return new Date(b.createdAt) - new Date(a.createdAt)
+        case 'oldest':
+          return new Date(a.createdAt) - new Date(b.createdAt)
+        case 'most-uploads':
+          return getFormUploads(b.id).length - getFormUploads(a.id).length
+        case 'name-az':
+          return a.title.localeCompare(b.title)
+        default:
+          return 0
+      }
+    })
 
   if (loading) {
     return (
@@ -112,11 +210,11 @@ function Responses() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[6], textAlign: 'center' }}>
+          <div style={{ marginBottom: theme.spacing[6] }}>
             <h1 style={{
               fontSize: '48px',
               fontWeight: '600',
-              margin: 0,
+              margin: '0 0 12px 0',
               color: theme.colors.text.primary,
               letterSpacing: '-0.02em',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
@@ -126,31 +224,103 @@ function Responses() {
             <p style={{
               fontSize: '18px',
               color: theme.colors.text.secondary,
-              margin: '12px 0 0 0',
+              margin: 0,
               lineHeight: '1.6'
             }}>
-              Track your forms and file uploads
+              Comprehensive operational dashboard for all your forms and uploads
             </p>
           </div>
 
-          {/* Stats */}
+          {/* Top Stats - 4 Cards */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
+            gridTemplateColumns: 'repeat(4, 1fr)',
             gap: theme.spacing[4],
-            marginBottom: theme.spacing[7],
-            width: '100%'
+            marginBottom: theme.spacing[7]
           }}>
+            {/* Total Forms */}
             <div style={{
-              padding: '32px',
+              padding: '24px',
               background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
               borderRadius: theme.radius.lg
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '11px',
                 color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[3],
+                marginBottom: theme.spacing[2],
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+              }}>
+                Total Forms
+              </div>
+              <div style={{
+                fontSize: '40px',
+                fontWeight: '700',
+                color: theme.colors.text.primary,
+                lineHeight: '1',
+                marginBottom: theme.spacing[1],
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {forms.length}
+              </div>
+              <div style={{
+                fontSize: '13px',
+                color: theme.colors.text.tertiary
+              }}>
+                All time
+              </div>
+            </div>
+
+            {/* Live Forms */}
+            <div style={{
+              padding: '24px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg
+            }}>
+              <div style={{
+                fontSize: '11px',
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[2],
+                fontWeight: '600',
+                textTransform: 'uppercase',
+                letterSpacing: '1px'
+              }}>
+                Live Forms
+              </div>
+              <div style={{
+                fontSize: '40px',
+                fontWeight: '700',
+                color: '#10b981',
+                lineHeight: '1',
+                marginBottom: theme.spacing[1],
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {forms.filter(f => getFormStatus(f) === 'Live').length}
+              </div>
+              <div style={{
+                fontSize: '13px',
+                color: theme.colors.text.tertiary
+              }}>
+                Active now
+              </div>
+            </div>
+
+            {/* Total Uploads */}
+            <div style={{
+              padding: '24px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg
+            }}>
+              <div style={{
+                fontSize: '11px',
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[2],
                 fontWeight: '600',
                 textTransform: 'uppercase',
                 letterSpacing: '1px'
@@ -158,34 +328,35 @@ function Responses() {
                 Total Uploads
               </div>
               <div style={{
-                fontSize: '56px',
+                fontSize: '40px',
                 fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[2],
+                marginBottom: theme.spacing[1],
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                 fontVariantNumeric: 'tabular-nums'
               }}>
-                {responses.length}
+                {uploads.length}
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: '13px',
                 color: theme.colors.text.tertiary
               }}>
                 Files received
               </div>
             </div>
 
+            {/* Storage Used */}
             <div style={{
-              padding: '32px',
+              padding: '24px',
               background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
               borderRadius: theme.radius.lg
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '11px',
                 color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[3],
+                marginBottom: theme.spacing[2],
                 fontWeight: '600',
                 textTransform: 'uppercase',
                 letterSpacing: '1px'
@@ -193,7 +364,7 @@ function Responses() {
                 Storage Used
               </div>
               <div style={{
-                fontSize: '56px',
+                fontSize: '40px',
                 fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1',
@@ -201,24 +372,133 @@ function Responses() {
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
                 fontVariantNumeric: 'tabular-nums'
               }}>
-                {formatBytes(responses.reduce((sum, r) => sum + (r.fileSize || 0), 0))}
+                {storageStats.used.toFixed(2)} GB
               </div>
               <div style={{
-                fontSize: '14px',
+                width: '100%',
+                height: '4px',
+                background: theme.colors.border.light,
+                borderRadius: '2px',
+                overflow: 'hidden',
+                marginBottom: theme.spacing[1]
+              }}>
+                <div style={{
+                  width: `${Math.min((storageStats.used / storageStats.limit) * 100, 100)}%`,
+                  height: '100%',
+                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#10b981',
+                  transition: 'width 0.3s ease'
+                }} />
+              </div>
+              <div style={{
+                fontSize: '13px',
                 color: theme.colors.text.tertiary
               }}>
-                Across all uploads
+                of {storageStats.limit} GB
               </div>
             </div>
           </div>
 
-          {/* Responses Grid */}
-          {responses.length === 0 ? (
+          {/* Filter/Search Bar */}
+          <div style={{
+            display: 'flex',
+            gap: theme.spacing[3],
+            marginBottom: theme.spacing[4],
+            alignItems: 'center',
+            flexWrap: 'wrap'
+          }}>
+            {/* Search */}
+            <input
+              type="text"
+              placeholder="Search forms..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              style={{
+                flex: '1',
+                minWidth: '200px',
+                padding: '10px 16px',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.md,
+                color: theme.colors.text.primary,
+                fontSize: '14px',
+                fontFamily: 'inherit',
+                outline: 'none'
+              }}
+            />
+
+            {/* Filter by Status */}
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              style={{
+                padding: '10px 16px',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.md,
+                color: theme.colors.text.primary,
+                fontSize: '14px',
+                fontFamily: 'inherit',
+                cursor: 'pointer',
+                outline: 'none'
+              }}
+            >
+              <option value="all">All Forms</option>
+              <option value="live">Live</option>
+              <option value="draft">Draft</option>
+              <option value="paused">Paused</option>
+              <option value="expired">Expired</option>
+            </select>
+
+            {/* Sort */}
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              style={{
+                padding: '10px 16px',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.md,
+                color: theme.colors.text.primary,
+                fontSize: '14px',
+                fontFamily: 'inherit',
+                cursor: 'pointer',
+                outline: 'none'
+              }}
+            >
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="most-uploads">Most Uploads</option>
+              <option value="name-az">Name A-Z</option>
+            </select>
+
+            {/* New Form Button */}
+            <button
+              onClick={() => navigate('/requests')}
+              style={{
+                padding: '10px 20px',
+                background: theme.colors.white,
+                color: theme.colors.black,
+                border: 'none',
+                borderRadius: theme.radius.md,
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              + New Form
+            </button>
+          </div>
+
+          {/* Forms Table */}
+          {filteredForms.length === 0 ? (
             <div style={{
               textAlign: 'center',
               padding: '80px 40px',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg
+              borderRadius: theme.radius.lg,
+              background: 'rgba(255, 255, 255, 0.02)'
             }}>
               <h3 style={{
                 fontSize: theme.fontSize.lg,
@@ -226,120 +506,354 @@ function Responses() {
                 color: theme.colors.text.primary,
                 margin: '0 0 8px 0'
               }}>
-                No uploads yet
+                {forms.length === 0 ? 'No forms yet' : 'No forms match your filters'}
               </h3>
               <p style={{
                 fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                margin: 0
+                margin: '0 0 20px 0'
               }}>
-                When someone uploads a file to your requests, it will appear here
+                {forms.length === 0
+                  ? 'Create your first form in Builder to start collecting files'
+                  : 'Try adjusting your search or filters'}
               </p>
+              {forms.length === 0 && (
+                <button
+                  onClick={() => navigate('/requests')}
+                  style={{
+                    padding: '12px 24px',
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    border: 'none',
+                    borderRadius: theme.radius.md,
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  Create First Form
+                </button>
+              )}
             </div>
           ) : (
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
-              gap: theme.spacing[4],
-              width: '100%'
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              background: 'rgba(255, 255, 255, 0.02)',
+              overflow: 'hidden'
             }}>
-              {responses.map((response) => (
-                <div
-                  key={response.id}
-                  style={{
-                    border: `1px solid ${theme.colors.border.light}`,
-                    borderRadius: theme.radius.lg,
-                    padding: theme.spacing[5],
-                    transition: 'all 0.2s ease',
-                    cursor: 'pointer',
-                    background: 'rgba(255, 255, 255, 0.02)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.borderColor = theme.colors.border.light
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-                  }}
-                >
-                  {/* File Name */}
-                  <h3 style={{
-                    fontSize: theme.fontSize.base,
-                    fontWeight: theme.weight.medium,
-                    color: theme.colors.text.primary,
-                    margin: `0 0 ${theme.spacing[3]}`,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    whiteSpace: 'nowrap'
-                  }}>
-                    {response.fileName}
-                  </h3>
+              {/* Table Header */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '2fr 100px 120px 100px 100px 140px 140px 140px',
+                padding: '16px 20px',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderBottom: `1px solid ${theme.colors.border.light}`,
+                fontSize: '12px',
+                fontWeight: '600',
+                color: theme.colors.text.secondary,
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                <div>Form Name</div>
+                <div>Status</div>
+                <div>Template</div>
+                <div>Responses</div>
+                <div>Storage</div>
+                <div>Created</div>
+                <div>Last Upload</div>
+                <div>Actions</div>
+              </div>
 
-                  {/* File Size & Request */}
-                  <div style={{
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.text.secondary,
-                    marginBottom: theme.spacing[4]
-                  }}>
-                    {formatBytes(response.fileSize)} • {response.requestTitle}
-                  </div>
+              {/* Table Rows */}
+              {filteredForms.map((form, index) => {
+                const formUploads = getFormUploads(form.id)
+                const status = getFormStatus(form)
+                const statusColor = getStatusColor(status)
+                const storageUsed = getFormStorageUsed(form.id)
+                const lastUpload = getLastUploadTime(form.id)
+                const isExpanded = selectedFormId === form.id
 
-                  {/* Uploader Name */}
-                  <div style={{
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.text.secondary,
-                    marginBottom: theme.spacing[1]
-                  }}>
-                    {response.uploaderName}
-                  </div>
-
-                  {/* Uploader Email */}
-                  {response.uploaderEmail && (
-                    <div style={{
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.tertiary,
-                      marginBottom: theme.spacing[4],
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}>
-                      {response.uploaderEmail}
+                return (
+                  <div key={form.id}>
+                    {/* Row */}
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '2fr 100px 120px 100px 100px 140px 140px 140px',
+                        padding: '16px 20px',
+                        background: index % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
+                        borderBottom: `1px solid ${theme.colors.border.light}`,
+                        fontSize: '14px',
+                        color: theme.colors.text.primary,
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        transition: 'background 0.15s ease'
+                      }}
+                      onClick={() => setSelectedFormId(isExpanded ? null : form.id)}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = index % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent'
+                      }}
+                    >
+                      <div style={{ fontWeight: '500' }}>{form.title}</div>
+                      <div>
+                        <span style={{
+                          padding: '4px 10px',
+                          background: `${statusColor}15`,
+                          color: statusColor,
+                          borderRadius: '12px',
+                          fontSize: '12px',
+                          fontWeight: '600'
+                        }}>
+                          {status}
+                        </span>
+                      </div>
+                      <div style={{ color: theme.colors.text.secondary }}>Blank</div>
+                      <div style={{ fontWeight: '600', fontVariantNumeric: 'tabular-nums' }}>{formUploads.length}</div>
+                      <div style={{ color: theme.colors.text.secondary, fontVariantNumeric: 'tabular-nums' }}>
+                        {formatBytes(storageUsed)}
+                      </div>
+                      <div style={{ color: theme.colors.text.secondary, fontSize: '13px' }}>
+                        {formatDate(form.createdAt).split(',')[0]}
+                      </div>
+                      <div style={{ color: theme.colors.text.secondary, fontSize: '13px' }}>
+                        {lastUpload ? getTimeAgo(lastUpload) : '-'}
+                      </div>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            setSelectedFormId(isExpanded ? null : form.id)
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            background: 'transparent',
+                            color: theme.colors.text.secondary,
+                            border: `1px solid ${theme.colors.border.light}`,
+                            borderRadius: theme.radius.sm,
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            cursor: 'pointer',
+                            fontFamily: 'inherit'
+                          }}
+                        >
+                          View
+                        </button>
+                      </div>
                     </div>
-                  )}
 
-                  {/* Date */}
-                  <div style={{
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.text.tertiary,
-                    marginBottom: theme.spacing[5]
-                  }}>
-                    {formatDate(response.uploadedAt)}
+                    {/* Expanded Details Panel */}
+                    {isExpanded && (
+                      <div style={{
+                        padding: '24px',
+                        background: 'rgba(255, 255, 255, 0.02)',
+                        borderBottom: `1px solid ${theme.colors.border.light}`
+                      }}>
+                        <div style={{
+                          display: 'grid',
+                          gridTemplateColumns: '1fr 2fr',
+                          gap: theme.spacing[6]
+                        }}>
+                          {/* Left: Form Info */}
+                          <div>
+                            <h3 style={{
+                              fontSize: '16px',
+                              fontWeight: '600',
+                              color: theme.colors.text.primary,
+                              margin: '0 0 16px 0'
+                            }}>
+                              Form Details
+                            </h3>
+
+                            <div style={{ marginBottom: theme.spacing[4] }}>
+                              <div style={{
+                                fontSize: '12px',
+                                color: theme.colors.text.secondary,
+                                marginBottom: '6px',
+                                fontWeight: '600'
+                              }}>
+                                Public URL
+                              </div>
+                              <div style={{
+                                display: 'flex',
+                                gap: '8px',
+                                alignItems: 'center'
+                              }}>
+                                <input
+                                  type="text"
+                                  readOnly
+                                  value={`${window.location.origin}/upload/${form.shortCode}`}
+                                  style={{
+                                    flex: 1,
+                                    padding: '8px 12px',
+                                    background: 'rgba(255, 255, 255, 0.02)',
+                                    border: `1px solid ${theme.colors.border.light}`,
+                                    borderRadius: theme.radius.sm,
+                                    color: theme.colors.text.primary,
+                                    fontSize: '13px',
+                                    fontFamily: 'monospace'
+                                  }}
+                                />
+                                <button
+                                  onClick={() => {
+                                    navigator.clipboard.writeText(`${window.location.origin}/upload/${form.shortCode}`)
+                                    alert('URL copied to clipboard!')
+                                  }}
+                                  style={{
+                                    padding: '8px 16px',
+                                    background: theme.colors.white,
+                                    color: theme.colors.black,
+                                    border: 'none',
+                                    borderRadius: theme.radius.sm,
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    fontFamily: 'inherit',
+                                    whiteSpace: 'nowrap'
+                                  }}
+                                >
+                                  Copy
+                                </button>
+                              </div>
+                            </div>
+
+                            <div style={{
+                              padding: '16px',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                              border: `1px solid ${theme.colors.border.light}`,
+                              borderRadius: theme.radius.md
+                            }}>
+                              <div style={{
+                                fontSize: '12px',
+                                fontWeight: '600',
+                                color: theme.colors.text.secondary,
+                                marginBottom: '12px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                              }}>
+                                Quick Stats
+                              </div>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                  <span style={{ color: theme.colors.text.secondary, fontSize: '14px' }}>Total Responses:</span>
+                                  <span style={{ color: theme.colors.text.primary, fontWeight: '600', fontSize: '14px' }}>{formUploads.length}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                  <span style={{ color: theme.colors.text.secondary, fontSize: '14px' }}>Storage Used:</span>
+                                  <span style={{ color: theme.colors.text.primary, fontWeight: '600', fontSize: '14px' }}>{formatBytes(storageUsed)}</span>
+                                </div>
+                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                  <span style={{ color: theme.colors.text.secondary, fontSize: '14px' }}>Avg File Size:</span>
+                                  <span style={{ color: theme.colors.text.primary, fontWeight: '600', fontSize: '14px' }}>
+                                    {formUploads.length > 0 ? formatBytes(storageUsed / formUploads.length) : '-'}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Right: Upload List */}
+                          <div>
+                            <h3 style={{
+                              fontSize: '16px',
+                              fontWeight: '600',
+                              color: theme.colors.text.primary,
+                              margin: '0 0 16px 0'
+                            }}>
+                              Uploads ({formUploads.length})
+                            </h3>
+
+                            {formUploads.length === 0 ? (
+                              <div style={{
+                                textAlign: 'center',
+                                padding: '40px',
+                                background: 'rgba(255, 255, 255, 0.01)',
+                                border: `1px solid ${theme.colors.border.light}`,
+                                borderRadius: theme.radius.md,
+                                color: theme.colors.text.secondary
+                              }}>
+                                No uploads yet for this form
+                              </div>
+                            ) : (
+                              <div style={{
+                                maxHeight: '400px',
+                                overflowY: 'auto',
+                                border: `1px solid ${theme.colors.border.light}`,
+                                borderRadius: theme.radius.md
+                              }}>
+                                {formUploads.map((upload, idx) => (
+                                  <div
+                                    key={upload.id}
+                                    style={{
+                                      padding: '16px',
+                                      borderBottom: idx < formUploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                                      background: idx % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent'
+                                    }}
+                                  >
+                                    <div style={{
+                                      display: 'flex',
+                                      justifyContent: 'space-between',
+                                      alignItems: 'flex-start',
+                                      marginBottom: '8px'
+                                    }}>
+                                      <div style={{ flex: 1 }}>
+                                        <div style={{
+                                          fontSize: '14px',
+                                          fontWeight: '500',
+                                          color: theme.colors.text.primary,
+                                          marginBottom: '4px'
+                                        }}>
+                                          {upload.fileName}
+                                        </div>
+                                        <div style={{
+                                          fontSize: '12px',
+                                          color: theme.colors.text.secondary
+                                        }}>
+                                          {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
+                                        </div>
+                                      </div>
+                                      <button
+                                        onClick={() => handleDownload(upload.id)}
+                                        style={{
+                                          padding: '6px 14px',
+                                          background: theme.colors.white,
+                                          color: theme.colors.black,
+                                          border: 'none',
+                                          borderRadius: theme.radius.sm,
+                                          fontSize: '12px',
+                                          fontWeight: '600',
+                                          cursor: 'pointer',
+                                          fontFamily: 'inherit',
+                                          whiteSpace: 'nowrap'
+                                        }}
+                                      >
+                                        Download
+                                      </button>
+                                    </div>
+                                    <div style={{
+                                      display: 'flex',
+                                      gap: '16px',
+                                      fontSize: '12px',
+                                      color: theme.colors.text.tertiary
+                                    }}>
+                                      <span>{formatBytes(upload.fileSize)}</span>
+                                      <span>{formatDate(upload.uploadedAt)}</span>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </div>
-
-                  {/* Download Button */}
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleDownload(response.id)
-                    }}
-                    style={{
-                      width: '100%',
-                      padding: '6px 12px',
-                      background: theme.colors.white,
-                      color: theme.colors.black,
-                      border: 'none',
-                      borderRadius: theme.radius.md,
-                      fontSize: theme.fontSize.xs,
-                      fontWeight: theme.weight.medium,
-                      cursor: 'pointer',
-                      fontFamily: 'inherit'
-                    }}
-                  >
-                    Download
-                  </button>
-                </div>
-              ))}
+                )
+              })}
             </div>
           )}
         </div>
