@@ -109,7 +109,7 @@ function Sidebar() {
   const navSections = [
     {
       items: [
-        { path: '/dashboard', label: 'Dashboard', planRequired: null },
+        { path: '/dashboard', label: 'Get Started', planRequired: null },
         { path: '/requests', label: 'Builder', planRequired: null },
         { path: '/responses', label: 'Tracking', planRequired: null },
         { path: '/plan', label: 'Plan', planRequired: null },
@@ -325,15 +325,20 @@ function Sidebar() {
           <button
             onClick={handleLogout}
             style={{
-              background: 'transparent',
-              border: `1px solid ${theme.colors.border.medium}`,
-              borderRadius: theme.radius.sm,
-              color: theme.colors.text.secondary,
-              cursor: 'pointer',
-              padding: `6px 12px`,
-              fontSize: '14px',
-              fontWeight: theme.weight.medium,
-                          }}
+              ...theme.buttons.secondary.base,
+              padding: '6px 12px',
+              fontSize: '13px'
+            }}
+            onMouseEnter={(e) => {
+              Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
+            }}
+            onMouseLeave={(e) => {
+              Object.assign(e.currentTarget.style, {
+                ...theme.buttons.secondary.base,
+                padding: '6px 12px',
+                fontSize: '13px'
+              })
+            }}
           >
             Sign Out
           </button>

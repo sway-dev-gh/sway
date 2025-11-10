@@ -88,6 +88,100 @@ const theme = {
     fast: '0.1s ease',
     normal: '0.15s ease',
     slow: '0.2s ease'
+  },
+  buttons: {
+    // Primary button - white background, black text
+    primary: {
+      base: {
+        padding: '10px 20px',
+        background: '#ffffff',
+        color: '#000000',
+        border: 'none',
+        borderRadius: '8px',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease'
+      },
+      hover: {
+        background: '#e5e5e5'
+      },
+      disabled: {
+        opacity: 0.6,
+        cursor: 'not-allowed'
+      }
+    },
+    // Secondary button - transparent with border
+    secondary: {
+      base: {
+        padding: '10px 20px',
+        background: 'transparent',
+        color: '#ffffff',
+        border: '1px solid #262626',
+        borderRadius: '8px',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease'
+      },
+      hover: {
+        background: 'rgba(255, 255, 255, 0.05)',
+        borderColor: '#404040'
+      },
+      disabled: {
+        opacity: 0.6,
+        cursor: 'not-allowed'
+      }
+    },
+    // Danger button - red theme
+    danger: {
+      base: {
+        padding: '10px 20px',
+        background: 'rgba(239, 68, 68, 0.1)',
+        color: '#ef4444',
+        border: '1px solid rgba(239, 68, 68, 0.4)',
+        borderRadius: '8px',
+        fontSize: '14px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease'
+      },
+      hover: {
+        background: '#ef4444',
+        color: '#ffffff',
+        borderColor: '#ef4444'
+      },
+      disabled: {
+        opacity: 0.6,
+        cursor: 'not-allowed'
+      }
+    },
+    // Ghost button - minimal, text only
+    ghost: {
+      base: {
+        padding: '10px 20px',
+        background: 'transparent',
+        color: '#8a8a8a',
+        border: 'none',
+        borderRadius: '8px',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease'
+      },
+      hover: {
+        background: 'rgba(255, 255, 255, 0.05)',
+        color: '#ffffff'
+      },
+      disabled: {
+        opacity: 0.6,
+        cursor: 'not-allowed'
+      }
+    }
   }
 }
 

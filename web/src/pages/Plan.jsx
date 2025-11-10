@@ -328,16 +328,22 @@ function Plan() {
                   disabled={plan.id === currentPlan || upgrading}
                   style={{
                     width: '100%',
-                    padding: '8px 16px',
-                    background: plan.id === currentPlan ? 'transparent' : (plan.popular ? theme.colors.white : 'transparent'),
-                    color: plan.id === currentPlan ? theme.colors.text.secondary : (plan.popular ? theme.colors.black : theme.colors.white),
-                    border: `1px solid ${plan.id === currentPlan ? theme.colors.border.medium : (plan.popular ? theme.colors.white : theme.colors.border.medium)}`,
-                    borderRadius: '8px',
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: '500',
-                    cursor: plan.id === currentPlan || upgrading ? 'not-allowed' : 'pointer',
-                    fontFamily: 'inherit',
-                    opacity: upgrading ? 0.6 : 1
+                    ...(plan.id === currentPlan
+                      ? { ...theme.buttons.secondary.base, cursor: 'not-allowed', opacity: 0.6 }
+                      : plan.popular
+                        ? { ...theme.buttons.primary.base, ...(upgrading && theme.buttons.primary.disabled) }
+                        : { ...theme.buttons.secondary.base, ...(upgrading && theme.buttons.secondary.disabled) }
+                    )
+                  }}
+                  onMouseEnter={(e) => {
+                    if (plan.id !== currentPlan && !upgrading) {
+                      Object.assign(e.currentTarget.style, plan.popular ? theme.buttons.primary.hover : theme.buttons.secondary.hover)
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (plan.id !== currentPlan && !upgrading) {
+                      Object.assign(e.currentTarget.style, plan.popular ? theme.buttons.primary.base : theme.buttons.secondary.base)
+                    }
                   }}
                 >
                   {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? (currentPlan === 'pro' ? 'Switch to Free' : 'Get Started') : 'Upgrade to Pro'))}
@@ -424,16 +430,19 @@ function Plan() {
               <button
                 onClick={() => setShowDowngradeModal(false)}
                 style={{
+                  ...theme.buttons.secondary.base,
                   flex: 1,
-                  padding: theme.spacing[4],
-                  background: theme.colors.bg.tertiary,
-                  color: theme.colors.text.primary,
-                  border: 'none',
-                  borderRadius: theme.radius.lg,
-                  fontSize: theme.fontSize.base,
-                  fontWeight: theme.weight.medium,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  padding: '12px 24px'
+                }}
+                onMouseEnter={(e) => {
+                  Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
+                }}
+                onMouseLeave={(e) => {
+                  Object.assign(e.currentTarget.style, {
+                    ...theme.buttons.secondary.base,
+                    flex: 1,
+                    padding: '12px 24px'
+                  })
                 }}
               >
                 Cancel
@@ -441,16 +450,19 @@ function Plan() {
               <button
                 onClick={handleDowngradeToFree}
                 style={{
+                  ...theme.buttons.danger.base,
                   flex: 1,
-                  padding: theme.spacing[4],
-                  background: theme.colors.accent.red,
-                  color: theme.colors.white,
-                  border: 'none',
-                  borderRadius: theme.radius.lg,
-                  fontSize: theme.fontSize.base,
-                  fontWeight: theme.weight.semibold,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  padding: '12px 24px'
+                }}
+                onMouseEnter={(e) => {
+                  Object.assign(e.currentTarget.style, theme.buttons.danger.hover)
+                }}
+                onMouseLeave={(e) => {
+                  Object.assign(e.currentTarget.style, {
+                    ...theme.buttons.danger.base,
+                    flex: 1,
+                    padding: '12px 24px'
+                  })
                 }}
               >
                 Yes, Switch to Free

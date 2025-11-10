@@ -83,6 +83,12 @@ function Dashboard() {
 
       const analytics = analyticsResponse.data
 
+      // If user has created forms, redirect them to Tracking (their real dashboard)
+      if (analytics.totalRequests > 0) {
+        navigate('/tracking')
+        return
+      }
+
       // Fetch files for recent activity
       const filesResponse = await api.get('/api/files', {
         headers: { Authorization: `Bearer ${token}` }
@@ -225,48 +231,39 @@ function Dashboard() {
             </p>
             <div style={{ display: 'flex', gap: theme.spacing[4], justifyContent: 'center' }}>
               <Link to="/requests" style={{
-                padding: '16px 40px',
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
-                borderRadius: theme.radius.md,
+                ...theme.buttons.primary.base,
+                padding: '14px 36px',
                 fontSize: theme.fontSize.base,
                 fontWeight: theme.weight.semibold,
-                cursor: 'pointer',
                 textDecoration: 'none',
-                display: 'inline-block',
-                transition: 'all 0.2s ease'
+                display: 'inline-block'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 255, 255, 0.15)'
+                Object.assign(e.currentTarget.style, theme.buttons.primary.hover)
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = 'none'
+                e.currentTarget.style.background = theme.buttons.primary.base.background
               }}>
                 Create Your First Form
               </Link>
               <Link to="/tracking" style={{
-                padding: '16px 40px',
-                background: 'transparent',
-                color: theme.colors.white,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: theme.radius.md,
+                ...theme.buttons.secondary.base,
+                padding: '14px 36px',
                 fontSize: theme.fontSize.base,
-                fontWeight: theme.weight.medium,
-                cursor: 'pointer',
                 textDecoration: 'none',
-                display: 'inline-block',
-                transition: 'all 0.2s ease'
+                display: 'inline-block'
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.white
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = theme.colors.border.medium
-                e.currentTarget.style.background = 'transparent'
+                Object.assign(e.currentTarget.style, {
+                  ...theme.buttons.secondary.base,
+                  padding: '14px 36px',
+                  fontSize: theme.fontSize.base,
+                  textDecoration: 'none',
+                  display: 'inline-block'
+                })
               }}>
                 View All Forms
               </Link>

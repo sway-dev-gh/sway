@@ -194,25 +194,12 @@ function Settings() {
                   Last changed: Never
                 </div>
                 <button
-                  style={{
-                    padding: '10px 20px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    color: theme.colors.text.primary,
-                    border: `1px solid ${theme.colors.border.medium}`,
-                    borderRadius: theme.radius.md,
-                    fontSize: '14px',
-                    fontWeight: '500',
-                    cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    transition: 'all 0.2s ease'
-                  }}
+                  style={theme.buttons.secondary.base}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
-                    e.currentTarget.style.borderColor = theme.colors.white
+                    Object.assign(e.currentTarget.style, theme.buttons.secondary.hover)
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
+                    Object.assign(e.currentTarget.style, theme.buttons.secondary.base)
                   }}
                 >
                   Change Password
@@ -280,27 +267,14 @@ function Settings() {
                     }
                   }}
                   style={{
-                    padding: '10px 20px',
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    color: '#ef4444',
-                    border: '1px solid rgba(239, 68, 68, 0.4)',
-                    borderRadius: theme.radius.md,
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    whiteSpace: 'nowrap',
-                    transition: 'all 0.2s ease'
+                    ...theme.buttons.danger.base,
+                    whiteSpace: 'nowrap'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#ef4444'
-                    e.currentTarget.style.color = 'white'
-                    e.currentTarget.style.borderColor = '#ef4444'
+                    Object.assign(e.currentTarget.style, theme.buttons.danger.hover)
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'
-                    e.currentTarget.style.color = '#ef4444'
-                    e.currentTarget.style.borderColor = 'rgba(239, 68, 68, 0.4)'
+                    Object.assign(e.currentTarget.style, theme.buttons.danger.base)
                   }}
                 >
                   Delete Account

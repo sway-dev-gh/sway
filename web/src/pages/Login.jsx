@@ -169,17 +169,19 @@ export default function Login() {
               type="submit"
               disabled={loading}
               style={{
+                ...theme.buttons.primary.base,
                 width: '100%',
-                padding: '8px 16px',
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
-                borderRadius: theme.radius.md,
-                fontSize: theme.fontSize.xs,
-                fontWeight: theme.weight.medium,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                fontFamily: 'inherit',
-                opacity: loading ? 0.6 : 1
+                ...(loading && theme.buttons.primary.disabled)
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  Object.assign(e.currentTarget.style, theme.buttons.primary.hover)
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.background = theme.buttons.primary.base.background
+                }
               }}
             >
               {loading ? 'Signing in...' : 'Sign In'}
