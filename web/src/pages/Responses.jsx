@@ -112,7 +112,7 @@ function Responses() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Live': return '#10b981'
+      case 'Live': return '#ffffff'
       case 'Draft': return '#6b7280'
       case 'Paused': return '#f59e0b'
       case 'Expired': return '#ef4444'
@@ -294,7 +294,7 @@ function Responses() {
               <div style={{
                 fontSize: '40px',
                 fontWeight: '700',
-                color: '#10b981',
+                color: '#ffffff',
                 lineHeight: '1',
                 marginBottom: theme.spacing[1],
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
@@ -385,7 +385,7 @@ function Responses() {
                 <div style={{
                   width: `${Math.min((storageStats.used / storageStats.limit) * 100, 100)}%`,
                   height: '100%',
-                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#10b981',
+                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#ffffff',
                   transition: 'width 0.3s ease'
                 }} />
               </div>
