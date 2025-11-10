@@ -168,8 +168,7 @@ function Notifications() {
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '16px',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s ease'
+                      cursor: 'pointer'
                     }}
 }
 }

@@ -389,8 +389,7 @@ function Responses() {
                 <div style={{
                   width: `${Math.min((storageStats.used / storageStats.limit) * 100, 100)}%`,
                   height: '100%',
-                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#ffffff',
-                  transition: 'width 0.3s ease'
+                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#ffffff'
                 }} />
               </div>
               <div style={{
@@ -592,8 +591,7 @@ function Responses() {
                         fontSize: '14px',
                         color: theme.colors.text.primary,
                         alignItems: 'center',
-                        cursor: 'pointer',
-                        transition: 'background 0.15s ease'
+                        cursor: 'pointer'
                       }}
                       onClick={() => setSelectedFormId(isExpanded ? null : form.id)}
                     >

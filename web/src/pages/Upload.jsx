@@ -429,8 +429,7 @@ function Upload() {
               borderRadius: '10px',
               background: theme.colors.bg.page,
               cursor: 'pointer',
-              padding: '40px 24px',
-              transition: `all ${theme.transition.fast}`,
+              padding: '40px 24px'
               position: 'relative'
             }}
 }
@@ -538,8 +537,7 @@ function Upload() {
                         fontSize: '20px',
                         padding: '4px 8px',
                         lineHeight: '1',
-                        fontFamily: 'inherit',
-                        transition: `color ${theme.transition.fast}`
+                        fontFamily: 'inherit'
                       }}
 
 >
@@ -578,8 +576,7 @@ function Upload() {
                   color: theme.colors.text.primary,
                   fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
-                  outline: 'none',
-                  transition: `border-color ${theme.transition.fast}`
+                  outline: 'none'
                 }}
                 onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
                 onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
@@ -614,8 +611,7 @@ function Upload() {
                   color: theme.colors.text.primary,
                   fontSize: theme.fontSize.sm,
                   fontFamily: 'inherit',
-                  outline: 'none',
-                  transition: `border-color ${theme.transition.fast}`
+                  outline: 'none'
                 }}
                 onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
                 onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
@@ -658,8 +654,7 @@ function Upload() {
                       fontSize: theme.fontSize.sm,
                       fontFamily: 'inherit',
                       outline: 'none',
-                      cursor: 'pointer',
-                      transition: `border-color ${theme.transition.fast}`
+                      cursor: 'pointer'
                     }}
                     onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
                     onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
@@ -687,8 +682,7 @@ function Upload() {
                       color: theme.colors.text.primary,
                       fontSize: theme.fontSize.sm,
                       fontFamily: 'inherit',
-                      outline: 'none',
-                      transition: `border-color ${theme.transition.fast}`
+                      outline: 'none'
                     }}
                     onFocus={(e) => e.currentTarget.style.borderColor = theme.colors.border.dark}
                     onBlur={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}

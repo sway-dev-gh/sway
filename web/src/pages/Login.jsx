@@ -152,8 +152,7 @@ export default function Login() {
             style={{
               color: theme.colors.white,
               textDecoration: 'none',
-              fontWeight: theme.weight.medium,
-              transition: `color ${theme.transition.fast}`
+              fontWeight: theme.weight.medium
             }}
           >
             Sign up

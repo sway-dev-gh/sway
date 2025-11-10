@@ -1646,8 +1646,7 @@ function Requests() {
       border: isSelected ? '2px solid #3b82f6' : '2px solid transparent',
       outline: isSelected ? '2px solid rgba(59, 130, 246, 0.3)' : 'none',
       outlineOffset: '2px',
-      borderRadius: '4px',
-      transition: isDraggingElement ? 'none' : 'all 0.15s ease',
+      borderRadius: '4px'
       boxSizing: 'border-box'
     }
 

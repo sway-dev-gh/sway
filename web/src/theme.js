@@ -159,8 +159,7 @@ const theme = {
         color: '#ffffff',
         fontSize: '14px',
         fontFamily: 'inherit',
-        outline: 'none',
-        transition: 'all 0.15s ease'
+        outline: 'none'
       },
       focus: {
         borderColor: '#404040',
@@ -183,8 +182,7 @@ const theme = {
         fontFamily: 'inherit',
         outline: 'none',
         resize: 'vertical',
-        minHeight: '80px',
-        transition: 'all 0.15s ease'
+        minHeight: '80px'
       },
       focus: {
         borderColor: '#404040',
@@ -212,8 +210,7 @@ const theme = {
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
-        fontFamily: 'inherit',
-        transition: 'all 0.15s ease'
+        fontFamily: 'inherit'
       },
       hover: {
         background: '#e5e5e5'
@@ -234,8 +231,7 @@ const theme = {
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
-        fontFamily: 'inherit',
-        transition: 'all 0.15s ease'
+        fontFamily: 'inherit'
       },
       hover: {
         background: 'rgba(255, 255, 255, 0.05)',
@@ -257,8 +253,7 @@ const theme = {
         fontSize: '14px',
         fontWeight: '600',
         cursor: 'pointer',
-        fontFamily: 'inherit',
-        transition: 'all 0.15s ease'
+        fontFamily: 'inherit'
       },
       hover: {
         background: '#ef4444',
@@ -281,8 +276,7 @@ const theme = {
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
-        fontFamily: 'inherit',
-        transition: 'all 0.15s ease'
+        fontFamily: 'inherit'
       },
       hover: {
         background: 'rgba(255, 255, 255, 0.05)',

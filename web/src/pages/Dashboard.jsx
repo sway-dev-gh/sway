@@ -306,8 +306,7 @@ function Dashboard() {
                 border: `2px solid ${theme.colors.border.light}`,
                 borderRadius: theme.radius.xl,
                 background: theme.colors.bg.secondary,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                cursor: 'pointer'
                 position: 'relative',
                 overflow: 'hidden'
               }}>
@@ -346,8 +345,7 @@ function Dashboard() {
                 border: `2px solid ${theme.colors.border.light}`,
                 borderRadius: theme.radius.xl,
                 background: theme.colors.bg.secondary,
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
+                cursor: 'pointer'
                 position: 'relative',
                 overflow: 'hidden'
               }}>
