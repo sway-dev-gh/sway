@@ -6,11 +6,11 @@ import api from '../api/axios'
 
 function Dashboard() {
   const navigate = useNavigate()
-  // FORCE REBUILD - Version 9 - Nov 9 2025 - Fix placeholder response time
+  // FORCE REBUILD - Version 10 - Nov 9 2025 - Reduce all sizes by 20%
   const [loading, setLoading] = useState(true)
   // Build version for cache busting
-  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v9') {
-    window.__BUILD_VERSION__ = '1.0.5-20251109-v9'
+  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v10') {
+    window.__BUILD_VERSION__ = '1.0.5-20251109-v10'
   }
   const [stats, setStats] = useState({
     totalRequests: 0,
@@ -202,12 +202,12 @@ function Dashboard() {
         <div style={{
           maxWidth: '1400px',
           margin: '0 auto',
-          padding: theme.spacing[12]
+          padding: theme.spacing[8]
         }}>
           {/* Header */}
-          <div style={{ marginBottom: theme.spacing[12] }}>
+          <div style={{ marginBottom: theme.spacing[8] }}>
             <h1 style={{
-              fontSize: theme.fontSize['3xl'],
+              fontSize: theme.fontSize['2xl'],
               fontWeight: '500',
               margin: 0,
               color: theme.colors.text.primary,
@@ -216,9 +216,9 @@ function Dashboard() {
               Dashboard
             </h1>
             <p style={{
-              fontSize: theme.fontSize.lg,
+              fontSize: theme.fontSize.base,
               color: theme.colors.text.secondary,
-              margin: '12px 0 0 0',
+              margin: '8px 0 0 0',
               lineHeight: '1.6'
             }}>
               Overview of your file requests and uploads
@@ -229,62 +229,62 @@ function Dashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: theme.spacing[6],
-            marginBottom: theme.spacing[10],
+            gap: theme.spacing[4],
+            marginBottom: theme.spacing[8],
             width: '100%'
           }}>
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '32px',
-              borderRadius: '16px',
+              padding: '24px',
+              borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
                           }}>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Active Requests</div>
-              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.activeRequests}</div>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.muted }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Active Requests</div>
+              <div style={{ fontSize: theme.fontSize['2xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{stats.activeRequests}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
                 of {(user.plan || 'free').toLowerCase() === 'pro' ? '200' : '20'} available
               </div>
             </div>
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '32px',
-              borderRadius: '16px',
+              padding: '24px',
+              borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
                           }}>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Uploads</div>
-              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalUploads}</div>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.muted }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Total Uploads</div>
+              <div style={{ fontSize: theme.fontSize['2xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{stats.totalUploads}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
                 {stats.uploadsByDay && stats.uploadsByDay.length > 0 ? stats.uploadsByDay[stats.uploadsByDay.length - 1].count : 0} today
               </div>
             </div>
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '32px',
-              borderRadius: '16px',
+              padding: '24px',
+              borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
                           }}>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Storage Used</div>
-              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{formatStorageMB(stats.storageUsed)}</div>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.muted }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Storage Used</div>
+              <div style={{ fontSize: theme.fontSize['2xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{formatStorageMB(stats.storageUsed)}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
                 of {user.storage_limit_gb} GB
               </div>
             </div>
 
             <div style={{
               background: theme.colors.bg.secondary,
-              padding: '32px',
-              borderRadius: '16px',
+              padding: '24px',
+              borderRadius: '12px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
                           }}>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: theme.spacing[4], fontWeight: theme.weight.medium }}>Total Requests</div>
-              <div style={{ fontSize: theme.fontSize['3xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[2] }}>{stats.totalRequests}</div>
-              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.muted }}>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, textTransform: 'uppercase', letterSpacing: '1.2px', marginBottom: theme.spacing[3], fontWeight: theme.weight.medium }}>Total Requests</div>
+              <div style={{ fontSize: theme.fontSize['2xl'], fontWeight: theme.weight.semibold, color: theme.colors.white, lineHeight: '1', marginBottom: theme.spacing[1] }}>{stats.totalRequests}</div>
+              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.muted }}>
                 All time
               </div>
             </div>
@@ -294,31 +294,31 @@ function Dashboard() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: theme.spacing[6],
-            marginBottom: theme.spacing[10]
+            gap: theme.spacing[4],
+            marginBottom: theme.spacing[8]
           }}>
             {/* Recent Requests */}
             <div style={{
               background: theme.colors.bg.secondary,
-              borderRadius: theme.radius['2xl'],
+              borderRadius: theme.radius.xl,
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
               overflow: 'hidden'
             }}>
               <div style={{
-                padding: theme.spacing[8],
+                padding: theme.spacing[6],
                 borderBottom: `1px solid ${theme.colors.border.light}`,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
               }}>
-                <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
+                <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
                   Recent Requests
                 </div>
                 <Link
                   to="/requests"
                   style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.secondary,
                     textDecoration: 'none',
                     transition: `color ${theme.transition.fast}`
@@ -332,10 +332,10 @@ function Dashboard() {
               <div>
                 {(!stats.recentRequests || stats.recentRequests.length === 0) ? (
                   <div style={{
-                    padding: theme.spacing[16],
+                    padding: theme.spacing[12],
                     textAlign: 'center',
                     color: theme.colors.text.muted,
-                    fontSize: theme.fontSize.base
+                    fontSize: theme.fontSize.sm
                   }}>
                     No requests yet
                   </div>
@@ -344,7 +344,7 @@ function Dashboard() {
                     <div
                       key={req.id}
                       style={{
-                        padding: theme.spacing[6],
+                        padding: theme.spacing[4],
                         borderBottom: index < stats.recentRequests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                         transition: `background ${theme.transition.fast}`,
                         cursor: 'pointer'
@@ -354,15 +354,15 @@ function Dashboard() {
 
                                       >
                       <div style={{
-                        fontSize: theme.fontSize.base,
+                        fontSize: theme.fontSize.sm,
                         color: theme.colors.text.primary,
                         fontWeight: theme.weight.medium,
-                        marginBottom: theme.spacing[1]
+                        marginBottom: '4px'
                       }}>
                         {req.title}
                       </div>
                       <div style={{
-                        fontSize: theme.fontSize.sm,
+                        fontSize: theme.fontSize.xs,
                         color: theme.colors.text.tertiary
                       }}>
                         {req.uploadCount || 0} uploads • {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -376,25 +376,25 @@ function Dashboard() {
             {/* Recent Responses */}
             <div style={{
               background: theme.colors.bg.secondary,
-              borderRadius: theme.radius['2xl'],
+              borderRadius: theme.radius.xl,
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md,
               overflow: 'hidden'
             }}>
               <div style={{
-                padding: theme.spacing[8],
+                padding: theme.spacing[6],
                 borderBottom: `1px solid ${theme.colors.border.light}`,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center'
               }}>
-                <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
+                <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.primary, fontWeight: theme.weight.medium }}>
                   Recent Responses
                 </div>
                 <Link
                   to="/responses"
                   style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.secondary,
                     textDecoration: 'none',
                     transition: `color ${theme.transition.fast}`
@@ -408,10 +408,10 @@ function Dashboard() {
               <div>
                 {(!stats.recentUploads || stats.recentUploads.length === 0) ? (
                   <div style={{
-                    padding: theme.spacing[16],
+                    padding: theme.spacing[12],
                     textAlign: 'center',
                     color: theme.colors.text.muted,
-                    fontSize: theme.fontSize.base
+                    fontSize: theme.fontSize.sm
                   }}>
                     No uploads yet
                   </div>
@@ -420,15 +420,15 @@ function Dashboard() {
                     <div
                       key={file.id}
                       style={{
-                        padding: theme.spacing[6],
+                        padding: theme.spacing[4],
                         borderBottom: index < stats.recentUploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none'
                       }}
                     >
                       <div style={{
-                        fontSize: theme.fontSize.base,
+                        fontSize: theme.fontSize.sm,
                         color: theme.colors.text.primary,
                         fontWeight: theme.weight.medium,
-                        marginBottom: theme.spacing[1],
+                        marginBottom: '4px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
@@ -436,7 +436,7 @@ function Dashboard() {
                         {file.fileName}
                       </div>
                       <div style={{
-                        fontSize: theme.fontSize.sm,
+                        fontSize: theme.fontSize.xs,
                         color: theme.colors.text.tertiary
                       }}>
                         {formatFileSize(file.fileSize)} • {new Date(file.uploadedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -494,25 +494,25 @@ function Dashboard() {
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: '2fr 1fr',
-                gap: theme.spacing[6],
-                marginBottom: theme.spacing[10]
+                gap: theme.spacing[4],
+                marginBottom: theme.spacing[8]
               }}>
                 {/* Upload Trend Chart */}
                 <div style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[12],
-                  borderRadius: theme.radius['2xl'],
+                  padding: theme.spacing[8],
+                  borderRadius: theme.radius.xl,
                   border: `1px solid ${theme.colors.border.light}`,
                   boxShadow: theme.shadows.md
                 }}>
-                  <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[8] }}>
+                  <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[6] }}>
                     Upload Trend (Last 7 Days)
                   </div>
                   <div style={{
                     display: 'flex',
                     alignItems: 'flex-end',
-                    gap: theme.spacing[3],
-                    height: '200px'
+                    gap: theme.spacing[2],
+                    height: '160px'
                   }}>
                     {(stats.uploadsByDay || []).map((day, index) => (
                       <div key={index} style={{
@@ -520,7 +520,7 @@ function Dashboard() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        gap: theme.spacing[2]
+                        gap: theme.spacing[1]
                       }}>
                         <div style={{
                           width: '100%',
@@ -539,14 +539,14 @@ function Dashboard() {
                           }} />
                         </div>
                         <div style={{
-                          fontSize: theme.fontSize.xs,
+                          fontSize: '10px',
                           color: theme.colors.text.tertiary,
                           textAlign: 'center'
                         }}>
                           {day.date}
                         </div>
                         <div style={{
-                          fontSize: theme.fontSize.sm,
+                          fontSize: theme.fontSize.xs,
                           color: theme.colors.text.secondary,
                           fontWeight: theme.weight.medium
                         }}>
@@ -560,15 +560,15 @@ function Dashboard() {
                 {/* Request Types Breakdown */}
                 <div style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[12],
-                  borderRadius: theme.radius['2xl'],
+                  padding: theme.spacing[8],
+                  borderRadius: theme.radius.xl,
                   border: `1px solid ${theme.colors.border.light}`,
                   boxShadow: theme.shadows.md
                 }}>
-                  <div style={{ fontSize: theme.fontSize.base, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[6] }}>
+                  <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[4] }}>
                     Request Types
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[4] }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[3] }}>
                     {Object.entries(stats.requestsByType || {})
                       .sort((a, b) => b[1] - a[1])
                       .slice(0, 5)
@@ -580,16 +580,16 @@ function Dashboard() {
                               display: 'flex',
                               justifyContent: 'space-between',
                               alignItems: 'center',
-                              marginBottom: theme.spacing[2]
+                              marginBottom: '6px'
                             }}>
-                              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.secondary }}>
+                              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary }}>
                                 {type.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                               </div>
-                              <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.tertiary, fontWeight: theme.weight.medium }}>{count}</div>
+                              <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.tertiary, fontWeight: theme.weight.medium }}>{count}</div>
                             </div>
                             <div style={{
                               width: '100%',
-                              height: '6px',
+                              height: '5px',
                               background: theme.colors.bg.page,
                               borderRadius: theme.radius.sm,
                               overflow: 'hidden'
@@ -613,37 +613,37 @@ function Dashboard() {
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
-                gap: theme.spacing[6],
-                marginBottom: theme.spacing[10]
+                gap: theme.spacing[4],
+                marginBottom: theme.spacing[8]
               }}>
                 {/* Response Rate */}
                 <div style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[8],
-                  borderRadius: theme.radius['2xl'],
+                  padding: theme.spacing[6],
+                  borderRadius: theme.radius.xl,
                   border: `1px solid ${theme.colors.border.light}`,
                   boxShadow: theme.shadows.md
                 }}>
                   <div style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.tertiary,
-                    marginBottom: theme.spacing[3],
+                    marginBottom: theme.spacing[2],
                     textTransform: 'uppercase',
-                    letterSpacing: '1.2px',
+                    letterSpacing: '1px',
                     fontWeight: theme.weight.medium
                   }}>
                     Response Rate
                   </div>
                   <div style={{
-                    fontSize: theme.fontSize['2xl'],
+                    fontSize: theme.fontSize.xl,
                     fontWeight: theme.weight.bold,
                     color: theme.colors.accent.green,
-                    marginBottom: theme.spacing[2]
+                    marginBottom: theme.spacing[1]
                   }}>
                     {stats.totalRequests > 0 ? Math.round((stats.totalUploads / stats.totalRequests) * 100) : 0}%
                   </div>
                   <div style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.muted
                   }}>
                     Of requests get uploads
@@ -653,31 +653,31 @@ function Dashboard() {
                 {/* Completion Rate */}
                 <div style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[8],
-                  borderRadius: theme.radius['2xl'],
+                  padding: theme.spacing[6],
+                  borderRadius: theme.radius.xl,
                   border: `1px solid ${theme.colors.border.light}`,
                   boxShadow: theme.shadows.md
                 }}>
                   <div style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.tertiary,
-                    marginBottom: theme.spacing[3],
+                    marginBottom: theme.spacing[2],
                     textTransform: 'uppercase',
-                    letterSpacing: '1.2px',
+                    letterSpacing: '1px',
                     fontWeight: theme.weight.medium
                   }}>
                     Completion Rate
                   </div>
                   <div style={{
-                    fontSize: theme.fontSize['2xl'],
+                    fontSize: theme.fontSize.xl,
                     fontWeight: theme.weight.bold,
                     color: theme.colors.accent.blue,
-                    marginBottom: theme.spacing[2]
+                    marginBottom: theme.spacing[1]
                   }}>
                     {stats.activeRequests === 0 ? 100 : Math.round(((stats.totalRequests - stats.activeRequests) / stats.totalRequests) * 100)}%
                   </div>
                   <div style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.muted
                   }}>
                     Requests fully completed
@@ -687,31 +687,31 @@ function Dashboard() {
                 {/* Avg Response Time */}
                 <div style={{
                   background: theme.colors.bg.secondary,
-                  padding: theme.spacing[8],
-                  borderRadius: theme.radius['2xl'],
+                  padding: theme.spacing[6],
+                  borderRadius: theme.radius.xl,
                   border: `1px solid ${theme.colors.border.light}`,
                   boxShadow: theme.shadows.md
                 }}>
                   <div style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.tertiary,
-                    marginBottom: theme.spacing[3],
+                    marginBottom: theme.spacing[2],
                     textTransform: 'uppercase',
-                    letterSpacing: '1.2px',
+                    letterSpacing: '1px',
                     fontWeight: theme.weight.medium
                   }}>
                     Avg Response Time
                   </div>
                   <div style={{
-                    fontSize: theme.fontSize['2xl'],
+                    fontSize: theme.fontSize.xl,
                     fontWeight: theme.weight.bold,
                     color: theme.colors.accent.purple,
-                    marginBottom: theme.spacing[2]
+                    marginBottom: theme.spacing[1]
                   }}>
                     {stats.totalUploads > 0 ? 'N/A' : 'N/A'}
                   </div>
                   <div style={{
-                    fontSize: theme.fontSize.sm,
+                    fontSize: theme.fontSize.xs,
                     color: theme.colors.text.muted
                   }}>
                     Coming soon
