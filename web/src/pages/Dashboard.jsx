@@ -315,7 +315,7 @@ function Dashboard() {
                 gap: theme.spacing[3],
                 height: '200px'
               }}>
-                {stats.uploadsByDay.map((day, index) => (
+                {(stats.uploadsByDay || []).map((day, index) => (
                   <div key={index} style={{
                     flex: 1,
                     display: 'flex',
@@ -370,7 +370,7 @@ function Dashboard() {
                 Request Types
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[4] }}>
-                {Object.entries(stats.requestsByType)
+                {Object.entries(stats.requestsByType || {})
                   .sort((a, b) => b[1] - a[1])
                   .slice(0, 5)
                   .map(([type, count], index) => {
@@ -449,7 +449,7 @@ function Dashboard() {
                 </Link>
               </div>
               <div>
-                {stats.recentRequests.length === 0 ? (
+                {(!stats.recentRequests || stats.recentRequests.length === 0) ? (
                   <div style={{
                     padding: theme.spacing[16],
                     textAlign: 'center',
@@ -459,7 +459,7 @@ function Dashboard() {
                     No requests yet
                   </div>
                 ) : (
-                  stats.recentRequests.map((req, index) => (
+                  (stats.recentRequests || []).map((req, index) => (
                     <div
                       key={req.id}
                       style={{
@@ -525,7 +525,7 @@ function Dashboard() {
                 </Link>
               </div>
               <div>
-                {stats.recentUploads.length === 0 ? (
+                {(!stats.recentUploads || stats.recentUploads.length === 0) ? (
                   <div style={{
                     padding: theme.spacing[16],
                     textAlign: 'center',
@@ -535,7 +535,7 @@ function Dashboard() {
                     No uploads yet
                   </div>
                 ) : (
-                  stats.recentUploads.map((file, index) => (
+                  (stats.recentUploads || []).map((file, index) => (
                     <div
                       key={file.id}
                       style={{
