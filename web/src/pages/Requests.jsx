@@ -355,7 +355,7 @@ function Requests() {
             <div>
               <h1 style={{
                 fontSize: theme.fontSize.xl,
-                fontWeight: theme.weight.bold,
+                fontWeight: '500',
                 margin: 0,
                 color: theme.colors.text.primary,
                 letterSpacing: '-0.02em'
@@ -377,14 +377,13 @@ function Requests() {
                 background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
-                padding: '16px 32px',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: theme.weight.bold,
+                padding: '12px 24px',
+                borderRadius: '10px',
+                fontSize: theme.fontSize.sm,
+                fontWeight: '500',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                height: '56px',
-                boxShadow: theme.shadows.lg
+                boxShadow: theme.shadows.md
               }}
             >
               New Request
@@ -396,23 +395,23 @@ function Requests() {
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '80px 40px',
+                padding: '60px 40px',
                 background: theme.colors.bg.secondary,
-                borderRadius: theme.radius['2xl'],
+                borderRadius: '10px',
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
                 <h3 style={{
-                  fontSize: theme.fontSize.xl,
+                  fontSize: theme.fontSize.lg,
                   fontWeight: theme.weight.medium,
                   color: theme.colors.text.primary,
-                  margin: '0 0 8px 0',
+                  margin: '0 0 6px 0',
                   letterSpacing: '-0.02em'
                 }}>
                   No requests yet
                 </h3>
                 <p style={{
-                  fontSize: theme.fontSize.base,
+                  fontSize: theme.fontSize.sm,
                   color: theme.colors.text.secondary,
                   margin: '0',
                   lineHeight: '1.6'
@@ -436,11 +435,11 @@ function Requests() {
                       style={{
                         background: theme.colors.bg.secondary,
                         border: `1px solid ${theme.colors.border.light}`,
-                        borderRadius: theme.radius.xl,
-                        padding: theme.spacing[6],
+                        borderRadius: '10px',
+                        padding: '20px',
                         cursor: 'pointer',
                         transition: `all ${theme.transition.fast}`,
-                        boxShadow: 'none'
+                        boxShadow: theme.shadows.md
                       }}
                       onMouseEnter={(e) => {
                         e.currentTarget.style.borderColor = theme.colors.border.medium
@@ -453,21 +452,21 @@ function Requests() {
                     >
                       {/* Header */}
                       <div style={{
-                        marginBottom: theme.spacing[5],
-                        paddingBottom: theme.spacing[4],
+                        marginBottom: theme.spacing[3],
+                        paddingBottom: theme.spacing[3],
                         borderBottom: `1px solid ${theme.colors.border.light}`
                       }}>
                         <h3 style={{
-                          fontSize: theme.fontSize.lg,
+                          fontSize: theme.fontSize.base,
                           fontWeight: theme.weight.medium,
                           color: theme.colors.text.primary,
-                          margin: '0 0 6px 0',
+                          margin: '0 0 4px 0',
                           letterSpacing: '-0.01em'
                         }}>
                           {req.title}
                         </h3>
                         <div style={{
-                          fontSize: theme.fontSize.sm,
+                          fontSize: theme.fontSize.xs,
                           color: theme.colors.text.tertiary
                         }}>
                           {req.requestType ? req.requestType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'General Upload'}
@@ -478,7 +477,7 @@ function Requests() {
                       <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
-                        marginBottom: theme.spacing[5]
+                        marginBottom: theme.spacing[3]
                       }}>
                         <div>
                           <div style={{
@@ -491,7 +490,7 @@ function Requests() {
                             Files
                           </div>
                           <div style={{
-                            fontSize: theme.fontSize.xl,
+                            fontSize: theme.fontSize.lg,
                             fontWeight: theme.weight.semibold,
                             color: theme.colors.text.primary
                           }}>
@@ -509,7 +508,7 @@ function Requests() {
                             Created
                           </div>
                           <div style={{
-                            fontSize: theme.fontSize.sm,
+                            fontSize: theme.fontSize.xs,
                             color: theme.colors.text.secondary
                           }}>
                             {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -529,13 +528,13 @@ function Requests() {
                           }}
                           style={{
                             flex: 1,
-                            padding: '10px 20px',
+                            padding: '8px 16px',
                             background: theme.colors.white,
                             color: theme.colors.black,
                             border: 'none',
-                            borderRadius: theme.radius.md,
-                            fontSize: theme.fontSize.sm,
-                            fontWeight: theme.weight.medium,
+                            borderRadius: '8px',
+                            fontSize: theme.fontSize.xs,
+                            fontWeight: '500',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
                             transition: `opacity ${theme.transition.fast}`
@@ -555,13 +554,13 @@ function Requests() {
                             handleDelete(req.id)
                           }}
                           style={{
-                            padding: '10px 20px',
+                            padding: '8px 16px',
                             background: 'transparent',
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: theme.radius.md,
-                            fontSize: theme.fontSize.sm,
-                            fontWeight: theme.weight.medium,
+                            borderRadius: '8px',
+                            fontSize: theme.fontSize.xs,
+                            fontWeight: '500',
                             cursor: 'pointer',
                             fontFamily: 'inherit',
                             transition: `all ${theme.transition.fast}`

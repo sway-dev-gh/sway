@@ -159,7 +159,7 @@ function Responses() {
               <div style={{
                 fontSize: theme.fontSize.xl,
                 fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
+                color: theme.colors.white,
                 lineHeight: '1',
                 marginBottom: theme.spacing[1]
               }}>
@@ -187,7 +187,7 @@ function Responses() {
               <div style={{
                 fontSize: theme.fontSize.xl,
                 fontWeight: theme.weight.semibold,
-                color: theme.colors.text.primary,
+                color: theme.colors.white,
                 lineHeight: '1',
                 marginBottom: theme.spacing[1]
               }}>
@@ -200,23 +200,23 @@ function Responses() {
           {responses.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '80px 40px',
+              padding: '60px 40px',
               background: theme.colors.bg.secondary,
-              borderRadius: theme.radius['2xl'],
+              borderRadius: '10px',
               border: `1px solid ${theme.colors.border.light}`,
               boxShadow: theme.shadows.md
             }}>
               <h3 style={{
-                fontSize: theme.fontSize.xl,
+                fontSize: theme.fontSize.lg,
                 fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary,
-                margin: '0 0 8px 0',
+                margin: '0 0 6px 0',
                 letterSpacing: '-0.02em'
               }}>
                 No uploads yet
               </h3>
               <p style={{
-                fontSize: theme.fontSize.base,
+                fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
                 margin: '0',
                 lineHeight: '1.6'
@@ -237,10 +237,10 @@ function Responses() {
                   style={{
                     background: theme.colors.bg.secondary,
                     border: `1px solid ${theme.colors.border.light}`,
-                    borderRadius: theme.radius.xl,
-                    padding: theme.spacing[6],
+                    borderRadius: '10px',
+                    padding: '20px',
                     transition: `all ${theme.transition.fast}`,
-                    boxShadow: 'none'
+                    boxShadow: theme.shadows.md
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = theme.colors.border.medium
@@ -253,12 +253,12 @@ function Responses() {
                 >
                   {/* Header */}
                   <div style={{
-                    marginBottom: theme.spacing[5],
-                    paddingBottom: theme.spacing[4],
+                    marginBottom: theme.spacing[3],
+                    paddingBottom: theme.spacing[3],
                     borderBottom: `1px solid ${theme.colors.border.light}`
                   }}>
                     <h3 style={{
-                      fontSize: theme.fontSize.lg,
+                      fontSize: theme.fontSize.base,
                       fontWeight: theme.weight.medium,
                       color: theme.colors.text.primary,
                       margin: '0 0 4px 0',
@@ -270,14 +270,14 @@ function Responses() {
                       {response.fileName}
                     </h3>
                     <div style={{
-                      fontSize: theme.fontSize.sm,
+                      fontSize: theme.fontSize.xs,
                       color: theme.colors.text.tertiary,
-                      marginBottom: theme.spacing[2]
+                      marginBottom: theme.spacing[1]
                     }}>
                       {formatBytes(response.fileSize)}
                     </div>
                     <div style={{
-                      fontSize: theme.fontSize.sm,
+                      fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary
                     }}>
                       {response.requestTitle}
@@ -288,7 +288,7 @@ function Responses() {
                   <div style={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    marginBottom: theme.spacing[5]
+                    marginBottom: theme.spacing[3]
                   }}>
                     <div style={{ flex: 1, minWidth: 0, marginRight: theme.spacing[3] }}>
                       <div style={{
@@ -301,7 +301,7 @@ function Responses() {
                         Uploader
                       </div>
                       <div style={{
-                        fontSize: theme.fontSize.sm,
+                        fontSize: theme.fontSize.xs,
                         color: theme.colors.text.primary,
                         marginBottom: theme.spacing[1],
                         overflow: 'hidden',
@@ -333,7 +333,7 @@ function Responses() {
                         Uploaded
                       </div>
                       <div style={{
-                        fontSize: theme.fontSize.sm,
+                        fontSize: theme.fontSize.xs,
                         color: theme.colors.text.secondary
                       }}>
                         {formatDate(response.uploadedAt)}
@@ -346,13 +346,13 @@ function Responses() {
                     onClick={() => handleDownload(response.id)}
                     style={{
                       width: '100%',
-                      padding: '10px 20px',
+                      padding: '8px 16px',
                       background: theme.colors.white,
                       color: theme.colors.black,
                       border: 'none',
-                      borderRadius: theme.radius.md,
-                      fontSize: theme.fontSize.sm,
-                      fontWeight: theme.weight.medium,
+                      borderRadius: '8px',
+                      fontSize: theme.fontSize.xs,
+                      fontWeight: '500',
                       cursor: 'pointer',
                       fontFamily: 'inherit',
                       transition: `opacity ${theme.transition.fast}`
