@@ -244,7 +244,7 @@ function Responses() {
             {/* Total Forms */}
             <div style={{
               padding: '28px',
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)',
+              background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
               borderRadius: '16px',
               transition: 'all 0.2s ease'
@@ -283,7 +283,7 @@ function Responses() {
             {/* Live Forms */}
             <div style={{
               padding: '28px',
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+              background: 'rgba(255, 255, 255, 0.05)',
               border: `1px solid ${theme.colors.white}`,
               borderRadius: '16px',
               transition: 'all 0.2s ease'
@@ -322,7 +322,7 @@ function Responses() {
             {/* Total Uploads */}
             <div style={{
               padding: '28px',
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)',
+              background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
               borderRadius: '16px',
               transition: 'all 0.2s ease'
@@ -361,7 +361,7 @@ function Responses() {
             {/* Storage Used */}
             <div style={{
               padding: '28px',
-              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)',
+              background: 'rgba(255, 255, 255, 0.02)',
               border: `1px solid ${theme.colors.border.light}`,
               borderRadius: '16px',
               transition: 'all 0.2s ease'
@@ -400,7 +400,7 @@ function Responses() {
                 <div style={{
                   width: `${Math.min((storageStats.used / storageStats.limit) * 100, 100)}%`,
                   height: '100%',
-                  background: storageStats.used > storageStats.limit * 0.8 ? 'linear-gradient(90deg, #ef4444, #dc2626)' : 'linear-gradient(90deg, #ffffff, #e5e5e5)',
+                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#ffffff',
                   transition: 'width 0.3s ease'
                 }} />
               </div>
