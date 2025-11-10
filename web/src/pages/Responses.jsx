@@ -160,7 +160,8 @@ function Responses() {
                 fontSize: '48px',
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
-                lineHeight: '1'
+                lineHeight: '1',
+                marginBottom: theme.spacing[2]
               }}>
                 {responses.length}
               </div>
@@ -187,7 +188,8 @@ function Responses() {
                 fontSize: '48px',
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.primary,
-                lineHeight: '1'
+                lineHeight: '1',
+                marginBottom: theme.spacing[2]
               }}>
                 {formatBytes(responses.reduce((sum, r) => sum + (r.fileSize || 0), 0))}
               </div>
