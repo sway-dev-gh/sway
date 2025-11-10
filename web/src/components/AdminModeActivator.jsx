@@ -152,7 +152,7 @@ function AdminModeActivator({ onActivate }) {
         padding: '40px',
         maxWidth: '450px',
         width: '90%',
-        boxShadow: '0 20px 60px rgba(255, 255, 255, 0.1)',
+        // boxShadow removed,
         animation: 'slideIn 0.3s ease-out'
       }}>
         <style>{`

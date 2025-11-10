@@ -209,7 +209,7 @@ function Plan() {
                   borderRadius: '10px',
                   border: plan.popular ? `1px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
                   position: 'relative',
-                  boxShadow: plan.popular ? theme.shadows.glowStrong : theme.shadows.md
+                  // boxShadow removed: theme.shadows.md
                 }}
               >
                 {/* Badge - Show CURRENT if on this plan, otherwise show MOST POPULAR for Pro */}
@@ -367,7 +367,7 @@ function Plan() {
             maxWidth: '500px',
             width: '90%',
             border: `1px solid ${theme.colors.border.light}`,
-            boxShadow: theme.shadows['2xl']
+            // boxShadow removed
           }}
           onClick={(e) => e.stopPropagation()}
           >

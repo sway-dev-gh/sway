@@ -294,7 +294,7 @@ function Dashboard() {
               background: theme.colors.bg.secondary,
               borderRadius: '10px',
               border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md,
+              // boxShadow removed,
               overflow: 'hidden'
             }}>
               <div style={{
@@ -370,7 +370,7 @@ function Dashboard() {
               background: theme.colors.bg.secondary,
               borderRadius: '10px',
               border: `1px solid ${theme.colors.border.light}`,
-              boxShadow: theme.shadows.md,
+              // boxShadow removed,
               overflow: 'hidden'
             }}>
               <div style={{
@@ -470,7 +470,7 @@ function Dashboard() {
                     fontSize: theme.fontSize.base,
                     fontWeight: theme.weight.semibold,
                     textDecoration: 'none',
-                    boxShadow: theme.shadows.xl
+                    // boxShadow removed
                   }}
                 >
                   Upgrade to Pro for Advanced Insights
@@ -495,7 +495,7 @@ function Dashboard() {
                   padding: theme.spacing[6],
                   borderRadius: '10px',
                   border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md
+                  // boxShadow removed
                 }}>
                   <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[4] }}>
                     Upload Trend (Last 7 Days)
@@ -555,7 +555,7 @@ function Dashboard() {
                   padding: theme.spacing[6],
                   borderRadius: '10px',
                   border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md
+                  // boxShadow removed
                 }}>
                   <div style={{ fontSize: theme.fontSize.sm, color: theme.colors.text.primary, fontWeight: theme.weight.medium, marginBottom: theme.spacing[3] }}>
                     Request Types
@@ -614,7 +614,7 @@ function Dashboard() {
                   padding: theme.spacing[4],
                   borderRadius: '10px',
                   border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md
+                  // boxShadow removed
                 }}>
                   <div style={{
                     fontSize: theme.fontSize.xs,
@@ -648,7 +648,7 @@ function Dashboard() {
                   padding: theme.spacing[4],
                   borderRadius: '10px',
                   border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md
+                  // boxShadow removed
                 }}>
                   <div style={{
                     fontSize: theme.fontSize.xs,
@@ -682,7 +682,7 @@ function Dashboard() {
                   padding: theme.spacing[4],
                   borderRadius: '10px',
                   border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md
+                  // boxShadow removed
                 }}>
                   <div style={{
                     fontSize: theme.fontSize.xs,

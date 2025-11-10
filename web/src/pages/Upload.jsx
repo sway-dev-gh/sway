@@ -199,7 +199,7 @@ function Upload() {
           border: `1px solid ${theme.colors.border.light}`,
           borderRadius: '12px',
           padding: '40px',
-          boxShadow: theme.shadows.lg
+          // boxShadow removed
         }}>
           <h1 style={{
             fontSize: theme.fontSize['2xl'],
@@ -288,7 +288,7 @@ function Upload() {
           border: `1px solid ${theme.colors.border.light}`,
           borderRadius: '12px',
           padding: '60px 40px',
-          boxShadow: theme.shadows.lg
+          // boxShadow removed
         }}>
           {/* Checkmark Icon */}
           <div style={{
@@ -386,7 +386,7 @@ function Upload() {
           border: `1px solid ${theme.colors.border.light}`,
           borderRadius: '12px',
           padding: '32px',
-          boxShadow: theme.shadows.lg
+          // boxShadow removed
         }}>
           {/* Title */}
           <h1 style={{
