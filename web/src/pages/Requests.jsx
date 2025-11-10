@@ -1152,6 +1152,7 @@ function Requests() {
   const [showTemplateModal, setShowTemplateModal] = useState(false)
   const [selectedTemplate, setSelectedTemplate] = useState(null)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
+  const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [userPlan, setUserPlan] = useState('free')
   const [clipboard, setClipboard] = useState(null)
   const [history, setHistory] = useState([])
@@ -2226,7 +2227,7 @@ function Requests() {
                 cursor: 'pointer',
                 fontFamily: 'inherit'
               }}
-              onClick={() => alert('Preview feature coming soon!')}
+              onClick={() => setShowPreviewModal(true)}
             >
               Preview
             </button>
@@ -3101,6 +3102,140 @@ function Requests() {
               >
                 Upgrade Now
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PREVIEW MODAL */}
+      {showPreviewModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.9)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10000,
+          padding: '40px'
+        }}
+        onClick={() => setShowPreviewModal(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#000',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+              maxWidth: '1400px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflow: 'auto',
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.8)'
+            }}
+          >
+            {/* Header */}
+            <div style={{
+              padding: '24px 32px',
+              borderBottom: '1px solid #2a2a2a',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <div>
+                <div style={{ fontSize: '24px', fontWeight: '600', color: '#ffffff', marginBottom: '4px' }}>
+                  Form Preview
+                </div>
+                <div style={{ fontSize: '14px', color: '#666' }}>
+                  {formTitle}
+                </div>
+              </div>
+              <button
+                onClick={() => setShowPreviewModal(false)}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid #2a2a2a',
+                  color: '#ffffff',
+                  padding: '8px 16px',
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
+                }}
+              >
+                Close Preview
+              </button>
+            </div>
+
+            {/* Canvas Preview */}
+            <div style={{
+              padding: '40px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'flex-start',
+              minHeight: '600px'
+            }}>
+              <div style={{
+                width: '1200px',
+                height: '800px',
+                background: '#0a0a0a',
+                border: '1px solid #2a2a2a',
+                borderRadius: '8px',
+                position: 'relative',
+                overflow: 'hidden'
+              }}>
+                {canvasElements.length === 0 ? (
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100%',
+                    color: '#666',
+                    fontSize: '16px'
+                  }}>
+                    No elements added yet. Start building your form!
+                  </div>
+                ) : (
+                  canvasElements.map((element) => (
+                    <div
+                      key={element.id}
+                      style={{
+                        position: 'absolute',
+                        left: `${element.x}px`,
+                        top: `${element.y}px`,
+                        width: `${element.width}px`,
+                        height: `${element.height}px`,
+                        border: '1px solid #333',
+                        borderRadius: '6px',
+                        background: element.type === 'button' ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: element.properties?.textAlign === 'center' ? 'center' : element.properties?.textAlign === 'right' ? 'flex-end' : 'flex-start',
+                        padding: '12px',
+                        fontSize: element.properties?.fontSize || '16px',
+                        color: element.type === 'button' ? '#000' : element.properties?.color || '#fff',
+                        fontWeight: element.properties?.fontWeight || '400',
+                        overflow: 'hidden',
+                        pointerEvents: 'none'
+                      }}
+                    >
+                      {element.type === 'heading' && element.properties?.content}
+                      {element.type === 'text' && element.properties?.content}
+                      {element.type === 'button' && element.properties?.label}
+                      {element.type === 'file-upload' && <div style={{ fontSize: '14px', color: '#999' }}>File Upload Zone</div>}
+                      {element.type === 'text-input' && <div style={{ fontSize: '14px', color: '#999', width: '100%' }}>{element.properties?.placeholder || element.properties?.label || 'Text Input'}</div>}
+                      {element.type === 'textarea' && <div style={{ fontSize: '14px', color: '#999' }}>Text Area</div>}
+                      {!['heading', 'text', 'button', 'file-upload', 'text-input', 'textarea'].includes(element.type) && (
+                        <div style={{ fontSize: '12px', color: '#999', textTransform: 'uppercase' }}>{element.type.replace('-', ' ')}</div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
