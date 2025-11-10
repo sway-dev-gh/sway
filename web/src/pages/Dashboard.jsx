@@ -568,13 +568,15 @@ function Dashboard() {
                 </div>
               </div>
             </div>
+            </div>
           </div>
 
           {/* Recent Activity */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
-            gap: theme.spacing[6]
+            gap: theme.spacing[6],
+            marginBottom: theme.spacing[10]
           }}>
             {/* Recent Requests */}
             <div style={{
@@ -727,12 +729,51 @@ function Dashboard() {
             </div>
           </div>
 
-              {/* Pro Advanced Analytics */}
+          {/* Pro Advanced Analytics */}
+          <div style={{
+            position: 'relative',
+            marginTop: theme.spacing[6]
+          }}>
+            {/* Blur overlay for Free users */}
+            {(user.plan || 'free').toLowerCase() === 'free' && (
               <div style={{
-                marginTop: theme.spacing[6]
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0, 0, 0, 0.7)',
+                backdropFilter: 'blur(8px)',
+                borderRadius: theme.radius['2xl'],
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 10
               }}>
-                {/* Section Header */}
-                <div style={{
+                <Link
+                  to="/plan"
+                  style={{
+                    padding: '12px 32px',
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    borderRadius: theme.radius.lg,
+                    fontSize: theme.fontSize.base,
+                    fontWeight: theme.weight.semibold,
+                    textDecoration: 'none',
+                    boxShadow: theme.shadows.xl
+                  }}
+                >
+                  Upgrade to Pro for Advanced Insights
+                </Link>
+              </div>
+            )}
+
+            <div style={{
+              filter: (user.plan || 'free').toLowerCase() === 'free' ? 'blur(4px)' : 'none',
+              pointerEvents: (user.plan || 'free').toLowerCase() === 'free' ? 'none' : 'auto'
+            }}>
+              {/* Section Header */}
+              <div style={{
                 marginBottom: theme.spacing[6]
               }}>
                 <div style={{
@@ -960,6 +1001,7 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
+            </div>
             </div>
           </div>
         </div>
