@@ -391,244 +391,180 @@ function Requests() {
             </button>
           </div>
 
-          {/* Request List - Table Style */}
+          {/* Request List - Card Grid */}
           <div>
             {requests.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '80px 60px',
+                padding: '100px 60px',
                 background: theme.colors.bg.secondary,
                 borderRadius: theme.radius['2xl'],
                 border: `1px solid ${theme.colors.border.light}`,
                 boxShadow: theme.shadows.md
               }}>
-                {/* Icon */}
                 <div style={{
-                  width: '80px',
-                  height: '80px',
-                  margin: '0 auto 24px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '36px',
-                  border: `2px solid ${theme.colors.border.medium}`
+                  fontSize: '48px',
+                  marginBottom: '20px'
                 }}>
                   📬
                 </div>
-
                 <h3 style={{
-                  fontSize: theme.fontSize.lg,
+                  fontSize: theme.fontSize.xl,
                   fontWeight: theme.weight.semibold,
                   color: theme.colors.text.primary,
-                  margin: '0 0 12px 0',
+                  margin: '0 0 10px 0',
                   letterSpacing: '-0.02em'
                 }}>
-                  Ready to collect files?
+                  No requests yet
                 </h3>
                 <p style={{
                   fontSize: theme.fontSize.base,
                   color: theme.colors.text.secondary,
-                  margin: '0 0 32px 0',
-                  lineHeight: '1.6',
-                  maxWidth: '400px',
-                  marginLeft: 'auto',
-                  marginRight: 'auto'
+                  margin: '0',
+                  lineHeight: '1.6'
                 }}>
-                  Create your first request and get a shareable link. Recipients can upload files instantly - no signup required.
+                  Click "New Request" to create your first request
                 </p>
-
-                {/* CTA */}
-                <button
-                  onClick={openModal}
-                  style={{
-                    padding: '14px 32px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    border: 'none',
-                    borderRadius: theme.radius.lg,
-                    fontSize: theme.fontSize.base,
-                    fontWeight: theme.weight.semibold,
-                    cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    boxShadow: theme.shadows.md
-                  }}
-                >
-                  Create Your First Request
-                </button>
-
-                {/* Quick tips */}
-                <div style={{
-                  marginTop: '48px',
-                  padding: '24px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  borderRadius: theme.radius.xl,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  textAlign: 'left',
-                  maxWidth: '500px',
-                  marginLeft: 'auto',
-                  marginRight: 'auto'
-                }}>
-                  <div style={{
-                    fontSize: theme.fontSize.sm,
-                    color: theme.colors.text.tertiary,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    marginBottom: '12px',
-                    fontWeight: theme.weight.medium
-                  }}>
-                    What you can do
-                  </div>
-                  <div style={{ display: 'grid', gap: '8px' }}>
-                    {[
-                      'Collect files from clients, vendors, or team members',
-                      'Set expiration dates and password protection',
-                      'Get instant notifications when files are uploaded',
-                      'Download everything as a zip file'
-                    ].map((tip, i) => (
-                      <div key={i} style={{
-                        fontSize: theme.fontSize.sm,
-                        color: theme.colors.text.secondary,
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        gap: '8px'
-                      }}>
-                        <span style={{ color: theme.colors.white, opacity: 0.6 }}>•</span>
-                        <span>{tip}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             ) : (
               <div style={{
-                background: theme.colors.bg.secondary,
-                borderRadius: theme.radius['2xl'],
-                border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md,
-                overflow: 'hidden'
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+                gap: theme.spacing[4],
+                width: '100%'
               }}>
-                {/* Table Header */}
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: '3fr 2fr 120px 180px 280px',
-                  gap: '24px',
-                  padding: '24px 32px',
-                  borderBottom: `1px solid ${theme.colors.border.light}`,
-                  background: theme.colors.bg.secondary
-                }}>
-                  <div style={{
-                    fontSize: theme.fontSize.lg,
-                    color: theme.colors.text.tertiary,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    fontWeight: theme.weight.medium
-                  }}>
-                    Title
-                  </div>
-                  <div style={{
-                    fontSize: theme.fontSize.lg,
-                    color: theme.colors.text.tertiary,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    fontWeight: theme.weight.medium
-                  }}>
-                    Type
-                  </div>
-                  <div style={{
-                    fontSize: theme.fontSize.lg,
-                    color: theme.colors.text.tertiary,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    fontWeight: theme.weight.medium,
-                    textAlign: 'center'
-                  }}>
-                    Files
-                  </div>
-                  <div style={{
-                    fontSize: theme.fontSize.lg,
-                    color: theme.colors.text.tertiary,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    fontWeight: theme.weight.medium
-                  }}>
-                    Created
-                  </div>
-                  <div style={{
-                    fontSize: theme.fontSize.lg,
-                    color: theme.colors.text.tertiary,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1px',
-                    fontWeight: theme.weight.medium,
-                    textAlign: 'right'
-                  }}>
-                    Actions
-                  </div>
-                </div>
-
-                {/* Table Body */}
                 {requests
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                  .map((req, index) => (
+                  .map((req) => (
                     <div
                       key={req.id}
-                      style={{
-                        display: 'grid',
-                        gridTemplateColumns: '3fr 2fr 120px 180px 280px',
-                        gap: '24px',
-                        padding: '24px 32px',
-                        borderBottom: index < requests.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
-                        transition: `background ${theme.transition.fast}`,
-                        cursor: 'pointer',
-                        alignItems: 'center'
-                      }}
                       onClick={() => navigate(`/requests/${req.id}`)}
+                      style={{
+                        background: `linear-gradient(135deg, ${theme.colors.bg.secondary} 0%, rgba(10, 10, 10, 0.8) 100%)`,
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: theme.radius['2xl'],
+                        padding: theme.spacing[6],
+                        cursor: 'pointer',
+                        transition: `all ${theme.transition.normal}`,
+                        boxShadow: theme.shadows.md,
+                        position: 'relative',
+                        overflow: 'hidden'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-4px)'
+                        e.currentTarget.style.boxShadow = theme.shadows.lg
+                        e.currentTarget.style.borderColor = theme.colors.border.medium
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)'
+                        e.currentTarget.style.boxShadow = theme.shadows.md
+                        e.currentTarget.style.borderColor = theme.colors.border.light
+                      }}
                     >
-                      {/* Title */}
+                      {/* Subtle gradient overlay */}
                       <div style={{
-                        fontSize: theme.fontSize.lg,
-                        fontWeight: theme.weight.medium,
-                        color: theme.colors.text.primary,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}>
-                        {req.title}
+                        position: 'absolute',
+                        top: 0,
+                        right: 0,
+                        width: '200px',
+                        height: '200px',
+                        background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)',
+                        pointerEvents: 'none'
+                      }} />
+
+                      {/* Title & Type */}
+                      <div style={{ marginBottom: theme.spacing[4], position: 'relative' }}>
+                        <h3 style={{
+                          fontSize: theme.fontSize.lg,
+                          fontWeight: theme.weight.semibold,
+                          color: theme.colors.text.primary,
+                          margin: '0 0 8px 0',
+                          letterSpacing: '-0.01em',
+                          lineHeight: '1.3'
+                        }}>
+                          {req.title}
+                        </h3>
+                        <div style={{
+                          display: 'inline-block',
+                          fontSize: theme.fontSize.xs,
+                          color: theme.colors.text.tertiary,
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px',
+                          padding: '4px 10px',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          borderRadius: theme.radius.sm,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          fontWeight: theme.weight.medium
+                        }}>
+                          {req.requestType ? req.requestType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'General Upload'}
+                        </div>
                       </div>
 
-                      {/* Type */}
+                      {/* Stats Row */}
                       <div style={{
-                        fontSize: '16px',
-                        color: theme.colors.text.secondary
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(2, 1fr)',
+                        gap: theme.spacing[3],
+                        marginBottom: theme.spacing[5],
+                        position: 'relative'
                       }}>
-                        {req.requestType ? req.requestType.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : 'General Upload'}
-                      </div>
-
-                      {/* File Count */}
-                      <div style={{
-                        fontSize: '16px',
-                        color: theme.colors.text.primary,
-                        fontWeight: theme.weight.medium,
-                        textAlign: 'center'
-                      }}>
-                        {req.uploadCount || 0}
-                      </div>
-
-                      {/* Created Date */}
-                      <div style={{
-                        fontSize: '16px',
-                        color: theme.colors.text.secondary
-                      }}>
-                        {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                        <div style={{
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          padding: theme.spacing[3],
+                          borderRadius: theme.radius.lg,
+                          border: `1px solid ${theme.colors.border.light}`
+                        }}>
+                          <div style={{
+                            fontSize: theme.fontSize.xs,
+                            color: theme.colors.text.tertiary,
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px',
+                            marginBottom: theme.spacing[1],
+                            fontWeight: theme.weight.medium
+                          }}>
+                            Files
+                          </div>
+                          <div style={{
+                            fontSize: theme.fontSize.xl,
+                            fontWeight: theme.weight.bold,
+                            color: theme.colors.white,
+                            lineHeight: '1'
+                          }}>
+                            {req.uploadCount || 0}
+                          </div>
+                        </div>
+                        <div style={{
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          padding: theme.spacing[3],
+                          borderRadius: theme.radius.lg,
+                          border: `1px solid ${theme.colors.border.light}`
+                        }}>
+                          <div style={{
+                            fontSize: theme.fontSize.xs,
+                            color: theme.colors.text.tertiary,
+                            textTransform: 'uppercase',
+                            letterSpacing: '1px',
+                            marginBottom: theme.spacing[1],
+                            fontWeight: theme.weight.medium
+                          }}>
+                            Created
+                          </div>
+                          <div style={{
+                            fontSize: theme.fontSize.sm,
+                            fontWeight: theme.weight.medium,
+                            color: theme.colors.text.secondary,
+                            lineHeight: '1.3'
+                          }}>
+                            {new Date(req.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                          </div>
+                        </div>
                       </div>
 
                       {/* Actions */}
                       <div style={{
                         display: 'flex',
-                        gap: '12px',
-                        justifyContent: 'flex-end',
-                        alignItems: 'center'
+                        gap: theme.spacing[2],
+                        position: 'relative'
                       }}>
                         <button
                           onClick={(e) => {
@@ -636,17 +572,26 @@ function Requests() {
                             navigate(`/requests/${req.id}`)
                           }}
                           style={{
-                            padding: '12px 24px',
+                            flex: 1,
+                            padding: '12px 20px',
                             background: theme.colors.white,
                             color: theme.colors.black,
                             border: 'none',
-                            borderRadius: '8px',
-                            fontSize: '16px',
-                            fontWeight: theme.weight.medium,
+                            borderRadius: theme.radius.lg,
+                            fontSize: theme.fontSize.base,
+                            fontWeight: theme.weight.semibold,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            height: '44px',
-                            minWidth: '80px'
+                            transition: `all ${theme.transition.fast}`,
+                            boxShadow: '0 2px 8px rgba(255, 255, 255, 0.1)'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.02)'
+                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.15)'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)'
+                            e.currentTarget.style.boxShadow = '0 2px 8px rgba(255, 255, 255, 0.1)'
                           }}
                         >
                           View
@@ -657,17 +602,26 @@ function Requests() {
                             handleDelete(req.id)
                           }}
                           style={{
-                            padding: '12px 24px',
-                            background: 'transparent',
+                            padding: '12px 20px',
+                            background: 'rgba(255, 255, 255, 0.05)',
                             color: theme.colors.text.secondary,
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: '8px',
-                            fontSize: '16px',
+                            borderRadius: theme.radius.lg,
+                            fontSize: theme.fontSize.base,
                             fontWeight: theme.weight.medium,
                             cursor: 'pointer',
                             fontFamily: 'inherit',
-                            height: '44px',
-                            minWidth: '80px'
+                            transition: `all ${theme.transition.fast}`
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
+                            e.currentTarget.style.borderColor = theme.colors.border.dark
+                            e.currentTarget.style.color = theme.colors.text.primary
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)'
+                            e.currentTarget.style.borderColor = theme.colors.border.medium
+                            e.currentTarget.style.color = theme.colors.text.secondary
                           }}
                         >
                           Delete
