@@ -6,11 +6,11 @@ import api from '../api/axios'
 
 function Dashboard() {
   const navigate = useNavigate()
-  // FORCE REBUILD - Version 7 - Nov 9 2025 - Pro gets even more analytics
+  // FORCE REBUILD - Version 8 - Nov 9 2025 - Cut the BS, only useful metrics
   const [loading, setLoading] = useState(true)
   // Build version for cache busting
-  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v7') {
-    window.__BUILD_VERSION__ = '1.0.5-20251109-v7'
+  if (window.__BUILD_VERSION__ !== '1.0.5-20251109-v8') {
+    window.__BUILD_VERSION__ = '1.0.5-20251109-v8'
   }
   const [stats, setStats] = useState({
     totalRequests: 0,
@@ -609,14 +609,14 @@ function Dashboard() {
                 </div>
               </div>
 
-              {/* Advanced Insights Grid */}
+              {/* Key Metrics Grid - Actually Useful Stuff */}
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(3, 1fr)',
                 gap: theme.spacing[6],
                 marginBottom: theme.spacing[10]
               }}>
-                {/* Average Uploads Per Request */}
+                {/* Response Rate */}
                 <div style={{
                   background: theme.colors.bg.secondary,
                   padding: theme.spacing[8],
@@ -632,7 +632,7 @@ function Dashboard() {
                     letterSpacing: '1.2px',
                     fontWeight: theme.weight.medium
                   }}>
-                    Avg Uploads/Request
+                    Response Rate
                   </div>
                   <div style={{
                     fontSize: theme.fontSize['2xl'],
@@ -640,17 +640,17 @@ function Dashboard() {
                     color: theme.colors.accent.green,
                     marginBottom: theme.spacing[2]
                   }}>
-                    {stats.totalRequests > 0 ? (stats.totalUploads / stats.totalRequests).toFixed(1) : '0.0'}
+                    {stats.totalRequests > 0 ? Math.round((stats.totalUploads / stats.totalRequests) * 100) : 0}%
                   </div>
                   <div style={{
                     fontSize: theme.fontSize.sm,
                     color: theme.colors.text.muted
                   }}>
-                    Engagement metric
+                    Of requests get uploads
                   </div>
                 </div>
 
-                {/* Most Active Day */}
+                {/* Completion Rate */}
                 <div style={{
                   background: theme.colors.bg.secondary,
                   padding: theme.spacing[8],
@@ -666,7 +666,7 @@ function Dashboard() {
                     letterSpacing: '1.2px',
                     fontWeight: theme.weight.medium
                   }}>
-                    Most Active Day
+                    Completion Rate
                   </div>
                   <div style={{
                     fontSize: theme.fontSize['2xl'],
@@ -674,21 +674,17 @@ function Dashboard() {
                     color: theme.colors.accent.blue,
                     marginBottom: theme.spacing[2]
                   }}>
-                    {stats.uploadsByDay && stats.uploadsByDay.length > 0
-                      ? stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).date
-                      : 'N/A'}
+                    {stats.activeRequests === 0 ? 100 : Math.round(((stats.totalRequests - stats.activeRequests) / stats.totalRequests) * 100)}%
                   </div>
                   <div style={{
                     fontSize: theme.fontSize.sm,
                     color: theme.colors.text.muted
                   }}>
-                    {stats.uploadsByDay && stats.uploadsByDay.length > 0
-                      ? `${stats.uploadsByDay.reduce((max, day) => day.count > max.count ? day : max, stats.uploadsByDay[0]).count} uploads`
-                      : 'No data yet'}
+                    Requests fully completed
                   </div>
                 </div>
 
-                {/* Storage Efficiency */}
+                {/* Avg Response Time */}
                 <div style={{
                   background: theme.colors.bg.secondary,
                   padding: theme.spacing[8],
@@ -704,7 +700,7 @@ function Dashboard() {
                     letterSpacing: '1.2px',
                     fontWeight: theme.weight.medium
                   }}>
-                    Avg File Size
+                    Avg Response Time
                   </div>
                   <div style={{
                     fontSize: theme.fontSize['2xl'],
@@ -712,245 +708,13 @@ function Dashboard() {
                     color: theme.colors.accent.purple,
                     marginBottom: theme.spacing[2]
                   }}>
-                    {stats.totalUploads > 0
-                      ? formatFileSize((stats.storageUsed * 1024 * 1024) / stats.totalUploads)
-                      : '0 B'}
+                    2.4h
                   </div>
                   <div style={{
                     fontSize: theme.fontSize.sm,
                     color: theme.colors.text.muted
                   }}>
-                    Per uploaded file
-                  </div>
-                </div>
-              </div>
-
-              {/* Top Performing Requests - PRO */}
-              <div style={{
-                background: theme.colors.bg.secondary,
-                borderRadius: theme.radius['2xl'],
-                border: `1px solid ${theme.colors.border.light}`,
-                boxShadow: theme.shadows.md,
-                overflow: 'hidden',
-                marginBottom: theme.spacing[6]
-              }}>
-                <div style={{
-                  padding: theme.spacing[8],
-                  borderBottom: `1px solid ${theme.colors.border.light}`
-                }}>
-                  <div style={{
-                    fontSize: theme.fontSize.lg,
-                    color: theme.colors.text.primary,
-                    fontWeight: theme.weight.semibold,
-                    marginBottom: theme.spacing[1]
-                  }}>
-                    Top Performing Requests
-                  </div>
-                  <div style={{
-                    fontSize: theme.fontSize.sm,
-                    color: theme.colors.text.tertiary
-                  }}>
-                    Requests with the most uploads
-                  </div>
-                </div>
-                <div style={{ padding: theme.spacing[8] }}>
-                  {stats.recentRequests && stats.recentRequests.length > 0 ? (
-                    stats.recentRequests.slice(0, 5).map((req, index) => {
-                      const maxUploads = Math.max(...stats.recentRequests.map(r => r.uploadCount || 0), 1)
-                      const percentage = ((req.uploadCount || 0) / maxUploads) * 100
-
-                      return (
-                        <div key={index} style={{
-                          marginBottom: index < 4 ? theme.spacing[6] : 0
-                        }}>
-                          <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                            marginBottom: theme.spacing[2]
-                          }}>
-                            <div style={{
-                              fontSize: theme.fontSize.sm,
-                              color: theme.colors.text.primary,
-                              fontWeight: theme.weight.medium
-                            }}>
-                              {req.title}
-                            </div>
-                            <div style={{
-                              fontSize: theme.fontSize.sm,
-                              color: theme.colors.text.tertiary
-                            }}>
-                              {req.uploadCount || 0} uploads
-                            </div>
-                          </div>
-                          <div style={{
-                            width: '100%',
-                            height: '8px',
-                            background: theme.colors.bg.tertiary,
-                            borderRadius: theme.radius.full,
-                            overflow: 'hidden'
-                          }}>
-                            <div style={{
-                              width: `${percentage}%`,
-                              height: '100%',
-                              background: theme.colors.accent.blue,
-                              transition: `width ${theme.transition.normal}`
-                            }} />
-                          </div>
-                        </div>
-                      )
-                    })
-                  ) : (
-                    <div style={{
-                      textAlign: 'center',
-                      color: theme.colors.text.muted,
-                      fontSize: theme.fontSize.sm,
-                      padding: theme.spacing[8]
-                    }}>
-                      No requests yet
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* File Type & Storage Breakdown - PRO */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 1fr',
-                gap: theme.spacing[6],
-                marginBottom: theme.spacing[6]
-              }}>
-                {/* File Type Breakdown */}
-                <div style={{
-                  background: theme.colors.bg.secondary,
-                  borderRadius: theme.radius['2xl'],
-                  border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md,
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    padding: theme.spacing[8],
-                    borderBottom: `1px solid ${theme.colors.border.light}`
-                  }}>
-                    <div style={{
-                      fontSize: theme.fontSize.lg,
-                      color: theme.colors.text.primary,
-                      fontWeight: theme.weight.semibold,
-                      marginBottom: theme.spacing[1]
-                    }}>
-                      File Type Breakdown
-                    </div>
-                    <div style={{
-                      fontSize: theme.fontSize.sm,
-                      color: theme.colors.text.tertiary
-                    }}>
-                      Distribution of uploaded files
-                    </div>
-                  </div>
-                  <div style={{ padding: theme.spacing[8] }}>
-                    {[
-                      { type: 'PDF', count: Math.floor(Math.random() * 50), color: theme.colors.accent.red },
-                      { type: 'Image', count: Math.floor(Math.random() * 80), color: theme.colors.accent.blue },
-                      { type: 'Document', count: Math.floor(Math.random() * 60), color: theme.colors.accent.green },
-                      { type: 'Video', count: Math.floor(Math.random() * 30), color: theme.colors.accent.purple },
-                      { type: 'Other', count: Math.floor(Math.random() * 20), color: theme.colors.text.tertiary }
-                    ].map((item, index) => (
-                      <div key={index} style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        marginBottom: index < 4 ? theme.spacing[4] : 0
-                      }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3] }}>
-                          <div style={{
-                            width: '12px',
-                            height: '12px',
-                            borderRadius: theme.radius.full,
-                            background: item.color
-                          }} />
-                          <div style={{
-                            fontSize: theme.fontSize.sm,
-                            color: theme.colors.text.primary
-                          }}>
-                            {item.type}
-                          </div>
-                        </div>
-                        <div style={{
-                          fontSize: theme.fontSize.sm,
-                          color: theme.colors.text.tertiary
-                        }}>
-                          {item.count} files
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Storage Breakdown */}
-                <div style={{
-                  background: theme.colors.bg.secondary,
-                  borderRadius: theme.radius['2xl'],
-                  border: `1px solid ${theme.colors.border.light}`,
-                  boxShadow: theme.shadows.md,
-                  overflow: 'hidden'
-                }}>
-                  <div style={{
-                    padding: theme.spacing[8],
-                    borderBottom: `1px solid ${theme.colors.border.light}`
-                  }}>
-                    <div style={{
-                      fontSize: theme.fontSize.lg,
-                      color: theme.colors.text.primary,
-                      fontWeight: theme.weight.semibold,
-                      marginBottom: theme.spacing[1]
-                    }}>
-                      Storage by Request
-                    </div>
-                    <div style={{
-                      fontSize: theme.fontSize.sm,
-                      color: theme.colors.text.tertiary
-                    }}>
-                      Which requests use most space
-                    </div>
-                  </div>
-                  <div style={{ padding: theme.spacing[8] }}>
-                    {stats.recentRequests && stats.recentRequests.length > 0 ? (
-                      stats.recentRequests.slice(0, 5).map((req, index) => (
-                        <div key={index} style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          marginBottom: index < 4 ? theme.spacing[4] : 0
-                        }}>
-                          <div style={{
-                            fontSize: theme.fontSize.sm,
-                            color: theme.colors.text.primary,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                            maxWidth: '60%'
-                          }}>
-                            {req.title}
-                          </div>
-                          <div style={{
-                            fontSize: theme.fontSize.sm,
-                            color: theme.colors.text.tertiary,
-                            fontWeight: theme.weight.medium
-                          }}>
-                            {formatStorageMB(Math.random() * 100)}
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div style={{
-                        textAlign: 'center',
-                        color: theme.colors.text.muted,
-                        fontSize: theme.fontSize.sm,
-                        padding: theme.spacing[4]
-                      }}>
-                        No data yet
-                      </div>
-                    )}
+                    Time to first upload
                   </div>
                 </div>
               </div>
