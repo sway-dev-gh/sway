@@ -28,8 +28,10 @@ function Plan() {
         userData.plan = adminPlanOverride
       }
 
+      const finalPlan = (userData.plan || 'free').toLowerCase()
       setUser(userData)
-      setCurrentPlan(userData.plan || 'free')
+      setCurrentPlan(finalPlan)
+      console.log('[Plan] Setting current plan to:', finalPlan)
     }
     setLoading(false)
   }, [navigate])
