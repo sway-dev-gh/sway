@@ -170,7 +170,7 @@ function Sidebar() {
       {/* Logo/Brand */}
       <Link to="/dashboard" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
         <img
-          src="/logo.svg"
+          src="/logo.png"
           alt="Sway"
           style={{
             width: '30px',
