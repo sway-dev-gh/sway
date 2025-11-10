@@ -222,7 +222,6 @@ function Dashboard() {
             <p style={{
               fontSize: '20px',
               color: theme.colors.text.secondary,
-              margin: '0 0 48px 0',
               lineHeight: '1.6',
               maxWidth: '700px',
               margin: '0 auto 48px'

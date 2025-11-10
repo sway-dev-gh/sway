@@ -61,7 +61,7 @@ function Settings() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '48px', textAlign: 'center' }}>
+          <div style={{ marginBottom: '48px', maxWidth: '900px', margin: '0 auto 48px' }}>
             <h1 style={{
               fontSize: '48px',
               fontWeight: '600',
