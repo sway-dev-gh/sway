@@ -97,14 +97,8 @@ export default function Signup() {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: theme.spacing[4] }}>
-              <label style={{
-                display: 'block',
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
-              }}>
+            <div style={{ marginBottom: theme.layout.formFieldGap }}>
+              <label style={theme.inputs.label}>
                 Name
               </label>
               <input
@@ -112,35 +106,18 @@ export default function Signup() {
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
-                style={{
-                  width: '100%',
-                  height: '36px',
-                  padding: `0 ${theme.spacing[3]}`,
-                  background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.md,
-                  color: theme.colors.text.primary,
-                  fontSize: theme.fontSize.sm,
-                  fontFamily: 'inherit',
-                  outline: 'none'
-                }}
+                style={theme.inputs.text.base}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.dark
+                  Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.light
+                  Object.assign(e.currentTarget.style, theme.inputs.text.base)
                 }}
               />
             </div>
 
-            <div style={{ marginBottom: theme.spacing[4] }}>
-              <label style={{
-                display: 'block',
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
-              }}>
+            <div style={{ marginBottom: theme.layout.formFieldGap }}>
+              <label style={theme.inputs.label}>
                 Email
               </label>
               <input
@@ -148,35 +125,18 @@ export default function Signup() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                style={{
-                  width: '100%',
-                  height: '36px',
-                  padding: `0 ${theme.spacing[3]}`,
-                  background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.md,
-                  color: theme.colors.text.primary,
-                  fontSize: theme.fontSize.sm,
-                  fontFamily: 'inherit',
-                  outline: 'none'
-                }}
+                style={theme.inputs.text.base}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.dark
+                  Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.light
+                  Object.assign(e.currentTarget.style, theme.inputs.text.base)
                 }}
               />
             </div>
 
-            <div style={{ marginBottom: theme.spacing[5] }}>
-              <label style={{
-                display: 'block',
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
-              }}>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={theme.inputs.label}>
                 Password
               </label>
               <input
@@ -186,23 +146,12 @@ export default function Signup() {
                 required
                 minLength={12}
                 placeholder="Min 12 chars: upper, lower, number, special"
-                style={{
-                  width: '100%',
-                  height: '36px',
-                  padding: `0 ${theme.spacing[3]}`,
-                  background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.md,
-                  color: theme.colors.text.primary,
-                  fontSize: theme.fontSize.sm,
-                  fontFamily: 'inherit',
-                  outline: 'none'
-                }}
+                style={theme.inputs.text.base}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.dark
+                  Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.light
+                  Object.assign(e.currentTarget.style, theme.inputs.text.base)
                 }}
               />
             </div>
@@ -211,17 +160,19 @@ export default function Signup() {
               type="submit"
               disabled={loading}
               style={{
+                ...theme.buttons.primary.base,
                 width: '100%',
-                padding: '8px 16px',
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
-                borderRadius: theme.radius.md,
-                fontSize: theme.fontSize.xs,
-                fontWeight: theme.weight.medium,
-                cursor: loading ? 'not-allowed' : 'pointer',
-                fontFamily: 'inherit',
-                opacity: loading ? 0.6 : 1
+                ...(loading && theme.buttons.primary.disabled)
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  Object.assign(e.currentTarget.style, theme.buttons.primary.hover)
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.background = theme.buttons.primary.base.background
+                }
               }}
             >
               {loading ? 'Creating account...' : 'Sign Up'}

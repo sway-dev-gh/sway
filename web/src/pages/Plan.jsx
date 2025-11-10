@@ -198,7 +198,7 @@ function Plan() {
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
             gap: theme.spacing[6],
-            maxWidth: '900px',
+            maxWidth: '1000px',
             margin: '0 auto 60px auto'
           }}>
             {plans.map((plan) => (
@@ -350,6 +350,178 @@ function Plan() {
                 </button>
               </div>
             ))}
+          </div>
+
+          {/* Feature Comparison Table */}
+          <div style={{
+            maxWidth: '1000px',
+            margin: '0 auto 80px auto'
+          }}>
+            <h2 style={{
+              fontSize: '32px',
+              fontWeight: '600',
+              textAlign: 'center',
+              marginBottom: '40px',
+              color: theme.colors.text.primary
+            }}>
+              Compare Plans
+            </h2>
+
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              overflow: 'hidden'
+            }}>
+              {[
+                { feature: 'Active Requests', free: '20', pro: '200' },
+                { feature: 'Storage', free: '2GB', pro: '50GB' },
+                { feature: 'Visual Request Builder', free: '✓', pro: '✓' },
+                { feature: 'Custom Upload Pages', free: '✓', pro: '✓' },
+                { feature: 'Password Protection', free: '—', pro: '✓' },
+                { feature: 'Bulk Download', free: '—', pro: '✓' },
+                { feature: 'Advanced Analytics', free: '—', pro: '✓' },
+                { feature: 'Priority Support', free: '—', pro: '✓' }
+              ].map((row, index) => (
+                <div key={index} style={{
+                  display: 'grid',
+                  gridTemplateColumns: '2fr 1fr 1fr',
+                  padding: '16px 24px',
+                  borderBottom: index < 7 ? `1px solid ${theme.colors.border.light}` : 'none',
+                  background: index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.01)'
+                }}>
+                  <div style={{
+                    fontSize: '14px',
+                    color: theme.colors.text.primary,
+                    fontWeight: '500'
+                  }}>
+                    {row.feature}
+                  </div>
+                  <div style={{
+                    fontSize: '14px',
+                    color: theme.colors.text.secondary,
+                    textAlign: 'center'
+                  }}>
+                    {row.free}
+                  </div>
+                  <div style={{
+                    fontSize: '14px',
+                    color: theme.colors.white,
+                    fontWeight: '600',
+                    textAlign: 'center'
+                  }}>
+                    {row.pro}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Pricing FAQ */}
+          <div style={{
+            maxWidth: '900px',
+            margin: '0 auto'
+          }}>
+            <h2 style={{
+              fontSize: '32px',
+              fontWeight: '600',
+              textAlign: 'center',
+              marginBottom: '40px',
+              color: theme.colors.text.primary
+            }}>
+              Pricing FAQ
+            </h2>
+
+            <div style={{
+              display: 'grid',
+              gap: '16px'
+            }}>
+              {[
+                {
+                  q: 'Can I change plans at any time?',
+                  a: 'Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately.'
+                },
+                {
+                  q: 'What happens if I exceed my limits?',
+                  a: 'We\'ll notify you when you\'re approaching your limits. You can upgrade to Pro for more requests and storage.'
+                },
+                {
+                  q: 'Do you offer refunds?',
+                  a: 'Yes, we offer a 30-day money-back guarantee on all paid plans. No questions asked.'
+                },
+                {
+                  q: 'Is my payment information secure?',
+                  a: 'Absolutely. We use Stripe for payment processing, which is PCI compliant and trusted by millions of businesses worldwide.'
+                }
+              ].map((faq, index) => (
+                <div key={index} style={{
+                  padding: '20px 24px',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: theme.radius.lg
+                }}>
+                  <div style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: theme.colors.text.primary,
+                    marginBottom: '8px'
+                  }}>
+                    {faq.q}
+                  </div>
+                  <div style={{
+                    fontSize: '14px',
+                    color: theme.colors.text.secondary,
+                    lineHeight: '1.6'
+                  }}>
+                    {faq.a}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div style={{
+            maxWidth: '700px',
+            margin: '80px auto 0',
+            textAlign: 'center',
+            padding: '40px',
+            background: 'rgba(255, 255, 255, 0.02)',
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: theme.radius.xl
+          }}>
+            <h3 style={{
+              fontSize: '24px',
+              fontWeight: '600',
+              color: theme.colors.text.primary,
+              marginBottom: '12px'
+            }}>
+              Ready to get started?
+            </h3>
+            <p style={{
+              fontSize: '16px',
+              color: theme.colors.text.secondary,
+              marginBottom: '24px',
+              lineHeight: '1.6'
+            }}>
+              Start collecting files today with our Free plan. Upgrade to Pro anytime for advanced features.
+            </p>
+            <button
+              onClick={() => navigate('/requests')}
+              style={{
+                ...theme.buttons.primary.base,
+                padding: '12px 32px',
+                fontSize: '16px'
+              }}
+              onMouseEnter={(e) => {
+                Object.assign(e.currentTarget.style, theme.buttons.primary.hover)
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = theme.buttons.primary.base.background
+              }}
+            >
+              Create Your First Form
+            </button>
           </div>
         </div>
       </div>

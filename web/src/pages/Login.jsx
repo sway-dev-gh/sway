@@ -93,14 +93,8 @@ export default function Login() {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: theme.spacing[4] }}>
-              <label style={{
-                display: 'block',
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
-              }}>
+            <div style={{ marginBottom: theme.layout.formFieldGap }}>
+              <label style={theme.inputs.label}>
                 Email
               </label>
               <input
@@ -108,35 +102,18 @@ export default function Login() {
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                style={{
-                  width: '100%',
-                  height: '36px',
-                  padding: `0 ${theme.spacing[3]}`,
-                  background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.md,
-                  color: theme.colors.text.primary,
-                  fontSize: theme.fontSize.sm,
-                  fontFamily: 'inherit',
-                  outline: 'none'
-                }}
+                style={theme.inputs.text.base}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.dark
+                  Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.light
+                  Object.assign(e.currentTarget.style, theme.inputs.text.base)
                 }}
               />
             </div>
 
-            <div style={{ marginBottom: theme.spacing[5] }}>
-              <label style={{
-                display: 'block',
-                fontSize: theme.fontSize.xs,
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: theme.weight.medium
-              }}>
+            <div style={{ marginBottom: '20px' }}>
+              <label style={theme.inputs.label}>
                 Password
               </label>
               <input
@@ -144,23 +121,12 @@ export default function Login() {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
-                style={{
-                  width: '100%',
-                  height: '36px',
-                  padding: `0 ${theme.spacing[3]}`,
-                  background: theme.colors.bg.page,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.md,
-                  color: theme.colors.text.primary,
-                  fontSize: theme.fontSize.sm,
-                  fontFamily: 'inherit',
-                  outline: 'none'
-                }}
+                style={theme.inputs.text.base}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.dark
+                  Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = theme.colors.border.light
+                  Object.assign(e.currentTarget.style, theme.inputs.text.base)
                 }}
               />
             </div>

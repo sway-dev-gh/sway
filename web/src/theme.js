@@ -50,6 +50,26 @@ const theme = {
     20: '128px',
     24: '160px'
   },
+  layout: {
+    // Standard page container
+    pageContainer: {
+      maxWidth: '1400px',
+      margin: '0 auto',
+      padding: '48px 32px',
+      paddingBottom: '120px'
+    },
+    // Standard page with sidebar
+    pageWithSidebar: {
+      minHeight: '100vh',
+      paddingTop: '54px'
+    },
+    // Standard section spacing
+    sectionGap: '48px',
+    // Standard card padding
+    cardPadding: '24px',
+    // Standard form field gap
+    formFieldGap: '16px'
+  },
   fontSize: {
     xs: '12px',
     sm: '14px',
@@ -88,6 +108,59 @@ const theme = {
     fast: '0.1s ease',
     normal: '0.15s ease',
     slow: '0.2s ease'
+  },
+  inputs: {
+    // Standard text input
+    text: {
+      base: {
+        width: '100%',
+        padding: '10px 12px',
+        background: '#0a0a0a',
+        border: '1px solid #1a1a1a',
+        borderRadius: '8px',
+        color: '#ffffff',
+        fontSize: '14px',
+        fontFamily: 'inherit',
+        outline: 'none',
+        transition: 'all 0.15s ease'
+      },
+      focus: {
+        borderColor: '#404040',
+        background: '#000000'
+      },
+      error: {
+        borderColor: '#ef4444'
+      }
+    },
+    // Textarea
+    textarea: {
+      base: {
+        width: '100%',
+        padding: '10px 12px',
+        background: '#0a0a0a',
+        border: '1px solid #1a1a1a',
+        borderRadius: '8px',
+        color: '#ffffff',
+        fontSize: '14px',
+        fontFamily: 'inherit',
+        outline: 'none',
+        resize: 'vertical',
+        minHeight: '80px',
+        transition: 'all 0.15s ease'
+      },
+      focus: {
+        borderColor: '#404040',
+        background: '#000000'
+      }
+    },
+    // Label
+    label: {
+      display: 'block',
+      fontSize: '12px',
+      color: '#8a8a8a',
+      marginBottom: '8px',
+      fontWeight: '500'
+    }
   },
   buttons: {
     // Primary button - white background, black text
