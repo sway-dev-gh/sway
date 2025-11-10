@@ -234,44 +234,47 @@ function Responses() {
             </p>
           </div>
 
-          {/* Top Stats - 4 Cards */}
+          {/* Top Stats - 4 Cards with improved design */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: theme.spacing[4],
-            marginBottom: theme.spacing[7]
+            gap: '20px',
+            marginBottom: '48px'
           }}>
             {/* Total Forms */}
             <div style={{
-              padding: '24px',
-              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg
+              borderRadius: '16px',
+              transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: '600',
+                fontSize: '11px',
+                color: theme.colors.text.tertiary,
+                marginBottom: '16px',
+                fontWeight: '700',
                 textTransform: 'uppercase',
-                letterSpacing: '1.2px'
+                letterSpacing: '1.5px'
               }}>
                 Requests
               </div>
               <div style={{
-                fontSize: '40px',
+                fontSize: '48px',
                 fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[1],
+                marginBottom: '12px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                fontVariantNumeric: 'tabular-nums'
+                fontVariantNumeric: 'tabular-nums',
+                letterSpacing: '-0.02em'
               }}>
                 {forms.length}
               </div>
               <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.tertiary
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                fontWeight: '500'
               }}>
                 Total created
               </div>
@@ -279,35 +282,38 @@ function Responses() {
 
             {/* Live Forms */}
             <div style={{
-              padding: '24px',
-              background: 'rgba(255, 255, 255, 0.02)',
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg
+              padding: '28px',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)',
+              border: `1px solid ${theme.colors.white}`,
+              borderRadius: '16px',
+              transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: '600',
+                fontSize: '11px',
+                color: theme.colors.text.tertiary,
+                marginBottom: '16px',
+                fontWeight: '700',
                 textTransform: 'uppercase',
-                letterSpacing: '1.2px'
+                letterSpacing: '1.5px'
               }}>
-                Live
+                Live Now
               </div>
               <div style={{
-                fontSize: '40px',
+                fontSize: '48px',
                 fontWeight: '700',
                 color: '#ffffff',
                 lineHeight: '1',
-                marginBottom: theme.spacing[1],
+                marginBottom: '12px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                fontVariantNumeric: 'tabular-nums'
+                fontVariantNumeric: 'tabular-nums',
+                letterSpacing: '-0.02em'
               }}>
                 {forms.filter(f => getFormStatus(f) === 'Live').length}
               </div>
               <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.tertiary
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                fontWeight: '500'
               }}>
                 Collecting files
               </div>
@@ -315,35 +321,38 @@ function Responses() {
 
             {/* Total Uploads */}
             <div style={{
-              padding: '24px',
-              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg
+              borderRadius: '16px',
+              transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: '600',
+                fontSize: '11px',
+                color: theme.colors.text.tertiary,
+                marginBottom: '16px',
+                fontWeight: '700',
                 textTransform: 'uppercase',
-                letterSpacing: '1.2px'
+                letterSpacing: '1.5px'
               }}>
                 Files
               </div>
               <div style={{
-                fontSize: '40px',
+                fontSize: '48px',
                 fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[1],
+                marginBottom: '12px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                fontVariantNumeric: 'tabular-nums'
+                fontVariantNumeric: 'tabular-nums',
+                letterSpacing: '-0.02em'
               }}>
                 {uploads.length}
               </div>
               <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.tertiary
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                fontWeight: '500'
               }}>
                 Total received
               </div>
@@ -351,51 +360,56 @@ function Responses() {
 
             {/* Storage Used */}
             <div style={{
-              padding: '24px',
-              background: 'rgba(255, 255, 255, 0.02)',
+              padding: '28px',
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)',
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg
+              borderRadius: '16px',
+              transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '12px',
-                color: theme.colors.text.secondary,
-                marginBottom: theme.spacing[2],
-                fontWeight: '600',
+                fontSize: '11px',
+                color: theme.colors.text.tertiary,
+                marginBottom: '16px',
+                fontWeight: '700',
                 textTransform: 'uppercase',
-                letterSpacing: '1.2px'
+                letterSpacing: '1.5px'
               }}>
                 Storage
               </div>
               <div style={{
-                fontSize: '40px',
+                fontSize: '48px',
                 fontWeight: '700',
                 color: theme.colors.text.primary,
                 lineHeight: '1',
-                marginBottom: theme.spacing[2],
+                marginBottom: '16px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                fontVariantNumeric: 'tabular-nums'
+                fontVariantNumeric: 'tabular-nums',
+                letterSpacing: '-0.02em'
               }}>
-                {storageStats.used.toFixed(2)} GB
+                {storageStats.used.toFixed(1)}
+                <span style={{ fontSize: '24px', fontWeight: '600', marginLeft: '6px', color: theme.colors.text.secondary }}>GB</span>
               </div>
               <div style={{
                 width: '100%',
-                height: '4px',
-                background: theme.colors.border.light,
-                borderRadius: '2px',
+                height: '6px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '3px',
                 overflow: 'hidden',
-                marginBottom: theme.spacing[1]
+                marginBottom: '10px'
               }}>
                 <div style={{
                   width: `${Math.min((storageStats.used / storageStats.limit) * 100, 100)}%`,
                   height: '100%',
-                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#ffffff'
+                  background: storageStats.used > storageStats.limit * 0.8 ? 'linear-gradient(90deg, #ef4444, #dc2626)' : 'linear-gradient(90deg, #ffffff, #e5e5e5)',
+                  transition: 'width 0.3s ease'
                 }} />
               </div>
               <div style={{
-                fontSize: '13px',
-                color: theme.colors.text.tertiary
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                fontWeight: '500'
               }}>
-                of {storageStats.limit} GB
+                of {storageStats.limit} GB used
               </div>
             </div>
           </div>

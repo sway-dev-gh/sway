@@ -117,7 +117,7 @@ function Notifications() {
               margin: 0,
               lineHeight: '1.5'
             }}>
-              Every file that comes in
+              Real-time updates for uploads, form views, and more
             </p>
           </div>
 
