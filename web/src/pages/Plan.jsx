@@ -109,7 +109,8 @@ function Plan() {
       features: [
         { text: '5 file requests', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Basic uploads', highlight: false }
+        { text: 'Basic visual builder', highlight: false },
+        { text: 'Basic analytics', highlight: false }
       ]
     },
     {
@@ -122,10 +123,10 @@ function Plan() {
       features: [
         { text: 'Unlimited requests', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'Advanced builder', highlight: true },
+        { text: 'Advanced visual builder', highlight: true },
         { text: 'Password protect pages', highlight: true },
         { text: 'Download everything', highlight: true },
-        { text: 'See analytics', highlight: true },
+        { text: 'Advanced analytics', highlight: true },
         { text: 'Priority support', highlight: true }
       ]
     }

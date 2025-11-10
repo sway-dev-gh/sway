@@ -46,7 +46,7 @@ function Sidebar() {
 
       if (isTyping) return
 
-      const pages = ['/dashboard', '/requests', '/responses', '/notifications', '/plan', '/faq', '/settings']
+      const pages = ['/dashboard', '/requests', '/responses', '/notifications', '/plan', '/faq', '/support', '/settings']
       const currentIndex = pages.indexOf(location.pathname)
 
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
@@ -116,6 +116,7 @@ function Sidebar() {
         { path: '/notifications', label: 'Notifications', planRequired: null },
         { path: '/plan', label: 'Plan', planRequired: null },
         { path: '/faq', label: 'FAQ', planRequired: null },
+        { path: '/support', label: 'Support', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
       ]
     }

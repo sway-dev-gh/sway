@@ -6,6 +6,7 @@ import Notifications from './pages/Notifications'
 import Uploads from './pages/Uploads'
 import Plan from './pages/Plan'
 import FAQ from './pages/FAQ'
+import Support from './pages/Support'
 import Settings from './pages/Settings'
 import RequestView from './pages/RequestView'
 import Upload from './pages/Upload'
@@ -29,6 +30,7 @@ function App() {
         <Route path="/uploads" element={<Uploads />} />
         <Route path="/plan" element={<Plan />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/support" element={<Support />} />
         <Route path="/settings" element={<Settings />} />
       </Routes>
     </BrowserRouter>
