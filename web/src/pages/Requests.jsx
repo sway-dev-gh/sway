@@ -1067,7 +1067,12 @@ function Requests() {
   const [selectedElements, setSelectedElements] = useState([])
   const [isDragging, setIsDragging] = useState(false)
   const [draggedComponent, setDraggedComponent] = useState(null)
-  const [formTitle, setFormTitle] = useState(`Untitled Request ${Date.now().toString().slice(-4)}`)
+  const [formTitle, setFormTitle] = useState(() => {
+    // Create a stable auto-number that doesn't change on reload
+    const currentTime = new Date()
+    const timeBasedId = Math.floor(currentTime.getTime() / 1000) % 10000
+    return `Untitled Request ${timeBasedId}`
+  })
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [activeTab, setActiveTab] = useState('templates')
   const [showTemplateModal, setShowTemplateModal] = useState(false)
@@ -2963,7 +2968,7 @@ function Requests() {
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            padding: '48px'
+            padding: '24px'
           }}>
             <div
               ref={canvasRef}
@@ -2973,8 +2978,9 @@ function Requests() {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               style={{
-                width: '1200px',
-                minHeight: '700px',
+                width: '100%',
+                maxWidth: '1000px',
+                minHeight: '600px',
                 background: theme.colors.bg.card,
                 borderRadius: theme.radius.md,
                 position: 'relative',
