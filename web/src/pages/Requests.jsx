@@ -710,21 +710,20 @@ function Requests() {
           padding: '80px 32px'
         }}>
 
-          {/* Header - Enhanced Modern Layout */}
+          {/* Header - Clean Layout */}
           <div style={{
             display: 'grid',
             gridTemplateColumns: '1fr auto auto',
-            gap: '40px',
+            gap: '24px',
             alignItems: 'start',
-            marginBottom: '56px',
-            padding: '40px 48px',
-            background: 'linear-gradient(135deg, #0A0A0A 0%, #111111 100%)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
-            borderRadius: '16px',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+            marginBottom: '40px',
+            padding: '32px',
+            background: '#0F0F0F',
+            border: '1px solid rgba(255, 255, 255, 0.05)',
+            borderRadius: '12px'
           }}>
             {/* Left: Project Info */}
-            <div style={{ flex: 1 }}>
+            <div>
               {isEditingTitle ? (
                 <input
                   type="text"
@@ -737,12 +736,11 @@ function Requests() {
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    borderBottom: '2px solid rgba(255, 255, 255, 0.15)',
+                    borderBottom: '1px solid #373737',
                     color: '#FFFFFF',
-                    fontSize: '32px',
-                    fontWeight: '700',
-                    letterSpacing: '-0.02em',
-                    padding: '0 0 12px 0',
+                    fontSize: '24px',
+                    fontWeight: '600',
+                    padding: '0 0 8px 0',
                     outline: 'none',
                     fontFamily: 'inherit',
                     width: '100%'
@@ -752,13 +750,11 @@ function Requests() {
                 <h1
                   onClick={() => setIsEditingTitle(true)}
                   style={{
-                    fontSize: '32px',
-                    fontWeight: '700',
-                    letterSpacing: '-0.02em',
-                    margin: '0 0 12px 0',
+                    fontSize: '24px',
+                    fontWeight: '600',
+                    margin: '0 0 8px 0',
                     color: '#FFFFFF',
-                    cursor: 'pointer',
-                    transition: 'color 0.2s ease'
+                    cursor: 'pointer'
                   }}
                 >
                   {formTitle}
@@ -766,28 +762,26 @@ function Requests() {
               )}
 
               <div style={{
-                fontSize: '15px',
-                color: '#8A8A8F',
-                marginBottom: '24px',
-                fontWeight: '500'
+                fontSize: '14px',
+                color: '#808080',
+                marginBottom: '16px'
               }}>
-                Collection Form • {elements.length} field{elements.length !== 1 ? 's' : ''} • Last saved 2 minutes ago
+                Collection Form • {elements.length} field{elements.length !== 1 ? 's' : ''} • Last saved 2 min ago
               </div>
 
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <button
                   onClick={() => setShowPreviewModal(true)}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
+                    background: 'transparent',
                     color: '#FFFFFF',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    padding: '10px 20px',
+                    border: '1px solid #373737',
+                    borderRadius: '6px',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    padding: '8px 16px',
                     cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    transition: 'all 0.2s ease'
+                    fontFamily: 'inherit'
                   }}
                 >
                   Preview
@@ -795,16 +789,15 @@ function Requests() {
                 <button
                   onClick={handleSave}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
+                    background: 'transparent',
                     color: '#FFFFFF',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    padding: '10px 20px',
+                    border: '1px solid #373737',
+                    borderRadius: '6px',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    padding: '8px 16px',
                     cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    transition: 'all 0.2s ease'
+                    fontFamily: 'inherit'
                   }}
                 >
                   Save Draft
@@ -813,29 +806,21 @@ function Requests() {
             </div>
 
             {/* Center: Stats */}
-            <div style={{
-              textAlign: 'center',
-              padding: '24px',
-              borderRadius: '12px',
-              background: 'rgba(255, 255, 255, 0.02)',
-              border: '1px solid rgba(255, 255, 255, 0.05)',
-              minWidth: '120px'
-            }}>
+            <div style={{ textAlign: 'center' }}>
               <div style={{
-                fontSize: '36px',
-                fontWeight: '800',
+                fontSize: '24px',
+                fontWeight: '700',
                 color: '#FFFFFF',
-                marginBottom: '8px',
-                letterSpacing: '-0.02em'
+                marginBottom: '4px'
               }}>
                 0
               </div>
               <div style={{
-                fontSize: '13px',
-                color: '#8A8A8F',
+                fontSize: '12px',
+                color: '#808080',
                 textTransform: 'uppercase',
-                fontWeight: '600',
-                letterSpacing: '0.8px'
+                fontWeight: '500',
+                letterSpacing: '0.5px'
               }}>
                 Submissions
               </div>
@@ -845,18 +830,15 @@ function Requests() {
             <button
               onClick={handlePublish}
               style={{
-                background: 'linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%)',
+                background: '#FFFFFF',
                 color: '#000000',
                 border: 'none',
-                borderRadius: '12px',
-                fontSize: '15px',
-                fontWeight: '700',
-                padding: '16px 32px',
+                borderRadius: '6px',
+                fontSize: '14px',
+                fontWeight: '600',
+                padding: '12px 24px',
                 cursor: 'pointer',
-                fontFamily: 'inherit',
-                transition: 'all 0.2s ease',
-                boxShadow: '0 4px 12px rgba(255, 255, 255, 0.15)',
-                letterSpacing: '-0.01em'
+                fontFamily: 'inherit'
               }}
             >
               Publish Collection
@@ -873,58 +855,44 @@ function Requests() {
 
             {/* Left: Tools Panel */}
             <div style={{
-              background: 'linear-gradient(135deg, #0A0A0A 0%, #0F0F0F 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '16px',
-              padding: '32px',
+              background: '#0F0F0F',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: '12px',
+              padding: '24px',
               display: 'flex',
               flexDirection: 'column',
-              gap: '32px',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-              backdropFilter: 'blur(8px)'
+              gap: '24px'
             }}>
               {/* Add Fields Section */}
               <div>
                 <h3 style={{
-                  fontSize: '16px',
-                  fontWeight: '700',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   color: '#FFFFFF',
-                  margin: '0 0 20px 0',
+                  margin: '0 0 16px 0',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.8px'
+                  letterSpacing: '0.5px'
                 }}>
                   Add Fields
                 </h3>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {COMPONENT_LIBRARY.filter(c => c.category === 'input').map((component) => (
                     <button
                       key={component.id}
                       onClick={() => addElement(component.id)}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
+                        background: 'transparent',
                         color: '#FFFFFF',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '10px',
-                        padding: '14px 16px',
-                        fontSize: '14px',
-                        fontWeight: '600',
+                        border: '1px solid #373737',
+                        borderRadius: '6px',
+                        padding: '10px 12px',
+                        fontSize: '13px',
+                        fontWeight: '500',
                         cursor: 'pointer',
                         fontFamily: 'inherit',
                         textAlign: 'left',
-                        width: '100%',
-                        transition: 'all 0.2s ease',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.background = 'rgba(255, 255, 255, 0.06)'
-                        e.target.style.transform = 'translateY(-1px)'
-                        e.target.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.background = 'rgba(255, 255, 255, 0.03)'
-                        e.target.style.transform = 'translateY(0)'
-                        e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)'
+                        width: '100%'
                       }}
                     >
                       + {component.label}
@@ -936,45 +904,33 @@ function Requests() {
               {/* Content Section */}
               <div>
                 <h3 style={{
-                  fontSize: '16px',
-                  fontWeight: '700',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   color: '#FFFFFF',
-                  margin: '0 0 20px 0',
+                  margin: '0 0 16px 0',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.8px'
+                  letterSpacing: '0.5px'
                 }}>
                   Content
                 </h3>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {COMPONENT_LIBRARY.filter(c => c.category === 'text').map((component) => (
                     <button
                       key={component.id}
                       onClick={() => addElement(component.id)}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
+                        background: 'transparent',
                         color: '#FFFFFF',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '10px',
-                        padding: '14px 16px',
-                        fontSize: '14px',
-                        fontWeight: '600',
+                        border: '1px solid #373737',
+                        borderRadius: '6px',
+                        padding: '10px 12px',
+                        fontSize: '13px',
+                        fontWeight: '500',
                         cursor: 'pointer',
                         fontFamily: 'inherit',
                         textAlign: 'left',
-                        width: '100%',
-                        transition: 'all 0.2s ease',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.background = 'rgba(255, 255, 255, 0.06)'
-                        e.target.style.transform = 'translateY(-1px)'
-                        e.target.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.background = 'rgba(255, 255, 255, 0.03)'
-                        e.target.style.transform = 'translateY(0)'
-                        e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)'
+                        width: '100%'
                       }}
                     >
                       + {component.label}
@@ -986,45 +942,33 @@ function Requests() {
               {/* Templates */}
               <div>
                 <h3 style={{
-                  fontSize: '16px',
-                  fontWeight: '700',
+                  fontSize: '14px',
+                  fontWeight: '600',
                   color: '#FFFFFF',
-                  margin: '0 0 20px 0',
+                  margin: '0 0 16px 0',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.8px'
+                  letterSpacing: '0.5px'
                 }}>
                   Quick Start
                 </h3>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {TEMPLATE_LIBRARY.slice(1).map((template) => (
                     <button
                       key={template.id}
                       onClick={() => loadTemplate(template)}
                       style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
+                        background: 'transparent',
                         color: '#FFFFFF',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '10px',
-                        padding: '14px 16px',
-                        fontSize: '14px',
-                        fontWeight: '600',
+                        border: '1px solid #373737',
+                        borderRadius: '6px',
+                        padding: '10px 12px',
+                        fontSize: '13px',
+                        fontWeight: '500',
                         cursor: 'pointer',
                         fontFamily: 'inherit',
                         textAlign: 'left',
-                        width: '100%',
-                        transition: 'all 0.2s ease',
-                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.background = 'rgba(255, 255, 255, 0.06)'
-                        e.target.style.transform = 'translateY(-1px)'
-                        e.target.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.2)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.background = 'rgba(255, 255, 255, 0.03)'
-                        e.target.style.transform = 'translateY(0)'
-                        e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)'
+                        width: '100%'
                       }}
                     >
                       {template.name}
@@ -1036,48 +980,43 @@ function Requests() {
 
             {/* Right: Form Canvas */}
             <div style={{
-              background: 'linear-gradient(135deg, #0A0A0A 0%, #0F0F0F 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '16px',
+              background: '#0F0F0F',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: '12px',
               position: 'relative',
-              overflow: 'hidden',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4)',
-              backdropFilter: 'blur(8px)'
+              overflow: 'hidden'
             }}>
               {/* Canvas Header */}
               <div style={{
-                padding: '20px 32px',
-                borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-                background: 'rgba(0, 0, 0, 0.2)',
+                padding: '16px 24px',
+                borderBottom: '1px solid rgba(255, 255, 255, 0.05)',
+                background: '#000000',
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center',
-                backdropFilter: 'blur(8px)'
+                alignItems: 'center'
               }}>
                 <div style={{
-                  fontSize: '16px',
-                  fontWeight: '700',
-                  color: '#FFFFFF',
-                  letterSpacing: '-0.01em'
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#FFFFFF'
                 }}>
                   Form Preview
                 </div>
 
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
                   <button
                     onClick={handleUndo}
                     disabled={historyIndex <= 0}
                     style={{
-                      background: historyIndex <= 0 ? 'transparent' : 'rgba(255, 255, 255, 0.05)',
+                      background: 'transparent',
                       color: historyIndex <= 0 ? '#4A4A4A' : '#FFFFFF',
-                      border: '1px solid ' + (historyIndex <= 0 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.1)'),
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      padding: '8px 12px',
+                      border: '1px solid #373737',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      padding: '6px 10px',
                       cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
-                      fontFamily: 'inherit',
-                      transition: 'all 0.2s ease'
+                      fontFamily: 'inherit'
                     }}
                   >
                     Undo
@@ -1086,16 +1025,15 @@ function Requests() {
                     onClick={handleRedo}
                     disabled={historyIndex >= history.length - 1}
                     style={{
-                      background: historyIndex >= history.length - 1 ? 'transparent' : 'rgba(255, 255, 255, 0.05)',
+                      background: 'transparent',
                       color: historyIndex >= history.length - 1 ? '#4A4A4A' : '#FFFFFF',
-                      border: '1px solid ' + (historyIndex >= history.length - 1 ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.1)'),
-                      borderRadius: '8px',
-                      fontSize: '13px',
-                      fontWeight: '600',
-                      padding: '8px 12px',
+                      border: '1px solid #373737',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      padding: '6px 10px',
                       cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
-                      fontFamily: 'inherit',
-                      transition: 'all 0.2s ease'
+                      fontFamily: 'inherit'
                     }}
                   >
                     Redo
@@ -1107,11 +1045,11 @@ function Requests() {
               <div
                 ref={canvasRef}
                 style={{
-                  height: 'calc(100% - 73px)',
-                  padding: '40px',
+                  height: 'calc(100% - 57px)',
+                  padding: '32px',
                   position: 'relative',
                   overflow: 'auto',
-                  background: 'linear-gradient(180deg, rgba(10, 10, 10, 0.8) 0%, rgba(15, 15, 15, 0.9) 100%)'
+                  background: '#0A0A0A'
                 }}
               >
                 {elements.length === 0 ? (
@@ -1120,28 +1058,26 @@ function Requests() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: '450px',
-                    color: '#8A8A8F',
+                    height: '400px',
+                    color: '#808080',
                     textAlign: 'center',
                     background: 'rgba(255, 255, 255, 0.02)',
-                    border: '2px dashed rgba(255, 255, 255, 0.08)',
-                    borderRadius: '16px',
-                    padding: '48px'
+                    border: '1px dashed rgba(255, 255, 255, 0.05)',
+                    borderRadius: '12px',
+                    padding: '40px'
                   }}>
                     <div style={{
-                      marginBottom: '16px',
-                      fontSize: '20px',
-                      fontWeight: '700',
-                      color: '#FFFFFF',
-                      letterSpacing: '-0.01em'
+                      marginBottom: '12px',
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: '#FFFFFF'
                     }}>
                       Start building your collection
                     </div>
                     <div style={{
-                      fontSize: '15px',
-                      fontWeight: '500',
+                      fontSize: '14px',
                       lineHeight: '1.5',
-                      maxWidth: '280px'
+                      maxWidth: '260px'
                     }}>
                       Add form fields from the panel on the left to begin creating your collection form
                     </div>
@@ -1161,35 +1097,31 @@ function Requests() {
               right: '32px',
               top: '50%',
               transform: 'translateY(-50%)',
-              width: '360px',
-              background: 'linear-gradient(135deg, #0A0A0A 0%, #111111 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
-              borderRadius: '20px',
-              padding: '32px',
-              zIndex: 1000,
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(16px)'
+              width: '320px',
+              background: '#0F0F0F',
+              border: '1px solid rgba(255, 255, 255, 0.05)',
+              borderRadius: '12px',
+              padding: '24px',
+              zIndex: 1000
             }}>
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                marginBottom: '28px'
+                alignItems: 'center',
+                marginBottom: '20px'
               }}>
                 <div>
                   <div style={{
-                    fontSize: '20px',
-                    fontWeight: '700',
+                    fontSize: '16px',
+                    fontWeight: '600',
                     color: '#FFFFFF',
-                    marginBottom: '6px',
-                    letterSpacing: '-0.02em'
+                    marginBottom: '4px'
                   }}>
                     {COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label}
                   </div>
                   <div style={{
-                    fontSize: '14px',
-                    color: '#8A8A8F',
-                    fontWeight: '500'
+                    fontSize: '12px',
+                    color: '#808080'
                   }}>
                     Field Properties
                   </div>
@@ -1197,40 +1129,29 @@ function Requests() {
                 <button
                   onClick={() => setSelectedElement(null)}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '10px',
-                    color: '#FFFFFF',
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#808080',
                     fontSize: '16px',
                     cursor: 'pointer',
-                    padding: '8px 10px',
-                    fontWeight: '400',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = 'rgba(255, 255, 255, 0.08)'
-                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.15)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = 'rgba(255, 255, 255, 0.05)'
-                    e.target.style.borderColor = 'rgba(255, 255, 255, 0.1)'
+                    padding: '4px'
                   }}
                 >
                   ×
                 </button>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                 {Object.entries(selectedElement.properties).map(([propertyName, value]) => (
                   <div key={propertyName}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
-                      fontWeight: '700',
+                      fontSize: '12px',
+                      fontWeight: '600',
                       color: '#FFFFFF',
-                      marginBottom: '8px',
+                      marginBottom: '6px',
                       textTransform: 'uppercase',
-                      letterSpacing: '0.8px'
+                      letterSpacing: '0.5px'
                     }}>
                       {propertyName.replace(/([A-Z])/g, ' $1')}
                     </label>
@@ -1239,29 +1160,16 @@ function Requests() {
                       <label style={{
                         display: 'flex',
                         alignItems: 'center',
-                        gap: '12px',
-                        cursor: 'pointer',
-                        padding: '12px 16px',
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        borderRadius: '10px',
-                        transition: 'all 0.2s ease'
+                        gap: '8px',
+                        cursor: 'pointer'
                       }}>
                         <input
                           type="checkbox"
                           checked={value}
                           onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.checked)}
-                          style={{
-                            width: '20px',
-                            height: '20px',
-                            accentColor: '#FFFFFF'
-                          }}
+                          style={{ width: '16px', height: '16px' }}
                         />
-                        <span style={{
-                          fontSize: '14px',
-                          color: '#FFFFFF',
-                          fontWeight: '600'
-                        }}>
+                        <span style={{ fontSize: '13px', color: '#808080' }}>
                           {value ? 'Enabled' : 'Disabled'}
                         </span>
                       </label>
@@ -1276,16 +1184,13 @@ function Requests() {
                         )}
                         style={{
                           width: '100%',
-                          padding: '12px 16px',
-                          fontSize: '14px',
-                          fontWeight: '500',
-                          border: '1px solid rgba(255, 255, 255, 0.08)',
-                          borderRadius: '10px',
-                          background: 'rgba(255, 255, 255, 0.03)',
+                          padding: '8px 12px',
+                          fontSize: '13px',
+                          border: '1px solid #373737',
+                          borderRadius: '6px',
+                          background: 'transparent',
                           color: '#FFFFFF',
-                          outline: 'none',
-                          transition: 'all 0.2s ease',
-                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)'
+                          outline: 'none'
                         }}
                       />
                     )}
@@ -1295,28 +1200,15 @@ function Requests() {
                 <button
                   onClick={() => deleteElement(selectedElement.id)}
                   style={{
-                    padding: '12px 16px',
-                    fontSize: '14px',
-                    fontWeight: '700',
+                    padding: '8px 12px',
+                    fontSize: '12px',
+                    fontWeight: '500',
                     border: '1px solid #EF4444',
-                    borderRadius: '10px',
-                    background: 'rgba(239, 68, 68, 0.1)',
+                    borderRadius: '6px',
+                    background: 'transparent',
                     color: '#EF4444',
                     cursor: 'pointer',
-                    marginTop: '12px',
-                    transition: 'all 0.2s ease',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = 'rgba(239, 68, 68, 0.2)'
-                    e.target.style.transform = 'translateY(-1px)'
-                    e.target.style.boxShadow = '0 4px 16px rgba(239, 68, 68, 0.3)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = 'rgba(239, 68, 68, 0.1)'
-                    e.target.style.transform = 'translateY(0)'
-                    e.target.style.boxShadow = 'none'
+                    marginTop: '8px'
                   }}
                 >
                   Delete Field
