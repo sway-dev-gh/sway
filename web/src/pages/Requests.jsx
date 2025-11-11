@@ -2265,7 +2265,7 @@ function Requests() {
       <div
         style={{
           height: '100vh',
-          background: theme.colors.bg.page,
+          background: '#000000',
           color: theme.colors.text.primary,
           paddingTop: '54px',
           display: 'flex',
@@ -2283,7 +2283,7 @@ function Requests() {
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 40px',
-          background: theme.colors.bg.card
+          background: '#000000'
         }}>
           {/* Left Section - Title with Status */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
