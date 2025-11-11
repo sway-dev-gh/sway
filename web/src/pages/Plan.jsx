@@ -121,19 +121,21 @@ function Plan() {
     {
       id: 'pro',
       name: 'Pro',
-      price: '$15',
+      price: '$12',
       period: '/month',
-      description: 'For serious file collection',
+      description: 'AI-powered workflow automation',
       popular: true,
       features: [
+        { text: 'AI Assistant with GPT-4o integration', highlight: true },
+        { text: 'AI file summarization & missing doc detection', highlight: true },
+        { text: 'Smart scheduling suggestions & insights', highlight: true },
+        { text: 'AI-powered follow-up email generation', highlight: true },
         { text: 'Unlimited requests', highlight: true },
         { text: '50GB storage', highlight: true },
         { text: 'Advanced visual builder (unlimited elements)', highlight: true },
         { text: 'Pro templates (Onboarding, Product, Event, Job)', highlight: true },
         { text: 'Advanced elements (Dropdowns, Multi-file, Gallery)', highlight: true },
         { text: 'Rich inputs (Date, Color, Slider, Rating)', highlight: true },
-        { text: 'Rich text editor & Email validation', highlight: true },
-        { text: 'Keyboard shortcuts enabled', highlight: true },
         { text: 'Password protect pages', highlight: true },
         { text: 'Download everything (bulk downloads)', highlight: true },
         { text: 'Advanced analytics', highlight: true },
@@ -405,6 +407,9 @@ function Plan() {
               overflow: 'hidden'
             }}>
               {[
+                { feature: 'AI Assistant', free: '—', pro: '✓' },
+                { feature: 'AI File Summarization', free: '—', pro: '✓' },
+                { feature: 'Smart Scheduling', free: '—', pro: '✓' },
                 { feature: 'Active Forms', free: '5', pro: 'Unlimited' },
                 { feature: 'Storage', free: '2GB', pro: '50GB' },
                 { feature: 'Visual Builder', free: '—', pro: '✓' },
@@ -417,7 +422,7 @@ function Plan() {
                   display: 'grid',
                   gridTemplateColumns: '2fr 1fr 1fr',
                   padding: '24px 32px',
-                  borderBottom: index < 6 ? `1px solid ${theme.colors.border.light}` : 'none'
+                  borderBottom: index < 9 ? `1px solid ${theme.colors.border.light}` : 'none'
                 }}>
                   <div style={{
                     fontSize: '14px',
