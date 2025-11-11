@@ -2275,7 +2275,7 @@ function Requests() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 32px',
+          padding: '0 24px',
           background: theme.colors.bg.hover
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -2544,7 +2544,7 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ padding: '24px 16px' }}>
+            <div style={{ padding: '24px 16px', marginTop: '24px' }}>
               {activeTab === 'branding' ? (
                 <>
                   <div style={{
@@ -3068,8 +3068,8 @@ function Requests() {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               style={{
-                width: '1600px',
-                minHeight: '900px',
+                width: '1400px',
+                minHeight: '800px',
                 background: theme.colors.bg.page,
                 borderRadius: '4px',
                 position: 'relative',
@@ -3968,8 +3968,8 @@ function Requests() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: '1600px',
-              minHeight: '900px',
+              width: '1400px',
+              minHeight: '800px',
               background: theme.colors.bg.hover,
               position: 'relative',
               overflow: 'visible'
