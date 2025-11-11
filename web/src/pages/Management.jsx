@@ -795,7 +795,7 @@ function Management() {
                       style={{
                         padding: '10px 20px',
                         background: 'transparent',
-                        border: '1px solid #262626',
+                        border: '1px solid #000000',
                         borderRadius: '6px',
                         color: '#ffffff',
                         fontSize: '14px',
@@ -805,12 +805,12 @@ function Management() {
                         fontFamily: 'inherit'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#141414'
-                        e.currentTarget.style.borderColor = '#404040'
+                        e.currentTarget.style.background = '#000000'
+                        e.currentTarget.style.borderColor = '#525252'
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.borderColor = '#262626'
+                        e.currentTarget.style.borderColor = '#000000'
                       }}
                     >
                       Previous
@@ -832,7 +832,7 @@ function Management() {
                         style={{
                           padding: '10px 20px',
                           background: 'transparent',
-                          border: '1px solid #262626',
+                          border: '1px solid #000000',
                           borderRadius: '6px',
                           color: '#ffffff',
                           fontSize: '14px',
@@ -842,12 +842,12 @@ function Management() {
                           fontFamily: 'inherit'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#141414'
-                          e.currentTarget.style.borderColor = '#404040'
+                          e.currentTarget.style.background = '#000000'
+                          e.currentTarget.style.borderColor = '#525252'
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.borderColor = '#262626'
+                          e.currentTarget.style.borderColor = '#000000'
                         }}
                       >
                         Today
@@ -857,7 +857,7 @@ function Management() {
                         style={{
                           padding: '10px 20px',
                           background: 'transparent',
-                          border: '1px solid #262626',
+                          border: '1px solid #000000',
                           borderRadius: '6px',
                           color: '#ffffff',
                           fontSize: '14px',
@@ -867,12 +867,12 @@ function Management() {
                           fontFamily: 'inherit'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#141414'
-                          e.currentTarget.style.borderColor = '#404040'
+                          e.currentTarget.style.background = '#000000'
+                          e.currentTarget.style.borderColor = '#525252'
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.borderColor = '#262626'
+                          e.currentTarget.style.borderColor = '#000000'
                         }}
                       >
                         Next
@@ -881,9 +881,9 @@ function Management() {
                   </div>
 
                   <div style={{
-                    border: '1px solid #262626',
+                    border: '1px solid #000000',
                     borderRadius: '8px',
-                    background: '#0F0F0F',
+                    background: '#000000',
                     overflow: 'hidden',
                     padding: '24px'
                   }}>
@@ -898,7 +898,7 @@ function Management() {
                           textAlign: 'center',
                           fontSize: '12px',
                           fontWeight: '600',
-                          color: '#737373',
+                          color: '#a3a3a3',
                           textTransform: 'uppercase',
                           letterSpacing: '0.5px',
                           padding: '8px'
@@ -912,14 +912,14 @@ function Management() {
                       display: 'grid',
                       gridTemplateColumns: 'repeat(7, 1fr)',
                       gap: '1px',
-                      background: '#262626'
+                      background: '#000000'
                     }}>
                       {generateCalendarDays().map((date, index) => {
                         if (!date) {
                           return (
                             <div key={`empty-${index}`} style={{
                               minHeight: '60px',
-                              background: '#0F0F0F'
+                              background: '#000000'
                             }} />
                           )
                         }
@@ -936,7 +936,7 @@ function Management() {
                             onClick={() => handleDayClick(date, uploadsForDay)}
                             style={{
                               minHeight: '60px',
-                              background: '#0F0F0F',
+                              background: '#000000',
                               border: isToday ? '1px solid #ffffff' : '1px solid transparent',
                               padding: '8px',
                               position: 'relative',
@@ -944,11 +944,11 @@ function Management() {
                               transition: 'all 0.15s ease'
                             }}
                             onMouseEnter={(e) => {
-                              e.currentTarget.style.background = '#141414'
-                              e.currentTarget.style.borderColor = '#404040'
+                              e.currentTarget.style.background = '#000000'
+                              e.currentTarget.style.borderColor = '#525252'
                             }}
                             onMouseLeave={(e) => {
-                              e.currentTarget.style.background = '#0F0F0F'
+                              e.currentTarget.style.background = '#000000'
                               e.currentTarget.style.borderColor = isToday ? '#ffffff' : 'transparent'
                             }}
                           >
@@ -966,7 +966,7 @@ function Management() {
                                 right: '8px',
                                 width: '6px',
                                 height: '6px',
-                                background: '#3b82f6',
+                                background: theme.colors.white,
                                 borderRadius: '50%'
                               }} />
                             )}
@@ -1016,7 +1016,7 @@ function Management() {
                   <div
                     style={{
                       background: '#000000',
-                      border: '1px solid #373737',
+                      border: '1px solid #525252',
                       borderRadius: '12px',
                       maxWidth: '800px',
                       width: '100%',
@@ -1029,7 +1029,7 @@ function Management() {
                   >
                     <div style={{
                       padding: '24px',
-                      borderBottom: '1px solid #373737',
+                      borderBottom: '1px solid #525252',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center'
@@ -1052,7 +1052,7 @@ function Management() {
                         style={{
                           background: 'transparent',
                           border: 'none',
-                          color: '#737373',
+                          color: '#a3a3a3',
                           fontSize: '14px',
                           cursor: 'pointer',
                           padding: '8px 16px',
@@ -1061,12 +1061,12 @@ function Management() {
                           fontWeight: '500'
                         }}
                         onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#1a1a1a'
+                          e.currentTarget.style.background = '#000000'
                           e.currentTarget.style.color = '#ffffff'
                         }}
                         onMouseLeave={(e) => {
                           e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.color = '#737373'
+                          e.currentTarget.style.color = '#a3a3a3'
                         }}
                       >
                         Close
@@ -1093,10 +1093,10 @@ function Management() {
                         {getUploadsForDate(selectedDate).length === 0 ? (
                           <div style={{
                             padding: '20px',
-                            background: '#0a0a0a',
-                            border: '1px solid #373737',
+                            background: '#000000',
+                            border: '1px solid #525252',
                             borderRadius: '8px',
-                            color: '#737373',
+                            color: '#a3a3a3',
                             fontSize: '14px',
                             textAlign: 'center'
                           }}>
@@ -1108,8 +1108,8 @@ function Management() {
                               key={upload.id}
                               style={{
                                 padding: '20px',
-                                background: '#0a0a0a',
-                                border: '1px solid #373737',
+                                background: '#000000',
+                                border: '1px solid #525252',
                                 borderRadius: '8px',
                                 marginBottom: idx < getUploadsForDate(selectedDate).length - 1 ? '12px' : '0'
                               }}
@@ -1131,7 +1131,7 @@ function Management() {
                                   </div>
                                   <div style={{
                                     fontSize: '14px',
-                                    color: '#737373',
+                                    color: '#a3a3a3',
                                     marginBottom: '4px'
                                   }}>
                                     {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
@@ -1159,7 +1159,7 @@ function Management() {
                                     transition: 'all 0.15s ease'
                                   }}
                                   onMouseEnter={(e) => {
-                                    e.currentTarget.style.background = '#e5e5e5'
+                                    e.currentTarget.style.background = '#a3a3a3'
                                   }}
                                   onMouseLeave={(e) => {
                                     e.currentTarget.style.background = '#ffffff'
@@ -1172,9 +1172,9 @@ function Management() {
                                 display: 'flex',
                                 gap: '20px',
                                 fontSize: '14px',
-                                color: '#737373',
+                                color: '#a3a3a3',
                                 paddingTop: '12px',
-                                borderTop: '1px solid #373737'
+                                borderTop: '1px solid #525252'
                               }}>
                                 <span>Size: {formatBytes(upload.fileSize)}</span>
                                 <span>Time: {formatDate(upload.uploadedAt)}</span>
@@ -1199,10 +1199,10 @@ function Management() {
                         {getScheduledForDate(selectedDate).length === 0 ? (
                           <div style={{
                             padding: '20px',
-                            background: '#0a0a0a',
-                            border: '1px solid #373737',
+                            background: '#000000',
+                            border: '1px solid #525252',
                             borderRadius: '8px',
-                            color: '#737373',
+                            color: '#a3a3a3',
                             fontSize: '14px',
                             textAlign: 'center'
                           }}>
@@ -1214,8 +1214,8 @@ function Management() {
                               key={scheduled._id}
                               style={{
                                 padding: '20px',
-                                background: '#0a0a0a',
-                                border: '1px solid #373737',
+                                background: '#000000',
+                                border: '1px solid #525252',
                                 borderRadius: '8px',
                                 marginBottom: idx < getScheduledForDate(selectedDate).length - 1 ? '12px' : '0'
                               }}
@@ -1236,7 +1236,7 @@ function Management() {
                                   </div>
                                   <div style={{
                                     fontSize: '14px',
-                                    color: '#737373',
+                                    color: '#a3a3a3',
                                     marginBottom: '8px'
                                   }}>
                                     Scheduled: {formatDateTime(scheduled.scheduledFor)}
@@ -1249,8 +1249,8 @@ function Management() {
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.5px',
                                     padding: '4px 8px',
-                                    background: '#1a1a1a',
-                                    border: '1px solid #373737',
+                                    background: '#000000',
+                                    border: '1px solid #525252',
                                     borderRadius: '4px'
                                   }}>
                                     {scheduled.status || 'pending'}
@@ -1270,7 +1270,7 @@ function Management() {
                                       padding: '6px 12px',
                                       background: 'transparent',
                                       color: '#ffffff',
-                                      border: '1px solid #373737',
+                                      border: '1px solid #525252',
                                       borderRadius: '6px',
                                       fontSize: '14px',
                                       fontWeight: '500',
@@ -1279,7 +1279,7 @@ function Management() {
                                       transition: 'all 0.15s ease'
                                     }}
                                     onMouseEnter={(e) => {
-                                      e.currentTarget.style.background = '#1a1a1a'
+                                      e.currentTarget.style.background = '#000000'
                                     }}
                                     onMouseLeave={(e) => {
                                       e.currentTarget.style.background = 'transparent'
@@ -1292,8 +1292,8 @@ function Management() {
                                     style={{
                                       padding: '6px 12px',
                                       background: 'transparent',
-                                      color: '#737373',
-                                      border: '1px solid #373737',
+                                      color: '#a3a3a3',
+                                      border: '1px solid #525252',
                                       borderRadius: '6px',
                                       fontSize: '14px',
                                       fontWeight: '500',
@@ -1302,12 +1302,12 @@ function Management() {
                                       transition: 'all 0.15s ease'
                                     }}
                                     onMouseEnter={(e) => {
-                                      e.currentTarget.style.background = '#1a1a1a'
+                                      e.currentTarget.style.background = '#000000'
                                       e.currentTarget.style.color = '#ffffff'
                                     }}
                                     onMouseLeave={(e) => {
                                       e.currentTarget.style.background = 'transparent'
-                                      e.currentTarget.style.color = '#737373'
+                                      e.currentTarget.style.color = '#a3a3a3'
                                     }}
                                   >
                                     Cancel

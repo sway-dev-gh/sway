@@ -9,29 +9,29 @@ const theme = {
     bg: {
       page: '#000000',           // Pure black
       card: '#000000',           // Pure black
-      cardHover: '#0a0a0a',      // Hover state
-      hover: '#0a0a0a',
+      cardHover: '#000000',      // Hover state
+      hover: '#000000',
       sidebar: '#000000',
       secondary: '#000000',
-      tertiary: '#0a0a0a'
+      tertiary: '#000000'
     },
     text: {
       primary: '#FFFFFF',        // Primary text
-      secondary: '#9B9A97',      // Notion's secondary (brownish gray)
-      tertiary: '#6C6C6C',       // Muted text
-      muted: '#4A4A4A'          // Very muted
+      secondary: '#a3a3a3',      // Notion's secondary (brownish gray)
+      tertiary: '#525252',       // Muted text
+      muted: '#525252'          // Very muted
     },
     border: {
-      light: '#2F2F2F',          // Subtle borders
-      medium: '#373737',         // Default borders
-      dark: '#4A4A4A'           // Emphasized borders
+      light: '#000000',          // Subtle borders
+      medium: '#525252',         // Default borders
+      dark: '#525252'           // Emphasized borders
     },
     white: '#ffffff',
     black: '#000000',
     accent: '#ffffff',
     success: '#ffffff',
     warning: '#ffffff',
-    error: '#EB5757'            // Notion's red
+    error: '#525252'            // Notion's red
   },
   shadows: {
     none: 'none',
@@ -74,10 +74,10 @@ const theme = {
   alerts: {
     error: {
       padding: '8px 12px',
-      background: 'rgba(235, 87, 87, 0.06)',
-      border: '1px solid rgba(235, 87, 87, 0.2)',
+      background: 'rgba(82, 82, 82, 0.06)',
+      border: '1px solid rgba(82, 82, 82, 0.2)',
       borderRadius: '4px',
-      color: '#EB5757',
+      color: '#525252',
       fontSize: '14px',
       lineHeight: '1.5',
       marginBottom: '12px',
@@ -99,7 +99,7 @@ const theme = {
       background: 'rgba(255, 255, 255, 0.02)',
       border: '1px solid rgba(255, 255, 255, 0.06)',
       borderRadius: '4px',
-      color: '#9B9A97',
+      color: '#a3a3a3',
       fontSize: '14px',
       lineHeight: '1.5',
       marginBottom: '12px',
@@ -152,8 +152,8 @@ const theme = {
         width: '100%',
         height: '36px',        // Smaller, Notion-like
         padding: '0 12px',
-        background: '#191919',
-        border: '1px solid #373737',
+        background: '#000000',
+        border: '1px solid #525252',
         borderRadius: '4px',
         color: '#ffffff',
         fontSize: '14px',
@@ -163,20 +163,20 @@ const theme = {
         boxSizing: 'border-box'
       },
       focus: {
-        borderColor: '#4A4A4A',
-        background: '#1E1E1E'
+        borderColor: '#525252',
+        background: '#000000'
       },
       error: {
-        borderColor: '#EB5757',
-        background: '#191919'
+        borderColor: '#525252',
+        background: '#000000'
       }
     },
     textarea: {
       base: {
         width: '100%',
         padding: '8px 12px',
-        background: '#191919',
-        border: '1px solid #373737',
+        background: '#000000',
+        border: '1px solid #525252',
         borderRadius: '4px',
         color: '#ffffff',
         fontSize: '14px',
@@ -189,31 +189,31 @@ const theme = {
         boxSizing: 'border-box'
       },
       focus: {
-        borderColor: '#4A4A4A',
-        background: '#1E1E1E'
+        borderColor: '#525252',
+        background: '#000000'
       },
       error: {
-        borderColor: '#EB5757',
-        background: '#191919'
+        borderColor: '#525252',
+        background: '#000000'
       }
     },
     label: {
       display: 'block',
       fontSize: '14px',
-      color: '#9B9A97',
+      color: '#a3a3a3',
       marginBottom: '6px',
       fontWeight: '500',
       letterSpacing: '0'
     },
     helper: {
       fontSize: '13px',
-      color: '#6C6C6C',
+      color: '#525252',
       marginTop: '4px',
       lineHeight: '1.4'
     },
     errorText: {
       fontSize: '13px',
-      color: '#EB5757',
+      color: '#525252',
       marginTop: '4px',
       lineHeight: '1.4'
     }
@@ -238,7 +238,7 @@ const theme = {
         justifyContent: 'center'
       },
       hover: {
-        background: '#E5E5E5'
+        background: '#ffffff'
       },
       disabled: {
         opacity: 0.4,
@@ -250,8 +250,8 @@ const theme = {
         height: '32px',
         padding: '0 12px',
         background: 'transparent',
-        color: '#9B9A97',
-        border: '1px solid #373737',
+        color: '#a3a3a3',
+        border: '1px solid #525252',
         borderRadius: '4px',
         fontSize: '14px',
         fontWeight: '500',
@@ -264,8 +264,8 @@ const theme = {
         justifyContent: 'center'
       },
       hover: {
-        background: '#252525',
-        borderColor: '#4A4A4A',
+        background: '#000000',
+        borderColor: '#525252',
         color: '#ffffff'
       },
       disabled: {
@@ -277,9 +277,9 @@ const theme = {
       base: {
         height: '32px',
         padding: '0 12px',
-        background: 'rgba(235, 87, 87, 0.1)',
-        color: '#EB5757',
-        border: '1px solid rgba(235, 87, 87, 0.3)',
+        background: 'rgba(82, 82, 82, 0.1)',
+        color: '#525252',
+        border: '1px solid rgba(82, 82, 82, 0.3)',
         borderRadius: '4px',
         fontSize: '14px',
         fontWeight: '500',
@@ -292,9 +292,9 @@ const theme = {
         justifyContent: 'center'
       },
       hover: {
-        background: '#EB5757',
+        background: '#525252',
         color: '#ffffff',
-        borderColor: '#EB5757'
+        borderColor: '#525252'
       },
       disabled: {
         opacity: 0.4,
@@ -306,7 +306,7 @@ const theme = {
         height: '32px',
         padding: '0 12px',
         background: 'transparent',
-        color: '#9B9A97',
+        color: '#a3a3a3',
         border: 'none',
         borderRadius: '4px',
         fontSize: '14px',
@@ -320,7 +320,7 @@ const theme = {
         justifyContent: 'center'
       },
       hover: {
-        background: '#252525',
+        background: '#000000',
         color: '#ffffff'
       },
       disabled: {

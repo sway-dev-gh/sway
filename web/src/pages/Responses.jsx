@@ -696,7 +696,7 @@ function Responses() {
               style={{
                 padding: '10px 24px',
                 background: viewMode === 'list' ? '#ffffff' : 'transparent',
-                border: `1px solid ${viewMode === 'list' ? '#ffffff' : '#262626'}`,
+                border: `1px solid ${viewMode === 'list' ? '#ffffff' : '#000000'}`,
                 borderRadius: '6px',
                 color: viewMode === 'list' ? '#000000' : '#ffffff',
                 fontSize: '14px',
@@ -707,13 +707,13 @@ function Responses() {
               }}
               onMouseEnter={(e) => {
                 if (viewMode !== 'list') {
-                  e.currentTarget.style.borderColor = '#404040'
-                  e.currentTarget.style.background = '#141414'
+                  e.currentTarget.style.borderColor = '#525252'
+                  e.currentTarget.style.background = '#000000'
                 }
               }}
               onMouseLeave={(e) => {
                 if (viewMode !== 'list') {
-                  e.currentTarget.style.borderColor = '#262626'
+                  e.currentTarget.style.borderColor = '#000000'
                   e.currentTarget.style.background = 'transparent'
                 }
               }}
@@ -725,7 +725,7 @@ function Responses() {
               style={{
                 padding: '10px 24px',
                 background: viewMode === 'calendar' ? '#ffffff' : 'transparent',
-                border: `1px solid ${viewMode === 'calendar' ? '#ffffff' : '#262626'}`,
+                border: `1px solid ${viewMode === 'calendar' ? '#ffffff' : '#000000'}`,
                 borderRadius: '6px',
                 color: viewMode === 'calendar' ? '#000000' : '#ffffff',
                 fontSize: '14px',
@@ -736,13 +736,13 @@ function Responses() {
               }}
               onMouseEnter={(e) => {
                 if (viewMode !== 'calendar') {
-                  e.currentTarget.style.borderColor = '#404040'
-                  e.currentTarget.style.background = '#141414'
+                  e.currentTarget.style.borderColor = '#525252'
+                  e.currentTarget.style.background = '#000000'
                 }
               }}
               onMouseLeave={(e) => {
                 if (viewMode !== 'calendar') {
-                  e.currentTarget.style.borderColor = '#262626'
+                  e.currentTarget.style.borderColor = '#000000'
                   e.currentTarget.style.background = 'transparent'
                 }
               }}
@@ -770,8 +770,8 @@ function Responses() {
                 flex: '1',
                 minWidth: '200px',
                 padding: '10px 14px',
-                background: '#0F0F0F',
-                border: '1px solid #262626',
+                background: '#000000',
+                border: '1px solid #000000',
                 borderRadius: '6px',
                 color: '#ffffff',
                 fontSize: '14px',
@@ -780,12 +780,12 @@ function Responses() {
                 transition: 'all 0.15s ease'
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = '#404040'
-                e.target.style.background = '#141414'
+                e.target.style.borderColor = '#525252'
+                e.target.style.background = '#000000'
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = '#262626'
-                e.target.style.background = '#0F0F0F'
+                e.target.style.borderColor = '#000000'
+                e.target.style.background = '#000000'
               }}
             />
 
@@ -795,8 +795,8 @@ function Responses() {
               onChange={(e) => setFilterStatus(e.target.value)}
               style={{
                 padding: '10px 14px',
-                background: '#0F0F0F',
-                border: '1px solid #262626',
+                background: '#000000',
+                border: '1px solid #000000',
                 borderRadius: '6px',
                 color: '#ffffff',
                 fontSize: '14px',
@@ -806,12 +806,12 @@ function Responses() {
                 transition: 'all 0.15s ease'
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = '#404040'
-                e.target.style.background = '#141414'
+                e.target.style.borderColor = '#525252'
+                e.target.style.background = '#000000'
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = '#262626'
-                e.target.style.background = '#0F0F0F'
+                e.target.style.borderColor = '#000000'
+                e.target.style.background = '#000000'
               }}
             >
               <option value="all">All Forms</option>
@@ -827,8 +827,8 @@ function Responses() {
               onChange={(e) => setSortBy(e.target.value)}
               style={{
                 padding: '10px 14px',
-                background: '#0F0F0F',
-                border: '1px solid #262626',
+                background: '#000000',
+                border: '1px solid #000000',
                 borderRadius: '6px',
                 color: '#ffffff',
                 fontSize: '14px',
@@ -838,12 +838,12 @@ function Responses() {
                 transition: 'all 0.15s ease'
               }}
               onFocus={(e) => {
-                e.target.style.borderColor = '#404040'
-                e.target.style.background = '#141414'
+                e.target.style.borderColor = '#525252'
+                e.target.style.background = '#000000'
               }}
               onBlur={(e) => {
-                e.target.style.borderColor = '#262626'
-                e.target.style.background = '#0F0F0F'
+                e.target.style.borderColor = '#000000'
+                e.target.style.background = '#000000'
               }}
             >
               <option value="newest">Newest</option>
@@ -857,8 +857,8 @@ function Responses() {
               <>
                 <div style={{
                   padding: '10px 14px',
-                  background: '#1a1a1a',
-                  border: '1px solid #404040',
+                  background: '#000000',
+                  border: '1px solid #525252',
                   borderRadius: '6px',
                   color: '#ffffff',
                   fontSize: '13px',
@@ -885,22 +885,22 @@ function Responses() {
                     fontSize: '13px',
                     fontWeight: '500',
                     background: 'transparent',
-                    border: '1px solid #262626',
+                    border: '1px solid #000000',
                     borderRadius: '6px',
-                    color: '#737373',
+                    color: '#a3a3a3',
                     cursor: 'pointer',
                     transition: 'all 0.15s ease',
                     whiteSpace: 'nowrap'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#1a1a1a'
-                    e.currentTarget.style.borderColor = '#404040'
+                    e.currentTarget.style.background = '#000000'
+                    e.currentTarget.style.borderColor = '#525252'
                     e.currentTarget.style.color = '#ffffff'
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.borderColor = '#262626'
-                    e.currentTarget.style.color = '#737373'
+                    e.currentTarget.style.borderColor = '#000000'
+                    e.currentTarget.style.color = '#a3a3a3'
                   }}
                 >
                   Delete Selected
@@ -939,7 +939,7 @@ function Responses() {
                   style={{
                     padding: '10px 20px',
                     background: 'transparent',
-                    border: '1px solid #262626',
+                    border: '1px solid #000000',
                     borderRadius: '6px',
                     color: '#ffffff',
                     fontSize: '14px',
@@ -949,12 +949,12 @@ function Responses() {
                     fontFamily: 'inherit'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#141414'
-                    e.currentTarget.style.borderColor = '#404040'
+                    e.currentTarget.style.background = '#000000'
+                    e.currentTarget.style.borderColor = '#525252'
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.borderColor = '#262626'
+                    e.currentTarget.style.borderColor = '#000000'
                   }}
                 >
                   Previous
@@ -976,7 +976,7 @@ function Responses() {
                     style={{
                       padding: '10px 20px',
                       background: 'transparent',
-                      border: '1px solid #262626',
+                      border: '1px solid #000000',
                       borderRadius: '6px',
                       color: '#ffffff',
                       fontSize: '14px',
@@ -986,12 +986,12 @@ function Responses() {
                       fontFamily: 'inherit'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#141414'
-                      e.currentTarget.style.borderColor = '#404040'
+                      e.currentTarget.style.background = '#000000'
+                      e.currentTarget.style.borderColor = '#525252'
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.borderColor = '#262626'
+                      e.currentTarget.style.borderColor = '#000000'
                     }}
                   >
                     Today
@@ -1001,7 +1001,7 @@ function Responses() {
                     style={{
                       padding: '10px 20px',
                       background: 'transparent',
-                      border: '1px solid #262626',
+                      border: '1px solid #000000',
                       borderRadius: '6px',
                       color: '#ffffff',
                       fontSize: '14px',
@@ -1011,12 +1011,12 @@ function Responses() {
                       fontFamily: 'inherit'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#141414'
-                      e.currentTarget.style.borderColor = '#404040'
+                      e.currentTarget.style.background = '#000000'
+                      e.currentTarget.style.borderColor = '#525252'
                     }}
                     onMouseLeave={(e) => {
                       e.currentTarget.style.background = 'transparent'
-                      e.currentTarget.style.borderColor = '#262626'
+                      e.currentTarget.style.borderColor = '#000000'
                     }}
                   >
                     Next
@@ -1026,9 +1026,9 @@ function Responses() {
 
               {/* Calendar Grid */}
               <div style={{
-                border: '1px solid #262626',
+                border: '1px solid #000000',
                 borderRadius: '8px',
-                background: '#0F0F0F',
+                background: '#000000',
                 overflow: 'hidden',
                 padding: '24px'
               }}>
@@ -1044,7 +1044,7 @@ function Responses() {
                       textAlign: 'center',
                       fontSize: '12px',
                       fontWeight: '600',
-                      color: '#737373',
+                      color: '#a3a3a3',
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px',
                       padding: '8px'
@@ -1059,14 +1059,14 @@ function Responses() {
                   display: 'grid',
                   gridTemplateColumns: 'repeat(7, 1fr)',
                   gap: '1px',
-                  background: '#262626'
+                  background: '#000000'
                 }}>
                   {generateCalendarDays().map((date, index) => {
                     if (!date) {
                       return (
                         <div key={`empty-${index}`} style={{
                           minHeight: '60px',
-                          background: '#0F0F0F'
+                          background: '#000000'
                         }} />
                       )
                     }
@@ -1081,7 +1081,7 @@ function Responses() {
                         onClick={() => handleDayClick(date, uploadsForDay)}
                         style={{
                           minHeight: '60px',
-                          background: '#0F0F0F',
+                          background: '#000000',
                           border: isToday ? '1px solid #ffffff' : '1px solid transparent',
                           padding: '8px',
                           position: 'relative',
@@ -1090,13 +1090,13 @@ function Responses() {
                         }}
                         onMouseEnter={(e) => {
                           if (hasUploads) {
-                            e.currentTarget.style.background = '#141414'
-                            e.currentTarget.style.borderColor = '#404040'
+                            e.currentTarget.style.background = '#000000'
+                            e.currentTarget.style.borderColor = '#525252'
                           }
                         }}
                         onMouseLeave={(e) => {
                           if (hasUploads) {
-                            e.currentTarget.style.background = '#0F0F0F'
+                            e.currentTarget.style.background = '#000000'
                             e.currentTarget.style.borderColor = isToday ? '#ffffff' : 'transparent'
                           }
                         }}
@@ -1147,7 +1147,7 @@ function Responses() {
                 <h2 style={{
                   fontSize: '18px',
                   fontWeight: '500',
-                  color: '#737373',
+                  color: '#a3a3a3',
                   marginBottom: '8px',
                   letterSpacing: '-0.01em'
                 }}>No Requests Yet</h2>
@@ -1169,14 +1169,14 @@ function Responses() {
               <div style={{
                 textAlign: 'center',
                 padding: '80px 40px',
-                border: '1px solid #1a1a1a',
+                border: '1px solid #000000',
                 borderRadius: '8px',
-                background: '#0F0F0F'
+                background: '#000000'
               }}>
                 <h3 style={{
                   fontSize: '16px',
                   fontWeight: '500',
-                  color: '#737373',
+                  color: '#a3a3a3',
                   margin: '0 0 6px 0',
                   letterSpacing: '-0.01em'
                 }}>
@@ -1193,9 +1193,9 @@ function Responses() {
             )
           ) : (
             <div style={{
-              border: '1px solid #1a1a1a',
+              border: '1px solid #000000',
               borderRadius: '8px',
-              background: '#0F0F0F',
+              background: '#000000',
               overflow: 'hidden'
             }}>
               {/* Table Header */}
@@ -1203,8 +1203,8 @@ function Responses() {
                 display: 'grid',
                 gridTemplateColumns: '40px 2fr 100px 120px 100px 100px 140px 140px 140px',
                 padding: '16px 20px',
-                background: '#0a0a0a',
-                borderBottom: '1px solid #1a1a1a',
+                background: '#000000',
+                borderBottom: '1px solid #000000',
                 fontSize: '11px',
                 fontWeight: '600',
                 color: '#a3a3a3',
@@ -1253,8 +1253,8 @@ function Responses() {
                         display: 'grid',
                         gridTemplateColumns: '40px 2fr 100px 120px 100px 100px 140px 140px 140px',
                         padding: '16px 20px',
-                        background: isSelected ? '#1a1a1a' : 'transparent',
-                        borderBottom: '1px solid #1a1a1a',
+                        background: isSelected ? '#000000' : 'transparent',
+                        borderBottom: '1px solid #000000',
                         fontSize: '14px',
                         color: '#ffffff',
                         alignItems: 'center',
@@ -1263,7 +1263,7 @@ function Responses() {
                       }}
                       onMouseEnter={(e) => {
                         if (!isSelected) {
-                          e.currentTarget.style.background = '#141414'
+                          e.currentTarget.style.background = '#000000'
                           e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)'
                         }
                       }}
@@ -1292,7 +1292,7 @@ function Responses() {
                       <div>
                         <span style={{
                           padding: '4px 8px',
-                          background: '#1a1a1a',
+                          background: '#000000',
                           color: '#ffffff',
                           borderRadius: '4px',
                           fontSize: '11px',
@@ -1302,15 +1302,15 @@ function Responses() {
                           {status}
                         </span>
                       </div>
-                      <div style={{ color: '#737373', fontSize: '13px' }}>Blank</div>
+                      <div style={{ color: '#a3a3a3', fontSize: '13px' }}>Blank</div>
                       <div style={{ fontWeight: '600', fontVariantNumeric: 'tabular-nums' }}>{formUploads.length}</div>
-                      <div style={{ color: '#737373', fontVariantNumeric: 'tabular-nums', fontSize: '13px' }}>
+                      <div style={{ color: '#a3a3a3', fontVariantNumeric: 'tabular-nums', fontSize: '13px' }}>
                         {formatBytes(storageUsed)}
                       </div>
-                      <div style={{ color: '#737373', fontSize: '13px' }}>
+                      <div style={{ color: '#a3a3a3', fontSize: '13px' }}>
                         {formatDate(form.createdAt).split(',')[0]}
                       </div>
-                      <div style={{ color: '#737373', fontSize: '13px' }}>
+                      <div style={{ color: '#a3a3a3', fontSize: '13px' }}>
                         {lastUpload ? getTimeAgo(lastUpload) : '-'}
                       </div>
                       <div style={{ display: 'flex', gap: '6px' }}>
@@ -1324,19 +1324,19 @@ function Responses() {
                             fontSize: '12px',
                             fontWeight: '500',
                             background: 'transparent',
-                            border: '1px solid #262626',
+                            border: '1px solid #000000',
                             borderRadius: '4px',
                             color: '#ffffff',
                             cursor: 'pointer',
                             transition: 'all 0.15s ease'
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#1a1a1a'
-                            e.currentTarget.style.borderColor = '#404040'
+                            e.currentTarget.style.background = '#000000'
+                            e.currentTarget.style.borderColor = '#525252'
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.background = 'transparent'
-                            e.currentTarget.style.borderColor = '#262626'
+                            e.currentTarget.style.borderColor = '#000000'
                           }}
                         >
                           View
@@ -1351,21 +1351,21 @@ function Responses() {
                             fontSize: '12px',
                             fontWeight: '500',
                             background: 'transparent',
-                            border: '1px solid #262626',
+                            border: '1px solid #000000',
                             borderRadius: '4px',
-                            color: '#737373',
+                            color: '#a3a3a3',
                             cursor: 'pointer',
                             transition: 'all 0.15s ease'
                           }}
                           onMouseEnter={(e) => {
-                            e.currentTarget.style.background = '#1a1a1a'
-                            e.currentTarget.style.borderColor = '#404040'
+                            e.currentTarget.style.background = '#000000'
+                            e.currentTarget.style.borderColor = '#525252'
                             e.currentTarget.style.color = '#ffffff'
                           }}
                           onMouseLeave={(e) => {
                             e.currentTarget.style.background = 'transparent'
-                            e.currentTarget.style.borderColor = '#262626'
-                            e.currentTarget.style.color = '#737373'
+                            e.currentTarget.style.borderColor = '#000000'
+                            e.currentTarget.style.color = '#a3a3a3'
                           }}
                         >
                           Delete
@@ -1825,8 +1825,8 @@ function Responses() {
         >
           <div
             style={{
-              background: '#0F0F0F',
-              border: '1px solid #262626',
+              background: '#000000',
+              border: '1px solid #000000',
               borderRadius: '12px',
               maxWidth: '800px',
               width: '100%',
@@ -1840,7 +1840,7 @@ function Responses() {
             {/* Modal Header */}
             <div style={{
               padding: '24px',
-              borderBottom: '1px solid #262626',
+              borderBottom: '1px solid #000000',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
@@ -1863,7 +1863,7 @@ function Responses() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  color: '#737373',
+                  color: '#a3a3a3',
                   fontSize: '24px',
                   cursor: 'pointer',
                   padding: '0',
@@ -1876,12 +1876,12 @@ function Responses() {
                   transition: 'all 0.15s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = '#1a1a1a'
+                  e.currentTarget.style.background = '#000000'
                   e.currentTarget.style.color = '#ffffff'
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = 'transparent'
-                  e.currentTarget.style.color = '#737373'
+                  e.currentTarget.style.color = '#a3a3a3'
                 }}
               >
                 Close
@@ -1900,7 +1900,7 @@ function Responses() {
                   style={{
                     padding: '20px',
                     background: 'rgba(255, 255, 255, 0.02)',
-                    border: '1px solid #262626',
+                    border: '1px solid #000000',
                     borderRadius: '8px',
                     marginBottom: idx < getUploadsForDate(selectedDate).length - 1 ? '16px' : '0'
                   }}
@@ -1922,7 +1922,7 @@ function Responses() {
                       </div>
                       <div style={{
                         fontSize: '14px',
-                        color: '#737373',
+                        color: '#a3a3a3',
                         marginBottom: '4px'
                       }}>
                         {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
@@ -1952,9 +1952,9 @@ function Responses() {
                     display: 'flex',
                     gap: '20px',
                     fontSize: '13px',
-                    color: '#737373',
+                    color: '#a3a3a3',
                     paddingTop: '12px',
-                    borderTop: '1px solid #1a1a1a'
+                    borderTop: '1px solid #000000'
                   }}>
                     <span>Size: {formatBytes(upload.fileSize)}</span>
                     <span>Time: {formatDate(upload.uploadedAt)}</span>

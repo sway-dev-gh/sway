@@ -172,7 +172,7 @@ function Dashboard() {
         <div style={{
           width: '20px',
           height: '20px',
-          border: '2px solid #262626',
+          border: '2px solid #525252',
           borderTopColor: '#ffffff',
           borderRadius: '50%',
           animation: 'spin 0.8s linear infinite'
@@ -221,7 +221,7 @@ function Dashboard() {
             </h1>
             <p style={{
               fontSize: '16px',
-              color: '#9B9A97',
+              color: '#a3a3a3',
               margin: 0,
               lineHeight: '1.6',
               fontWeight: '400'
@@ -241,7 +241,7 @@ function Dashboard() {
             <Link to="/requests" style={{ textDecoration: 'none' }}>
               <div style={{
                 padding: '32px',
-                border: '1px solid #2F2F2F',
+                border: '1px solid #525252',
                 borderRadius: '8px',
                 background: '#000000',
                 cursor: 'pointer',
@@ -249,7 +249,7 @@ function Dashboard() {
               }}>
                 <div style={{
                   fontSize: '10px',
-                  color: '#6C6C6C',
+                  color: '#a3a3a3',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                   fontWeight: '600',
@@ -268,7 +268,7 @@ function Dashboard() {
                 </div>
                 <div style={{
                   fontSize: '14px',
-                  color: '#9B9A97',
+                  color: '#a3a3a3',
                   lineHeight: '1.5',
                   fontWeight: '400'
                 }}>
@@ -280,7 +280,7 @@ function Dashboard() {
             <Link to="/responses" style={{ textDecoration: 'none' }}>
               <div style={{
                 padding: '32px',
-                border: '1px solid #2F2F2F',
+                border: '1px solid #525252',
                 borderRadius: '8px',
                 background: '#000000',
                 cursor: 'pointer',
@@ -288,7 +288,7 @@ function Dashboard() {
               }}>
                 <div style={{
                   fontSize: '10px',
-                  color: '#6C6C6C',
+                  color: '#a3a3a3',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                   fontWeight: '600',
@@ -307,7 +307,7 @@ function Dashboard() {
                 </div>
                 <div style={{
                   fontSize: '14px',
-                  color: '#9B9A97',
+                  color: '#a3a3a3',
                   lineHeight: '1.5',
                   fontWeight: '400'
                 }}>

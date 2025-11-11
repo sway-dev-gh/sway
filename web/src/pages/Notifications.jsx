@@ -130,14 +130,14 @@ function Notifications() {
               <div style={{
                 textAlign: 'center',
                 padding: '120px 32px',
-                border: '1px solid #1a1a1a',
+                border: '1px solid #000000',
                 borderRadius: '8px',
-                background: '#0F0F0F'
+                background: '#000000'
               }}>
                 <h3 style={{
                   fontSize: '16px',
                   fontWeight: '500',
-                  color: '#737373',
+                  color: '#a3a3a3',
                   margin: '0 0 6px 0',
                   letterSpacing: '-0.01em'
                 }}>
@@ -153,9 +153,9 @@ function Notifications() {
               </div>
             ) : (
               <div style={{
-                border: '1px solid #1a1a1a',
+                border: '1px solid #000000',
                 borderRadius: '8px',
-                background: '#0F0F0F',
+                background: '#000000',
                 overflow: 'hidden'
               }}>
                 {notifications.map((notif, index) => (
@@ -163,7 +163,7 @@ function Notifications() {
                     key={notif.id}
                     style={{
                       padding: '16px 20px',
-                      borderBottom: index < notifications.length - 1 ? '1px solid #1a1a1a' : 'none',
+                      borderBottom: index < notifications.length - 1 ? '1px solid #000000' : 'none',
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '16px',
@@ -172,7 +172,7 @@ function Notifications() {
                     }}
                     onClick={() => navigate('/responses')}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = '#141414'
+                      e.currentTarget.style.background = '#000000'
                       e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)'
                     }}
                     onMouseLeave={(e) => {
@@ -185,8 +185,8 @@ function Notifications() {
                       width: '32px',
                       height: '32px',
                       borderRadius: '4px',
-                      background: '#1a1a1a',
-                      border: '1px solid #262626',
+                      background: '#000000',
+                      border: '1px solid #525252',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
@@ -212,7 +212,7 @@ function Notifications() {
                       </div>
                       <div style={{
                         fontSize: '13px',
-                        color: '#737373',
+                        color: '#a3a3a3',
                         marginBottom: '8px',
                         lineHeight: '1.5'
                       }}>
@@ -227,9 +227,9 @@ function Notifications() {
                           fontSize: '11px',
                           color: '#a3a3a3',
                           padding: '3px 8px',
-                          background: '#1a1a1a',
+                          background: '#000000',
                           borderRadius: '4px',
-                          border: '1px solid #262626',
+                          border: '1px solid #525252',
                           fontWeight: '500',
                           letterSpacing: '0.3px'
                         }}>
@@ -237,7 +237,7 @@ function Notifications() {
                         </div>
                         <div style={{
                           fontSize: '11px',
-                          color: '#737373'
+                          color: '#a3a3a3'
                         }}>
                           {getTimeAgo(notif.timestamp)}
                         </div>

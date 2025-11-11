@@ -27,7 +27,7 @@
 }
 
 .request-header {
-  background: #0F0F0F;
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 32px;
   padding: 56px;
@@ -78,7 +78,7 @@
 }
 
 .link-display:hover {
-  background: #0F0F0F;
+  background: #000000;
   border-color: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
@@ -109,7 +109,7 @@
 }
 
 .uploads-section {
-  background: #0F0F0F;
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 32px;
   padding: 56px;

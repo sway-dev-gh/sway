@@ -462,7 +462,7 @@ function Settings() {
       <div style={{
         padding: '32px',
         borderRadius: theme.radius.lg,
-        border: `1px solid rgba(239, 68, 68, 0.3)`,
+        border: `1px solid rgba(82, 82, 82, 0.3)`,
         background: 'rgba(255, 255, 255, 0.02)'
       }}>
         <div style={{

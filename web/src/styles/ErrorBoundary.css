@@ -26,7 +26,7 @@
 }
 
 .error-icon {
-  color: #ff4444;
+  color: #525252;
   margin-bottom: 24px;
   animation: errorPulse 2s ease-in-out infinite;
 }
@@ -56,7 +56,7 @@
 }
 
 .error-count {
-  color: #ff6666;
+  color: #525252;
   font-weight: 600;
 }
 
@@ -108,7 +108,7 @@
   overflow-x: auto;
   font-size: 12px;
   line-height: 1.6;
-  color: #ff6666;
+  color: #525252;
   font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
   margin-top: 8px;
 }

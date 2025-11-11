@@ -96,9 +96,9 @@ function ConfirmModal({ isOpen, title, message, onConfirm, onCancel, confirmText
             aria-label={danger ? 'Confirm dangerous action' : 'Confirm'}
             style={{
               padding: '6px 12px',
-              background: danger ? '#EB5757' : theme.colors.white,
+              background: danger ? '#525252' : theme.colors.white,
               color: danger ? theme.colors.white : theme.colors.black,
-              border: danger ? '1px solid #EB5757' : 'none',
+              border: danger ? '1px solid #525252' : 'none',
               borderRadius: '6px',
               fontSize: '13px',
               fontWeight: '500',

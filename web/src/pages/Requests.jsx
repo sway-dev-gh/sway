@@ -76,7 +76,7 @@ function Requests() {
         content: 'Add your description text here...',
         fontSize: '16px',
         fontWeight: '400',
-        color: '#9B9A97'
+        color: '#a3a3a3'
       }
     },
     {
@@ -457,7 +457,7 @@ function Requests() {
               margin: 0,
               fontSize: element.properties.fontSize || '16px',
               fontWeight: element.properties.fontWeight || '400',
-              color: element.properties.color || '#9B9A97',
+              color: element.properties.color || '#a3a3a3',
               lineHeight: '1.5',
               overflow: 'hidden'
             }}>
@@ -490,7 +490,7 @@ function Requests() {
             }}>
               {element.properties.label || 'Input Field'}
               {element.properties.required && (
-                <span style={{ color: '#ef4444', marginLeft: '4px' }}>*</span>
+                <span style={{ color: '#525252', marginLeft: '4px' }}>*</span>
               )}
             </label>
             <input
@@ -499,7 +499,7 @@ function Requests() {
               style={{
                 padding: '10px',
                 fontSize: '14px',
-                border: '1px solid #2F2F2F',
+                border: '1px solid #525252',
                 borderRadius: '6px',
                 background: 'rgba(255, 255, 255, 0.05)',
                 color: '#FFFFFF',
@@ -533,7 +533,7 @@ function Requests() {
             }}>
               {element.properties.label || 'Text Area'}
               {element.properties.required && (
-                <span style={{ color: '#ef4444', marginLeft: '4px' }}>*</span>
+                <span style={{ color: '#525252', marginLeft: '4px' }}>*</span>
               )}
             </label>
             <textarea
@@ -542,7 +542,7 @@ function Requests() {
               style={{
                 padding: '10px',
                 fontSize: '14px',
-                border: '1px solid #2F2F2F',
+                border: '1px solid #525252',
                 borderRadius: '6px',
                 background: 'rgba(255, 255, 255, 0.05)',
                 color: '#FFFFFF',
@@ -579,7 +579,7 @@ function Requests() {
               {element.properties.label || 'File Upload'}
             </label>
             <div style={{
-              border: '2px dashed #2F2F2F',
+              border: '2px dashed #525252',
               borderRadius: '8px',
               padding: '20px',
               textAlign: 'center',
@@ -591,9 +591,9 @@ function Requests() {
             }}>
               <div style={{
                 fontSize: '14px',
-                color: '#9B9A97'
+                color: '#a3a3a3'
               }}>
-                📁 Drop files here or click to upload
+                □ Drop files here or click to upload
               </div>
             </div>
           </div>
@@ -617,7 +617,7 @@ function Requests() {
             <button style={{
               background: 'rgba(255, 255, 255, 0.1)',
               color: '#FFFFFF',
-              border: '1px solid #373737',
+              border: '1px solid #525252',
               borderRadius: '6px',
               padding: '10px 20px',
               fontSize: '14px',
@@ -858,7 +858,7 @@ function Requests() {
             <div>
               {/* Quick Actions */}
               <div style={{
-                background: '#0F0F0F',
+                background: '#000000',
                 border: '1px solid rgba(255, 255, 255, 0.05)',
                 borderRadius: '16px',
                 padding: '32px',
@@ -909,7 +909,7 @@ function Requests() {
 
               {/* Add Elements */}
               <div style={{
-                background: '#0F0F0F',
+                background: '#000000',
                 border: '1px solid rgba(255, 255, 255, 0.05)',
                 borderRadius: '16px',
                 padding: '32px'
@@ -1009,7 +1009,7 @@ function Requests() {
 
             {/* Right: Canvas Area */}
             <div style={{
-              background: '#0F0F0F',
+              background: '#000000',
               border: '1px solid rgba(255, 255, 255, 0.05)',
               borderRadius: '16px',
               position: 'relative',
@@ -1047,7 +1047,7 @@ function Requests() {
                     disabled={historyIndex <= 0}
                     style={{
                       background: 'rgba(255, 255, 255, 0.05)',
-                      color: historyIndex <= 0 ? '#4A4A4A' : '#FFFFFF',
+                      color: historyIndex <= 0 ? '#525252' : '#FFFFFF',
                       border: '1px solid rgba(255, 255, 255, 0.05)',
                       borderRadius: '8px',
                       fontSize: '13px',
@@ -1064,7 +1064,7 @@ function Requests() {
                     disabled={historyIndex >= history.length - 1}
                     style={{
                       background: 'rgba(255, 255, 255, 0.05)',
-                      color: historyIndex >= history.length - 1 ? '#4A4A4A' : '#FFFFFF',
+                      color: historyIndex >= history.length - 1 ? '#525252' : '#FFFFFF',
                       border: '1px solid rgba(255, 255, 255, 0.05)',
                       borderRadius: '8px',
                       fontSize: '13px',
@@ -1185,7 +1185,7 @@ function Requests() {
               top: '50%',
               transform: 'translateY(-50%)',
               width: '360px',
-              background: '#0F0F0F',
+              background: '#000000',
               border: '1px solid rgba(255, 255, 255, 0.05)',
               borderRadius: '16px',
               padding: '32px',
@@ -1308,10 +1308,10 @@ function Requests() {
                       padding: '12px 16px',
                       fontSize: '14px',
                       fontWeight: '500',
-                      border: '1px solid rgba(239, 68, 68, 0.2)',
+                      border: '1px solid rgba(82, 82, 82, 0.2)',
                       borderRadius: '8px',
-                      background: 'rgba(239, 68, 68, 0.05)',
-                      color: '#EF4444',
+                      background: 'rgba(82, 82, 82, 0.05)',
+                      color: '#525252',
                       cursor: 'pointer',
                       fontFamily: 'inherit'
                     }}
@@ -1339,7 +1339,7 @@ function Requests() {
               backdropFilter: 'blur(8px)'
             }}>
               <div style={{
-                background: '#0F0F0F',
+                background: '#000000',
                 borderRadius: '24px',
                 padding: '32px',
                 width: '460px',

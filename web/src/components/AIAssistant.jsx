@@ -6,12 +6,12 @@ const theme = {
   colors: {
     text: {
       primary: '#FFFFFF',
-      secondary: '#A3A3A3',
+      secondary: '#a3a3a3',
     },
     bg: {
       primary: '#000000',
-      secondary: '#0F0F0F',
-      tertiary: '#1A1A1A',
+      secondary: '#000000',
+      tertiary: '#000000',
     },
     border: {
       light: 'rgba(255, 255, 255, 0.1)',

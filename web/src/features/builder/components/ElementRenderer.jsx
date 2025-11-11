@@ -40,7 +40,7 @@ function ElementRenderer({ element, isSelected, isLocked, isDragging, onMouseDow
     minHeight: type === 'spacer' ? `${properties.height || '40px'}` : 'auto',
     cursor: isLocked ? 'not-allowed' : (isDragging ? 'grabbing' : 'grab'),
     border: isSelected ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-    outline: isSelected ? '2px solid rgba(59, 130, 246, 0.3)' : 'none',
+    outline: isSelected ? '2px solid rgba(255, 255, 255, 0.3)' : 'none',
     outlineOffset: '2px',
     borderRadius: '4px',
     boxSizing: 'border-box',

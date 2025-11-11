@@ -47,10 +47,10 @@ export default function UpgradeBanner({ user, plan, onClose }) {
       bottom: '32px',
       right: '32px',
       maxWidth: '380px',
-      background: '#FFFFFF',
+      background: theme.colors.white,
       borderRadius: '12px',
       padding: '24px',
-      border: '1px solid #000',
+      border: `1px solid ${theme.colors.black}`,
       zIndex: 999,
       animation: 'slideInFromBottom 0.4s ease'
     }}>
@@ -75,7 +75,7 @@ export default function UpgradeBanner({ user, plan, onClose }) {
           right: '12px',
           background: 'transparent',
           border: 'none',
-          color: '#666',
+          color: theme.colors.text.secondary,
           fontSize: '20px',
           cursor: 'pointer',
           padding: '4px 8px'
@@ -94,14 +94,14 @@ export default function UpgradeBanner({ user, plan, onClose }) {
           <div style={{
             fontSize: '18px',
             fontWeight: '700',
-            color: '#000',
+            color: theme.colors.black,
             marginBottom: '4px'
           }}>
             Unlock AI-Powered Workflows
           </div>
           <div style={{
             fontSize: '13px',
-            color: '#666',
+            color: theme.colors.text.secondary,
             fontWeight: '500'
           }}>
             Upgrade to Pro for $15/month
@@ -123,7 +123,7 @@ export default function UpgradeBanner({ user, plan, onClose }) {
             key={idx}
             style={{
               fontSize: '13px',
-              color: '#333',
+              color: theme.colors.text.primary,
               marginBottom: '8px',
               display: 'flex',
               alignItems: 'center',
@@ -131,7 +131,7 @@ export default function UpgradeBanner({ user, plan, onClose }) {
               fontWeight: '500'
             }}
           >
-            <span style={{ color: '#000', fontSize: '16px' }}>•</span>
+            <span style={{ color: theme.colors.black, fontSize: '16px' }}>•</span>
             {feature}
           </div>
         ))}
@@ -142,8 +142,8 @@ export default function UpgradeBanner({ user, plan, onClose }) {
         style={{
           width: '100%',
           padding: '14px 24px',
-          background: '#000',
-          color: '#FFF',
+          background: theme.colors.black,
+          color: theme.colors.white,
           border: 'none',
           borderRadius: '8px',
           fontSize: '14px',

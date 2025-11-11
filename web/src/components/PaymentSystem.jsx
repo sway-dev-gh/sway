@@ -64,9 +64,9 @@ function PaymentContainer({ projectId, clientView, style }) {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'paid': return '#22c55e'
-      case 'sent': return '#3b82f6'
-      case 'overdue': return '#ef4444'
+      case 'paid': return theme.colors.white
+      case 'sent': return '#a3a3a3'
+      case 'overdue': return '#525252'
       case 'draft': return theme.colors.text.secondary
       default: return theme.colors.text.secondary
     }
@@ -128,7 +128,7 @@ function PaymentContainer({ projectId, clientView, style }) {
           padding: '60px 20px',
           color: theme.colors.text.secondary
         }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>💳</div>
+          <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>◯</div>
           <h4 style={{ marginBottom: '8px' }}>
             {clientView ? 'No invoices yet' : 'No payments created'}
           </h4>
@@ -191,9 +191,9 @@ function PaymentCard({ payment, clientView, onPaymentClick, onStatusUpdate }) {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'paid': return '#22c55e'
-      case 'sent': return '#3b82f6'
-      case 'overdue': return '#ef4444'
+      case 'paid': return theme.colors.white
+      case 'sent': return '#a3a3a3'
+      case 'overdue': return '#525252'
       case 'draft': return theme.colors.text.secondary
       default: return theme.colors.text.secondary
     }
@@ -310,11 +310,11 @@ function PaymentCard({ payment, clientView, onPaymentClick, onStatusUpdate }) {
             <button
               onClick={markAsPaid}
               style={{
-                background: 'rgba(34, 197, 94, 0.1)',
-                color: '#22c55e',
+                background: 'rgba(255, 255, 255, 0.1)',
+                color: theme.colors.white,
                 padding: '8px 16px',
                 borderRadius: theme.radius.md,
-                border: `1px solid rgba(34, 197, 94, 0.2)`,
+                border: `1px solid rgba(255, 255, 255, 0.2)`,
                 fontSize: theme.fontSize.sm,
                 fontWeight: theme.weight.medium,
                 cursor: 'pointer'
@@ -614,7 +614,7 @@ function InvoiceCreator({ projectId, onClose, onSuccess }) {
                       padding: '4px'
                     }}
                   >
-                    ✕
+                    ×
                   </button>
                 )}
               </div>
@@ -893,12 +893,12 @@ function PaymentForm({ payment, onClose, onSuccess }) {
 
           {error && (
             <div style={{
-              color: '#ef4444',
+              color: theme.colors.text.primary,
               fontSize: theme.fontSize.sm,
               marginBottom: '16px',
               padding: '8px 12px',
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.2)',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               borderRadius: theme.radius.md
             }}>
               {error}

@@ -173,7 +173,7 @@ function Scheduling() {
               transition: 'all 0.15s ease'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#e5e5e5'
+              e.currentTarget.style.background = '#a3a3a3'
               e.currentTarget.style.transform = 'translateY(-1px)'
             }}
             onMouseLeave={(e) => {

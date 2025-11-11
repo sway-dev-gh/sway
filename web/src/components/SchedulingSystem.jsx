@@ -946,10 +946,10 @@ function getEndOfWeek(date) {
 
 function getAppointmentColor(status) {
   switch (status) {
-    case 'confirmed': return '#22c55e'
-    case 'scheduled': return '#3b82f6'
-    case 'cancelled': return '#ef4444'
-    case 'completed': return '#8b5cf6'
+    case 'confirmed': return '#ffffff'
+    case 'scheduled': return '#808080'
+    case 'cancelled': return '#525252'
+    case 'completed': return '#a3a3a3'
     default: return theme.colors.text.secondary
   }
 }

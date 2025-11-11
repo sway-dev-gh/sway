@@ -48,19 +48,19 @@ function Projects() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return '#22c55e'
-      case 'completed': return '#3b82f6'
-      case 'review': return '#f59e0b'
-      case 'cancelled': return '#ef4444'
+      case 'active': return theme.colors.white
+      case 'completed': return '#a3a3a3'
+      case 'review': return '#a3a3a3'
+      case 'cancelled': return '#525252'
       default: return theme.colors.text.secondary
     }
   }
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'urgent': return '#ef4444'
-      case 'high': return '#f59e0b'
-      case 'medium': return '#22c55e'
+      case 'urgent': return '#525252'
+      case 'high': return '#808080'
+      case 'medium': return '#a3a3a3'
       case 'low': return theme.colors.text.secondary
       default: return theme.colors.text.secondary
     }
@@ -143,7 +143,7 @@ function Projects() {
               letterSpacing: '-0.3px',
               transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1)',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-              border: '1px solid #373737',
+              border: '1px solid #525252',
               cursor: 'pointer'
             }}
             onMouseEnter={(e) => {
@@ -210,7 +210,7 @@ function Projects() {
               Active Projects
             </div>
             <div style={{
-              color: '#22c55e',
+              color: theme.colors.white,
               fontSize: '32px',
               fontWeight: theme.weight.bold
             }}>
@@ -260,7 +260,7 @@ function Projects() {
               Active Value
             </div>
             <div style={{
-              color: '#22c55e',
+              color: theme.colors.white,
               fontSize: '32px',
               fontWeight: theme.weight.bold
             }}>
@@ -464,7 +464,7 @@ function Projects() {
               marginBottom: '24px',
               opacity: 0.3
             }}>
-              📁
+              ◯
             </div>
             <h3 style={{
               fontSize: '28px',

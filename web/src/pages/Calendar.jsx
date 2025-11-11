@@ -51,10 +51,10 @@ function Calendar() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'confirmed': return '#22c55e'
-      case 'scheduled': return '#3b82f6'
-      case 'cancelled': return '#ef4444'
-      case 'completed': return '#8b5cf6'
+      case 'confirmed': return '#ffffff'
+      case 'scheduled': return '#a3a3a3'
+      case 'cancelled': return '#525252'
+      case 'completed': return '#808080'
       default: return theme.colors.text.secondary
     }
   }
@@ -157,7 +157,7 @@ function Calendar() {
                   color: theme.colors.text.secondary,
                   padding: '20px'
                 }}>
-                  <div style={{ fontSize: '32px', marginBottom: '8px', opacity: 0.3 }}>📅</div>
+                  <div style={{ fontSize: '32px', marginBottom: '8px', opacity: 0.3 }}>◯</div>
                   <p style={{ fontSize: theme.fontSize.sm }}>
                     No upcoming appointments
                   </p>
@@ -296,7 +296,7 @@ function Calendar() {
                     Confirmed
                   </span>
                   <span style={{
-                    color: '#22c55e',
+                    color: '#ffffff',
                     fontSize: theme.fontSize.sm,
                     fontWeight: theme.weight.semibold
                   }}>
@@ -312,7 +312,7 @@ function Calendar() {
                     Pending
                   </span>
                   <span style={{
-                    color: '#3b82f6',
+                    color: '#a3a3a3',
                     fontSize: theme.fontSize.sm,
                     fontWeight: theme.weight.semibold
                   }}>

@@ -11,7 +11,7 @@
 }
 
 .modal-panel {
-  background: #0F0F0F;
+  background: #000000;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   width: 100%;
@@ -188,11 +188,11 @@
 }
 
 .error-message {
-  background: rgba(255, 59, 48, 0.1);
-  color: #FF3B30;
+  background: rgba(82, 82, 82, 0.1);
+  color: #525252;
   padding: 14px 16px;
   border-radius: 12px;
   margin-bottom: 20px;
   font-size: 14px;
-  border: 1px solid rgba(255, 59, 48, 0.2);
+  border: 1px solid rgba(82, 82, 82, 0.2);
 }

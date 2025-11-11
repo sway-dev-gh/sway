@@ -48,7 +48,7 @@ input[type="checkbox"] {
 :root {
   --black: #000000;
   --white: #FFFFFF;
-  --gray: #9B9A97;
+  --gray: #a3a3a3;
 }
 
 .container {
@@ -86,7 +86,7 @@ a {
   border-radius: 6px;
   font-weight: 500;
   font-size: 13px;
-  border: 1px solid #373737;
+  border: 1px solid #525252;
 }
 
 .btn-primary:disabled {
@@ -100,6 +100,6 @@ a {
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 13px;
-  border: 1px solid #2F2F2F;
+  border: 1px solid #000000;
   font-weight: 500;
 }

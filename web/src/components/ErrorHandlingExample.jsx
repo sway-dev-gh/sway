@@ -89,7 +89,7 @@ function ErrorHandlingExample() {
   return (
     <div style={{
       padding: '24px',
-      background: '#0F0F0F',
+      background: '#000000',
       borderRadius: '12px',
       border: '1px solid rgba(255, 255, 255, 0.1)',
       maxWidth: '800px',
@@ -100,10 +100,10 @@ function ErrorHandlingExample() {
       {/* Error Toggle */}
       <div style={{
         padding: '16px',
-        background: shouldError ? '#2d1a1a' : '#1a2d1a',
+        background: shouldError ? '#525252' : '#000000',
         borderRadius: '8px',
         marginBottom: '24px',
-        border: `2px solid ${shouldError ? '#ff4444' : '#44ff44'}`
+        border: `2px solid ${shouldError ? '#525252' : '#ffffff'}`
       }}>
         <label style={{ display: 'flex', alignItems: 'center', gap: '12px', cursor: 'pointer' }}>
           <input
@@ -133,19 +133,19 @@ function ErrorHandlingExample() {
         {usersError && (
           <div style={{
             padding: '12px',
-            background: '#2d1a1a',
-            border: '1px solid #ff4444',
+            background: '#000000',
+            border: '1px solid #525252',
             borderRadius: '6px',
             marginBottom: '12px'
           }}>
-            <strong style={{ color: '#ff6666' }}>Error:</strong> {usersErrorMessage}
+            <strong style={{ color: '#525252' }}>Error:</strong> {usersErrorMessage}
           </div>
         )}
 
         {!usersLoading && !usersError && users && (
           <div style={{ marginBottom: '12px' }}>
             {users.map(user => (
-              <div key={user.id} style={{ padding: '8px', background: '#1a1a1a', marginBottom: '4px', borderRadius: '4px' }}>
+              <div key={user.id} style={{ padding: '8px', background: '#000000', marginBottom: '4px', borderRadius: '4px' }}>
                 {user.name}
               </div>
             ))}
@@ -171,24 +171,24 @@ function ErrorHandlingExample() {
         {createError && (
           <div style={{
             padding: '12px',
-            background: '#2d1a1a',
-            border: '1px solid #ff4444',
+            background: '#000000',
+            border: '1px solid #525252',
             borderRadius: '6px',
             marginBottom: '12px'
           }}>
-            <strong style={{ color: '#ff6666' }}>Error:</strong> {createErrorMessage}
+            <strong style={{ color: '#525252' }}>Error:</strong> {createErrorMessage}
           </div>
         )}
 
         {createSuccess && (
           <div style={{
             padding: '12px',
-            background: '#1a2d1a',
-            border: '1px solid #44ff44',
+            background: '#000000',
+            border: '1px solid #ffffff',
             borderRadius: '6px',
             marginBottom: '12px'
           }}>
-            <strong style={{ color: '#66ff66' }}>Success!</strong> User created successfully
+            <strong style={{ color: '#ffffff' }}>Success!</strong> User created successfully
           </div>
         )}
 
@@ -212,18 +212,18 @@ function ErrorHandlingExample() {
         {isError && (
           <div style={{
             padding: '12px',
-            background: '#2d1a1a',
-            border: '1px solid #ff4444',
+            background: '#000000',
+            border: '1px solid #525252',
             borderRadius: '6px',
             marginBottom: '12px'
           }}>
-            <strong style={{ color: '#ff6666' }}>Custom Error:</strong> {errorMessage}
+            <strong style={{ color: '#525252' }}>Custom Error:</strong> {errorMessage}
             <button
               onClick={clearError}
               style={{
                 marginLeft: '12px',
                 padding: '4px 12px',
-                background: '#ff4444',
+                background: '#525252',
                 color: '#fff',
                 border: 'none',
                 borderRadius: '4px',
@@ -251,7 +251,7 @@ function ErrorHandlingExample() {
         <p style={{ color: '#999', fontSize: '14px', marginBottom: '12px' }}>
           Demonstrates React Error Boundary catching component errors
         </p>
-        <p style={{ color: '#ff6666', fontSize: '13px', marginBottom: '12px' }}>
+        <p style={{ color: '#525252', fontSize: '13px', marginBottom: '12px' }}>
           Warning: This will crash the component and show the error boundary page!
         </p>
 

@@ -182,7 +182,7 @@ function AdminModeActivator({ onActivate }) {
           fontWeight: theme.weight.bold,
           color: theme.colors.black
         }}>
-          ⚠
+          !
         </div>
 
         {/* Title */}
@@ -216,7 +216,7 @@ function AdminModeActivator({ onActivate }) {
           <div style={{
             fontSize: '48px',
             fontWeight: theme.weight.bold,
-            color: timeLeft <= 5 ? '#ff4444' : theme.colors.white,
+            color: timeLeft <= 5 ? '#525252' : theme.colors.white,
             fontFamily: 'monospace',
                       }}>
             {timeLeft}
@@ -309,7 +309,7 @@ function AdminModeActivator({ onActivate }) {
                   width: '100%',
                   padding: '14px 16px',
                   background: theme.colors.bg.page,
-                  border: `2px solid ${error ? '#ff4444' : theme.colors.border.medium}`,
+                  border: `2px solid ${error ? '#525252' : theme.colors.border.medium}`,
                   borderRadius: '8px',
                   color: theme.colors.text.primary,
                   fontSize: '16px',
@@ -321,7 +321,7 @@ function AdminModeActivator({ onActivate }) {
                 <div style={{
                   marginTop: '8px',
                   fontSize: '13px',
-                  color: '#ff4444'
+                  color: '#525252'
                 }}>
                   {error}
                 </div>
@@ -356,7 +356,7 @@ function AdminModeActivator({ onActivate }) {
               style={{
                 flex: 1,
                 padding: '12px',
-                background: isAdminMode ? '#ff4444' : theme.colors.white,
+                background: isAdminMode ? '#525252' : theme.colors.white,
                 border: 'none',
                 borderRadius: '8px',
                 color: isAdminMode ? theme.colors.white : theme.colors.black,

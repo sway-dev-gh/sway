@@ -14,25 +14,25 @@ function Toast({ message, type = 'info', duration = 3000, onClose }) {
     switch (type) {
       case 'success':
         return {
-          background: '#ffffff',
+          background: theme.colors.white,
           borderColor: theme.colors.white,
           color: theme.colors.black
         }
       case 'error':
         return {
-          background: '#EB5757',
-          borderColor: '#EB5757',
+          background: '#525252',
+          borderColor: '#525252',
           color: theme.colors.white
         }
       case 'warning':
         return {
-          background: '#ffffff',
+          background: theme.colors.white,
           borderColor: theme.colors.text.secondary,
           color: theme.colors.black
         }
       default: // info
         return {
-          background: '#000000',
+          background: theme.colors.black,
           borderColor: theme.colors.border.light,
           color: theme.colors.white
         }

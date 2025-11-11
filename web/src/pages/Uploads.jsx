@@ -150,14 +150,14 @@ function Uploads() {
             <div style={{
               textAlign: 'center',
               padding: '120px 40px',
-              border: '1px solid #1a1a1a',
+              border: '1px solid #000000',
               borderRadius: '8px',
-              background: '#0F0F0F'
+              background: '#000000'
             }}>
               <h3 style={{
                 fontSize: '16px',
                 fontWeight: '500',
-                color: '#737373',
+                color: '#a3a3a3',
                 margin: 0,
                 letterSpacing: '-0.01em'
               }}>
@@ -166,9 +166,9 @@ function Uploads() {
             </div>
           ) : (
             <div style={{
-              border: '1px solid #1a1a1a',
+              border: '1px solid #000000',
               borderRadius: '8px',
-              background: '#0F0F0F',
+              background: '#000000',
               overflow: 'hidden'
             }}>
               {/* Table Header */}
@@ -177,8 +177,8 @@ function Uploads() {
                 gridTemplateColumns: '2fr 1.5fr 1.5fr 1fr auto',
                 gap: '24px',
                 padding: '16px 20px',
-                background: '#0a0a0a',
-                borderBottom: '1px solid #1a1a1a',
+                background: '#000000',
+                borderBottom: '1px solid #000000',
                 fontSize: '11px',
                 fontWeight: '600',
                 color: '#a3a3a3',
@@ -199,7 +199,7 @@ function Uploads() {
                   key={upload.id}
                   style={{
                     padding: '16px 20px',
-                    borderBottom: index < uploads.length - 1 ? '1px solid #1a1a1a' : 'none',
+                    borderBottom: index < uploads.length - 1 ? '1px solid #000000' : 'none',
                     display: 'grid',
                     gridTemplateColumns: '2fr 1.5fr 1.5fr 1fr auto',
                     gap: '24px',
@@ -207,7 +207,7 @@ function Uploads() {
                     transition: 'all 0.15s ease'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#141414'
+                    e.currentTarget.style.background = '#000000'
                     e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)'
                   }}
                   onMouseLeave={(e) => {
@@ -232,7 +232,7 @@ function Uploads() {
                     </div>
                     <div style={{
                       fontSize: '12px',
-                      color: '#737373'
+                      color: '#a3a3a3'
                     }}>
                       {(upload.fileSize / 1024 / 1024).toFixed(2)} MB
                     </div>
@@ -255,7 +255,7 @@ function Uploads() {
                     {upload.uploaderEmail && (
                       <div style={{
                         fontSize: '12px',
-                        color: '#737373',
+                        color: '#a3a3a3',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
@@ -292,7 +292,7 @@ function Uploads() {
                   <div>
                     <div style={{
                       fontSize: '13px',
-                      color: '#737373'
+                      color: '#a3a3a3'
                     }}>
                       {new Date(upload.uploadedAt).toLocaleDateString()}
                     </div>
@@ -307,7 +307,7 @@ function Uploads() {
                         fontSize: '12px',
                         fontWeight: '500',
                         background: 'transparent',
-                        border: '1px solid #262626',
+                        border: '1px solid #525252',
                         borderRadius: '4px',
                         color: '#ffffff',
                         cursor: 'pointer',
@@ -315,12 +315,12 @@ function Uploads() {
                         whiteSpace: 'nowrap'
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#1a1a1a'
-                        e.currentTarget.style.borderColor = '#404040'
+                        e.currentTarget.style.background = '#000000'
+                        e.currentTarget.style.borderColor = '#525252'
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.borderColor = '#262626'
+                        e.currentTarget.style.borderColor = '#525252'
                       }}
                     >
                       Download

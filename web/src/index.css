@@ -2,22 +2,22 @@
   /* Backgrounds */
   --bg-page: #000000;
   --bg-card: #000000;
-  --bg-hover: #0a0a0a;
+  --bg-hover: #000000;
   --bg-sidebar: #000000;
 
   /* Text */
   --text-primary: #FFFFFF;
-  --text-secondary: #9B9A97;
-  --text-tertiary: #6C6C6C;
+  --text-secondary: #a3a3a3;
+  --text-tertiary: #525252;
 
   /* Borders */
-  --border-light: #2F2F2F;
-  --border-medium: #373737;
+  --border-light: #000000;
+  --border-medium: #525252;
 
   /* Colors */
   --white: #ffffff;
   --black: #000000;
-  --error: #EB5757;
+  --error: #525252;
 
   /* Spacing (8px increments) */
   --space-8: 8px;

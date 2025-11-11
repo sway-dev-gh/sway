@@ -100,7 +100,7 @@ function Messages() {
               marginBottom: '24px',
               opacity: 0.3
             }}>
-              💬
+              ◯
             </div>
             <h3 style={{
               fontSize: '28px',

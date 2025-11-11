@@ -136,19 +136,7 @@ function MessagingSystem({
   }
 
   const getFileIcon = (filename) => {
-    const ext = filename.split('.').pop()?.toLowerCase()
-    switch (ext) {
-      case 'pdf': return '📄'
-      case 'doc':
-      case 'docx': return '📝'
-      case 'jpg':
-      case 'jpeg':
-      case 'png':
-      case 'gif': return '🖼️'
-      case 'zip':
-      case 'rar': return '🗜️'
-      default: return '📎'
-    }
+    return '□' // Simple minimal file icon
   }
 
   return (
@@ -214,7 +202,7 @@ function MessagingSystem({
             color: theme.colors.text.secondary,
             textAlign: 'center'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>💬</div>
+            <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.3 }}>◯</div>
             <h4 style={{ marginBottom: '8px' }}>Start the conversation</h4>
             <p style={{ fontSize: theme.fontSize.sm }}>Send a message to get started</p>
           </div>
@@ -349,7 +337,7 @@ function MessagingSystem({
           }}
           title="Attach file"
         >
-          {uploadingFile ? '⏳' : '📎'}
+          {uploadingFile ? '•' : '+'}
         </button>
 
         {/* Text Input */}
@@ -397,7 +385,7 @@ function MessagingSystem({
           }}
           title="Send message"
         >
-          {sending ? '⏳' : '↗️'}
+          {sending ? '•' : '→'}
         </button>
 
         {/* Hidden File Input */}

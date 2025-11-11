@@ -54,9 +54,9 @@ function Payments() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'paid': return '#22c55e'
-      case 'sent': return '#3b82f6'
-      case 'overdue': return '#ef4444'
+      case 'paid': return '#ffffff'
+      case 'sent': return '#a3a3a3'
+      case 'overdue': return '#525252'
       case 'draft': return theme.colors.text.secondary
       default: return theme.colors.text.secondary
     }
@@ -133,7 +133,7 @@ function Payments() {
               letterSpacing: '-0.3px',
               transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1)',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-              border: '1px solid #373737',
+              border: '1px solid #525252',
               textDecoration: 'none',
               display: 'inline-block'
             }}
@@ -176,7 +176,7 @@ function Payments() {
               Total Revenue
             </div>
             <div style={{
-              color: '#22c55e',
+              color: '#ffffff',
               fontSize: '32px',
               fontWeight: theme.weight.bold
             }}>
@@ -201,7 +201,7 @@ function Payments() {
               Outstanding
             </div>
             <div style={{
-              color: '#3b82f6',
+              color: '#a3a3a3',
               fontSize: '32px',
               fontWeight: theme.weight.bold
             }}>
@@ -226,7 +226,7 @@ function Payments() {
               Overdue
             </div>
             <div style={{
-              color: '#ef4444',
+              color: '#525252',
               fontSize: '32px',
               fontWeight: theme.weight.bold
             }}>
@@ -450,7 +450,7 @@ function Payments() {
 
                   {/* Due Date */}
                   <div style={{
-                    color: payment.status === 'overdue' ? '#ef4444' : theme.colors.text.secondary,
+                    color: payment.status === 'overdue' ? '#525252' : theme.colors.text.secondary,
                     fontSize: theme.fontSize.sm
                   }}>
                     {new Date(payment.dueDate).toLocaleDateString('en-US', {
@@ -491,7 +491,7 @@ function Payments() {
               marginBottom: '24px',
               opacity: 0.3
             }}>
-              💳
+              ◯
             </div>
             <h3 style={{
               fontSize: '28px',

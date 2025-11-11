@@ -196,13 +196,13 @@ select:required {
 /* Invalid field indicator */
 input:invalid:not(:placeholder-shown),
 textarea:invalid:not(:placeholder-shown) {
-  border-color: #ef4444;
-  outline-color: #ef4444;
+  border-color: #525252;
+  outline-color: #525252;
 }
 
 /* Error message styling */
 .error-message {
-  color: #ef4444;
+  color: #525252;
   font-size: 14px;
   margin-top: 4px;
   display: flex;
@@ -212,7 +212,7 @@ textarea:invalid:not(:placeholder-shown) {
 
 /* Success message styling */
 .success-message {
-  color: #10b981;
+  color: #a3a3a3;
   font-size: 14px;
   margin-top: 4px;
   display: flex;
@@ -271,12 +271,12 @@ textarea:invalid:not(:placeholder-shown) {
 }
 
 .text-secondary {
-  color: #d1d5db;
+  color: #a3a3a3;
   /* Contrast ratio: 14:1 on black background */
 }
 
 .text-tertiary {
-  color: #9ca3af;
+  color: #525252;
   /* Contrast ratio: 7:1 on black background */
 }
 

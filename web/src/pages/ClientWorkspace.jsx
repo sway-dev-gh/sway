@@ -134,7 +134,7 @@ function ClientWorkspace() {
             fontSize: '48px',
             marginBottom: theme.spacing[4],
             opacity: 0.3
-          }}>🔒</div>
+          }}>◯</div>
           <h3 style={{
             color: theme.colors.text.primary,
             fontSize: theme.fontSize.lg,
@@ -164,10 +164,10 @@ function ClientWorkspace() {
   const { project, client, messages, files, payments, progress } = workspace
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'files', label: 'Files', icon: '📁', count: files?.length || 0 },
-    { id: 'messages', label: 'Messages', icon: '💬', count: messages?.filter(m => !m.isRead)?.length || 0 },
-    { id: 'payments', label: 'Invoices', icon: '💳', count: payments?.filter(p => p.status === 'sent')?.length || 0 }
+    { id: 'overview', label: 'Overview', icon: '◯' },
+    { id: 'files', label: 'Files', icon: '□', count: files?.length || 0 },
+    { id: 'messages', label: 'Messages', icon: '◯', count: messages?.filter(m => !m.isRead)?.length || 0 },
+    { id: 'payments', label: 'Invoices', icon: '◯', count: payments?.filter(p => p.status === 'sent')?.length || 0 }
   ]
 
   return (
@@ -204,13 +204,13 @@ function ClientWorkspace() {
           <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3] }}>
             <div style={{
               padding: '8px 16px',
-              background: project.status === 'active' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(156, 163, 175, 0.1)',
-              color: project.status === 'active' ? '#22c55e' : theme.colors.text.secondary,
+              background: project.status === 'active' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(156, 163, 175, 0.1)',
+              color: project.status === 'active' ? theme.colors.white : theme.colors.text.secondary,
               borderRadius: theme.radius.full,
               fontSize: theme.fontSize.xs,
               fontWeight: theme.weight.semibold,
               textTransform: 'uppercase',
-              border: `1px solid ${project.status === 'active' ? 'rgba(34, 197, 94, 0.2)' : theme.colors.border.light}`
+              border: `1px solid ${project.status === 'active' ? 'rgba(255, 255, 255, 0.2)' : theme.colors.border.light}`
             }}>
               {project.status}
             </div>
@@ -455,7 +455,7 @@ function ClientWorkspace() {
                         justifyContent: 'center',
                         fontSize: theme.fontSize.lg
                       }}>
-                        📄
+                        □
                       </div>
                       <div>
                         <div style={{
@@ -491,7 +491,7 @@ function ClientWorkspace() {
                     padding: '60px 20px',
                     color: theme.colors.text.secondary
                   }}>
-                    <div style={{ fontSize: '48px', marginBottom: theme.spacing[3], opacity: 0.3 }}>📁</div>
+                    <div style={{ fontSize: '48px', marginBottom: theme.spacing[3], opacity: 0.3 }}>◯</div>
                     <h4 style={{ marginBottom: theme.spacing[2] }}>No files shared yet</h4>
                     <p style={{ fontSize: theme.fontSize.sm }}>Files will appear here when they're shared with you</p>
                   </div>
@@ -578,7 +578,7 @@ function ClientWorkspace() {
                     padding: '40px 20px',
                     color: theme.colors.text.secondary
                   }}>
-                    <div style={{ fontSize: '48px', marginBottom: theme.spacing[3], opacity: 0.3 }}>💬</div>
+                    <div style={{ fontSize: '48px', marginBottom: theme.spacing[3], opacity: 0.3 }}>◯</div>
                     <h4 style={{ marginBottom: theme.spacing[2] }}>Start the conversation</h4>
                     <p style={{ fontSize: theme.fontSize.sm }}>Send a message to get started</p>
                   </div>
@@ -700,7 +700,7 @@ function ClientWorkspace() {
                           ${payment.total.toFixed(2)}
                         </div>
                         <div style={{
-                          color: payment.status === 'paid' ? '#22c55e' : payment.status === 'overdue' ? '#ef4444' : theme.colors.text.secondary,
+                          color: payment.status === 'paid' ? theme.colors.white : payment.status === 'overdue' ? '#525252' : theme.colors.text.secondary,
                           fontSize: theme.fontSize.xs,
                           fontWeight: theme.weight.semibold,
                           textTransform: 'uppercase'
@@ -730,7 +730,7 @@ function ClientWorkspace() {
                     padding: '60px 20px',
                     color: theme.colors.text.secondary
                   }}>
-                    <div style={{ fontSize: '48px', marginBottom: theme.spacing[3], opacity: 0.3 }}>💳</div>
+                    <div style={{ fontSize: '48px', marginBottom: theme.spacing[3], opacity: 0.3 }}>◯</div>
                     <h4 style={{ marginBottom: theme.spacing[2] }}>No invoices yet</h4>
                     <p style={{ fontSize: theme.fontSize.sm }}>Invoices will appear here when they're created</p>
                   </div>

@@ -1683,7 +1683,7 @@ function Requests() {
       minHeight: type === 'spacer' ? `${properties.height || '40px'}` : 'auto',
       cursor: isLocked ? 'not-allowed' : (isDraggingElement ? 'grabbing' : 'grab'),
       border: isSelected ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-      outline: isSelected ? '2px solid rgba(59, 130, 246, 0.3)' : 'none',
+      outline: isSelected ? '2px solid rgba(255, 255, 255, 0.3)' : 'none',
       outlineOffset: '2px',
       borderRadius: '4px',
       boxSizing: 'border-box',
@@ -2373,7 +2373,7 @@ function Requests() {
                 disabled={historyIndex <= 0}
                 style={{
                   background: 'transparent',
-                  color: historyIndex <= 0 ? '#6C6C6C' : '#9B9A97',
+                  color: historyIndex <= 0 ? '#525252' : '#a3a3a3',
                   cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
                   opacity: historyIndex <= 0 ? 0.4 : 1,
                   border: 'none',
@@ -2390,7 +2390,7 @@ function Requests() {
                 disabled={historyIndex >= history.length - 1}
                 style={{
                   background: 'transparent',
-                  color: historyIndex >= history.length - 1 ? '#6C6C6C' : '#9B9A97',
+                  color: historyIndex >= history.length - 1 ? '#525252' : '#a3a3a3',
                   cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
                   opacity: historyIndex >= history.length - 1 ? 0.4 : 1,
                   border: 'none',
@@ -2410,7 +2410,7 @@ function Requests() {
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   color: '#FFFFFF',
-                  border: '1px solid #373737',
+                  border: '1px solid #525252',
                   borderRadius: '6px',
                   fontSize: '13px',
                   fontWeight: '500',
@@ -2426,7 +2426,7 @@ function Requests() {
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   color: '#FFFFFF',
-                  border: '1px solid #373737',
+                  border: '1px solid #525252',
                   borderRadius: '6px',
                   fontSize: '13px',
                   fontWeight: '500',
@@ -2442,7 +2442,7 @@ function Requests() {
                 style={{
                   background: 'rgba(255, 255, 255, 0.08)',
                   color: '#FFFFFF',
-                  border: '1px solid #373737',
+                  border: '1px solid #525252',
                   borderRadius: '6px',
                   fontSize: '13px',
                   fontWeight: '600',
@@ -2505,10 +2505,10 @@ function Requests() {
               background: 'rgba(255, 255, 255, 0.01)'
             }}>
               {[
-                { key: 'templates', label: 'Templates', icon: '📋' },
-                { key: 'elements', label: 'Elements', icon: '🔧' },
-                { key: 'branding', label: 'Branding', icon: '🎨' },
-                { key: 'settings', label: 'Settings', icon: '⚙️' }
+                { key: 'templates', label: 'Templates', icon: 'T' },
+                { key: 'elements', label: 'Elements', icon: 'E' },
+                { key: 'branding', label: 'Branding', icon: 'B' },
+                { key: 'settings', label: 'Settings', icon: 'S' }
               ].map((tab) => (
                 <button
                   key={tab.key}
@@ -3145,7 +3145,7 @@ function Requests() {
                       justifyContent: 'center',
                       fontSize: '32px'
                     }}>
-                      ✨
+                      *
                     </div>
                     <h3 style={{
                       fontSize: '16px',
