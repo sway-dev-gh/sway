@@ -1300,10 +1300,17 @@ function Requests() {
       })
 
       const shortCode = response.data.shortCode
-      toast.success(`Form published successfully! Redirecting to your public link...`)
 
-      // Redirect to the public upload page
-      window.location.href = `/r/${shortCode}`
+      // Ask user if they want to schedule this request
+      const scheduleNow = window.confirm(`Form published successfully!\n\nWould you like to schedule when this request opens?\n\nClick OK to schedule, or Cancel to view your public link.`)
+
+      if (scheduleNow) {
+        // Navigate to Management page
+        navigate('/management')
+      } else {
+        // Redirect to the public upload page
+        window.location.href = `/r/${shortCode}`
+      }
     } catch (error) {
       console.error('Publish error:', error)
       const errorMessage = error.response?.data?.message || error.message || 'Failed to publish form. Please try again.'
@@ -2460,7 +2467,7 @@ function Requests() {
             flexDirection: 'column'
           }}>
             {/* Tabs */}
-            <div style={{ display: 'flex', borderBottom: `1px solid ${theme.colors.border.dark}` }}>
+            <div style={{ display: 'flex', gap: '4px', borderBottom: `1px solid ${theme.colors.border.dark}` }}>
               <button
                 onClick={() => setActiveTab('templates')}
                 style={{

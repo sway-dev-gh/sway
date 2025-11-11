@@ -415,8 +415,15 @@ function Management() {
 
   const handleDayClick = (date, uploadsForDay) => {
     if (uploadsForDay.length > 0) {
+      // Show uploads for this day
       setSelectedDate(date)
       setDayModalOpen(true)
+    } else {
+      // Open scheduling modal with date pre-filled
+      const formattedDate = date.toISOString().split('T')[0]
+      setScheduledDate(formattedDate)
+      setScheduledTime('09:00')
+      setShowCreateModal(true)
     }
   }
 
@@ -1207,20 +1214,16 @@ function Management() {
                               border: isToday ? '1px solid #ffffff' : '1px solid transparent',
                               padding: '8px',
                               position: 'relative',
-                              cursor: hasUploads ? 'pointer' : 'default',
+                              cursor: 'pointer',
                               transition: 'all 0.15s ease'
                             }}
                             onMouseEnter={(e) => {
-                              if (hasUploads) {
-                                e.currentTarget.style.background = '#141414'
-                                e.currentTarget.style.borderColor = '#404040'
-                              }
+                              e.currentTarget.style.background = '#141414'
+                              e.currentTarget.style.borderColor = '#404040'
                             }}
                             onMouseLeave={(e) => {
-                              if (hasUploads) {
-                                e.currentTarget.style.background = '#0F0F0F'
-                                e.currentTarget.style.borderColor = isToday ? '#ffffff' : 'transparent'
-                              }
+                              e.currentTarget.style.background = '#0F0F0F'
+                              e.currentTarget.style.borderColor = isToday ? '#ffffff' : 'transparent'
                             }}
                           >
                             <div style={{
