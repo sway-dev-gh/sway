@@ -14,13 +14,14 @@ const Signup = lazy(() => import('./pages/Signup'))
 // Public upload route - separate chunk
 const Upload = lazy(() => import('./pages/Upload'))
 
-// Dashboard - critical route with custom skeleton
-const Dashboard = lazy(() => import('./pages/Dashboard'))
+// Dashboard (Builder) - critical route with custom skeleton
+const Dashboard = lazy(() => import('./pages/Requests'))
 
-// Request management routes - grouped chunk
-const Requests = lazy(() => import('./pages/Requests'))
+// Management page - calendar + scheduling combined
+const Management = lazy(() => import('./pages/Management'))
+
+// Legacy routes for backward compatibility
 const RequestView = lazy(() => import('./pages/RequestView'))
-const Responses = lazy(() => import('./pages/Responses'))
 
 // File management routes - grouped chunk
 const Uploads = lazy(() => import('./pages/Uploads'))
@@ -34,23 +35,18 @@ const Support = lazy(() => import('./pages/Support'))
 // Notification route - separate chunk
 const Notifications = lazy(() => import('./pages/Notifications'))
 
-// Scheduling route - separate chunk
-const Scheduling = lazy(() => import('./pages/Scheduling'))
-
 // Prefetch critical routes on idle
 function prefetchCriticalRoutes() {
   if (typeof requestIdleCallback !== 'undefined') {
     requestIdleCallback(() => {
       // Prefetch likely next routes
-      import('./pages/Dashboard').catch(() => {})
-      import('./pages/Requests').catch(() => {})
-      import('./pages/Responses').catch(() => {})
+      import('./pages/Requests').catch(() => {}) // Dashboard (builder)
+      import('./pages/Management').catch(() => {})
     }, { timeout: 2000 })
   } else {
     setTimeout(() => {
-      import('./pages/Dashboard').catch(() => {})
       import('./pages/Requests').catch(() => {})
-      import('./pages/Responses').catch(() => {})
+      import('./pages/Management').catch(() => {})
     }, 2000)
   }
 }
@@ -87,27 +83,24 @@ function App() {
           </Suspense>
         } />
 
-        {/* Dashboard - critical route */}
+        {/* Dashboard (Builder) - critical route */}
         <Route path="/dashboard" element={
           <Suspense fallback={<DashboardSkeleton />}>
             <Dashboard />
           </Suspense>
         } />
 
-        {/* Request management routes */}
-        <Route path="/requests" element={
-          <Suspense fallback={<TableSkeleton />}>
-            <Requests />
-          </Suspense>
-        } />
+        {/* Legacy routes for backward compatibility */}
         <Route path="/requests/:id" element={
           <Suspense fallback={<PageLoadingFallback />}>
             <RequestView />
           </Suspense>
         } />
-        <Route path="/responses" element={
+
+        {/* Management - Calendar + Scheduling */}
+        <Route path="/management" element={
           <Suspense fallback={<TableSkeleton />}>
-            <Responses />
+            <Management />
           </Suspense>
         } />
 
@@ -144,13 +137,6 @@ function App() {
         <Route path="/notifications" element={
           <Suspense fallback={<TableSkeleton />}>
             <Notifications />
-          </Suspense>
-        } />
-
-        {/* Scheduling */}
-        <Route path="/scheduling" element={
-          <Suspense fallback={<TableSkeleton />}>
-            <Scheduling />
           </Suspense>
         } />
           </Routes>
