@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
@@ -205,27 +204,26 @@ function Dashboard() {
         }}>
           {/* Header */}
           <div style={{
-            marginBottom: '80px',
+            marginBottom: '64px',
             maxWidth: '800px',
-            margin: '0 auto 80px',
+            margin: '0 auto 64px',
             textAlign: 'center'
           }}>
             <h1 style={{
-              fontSize: '64px',
+              fontSize: '48px',
               fontWeight: '600',
-              margin: '0 0 20px 0',
+              margin: '0 0 16px 0',
               color: '#ffffff',
-              letterSpacing: '-0.011em',
+              letterSpacing: '-0.02em',
               lineHeight: '1.1'
             }}>
               Stop Asking For Files
             </h1>
             <p style={{
-              fontSize: '18px',
-              color: '#a3a3a3',
+              fontSize: '16px',
+              color: '#9B9A97',
               margin: 0,
               lineHeight: '1.6',
-              letterSpacing: '-0.006em',
               fontWeight: '400'
             }}>
               Build a page. Share the link. Get their files. Done.
@@ -241,101 +239,81 @@ function Dashboard() {
             margin: '0 auto'
           }}>
             <Link to="/requests" style={{ textDecoration: 'none' }}>
-              <motion.div
-                initial={{ y: 0, boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)' }}
-                whileHover={{
-                  y: -2,
-                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.6)',
-                  transition: { duration: 0.2 }
-                }}
-                style={{
-                  padding: '48px',
-                  border: '1px solid #1a1a1a',
-                  borderRadius: '12px',
-                  background: '#0F0F0F',
-                  cursor: 'pointer',
-                  height: '100%',
-                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
-                }}
-              >
+              <div style={{
+                padding: '32px',
+                border: '1px solid #2F2F2F',
+                borderRadius: '8px',
+                background: '#000000',
+                cursor: 'pointer',
+                height: '100%'
+              }}>
                 <div style={{
-                  fontSize: '11px',
-                  color: '#737373',
+                  fontSize: '10px',
+                  color: '#6C6C6C',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
+                  letterSpacing: '0.05em',
                   fontWeight: '600',
-                  marginBottom: '20px'
+                  marginBottom: '16px'
                 }}>
                   Start Here
                 </div>
                 <div style={{
-                  fontSize: '28px',
+                  fontSize: '24px',
                   color: '#ffffff',
                   fontWeight: '600',
-                  marginBottom: '12px',
-                  letterSpacing: '-0.011em'
+                  marginBottom: '8px',
+                  letterSpacing: '-0.02em'
                 }}>
                   New Request
                 </div>
                 <div style={{
-                  fontSize: '15px',
-                  color: '#a3a3a3',
+                  fontSize: '14px',
+                  color: '#9B9A97',
                   lineHeight: '1.5',
-                  letterSpacing: '-0.006em',
                   fontWeight: '400'
                 }}>
                   Build your upload page in 30 seconds
                 </div>
-              </motion.div>
+              </div>
             </Link>
 
             <Link to="/responses" style={{ textDecoration: 'none' }}>
-              <motion.div
-                initial={{ y: 0, boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)' }}
-                whileHover={{
-                  y: -2,
-                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.6)',
-                  transition: { duration: 0.2 }
-                }}
-                style={{
-                  padding: '48px',
-                  border: '1px solid #1a1a1a',
-                  borderRadius: '12px',
-                  background: '#0F0F0F',
-                  cursor: 'pointer',
-                  height: '100%',
-                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
-                }}
-              >
+              <div style={{
+                padding: '32px',
+                border: '1px solid #2F2F2F',
+                borderRadius: '8px',
+                background: '#000000',
+                cursor: 'pointer',
+                height: '100%'
+              }}>
                 <div style={{
-                  fontSize: '11px',
-                  color: '#737373',
+                  fontSize: '10px',
+                  color: '#6C6C6C',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
+                  letterSpacing: '0.05em',
                   fontWeight: '600',
-                  marginBottom: '20px'
+                  marginBottom: '16px'
                 }}>
                   Your Work
                 </div>
                 <div style={{
-                  fontSize: '28px',
+                  fontSize: '24px',
                   color: '#ffffff',
                   fontWeight: '600',
-                  marginBottom: '12px',
-                  letterSpacing: '-0.011em'
+                  marginBottom: '8px',
+                  letterSpacing: '-0.02em'
                 }}>
                   All Requests
                 </div>
                 <div style={{
-                  fontSize: '15px',
-                  color: '#a3a3a3',
+                  fontSize: '14px',
+                  color: '#9B9A97',
                   lineHeight: '1.5',
-                  letterSpacing: '-0.006em',
                   fontWeight: '400'
                 }}>
                   Track uploads and download everything
                 </div>
-              </motion.div>
+              </div>
             </Link>
           </div>
 

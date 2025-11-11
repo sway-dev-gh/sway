@@ -601,61 +601,6 @@ function Management() {
             </p>
           </div>
 
-          {/* Status Filter */}
-          <div style={{
-            display: 'flex',
-            gap: '12px',
-            marginBottom: '48px',
-            alignItems: 'center'
-          }}>
-            <span style={{
-              fontSize: '14px',
-              fontWeight: theme.weight.semibold,
-              color: theme.colors.text.secondary,
-              marginRight: '8px'
-            }}>
-              Filter by status:
-            </span>
-            {['all', 'live', 'done', 'draft'].map((status) => (
-              <button
-                key={status}
-                onClick={() => setFilterStatus(status)}
-                style={{
-                  padding: '8px 16px',
-                  background: filterStatus === status ? theme.colors.white : 'transparent',
-                  color: filterStatus === status ? theme.colors.black : theme.colors.text.secondary,
-                  border: `1px solid ${filterStatus === status ? theme.colors.white : theme.colors.border.light}`,
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: theme.weight.medium,
-                  cursor: 'pointer',
-                  transition: 'all 0.15s ease',
-                  textTransform: 'capitalize'
-                }}
-                onMouseEnter={(e) => {
-                  if (filterStatus !== status) {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-                    e.currentTarget.style.borderColor = theme.colors.border.medium
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (filterStatus !== status) {
-                    e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.borderColor = theme.colors.border.light
-                  }
-                }}
-              >
-                {status === 'all' ? 'All' : status}
-              </button>
-            ))}
-            <div style={{
-              fontSize: '14px',
-              color: theme.colors.text.tertiary,
-              marginLeft: '16px'
-            }}>
-              {filteredForms.length} result{filteredForms.length !== 1 ? 's' : ''}
-            </div>
-          </div>
 
           {/* Calendar Section */}
               {/* Top Stats */}
@@ -1377,6 +1322,187 @@ function Management() {
                   </div>
                 </div>
               )}
+
+          {/* Request Management Section */}
+          <div style={{ marginBottom: '64px' }}>
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '32px'
+            }}>
+              <h2 style={{
+                fontSize: '24px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                margin: 0,
+                letterSpacing: '-0.02em'
+              }}>
+                Request Manager
+              </h2>
+
+              {/* Status Filter */}
+              <div style={{
+                display: 'flex',
+                gap: '8px',
+                alignItems: 'center'
+              }}>
+                <span style={{
+                  fontSize: '14px',
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.secondary,
+                  marginRight: '12px'
+                }}>
+                  Filter:
+                </span>
+                {['all', 'live', 'done', 'draft'].map((status) => (
+                  <button
+                    key={status}
+                    onClick={() => setFilterStatus(status)}
+                    style={{
+                      padding: '6px 14px',
+                      background: filterStatus === status ? theme.colors.white : 'transparent',
+                      color: filterStatus === status ? theme.colors.black : theme.colors.text.secondary,
+                      border: `1px solid ${filterStatus === status ? theme.colors.white : theme.colors.border.light}`,
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                      fontWeight: theme.weight.medium,
+                      cursor: 'pointer',
+                      textTransform: 'capitalize'
+                    }}
+                  >
+                    {status === 'all' ? 'All' : status}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Request List */}
+            {filteredForms.length === 0 ? (
+              <div style={{
+                padding: '80px 40px',
+                textAlign: 'center',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '8px',
+                background: 'transparent'
+              }}>
+                <div style={{
+                  fontSize: '16px',
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.primary,
+                  marginBottom: '8px'
+                }}>
+                  No {filterStatus === 'all' ? '' : filterStatus + ' '}requests found
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.tertiary
+                }}>
+                  {filterStatus === 'all'
+                    ? 'Create your first request to start collecting files'
+                    : `No requests with ${filterStatus} status`}
+                </div>
+              </div>
+            ) : (
+              <div style={{
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '8px',
+                overflow: 'hidden'
+              }}>
+                {filteredForms.map((form, index) => (
+                  <div
+                    key={form.id}
+                    style={{
+                      padding: '20px 24px',
+                      borderBottom: index < filteredForms.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                      background: 'transparent'
+                    }}
+                  >
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start'
+                    }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{
+                          fontSize: '16px',
+                          fontWeight: theme.weight.semibold,
+                          color: theme.colors.text.primary,
+                          marginBottom: '8px',
+                          maxWidth: '300px',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap'
+                        }}>
+                          {form.title}
+                        </div>
+                        <div style={{
+                          display: 'flex',
+                          gap: '24px',
+                          fontSize: '14px',
+                          color: theme.colors.text.secondary,
+                          marginBottom: '12px'
+                        }}>
+                          <span>Created {getTimeSinceCreated(form.createdAt)} ago</span>
+                          <span>{getFormUploads(form.id).length} files received</span>
+                          <span>{formatBytes(getFormStorageUsed(form.id))}</span>
+                        </div>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: theme.weight.semibold,
+                          color: getStatusColor(getFormStatus(form)),
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}>
+                          {getFormStatus(form)}
+                        </div>
+                      </div>
+                      <div style={{
+                        display: 'flex',
+                        gap: '12px',
+                        marginLeft: '24px'
+                      }}>
+                        <button
+                          onClick={() => {
+                            const url = `${window.location.origin}/upload/${form.shortCode}`
+                            navigator.clipboard.writeText(url)
+                            toast.success('Request URL copied!')
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            background: 'transparent',
+                            color: theme.colors.text.secondary,
+                            border: `1px solid ${theme.colors.border.light}`,
+                            borderRadius: '4px',
+                            fontSize: '13px',
+                            fontWeight: theme.weight.medium,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Copy Link
+                        </button>
+                        <button
+                          onClick={() => setConfirmDelete({ isOpen: true, formId: form.id })}
+                          style={{
+                            padding: '6px 12px',
+                            background: 'transparent',
+                            color: theme.colors.text.tertiary,
+                            border: `1px solid ${theme.colors.border.light}`,
+                            borderRadius: '4px',
+                            fontSize: '13px',
+                            fontWeight: theme.weight.medium,
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Scheduling Section */}
             <div>

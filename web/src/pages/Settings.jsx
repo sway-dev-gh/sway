@@ -655,39 +655,28 @@ function Settings() {
               disabled={plan.id === currentPlan || upgrading}
               style={{
                 width: '100%',
-                padding: '14px 24px',
-                fontSize: '14px',
+                padding: '8px 16px',
+                fontSize: '13px',
                 fontWeight: '500',
-                borderRadius: '8px',
+                borderRadius: '6px',
                 border: plan.id === currentPlan
-                  ? `1px solid ${theme.colors.border.medium}`
+                  ? `1px solid ${theme.colors.border.light}`
                   : plan.popular
                     ? 'none'
-                    : `1px solid ${theme.colors.border.medium}`,
+                    : `1px solid ${theme.colors.border.light}`,
                 background: plan.id === currentPlan
                   ? 'transparent'
                   : plan.popular
                     ? theme.colors.white
                     : 'transparent',
                 color: plan.id === currentPlan
-                  ? theme.colors.text.muted
+                  ? theme.colors.text.tertiary
                   : plan.popular
                     ? theme.colors.black
                     : theme.colors.text.primary,
                 cursor: plan.id === currentPlan ? 'not-allowed' : 'pointer',
-                opacity: plan.id === currentPlan ? 0.5 : 1,
-                transition: 'all 0.15s ease',
+                opacity: plan.id === currentPlan ? 0.4 : 1,
                 outline: 'none'
-              }}
-              onMouseEnter={(e) => {
-                if (plan.id !== currentPlan && !upgrading) {
-                  e.target.style.opacity = '0.85'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (plan.id !== currentPlan) {
-                  e.target.style.opacity = '1'
-                }
               }}
             >
               {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? (currentPlan === 'pro' ? 'Switch to Free' : 'Get Started') : 'Upgrade to Pro'))}
@@ -794,14 +783,7 @@ function Settings() {
                 gap: '24px',
                 cursor: 'pointer',
                 textAlign: 'left',
-                fontFamily: 'inherit',
-                transition: 'opacity 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.opacity = '0.7'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.opacity = '1'
+                fontFamily: 'inherit'
               }}
             >
               <div style={{
@@ -809,42 +791,34 @@ function Settings() {
                 color: theme.colors.text.primary,
                 fontWeight: '500',
                 lineHeight: '1.5',
-                flex: 1,
-                letterSpacing: '-0.01em'
+                flex: 1
               }}>
                 {faq.question}
               </div>
               <div style={{
-                fontSize: '18px',
+                fontSize: '16px',
                 color: theme.colors.text.secondary,
                 lineHeight: '1',
                 flexShrink: 0,
-                transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
                 transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                 marginTop: '2px'
               }}>
-
+                ▼
               </div>
             </button>
 
-            <div style={{
-              overflow: 'hidden',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              maxHeight: isExpanded ? '500px' : '0',
-              opacity: isExpanded ? '1' : '0'
-            }}>
+            {isExpanded && (
               <div style={{
-                paddingTop: isExpanded ? '20px' : '0',
-                fontSize: '15px',
+                paddingTop: '16px',
+                fontSize: '14px',
                 color: theme.colors.text.secondary,
-                lineHeight: '1.7',
+                lineHeight: '1.6',
                 fontWeight: '400',
-                letterSpacing: '-0.005em',
                 paddingRight: '48px'
               }}>
                 {faq.answer}
               </div>
-            </div>
+            )}
           </div>
         )
       })}
@@ -1092,13 +1066,12 @@ function Settings() {
               fontWeight: '600',
               margin: '0 0 8px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              letterSpacing: '-0.02em'
             }}>
               Settings
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '16px',
               color: theme.colors.text.secondary,
               margin: 0,
               lineHeight: '1.6'
@@ -1128,24 +1101,13 @@ function Settings() {
                     background: 'transparent',
                     border: 'none',
                     padding: '16px 0',
-                    fontSize: '15px',
+                    fontSize: '14px',
                     fontWeight: '500',
                     color: activeTab === tab.id ? theme.colors.white : theme.colors.text.secondary,
                     cursor: 'pointer',
                     borderBottom: activeTab === tab.id ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-                    transition: 'all 0.2s ease',
                     fontFamily: 'inherit',
                     marginBottom: '-1px'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeTab !== tab.id) {
-                      e.target.style.color = theme.colors.text.primary
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeTab !== tab.id) {
-                      e.target.style.color = theme.colors.text.secondary
-                    }
                   }}
                 >
                   {tab.label}
@@ -1242,19 +1204,16 @@ function Settings() {
                 onClick={() => setShowDowngradeModal(false)}
                 style={{
                   flex: 1,
-                  padding: '14px 24px',
-                  fontSize: '14px',
+                  padding: '8px 16px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  borderRadius: '8px',
-                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '6px',
+                  border: `1px solid ${theme.colors.border.light}`,
                   background: 'transparent',
                   color: theme.colors.text.primary,
                   cursor: 'pointer',
-                  transition: 'opacity 0.15s ease',
                   outline: 'none'
                 }}
-                onMouseEnter={(e) => { e.target.style.opacity = '0.7' }}
-                onMouseLeave={(e) => { e.target.style.opacity = '1' }}
               >
                 Cancel
               </button>
@@ -1262,19 +1221,16 @@ function Settings() {
                 onClick={handleDowngradeToFree}
                 style={{
                   flex: 1,
-                  padding: '14px 24px',
-                  fontSize: '14px',
+                  padding: '8px 16px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  borderRadius: '8px',
+                  borderRadius: '6px',
                   border: 'none',
                   background: theme.colors.white,
                   color: theme.colors.black,
                   cursor: 'pointer',
-                  transition: 'opacity 0.15s ease',
                   outline: 'none'
                 }}
-                onMouseEnter={(e) => { e.target.style.opacity = '0.85' }}
-                onMouseLeave={(e) => { e.target.style.opacity = '1' }}
               >
                 Yes, Switch to Free
               </button>

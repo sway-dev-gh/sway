@@ -2275,17 +2275,17 @@ function Requests() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
-        {/* Top Toolbar */}
+        {/* Top Toolbar - Clean minimal design */}
         <div style={{
-          height: '48px',
+          height: '64px',
           borderBottom: `1px solid ${theme.colors.border.medium}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 16px',
+          padding: '0 32px',
           background: theme.colors.bg.card
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             {isEditingTitle ? (
               <input
                 type="text"
@@ -2307,37 +2307,34 @@ function Requests() {
                   border: 'none',
                   borderBottom: `1px solid ${theme.colors.border.medium}`,
                   color: theme.colors.text.primary,
-                  fontSize: theme.fontSize.sm,
-                  fontWeight: '500',
-                  padding: '4px 0',
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  padding: '8px 0',
                   outline: 'none',
                   fontFamily: 'inherit',
-                  minWidth: '200px'
+                  minWidth: '300px'
                 }}
               />
             ) : (
               <h1
                 onClick={() => setIsEditingTitle(true)}
                 style={{
-                  fontSize: theme.fontSize.sm,
-                  fontWeight: '500',
+                  fontSize: '18px',
+                  fontWeight: '600',
                   margin: 0,
                   cursor: 'pointer',
-                  padding: '4px 8px',
+                  padding: '8px',
                   borderRadius: theme.radius.sm,
-                  transition: 'background 0.15s ease',
-                  maxWidth: '300px',
+                  maxWidth: '400px',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
+                  whiteSpace: 'nowrap',
+                  color: theme.colors.text.primary
                 }}
-                onMouseEnter={(e) => e.target.style.background = theme.colors.bg.cardHover}
-                onMouseLeave={(e) => e.target.style.background = 'transparent'}
               >
                 {formTitle}
               </h1>
             )}
-
           </div>
 
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
@@ -2349,18 +2346,6 @@ function Requests() {
                 color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
                 cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
                 opacity: historyIndex <= 0 ? 0.4 : 1
-              }}
-              onMouseEnter={(e) => {
-                if (!e.target.disabled && historyIndex > 0) {
-                  e.target.style.background = theme.buttons.secondary.hover.background
-                  e.target.style.borderColor = theme.buttons.secondary.hover.borderColor
-                  e.target.style.color = theme.buttons.secondary.hover.color
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = theme.buttons.secondary.base.background
-                e.target.style.borderColor = theme.buttons.secondary.base.border.split(' ')[2]
-                e.target.style.color = historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary
               }}
             >
               Undo
@@ -2374,64 +2359,30 @@ function Requests() {
                 cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
                 opacity: historyIndex >= history.length - 1 ? 0.4 : 1
               }}
-              onMouseEnter={(e) => {
-                if (!e.target.disabled && historyIndex < history.length - 1) {
-                  e.target.style.background = theme.buttons.secondary.hover.background
-                  e.target.style.borderColor = theme.buttons.secondary.hover.borderColor
-                  e.target.style.color = theme.buttons.secondary.hover.color
-                }
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = theme.buttons.secondary.base.background
-                e.target.style.borderColor = theme.buttons.secondary.base.border.split(' ')[2]
-                e.target.style.color = historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary
-              }}
             >
               Redo
             </button>
             <div style={{
               width: '1px',
-              height: '16px',
+              height: '20px',
               background: theme.colors.border.medium,
-              margin: '0 4px'
+              margin: '0 8px'
             }}></div>
             <button
               style={theme.buttons.secondary.base}
               onClick={() => setShowPreviewModal(true)}
-              onMouseEnter={(e) => {
-                e.target.style.background = theme.buttons.secondary.hover.background
-                e.target.style.borderColor = theme.buttons.secondary.hover.borderColor
-                e.target.style.color = theme.buttons.secondary.hover.color
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = theme.buttons.secondary.base.background
-                e.target.style.borderColor = theme.buttons.secondary.base.border.split(' ')[2]
-                e.target.style.color = theme.buttons.secondary.base.color
-              }}
             >
               Preview
             </button>
             <button
               style={theme.buttons.secondary.base}
               onClick={handleSave}
-              onMouseEnter={(e) => {
-                e.target.style.background = theme.buttons.secondary.hover.background
-                e.target.style.borderColor = theme.buttons.secondary.hover.borderColor
-                e.target.style.color = theme.buttons.secondary.hover.color
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = theme.buttons.secondary.base.background
-                e.target.style.borderColor = theme.buttons.secondary.base.border.split(' ')[2]
-                e.target.style.color = theme.buttons.secondary.base.color
-              }}
             >
               Save
             </button>
             <button
               style={theme.buttons.primary.base}
               onClick={handlePublish}
-              onMouseEnter={(e) => e.target.style.background = theme.buttons.primary.hover.background}
-              onMouseLeave={(e) => e.target.style.background = theme.buttons.primary.base.background}
             >
               Publish
             </button>
@@ -2440,21 +2391,27 @@ function Requests() {
 
         {/* Workspace Layout - Sidebar + Canvas */}
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-          {/* LEFT SIDEBAR */}
+          {/* LEFT SIDEBAR - Clean minimal design */}
           <div style={{
-            width: '320px',
+            width: '280px',
             borderRight: `1px solid ${theme.colors.border.medium}`,
             background: theme.colors.bg.card,
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column'
           }}>
-            {/* Tabs */}
-            <div style={{ display: 'flex', gap: '24px', borderBottom: `1px solid ${theme.colors.border.medium}`, padding: '0 24px' }}>
+            {/* Tabs - Clean design */}
+            <div style={{
+              display: 'flex',
+              gap: '0',
+              borderBottom: `1px solid ${theme.colors.border.medium}`,
+              padding: '0'
+            }}>
               <button
                 onClick={() => setActiveTab('templates')}
                 style={{
-                  padding: '14px 12px',
+                  flex: 1,
+                  padding: '16px 0',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'templates' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2463,18 +2420,16 @@ function Requests() {
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease',
                   whiteSpace: 'nowrap'
                 }}
-                onMouseEnter={(e) => activeTab !== 'templates' && (e.target.style.color = theme.colors.text.primary)}
-                onMouseLeave={(e) => activeTab !== 'templates' && (e.target.style.color = theme.colors.text.secondary)}
               >
                 Templates
               </button>
               <button
                 onClick={() => setActiveTab('elements')}
                 style={{
-                  padding: '14px 12px',
+                  flex: 1,
+                  padding: '16px 0',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'elements' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2483,18 +2438,16 @@ function Requests() {
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease',
                   whiteSpace: 'nowrap'
                 }}
-                onMouseEnter={(e) => activeTab !== 'elements' && (e.target.style.color = theme.colors.text.primary)}
-                onMouseLeave={(e) => activeTab !== 'elements' && (e.target.style.color = theme.colors.text.secondary)}
               >
                 Elements
               </button>
               <button
                 onClick={() => setActiveTab('branding')}
                 style={{
-                  padding: '14px 12px',
+                  flex: 1,
+                  padding: '16px 0',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'branding' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2503,18 +2456,16 @@ function Requests() {
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease',
                   whiteSpace: 'nowrap'
                 }}
-                onMouseEnter={(e) => activeTab !== 'branding' && (e.target.style.color = theme.colors.text.primary)}
-                onMouseLeave={(e) => activeTab !== 'branding' && (e.target.style.color = theme.colors.text.secondary)}
               >
                 Branding
               </button>
               <button
                 onClick={() => setActiveTab('settings')}
                 style={{
-                  padding: '14px 12px',
+                  flex: 1,
+                  padding: '16px 0',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'settings' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2523,40 +2474,37 @@ function Requests() {
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease',
                   whiteSpace: 'nowrap'
                 }}
-                onMouseEnter={(e) => activeTab !== 'settings' && (e.target.style.color = theme.colors.text.primary)}
-                onMouseLeave={(e) => activeTab !== 'settings' && (e.target.style.color = theme.colors.text.secondary)}
               >
                 Settings
               </button>
             </div>
 
-            {/* Tab Content */}
-            <div style={{ paddingTop: '36px', paddingLeft: '28px', paddingRight: '28px', paddingBottom: '28px' }}>
+            {/* Tab Content - Consistent spacing */}
+            <div style={{ padding: '32px 24px' }}>
               {activeTab === 'branding' ? (
                 <>
+                  {/* Section Title */}
                   <div style={{
-                    fontSize: '11px',
-                    fontWeight: theme.weight.bold,
+                    fontSize: '12px',
+                    fontWeight: '600',
                     color: theme.colors.text.tertiary,
-                    marginBottom: '32px',
+                    marginBottom: '24px',
                     textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    letterSpacing: '0.5px'
                   }}>
-                    Customize Your Upload Page
+                    Branding
                   </div>
 
-                  {/* Accent Color */}
                   {/* Page Title */}
-                  <div style={{ marginBottom: '32px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
-                      marginBottom: '12px',
-                      fontWeight: theme.weight.semibold
+                      marginBottom: '8px',
+                      fontWeight: '500'
                     }}>
                       Page Title
                     </label>
@@ -2580,13 +2528,13 @@ function Requests() {
                   </div>
 
                   {/* Instructions */}
-                  <div style={{ marginBottom: '40px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
-                      marginBottom: '12px',
-                      fontWeight: theme.weight.semibold
+                      marginBottom: '8px',
+                      fontWeight: '500'
                     }}>
                       Instructions Text
                     </label>
@@ -2611,13 +2559,13 @@ function Requests() {
                   </div>
 
                   {/* Success Message */}
-                  <div style={{ marginBottom: '40px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
-                      marginBottom: '12px',
-                      fontWeight: theme.weight.semibold
+                      marginBottom: '8px',
+                      fontWeight: '500'
                     }}>
                       Success Message
                     </label>
@@ -2642,7 +2590,7 @@ function Requests() {
                   </div>
 
                   {/* Show Powered By */}
-                  <div style={{ marginBottom: '40px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -2650,7 +2598,7 @@ function Requests() {
                       color: theme.colors.text.primary,
                       cursor: 'pointer',
                       userSelect: 'none',
-                      padding: '12px 0'
+                      padding: '0'
                     }}>
                       <input
                         type="checkbox"
@@ -2669,29 +2617,30 @@ function Requests() {
                 </>
               ) : activeTab === 'settings' ? (
                 <>
+                  {/* Section Title */}
                   <div style={{
-                    fontSize: '11px',
-                    fontWeight: theme.weight.bold,
+                    fontSize: '12px',
+                    fontWeight: '600',
                     color: theme.colors.text.tertiary,
-                    marginBottom: '32px',
+                    marginBottom: '24px',
                     textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    letterSpacing: '0.5px'
                   }}>
-                    File Upload Restrictions
+                    Settings
                   </div>
 
                   {/* Allowed File Types */}
-                  <div style={{ marginBottom: '40px' }}>
+                  <div style={{ marginBottom: '32px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
-                      marginBottom: '16px',
-                      fontWeight: theme.weight.semibold
+                      marginBottom: '12px',
+                      fontWeight: '500'
                     }}>
                       Allowed File Types
                     </label>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                       {['image', 'document', 'video', 'audio', 'archive'].map(type => (
                         <label key={type} style={{
                           display: 'flex',
@@ -2700,7 +2649,7 @@ function Requests() {
                           color: theme.colors.text.primary,
                           cursor: 'pointer',
                           userSelect: 'none',
-                          padding: '8px 0'
+                          padding: '0'
                         }}>
                           <input
                             type="checkbox"
@@ -2728,15 +2677,15 @@ function Requests() {
                     </div>
 
                     {/* Custom File Types */}
-                    <div style={{ marginTop: '20px' }}>
+                    <div style={{ marginTop: '16px' }}>
                       <label style={{
                         display: 'block',
-                        fontSize: '13px',
+                        fontSize: '14px',
                         color: theme.colors.text.primary,
-                        marginBottom: '12px',
-                        fontWeight: theme.weight.semibold
+                        marginBottom: '8px',
+                        fontWeight: '500'
                       }}>
-                        Custom File Extensions (optional)
+                        Custom File Extensions
                       </label>
                       <input
                         type="text"
@@ -2766,15 +2715,15 @@ function Requests() {
                   </div>
 
                   {/* Maximum File Size */}
-                  <div style={{ marginBottom: '48px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
-                      marginBottom: '12px',
-                      fontWeight: theme.weight.semibold
+                      marginBottom: '8px',
+                      fontWeight: '500'
                     }}>
-                      Maximum File Size Per Upload
+                      Maximum File Size
                     </label>
                     <select
                       value={settings.maxFileSize}
@@ -2802,15 +2751,15 @@ function Requests() {
                   </div>
 
                   {/* Maximum Number of Files */}
-                  <div style={{ marginBottom: '48px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
-                      marginBottom: '12px',
-                      fontWeight: theme.weight.semibold
+                      marginBottom: '8px',
+                      fontWeight: '500'
                     }}>
-                      Maximum Number of Files Per Submission
+                      Maximum Number of Files
                     </label>
                     <input
                       type="number"
@@ -2844,21 +2793,22 @@ function Requests() {
                 </>
               ) : activeTab === 'templates' ? (
                 <>
+                  {/* Section Title */}
                   <div style={{
-                    fontSize: '11px',
-                    fontWeight: theme.weight.bold,
+                    fontSize: '12px',
+                    fontWeight: '600',
                     color: theme.colors.text.tertiary,
-                    marginBottom: '40px',
+                    marginBottom: '24px',
                     textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    letterSpacing: '0.5px'
                   }}>
-                    Choose a Template
+                    Templates
                   </div>
 
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '20px'
+                    gap: '12px'
                   }}>
                     {TEMPLATES.map((template) => {
                       const isPro = template.plan === 'pro'
@@ -2869,52 +2819,40 @@ function Requests() {
                           key={template.id}
                           onClick={() => handleTemplateClick(template)}
                           style={{
-                            padding: '12px',
+                            padding: '16px',
                             background: 'transparent',
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: theme.radius.md,
                             cursor: isLocked ? 'not-allowed' : 'pointer',
-                            opacity: isLocked ? 0.5 : 1,
-                            transition: 'background 0.15s ease, border-color 0.15s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            if (!isLocked) {
-                              e.currentTarget.style.background = theme.colors.bg.cardHover
-                              e.currentTarget.style.borderColor = theme.colors.border.medium
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent'
-                            e.currentTarget.style.borderColor = theme.colors.border.medium
+                            opacity: isLocked ? 0.5 : 1
                           }}
                         >
                           <div style={{
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'flex-start',
-                            marginBottom: '6px'
+                            marginBottom: '8px'
                           }}>
-                            <div style={{ fontSize: theme.fontSize.sm, fontWeight: '500', color: theme.colors.text.primary }}>
+                            <div style={{ fontSize: '14px', fontWeight: '500', color: theme.colors.text.primary }}>
                               {template.name}
                             </div>
                             {isPro && (
                               <div style={{
-                                fontSize: theme.fontSize.xs,
+                                fontSize: '10px',
                                 fontWeight: '600',
                                 color: theme.colors.text.tertiary,
                                 background: 'transparent',
                                 border: `1px solid ${theme.colors.border.medium}`,
-                                padding: '1px 4px',
+                                padding: '2px 6px',
                                 borderRadius: theme.radius.sm,
                                 textTransform: 'uppercase',
-                                letterSpacing: '0.3px',
-                                lineHeight: '1.2'
+                                letterSpacing: '0.5px'
                               }}>
                                 PRO
                               </div>
                             )}
                           </div>
-                          <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, lineHeight: '1.4' }}>
+                          <div style={{ fontSize: '13px', color: theme.colors.text.secondary, lineHeight: '1.5' }}>
                             {template.description}
                           </div>
                         </div>
@@ -2924,21 +2862,22 @@ function Requests() {
                 </>
               ) : (
                 <>
+                  {/* Section Title */}
                   <div style={{
-                    fontSize: '11px',
-                    fontWeight: theme.weight.bold,
+                    fontSize: '12px',
+                    fontWeight: '600',
                     color: theme.colors.text.tertiary,
-                    marginBottom: '40px',
+                    marginBottom: '24px',
                     textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    letterSpacing: '0.5px'
                   }}>
-                    Drag to Canvas
+                    Elements
                   </div>
 
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '20px'
+                    gap: '12px'
                   }}>
                     {COMPONENT_LIBRARY.map((component) => {
                       const isPro = component.plan === 'pro'
@@ -2951,38 +2890,28 @@ function Requests() {
                           onDragStart={() => !isLocked && handleDragStart(component)}
                           onClick={() => isLocked && setShowUpgradeModal(true)}
                           style={{
-                            padding: '12px',
+                            padding: '16px',
                             background: 'transparent',
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: theme.radius.md,
                             cursor: isLocked ? 'not-allowed' : 'grab',
                             userSelect: 'none',
-                            opacity: isLocked ? 0.5 : 1,
-                            transition: 'background 0.15s ease, border-color 0.15s ease'
-                          }}
-                          onMouseEnter={(e) => {
-                            if (!isLocked) {
-                              e.currentTarget.style.background = theme.colors.bg.cardHover
-                              e.currentTarget.style.borderColor = theme.colors.border.medium
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.background = 'transparent'
-                            e.currentTarget.style.borderColor = theme.colors.border.medium
+                            opacity: isLocked ? 0.5 : 1
                           }}
                         >
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <div style={{
-                            fontSize: '16px',
+                            fontSize: '11px',
                             fontWeight: '600',
                             color: theme.colors.text.secondary,
-                            minWidth: '28px',
-                            textAlign: 'center',
+                            minWidth: '40px',
+                            height: '40px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             background: 'transparent',
                             border: `1px solid ${theme.colors.border.medium}`,
-                            borderRadius: theme.radius.sm,
-                            padding: '4px',
-                            lineHeight: '1'
+                            borderRadius: theme.radius.sm
                           }}>
                             {component.icon}
                           </div>
@@ -2990,30 +2919,29 @@ function Requests() {
                             <div style={{
                               display: 'flex',
                               alignItems: 'center',
-                              gap: '6px',
-                              marginBottom: '2px'
+                              gap: '8px',
+                              marginBottom: '4px'
                             }}>
-                              <div style={{ fontSize: theme.fontSize.sm, fontWeight: '500', color: theme.colors.text.primary }}>
+                              <div style={{ fontSize: '14px', fontWeight: '500', color: theme.colors.text.primary }}>
                                 {component.label}
                               </div>
                               {isPro && (
                                 <div style={{
-                                  fontSize: theme.fontSize.xs,
+                                  fontSize: '10px',
                                   fontWeight: '600',
                                   color: theme.colors.text.tertiary,
                                   background: 'transparent',
                                   border: `1px solid ${theme.colors.border.medium}`,
-                                  padding: '1px 4px',
+                                  padding: '2px 6px',
                                   borderRadius: theme.radius.sm,
                                   textTransform: 'uppercase',
-                                  letterSpacing: '0.3px',
-                                  lineHeight: '1.2'
+                                  letterSpacing: '0.5px'
                                 }}>
                                   PRO
                                 </div>
                               )}
                             </div>
-                            <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary }}>
+                            <div style={{ fontSize: '13px', color: theme.colors.text.secondary, lineHeight: '1.4' }}>
                               {component.description}
                             </div>
                           </div>
@@ -3035,7 +2963,7 @@ function Requests() {
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            padding: '16px'
+            padding: '48px'
           }}>
             <div
               ref={canvasRef}
@@ -3045,12 +2973,12 @@ function Requests() {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               style={{
-                width: '1400px',
-                minHeight: '800px',
+                width: '1200px',
+                minHeight: '700px',
                 background: theme.colors.bg.card,
                 borderRadius: theme.radius.md,
                 position: 'relative',
-                border: isDragging ? `1px dashed ${theme.colors.border.medium}` : `1px solid ${theme.colors.border.medium}`,
+                border: `1px solid ${theme.colors.border.medium}`,
                 overflow: 'visible'
               }}
             >
@@ -3091,7 +3019,7 @@ function Requests() {
 
         {/* BOTTOM PROPERTIES BAR */}
         <div style={{
-          height: '140px',
+          height: '160px',
           borderTop: `1px solid ${theme.colors.border.medium}`,
           background: theme.colors.bg.card,
           display: 'flex',
@@ -3103,41 +3031,33 @@ function Requests() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            padding: '8px 16px',
+            padding: '16px 24px',
             borderBottom: `1px solid ${theme.colors.border.medium}`
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '12px'
+              gap: '16px'
             }}>
-              <div style={{ fontSize: theme.fontSize.sm, fontWeight: '600', color: theme.colors.text.primary }}>
+              <div style={{ fontSize: '14px', fontWeight: '600', color: theme.colors.text.primary }}>
                 {selectedElement ? COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label : 'Properties'}
               </div>
               {selectedElement && (
-                <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary }}>
+                <div style={{ fontSize: '13px', color: theme.colors.text.secondary }}>
                   Edit element properties
                 </div>
               )}
             </div>
             {selectedElement && (
-              <div style={{ display: 'flex', gap: '6px' }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
                 {/* Copy Button */}
                 <button
                   onClick={() => setClipboard(JSON.parse(JSON.stringify(selectedElement)))}
                   style={{
-                    ...theme.buttons.ghost.base,
-                    height: '28px',
-                    padding: '0 10px',
-                    fontSize: theme.fontSize.xs
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = theme.buttons.ghost.hover.background
-                    e.target.style.color = theme.buttons.ghost.hover.color
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = theme.buttons.ghost.base.background
-                    e.target.style.color = theme.buttons.ghost.base.color
+                    ...theme.buttons.secondary.base,
+                    height: '32px',
+                    padding: '0 12px',
+                    fontSize: '13px'
                   }}
                   title="Copy (Cmd+C)"
                 >
@@ -3161,23 +3081,13 @@ function Requests() {
                   }}
                   disabled={!clipboard}
                   style={{
-                    ...theme.buttons.ghost.base,
-                    height: '28px',
-                    padding: '0 10px',
-                    fontSize: theme.fontSize.xs,
+                    ...theme.buttons.secondary.base,
+                    height: '32px',
+                    padding: '0 12px',
+                    fontSize: '13px',
                     color: clipboard ? theme.colors.text.secondary : theme.colors.text.tertiary,
                     cursor: clipboard ? 'pointer' : 'not-allowed',
                     opacity: clipboard ? 1 : 0.4
-                  }}
-                  onMouseEnter={(e) => {
-                    if (clipboard) {
-                      e.target.style.background = theme.buttons.ghost.hover.background
-                      e.target.style.color = theme.buttons.ghost.hover.color
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = theme.buttons.ghost.base.background
-                    e.target.style.color = clipboard ? theme.colors.text.secondary : theme.colors.text.tertiary
                   }}
                   title="Paste (Cmd+V)"
                 >
@@ -3187,48 +3097,24 @@ function Requests() {
                 <button
                   onClick={() => toggleElementLock(selectedElement.id)}
                   style={{
-                    ...(isElementLocked(selectedElement.id) ? theme.buttons.primary.base : theme.buttons.ghost.base),
-                    height: '28px',
-                    padding: '0 10px',
-                    fontSize: theme.fontSize.xs
-                  }}
-                  onMouseEnter={(e) => {
-                    if (isElementLocked(selectedElement.id)) {
-                      e.target.style.background = theme.buttons.primary.hover.background
-                    } else {
-                      e.target.style.background = theme.buttons.ghost.hover.background
-                      e.target.style.color = theme.buttons.ghost.hover.color
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (isElementLocked(selectedElement.id)) {
-                      e.target.style.background = theme.buttons.primary.base.background
-                    } else {
-                      e.target.style.background = theme.buttons.ghost.base.background
-                      e.target.style.color = theme.buttons.ghost.base.color
-                    }
+                    ...(isElementLocked(selectedElement.id) ? theme.buttons.primary.base : theme.buttons.secondary.base),
+                    height: '32px',
+                    padding: '0 12px',
+                    fontSize: '13px'
                   }}
                   title={isElementLocked(selectedElement.id) ? 'Unlock' : 'Lock'}
                 >
                   {isElementLocked(selectedElement.id) ? 'Locked' : 'Lock'}
                 </button>
                 {/* Layer Controls */}
-                <div style={{ display: 'flex', gap: '2px', marginLeft: '6px' }}>
+                <div style={{ display: 'flex', gap: '4px', marginLeft: '8px' }}>
                   <button
                     onClick={sendToBack}
                     style={{
-                      ...theme.buttons.ghost.base,
-                      height: '28px',
-                      padding: '0 8px',
-                      fontSize: theme.fontSize.xs
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = theme.buttons.ghost.hover.background
-                      e.target.style.color = theme.buttons.ghost.hover.color
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = theme.buttons.ghost.base.background
-                      e.target.style.color = theme.buttons.ghost.base.color
+                      ...theme.buttons.secondary.base,
+                      height: '32px',
+                      padding: '0 10px',
+                      fontSize: '13px'
                     }}
                     title="Send to Back"
                   >
@@ -3237,18 +3123,10 @@ function Requests() {
                   <button
                     onClick={sendBackward}
                     style={{
-                      ...theme.buttons.ghost.base,
-                      height: '28px',
-                      padding: '0 8px',
-                      fontSize: theme.fontSize.xs
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = theme.buttons.ghost.hover.background
-                      e.target.style.color = theme.buttons.ghost.hover.color
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = theme.buttons.ghost.base.background
-                      e.target.style.color = theme.buttons.ghost.base.color
+                      ...theme.buttons.secondary.base,
+                      height: '32px',
+                      padding: '0 10px',
+                      fontSize: '13px'
                     }}
                     title="Send Backward"
                   >
@@ -3257,18 +3135,10 @@ function Requests() {
                   <button
                     onClick={bringForward}
                     style={{
-                      ...theme.buttons.ghost.base,
-                      height: '28px',
-                      padding: '0 8px',
-                      fontSize: theme.fontSize.xs
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = theme.buttons.ghost.hover.background
-                      e.target.style.color = theme.buttons.ghost.hover.color
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = theme.buttons.ghost.base.background
-                      e.target.style.color = theme.buttons.ghost.base.color
+                      ...theme.buttons.secondary.base,
+                      height: '32px',
+                      padding: '0 10px',
+                      fontSize: '13px'
                     }}
                     title="Bring Forward"
                   >
@@ -3277,18 +3147,10 @@ function Requests() {
                   <button
                     onClick={bringToFront}
                     style={{
-                      ...theme.buttons.ghost.base,
-                      height: '28px',
-                      padding: '0 8px',
-                      fontSize: theme.fontSize.xs
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = theme.buttons.ghost.hover.background
-                      e.target.style.color = theme.buttons.ghost.hover.color
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = theme.buttons.ghost.base.background
-                      e.target.style.color = theme.buttons.ghost.base.color
+                      ...theme.buttons.secondary.base,
+                      height: '32px',
+                      padding: '0 10px',
+                      fontSize: '13px'
                     }}
                     title="Bring to Front"
                   >
@@ -3296,22 +3158,14 @@ function Requests() {
                   </button>
                 </div>
                 {/* Divider */}
-                <div style={{ width: '1px', height: '20px', background: theme.colors.border.medium, margin: '0 4px' }}></div>
+                <div style={{ width: '1px', height: '24px', background: theme.colors.border.medium, margin: '0 8px' }}></div>
                 <button
                   onClick={handleDuplicateElement}
                   style={{
-                    ...theme.buttons.ghost.base,
-                    height: '28px',
-                    padding: '0 10px',
-                    fontSize: theme.fontSize.xs
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = theme.buttons.ghost.hover.background
-                    e.target.style.color = theme.buttons.ghost.hover.color
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = theme.buttons.ghost.base.background
-                    e.target.style.color = theme.buttons.ghost.base.color
+                    ...theme.buttons.secondary.base,
+                    height: '32px',
+                    padding: '0 12px',
+                    fontSize: '13px'
                   }}
                 >
                   Duplicate
@@ -3319,19 +3173,10 @@ function Requests() {
                 <button
                   onClick={handleDeleteElement}
                   style={{
-                    ...theme.buttons.ghost.base,
-                    height: '28px',
-                    padding: '0 10px',
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.error
-                  }}
-                  onMouseEnter={(e) => {
-                    e.target.style.background = theme.buttons.ghost.hover.background
-                    e.target.style.color = theme.colors.error
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.background = theme.buttons.ghost.base.background
-                    e.target.style.color = theme.colors.error
+                    ...theme.buttons.danger.base,
+                    height: '32px',
+                    padding: '0 12px',
+                    fontSize: '13px'
                   }}
                 >
                   Delete
@@ -3345,12 +3190,12 @@ function Requests() {
             flex: 1,
             overflowX: 'auto',
             overflowY: 'hidden',
-            padding: '10px 20px'
+            padding: '16px 24px'
           }}>
             {selectedElement ? (
               <div style={{
                 display: 'flex',
-                gap: '24px',
+                gap: '32px',
                 alignItems: 'flex-start',
                 minWidth: 'max-content'
               }}>

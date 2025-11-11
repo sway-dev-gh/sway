@@ -183,19 +183,18 @@ function Plan() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '80px', textAlign: 'center' }}>
+          <div style={{ marginBottom: '64px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '56px',
+              fontSize: '48px',
               fontWeight: '600',
               margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.03em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
+              letterSpacing: '-0.02em'
             }}>
               Pricing
             </h1>
             <p style={{
-              fontSize: '17px',
+              fontSize: '16px',
               color: theme.colors.text.secondary,
               margin: 0,
               lineHeight: '1.5',
@@ -263,11 +262,11 @@ function Plan() {
 
                 {/* Plan Name */}
                 <div style={{
-                  fontSize: '13px',
+                  fontSize: '10px',
                   color: theme.colors.text.tertiary,
                   marginBottom: '12px',
                   textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
+                  letterSpacing: '0.05em',
                   fontWeight: '600'
                 }}>
                   {plan.name}
@@ -343,39 +342,28 @@ function Plan() {
                   disabled={plan.id === currentPlan || upgrading}
                   style={{
                     width: '100%',
-                    padding: '14px 24px',
-                    fontSize: '14px',
+                    padding: '8px 16px',
+                    fontSize: '13px',
                     fontWeight: '500',
-                    borderRadius: '8px',
+                    borderRadius: '6px',
                     border: plan.id === currentPlan
-                      ? `1px solid ${theme.colors.border.medium}`
+                      ? `1px solid ${theme.colors.border.light}`
                       : plan.popular
                         ? 'none'
-                        : `1px solid ${theme.colors.border.medium}`,
+                        : `1px solid ${theme.colors.border.light}`,
                     background: plan.id === currentPlan
                       ? 'transparent'
                       : plan.popular
                         ? theme.colors.white
                         : 'transparent',
                     color: plan.id === currentPlan
-                      ? theme.colors.text.muted
+                      ? theme.colors.text.tertiary
                       : plan.popular
                         ? theme.colors.black
                         : theme.colors.text.primary,
                     cursor: plan.id === currentPlan ? 'not-allowed' : 'pointer',
-                    opacity: plan.id === currentPlan ? 0.5 : 1,
-                    transition: 'all 0.15s ease',
+                    opacity: plan.id === currentPlan ? 0.4 : 1,
                     outline: 'none'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (plan.id !== currentPlan && !upgrading) {
-                      e.target.style.opacity = '0.85'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (plan.id !== currentPlan) {
-                      e.target.style.opacity = '1'
-                    }
                   }}
                 >
                   {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? (currentPlan === 'pro' ? 'Switch to Free' : 'Get Started') : 'Upgrade to Pro'))}
@@ -552,19 +540,16 @@ function Plan() {
             <button
               onClick={() => navigate('/requests')}
               style={{
-                padding: '14px 32px',
-                fontSize: '14px',
+                padding: '8px 16px',
+                fontSize: '13px',
                 fontWeight: '500',
-                borderRadius: '8px',
+                borderRadius: '6px',
                 border: 'none',
                 background: theme.colors.white,
                 color: theme.colors.black,
                 cursor: 'pointer',
-                transition: 'opacity 0.15s ease',
                 outline: 'none'
               }}
-              onMouseEnter={(e) => { e.target.style.opacity = '0.85' }}
-              onMouseLeave={(e) => { e.target.style.opacity = '1' }}
             >
               Get Started
             </button>
@@ -652,19 +637,16 @@ function Plan() {
                 onClick={() => setShowDowngradeModal(false)}
                 style={{
                   flex: 1,
-                  padding: '14px 24px',
-                  fontSize: '14px',
+                  padding: '8px 16px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  borderRadius: '8px',
-                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '6px',
+                  border: `1px solid ${theme.colors.border.light}`,
                   background: 'transparent',
                   color: theme.colors.text.primary,
                   cursor: 'pointer',
-                  transition: 'opacity 0.15s ease',
                   outline: 'none'
                 }}
-                onMouseEnter={(e) => { e.target.style.opacity = '0.7' }}
-                onMouseLeave={(e) => { e.target.style.opacity = '1' }}
               >
                 Cancel
               </button>
@@ -672,19 +654,16 @@ function Plan() {
                 onClick={handleDowngradeToFree}
                 style={{
                   flex: 1,
-                  padding: '14px 24px',
-                  fontSize: '14px',
+                  padding: '8px 16px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  borderRadius: '8px',
+                  borderRadius: '6px',
                   border: 'none',
                   background: theme.colors.white,
                   color: theme.colors.black,
                   cursor: 'pointer',
-                  transition: 'opacity 0.15s ease',
                   outline: 'none'
                 }}
-                onMouseEnter={(e) => { e.target.style.opacity = '0.85' }}
-                onMouseLeave={(e) => { e.target.style.opacity = '1' }}
               >
                 Yes, Switch to Free
               </button>

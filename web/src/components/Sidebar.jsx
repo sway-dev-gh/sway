@@ -152,16 +152,15 @@ function Sidebar() {
   const navLinkStyle = (isActive) => ({
     display: 'inline-flex',
     alignItems: 'center',
-    padding: `6px 12px`,
+    padding: '6px 12px',
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
-    fontSize: '14px',
+    fontSize: '13px',
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
     background: isActive ? 'rgba(255, 255, 255, 0.06)' : 'transparent',
     borderRadius: '6px',
     whiteSpace: 'nowrap',
-    height: '32px',
-    transition: 'all 0.15s ease'
+    height: '32px'
   })
 
   return (
@@ -277,18 +276,6 @@ function Sidebar() {
                     to={item.path}
                     aria-current={isActive ? 'page' : undefined}
                     style={navLinkStyle(isActive)}
-                    onMouseEnter={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-                        e.currentTarget.style.color = theme.colors.text.primary
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isActive) {
-                        e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.color = theme.colors.text.secondary
-                      }
-                    }}
                   >
                     {item.label}
                   </Link>
@@ -348,7 +335,7 @@ function Sidebar() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[2] }}>
               <div style={{
-                fontSize: '15px',
+                fontSize: '13px',
                 fontWeight: theme.weight.medium,
                 color: theme.colors.text.primary
               }}>
@@ -359,8 +346,8 @@ function Sidebar() {
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '0.8px',
-                padding: '3px 7px',
+                letterSpacing: '0.5px',
+                padding: '2px 6px',
                 background: 'rgba(255, 255, 255, 0.04)',
                 border: `1px solid ${theme.colors.border.light}`,
                 borderRadius: '4px'
@@ -373,8 +360,8 @@ function Sidebar() {
                   fontWeight: theme.weight.semibold,
                   color: theme.colors.black,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.8px',
-                  padding: '3px 7px',
+                  letterSpacing: '0.5px',
+                  padding: '2px 6px',
                   background: theme.colors.white,
                   border: 'none',
                   borderRadius: '4px'
@@ -396,18 +383,7 @@ function Sidebar() {
               borderRadius: '6px',
               fontSize: '13px',
               fontWeight: '500',
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-              e.currentTarget.style.color = theme.colors.text.primary
-              e.currentTarget.style.borderColor = theme.colors.border.medium
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent'
-              e.currentTarget.style.color = theme.colors.text.secondary
-              e.currentTarget.style.borderColor = theme.colors.border.light
+              cursor: 'pointer'
             }}
           >
             Sign Out
