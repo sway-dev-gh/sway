@@ -3002,9 +3002,7 @@ function Requests() {
                 borderRadius: '8px',
                 position: 'relative',
                 border: isDragging ? `2px dashed ${theme.colors.white}` : `1px solid ${theme.colors.border.dark}`,
-                overflow: 'visible',
-                transform: `scale(${zoom})`,
-                transformOrigin: 'top left'
+                overflow: 'visible'
               }}
             >
               {canvasElements.length === 0 && !isDragging && (
