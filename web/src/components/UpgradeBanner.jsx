@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import theme from '../theme';
 
-export default function UpgradeBanner({ user, onClose }) {
+export default function UpgradeBanner({ user, plan, onClose }) {
   const navigate = useNavigate();
 
-  // Don't show if user not loaded yet or not free
-  if (!user || !user.email) return null;
+  // Support both user object (Management) and plan string (Requests)
+  const userPlan = plan || user?.plan?.toLowerCase() || 'free';
 
-  const userPlan = user?.plan?.toLowerCase() || 'free';
+  // Only show for free users
   if (userPlan !== 'free') return null;
 
   return (

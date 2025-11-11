@@ -3981,7 +3981,7 @@ function Requests() {
         </div>
       )}
 
-      <UpgradeBanner user={user} />
+      <UpgradeBanner plan={userPlan} />
       <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </>
   )
