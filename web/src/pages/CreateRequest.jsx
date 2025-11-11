@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../api/axios'
 import '../styles/CreateRequest.css'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
 
 const PRESETS = [
   {
@@ -44,6 +46,7 @@ const PRESETS = [
 
 export default function CreateRequest() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [selectedPreset, setSelectedPreset] = useState(null)
   const [formData, setFormData] = useState({
     title: '',
@@ -79,7 +82,7 @@ export default function CreateRequest() {
       setCreated(data)
     } catch (error) {
       console.error('Error creating request:', error)
-      alert('Failed to create request')
+      toast.error('Failed to create request')
     } finally {
       setLoading(false)
     }
@@ -88,7 +91,7 @@ export default function CreateRequest() {
   const copyLink = () => {
     const link = `${window.location.origin}/r/${created.shortCode}`
     navigator.clipboard.writeText(link)
-    alert('Link copied!')
+    toast.success('Link copied!')
   }
 
   if (created) {
@@ -170,6 +173,8 @@ export default function CreateRequest() {
         </form>
         )}
       </div>
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </div>
   )
 }

@@ -12,6 +12,30 @@ body {
   color: #FFFFFF;
 }
 
+/* Dark scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #262626 #0a0a0a;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #262626;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #404040;
+}
+
 /* ALIEN PREMIUM THEME - Apple x Travis Scott at 3am */
 :root {
   --black: #000000;

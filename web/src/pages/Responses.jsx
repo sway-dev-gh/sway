@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 import { getStorageLimit, formatStorageDisplay, getEffectivePlan } from '../utils/planUtils'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
+import ConfirmModal from '../components/ConfirmModal'
 
 function Responses() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [loading, setLoading] = useState(true)
   const [forms, setForms] = useState([])
   const [uploads, setUploads] = useState([])
@@ -15,6 +19,9 @@ function Responses() {
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('newest')
   const [storageStats, setStorageStats] = useState({ used: 0, limit: 2 })
+  const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, formId: null })
+  const [selectedForms, setSelectedForms] = useState([])
+  const [confirmBulkDelete, setConfirmBulkDelete] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -74,14 +81,13 @@ function Responses() {
       document.body.removeChild(a)
     } catch (err) {
       console.error('Download error:', err)
-      alert('Failed to download file')
+      toast.error('Failed to download file')
     }
   }
 
-  const handleDelete = async (formId) => {
-    if (!window.confirm('Are you sure you want to delete this request? This will also delete all uploaded files.')) {
-      return
-    }
+  const handleDelete = async () => {
+    const formId = confirmDelete.formId
+    setConfirmDelete({ isOpen: false, formId: null })
 
     try {
       const token = localStorage.getItem('token')
@@ -95,9 +101,76 @@ function Responses() {
       if (selectedFormId === formId) {
         setSelectedFormId(null)
       }
+      toast.success('Request deleted successfully')
     } catch (err) {
       console.error('Delete error:', err)
-      alert('Failed to delete request. Please try again.')
+      toast.error('Failed to delete request. Please try again.')
+    }
+  }
+
+  const handleBulkDelete = async () => {
+    setConfirmBulkDelete(false)
+
+    try {
+      const token = localStorage.getItem('token')
+
+      // Delete all selected forms
+      await Promise.all(
+        selectedForms.map(formId =>
+          api.delete(`/api/requests/${formId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        )
+      )
+
+      toast.success(`Deleted ${selectedForms.length} requests`)
+      setSelectedForms([])
+      fetchData()
+      setSelectedFormId(null)
+    } catch (err) {
+      console.error('Bulk delete error:', err)
+      toast.error('Failed to delete some requests')
+    }
+  }
+
+  const handleBulkDownload = async () => {
+    if (selectedForms.length === 0) return
+
+    try {
+      // Get all uploads for selected forms
+      const allUploads = selectedForms.flatMap(formId => getFormUploads(formId))
+
+      if (allUploads.length === 0) {
+        toast.info('No files to download from selected requests')
+        return
+      }
+
+      // Download each file with a small delay
+      for (const upload of allUploads) {
+        await handleDownload(upload.id)
+        await new Promise(resolve => setTimeout(resolve, 500))
+      }
+
+      toast.success(`Downloaded ${allUploads.length} files from ${selectedForms.length} requests`)
+    } catch (err) {
+      console.error('Bulk download error:', err)
+      toast.error('Failed to download some files')
+    }
+  }
+
+  const toggleSelectForm = (formId) => {
+    setSelectedForms(prev =>
+      prev.includes(formId)
+        ? prev.filter(id => id !== formId)
+        : [...prev, formId]
+    )
+  }
+
+  const toggleSelectAll = () => {
+    if (selectedForms.length === filteredForms.length) {
+      setSelectedForms([])
+    } else {
+      setSelectedForms(filteredForms.map(f => f.id))
     }
   }
 
@@ -166,6 +239,99 @@ function Responses() {
       return new Date(upload.uploadedAt) > new Date(latest.uploadedAt) ? upload : latest
     }, formUploads[0])
     return latest.uploadedAt
+  }
+
+  // Analytics helper functions
+  const getFormViews = (shortCode) => {
+    const storageKey = `form_views_${shortCode}`
+    return parseInt(localStorage.getItem(storageKey) || '0', 10)
+  }
+
+  const formatNumber = (num) => {
+    return num.toLocaleString('en-US')
+  }
+
+  const getConversionRate = (views, uploads) => {
+    if (views === 0) return '—'
+    return ((uploads / views) * 100).toFixed(1) + '%'
+  }
+
+  const getTimeSinceCreated = (createdAt) => {
+    const now = new Date()
+    const created = new Date(createdAt)
+    const diffMs = now - created
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+
+    if (diffDays === 0) return 'Today'
+    if (diffDays === 1) return '1 day'
+    if (diffDays < 30) return `${diffDays} days`
+
+    const diffMonths = Math.floor(diffDays / 30)
+    if (diffMonths === 1) return '1 month'
+    if (diffMonths < 12) return `${diffMonths} months`
+
+    const diffYears = Math.floor(diffDays / 365)
+    if (diffYears === 1) return '1 year'
+    return `${diffYears} years`
+  }
+
+  const getTimeToFirstUpload = (createdAt, formUploads) => {
+    if (formUploads.length === 0) return '—'
+
+    const created = new Date(createdAt)
+    const firstUpload = formUploads.reduce((earliest, upload) => {
+      return new Date(upload.uploadedAt) < new Date(earliest.uploadedAt) ? upload : earliest
+    }, formUploads[0])
+
+    const diffMs = new Date(firstUpload.uploadedAt) - created
+    const diffMinutes = Math.floor(diffMs / (1000 * 60))
+
+    if (diffMinutes < 1) return 'Less than 1 min'
+    if (diffMinutes < 60) return `${diffMinutes} min`
+
+    const diffHours = Math.floor(diffMinutes / 60)
+    if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'}`
+
+    const diffDays = Math.floor(diffHours / 24)
+    return `${diffDays} day${diffDays === 1 ? '' : 's'}`
+  }
+
+  const getAverageUploadInterval = (formUploads) => {
+    if (formUploads.length <= 1) return '—'
+
+    const sortedUploads = [...formUploads].sort((a, b) =>
+      new Date(a.uploadedAt) - new Date(b.uploadedAt)
+    )
+
+    const firstTime = new Date(sortedUploads[0].uploadedAt)
+    const lastTime = new Date(sortedUploads[sortedUploads.length - 1].uploadedAt)
+    const totalMs = lastTime - firstTime
+    const avgMs = totalMs / (formUploads.length - 1)
+
+    const avgHours = avgMs / (1000 * 60 * 60)
+
+    if (avgHours < 1) return 'Less than 1 hour'
+    if (avgHours < 24) return `${Math.floor(avgHours)} hours`
+
+    const avgDays = Math.floor(avgHours / 24)
+    return `${avgDays} day${avgDays === 1 ? '' : 's'}`
+  }
+
+  const getFilesPerDay = (createdAt, formUploads) => {
+    if (formUploads.length === 0) return '—'
+
+    const now = new Date()
+    const created = new Date(createdAt)
+    const diffDays = Math.max(1, Math.floor((now - created) / (1000 * 60 * 60 * 24)))
+    const rate = formUploads.length / diffDays
+
+    if (rate < 0.1) {
+      // Less than 0.1 per day, show per week
+      const perWeek = (rate * 7).toFixed(1)
+      return `${perWeek}/week`
+    }
+
+    return rate.toFixed(1) + '/day'
   }
 
   // Filter and sort forms
@@ -510,6 +676,43 @@ function Responses() {
               <option value="name-az">Name A-Z</option>
             </select>
 
+            {/* Bulk Actions - Show when items selected */}
+            {selectedForms.length > 0 && (
+              <>
+                <div style={{
+                  padding: '10px 16px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  border: `1px solid ${theme.colors.white}`,
+                  borderRadius: theme.radius.md,
+                  color: theme.colors.text.primary,
+                  fontSize: '14px',
+                  fontWeight: theme.weight.medium
+                }}>
+                  {selectedForms.length} selected
+                </div>
+                <button
+                  onClick={handleBulkDownload}
+                  style={{
+                    ...theme.buttons.primary.base,
+                    fontWeight: theme.weight.semibold,
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  Download All Files
+                </button>
+                <button
+                  onClick={() => setConfirmBulkDelete(true)}
+                  style={{
+                    ...theme.buttons.danger.base,
+                    fontWeight: theme.weight.semibold,
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  Delete Selected
+                </button>
+              </>
+            )}
+
             {/* New Request Button */}
             <button
               onClick={() => navigate('/requests')}
@@ -525,43 +728,63 @@ function Responses() {
 
           {/* Forms Table */}
           {filteredForms.length === 0 ? (
-            <div style={{
-              textAlign: 'center',
-              padding: '80px 40px',
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: 'rgba(255, 255, 255, 0.02)'
-            }}>
-              <h3 style={{
-                fontSize: theme.fontSize.lg,
-                fontWeight: theme.weight.medium,
-                color: theme.colors.text.primary,
-                margin: '0 0 8px 0'
+            forms.length === 0 ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '80px 20px',
+                maxWidth: '500px',
+                margin: '0 auto'
               }}>
-                {forms.length === 0 ? 'No requests yet' : 'No requests match your filters'}
-              </h3>
-              <p style={{
-                fontSize: theme.fontSize.sm,
-                color: theme.colors.text.secondary,
-                margin: '0'
+                <div style={{
+                  fontSize: '48px',
+                  marginBottom: '16px',
+                  opacity: 0.3
+                }}>◇</div>
+                <h2 style={{
+                  fontSize: theme.fontSize['2xl'],
+                  fontWeight: theme.weight.semibold,
+                  color: theme.colors.text.primary,
+                  marginBottom: '12px'
+                }}>No Requests Yet</h2>
+                <p style={{
+                  fontSize: theme.fontSize.base,
+                  color: theme.colors.text.secondary,
+                  marginBottom: '32px',
+                  lineHeight: '1.6'
+                }}>
+                  Create your first file request to start collecting files from anyone
+                </p>
+                <Link to="/requests">
+                  <button style={{...theme.buttons.primary.base}}>
+                    Create First Request
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              <div style={{
+                textAlign: 'center',
+                padding: '80px 40px',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: theme.radius.lg,
+                background: 'rgba(255, 255, 255, 0.02)'
               }}>
-                {forms.length === 0
-                  ? ''
-                  : 'Try adjusting your search or filters'}
-              </p>
-              {forms.length !== 0 && (
-                <button
-                  onClick={() => navigate('/requests')}
-                  style={{
-                    ...theme.buttons.primary.base,
-                    padding: '12px 24px',
-                    fontWeight: theme.weight.semibold
-                  }}
-                >
-                  Create First Request
-                </button>
-              )}
-            </div>
+                <h3 style={{
+                  fontSize: theme.fontSize.lg,
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.primary,
+                  margin: '0 0 8px 0'
+                }}>
+                  No requests match your filters
+                </h3>
+                <p style={{
+                  fontSize: theme.fontSize.sm,
+                  color: theme.colors.text.secondary,
+                  margin: '0'
+                }}>
+                  Try adjusting your search or filters
+                </p>
+              </div>
+            )
           ) : (
             <div style={{
               border: `1px solid ${theme.colors.border.light}`,
@@ -572,7 +795,7 @@ function Responses() {
               {/* Table Header */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: '2fr 100px 120px 100px 100px 140px 140px 140px',
+                gridTemplateColumns: '40px 2fr 100px 120px 100px 100px 140px 140px 140px',
                 padding: '16px 20px',
                 background: 'rgba(255, 255, 255, 0.03)',
                 borderBottom: `1px solid ${theme.colors.border.light}`,
@@ -580,8 +803,21 @@ function Responses() {
                 fontWeight: theme.weight.semibold,
                 color: theme.colors.text.secondary,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px'
+                letterSpacing: '0.5px',
+                alignItems: 'center'
               }}>
+                <div>
+                  <input
+                    type="checkbox"
+                    checked={filteredForms.length > 0 && selectedForms.length === filteredForms.length}
+                    onChange={toggleSelectAll}
+                    style={{
+                      width: '16px',
+                      height: '16px',
+                      cursor: 'pointer'
+                    }}
+                  />
+                </div>
                 <div>Request</div>
                 <div>Status</div>
                 <div>Template</div>
@@ -607,7 +843,7 @@ function Responses() {
                     <div
                       style={{
                         display: 'grid',
-                        gridTemplateColumns: '2fr 100px 120px 100px 100px 140px 140px 140px',
+                        gridTemplateColumns: '40px 2fr 100px 120px 100px 100px 140px 140px 140px',
                         padding: '16px 20px',
                         background: index % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
                         borderBottom: `1px solid ${theme.colors.border.light}`,
@@ -618,6 +854,18 @@ function Responses() {
                       }}
                       onClick={() => setSelectedFormId(isExpanded ? null : form.id)}
                     >
+                      <div onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={selectedForms.includes(form.id)}
+                          onChange={() => toggleSelectForm(form.id)}
+                          style={{
+                            width: '16px',
+                            height: '16px',
+                            cursor: 'pointer'
+                          }}
+                        />
+                      </div>
                       <div style={{ fontWeight: '500' }}>{form.title}</div>
                       <div>
                         <span style={{
@@ -659,7 +907,7 @@ function Responses() {
                         <button
                           onClick={(e) => {
                             e.stopPropagation()
-                            handleDelete(form.id)
+                            setConfirmDelete({ isOpen: true, formId: form.id })
                           }}
                           style={{
                             ...theme.buttons.danger.base,
@@ -679,6 +927,233 @@ function Responses() {
                         background: 'rgba(255, 255, 255, 0.02)',
                         borderBottom: `1px solid ${theme.colors.border.light}`
                       }}>
+                        {/* Analytics Section */}
+                        <div style={{ marginBottom: theme.spacing[6] }}>
+                          <h3 style={{
+                            fontSize: theme.fontSize.base,
+                            fontWeight: theme.weight.semibold,
+                            color: theme.colors.text.primary,
+                            margin: '0 0 16px 0'
+                          }}>
+                            Analytics
+                          </h3>
+
+                          {(() => {
+                            const views = getFormViews(form.shortCode)
+                            const uploadCount = formUploads.length
+                            const conversionRate = getConversionRate(views, uploadCount)
+
+                            return (
+                              <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(4, 1fr)',
+                                gap: '16px',
+                                marginBottom: '16px'
+                              }}>
+                                {/* Total Views */}
+                                <div style={{
+                                  padding: '16px',
+                                  background: 'rgba(255, 255, 255, 0.02)',
+                                  border: `1px solid ${theme.colors.border.light}`,
+                                  borderRadius: theme.radius.md
+                                }}>
+                                  <div style={{
+                                    fontSize: theme.fontSize.xs,
+                                    color: theme.colors.text.tertiary,
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    fontWeight: theme.weight.semibold
+                                  }}>
+                                    Total Views
+                                  </div>
+                                  <div style={{
+                                    fontSize: '28px',
+                                    fontWeight: theme.weight.bold,
+                                    color: theme.colors.text.primary,
+                                    lineHeight: '1',
+                                    fontVariantNumeric: 'tabular-nums'
+                                  }}>
+                                    {views === 0 ? '—' : formatNumber(views)}
+                                  </div>
+                                </div>
+
+                                {/* Conversion Rate */}
+                                <div style={{
+                                  padding: '16px',
+                                  background: 'rgba(255, 255, 255, 0.02)',
+                                  border: `1px solid ${theme.colors.border.light}`,
+                                  borderRadius: theme.radius.md
+                                }}>
+                                  <div style={{
+                                    fontSize: theme.fontSize.xs,
+                                    color: theme.colors.text.tertiary,
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    fontWeight: theme.weight.semibold
+                                  }}>
+                                    Conversion
+                                  </div>
+                                  <div style={{
+                                    fontSize: '28px',
+                                    fontWeight: theme.weight.bold,
+                                    color: theme.colors.text.primary,
+                                    lineHeight: '1',
+                                    fontVariantNumeric: 'tabular-nums'
+                                  }}>
+                                    {conversionRate}
+                                  </div>
+                                </div>
+
+                                {/* Upload Trend */}
+                                <div style={{
+                                  padding: '16px',
+                                  background: 'rgba(255, 255, 255, 0.02)',
+                                  border: `1px solid ${theme.colors.border.light}`,
+                                  borderRadius: theme.radius.md
+                                }}>
+                                  <div style={{
+                                    fontSize: theme.fontSize.xs,
+                                    color: theme.colors.text.tertiary,
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    fontWeight: theme.weight.semibold
+                                  }}>
+                                    Upload Trend
+                                  </div>
+                                  <div style={{
+                                    fontSize: '28px',
+                                    fontWeight: theme.weight.bold,
+                                    color: theme.colors.text.primary,
+                                    lineHeight: '1',
+                                    fontVariantNumeric: 'tabular-nums'
+                                  }}>
+                                    {getFilesPerDay(form.createdAt, formUploads)}
+                                  </div>
+                                </div>
+
+                                {/* Time Since Created */}
+                                <div style={{
+                                  padding: '16px',
+                                  background: 'rgba(255, 255, 255, 0.02)',
+                                  border: `1px solid ${theme.colors.border.light}`,
+                                  borderRadius: theme.radius.md
+                                }}>
+                                  <div style={{
+                                    fontSize: theme.fontSize.xs,
+                                    color: theme.colors.text.tertiary,
+                                    marginBottom: '8px',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    fontWeight: theme.weight.semibold
+                                  }}>
+                                    Age
+                                  </div>
+                                  <div style={{
+                                    fontSize: '28px',
+                                    fontWeight: theme.weight.bold,
+                                    color: theme.colors.text.primary,
+                                    lineHeight: '1',
+                                    fontVariantNumeric: 'tabular-nums'
+                                  }}>
+                                    {getTimeSinceCreated(form.createdAt)}
+                                  </div>
+                                </div>
+                              </div>
+                            )
+                          })()}
+
+                          {/* Time Metrics Row */}
+                          <div style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(3, 1fr)',
+                            gap: '16px'
+                          }}>
+                            {/* Time to First Upload */}
+                            <div style={{
+                              padding: '16px',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                              border: `1px solid ${theme.colors.border.light}`,
+                              borderRadius: theme.radius.md
+                            }}>
+                              <div style={{
+                                fontSize: theme.fontSize.xs,
+                                color: theme.colors.text.tertiary,
+                                marginBottom: '8px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                fontWeight: theme.weight.semibold
+                              }}>
+                                Time to First Upload
+                              </div>
+                              <div style={{
+                                fontSize: theme.fontSize.lg,
+                                fontWeight: theme.weight.semibold,
+                                color: theme.colors.text.primary,
+                                lineHeight: '1.2'
+                              }}>
+                                {getTimeToFirstUpload(form.createdAt, formUploads)}
+                              </div>
+                            </div>
+
+                            {/* Average Upload Interval */}
+                            <div style={{
+                              padding: '16px',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                              border: `1px solid ${theme.colors.border.light}`,
+                              borderRadius: theme.radius.md
+                            }}>
+                              <div style={{
+                                fontSize: theme.fontSize.xs,
+                                color: theme.colors.text.tertiary,
+                                marginBottom: '8px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                fontWeight: theme.weight.semibold
+                              }}>
+                                Avg Upload Interval
+                              </div>
+                              <div style={{
+                                fontSize: theme.fontSize.lg,
+                                fontWeight: theme.weight.semibold,
+                                color: theme.colors.text.primary,
+                                lineHeight: '1.2'
+                              }}>
+                                {getAverageUploadInterval(formUploads)}
+                              </div>
+                            </div>
+
+                            {/* Last Upload Time */}
+                            <div style={{
+                              padding: '16px',
+                              background: 'rgba(255, 255, 255, 0.02)',
+                              border: `1px solid ${theme.colors.border.light}`,
+                              borderRadius: theme.radius.md
+                            }}>
+                              <div style={{
+                                fontSize: theme.fontSize.xs,
+                                color: theme.colors.text.tertiary,
+                                marginBottom: '8px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px',
+                                fontWeight: theme.weight.semibold
+                              }}>
+                                Last Upload
+                              </div>
+                              <div style={{
+                                fontSize: theme.fontSize.lg,
+                                fontWeight: theme.weight.semibold,
+                                color: theme.colors.text.primary,
+                                lineHeight: '1.2'
+                              }}>
+                                {lastUpload ? getTimeAgo(lastUpload) : '—'}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
                         <div style={{
                           display: 'grid',
                           gridTemplateColumns: '1fr 2fr',
@@ -727,7 +1202,7 @@ function Responses() {
                                 <button
                                   onClick={() => {
                                     navigator.clipboard.writeText(`${window.location.origin}/upload/${form.shortCode}`)
-                                    alert('URL copied to clipboard!')
+                                    toast.success('URL copied to clipboard!')
                                   }}
                                   style={{
                                     ...theme.buttons.primary.base,
@@ -874,6 +1349,28 @@ function Responses() {
           )}
         </div>
       </div>
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
+      <ConfirmModal
+        isOpen={confirmDelete.isOpen}
+        title="Delete Request"
+        message="Are you sure you want to delete this request? This will also delete all uploaded files."
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmDelete({ isOpen: false, formId: null })}
+        confirmText="Delete"
+        cancelText="Cancel"
+        danger={true}
+      />
+      <ConfirmModal
+        isOpen={confirmBulkDelete}
+        title="Delete Selected Requests"
+        message={`Are you sure you want to delete ${selectedForms.length} selected requests? This will also delete all uploaded files.`}
+        onConfirm={handleBulkDelete}
+        onCancel={() => setConfirmBulkDelete(false)}
+        confirmText="Delete All"
+        cancelText="Cancel"
+        danger={true}
+      />
     </>
   )
 }

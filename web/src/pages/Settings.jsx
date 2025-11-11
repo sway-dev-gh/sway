@@ -3,9 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
+import ConfirmModal from '../components/ConfirmModal'
 
 function Settings() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [user, setUser] = useState({ email: '' })
   const [loading, setLoading] = useState(true)
   const [currentPassword, setCurrentPassword] = useState('')
@@ -14,6 +18,7 @@ function Settings() {
   const [passwordError, setPasswordError] = useState('')
   const [passwordSuccess, setPasswordSuccess] = useState('')
   const [changingPassword, setChangingPassword] = useState(false)
+  const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -355,11 +360,7 @@ function Settings() {
                   </div>
                 </div>
                 <button
-                  onClick={() => {
-                    if (confirm('Are you sure you want to delete your account? This cannot be undone.')) {
-                      alert('Account deletion would be processed here')
-                    }
-                  }}
+                  onClick={() => setConfirmDeleteAccount(true)}
                   style={{
                     ...theme.buttons.danger.base,
                     whiteSpace: 'nowrap'
@@ -373,6 +374,21 @@ function Settings() {
           </div>
         </div>
       </div>
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
+      <ConfirmModal
+        isOpen={confirmDeleteAccount}
+        title="Delete Account"
+        message="Are you sure you want to delete your account? This cannot be undone."
+        onConfirm={() => {
+          setConfirmDeleteAccount(false)
+          toast.info('Account deletion would be processed here')
+        }}
+        onCancel={() => setConfirmDeleteAccount(false)}
+        confirmText="Delete Account"
+        cancelText="Cancel"
+        danger={true}
+      />
     </>
   )
 }

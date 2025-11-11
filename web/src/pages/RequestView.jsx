@@ -3,12 +3,18 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import api from '../api/axios'
 import theme from '../theme'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
+import ConfirmModal from '../components/ConfirmModal'
 
 function RequestView() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const toast = useToast()
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [confirmToggle, setConfirmToggle] = useState(false)
 
   const fetchRequest = async () => {
     try {
@@ -38,11 +44,11 @@ function RequestView() {
   const copyLink = () => {
     const link = `${window.location.origin}/r/${data.request.shortCode}`
     navigator.clipboard.writeText(link)
-    alert('Link copied!')
+    toast.success('Link copied!')
   }
 
   const handleDelete = async () => {
-    if (!confirm('Delete this request? This cannot be undone and all uploads will be lost.')) return
+    setConfirmDelete(false)
 
     try {
       const token = localStorage.getItem('token')
@@ -50,18 +56,18 @@ function RequestView() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
+      toast.success('Request deleted successfully')
       navigate('/requests')
     } catch (error) {
       console.error('Delete error:', error)
-      alert('Failed to delete request')
+      toast.error('Failed to delete request')
     }
   }
 
   const handleToggleActive = async () => {
+    setConfirmToggle(false)
     const newStatus = !data.request.isActive
     const action = newStatus ? 'reactivate' : 'close'
-
-    if (!confirm(`Are you sure you want to ${action} this request?`)) return
 
     try {
       const token = localStorage.getItem('token')
@@ -75,10 +81,11 @@ function RequestView() {
         }
       )
 
+      toast.success(`Request ${action}d successfully`)
       fetchRequest() // Reload the data
     } catch (error) {
       console.error('Toggle active error:', error)
-      alert(`Failed to ${action} request`)
+      toast.error(`Failed to ${action} request`)
     }
   }
 
@@ -101,17 +108,13 @@ function RequestView() {
       window.URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Download error:', error)
-      alert('Failed to download file')
+      toast.error('Failed to download file')
     }
   }
 
   const downloadAll = async () => {
     if (!data.uploads || data.uploads.length === 0) {
-      alert('No files to download')
-      return
-    }
-
-    if (!confirm(`Download all ${data.uploads.length} files? They will download one by one.`)) {
+      toast.info('No files to download')
       return
     }
 
@@ -120,6 +123,7 @@ function RequestView() {
       // Small delay between downloads to avoid browser blocking
       await new Promise(resolve => setTimeout(resolve, 500))
     }
+    toast.success(`Downloaded ${data.uploads.length} files`)
   }
 
   if (loading) {
@@ -250,7 +254,7 @@ function RequestView() {
               gap: '8px'
             }}>
               <button
-                onClick={handleToggleActive}
+                onClick={() => setConfirmToggle(true)}
                 style={{
                   padding: '8px 16px',
                   background: 'transparent',
@@ -280,7 +284,7 @@ function RequestView() {
                 </button>
               )}
               <button
-                onClick={handleDelete}
+                onClick={() => setConfirmDelete(true)}
                 style={{
                   padding: '8px 16px',
                   background: 'transparent',
@@ -391,6 +395,28 @@ function RequestView() {
           </div>
         </div>
       </div>
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
+      <ConfirmModal
+        isOpen={confirmDelete}
+        title="Delete Request"
+        message="Delete this request? This cannot be undone and all uploads will be lost."
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmDelete(false)}
+        confirmText="Delete"
+        cancelText="Cancel"
+        danger={true}
+      />
+      <ConfirmModal
+        isOpen={confirmToggle}
+        title={data?.request?.isActive ? "Close Request" : "Reactivate Request"}
+        message={`Are you sure you want to ${data?.request?.isActive ? 'close' : 'reactivate'} this request?`}
+        onConfirm={handleToggleActive}
+        onCancel={() => setConfirmToggle(false)}
+        confirmText={data?.request?.isActive ? "Close" : "Reactivate"}
+        cancelText="Cancel"
+        danger={false}
+      />
     </>
   )
 }

@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
 
 function Uploads() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [uploads, setUploads] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -82,7 +85,7 @@ function Uploads() {
       }
     } catch (error) {
       console.error('Download error:', error)
-      alert('Failed to download file')
+      toast.error('Failed to download file')
     }
   }
 
@@ -273,6 +276,8 @@ function Uploads() {
           )}
         </div>
       </div>
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </>
   )
 }

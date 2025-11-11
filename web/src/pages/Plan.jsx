@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
 
 function Plan() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [user, setUser] = useState({ email: '' })
   const [loading, setLoading] = useState(true)
   const [currentPlan, setCurrentPlan] = useState('free')
@@ -64,7 +67,7 @@ function Plan() {
 
     // For real users, cancel their subscription (to be implemented)
     // For now, just show a message
-    alert('Downgrade feature coming soon! Contact support to downgrade your plan.')
+    toast.info('Downgrade feature coming soon! Contact support to downgrade your plan.')
     setShowDowngradeModal(false)
   }
 
@@ -93,7 +96,7 @@ function Plan() {
       }
     } catch (error) {
       console.error('Upgrade error:', error)
-      alert('Failed to start upgrade process. Please try again.')
+      toast.error('Failed to start upgrade process. Please try again.')
     } finally {
       setUpgrading(false)
     }
@@ -611,6 +614,8 @@ function Plan() {
           </div>
         </div>
       )}
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </>
   )
 }

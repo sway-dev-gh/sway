@@ -2,9 +2,12 @@ import { useParams } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import api from '../api/axios'
 import theme from '../theme'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
 
 function Upload() {
   const { shortCode } = useParams()
+  const toast = useToast()
   const [requestData, setRequestData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
@@ -15,6 +18,7 @@ function Upload() {
   })
   const [files, setFiles] = useState([])
   const [uploading, setUploading] = useState(false)
+  const [uploadProgress, setUploadProgress] = useState(0)
   const [success, setSuccess] = useState(false)
   const [brandingData, setBrandingData] = useState(null)
   const [validationError, setValidationError] = useState('')
@@ -46,11 +50,89 @@ function Upload() {
 
   useEffect(() => {
     fetchRequest()
+
+    // Track view count (once per session)
+    const viewKey = `form_viewed_${shortCode}`
+    const hasViewedThisSession = sessionStorage.getItem(viewKey)
+
+    if (!hasViewedThisSession) {
+      // Increment view count in localStorage
+      const storageKey = `form_views_${shortCode}`
+      const currentViews = parseInt(localStorage.getItem(storageKey) || '0', 10)
+      localStorage.setItem(storageKey, (currentViews + 1).toString())
+
+      // Mark as viewed this session
+      sessionStorage.setItem(viewKey, 'true')
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shortCode])
 
+  const validateFiles = (fileList) => {
+    const settings = requestData?.settings || {}
+    const maxFileSize = settings.maxFileSize || 104857600 // 100MB default
+    const maxFiles = settings.maxFiles || 10
+    const allowedTypes = settings.allowedFileTypes || ['*']
+
+    // Check file count
+    if (fileList.length > maxFiles) {
+      toast.error(`Too many files. Maximum: ${maxFiles} files`)
+      return false
+    }
+
+    // File type extensions map
+    const typeExtensions = {
+      image: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'],
+      document: ['.pdf', '.doc', '.docx', '.txt', '.rtf', '.odt'],
+      video: ['.mp4', '.mov', '.avi', '.mkv', '.webm'],
+      audio: ['.mp3', '.wav', '.ogg', '.m4a', '.flac'],
+      archive: ['.zip', '.rar', '.7z', '.tar', '.gz']
+    }
+
+    // Build allowed extensions list
+    let allowedExtensions = []
+    if (allowedTypes.includes('*')) {
+      // All types allowed
+      allowedExtensions = ['*']
+    } else {
+      allowedTypes.forEach(type => {
+        if (typeExtensions[type]) {
+          allowedExtensions.push(...typeExtensions[type])
+        }
+      })
+    }
+
+    // Validate each file
+    for (const file of fileList) {
+      // Check file size
+      if (file.size > maxFileSize) {
+        const sizeMB = (maxFileSize / 1024 / 1024).toFixed(0)
+        toast.error(`File too large: ${file.name}. Maximum size: ${sizeMB}MB`)
+        return false
+      }
+
+      // Check file type
+      if (!allowedExtensions.includes('*')) {
+        const fileName = file.name.toLowerCase()
+        const fileExt = '.' + fileName.split('.').pop()
+        if (!allowedExtensions.includes(fileExt)) {
+          const typeNames = allowedTypes.join(', ')
+          toast.error(`File type not allowed: ${file.name}. Allowed types: ${typeNames}`)
+          return false
+        }
+      }
+    }
+
+    return true
+  }
+
   const handleFileChange = (e) => {
-    setFiles(Array.from(e.target.files))
+    const fileList = Array.from(e.target.files)
+    if (validateFiles(fileList)) {
+      setFiles(fileList)
+    } else {
+      e.target.value = '' // Clear the input
+      setFiles([])
+    }
   }
 
   const validateRequiredFields = () => {
@@ -82,7 +164,7 @@ function Upload() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (files.length === 0) {
-      alert('Please select at least one file')
+      toast.error('Please select at least one file')
       return
     }
 
@@ -112,16 +194,21 @@ function Upload() {
       })
 
       await api.post(`/api/r/${shortCode}/upload`, formDataObj, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: { 'Content-Type': 'multipart/form-data' },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          setUploadProgress(percentCompleted)
+        }
       })
 
       setSuccess(true)
+      setUploadProgress(0)
     } catch (error) {
       console.error('Upload error:', error)
       if (error.response?.status === 401) {
-        alert('Incorrect password. Please try again.')
+        toast.error('Incorrect password. Please try again.')
       } else {
-        alert(error.response?.data?.error || 'Failed to upload files')
+        toast.error(error.response?.data?.error || 'Failed to upload files')
       }
     } finally {
       setUploading(false)
@@ -253,7 +340,7 @@ function Upload() {
               style={{
                 width: '100%',
                 padding: '12px 20px',
-                background: theme.colors.white,
+                background: requestData.branding?.accentColor || theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
                 borderRadius: '8px',
@@ -315,7 +402,7 @@ function Upload() {
             margin: '0 0 8px 0',
             letterSpacing: '-0.02em'
           }}>
-            Files uploaded successfully
+            {requestData.branding?.successMessage || 'Thank you! Your file has been uploaded successfully.'}
           </h1>
 
           {/* Subtitle */}
@@ -399,7 +486,7 @@ function Upload() {
             letterSpacing: '-0.02em',
             lineHeight: '1.2'
           }}>
-            {requestData.title}
+            {requestData.branding?.pageTitle || requestData.title}
           </h1>
 
           {/* Subtitle with Instructions */}
@@ -416,6 +503,19 @@ function Upload() {
           )}
 
         <form onSubmit={handleSubmit}>
+          {/* Custom Instructions */}
+          {requestData.branding?.instructions && (
+            <div style={{
+              fontSize: theme.fontSize.sm,
+              color: theme.colors.text.secondary,
+              marginBottom: theme.spacing[4],
+              lineHeight: '1.6',
+              textAlign: 'center'
+            }}>
+              {requestData.branding.instructions}
+            </div>
+          )}
+
           {/* Upload Dropzone */}
           <div style={{ marginBottom: theme.spacing[5] }}>
             <label style={{
@@ -714,7 +814,7 @@ function Upload() {
             style={{
               width: '100%',
               padding: '12px 20px',
-              background: theme.colors.white,
+              background: requestData.branding?.accentColor || theme.colors.white,
               color: theme.colors.black,
               border: 'none',
               borderRadius: '8px',
@@ -725,19 +825,40 @@ function Upload() {
               opacity: (uploading || files.length === 0) ? 0.5 : 1
             }}
           >
-            {uploading ? 'Uploading...' : 'Upload Files'}
+            {uploading ? `Uploading... ${uploadProgress}%` : 'Upload Files'}
           </button>
 
+          {/* Upload Progress Bar */}
+          {uploading && uploadProgress > 0 && (
+            <div style={{
+              width: '100%',
+              height: '4px',
+              background: 'rgba(255, 255, 255, 0.1)',
+              borderRadius: '2px',
+              overflow: 'hidden',
+              marginTop: '8px'
+            }}>
+              <div style={{
+                width: `${uploadProgress}%`,
+                height: '100%',
+                background: requestData.branding?.accentColor || theme.colors.white,
+                transition: 'width 0.3s ease'
+              }} />
+            </div>
+          )}
+
           {/* Powered by Text at Bottom */}
-          <div style={{
-            fontSize: theme.fontSize.xs,
-            color: theme.colors.text.tertiary,
-            textAlign: 'center',
-            marginTop: theme.spacing[6],
-            fontWeight: theme.weight.normal
-          }}>
-            Powered by Sway
-          </div>
+          {(requestData.branding?.showPoweredBy !== false) && (
+            <div style={{
+              fontSize: theme.fontSize.xs,
+              color: theme.colors.text.tertiary,
+              textAlign: 'center',
+              marginTop: theme.spacing[6],
+              fontWeight: theme.weight.normal
+            }}>
+              Powered by Sway
+            </div>
+          )}
         </form>
         </div>
       </div>
@@ -889,6 +1010,8 @@ function Upload() {
           })}
         </div>
       )}
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </div>
   )
 }

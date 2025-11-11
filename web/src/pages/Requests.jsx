@@ -4,6 +4,8 @@ import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import { canCreateForm } from '../utils/planUtils'
 import api from '../api/axios'
+import { useToast } from '../hooks/useToast'
+import ToastContainer from '../components/ToastContainer'
 
 // TEMPLATES - Pre-configured form layouts
 const TEMPLATES = [
@@ -1059,6 +1061,7 @@ const DEFAULT_SIZES = {
 
 function Requests() {
   const navigate = useNavigate()
+  const toast = useToast()
   const [canvasElements, setCanvasElements] = useState([])
   const [selectedElement, setSelectedElement] = useState(null)
   const [selectedElements, setSelectedElements] = useState([])
@@ -1079,6 +1082,23 @@ function Requests() {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [isResizing, setIsResizing] = useState(false)
   const [resizeHandle, setResizeHandle] = useState(null)
+  const [zoom, setZoom] = useState(1) // Zoom level: 0.25 to 2
+  const [lockedElements, setLockedElements] = useState([]) // Array of locked element IDs
+  const [snapToGrid, setSnapToGrid] = useState(true) // Grid snapping enabled by default
+  const [branding, setBranding] = useState({
+    accentColor: '#ffffff',
+    pageTitle: '',
+    successMessage: 'Thank you! Your file has been uploaded successfully.',
+    showPoweredBy: true,
+    instructions: ''
+  })
+  const [settings, setSettings] = useState({
+    allowedFileTypes: ['*'], // '*' means all files allowed
+    maxFileSize: 104857600, // 100MB in bytes
+    maxFiles: 10,
+    customFileTypes: ''
+  })
+  const [editingElementId, setEditingElementId] = useState(null)
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -1109,6 +1129,88 @@ function Requests() {
     setHistoryIndex(newHistory.length - 1)
   }
 
+  // Snap coordinate to 10px grid
+  const snapToGridValue = (value) => {
+    if (!snapToGrid) return value
+    return Math.round(value / 10) * 10
+  }
+
+  // Check if element is locked
+  const isElementLocked = (elementId) => {
+    return lockedElements.includes(elementId)
+  }
+
+  // Toggle element lock
+  const toggleElementLock = (elementId) => {
+    if (lockedElements.includes(elementId)) {
+      setLockedElements(lockedElements.filter(id => id !== elementId))
+    } else {
+      setLockedElements([...lockedElements, elementId])
+    }
+  }
+
+  // Z-index management - get element z-index
+  const getElementZIndex = (elementId) => {
+    const index = canvasElements.findIndex(el => el.id === elementId)
+    return index
+  }
+
+  // Bring element forward (swap with next element)
+  const bringForward = () => {
+    if (!selectedElement) return
+    const currentIndex = canvasElements.findIndex(el => el.id === selectedElement.id)
+    if (currentIndex < canvasElements.length - 1) {
+      const newElements = [...canvasElements]
+      const temp = newElements[currentIndex]
+      newElements[currentIndex] = newElements[currentIndex + 1]
+      newElements[currentIndex + 1] = temp
+      setCanvasElements(newElements)
+      saveToHistory(newElements)
+    }
+  }
+
+  // Send element backward (swap with previous element)
+  const sendBackward = () => {
+    if (!selectedElement) return
+    const currentIndex = canvasElements.findIndex(el => el.id === selectedElement.id)
+    if (currentIndex > 0) {
+      const newElements = [...canvasElements]
+      const temp = newElements[currentIndex]
+      newElements[currentIndex] = newElements[currentIndex - 1]
+      newElements[currentIndex - 1] = temp
+      setCanvasElements(newElements)
+      saveToHistory(newElements)
+    }
+  }
+
+  // Bring element to front (move to end of array)
+  const bringToFront = () => {
+    if (!selectedElement) return
+    const currentIndex = canvasElements.findIndex(el => el.id === selectedElement.id)
+    if (currentIndex < canvasElements.length - 1) {
+      const newElements = [...canvasElements]
+      const element = newElements.splice(currentIndex, 1)[0]
+      newElements.push(element)
+      setCanvasElements(newElements)
+      saveToHistory(newElements)
+    }
+  }
+
+  // Send element to back (move to start of array)
+  const sendToBack = () => {
+    if (!selectedElement) return
+    const currentIndex = canvasElements.findIndex(el => el.id === selectedElement.id)
+    if (currentIndex > 0) {
+      const newElements = [...canvasElements]
+      const element = newElements.splice(currentIndex, 1)[0]
+      newElements.unshift(element)
+      setCanvasElements(newElements)
+      saveToHistory(newElements)
+      // Update selected element reference
+      setSelectedElement(element)
+    }
+  }
+
   // Undo
   const handleUndo = () => {
     if (historyIndex > 0) {
@@ -1131,12 +1233,12 @@ function Requests() {
   const handleSave = async () => {
     // Validation
     if (!formTitle || formTitle.trim() === '') {
-      alert('Please add a form title before saving')
+      toast.error('Please add a form title before saving')
       return
     }
 
     if (canvasElements.length === 0) {
-      alert('Please add at least one element to your form before saving')
+      toast.error('Please add at least one element to your form before saving')
       return
     }
 
@@ -1145,18 +1247,20 @@ function Requests() {
       const formData = {
         title: formTitle,
         elements: canvasElements,
-        status: 'draft'
+        status: 'draft',
+        branding: branding,
+        settings: settings
       }
 
       const response = await api.post('/api/requests', formData, {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      alert('Form saved as draft!')
+      toast.success('Form saved as draft!')
       navigate('/tracking')
     } catch (error) {
       console.error('Save error:', error)
-      alert('Failed to save form. Please try again.')
+      toast.error('Failed to save form. Please try again.')
     }
   }
 
@@ -1164,12 +1268,12 @@ function Requests() {
   const handlePublish = async () => {
     // Validation
     if (!formTitle || formTitle.trim() === '') {
-      alert('Please add a form title before publishing')
+      toast.error('Please add a form title before publishing')
       return
     }
 
     if (canvasElements.length === 0) {
-      alert('Please add at least one element to your form before publishing')
+      toast.error('Please add at least one element to your form before publishing')
       return
     }
 
@@ -1185,7 +1289,7 @@ function Requests() {
       // Validate if user can create a new form
       const validation = canCreateForm(currentFormCount)
       if (!validation.allowed) {
-        alert(validation.reason)
+        toast.error(validation.reason)
         navigate('/plan')
         return
       }
@@ -1193,7 +1297,9 @@ function Requests() {
       const formData = {
         title: formTitle,
         elements: canvasElements,
-        status: 'live'
+        status: 'live',
+        branding: branding,
+        settings: settings
       }
 
       const response = await api.post('/api/requests', formData, {
@@ -1201,14 +1307,14 @@ function Requests() {
       })
 
       const shortCode = response.data.shortCode
-      alert(`Form published successfully! Redirecting to your public link...`)
+      toast.success(`Form published successfully! Redirecting to your public link...`)
 
       // Redirect to the public upload page
       window.location.href = `/r/${shortCode}`
     } catch (error) {
       console.error('Publish error:', error)
       const errorMessage = error.response?.data?.message || error.message || 'Failed to publish form. Please try again.'
-      alert(errorMessage)
+      toast.error(errorMessage)
     }
   }
 
@@ -1271,11 +1377,17 @@ function Requests() {
         setSelectedElements([])
       }
 
-      // Arrow keys - Move selected element(s)
+      // Arrow keys - Nudge selected element(s) by 10px
       if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
         if (selectedElement || selectedElements.length > 0) {
           e.preventDefault()
-          const moveAmount = e.shiftKey ? 10 : 1
+
+          // Check if selected element is locked
+          if (selectedElement && isElementLocked(selectedElement.id)) {
+            return // Don't move locked elements
+          }
+
+          const moveAmount = 10 // Always move by 10px for grid snapping
           let deltaX = 0
           let deltaY = 0
 
@@ -1291,8 +1403,8 @@ function Requests() {
               setSelectedElement(updated)
               return updated
             }
-            // Move all selected elements in multi-select
-            if (selectedElements.some(sel => sel.id === el.id)) {
+            // Move all selected elements in multi-select (skip locked ones)
+            if (selectedElements.some(sel => sel.id === el.id) && !isElementLocked(el.id)) {
               return { ...el, x: el.x + deltaX, y: el.y + deltaY }
             }
             return el
@@ -1498,20 +1610,31 @@ function Requests() {
   const handleElementMouseDown = (element, e) => {
     if (e.button !== 0) return // Only left click
     e.stopPropagation()
+
+    // Prevent dragging locked elements
+    if (isElementLocked(element.id)) {
+      setSelectedElement(element)
+      return
+    }
+
     setSelectedElement(element)
     setIsDraggingElement(true)
     const canvasRect = canvasRef.current.getBoundingClientRect()
     setDragOffset({
-      x: e.clientX - canvasRect.left - element.x,
-      y: e.clientY - canvasRect.top - element.y
+      x: (e.clientX - canvasRect.left) / zoom - element.x,
+      y: (e.clientY - canvasRect.top) / zoom - element.y
     })
   }
 
   const handleMouseMove = (e) => {
     if (isDraggingElement && selectedElement && canvasRef.current) {
       const canvasRect = canvasRef.current.getBoundingClientRect()
-      const newX = e.clientX - canvasRect.left - dragOffset.x
-      const newY = e.clientY - canvasRect.top - dragOffset.y
+      let newX = (e.clientX - canvasRect.left) / zoom - dragOffset.x
+      let newY = (e.clientY - canvasRect.top) / zoom - dragOffset.y
+
+      // Apply grid snapping
+      newX = snapToGridValue(newX)
+      newY = snapToGridValue(newY)
 
       // Calculate delta for group move
       const deltaX = newX - selectedElement.x
@@ -1524,8 +1647,8 @@ function Requests() {
           setSelectedElement(updated)
           return updated
         }
-        // Move all other selected elements by the same delta
-        if (selectedElements.some(sel => sel.id === el.id)) {
+        // Move all other selected elements by the same delta (skip locked)
+        if (selectedElements.some(sel => sel.id === el.id) && !isElementLocked(el.id)) {
           return { ...el, x: el.x + deltaX, y: el.y + deltaY }
         }
         return el
@@ -1553,6 +1676,7 @@ function Requests() {
   const renderCanvasElement = (element) => {
     const { type, properties, x, y, width, height } = element
     const isSelected = selectedElement?.id === element.id || selectedElements.some(el => el.id === element.id)
+    const isLocked = isElementLocked(element.id)
 
     const elementStyle = {
       position: 'absolute',
@@ -1561,12 +1685,13 @@ function Requests() {
       width: `${width}px`,
       height: type === 'textarea' || type === 'rich-text' || type === 'signature' ? `${height}px` : 'auto',
       minHeight: type === 'spacer' ? `${properties.height || '40px'}` : 'auto',
-      cursor: isDraggingElement ? 'grabbing' : 'grab',
+      cursor: isLocked ? 'not-allowed' : (isDraggingElement ? 'grabbing' : 'grab'),
       border: isSelected ? `2px solid ${theme.colors.white}` : '2px solid transparent',
       outline: isSelected ? '2px solid rgba(59, 130, 246, 0.3)' : 'none',
       outlineOffset: '2px',
       borderRadius: '4px',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      opacity: isLocked ? 0.7 : 1
     }
 
     const commonProps = {
@@ -1576,9 +1701,36 @@ function Requests() {
       onClick: (e) => handleElementSelect(element, e)
     }
 
+    // Wrapper to add lock indicator
+    const wrapWithLockIndicator = (content) => {
+      if (isLocked && isSelected) {
+        return (
+          <>
+            {content}
+            <div style={{
+              position: 'absolute',
+              top: '-8px',
+              right: '-8px',
+              background: theme.colors.white,
+              color: theme.colors.black,
+              borderRadius: '4px',
+              padding: '4px 6px',
+              fontSize: '10px',
+              fontWeight: '600',
+              pointerEvents: 'none',
+              zIndex: 10
+            }}>
+              LOCKED
+            </div>
+          </>
+        )
+      }
+      return content
+    }
+
     switch (type) {
       case 'text':
-        return (
+        return wrapWithLockIndicator(
           <div {...commonProps}>
             <div style={{
               fontSize: properties.fontSize,
@@ -1594,7 +1746,7 @@ function Requests() {
         )
 
       case 'heading':
-        return (
+        return wrapWithLockIndicator(
           <div {...commonProps}>
             <div style={{
               fontSize: properties.fontSize,
@@ -1610,7 +1762,7 @@ function Requests() {
         )
 
       case 'text-input':
-        return (
+        return wrapWithLockIndicator(
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
@@ -2207,10 +2359,54 @@ function Requests() {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            {/* Keyboard shortcuts hint */}
-            <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, marginRight: '8px' }}>
-              {userPlan === 'pro' ? 'Shortcuts enabled' : 'Upgrade for shortcuts'}
+            {/* Zoom Controls */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary }}>Zoom:</span>
+              <select
+                value={zoom}
+                onChange={(e) => setZoom(parseFloat(e.target.value))}
+                style={{
+                  background: theme.colors.bg.hover,
+                  border: `1px solid ${theme.colors.border.dark}`,
+                  borderRadius: theme.radius.sm,
+                  color: theme.colors.text.primary,
+                  padding: '6px 8px',
+                  fontSize: theme.fontSize.xs,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
+                }}
+              >
+                <option value="0.25">25%</option>
+                <option value="0.5">50%</option>
+                <option value="0.75">75%</option>
+                <option value="1">100%</option>
+                <option value="1.25">125%</option>
+                <option value="1.5">150%</option>
+                <option value="2">200%</option>
+              </select>
             </div>
+
+            {/* Grid Snap Toggle */}
+            <button
+              onClick={() => setSnapToGrid(!snapToGrid)}
+              style={{
+                background: snapToGrid ? theme.colors.white : 'transparent',
+                border: `1px solid ${theme.colors.border.dark}`,
+                borderRadius: theme.radius.sm,
+                color: snapToGrid ? theme.colors.black : theme.colors.text.secondary,
+                padding: '6px 12px',
+                fontSize: theme.fontSize.xs,
+                cursor: 'pointer',
+                fontFamily: 'inherit',
+                fontWeight: '600'
+              }}
+              title={snapToGrid ? 'Grid Snap: ON (10px)' : 'Grid Snap: OFF'}
+            >
+              {snapToGrid ? 'Snap: ON' : 'Snap: OFF'}
+            </button>
+
+            {/* Divider */}
+            <div style={{ width: '1px', height: '24px', background: theme.colors.border.dark }}></div>
 
             <button
               onClick={handleUndo}
@@ -2319,11 +2515,405 @@ function Requests() {
               >
                 Elements
               </button>
+              <button
+                onClick={() => setActiveTab('branding')}
+                style={{
+                  flex: 1,
+                  padding: '14px',
+                  background: activeTab === 'branding' ? theme.colors.bg.hover : 'transparent',
+                  border: 'none',
+                  borderBottom: activeTab === 'branding' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
+                  color: activeTab === 'branding' ? theme.colors.white : theme.colors.text.secondary,
+                  fontSize: theme.fontSize.sm,
+                  fontWeight: theme.weight.semibold,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
+                }}
+              >
+                Branding
+              </button>
+              <button
+                onClick={() => setActiveTab('settings')}
+                style={{
+                  flex: 1,
+                  padding: '14px',
+                  background: activeTab === 'settings' ? theme.colors.bg.hover : 'transparent',
+                  border: 'none',
+                  borderBottom: activeTab === 'settings' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
+                  color: activeTab === 'settings' ? theme.colors.white : theme.colors.text.secondary,
+                  fontSize: theme.fontSize.sm,
+                  fontWeight: theme.weight.semibold,
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
+                }}
+              >
+                Settings
+              </button>
             </div>
 
             {/* Tab Content */}
             <div style={{ padding: '12px 12px' }}>
-              {activeTab === 'templates' ? (
+              {activeTab === 'branding' ? (
+                <>
+                  <div style={{
+                    fontSize: theme.fontSize.xs,
+                    fontWeight: theme.weight.semibold,
+                    color: theme.colors.text.secondary,
+                    marginBottom: '16px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    Customize Your Upload Page
+                  </div>
+
+                  {/* Accent Color */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Accent Color
+                    </label>
+                    <input
+                      type="color"
+                      value={branding.accentColor}
+                      onChange={(e) => setBranding({ ...branding, accentColor: e.target.value })}
+                      style={{
+                        width: '100%',
+                        height: '40px',
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: theme.radius.md,
+                        background: 'transparent',
+                        cursor: 'pointer'
+                      }}
+                    />
+                  </div>
+
+                  {/* Page Title */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Page Title
+                    </label>
+                    <input
+                      type="text"
+                      value={branding.pageTitle}
+                      onChange={(e) => setBranding({ ...branding, pageTitle: e.target.value })}
+                      placeholder="Uses form title if empty"
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        background: theme.colors.bg.page,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: theme.fontSize.sm,
+                        fontFamily: 'inherit',
+                        outline: 'none'
+                      }}
+                    />
+                  </div>
+
+                  {/* Instructions */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Instructions Text
+                    </label>
+                    <textarea
+                      value={branding.instructions}
+                      onChange={(e) => setBranding({ ...branding, instructions: e.target.value })}
+                      placeholder="Optional instructions above file upload"
+                      rows={3}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        background: theme.colors.bg.page,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: theme.fontSize.sm,
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        resize: 'vertical'
+                      }}
+                    />
+                  </div>
+
+                  {/* Success Message */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Success Message
+                    </label>
+                    <textarea
+                      value={branding.successMessage}
+                      onChange={(e) => setBranding({ ...branding, successMessage: e.target.value })}
+                      placeholder="Message shown after successful upload"
+                      rows={2}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        background: theme.colors.bg.page,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: theme.fontSize.sm,
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        resize: 'vertical'
+                      }}
+                    />
+                  </div>
+
+                  {/* Show Powered By */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      fontSize: theme.fontSize.sm,
+                      color: theme.colors.text.primary,
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}>
+                      <input
+                        type="checkbox"
+                        checked={branding.showPoweredBy}
+                        onChange={(e) => setBranding({ ...branding, showPoweredBy: e.target.checked })}
+                        style={{
+                          marginRight: '10px',
+                          cursor: 'pointer',
+                          width: '18px',
+                          height: '18px'
+                        }}
+                      />
+                      Show "Powered by Sway"
+                    </label>
+                  </div>
+                </>
+              ) : activeTab === 'settings' ? (
+                <>
+                  <div style={{
+                    fontSize: theme.fontSize.xs,
+                    fontWeight: theme.weight.semibold,
+                    color: theme.colors.text.secondary,
+                    marginBottom: '16px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    File Upload Restrictions
+                  </div>
+
+                  {/* Allowed File Types */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Allowed File Types
+                    </label>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px' }}>
+                      {['image', 'document', 'video', 'audio', 'archive'].map(type => (
+                        <label key={type} style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          fontSize: theme.fontSize.sm,
+                          color: theme.colors.text.primary,
+                          cursor: 'pointer',
+                          userSelect: 'none'
+                        }}>
+                          <input
+                            type="checkbox"
+                            checked={settings.allowedFileTypes.includes('*') || settings.allowedFileTypes.includes(type)}
+                            onChange={(e) => {
+                              if (settings.allowedFileTypes.includes('*')) {
+                                // If "all" was selected, start with just this type
+                                setSettings({ ...settings, allowedFileTypes: [type] })
+                              } else if (e.target.checked) {
+                                // Add this type
+                                setSettings({ ...settings, allowedFileTypes: [...settings.allowedFileTypes, type] })
+                              } else {
+                                // Remove this type
+                                const newTypes = settings.allowedFileTypes.filter(t => t !== type)
+                                setSettings({ ...settings, allowedFileTypes: newTypes.length > 0 ? newTypes : ['*'] })
+                              }
+                            }}
+                            style={{
+                              marginRight: '10px',
+                              cursor: 'pointer',
+                              width: '18px',
+                              height: '18px'
+                            }}
+                          />
+                          {type.charAt(0).toUpperCase() + type.slice(1)}s
+                        </label>
+                      ))}
+                      <label style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        fontSize: theme.fontSize.sm,
+                        color: theme.colors.text.primary,
+                        cursor: 'pointer',
+                        userSelect: 'none'
+                      }}>
+                        <input
+                          type="checkbox"
+                          checked={settings.allowedFileTypes.includes('*')}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setSettings({ ...settings, allowedFileTypes: ['*'] })
+                            } else {
+                              setSettings({ ...settings, allowedFileTypes: ['image'] })
+                            }
+                          }}
+                          style={{
+                            marginRight: '10px',
+                            cursor: 'pointer',
+                            width: '18px',
+                            height: '18px'
+                          }}
+                        />
+                        All File Types
+                      </label>
+                    </div>
+
+                    {/* Custom File Types */}
+                    <div style={{ marginTop: '12px' }}>
+                      <label style={{
+                        display: 'block',
+                        fontSize: theme.fontSize.xs,
+                        color: theme.colors.text.secondary,
+                        marginBottom: '8px',
+                        fontWeight: theme.weight.medium
+                      }}>
+                        Custom File Extensions (optional)
+                      </label>
+                      <input
+                        type="text"
+                        value={settings.customFileTypes}
+                        onChange={(e) => setSettings({ ...settings, customFileTypes: e.target.value })}
+                        placeholder=".psd, .ai, .sketch"
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          background: theme.colors.bg.page,
+                          border: `1px solid ${theme.colors.border.medium}`,
+                          borderRadius: theme.radius.md,
+                          color: theme.colors.text.primary,
+                          fontSize: theme.fontSize.sm,
+                          fontFamily: 'inherit',
+                          outline: 'none'
+                        }}
+                      />
+                      <div style={{
+                        fontSize: theme.fontSize.xs,
+                        color: theme.colors.text.tertiary,
+                        marginTop: '6px'
+                      }}>
+                        Comma-separated list of file extensions (e.g., .psd, .ai)
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Maximum File Size */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Maximum File Size Per Upload
+                    </label>
+                    <select
+                      value={settings.maxFileSize}
+                      onChange={(e) => setSettings({ ...settings, maxFileSize: parseInt(e.target.value) })}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        background: theme.colors.bg.page,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: theme.fontSize.sm,
+                        fontFamily: 'inherit',
+                        outline: 'none',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <option value="10485760">10 MB</option>
+                      <option value="26214400">25 MB</option>
+                      <option value="52428800">50 MB</option>
+                      <option value="104857600">100 MB</option>
+                      <option value="209715200">200 MB</option>
+                      <option value="524288000">500 MB</option>
+                    </select>
+                  </div>
+
+                  {/* Maximum Number of Files */}
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.secondary,
+                      marginBottom: '8px',
+                      fontWeight: theme.weight.medium
+                    }}>
+                      Maximum Number of Files Per Submission
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="50"
+                      value={settings.maxFiles}
+                      onChange={(e) => {
+                        const val = parseInt(e.target.value) || 1
+                        setSettings({ ...settings, maxFiles: Math.max(1, Math.min(50, val)) })
+                      }}
+                      style={{
+                        width: '100%',
+                        padding: '10px 12px',
+                        background: theme.colors.bg.page,
+                        border: `1px solid ${theme.colors.border.medium}`,
+                        borderRadius: theme.radius.md,
+                        color: theme.colors.text.primary,
+                        fontSize: theme.fontSize.sm,
+                        fontFamily: 'inherit',
+                        outline: 'none'
+                      }}
+                    />
+                    <div style={{
+                      fontSize: theme.fontSize.xs,
+                      color: theme.colors.text.tertiary,
+                      marginTop: '6px'
+                    }}>
+                      Range: 1-50 files
+                    </div>
+                  </div>
+                </>
+              ) : activeTab === 'templates' ? (
                 <>
                   <div style={{
                     fontSize: theme.fontSize.xs,
@@ -2496,7 +3086,9 @@ function Requests() {
                 borderRadius: '8px',
                 position: 'relative',
                 border: isDragging ? `2px dashed ${theme.colors.white}` : `1px solid ${theme.colors.border.dark}`,
-                overflow: 'hidden'
+                overflow: 'hidden',
+                transform: `scale(${zoom})`,
+                transformOrigin: 'top left'
               }}
             >
               {canvasElements.length === 0 && !isDragging && (
@@ -2567,13 +3159,148 @@ function Requests() {
             </div>
             {selectedElement && (
               <div style={{ display: 'flex', gap: '8px' }}>
+                {/* Copy Button */}
+                <button
+                  onClick={() => setClipboard(JSON.parse(JSON.stringify(selectedElement)))}
+                  style={{
+                    background: 'transparent',
+                    border: `1px solid ${theme.colors.border.dark}`,
+                    borderRadius: '4px',
+                    padding: '6px 12px',
+                    fontSize: '12px',
+                    color: theme.colors.text.secondary,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                  title="Copy (Cmd+C)"
+                >
+                  Copy
+                </button>
+                {/* Paste Button */}
+                <button
+                  onClick={() => {
+                    if (clipboard) {
+                      const newElement = {
+                        ...clipboard,
+                        id: generateId(),
+                        x: clipboard.x + 20,
+                        y: clipboard.y + 20
+                      }
+                      const newElements = [...canvasElements, newElement]
+                      setCanvasElements(newElements)
+                      saveToHistory(newElements)
+                      setSelectedElement(newElement)
+                    }
+                  }}
+                  disabled={!clipboard}
+                  style={{
+                    background: 'transparent',
+                    border: `1px solid ${theme.colors.border.dark}`,
+                    borderRadius: '4px',
+                    padding: '6px 12px',
+                    fontSize: '12px',
+                    color: clipboard ? theme.colors.text.secondary : theme.colors.text.tertiary,
+                    cursor: clipboard ? 'pointer' : 'not-allowed',
+                    fontFamily: 'inherit'
+                  }}
+                  title="Paste (Cmd+V)"
+                >
+                  Paste
+                </button>
+                {/* Lock/Unlock Button */}
+                <button
+                  onClick={() => toggleElementLock(selectedElement.id)}
+                  style={{
+                    background: isElementLocked(selectedElement.id) ? theme.colors.white : 'transparent',
+                    border: `1px solid ${theme.colors.border.dark}`,
+                    borderRadius: '4px',
+                    padding: '6px 12px',
+                    fontSize: '12px',
+                    color: isElementLocked(selectedElement.id) ? theme.colors.black : theme.colors.text.secondary,
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    fontWeight: '600'
+                  }}
+                  title={isElementLocked(selectedElement.id) ? 'Unlock' : 'Lock'}
+                >
+                  {isElementLocked(selectedElement.id) ? 'Locked' : 'Lock'}
+                </button>
+                {/* Layer Controls */}
+                <div style={{ display: 'flex', gap: '4px', marginLeft: '8px' }}>
+                  <button
+                    onClick={sendToBack}
+                    style={{
+                      background: 'transparent',
+                      border: `1px solid ${theme.colors.border.dark}`,
+                      borderRadius: '4px',
+                      padding: '6px 8px',
+                      fontSize: '11px',
+                      color: theme.colors.text.secondary,
+                      cursor: 'pointer',
+                      fontFamily: 'inherit'
+                    }}
+                    title="Send to Back"
+                  >
+                    Back
+                  </button>
+                  <button
+                    onClick={sendBackward}
+                    style={{
+                      background: 'transparent',
+                      border: `1px solid ${theme.colors.border.dark}`,
+                      borderRadius: '4px',
+                      padding: '6px 8px',
+                      fontSize: '11px',
+                      color: theme.colors.text.secondary,
+                      cursor: 'pointer',
+                      fontFamily: 'inherit'
+                    }}
+                    title="Send Backward"
+                  >
+                    -
+                  </button>
+                  <button
+                    onClick={bringForward}
+                    style={{
+                      background: 'transparent',
+                      border: `1px solid ${theme.colors.border.dark}`,
+                      borderRadius: '4px',
+                      padding: '6px 8px',
+                      fontSize: '11px',
+                      color: theme.colors.text.secondary,
+                      cursor: 'pointer',
+                      fontFamily: 'inherit'
+                    }}
+                    title="Bring Forward"
+                  >
+                    +
+                  </button>
+                  <button
+                    onClick={bringToFront}
+                    style={{
+                      background: 'transparent',
+                      border: `1px solid ${theme.colors.border.dark}`,
+                      borderRadius: '4px',
+                      padding: '6px 8px',
+                      fontSize: '11px',
+                      color: theme.colors.text.secondary,
+                      cursor: 'pointer',
+                      fontFamily: 'inherit'
+                    }}
+                    title="Bring to Front"
+                  >
+                    Front
+                  </button>
+                </div>
+                {/* Divider */}
+                <div style={{ width: '1px', height: '24px', background: theme.colors.border.dark, margin: '0 4px' }}></div>
                 <button
                   onClick={handleDuplicateElement}
                   style={{
                     background: 'transparent',
                     border: `1px solid ${theme.colors.border.dark}`,
                     borderRadius: '4px',
-                    padding: '6px 16px',
+                    padding: '6px 12px',
                     fontSize: '12px',
                     color: theme.colors.text.secondary,
                     cursor: 'pointer',
@@ -2588,7 +3315,7 @@ function Requests() {
                     background: 'transparent',
                     border: `1px solid ${theme.colors.border.dark}`,
                     borderRadius: '4px',
-                    padding: '6px 16px',
+                    padding: '6px 12px',
                     fontSize: '12px',
                     color: theme.colors.error,
                     cursor: 'pointer',
@@ -3191,7 +3918,8 @@ function Requests() {
               <button
                 onClick={() => {
                   setShowUpgradeModal(false)
-                  alert('Redirecting to pricing page...')
+                  toast.info('Redirecting to pricing page...')
+                  navigate('/plan')
                 }}
                 style={{
                   flex: 1,
@@ -3254,6 +3982,13 @@ function Requests() {
                   canvasElements.map((element) => (
                     <div
                       key={element.id}
+                      onDoubleClick={(e) => {
+                        if (element.type === 'heading' || element.type === 'text') {
+                          e.stopPropagation()
+                          setEditingElementId(element.id)
+                          setSelectedElement(element)
+                        }
+                      }}
                       style={{
                         position: 'absolute',
                         left: `${element.x}px`,
@@ -3271,17 +4006,56 @@ function Requests() {
                         color: element.type === 'button' ? theme.colors.black : element.properties?.color || theme.colors.white,
                         fontWeight: element.properties?.fontWeight || '400',
                         overflow: 'hidden',
-                        pointerEvents: 'none'
+                        pointerEvents: editingElementId === element.id ? 'auto' : 'none',
+                        cursor: (element.type === 'heading' || element.type === 'text') ? 'text' : 'default'
                       }}
                     >
-                      {element.type === 'heading' && element.properties?.content}
-                      {element.type === 'text' && element.properties?.content}
-                      {element.type === 'button' && element.properties?.label}
-                      {element.type === 'file-upload' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary }}>File Upload Zone</div>}
-                      {element.type === 'text-input' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary, width: '100%' }}>{element.properties?.placeholder || element.properties?.label || 'Text Input'}</div>}
-                      {element.type === 'textarea' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary }}>Text Area</div>}
-                      {!['heading', 'text', 'button', 'file-upload', 'text-input', 'textarea'].includes(element.type) && (
-                        <div style={{ fontSize: '12px', color: theme.colors.text.secondary, textTransform: 'uppercase' }}>{element.type.replace('-', ' ')}</div>
+                      {editingElementId === element.id && (element.type === 'heading' || element.type === 'text') ? (
+                        <input
+                          type="text"
+                          autoFocus
+                          value={element.properties?.content || ''}
+                          onChange={(e) => {
+                            const updated = canvasElements.map(el =>
+                              el.id === element.id
+                                ? { ...el, properties: { ...el.properties, content: e.target.value } }
+                                : el
+                            )
+                            setCanvasElements(updated)
+                            setSelectedElement({ ...element, properties: { ...element.properties, content: e.target.value } })
+                          }}
+                          onBlur={() => setEditingElementId(null)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              setEditingElementId(null)
+                            }
+                          }}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            background: 'transparent',
+                            border: 'none',
+                            outline: 'none',
+                            color: element.properties?.color || theme.colors.white,
+                            fontSize: 'inherit',
+                            fontWeight: 'inherit',
+                            textAlign: element.properties?.textAlign || 'left',
+                            padding: 0
+                          }}
+                        />
+                      ) : (
+                        <>
+                          {element.type === 'heading' && element.properties?.content}
+                          {element.type === 'text' && element.properties?.content}
+                          {element.type === 'button' && element.properties?.label}
+                          {element.type === 'file-upload' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary }}>File Upload Zone</div>}
+                          {element.type === 'text-input' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary, width: '100%' }}>{element.properties?.placeholder || element.properties?.label || 'Text Input'}</div>}
+                          {element.type === 'textarea' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary }}>Text Area</div>}
+                          {!['heading', 'text', 'button', 'file-upload', 'text-input', 'textarea'].includes(element.type) && (
+                            <div style={{ fontSize: '12px', color: theme.colors.text.secondary, textTransform: 'uppercase' }}>{element.type.replace('-', ' ')}</div>
+                          )}
+                        </>
                       )}
                     </div>
                   ))
@@ -3289,6 +4063,8 @@ function Requests() {
           </div>
         </div>
       )}
+
+      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </>
   )
 }
