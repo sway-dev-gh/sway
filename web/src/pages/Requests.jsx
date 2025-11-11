@@ -2552,14 +2552,14 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ padding: '12px 12px' }}>
+            <div style={{ padding: '20px 16px' }}>
               {activeTab === 'branding' ? (
                 <>
                   <div style={{
                     fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
-                    marginBottom: '16px',
+                    marginBottom: '24px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -2568,12 +2568,12 @@ function Requests() {
 
                   {/* Accent Color */}
                   {/* Page Title */}
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
-                      marginBottom: '8px',
+                      marginBottom: '10px',
                       fontWeight: theme.weight.medium
                     }}>
                       Page Title
@@ -2598,12 +2598,12 @@ function Requests() {
                   </div>
 
                   {/* Instructions */}
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
-                      marginBottom: '8px',
+                      marginBottom: '10px',
                       fontWeight: theme.weight.medium
                     }}>
                       Instructions Text
@@ -2629,12 +2629,12 @@ function Requests() {
                   </div>
 
                   {/* Success Message */}
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
-                      marginBottom: '8px',
+                      marginBottom: '10px',
                       fontWeight: theme.weight.medium
                     }}>
                       Success Message
@@ -2660,7 +2660,7 @@ function Requests() {
                   </div>
 
                   {/* Show Powered By */}
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '24px' }}>
                     <label style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -2674,7 +2674,7 @@ function Requests() {
                         checked={branding.showPoweredBy}
                         onChange={(e) => setBranding({ ...branding, showPoweredBy: e.target.checked })}
                         style={{
-                          marginRight: '10px',
+                          marginRight: '12px',
                           cursor: 'pointer',
                           width: '18px',
                           height: '18px'
@@ -2690,7 +2690,7 @@ function Requests() {
                     fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
-                    marginBottom: '16px',
+                    marginBottom: '24px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -2698,12 +2698,12 @@ function Requests() {
                   </div>
 
                   {/* Allowed File Types */}
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '28px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
-                      marginBottom: '8px',
+                      marginBottom: '12px',
                       fontWeight: theme.weight.medium
                     }}>
                       Allowed File Types
@@ -2735,11 +2735,10 @@ function Requests() {
                               }
                             }}
                             style={{
-                              marginRight: '10px',
+                              marginRight: '12px',
                               cursor: 'pointer',
                               width: '18px',
-                              height: '18px',
-                              accentColor: '#fff'
+                              height: '18px'
                             }}
                           />
                           {type.charAt(0).toUpperCase() + type.slice(1)}s
@@ -2764,7 +2763,7 @@ function Requests() {
                             }
                           }}
                           style={{
-                            marginRight: '10px',
+                            marginRight: '12px',
                             cursor: 'pointer',
                             width: '18px',
                             height: '18px'
@@ -2775,12 +2774,12 @@ function Requests() {
                     </div>
 
                     {/* Custom File Types */}
-                    <div style={{ marginTop: '12px' }}>
+                    <div style={{ marginTop: '16px' }}>
                       <label style={{
                         display: 'block',
                         fontSize: theme.fontSize.xs,
                         color: theme.colors.text.secondary,
-                        marginBottom: '8px',
+                        marginBottom: '10px',
                         fontWeight: theme.weight.medium
                       }}>
                         Custom File Extensions (optional)
@@ -2813,12 +2812,12 @@ function Requests() {
                   </div>
 
                   {/* Maximum File Size */}
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '28px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
-                      marginBottom: '8px',
+                      marginBottom: '10px',
                       fontWeight: theme.weight.medium
                     }}>
                       Maximum File Size Per Upload
@@ -2849,12 +2848,12 @@ function Requests() {
                   </div>
 
                   {/* Maximum Number of Files */}
-                  <div style={{ marginBottom: '20px' }}>
+                  <div style={{ marginBottom: '28px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
-                      marginBottom: '8px',
+                      marginBottom: '10px',
                       fontWeight: theme.weight.medium
                     }}>
                       Maximum Number of Files Per Submission
@@ -2895,7 +2894,7 @@ function Requests() {
                     fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
-                    marginBottom: '10px',
+                    marginBottom: '16px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>
@@ -2958,7 +2957,7 @@ function Requests() {
                     fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
-                    marginBottom: '16px',
+                    marginBottom: '20px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
                   }}>

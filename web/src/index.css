@@ -110,6 +110,12 @@ body {
   background: #404040;
 }
 
+/* WHITE CHECKBOXES - NO BLUE */
+input[type="checkbox"] {
+  accent-color: #ffffff;
+  cursor: pointer;
+}
+
 .app-container {
   min-height: 100vh;
 }
