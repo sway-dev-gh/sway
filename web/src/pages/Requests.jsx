@@ -2430,10 +2430,14 @@ function Requests() {
               </button>
               <button
                 style={{
-                  ...theme.buttons.primary.base,
+                  ...theme.buttons.secondary.base,
                   fontSize: '13px',
                   fontWeight: '600',
-                  padding: '10px 20px'
+                  padding: '10px 20px',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  borderRadius: '6px'
                 }}
                 onClick={handlePublish}
               >
@@ -3257,7 +3261,10 @@ function Requests() {
                 <button
                   onClick={() => toggleElementLock(selectedElement.id)}
                   style={{
-                    ...(isElementLocked(selectedElement.id) ? theme.buttons.primary.base : theme.buttons.secondary.base),
+                    ...theme.buttons.secondary.base,
+                    background: isElementLocked(selectedElement.id) ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
+                    color: isElementLocked(selectedElement.id) ? theme.colors.text.primary : theme.colors.text.secondary,
+                    border: `1px solid ${theme.colors.border.medium}`,
                     height: '32px',
                     padding: '0 12px',
                     fontSize: '13px'
@@ -3763,7 +3770,10 @@ function Requests() {
                           textAlign: props.textAlign || 'center'
                         }}>
                           <button disabled style={{
-                            ...theme.buttons.primary.base,
+                            ...theme.buttons.secondary.base,
+                            background: 'rgba(255, 255, 255, 0.08)',
+                            color: theme.colors.text.primary,
+                            border: `1px solid ${theme.colors.border.medium}`,
                             padding: '0 24px'
                           }}>
                             {props.label || 'Submit'}
@@ -3825,9 +3835,12 @@ function Requests() {
               </button>
               <button
                 onClick={handleUseTemplate}
-                style={theme.buttons.primary.base}
-                onMouseEnter={(e) => e.target.style.background = theme.buttons.primary.hover.background}
-                onMouseLeave={(e) => e.target.style.background = theme.buttons.primary.base.background}
+                style={{
+                  ...theme.buttons.secondary.base,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border.medium}`
+                }}
               >
                 Use Template
               </button>
@@ -3929,11 +3942,12 @@ function Requests() {
                   navigate('/plan')
                 }}
                 style={{
-                  ...theme.buttons.primary.base,
+                  ...theme.buttons.secondary.base,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border.medium}`,
                   flex: 1
                 }}
-                onMouseEnter={(e) => e.target.style.background = theme.buttons.primary.hover.background}
-                onMouseLeave={(e) => e.target.style.background = theme.buttons.primary.base.background}
               >
                 Upgrade Now
               </button>
@@ -4001,13 +4015,13 @@ function Requests() {
                         height: `${element.height}px`,
                         border: `1px solid ${theme.colors.border.medium}`,
                         borderRadius: theme.radius.md,
-                        background: element.type === 'button' ? theme.colors.white : 'rgba(255, 255, 255, 0.05)',
+                        background: element.type === 'button' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.05)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: element.properties?.textAlign === 'center' ? 'center' : element.properties?.textAlign === 'right' ? 'flex-end' : 'flex-start',
                         padding: '12px',
                         fontSize: element.properties?.fontSize || '16px',
-                        color: element.type === 'button' ? theme.colors.black : element.properties?.color || theme.colors.white,
+                        color: element.type === 'button' ? theme.colors.text.primary : element.properties?.color || theme.colors.white,
                         fontWeight: element.properties?.fontWeight || '400',
                         overflow: 'hidden',
                         pointerEvents: editingElementId === element.id ? 'auto' : 'none',
