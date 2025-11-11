@@ -3081,12 +3081,12 @@ function Requests() {
               onMouseUp={handleMouseUp}
               style={{
                 width: '1000px',
-                height: '500px',
+                minHeight: '1400px',
                 background: theme.colors.bg.page,
                 borderRadius: '8px',
                 position: 'relative',
                 border: isDragging ? `2px dashed ${theme.colors.white}` : `1px solid ${theme.colors.border.dark}`,
-                overflow: 'hidden',
+                overflow: 'visible',
                 transform: `scale(${zoom})`,
                 transformOrigin: 'top left'
               }}
@@ -3953,18 +3953,20 @@ function Requests() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 10000
+          zIndex: 10000,
+          overflow: 'auto',
+          padding: '40px'
         }}
         onClick={() => setShowPreviewModal(false)}
         >
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: '1200px',
-              height: '800px',
+              width: '1000px',
+              minHeight: '1400px',
               background: theme.colors.bg.hover,
               position: 'relative',
-              overflow: 'hidden'
+              overflow: 'visible'
             }}
           >
                 {canvasElements.length === 0 ? (
