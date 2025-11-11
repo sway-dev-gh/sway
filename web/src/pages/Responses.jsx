@@ -78,6 +78,29 @@ function Responses() {
     }
   }
 
+  const handleDelete = async (formId) => {
+    if (!window.confirm('Are you sure you want to delete this request? This will also delete all uploaded files.')) {
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      await api.delete(`/api/requests/${formId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      // Refresh data after delete
+      fetchData()
+      // Close expanded view if it was the deleted form
+      if (selectedFormId === formId) {
+        setSelectedFormId(null)
+      }
+    } catch (err) {
+      console.error('Delete error:', err)
+      alert('Failed to delete request. Please try again.')
+    }
+  }
+
   const formatBytes = (bytes) => {
     if (bytes === 0) return '0 Bytes'
     const k = 1024
@@ -651,6 +674,25 @@ function Responses() {
                           }}
                         >
                           View
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            handleDelete(form.id)
+                          }}
+                          style={{
+                            padding: '6px 12px',
+                            background: 'transparent',
+                            color: theme.colors.error,
+                            border: `1px solid ${theme.colors.error}`,
+                            borderRadius: theme.radius.sm,
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            cursor: 'pointer',
+                            fontFamily: 'inherit'
+                          }}
+                        >
+                          Delete
                         </button>
                       </div>
                     </div>

@@ -1200,8 +1200,11 @@ function Requests() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      alert('Form published successfully!')
-      navigate('/tracking')
+      const shortCode = response.data.shortCode
+      alert(`Form published successfully! Redirecting to your public link...`)
+
+      // Redirect to the public upload page
+      window.location.href = `/r/${shortCode}`
     } catch (error) {
       console.error('Publish error:', error)
       const errorMessage = error.response?.data?.message || error.message || 'Failed to publish form. Please try again.'
