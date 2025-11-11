@@ -77,7 +77,7 @@ export default function UpgradeBanner({ user, plan, onClose }) {
             color: '#666',
             fontWeight: '500'
           }}>
-            Upgrade to Pro for $12/month
+            Upgrade to Pro for $15/month
           </div>
         </div>
       </div>

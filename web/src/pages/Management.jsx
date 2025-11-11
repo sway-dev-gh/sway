@@ -13,6 +13,7 @@ function Management() {
   const navigate = useNavigate()
   const toast = useToast()
   const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState({ email: '', plan: 'free' })
   const [activeTab, setActiveTab] = useState('calendar')
 
   // Calendar/Responses state
@@ -45,6 +46,12 @@ function Management() {
     if (!token) {
       navigate('/login')
       return
+    }
+
+    // Load user data
+    const userStr = localStorage.getItem('user')
+    if (userStr) {
+      setUser(JSON.parse(userStr))
     }
 
     fetchData()

@@ -121,7 +121,7 @@ function Plan() {
     {
       id: 'pro',
       name: 'Pro',
-      price: '$12',
+      price: '$15',
       period: '/month',
       description: 'AI-powered workflow automation',
       popular: true,
