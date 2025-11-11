@@ -7,121 +7,117 @@ const theme = {
   },
   colors: {
     bg: {
-      page: '#000000',
-      card: '#000000',
-      cardHover: '#0a0a0a',
-      hover: '#0a0a0a',
-      sidebar: '#000000',
-      secondary: '#000000',
-      tertiary: '#0a0a0a'
+      page: '#191919',           // Notion's main bg
+      card: '#1E1E1E',           // Elevated surfaces
+      cardHover: '#252525',      // Hover state
+      hover: '#252525',
+      sidebar: '#191919',
+      secondary: '#1E1E1E',
+      tertiary: '#252525'
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#8a8a8a',
-      tertiary: '#4a4a4a',
-      muted: '#2a2a2a'
+      primary: '#FFFFFF',        // Primary text
+      secondary: '#9B9A97',      // Notion's secondary (brownish gray)
+      tertiary: '#6C6C6C',       // Muted text
+      muted: '#4A4A4A'          // Very muted
     },
     border: {
-      light: '#1a1a1a',
-      medium: '#1a1a1a',
-      dark: '#2a2a2a'
+      light: '#2F2F2F',          // Subtle borders
+      medium: '#373737',         // Default borders
+      dark: '#4A4A4A'           // Emphasized borders
     },
     white: '#ffffff',
     black: '#000000',
     accent: '#ffffff',
     success: '#ffffff',
     warning: '#ffffff',
-    error: '#ff3b30'
+    error: '#EB5757'            // Notion's red
   },
   shadows: {
     none: 'none',
-    sm: 'none',
-    md: 'none',
-    lg: 'none',
-    xl: 'none',
-    '2xl': 'none'
+    sm: '0 1px 2px rgba(0,0,0,0.3)',
+    md: '0 2px 4px rgba(0,0,0,0.3)',
+    lg: '0 4px 8px rgba(0,0,0,0.3)',
+    xl: '0 8px 16px rgba(0,0,0,0.3)',
+    '2xl': '0 16px 32px rgba(0,0,0,0.3)'
   },
   spacing: {
     1: '2px',
     2: '4px',
-    3: '8px',
-    4: '12px',
-    5: '16px',
-    6: '24px',
-    7: '32px',
-    8: '40px',
-    10: '48px',
-    12: '64px',
-    16: '96px',
-    20: '128px',
-    24: '160px'
+    3: '6px',
+    4: '8px',
+    5: '12px',
+    6: '16px',
+    7: '20px',
+    8: '24px',
+    10: '32px',
+    12: '40px',
+    16: '64px',
+    20: '80px',
+    24: '96px'
   },
   layout: {
-    // Standard page container
     pageContainer: {
       maxWidth: '1400px',
       margin: '0 auto',
-      padding: '48px 32px',
-      paddingBottom: '120px'
+      padding: '40px 24px',
+      paddingBottom: '100px'
     },
-    // Standard page with sidebar
     pageWithSidebar: {
       minHeight: '100vh',
-      paddingTop: '54px'
+      paddingTop: '50px'
     },
-    // Standard section spacing
-    sectionGap: '48px',
-    // Standard card padding
-    cardPadding: '24px',
-    // Standard form field gap
-    formFieldGap: '24px'
+    sectionGap: '32px',
+    cardPadding: '16px',
+    formFieldGap: '16px'
   },
   alerts: {
     error: {
-      padding: '12px 16px',
-      background: 'rgba(255, 68, 68, 0.05)',
-      border: '1px solid rgba(255, 68, 68, 0.2)',
-      borderRadius: '8px',
-      color: '#ff4444',
-      fontSize: '13px',
+      padding: '8px 12px',
+      background: 'rgba(235, 87, 87, 0.06)',
+      border: '1px solid rgba(235, 87, 87, 0.2)',
+      borderRadius: '4px',
+      color: '#EB5757',
+      fontSize: '14px',
       lineHeight: '1.5',
-      marginBottom: '24px',
+      marginBottom: '12px',
       fontWeight: '400'
     },
     success: {
-      padding: '12px 16px',
+      padding: '8px 12px',
       background: 'rgba(255, 255, 255, 0.03)',
       border: '1px solid rgba(255, 255, 255, 0.1)',
-      borderRadius: '8px',
+      borderRadius: '4px',
       color: '#ffffff',
-      fontSize: '13px',
+      fontSize: '14px',
       lineHeight: '1.5',
-      marginBottom: '24px',
+      marginBottom: '12px',
       fontWeight: '400'
     },
     info: {
-      padding: '12px 16px',
+      padding: '8px 12px',
       background: 'rgba(255, 255, 255, 0.02)',
-      border: '1px solid rgba(255, 255, 255, 0.08)',
-      borderRadius: '8px',
-      color: '#a3a3a3',
-      fontSize: '13px',
+      border: '1px solid rgba(255, 255, 255, 0.06)',
+      borderRadius: '4px',
+      color: '#9B9A97',
+      fontSize: '14px',
       lineHeight: '1.5',
-      marginBottom: '24px',
+      marginBottom: '12px',
       fontWeight: '400'
     }
   },
   fontSize: {
     xs: '12px',
-    sm: '14px',
-    base: '16px',
-    lg: '18px',
-    xl: '20px',
-    '2xl': '24px',
-    '3xl': '32px',
-    '4xl': '48px',
-    '5xl': '64px',
-    '6xl': '72px'
+    sm: '14px',          // Base size in Notion
+    base: '14px',        // Changed from 16px
+    md: '15px',
+    lg: '16px',
+    xl: '18px',
+    '2xl': '20px',
+    '3xl': '24px',
+    '4xl': '32px',
+    '5xl': '40px',
+    '6xl': '48px'
   },
   weight: {
     light: 300,
@@ -132,16 +128,16 @@ const theme = {
     black: 900
   },
   fontFamily: {
-    base: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Helvetica Neue", Arial, sans-serif'
+    base: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"'
   },
   radius: {
     none: '0px',
-    sm: '6px',
-    md: '8px',
-    lg: '12px',
-    xl: '16px',
-    '2xl': '20px',
-    '3xl': '24px',
+    sm: '3px',           // Notion's small radius
+    md: '4px',           // Notion's default radius
+    lg: '6px',
+    xl: '8px',
+    '2xl': '12px',
+    '3xl': '16px',
     full: '9999px'
   },
   transition: {
@@ -151,94 +147,86 @@ const theme = {
     slow: '0.2s ease'
   },
   inputs: {
-    // Standard text input
     text: {
       base: {
         width: '100%',
-        height: '44px',
-        padding: '0 16px',
-        background: '#0a0a0a',
-        border: '1px solid #1a1a1a',
-        borderRadius: '8px',
+        height: '36px',        // Smaller, Notion-like
+        padding: '0 12px',
+        background: '#191919',
+        border: '1px solid #373737',
+        borderRadius: '4px',
         color: '#ffffff',
-        fontSize: '15px',
+        fontSize: '14px',
         fontFamily: 'inherit',
         outline: 'none',
-        transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+        transition: 'border-color 0.15s ease, background 0.15s ease',
         boxSizing: 'border-box'
       },
       focus: {
-        borderColor: '#262626',
-        background: '#0a0a0a',
-        boxShadow: '0 0 0 3px rgba(38, 38, 38, 0.1)'
+        borderColor: '#4A4A4A',
+        background: '#1E1E1E'
       },
       error: {
-        borderColor: '#ff4444',
-        background: '#0a0a0a'
+        borderColor: '#EB5757',
+        background: '#191919'
       }
     },
-    // Textarea
     textarea: {
       base: {
         width: '100%',
-        padding: '12px 16px',
-        background: '#0a0a0a',
-        border: '1px solid #1a1a1a',
-        borderRadius: '8px',
+        padding: '8px 12px',
+        background: '#191919',
+        border: '1px solid #373737',
+        borderRadius: '4px',
         color: '#ffffff',
-        fontSize: '15px',
+        fontSize: '14px',
         fontFamily: 'inherit',
         outline: 'none',
         resize: 'vertical',
-        minHeight: '120px',
+        minHeight: '80px',
         lineHeight: '1.5',
-        transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+        transition: 'border-color 0.15s ease, background 0.15s ease',
         boxSizing: 'border-box'
       },
       focus: {
-        borderColor: '#262626',
-        background: '#0a0a0a',
-        boxShadow: '0 0 0 3px rgba(38, 38, 38, 0.1)'
+        borderColor: '#4A4A4A',
+        background: '#1E1E1E'
       },
       error: {
-        borderColor: '#ff4444',
-        background: '#0a0a0a'
+        borderColor: '#EB5757',
+        background: '#191919'
       }
     },
-    // Label
     label: {
       display: 'block',
-      fontSize: '12px',
-      color: '#a3a3a3',
-      marginBottom: '8px',
+      fontSize: '14px',
+      color: '#9B9A97',
+      marginBottom: '6px',
       fontWeight: '500',
-      letterSpacing: '0.01em'
+      letterSpacing: '0'
     },
-    // Helper text
     helper: {
-      fontSize: '12px',
-      color: '#737373',
-      marginTop: '6px',
+      fontSize: '13px',
+      color: '#6C6C6C',
+      marginTop: '4px',
       lineHeight: '1.4'
     },
-    // Error text
     errorText: {
-      fontSize: '12px',
-      color: '#ff4444',
-      marginTop: '6px',
+      fontSize: '13px',
+      color: '#EB5757',
+      marginTop: '4px',
       lineHeight: '1.4'
     }
   },
   buttons: {
-    // Primary button - white background, black text
     primary: {
       base: {
-        height: '44px',
-        padding: '0 24px',
+        height: '32px',          // Smaller, Notion-like
+        padding: '0 12px',
         background: '#ffffff',
         color: '#000000',
         border: 'none',
-        borderRadius: '8px',
+        borderRadius: '4px',
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
@@ -250,22 +238,21 @@ const theme = {
         justifyContent: 'center'
       },
       hover: {
-        background: '#e5e5e5'
+        background: '#E5E5E5'
       },
       disabled: {
-        opacity: 0.5,
+        opacity: 0.4,
         cursor: 'not-allowed'
       }
     },
-    // Secondary button - transparent with border
     secondary: {
       base: {
-        height: '44px',
-        padding: '0 24px',
+        height: '32px',
+        padding: '0 12px',
         background: 'transparent',
-        color: '#ffffff',
-        border: '1px solid #262626',
-        borderRadius: '8px',
+        color: '#9B9A97',
+        border: '1px solid #373737',
+        borderRadius: '4px',
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
@@ -277,68 +264,67 @@ const theme = {
         justifyContent: 'center'
       },
       hover: {
-        background: 'rgba(255, 255, 255, 0.05)',
-        borderColor: '#404040'
-      },
-      disabled: {
-        opacity: 0.5,
-        cursor: 'not-allowed'
-      }
-    },
-    // Danger button - red theme
-    danger: {
-      base: {
-        height: '44px',
-        padding: '0 24px',
-        background: 'rgba(255, 68, 68, 0.1)',
-        color: '#ff4444',
-        border: '1px solid rgba(255, 68, 68, 0.3)',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontWeight: '500',
-        cursor: 'pointer',
-        fontFamily: 'inherit',
-        transition: 'all 0.15s ease',
-        boxSizing: 'border-box',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      hover: {
-        background: '#ff4444',
-        color: '#ffffff',
-        borderColor: '#ff4444'
-      },
-      disabled: {
-        opacity: 0.5,
-        cursor: 'not-allowed'
-      }
-    },
-    // Ghost button - minimal, text only
-    ghost: {
-      base: {
-        height: '44px',
-        padding: '0 24px',
-        background: 'transparent',
-        color: '#8a8a8a',
-        border: 'none',
-        borderRadius: '8px',
-        fontSize: '14px',
-        fontWeight: '500',
-        cursor: 'pointer',
-        fontFamily: 'inherit',
-        transition: 'all 0.15s ease',
-        boxSizing: 'border-box',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      },
-      hover: {
-        background: 'rgba(255, 255, 255, 0.05)',
+        background: '#252525',
+        borderColor: '#4A4A4A',
         color: '#ffffff'
       },
       disabled: {
-        opacity: 0.5,
+        opacity: 0.4,
+        cursor: 'not-allowed'
+      }
+    },
+    danger: {
+      base: {
+        height: '32px',
+        padding: '0 12px',
+        background: 'rgba(235, 87, 87, 0.1)',
+        color: '#EB5757',
+        border: '1px solid rgba(235, 87, 87, 0.3)',
+        borderRadius: '4px',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease',
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      hover: {
+        background: '#EB5757',
+        color: '#ffffff',
+        borderColor: '#EB5757'
+      },
+      disabled: {
+        opacity: 0.4,
+        cursor: 'not-allowed'
+      }
+    },
+    ghost: {
+      base: {
+        height: '32px',
+        padding: '0 12px',
+        background: 'transparent',
+        color: '#9B9A97',
+        border: 'none',
+        borderRadius: '4px',
+        fontSize: '14px',
+        fontWeight: '500',
+        cursor: 'pointer',
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease',
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      },
+      hover: {
+        background: '#252525',
+        color: '#ffffff'
+      },
+      disabled: {
+        opacity: 0.4,
         cursor: 'not-allowed'
       }
     }
