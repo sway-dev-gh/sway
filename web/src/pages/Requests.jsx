@@ -1091,7 +1091,7 @@ function Requests() {
     instructions: ''
   })
   const [settings, setSettings] = useState({
-    allowedFileTypes: ['*'], // '*' means all files allowed
+    allowedFileTypes: ['image', 'document', 'video', 'audio', 'archive'], // All types checked by default
     maxFileSize: 104857600, // 100MB in bytes
     maxFiles: 10,
     customFileTypes: ''
@@ -2286,28 +2286,6 @@ function Requests() {
           background: theme.colors.bg.card
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <button
-              onClick={() => navigate('/dashboard')}
-              style={{
-                ...theme.buttons.ghost.base,
-                padding: '0 8px'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = theme.buttons.ghost.hover.background
-                e.target.style.color = theme.buttons.ghost.hover.color
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = theme.buttons.ghost.base.background
-                e.target.style.color = theme.buttons.ghost.base.color
-              }}
-            >
-              Back
-            </button>
-            <div style={{
-              width: '1px',
-              height: '16px',
-              background: theme.colors.border.medium
-            }}></div>
             {isEditingTitle ? (
               <input
                 type="text"
@@ -2462,21 +2440,21 @@ function Requests() {
             flexDirection: 'column'
           }}>
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: '12px', borderBottom: `1px solid ${theme.colors.border.medium}`, padding: '0 12px' }}>
+            <div style={{ display: 'flex', gap: '16px', borderBottom: `1px solid ${theme.colors.border.medium}`, padding: '0 16px' }}>
               <button
                 onClick={() => setActiveTab('templates')}
                 style={{
-                  flex: 1,
-                  padding: '8px 4px',
+                  padding: '10px 8px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'templates' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
                   color: activeTab === 'templates' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: theme.fontSize.sm,
+                  fontSize: '13px',
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease'
+                  transition: 'color 0.15s ease',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseEnter={(e) => activeTab !== 'templates' && (e.target.style.color = theme.colors.text.primary)}
                 onMouseLeave={(e) => activeTab !== 'templates' && (e.target.style.color = theme.colors.text.secondary)}
@@ -2486,17 +2464,17 @@ function Requests() {
               <button
                 onClick={() => setActiveTab('elements')}
                 style={{
-                  flex: 1,
-                  padding: '8px 4px',
+                  padding: '10px 8px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'elements' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
                   color: activeTab === 'elements' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: theme.fontSize.sm,
+                  fontSize: '13px',
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease'
+                  transition: 'color 0.15s ease',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseEnter={(e) => activeTab !== 'elements' && (e.target.style.color = theme.colors.text.primary)}
                 onMouseLeave={(e) => activeTab !== 'elements' && (e.target.style.color = theme.colors.text.secondary)}
@@ -2506,17 +2484,17 @@ function Requests() {
               <button
                 onClick={() => setActiveTab('branding')}
                 style={{
-                  flex: 1,
-                  padding: '8px 4px',
+                  padding: '10px 8px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'branding' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
                   color: activeTab === 'branding' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: theme.fontSize.sm,
+                  fontSize: '13px',
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease'
+                  transition: 'color 0.15s ease',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseEnter={(e) => activeTab !== 'branding' && (e.target.style.color = theme.colors.text.primary)}
                 onMouseLeave={(e) => activeTab !== 'branding' && (e.target.style.color = theme.colors.text.secondary)}
@@ -2526,17 +2504,17 @@ function Requests() {
               <button
                 onClick={() => setActiveTab('settings')}
                 style={{
-                  flex: 1,
-                  padding: '8px 4px',
+                  padding: '10px 8px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'settings' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
                   color: activeTab === 'settings' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: theme.fontSize.sm,
+                  fontSize: '13px',
                   fontWeight: '500',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'color 0.15s ease'
+                  transition: 'color 0.15s ease',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseEnter={(e) => activeTab !== 'settings' && (e.target.style.color = theme.colors.text.primary)}
                 onMouseLeave={(e) => activeTab !== 'settings' && (e.target.style.color = theme.colors.text.secondary)}
@@ -2716,18 +2694,15 @@ function Requests() {
                         }}>
                           <input
                             type="checkbox"
-                            checked={settings.allowedFileTypes.includes('*') || settings.allowedFileTypes.includes(type)}
+                            checked={settings.allowedFileTypes.includes(type)}
                             onChange={(e) => {
-                              if (settings.allowedFileTypes.includes('*')) {
-                                // If "all" was selected, start with just this type
-                                setSettings({ ...settings, allowedFileTypes: [type] })
-                              } else if (e.target.checked) {
+                              if (e.target.checked) {
                                 // Add this type
                                 setSettings({ ...settings, allowedFileTypes: [...settings.allowedFileTypes, type] })
                               } else {
-                                // Remove this type
+                                // Remove this type (allow empty array - user explicitly unchecked)
                                 const newTypes = settings.allowedFileTypes.filter(t => t !== type)
-                                setSettings({ ...settings, allowedFileTypes: newTypes.length > 0 ? newTypes : ['*'] })
+                                setSettings({ ...settings, allowedFileTypes: newTypes })
                               }
                             }}
                             style={{
@@ -2740,34 +2715,6 @@ function Requests() {
                           {type.charAt(0).toUpperCase() + type.slice(1)}s
                         </label>
                       ))}
-                      <label style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        fontSize: '14px',
-                        color: theme.colors.text.primary,
-                        cursor: 'pointer',
-                        userSelect: 'none',
-                        padding: '8px 0'
-                      }}>
-                        <input
-                          type="checkbox"
-                          checked={settings.allowedFileTypes.includes('*')}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setSettings({ ...settings, allowedFileTypes: ['*'] })
-                            } else {
-                              setSettings({ ...settings, allowedFileTypes: ['image'] })
-                            }
-                          }}
-                          style={{
-                            marginRight: '14px',
-                            cursor: 'pointer',
-                            width: '20px',
-                            height: '20px'
-                          }}
-                        />
-                        All File Types
-                      </label>
                     </div>
 
                     {/* Custom File Types */}
