@@ -19,6 +19,8 @@ function Requests() {
   const [searchTerm, setSearchTerm] = useState('')
   const [showPreviewModal, setShowPreviewModal] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
+  const [draggedElement, setDraggedElement] = useState(null)
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [draggedComponent, setDraggedComponent] = useState(null)
 
   const canvasRef = useRef()
@@ -294,6 +296,365 @@ function Requests() {
     setActiveTab('properties')
   }
 
+  // Update element properties
+  const updateElementProperty = (elementId, propertyName, value) => {
+    const newElements = elements.map(element => {
+      if (element.id === elementId) {
+        return {
+          ...element,
+          properties: {
+            ...element.properties,
+            [propertyName]: value
+          }
+        }
+      }
+      return element
+    })
+    setElements(newElements)
+    saveToHistory(newElements)
+
+    // Update selected element if it's the one being edited
+    if (selectedElement && selectedElement.id === elementId) {
+      setSelectedElement(newElements.find(el => el.id === elementId))
+    }
+  }
+
+  // Delete element
+  const deleteElement = (elementId) => {
+    const newElements = elements.filter(element => element.id !== elementId)
+    setElements(newElements)
+    saveToHistory(newElements)
+    if (selectedElement && selectedElement.id === elementId) {
+      setSelectedElement(null)
+    }
+  }
+
+  // Drag and drop handlers
+  const handleMouseDown = (e, element) => {
+    e.preventDefault()
+    e.stopPropagation()
+
+    const rect = canvasRef.current.getBoundingClientRect()
+    const offsetX = e.clientX - rect.left - element.x
+    const offsetY = e.clientY - rect.top - element.y
+
+    setDraggedElement(element)
+    setDragOffset({ x: offsetX, y: offsetY })
+    setIsDragging(true)
+    setSelectedElement(element)
+
+    // Add cursor change to body
+    document.body.style.cursor = 'grabbing'
+    document.body.style.userSelect = 'none'
+  }
+
+  const handleMouseMove = useCallback((e) => {
+    if (!isDragging || !draggedElement) return
+
+    e.preventDefault()
+    const rect = canvasRef.current.getBoundingClientRect()
+    const newX = Math.max(0, Math.min(e.clientX - rect.left - dragOffset.x, rect.width - draggedElement.width))
+    const newY = Math.max(0, Math.min(e.clientY - rect.top - dragOffset.y, rect.height - draggedElement.height))
+
+    const newElements = elements.map(element =>
+      element.id === draggedElement.id
+        ? { ...element, x: newX, y: newY }
+        : element
+    )
+
+    setElements(newElements)
+    setDraggedElement({ ...draggedElement, x: newX, y: newY })
+  }, [isDragging, draggedElement, dragOffset, elements])
+
+  const handleMouseUp = useCallback(() => {
+    if (isDragging && draggedElement) {
+      saveToHistory(elements)
+      // Restore cursor
+      document.body.style.cursor = ''
+      document.body.style.userSelect = ''
+    }
+    setIsDragging(false)
+    setDraggedElement(null)
+    setDragOffset({ x: 0, y: 0 })
+  }, [isDragging, draggedElement, elements, saveToHistory])
+
+  // Add global mouse event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener('mousemove', handleMouseMove)
+      document.addEventListener('mouseup', handleMouseUp)
+
+      return () => {
+        document.removeEventListener('mousemove', handleMouseMove)
+        document.removeEventListener('mouseup', handleMouseUp)
+      }
+    }
+  }, [isDragging, handleMouseMove, handleMouseUp])
+
+  // Render realistic form element
+  const renderFormElement = (element) => {
+    const isSelected = selectedElement?.id === element.id
+    const isBeingDragged = draggedElement?.id === element.id
+    const baseStyle = {
+      position: 'absolute',
+      left: element.x,
+      top: element.y,
+      width: element.width,
+      height: element.height,
+      border: isSelected ? '2px solid #FFFFFF' : '2px solid transparent',
+      borderRadius: '4px',
+      cursor: isBeingDragged ? 'grabbing' : 'grab',
+      boxSizing: 'border-box',
+      transform: isBeingDragged ? 'scale(1.02)' : 'scale(1)',
+      boxShadow: isBeingDragged ? '0 8px 24px rgba(0, 0, 0, 0.5)' : isSelected ? '0 4px 12px rgba(0, 0, 0, 0.3)' : 'none',
+      zIndex: isBeingDragged ? 1000 : isSelected ? 100 : 1,
+      transition: isBeingDragged ? 'none' : 'all 0.2s ease',
+      opacity: isBeingDragged ? 0.9 : 1
+    }
+
+    switch (element.type) {
+      case 'heading':
+        return (
+          <div
+            key={element.id}
+            onClick={() => setSelectedElement(element)}
+            onMouseDown={(e) => handleMouseDown(e, element)}
+            style={{
+              ...baseStyle,
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <h1 style={{
+              margin: 0,
+              fontSize: element.properties.fontSize || '32px',
+              fontWeight: element.properties.fontWeight || '700',
+              color: element.properties.color || '#FFFFFF',
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap'
+            }}>
+              {element.properties.content || 'Heading'}
+            </h1>
+          </div>
+        )
+
+      case 'paragraph':
+        return (
+          <div
+            key={element.id}
+            onClick={() => setSelectedElement(element)}
+            onMouseDown={(e) => handleMouseDown(e, element)}
+            style={{
+              ...baseStyle,
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'flex-start'
+            }}
+          >
+            <p style={{
+              margin: 0,
+              fontSize: element.properties.fontSize || '16px',
+              fontWeight: element.properties.fontWeight || '400',
+              color: element.properties.color || '#9B9A97',
+              lineHeight: '1.5',
+              overflow: 'hidden'
+            }}>
+              {element.properties.content || 'Paragraph text...'}
+            </p>
+          </div>
+        )
+
+      case 'textfield':
+      case 'email':
+      case 'phone':
+        return (
+          <div
+            key={element.id}
+            onClick={() => setSelectedElement(element)}
+            onMouseDown={(e) => handleMouseDown(e, element)}
+            style={{
+              ...baseStyle,
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}
+          >
+            <label style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: '#FFFFFF'
+            }}>
+              {element.properties.label || 'Input Field'}
+              {element.properties.required && (
+                <span style={{ color: '#ef4444', marginLeft: '4px' }}>*</span>
+              )}
+            </label>
+            <input
+              type={element.type === 'email' ? 'email' : element.type === 'phone' ? 'tel' : 'text'}
+              placeholder={element.properties.placeholder || 'Enter text...'}
+              style={{
+                padding: '10px',
+                fontSize: '14px',
+                border: '1px solid #2F2F2F',
+                borderRadius: '6px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#FFFFFF',
+                outline: 'none',
+                pointerEvents: 'none'
+              }}
+              readOnly
+            />
+          </div>
+        )
+
+      case 'textarea':
+        return (
+          <div
+            key={element.id}
+            onClick={() => setSelectedElement(element)}
+            onMouseDown={(e) => handleMouseDown(e, element)}
+            style={{
+              ...baseStyle,
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}
+          >
+            <label style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: '#FFFFFF'
+            }}>
+              {element.properties.label || 'Text Area'}
+              {element.properties.required && (
+                <span style={{ color: '#ef4444', marginLeft: '4px' }}>*</span>
+              )}
+            </label>
+            <textarea
+              placeholder={element.properties.placeholder || 'Enter text...'}
+              rows={element.properties.rows || 4}
+              style={{
+                padding: '10px',
+                fontSize: '14px',
+                border: '1px solid #2F2F2F',
+                borderRadius: '6px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                color: '#FFFFFF',
+                outline: 'none',
+                resize: 'none',
+                flex: 1,
+                pointerEvents: 'none'
+              }}
+              readOnly
+            />
+          </div>
+        )
+
+      case 'file-upload':
+        return (
+          <div
+            key={element.id}
+            onClick={() => setSelectedElement(element)}
+            onMouseDown={(e) => handleMouseDown(e, element)}
+            style={{
+              ...baseStyle,
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '12px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '8px'
+            }}
+          >
+            <label style={{
+              fontSize: '14px',
+              fontWeight: '600',
+              color: '#FFFFFF'
+            }}>
+              {element.properties.label || 'File Upload'}
+            </label>
+            <div style={{
+              border: '2px dashed #2F2F2F',
+              borderRadius: '8px',
+              padding: '20px',
+              textAlign: 'center',
+              background: 'rgba(255, 255, 255, 0.02)',
+              flex: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <div style={{
+                fontSize: '14px',
+                color: '#9B9A97'
+              }}>
+                📁 Drop files here or click to upload
+              </div>
+            </div>
+          </div>
+        )
+
+      case 'button':
+        return (
+          <div
+            key={element.id}
+            onClick={() => setSelectedElement(element)}
+            onMouseDown={(e) => handleMouseDown(e, element)}
+            style={{
+              ...baseStyle,
+              background: 'rgba(255, 255, 255, 0.03)',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <button style={{
+              background: 'rgba(255, 255, 255, 0.1)',
+              color: '#FFFFFF',
+              border: '1px solid #373737',
+              borderRadius: '6px',
+              padding: '10px 20px',
+              fontSize: '14px',
+              fontWeight: '600',
+              cursor: 'default',
+              pointerEvents: 'none'
+            }}>
+              {element.properties.content || 'Button'}
+            </button>
+          </div>
+        )
+
+      default:
+        return (
+          <div
+            key={element.id}
+            onClick={() => setSelectedElement(element)}
+            onMouseDown={(e) => handleMouseDown(e, element)}
+            style={{
+              ...baseStyle,
+              background: 'rgba(255, 255, 255, 0.05)',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '14px',
+              color: '#FFFFFF'
+            }}
+          >
+            {COMPONENT_LIBRARY.find(c => c.id === element.type)?.label || element.type}
+          </div>
+        )
+    }
+  }
+
   // Handle saving
   const handleSave = async () => {
     try {
@@ -509,17 +870,24 @@ function Requests() {
 
             {/* Left Sidebar */}
             <div style={{
-              width: '320px',
-              flexShrink: 0
+              width: '340px',
+              flexShrink: 0,
+              background: 'rgba(255, 255, 255, 0.01)',
+              border: '1px solid #1A1A1A',
+              borderRadius: '12px',
+              padding: '24px',
+              height: 'fit-content'
             }}>
 
               {/* Tab Navigation */}
               <div style={{
                 display: 'flex',
-                gap: '8px',
-                marginBottom: '24px',
-                borderBottom: '1px solid #2F2F2F',
-                paddingBottom: '16px'
+                gap: '4px',
+                marginBottom: '32px',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderRadius: '8px',
+                padding: '4px',
+                border: '1px solid #1A1A1A'
               }}>
                 {[
                   { key: 'templates', label: 'Templates' },
@@ -530,15 +898,18 @@ function Requests() {
                     key={tab.key}
                     onClick={() => setActiveTab(tab.key)}
                     style={{
-                      background: activeTab === tab.key ? 'rgba(255, 255, 255, 0.08)' : 'transparent',
-                      color: activeTab === tab.key ? '#FFFFFF' : '#9B9A97',
+                      background: activeTab === tab.key ? '#FFFFFF' : 'transparent',
+                      color: activeTab === tab.key ? '#000000' : '#9B9A97',
                       border: 'none',
                       borderRadius: '6px',
                       fontSize: '13px',
-                      fontWeight: '500',
-                      padding: '8px 16px',
+                      fontWeight: activeTab === tab.key ? '600' : '500',
+                      padding: '10px 16px',
                       cursor: 'pointer',
-                      fontFamily: 'inherit'
+                      fontFamily: 'inherit',
+                      flex: 1,
+                      textAlign: 'center',
+                      transition: 'all 0.2s ease'
                     }}
                   >
                     {tab.label}
@@ -564,28 +935,65 @@ function Requests() {
                         key={template.id}
                         onClick={() => loadTemplate(template)}
                         style={{
-                          background: 'rgba(255, 255, 255, 0.03)',
-                          border: '1px solid #2F2F2F',
-                          borderRadius: '8px',
-                          padding: '16px',
-                          cursor: 'pointer'
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          border: '1px solid #1A1A1A',
+                          borderRadius: '10px',
+                          padding: '20px',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          ':hover': {
+                            background: 'rgba(255, 255, 255, 0.04)',
+                            border: '1px solid #2A2A2A',
+                            transform: 'translateY(-1px)'
+                          }
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.background = 'rgba(255, 255, 255, 0.04)'
+                          e.target.style.border = '1px solid #2A2A2A'
+                          e.target.style.transform = 'translateY(-1px)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+                          e.target.style.border = '1px solid #1A1A1A'
+                          e.target.style.transform = 'translateY(0)'
                         }}
                       >
-                        <h4 style={{
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          color: '#FFFFFF',
-                          margin: '0 0 8px 0'
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          marginBottom: '8px'
                         }}>
-                          {template.name}
-                        </h4>
+                          <div style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            background: template.id === 'blank' ? '#6B7280' : '#34D399'
+                          }} />
+                          <h4 style={{
+                            fontSize: '15px',
+                            fontWeight: '600',
+                            color: '#FFFFFF',
+                            margin: 0
+                          }}>
+                            {template.name}
+                          </h4>
+                        </div>
                         <p style={{
-                          fontSize: '12px',
+                          fontSize: '13px',
                           color: '#9B9A97',
-                          margin: 0
+                          margin: 0,
+                          lineHeight: '1.4'
                         }}>
                           {template.description}
                         </p>
+                        <div style={{
+                          fontSize: '11px',
+                          color: '#6B7280',
+                          marginTop: '8px'
+                        }}>
+                          {template.elements.length} element{template.elements.length !== 1 ? 's' : ''}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -673,6 +1081,112 @@ function Requests() {
                           Configure the properties for this element
                         </div>
                       </div>
+
+                      {/* Property Input Fields */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        {Object.entries(selectedElement.properties).map(([propertyName, value]) => (
+                          <div key={propertyName}>
+                            <label style={{
+                              display: 'block',
+                              fontSize: '12px',
+                              fontWeight: '600',
+                              color: '#FFFFFF',
+                              marginBottom: '8px',
+                              textTransform: 'capitalize'
+                            }}>
+                              {propertyName.replace(/([A-Z])/g, ' $1')}
+                            </label>
+
+                            {typeof value === 'boolean' ? (
+                              <label style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                cursor: 'pointer'
+                              }}>
+                                <input
+                                  type="checkbox"
+                                  checked={value}
+                                  onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.checked)}
+                                  style={{
+                                    width: '16px',
+                                    height: '16px'
+                                  }}
+                                />
+                                <span style={{ fontSize: '13px', color: '#9B9A97' }}>
+                                  {value ? 'Enabled' : 'Disabled'}
+                                </span>
+                              </label>
+                            ) : typeof value === 'number' ? (
+                              <input
+                                type="number"
+                                value={value}
+                                onChange={(e) => updateElementProperty(selectedElement.id, propertyName, parseInt(e.target.value) || 0)}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px',
+                                  fontSize: '13px',
+                                  border: '1px solid #2F2F2F',
+                                  borderRadius: '6px',
+                                  background: 'rgba(255, 255, 255, 0.03)',
+                                  color: '#FFFFFF',
+                                  outline: 'none'
+                                }}
+                              />
+                            ) : propertyName.toLowerCase().includes('color') ? (
+                              <input
+                                type="color"
+                                value={value}
+                                onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.value)}
+                                style={{
+                                  width: '100%',
+                                  height: '40px',
+                                  border: '1px solid #2F2F2F',
+                                  borderRadius: '6px',
+                                  background: 'rgba(255, 255, 255, 0.03)',
+                                  cursor: 'pointer'
+                                }}
+                              />
+                            ) : (
+                              <textarea
+                                value={value}
+                                onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.value)}
+                                rows={propertyName === 'content' ? 3 : 1}
+                                style={{
+                                  width: '100%',
+                                  padding: '10px',
+                                  fontSize: '13px',
+                                  border: '1px solid #2F2F2F',
+                                  borderRadius: '6px',
+                                  background: 'rgba(255, 255, 255, 0.03)',
+                                  color: '#FFFFFF',
+                                  outline: 'none',
+                                  resize: 'none',
+                                  fontFamily: 'inherit'
+                                }}
+                              />
+                            )}
+                          </div>
+                        ))}
+
+                        {/* Delete Button */}
+                        <button
+                          onClick={() => deleteElement(selectedElement.id)}
+                          style={{
+                            padding: '10px 16px',
+                            fontSize: '13px',
+                            fontWeight: '600',
+                            border: '1px solid #ef4444',
+                            borderRadius: '6px',
+                            background: 'rgba(239, 68, 68, 0.1)',
+                            color: '#ef4444',
+                            cursor: 'pointer',
+                            marginTop: '8px'
+                          }}
+                        >
+                          Delete Element
+                        </button>
+                      </div>
                     </div>
                   ) : (
                     <div style={{
@@ -690,25 +1204,47 @@ function Requests() {
 
             {/* Canvas Area */}
             <div style={{ flex: 1 }}>
-              <h2 style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                color: '#FFFFFF',
-                margin: '0 0 24px 0',
-                letterSpacing: '-0.02em'
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '24px'
               }}>
-                Form Builder
-              </h2>
+                <h2 style={{
+                  fontSize: '28px',
+                  fontWeight: '700',
+                  color: '#FFFFFF',
+                  margin: 0,
+                  letterSpacing: '-0.02em'
+                }}>
+                  Canvas
+                </h2>
+                <div style={{
+                  fontSize: '13px',
+                  color: '#6B7280',
+                  padding: '8px 12px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  borderRadius: '6px',
+                  border: '1px solid #1A1A1A'
+                }}>
+                  {elements.length} element{elements.length !== 1 ? 's' : ''}
+                </div>
+              </div>
 
               <div
                 ref={canvasRef}
                 style={{
-                  minHeight: '500px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid #2F2F2F',
-                  borderRadius: '8px',
+                  minHeight: '600px',
+                  background: `
+                    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0),
+                    rgba(255, 255, 255, 0.015)
+                  `,
+                  backgroundSize: '20px 20px',
+                  border: '1px solid #1A1A1A',
+                  borderRadius: '12px',
                   padding: '40px',
-                  position: 'relative'
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
               >
                 {elements.length === 0 ? (
@@ -776,31 +1312,7 @@ function Requests() {
                   </div>
                 ) : (
                   /* Render Elements */
-                  elements.map((element) => (
-                    <div
-                      key={element.id}
-                      onClick={() => setSelectedElement(element)}
-                      style={{
-                        position: 'absolute',
-                        left: element.x,
-                        top: element.y,
-                        width: element.width,
-                        height: element.height,
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        border: selectedElement?.id === element.id ? '2px solid #FFFFFF' : '2px solid transparent',
-                        borderRadius: '4px',
-                        padding: '12px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '14px',
-                        color: '#FFFFFF'
-                      }}
-                    >
-                      {COMPONENT_LIBRARY.find(c => c.id === element.type)?.label || element.type}
-                    </div>
-                  ))
+                  elements.map(renderFormElement)
                 )}
               </div>
             </div>
