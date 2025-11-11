@@ -2472,7 +2472,7 @@ function Requests() {
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
           {/* LEFT SIDEBAR */}
           <div style={{
-            width: '280px',
+            width: '320px',
             borderRight: `1px solid ${theme.colors.border.dark}`,
             background: theme.colors.bg.hover,
             overflowY: 'auto',
@@ -2552,7 +2552,7 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ padding: '32px 24px' }}>
+            <div style={{ padding: '40px 32px' }}>
               {activeTab === 'branding' ? (
                 <>
                   <div style={{
@@ -2598,7 +2598,7 @@ function Requests() {
                   </div>
 
                   {/* Instructions */}
-                  <div style={{ marginBottom: '32px' }}>
+                  <div style={{ marginBottom: '40px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: '13px',
@@ -2629,7 +2629,7 @@ function Requests() {
                   </div>
 
                   {/* Success Message */}
-                  <div style={{ marginBottom: '32px' }}>
+                  <div style={{ marginBottom: '40px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: '13px',
@@ -2660,7 +2660,7 @@ function Requests() {
                   </div>
 
                   {/* Show Powered By */}
-                  <div style={{ marginBottom: '32px' }}>
+                  <div style={{ marginBottom: '40px' }}>
                     <label style={{
                       display: 'flex',
                       alignItems: 'center',
@@ -2815,7 +2815,7 @@ function Requests() {
                   </div>
 
                   {/* Maximum File Size */}
-                  <div style={{ marginBottom: '40px' }}>
+                  <div style={{ marginBottom: '48px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: '13px',
@@ -2851,7 +2851,7 @@ function Requests() {
                   </div>
 
                   {/* Maximum Number of Files */}
-                  <div style={{ marginBottom: '40px' }}>
+                  <div style={{ marginBottom: '48px' }}>
                     <label style={{
                       display: 'block',
                       fontSize: '13px',
@@ -2897,7 +2897,7 @@ function Requests() {
                     fontSize: '11px',
                     fontWeight: theme.weight.bold,
                     color: theme.colors.text.tertiary,
-                    marginBottom: '28px',
+                    marginBottom: '40px',
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
@@ -2907,7 +2907,7 @@ function Requests() {
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '16px'
+                    gap: '20px'
                   }}>
                     {TEMPLATES.map((template) => {
                       const isPro = template.plan === 'pro'
@@ -2918,7 +2918,7 @@ function Requests() {
                           key={template.id}
                           onClick={() => handleTemplateClick(template)}
                           style={{
-                            padding: '20px',
+                            padding: '24px',
                             background: 'rgba(255, 255, 255, 0.02)',
                             border: `1px solid ${theme.colors.border.light}`,
                             borderRadius: '8px',
@@ -2965,7 +2965,7 @@ function Requests() {
                     fontSize: '11px',
                     fontWeight: theme.weight.bold,
                     color: theme.colors.text.tertiary,
-                    marginBottom: '28px',
+                    marginBottom: '40px',
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
@@ -2975,7 +2975,7 @@ function Requests() {
                   <div style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '16px'
+                    gap: '20px'
                   }}>
                     {COMPONENT_LIBRARY.map((component) => {
                       const isPro = component.plan === 'pro'
@@ -2988,7 +2988,7 @@ function Requests() {
                           onDragStart={() => !isLocked && handleDragStart(component)}
                           onClick={() => isLocked && setShowUpgradeModal(true)}
                           style={{
-                            padding: '20px',
+                            padding: '24px',
                             background: 'rgba(255, 255, 255, 0.02)',
                             border: `1px solid ${theme.colors.border.light}`,
                             borderRadius: '8px',
