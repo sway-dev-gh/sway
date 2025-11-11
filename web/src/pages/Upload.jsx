@@ -4,6 +4,16 @@ import api from '../api/axios'
 import theme from '../theme'
 import { useToast } from '../hooks/useToast'
 import ToastContainer from '../components/ToastContainer'
+import {
+  validateFileType,
+  validateFileSize,
+  sanitizeFileName,
+  validateSVGSafety,
+  sanitizeTextInput,
+  sanitizeEmail,
+  escapeHTML,
+  validateURL
+} from '../utils/security/sanitize'
 
 function Upload() {
   const { shortCode } = useParams()
@@ -67,7 +77,7 @@ function Upload() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shortCode])
 
-  const validateFiles = (fileList) => {
+  const validateFiles = async (fileList) => {
     const settings = requestData?.settings || {}
     const maxFileSize = settings.maxFileSize || 104857600 // 100MB default
     const maxFiles = settings.maxFiles || 10
@@ -79,44 +89,35 @@ function Upload() {
       return false
     }
 
-    // File type extensions map
-    const typeExtensions = {
-      image: ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'],
-      document: ['.pdf', '.doc', '.docx', '.txt', '.rtf', '.odt'],
-      video: ['.mp4', '.mov', '.avi', '.mkv', '.webm'],
-      audio: ['.mp3', '.wav', '.ogg', '.m4a', '.flac'],
-      archive: ['.zip', '.rar', '.7z', '.tar', '.gz']
-    }
-
-    // Build allowed extensions list
-    let allowedExtensions = []
-    if (allowedTypes.includes('*')) {
-      // All types allowed
-      allowedExtensions = ['*']
-    } else {
-      allowedTypes.forEach(type => {
-        if (typeExtensions[type]) {
-          allowedExtensions.push(...typeExtensions[type])
-        }
-      })
-    }
-
     // Validate each file
     for (const file of fileList) {
-      // Check file size
-      if (file.size > maxFileSize) {
+      // Validate filename for path traversal and dangerous characters
+      try {
+        sanitizeFileName(file.name)
+      } catch (error) {
+        toast.error(`Invalid filename: ${file.name}`)
+        return false
+      }
+
+      // Check file size using secure validation
+      if (!validateFileSize(file, maxFileSize)) {
         const sizeMB = (maxFileSize / 1024 / 1024).toFixed(0)
         toast.error(`File too large: ${file.name}. Maximum size: ${sizeMB}MB`)
         return false
       }
 
-      // Check file type
-      if (!allowedExtensions.includes('*')) {
-        const fileName = file.name.toLowerCase()
-        const fileExt = '.' + fileName.split('.').pop()
-        if (!allowedExtensions.includes(fileExt)) {
-          const typeNames = allowedTypes.join(', ')
-          toast.error(`File type not allowed: ${file.name}. Allowed types: ${typeNames}`)
+      // Check file type with MIME type validation
+      if (!validateFileType(file, allowedTypes)) {
+        const typeNames = allowedTypes.join(', ')
+        toast.error(`File type not allowed: ${file.name}. Allowed types: ${typeNames}`)
+        return false
+      }
+
+      // Special check for SVG files to prevent XSS
+      if (file.type === 'image/svg+xml') {
+        const isSafeSVG = await validateSVGSafety(file)
+        if (!isSafeSVG) {
+          toast.error(`SVG file contains unsafe content: ${file.name}`)
           return false
         }
       }
@@ -125,9 +126,10 @@ function Upload() {
     return true
   }
 
-  const handleFileChange = (e) => {
+  const handleFileChange = async (e) => {
     const fileList = Array.from(e.target.files)
-    if (validateFiles(fileList)) {
+    const isValid = await validateFiles(fileList)
+    if (isValid) {
       setFiles(fileList)
     } else {
       e.target.value = '' // Clear the input
@@ -176,21 +178,44 @@ function Upload() {
     setUploading(true)
     try {
       const formDataObj = new FormData()
-      formDataObj.append('name', formData.name)
-      formDataObj.append('email', formData.email)
 
-      // Add password if required
+      // Sanitize text inputs before sending
+      const sanitizedName = sanitizeTextInput(formData.name)
+      formDataObj.append('name', sanitizedName)
+
+      // Validate and sanitize email
+      if (formData.email) {
+        const sanitizedEmail = sanitizeEmail(formData.email)
+        if (sanitizedEmail) {
+          formDataObj.append('email', sanitizedEmail)
+        } else {
+          toast.error('Invalid email address')
+          setUploading(false)
+          return
+        }
+      }
+
+      // Add password if required (no sanitization for passwords)
       if (requestData.requiresPassword && formData.password) {
         formDataObj.append('password', formData.password)
       }
 
-      // Add custom fields
+      // Add custom fields with sanitization
       Object.keys(formData.customFields).forEach(key => {
-        formDataObj.append(`customFields[${key}]`, formData.customFields[key])
+        const sanitizedValue = sanitizeTextInput(formData.customFields[key])
+        formDataObj.append(`customFields[${key}]`, sanitizedValue)
       })
 
+      // Append files with sanitized names
       files.forEach(file => {
-        formDataObj.append('files', file)
+        try {
+          const sanitizedFileName = sanitizeFileName(file.name)
+          // Create new file with sanitized name
+          const sanitizedFile = new File([file], sanitizedFileName, { type: file.type })
+          formDataObj.append('files', sanitizedFile)
+        } catch (error) {
+          throw new Error(`Invalid filename: ${file.name}`)
+        }
       })
 
       await api.post(`/api/r/${shortCode}/upload`, formDataObj, {
@@ -892,7 +917,7 @@ function Upload() {
                     whiteSpace: 'nowrap'
                   }}
                 >
-                  {el.content}
+                  {escapeHTML(el.content)}
                 </div>
               )
             }
@@ -912,12 +937,13 @@ function Upload() {
                     display: 'inline-block'
                   }}
                 >
-                  {el.content}
+                  {escapeHTML(el.content)}
                 </div>
               )
 
               // If button has a link, wrap it in an anchor tag and enable pointer events
-              if (el.link && el.link.trim()) {
+              // Validate URL to prevent javascript: and data: URLs
+              if (el.link && el.link.trim() && validateURL(el.link)) {
                 return (
                   <div
                     key={index}

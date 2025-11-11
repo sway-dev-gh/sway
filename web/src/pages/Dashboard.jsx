@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 import { getStorageLimit, getEffectivePlan } from '../utils/planUtils'
+import { staggerChildren, staggerItem, cardHoverVariants } from '../lib/animations/variants'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -224,15 +226,26 @@ function Dashboard() {
           </div>
 
           {/* Actions */}
-          <div className="dashboard-grid" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '24px',
-            maxWidth: '840px',
-            margin: '0 auto'
-          }}>
+          <motion.div
+            className="dashboard-grid"
+            variants={staggerChildren}
+            initial="initial"
+            animate="animate"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '24px',
+              maxWidth: '840px',
+              margin: '0 auto'
+            }}
+          >
             <Link to="/requests" style={{ textDecoration: 'none' }}>
-              <div style={{
+              <motion.div
+                variants={staggerItem}
+                initial="rest"
+                whileHover="hover"
+                animate="rest"
+                style={{
                 padding: '40px',
                 border: `1px solid ${theme.colors.border.light}`,
                 borderRadius: theme.radius.lg,
@@ -266,11 +279,16 @@ function Dashboard() {
                 }}>
                   Build your upload page in 30 seconds
                 </div>
-              </div>
+              </motion.div>
             </Link>
 
             <Link to="/responses" style={{ textDecoration: 'none' }}>
-              <div style={{
+              <motion.div
+                variants={staggerItem}
+                initial="rest"
+                whileHover="hover"
+                animate="rest"
+                style={{
                 padding: '40px',
                 border: `1px solid ${theme.colors.border.light}`,
                 borderRadius: theme.radius.lg,
@@ -304,9 +322,9 @@ function Dashboard() {
                 }}>
                   Track uploads and download everything
                 </div>
-              </div>
+              </motion.div>
             </Link>
-          </div>
+          </motion.div>
 
         </div>
       </div>

@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
+import { motion } from 'framer-motion'
 import theme from '../theme'
+import { toastVariants } from '../lib/animations/variants'
 
 function Toast({ message, type = 'info', duration = 3000, onClose }) {
   useEffect(() => {
@@ -42,7 +44,15 @@ function Toast({ message, type = 'info', duration = 3000, onClose }) {
   const typeStyles = getTypeStyles()
 
   return (
-    <div style={{
+    <motion.div
+      role="alert"
+      aria-live={type === 'error' ? 'assertive' : 'polite'}
+      aria-atomic="true"
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      variants={toastVariants}
+      style={{
       position: 'fixed',
       bottom: '24px',
       right: '24px',
@@ -59,7 +69,7 @@ function Toast({ message, type = 'info', duration = 3000, onClose }) {
       fontFamily: theme.fontFamily.base
     }}>
       {message}
-    </div>
+    </motion.div>
   )
 }
 

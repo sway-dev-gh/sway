@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import api from '../api/axios'
 import './CreateRequestModal.css'
 import { canCreateForm, getMaxActiveForms } from '../utils/planUtils'
+import { modalVariants, backdropVariants } from '../lib/animations/variants'
 
 export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
   const [requestType, setRequestType] = useState('document')
@@ -92,11 +94,22 @@ export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
     onClose()
   }
 
-  if (!isOpen) return null
-
   return (
-    <div className="modal-overlay" onClick={handleClose}>
-      <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          className="modal-overlay"
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={backdropVariants}
+          onClick={handleClose}
+        >
+          <motion.div
+            className="modal-panel"
+            variants={modalVariants}
+            onClick={(e) => e.stopPropagation()}
+          >
         <div className="modal-header">
           <h2>Create New Request</h2>
           <button className="modal-close" onClick={handleClose}>✕</button>
@@ -170,7 +183,9 @@ export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
             </button>
           </div>
         </form>
-      </div>
-    </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

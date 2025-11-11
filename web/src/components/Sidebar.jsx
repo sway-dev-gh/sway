@@ -172,6 +172,9 @@ function Sidebar() {
       {/* Mobile Hamburger Menu */}
       <button
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+        aria-expanded={mobileMenuOpen}
+        aria-controls="mobile-nav"
         style={{
           display: 'none',
           background: 'transparent',
@@ -217,11 +220,16 @@ function Sidebar() {
       </Link>
 
       {/* Navigation Links */}
-      <nav className="desktop-nav" style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '12px'
-      }}>
+      <nav
+        className="desktop-nav"
+        role="navigation"
+        aria-label="Main navigation"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px'
+        }}
+      >
           {navSections.map((section, sectionIndex) => (
             <div key={sectionIndex} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
               {section.items.map((item) => {
@@ -269,6 +277,7 @@ function Sidebar() {
                   <Link
                     key={item.path}
                     to={item.path}
+                    aria-current={isActive ? 'page' : undefined}
                     style={navLinkStyle(isActive)}
                   >
                     {item.label}
@@ -362,6 +371,7 @@ function Sidebar() {
 
           <button
             onClick={handleLogout}
+            aria-label="Sign out of your account"
             style={{
               ...theme.buttons.secondary.base,
               padding: '6px 12px',
@@ -376,18 +386,24 @@ function Sidebar() {
 
     {/* Mobile Navigation Menu */}
     {mobileMenuOpen && (
-      <div className="mobile-nav" style={{
-        display: 'none',
-        position: 'fixed',
-        top: '54px',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: theme.colors.bg.page,
-        zIndex: 99,
-        padding: '20px',
-        overflowY: 'auto'
-      }}>
+      <div
+        id="mobile-nav"
+        className="mobile-nav"
+        role="navigation"
+        aria-label="Mobile navigation"
+        style={{
+          display: 'none',
+          position: 'fixed',
+          top: '54px',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: theme.colors.bg.page,
+          zIndex: 99,
+          padding: '20px',
+          overflowY: 'auto'
+        }}
+      >
         {navSections.map((section, sectionIndex) => (
           <div key={sectionIndex} style={{ marginBottom: '24px' }}>
             {section.items.map((item) => {
