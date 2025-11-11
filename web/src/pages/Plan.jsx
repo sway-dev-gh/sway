@@ -524,7 +524,7 @@ function Plan() {
           {/* CTA Section */}
           <div style={{
             maxWidth: '700px',
-            margin: '120px auto 0',
+            margin: '120px auto 80px',
             textAlign: 'center',
             padding: '48px',
             background: theme.colors.bg.secondary,

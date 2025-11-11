@@ -2524,7 +2524,7 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ padding: '16px 12px' }}>
+            <div style={{ paddingTop: '28px', paddingLeft: '16px', paddingRight: '16px', paddingBottom: '16px' }}>
               {activeTab === 'branding' ? (
                 <>
                   <div style={{

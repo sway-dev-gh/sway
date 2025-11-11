@@ -13,7 +13,6 @@ function Management() {
   const toast = useToast()
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState({ email: '', plan: 'free' })
-  const [activeTab, setActiveTab] = useState('calendar')
 
   // Calendar/Responses state
   const [forms, setForms] = useState([])
@@ -594,55 +593,7 @@ function Management() {
             </p>
           </div>
 
-          {/* Tab Navigation */}
-          <div style={{
-            borderBottom: `1px solid ${theme.colors.border.light}`,
-            marginBottom: '48px'
-          }}>
-            <div style={{
-              display: 'flex',
-              gap: '32px'
-            }}>
-              {[
-                { id: 'calendar', label: 'Calendar' },
-                { id: 'scheduling', label: 'Scheduling' }
-              ].map(tab => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    padding: '14px 0',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    color: activeTab === tab.id ? theme.colors.white : theme.colors.text.secondary,
-                    cursor: 'pointer',
-                    borderBottom: activeTab === tab.id ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-                    transition: 'all 0.2s ease',
-                    fontFamily: 'inherit',
-                    marginBottom: '-1px'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (activeTab !== tab.id) {
-                      e.target.style.color = theme.colors.text.primary
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (activeTab !== tab.id) {
-                      e.target.style.color = theme.colors.text.secondary
-                    }
-                  }}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Calendar Tab Content */}
-          {true && (
-            <>
+          {/* Calendar Section */}
               {/* Top Stats */}
               <div className="stats-grid" style={{
                 display: 'grid',
@@ -1362,11 +1313,8 @@ function Management() {
                   </div>
                 </div>
               )}
-            </>
-          )}
 
-          {/* Scheduling Tab Content */}
-          {true && (
+          {/* Scheduling Section */}
             <div>
               <div style={{
                 display: 'flex',
@@ -1520,7 +1468,6 @@ function Management() {
                 </div>
               )}
             </div>
-          )}
 
         </div>
       </div>
