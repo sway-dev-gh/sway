@@ -229,7 +229,15 @@ function Management() {
   }
 
   const getFormStatus = (form) => {
-    return 'Live'
+    const status = form.status || 'live'
+    switch (status.toLowerCase()) {
+      case 'live': return 'Live'
+      case 'draft': return 'Draft'
+      case 'paused':
+      case 'expired':
+      case 'done': return 'Done'
+      default: return 'Live'
+    }
   }
 
   const getStatusColor = (status) => {
@@ -593,6 +601,62 @@ function Management() {
             </p>
           </div>
 
+          {/* Status Filter */}
+          <div style={{
+            display: 'flex',
+            gap: '12px',
+            marginBottom: '48px',
+            alignItems: 'center'
+          }}>
+            <span style={{
+              fontSize: '14px',
+              fontWeight: theme.weight.semibold,
+              color: theme.colors.text.secondary,
+              marginRight: '8px'
+            }}>
+              Filter by status:
+            </span>
+            {['all', 'live', 'done', 'draft'].map((status) => (
+              <button
+                key={status}
+                onClick={() => setFilterStatus(status)}
+                style={{
+                  padding: '8px 16px',
+                  background: filterStatus === status ? theme.colors.white : 'transparent',
+                  color: filterStatus === status ? theme.colors.black : theme.colors.text.secondary,
+                  border: `1px solid ${filterStatus === status ? theme.colors.white : theme.colors.border.light}`,
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: theme.weight.medium,
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                  textTransform: 'capitalize'
+                }}
+                onMouseEnter={(e) => {
+                  if (filterStatus !== status) {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                    e.currentTarget.style.borderColor = theme.colors.border.medium
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (filterStatus !== status) {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.borderColor = theme.colors.border.light
+                  }
+                }}
+              >
+                {status === 'all' ? 'All' : status}
+              </button>
+            ))}
+            <div style={{
+              fontSize: '14px',
+              color: theme.colors.text.tertiary,
+              marginLeft: '16px'
+            }}>
+              {filteredForms.length} result{filteredForms.length !== 1 ? 's' : ''}
+            </div>
+          </div>
+
           {/* Calendar Section */}
               {/* Top Stats */}
               <div className="stats-grid" style={{
@@ -628,14 +692,14 @@ function Management() {
                     fontVariantNumeric: 'tabular-nums',
                     letterSpacing: '-0.02em'
                   }}>
-                    {forms.length}
+                    {filterStatus === 'all' ? forms.length : filteredForms.length}
                   </div>
                   <div style={{
                     fontSize: theme.fontSize.sm,
                     color: theme.colors.text.secondary,
                     fontWeight: theme.weight.medium
                   }}>
-                    Total created
+                    {filterStatus === 'all' ? 'Total created' : `${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} requests`}
                   </div>
                 </div>
 

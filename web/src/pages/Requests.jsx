@@ -1067,7 +1067,7 @@ function Requests() {
   const [selectedElements, setSelectedElements] = useState([])
   const [isDragging, setIsDragging] = useState(false)
   const [draggedComponent, setDraggedComponent] = useState(null)
-  const [formTitle, setFormTitle] = useState('Untitled File Request')
+  const [formTitle, setFormTitle] = useState(`Untitled Request ${Date.now().toString().slice(-4)}`)
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [activeTab, setActiveTab] = useState('templates')
   const [showTemplateModal, setShowTemplateModal] = useState(false)
@@ -2290,7 +2290,13 @@ function Requests() {
               <input
                 type="text"
                 value={formTitle}
-                onChange={(e) => setFormTitle(e.target.value)}
+                maxLength={50}
+                onChange={(e) => {
+                  const value = e.target.value
+                  if (value.length <= 50) {
+                    setFormTitle(value)
+                  }
+                }}
                 onBlur={() => setIsEditingTitle(false)}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') setIsEditingTitle(false)
@@ -2319,7 +2325,11 @@ function Requests() {
                   cursor: 'pointer',
                   padding: '4px 8px',
                   borderRadius: theme.radius.sm,
-                  transition: 'background 0.15s ease'
+                  transition: 'background 0.15s ease',
+                  maxWidth: '300px',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
                 }}
                 onMouseEnter={(e) => e.target.style.background = theme.colors.bg.cardHover}
                 onMouseLeave={(e) => e.target.style.background = 'transparent'}
@@ -2432,7 +2442,7 @@ function Requests() {
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
           {/* LEFT SIDEBAR */}
           <div style={{
-            width: '240px',
+            width: '320px',
             borderRight: `1px solid ${theme.colors.border.medium}`,
             background: theme.colors.bg.card,
             overflowY: 'auto',
@@ -2440,11 +2450,11 @@ function Requests() {
             flexDirection: 'column'
           }}>
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: '16px', borderBottom: `1px solid ${theme.colors.border.medium}`, padding: '0 16px' }}>
+            <div style={{ display: 'flex', gap: '24px', borderBottom: `1px solid ${theme.colors.border.medium}`, padding: '0 24px' }}>
               <button
                 onClick={() => setActiveTab('templates')}
                 style={{
-                  padding: '10px 8px',
+                  padding: '14px 12px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'templates' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2464,7 +2474,7 @@ function Requests() {
               <button
                 onClick={() => setActiveTab('elements')}
                 style={{
-                  padding: '10px 8px',
+                  padding: '14px 12px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'elements' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2484,7 +2494,7 @@ function Requests() {
               <button
                 onClick={() => setActiveTab('branding')}
                 style={{
-                  padding: '10px 8px',
+                  padding: '14px 12px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'branding' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2504,7 +2514,7 @@ function Requests() {
               <button
                 onClick={() => setActiveTab('settings')}
                 style={{
-                  padding: '10px 8px',
+                  padding: '14px 12px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'settings' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2524,7 +2534,7 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ paddingTop: '28px', paddingLeft: '16px', paddingRight: '16px', paddingBottom: '16px' }}>
+            <div style={{ paddingTop: '36px', paddingLeft: '28px', paddingRight: '28px', paddingBottom: '28px' }}>
               {activeTab === 'branding' ? (
                 <>
                   <div style={{
