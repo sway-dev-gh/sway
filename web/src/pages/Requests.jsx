@@ -1082,7 +1082,7 @@ function Requests() {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [isResizing, setIsResizing] = useState(false)
   const [resizeHandle, setResizeHandle] = useState(null)
-  const [zoom, setZoom] = useState(1) // Zoom level: 0.25 to 2
+  const [zoom, setZoom] = useState(1) // Zoom level
   const [lockedElements, setLockedElements] = useState([]) // Array of locked element IDs
   const [snapToGrid, setSnapToGrid] = useState(true) // Grid snapping enabled by default
   const [branding, setBranding] = useState({
