@@ -157,7 +157,7 @@ const TEMPLATES = [
   {
     id: 'agency',
     name: 'Agency Onboarding',
-    description: 'Professional multi-section onboarding form',
+    description: 'Multi-section onboarding form',
     plan: 'pro',
     preview: 'Complete agency client onboarding with brand assets',
     elements: [
@@ -1067,12 +1067,7 @@ function Requests() {
   const [selectedElements, setSelectedElements] = useState([])
   const [isDragging, setIsDragging] = useState(false)
   const [draggedComponent, setDraggedComponent] = useState(null)
-  const [formTitle, setFormTitle] = useState(() => {
-    // Create a stable auto-number that doesn't change on reload
-    const currentTime = new Date()
-    const timeBasedId = Math.floor(currentTime.getTime() / 1000) % 10000
-    return `Untitled Request ${timeBasedId}`
-  })
+  const [formTitle, setFormTitle] = useState('Untitled Request')
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [activeTab, setActiveTab] = useState('templates')
   const [showTemplateModal, setShowTemplateModal] = useState(false)
@@ -2838,7 +2833,16 @@ function Requests() {
                             alignItems: 'flex-start',
                             marginBottom: '8px'
                           }}>
-                            <div style={{ fontSize: '14px', fontWeight: '500', color: theme.colors.text.primary }}>
+                            <div style={{
+                              fontSize: '14px',
+                              fontWeight: '500',
+                              color: theme.colors.text.primary,
+                              wordBreak: 'break-word',
+                              overflowWrap: 'break-word',
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap'
+                            }}>
                               {template.name}
                             </div>
                             {isPro && (
@@ -2857,7 +2861,17 @@ function Requests() {
                               </div>
                             )}
                           </div>
-                          <div style={{ fontSize: '13px', color: theme.colors.text.secondary, lineHeight: '1.5' }}>
+                          <div style={{
+                            fontSize: '13px',
+                            color: theme.colors.text.secondary,
+                            lineHeight: '1.5',
+                            wordBreak: 'break-word',
+                            overflowWrap: 'break-word',
+                            overflow: 'hidden',
+                            display: '-webkit-box',
+                            WebkitBoxOrient: 'vertical',
+                            WebkitLineClamp: 2
+                          }}>
                             {template.description}
                           </div>
                         </div>
@@ -2979,8 +2993,9 @@ function Requests() {
               onMouseUp={handleMouseUp}
               style={{
                 width: '100%',
-                maxWidth: '1000px',
-                minHeight: '600px',
+                maxWidth: '1200px',
+                minHeight: '500px',
+                aspectRatio: '16/9',
                 background: theme.colors.bg.card,
                 borderRadius: theme.radius.md,
                 position: 'relative',
