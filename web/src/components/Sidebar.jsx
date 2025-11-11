@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import theme from '../theme'
 import api from '../api/axios'
 import AdminModeActivator from './AdminModeActivator'
+import AIAssistant from './AIAssistant'
 import { getEffectivePlan, getPlanInfo } from '../utils/planUtils'
 
 function Sidebar() {
@@ -14,6 +15,7 @@ function Sidebar() {
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [showMoreDropdown, setShowMoreDropdown] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showAIAssistant, setShowAIAssistant] = useState(false)
 
   // Calculate effective plan using centralized utility
   const effectivePlan = getEffectivePlan()
@@ -306,7 +308,45 @@ function Sidebar() {
           ))}
       </nav>
 
-      {/* Right Section - User */}
+      {/* Right Section - AI + User */}
+      <div style={{
+        marginLeft: 'auto',
+        display: 'flex',
+        alignItems: 'center',
+        gap: theme.spacing[3]
+      }}>
+        {/* AI Assistant Button */}
+        <button
+          onClick={() => setShowAIAssistant(true)}
+          aria-label="Open AI Assistant"
+          style={{
+            padding: '6px 14px',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04))',
+            color: theme.colors.text.primary,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '6px',
+            fontSize: '13px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            transition: 'all 0.15s ease',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06))'
+            e.currentTarget.style.borderColor = theme.colors.border.medium
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04))'
+            e.currentTarget.style.borderColor = theme.colors.border.light
+          }}
+        >
+          <span style={{ fontSize: '14px' }}>✨</span>
+          AI Assistant
+        </button>
+      </div>
+
       <div style={{
         display: 'flex',
         alignItems: 'center'
@@ -510,6 +550,9 @@ function Sidebar() {
 
     {/* Admin Mode Activator */}
     <AdminModeActivator onActivate={handleAdminActivate} />
+
+    {/* AI Assistant Modal */}
+    <AIAssistant isOpen={showAIAssistant} onClose={() => setShowAIAssistant(false)} />
     </>
   )
 }
