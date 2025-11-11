@@ -34,6 +34,9 @@ const Support = lazy(() => import('./pages/Support'))
 // Notification route - separate chunk
 const Notifications = lazy(() => import('./pages/Notifications'))
 
+// Scheduling route - separate chunk
+const Scheduling = lazy(() => import('./pages/Scheduling'))
+
 // Prefetch critical routes on idle
 function prefetchCriticalRoutes() {
   if (typeof requestIdleCallback !== 'undefined') {
@@ -141,6 +144,13 @@ function App() {
         <Route path="/notifications" element={
           <Suspense fallback={<TableSkeleton />}>
             <Notifications />
+          </Suspense>
+        } />
+
+        {/* Scheduling */}
+        <Route path="/scheduling" element={
+          <Suspense fallback={<TableSkeleton />}>
+            <Scheduling />
           </Suspense>
         } />
           </Routes>

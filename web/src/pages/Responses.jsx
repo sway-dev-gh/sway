@@ -22,6 +22,10 @@ function Responses() {
   const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, formId: null })
   const [selectedForms, setSelectedForms] = useState([])
   const [confirmBulkDelete, setConfirmBulkDelete] = useState(false)
+  const [viewMode, setViewMode] = useState('calendar') // 'calendar' or 'list'
+  const [currentMonth, setCurrentMonth] = useState(new Date())
+  const [selectedDate, setSelectedDate] = useState(null)
+  const [dayModalOpen, setDayModalOpen] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -334,6 +338,72 @@ function Responses() {
     return rate.toFixed(1) + '/day'
   }
 
+  // Calendar helper functions
+  const getDaysInMonth = (date) => {
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    return new Date(year, month + 1, 0).getDate()
+  }
+
+  const getFirstDayOfMonth = (date) => {
+    const year = date.getFullYear()
+    const month = date.getMonth()
+    return new Date(year, month, 1).getDay()
+  }
+
+  const isSameDay = (date1, date2) => {
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate()
+  }
+
+  const getUploadsForDate = (date) => {
+    return uploads.filter(upload => {
+      const uploadDate = new Date(upload.uploadedAt)
+      return isSameDay(uploadDate, date)
+    })
+  }
+
+  const generateCalendarDays = () => {
+    const year = currentMonth.getFullYear()
+    const month = currentMonth.getMonth()
+    const daysInMonth = getDaysInMonth(currentMonth)
+    const firstDay = getFirstDayOfMonth(currentMonth)
+
+    const days = []
+
+    // Add empty cells for days before the month starts
+    for (let i = 0; i < firstDay; i++) {
+      days.push(null)
+    }
+
+    // Add all days in the month
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push(new Date(year, month, day))
+    }
+
+    return days
+  }
+
+  const goToPreviousMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))
+  }
+
+  const goToNextMonth = () => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))
+  }
+
+  const goToCurrentMonth = () => {
+    setCurrentMonth(new Date())
+  }
+
+  const handleDayClick = (date, uploadsForDay) => {
+    if (uploadsForDay.length > 0) {
+      setSelectedDate(date)
+      setDayModalOpen(true)
+    }
+  }
+
   // Filter and sort forms
   const filteredForms = forms
     .filter(form => {
@@ -382,7 +452,17 @@ function Responses() {
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <style>{`
+          @keyframes spin { to { transform: rotate(360deg); } }
+          @media (max-width: 768px) {
+            .calendar-nav-mobile {
+              flex-direction: column !important;
+            }
+            .stats-grid {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
+          }
+        `}</style>
       </div>
     )
   }
@@ -603,14 +683,83 @@ function Responses() {
             </div>
           </div>
 
-          {/* Filter/Search Bar */}
+          {/* View Toggle */}
           <div style={{
             display: 'flex',
             gap: '12px',
             marginBottom: '24px',
             alignItems: 'center',
-            flexWrap: 'wrap'
+            justifyContent: 'center'
           }}>
+            <button
+              onClick={() => setViewMode('list')}
+              style={{
+                padding: '10px 24px',
+                background: viewMode === 'list' ? '#ffffff' : 'transparent',
+                border: `1px solid ${viewMode === 'list' ? '#ffffff' : '#262626'}`,
+                borderRadius: '6px',
+                color: viewMode === 'list' ? '#000000' : '#ffffff',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+                fontFamily: 'inherit'
+              }}
+              onMouseEnter={(e) => {
+                if (viewMode !== 'list') {
+                  e.currentTarget.style.borderColor = '#404040'
+                  e.currentTarget.style.background = '#141414'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (viewMode !== 'list') {
+                  e.currentTarget.style.borderColor = '#262626'
+                  e.currentTarget.style.background = 'transparent'
+                }
+              }}
+            >
+              List View
+            </button>
+            <button
+              onClick={() => setViewMode('calendar')}
+              style={{
+                padding: '10px 24px',
+                background: viewMode === 'calendar' ? '#ffffff' : 'transparent',
+                border: `1px solid ${viewMode === 'calendar' ? '#ffffff' : '#262626'}`,
+                borderRadius: '6px',
+                color: viewMode === 'calendar' ? '#000000' : '#ffffff',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+                fontFamily: 'inherit'
+              }}
+              onMouseEnter={(e) => {
+                if (viewMode !== 'calendar') {
+                  e.currentTarget.style.borderColor = '#404040'
+                  e.currentTarget.style.background = '#141414'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (viewMode !== 'calendar') {
+                  e.currentTarget.style.borderColor = '#262626'
+                  e.currentTarget.style.background = 'transparent'
+                }
+              }}
+            >
+              Calendar View
+            </button>
+          </div>
+
+          {/* Filter/Search Bar */}
+          {viewMode === 'list' && (
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              marginBottom: '24px',
+              alignItems: 'center',
+              flexWrap: 'wrap'
+            }}>
             {/* Search */}
             <input
               type="text"
@@ -770,9 +919,223 @@ function Responses() {
             >
               + New Request
             </button>
-          </div>
+            </div>
+          )}
+
+          {/* Calendar View */}
+          {viewMode === 'calendar' && (
+            <div style={{ marginBottom: '48px' }}>
+              {/* Month Navigation */}
+              <div className="calendar-nav-mobile" style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '32px',
+                flexWrap: 'wrap',
+                gap: '16px'
+              }}>
+                <button
+                  onClick={goToPreviousMonth}
+                  style={{
+                    padding: '10px 20px',
+                    background: 'transparent',
+                    border: '1px solid #262626',
+                    borderRadius: '6px',
+                    color: '#ffffff',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
+                    fontFamily: 'inherit'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#141414'
+                    e.currentTarget.style.borderColor = '#404040'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.borderColor = '#262626'
+                  }}
+                >
+                  ← Previous
+                </button>
+
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  color: '#ffffff',
+                  margin: 0,
+                  letterSpacing: '-0.02em'
+                }}>
+                  {currentMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' })}
+                </h2>
+
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button
+                    onClick={goToCurrentMonth}
+                    style={{
+                      padding: '10px 20px',
+                      background: 'transparent',
+                      border: '1px solid #262626',
+                      borderRadius: '6px',
+                      color: '#ffffff',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                      fontFamily: 'inherit'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#141414'
+                      e.currentTarget.style.borderColor = '#404040'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent'
+                      e.currentTarget.style.borderColor = '#262626'
+                    }}
+                  >
+                    Today
+                  </button>
+                  <button
+                    onClick={goToNextMonth}
+                    style={{
+                      padding: '10px 20px',
+                      background: 'transparent',
+                      border: '1px solid #262626',
+                      borderRadius: '6px',
+                      color: '#ffffff',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                      fontFamily: 'inherit'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#141414'
+                      e.currentTarget.style.borderColor = '#404040'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent'
+                      e.currentTarget.style.borderColor = '#262626'
+                    }}
+                  >
+                    Next →
+                  </button>
+                </div>
+              </div>
+
+              {/* Calendar Grid */}
+              <div style={{
+                border: '1px solid #262626',
+                borderRadius: '8px',
+                background: '#0F0F0F',
+                overflow: 'hidden',
+                padding: '24px'
+              }}>
+                {/* Day Headers */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(7, 1fr)',
+                  gap: '1px',
+                  marginBottom: '16px'
+                }}>
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                    <div key={day} style={{
+                      textAlign: 'center',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      color: '#737373',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px',
+                      padding: '8px'
+                    }}>
+                      {day}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Calendar Days */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(7, 1fr)',
+                  gap: '1px',
+                  background: '#262626'
+                }}>
+                  {generateCalendarDays().map((date, index) => {
+                    if (!date) {
+                      return (
+                        <div key={`empty-${index}`} style={{
+                          minHeight: '60px',
+                          background: '#0F0F0F'
+                        }} />
+                      )
+                    }
+
+                    const uploadsForDay = getUploadsForDate(date)
+                    const isToday = isSameDay(date, new Date())
+                    const hasUploads = uploadsForDay.length > 0
+
+                    return (
+                      <div
+                        key={date.toISOString()}
+                        onClick={() => handleDayClick(date, uploadsForDay)}
+                        style={{
+                          minHeight: '60px',
+                          background: '#0F0F0F',
+                          border: isToday ? '1px solid #ffffff' : '1px solid transparent',
+                          padding: '8px',
+                          position: 'relative',
+                          cursor: hasUploads ? 'pointer' : 'default',
+                          transition: 'all 0.15s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (hasUploads) {
+                            e.currentTarget.style.background = '#141414'
+                            e.currentTarget.style.borderColor = '#404040'
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (hasUploads) {
+                            e.currentTarget.style.background = '#0F0F0F'
+                            e.currentTarget.style.borderColor = isToday ? '#ffffff' : 'transparent'
+                          }
+                        }}
+                      >
+                        <div style={{
+                          fontSize: '14px',
+                          color: isToday ? '#ffffff' : '#a3a3a3',
+                          fontWeight: isToday ? '600' : '400'
+                        }}>
+                          {date.getDate()}
+                        </div>
+                        {hasUploads && (
+                          <div style={{
+                            position: 'absolute',
+                            bottom: '8px',
+                            right: '8px',
+                            fontSize: '11px',
+                            fontWeight: '600',
+                            background: '#ffffff',
+                            color: '#000000',
+                            padding: '2px 6px',
+                            borderRadius: '10px',
+                            minWidth: '20px',
+                            textAlign: 'center'
+                          }}>
+                            {uploadsForDay.length}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Forms Table */}
+          {viewMode === 'list' && (
+            <>
           {filteredForms.length === 0 ? (
             forms.length === 0 ? (
               <div style={{
@@ -1437,8 +1800,171 @@ function Responses() {
               })}
             </div>
           )}
+            </>
+          )}
         </div>
       </div>
+
+      {/* Day Modal for Calendar View */}
+      {dayModalOpen && selectedDate && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(0, 0, 0, 0.8)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '20px'
+          }}
+          onClick={() => setDayModalOpen(false)}
+        >
+          <div
+            style={{
+              background: '#0F0F0F',
+              border: '1px solid #262626',
+              borderRadius: '12px',
+              maxWidth: '800px',
+              width: '100%',
+              maxHeight: '80vh',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div style={{
+              padding: '24px',
+              borderBottom: '1px solid #262626',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}>
+              <h3 style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#ffffff',
+                margin: 0
+              }}>
+                Uploads on {selectedDate.toLocaleDateString('en-US', {
+                  weekday: 'long',
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </h3>
+              <button
+                onClick={() => setDayModalOpen(false)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#737373',
+                  fontSize: '24px',
+                  cursor: 'pointer',
+                  padding: '0',
+                  width: '32px',
+                  height: '32px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  borderRadius: '4px',
+                  transition: 'all 0.15s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = '#1a1a1a'
+                  e.currentTarget.style.color = '#ffffff'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent'
+                  e.currentTarget.style.color = '#737373'
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div style={{
+              padding: '24px',
+              overflowY: 'auto',
+              flex: 1
+            }}>
+              {getUploadsForDate(selectedDate).map((upload, idx) => (
+                <div
+                  key={upload.id}
+                  style={{
+                    padding: '20px',
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid #262626',
+                    borderRadius: '8px',
+                    marginBottom: idx < getUploadsForDate(selectedDate).length - 1 ? '16px' : '0'
+                  }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '12px'
+                  }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontSize: '16px',
+                        fontWeight: '600',
+                        color: '#ffffff',
+                        marginBottom: '8px'
+                      }}>
+                        {upload.fileName}
+                      </div>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#737373',
+                        marginBottom: '4px'
+                      }}>
+                        {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
+                      </div>
+                      <div style={{
+                        fontSize: '13px',
+                        color: '#525252'
+                      }}>
+                        Request: {forms.find(f => f.shortCode === upload.requestCode)?.title || 'Unknown'}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleDownload(upload.id)}
+                      style={{
+                        ...theme.buttons.primary.base,
+                        padding: '8px 16px',
+                        fontSize: '14px',
+                        fontWeight: '600',
+                        whiteSpace: 'nowrap',
+                        marginLeft: '16px'
+                      }}
+                    >
+                      Download
+                    </button>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    gap: '20px',
+                    fontSize: '13px',
+                    color: '#737373',
+                    paddingTop: '12px',
+                    borderTop: '1px solid #1a1a1a'
+                  }}>
+                    <span>Size: {formatBytes(upload.fileSize)}</span>
+                    <span>Time: {formatDate(upload.uploadedAt)}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
       <ConfirmModal
