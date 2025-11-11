@@ -2472,7 +2472,7 @@ function Requests() {
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
           {/* LEFT SIDEBAR */}
           <div style={{
-            width: '320px',
+            width: '240px',
             borderRight: `1px solid ${theme.colors.border.dark}`,
             background: theme.colors.bg.hover,
             overflowY: 'auto',
@@ -2552,7 +2552,7 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ padding: '40px 32px' }}>
+            <div style={{ padding: '24px 16px' }}>
               {activeTab === 'branding' ? (
                 <>
                   <div style={{
