@@ -61,8 +61,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Submit',
-          backgroundColor: theme.colors.white,
-          color: theme.colors.black
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
+          color: theme.colors.text.primary
         }
       }
     ]
@@ -147,8 +147,8 @@ const TEMPLATES = [
         height: 45,
         properties: {
           label: 'Send Message',
-          backgroundColor: theme.colors.white,
-          color: theme.colors.black
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
+          color: theme.colors.text.primary
         }
       }
     ]
@@ -314,8 +314,8 @@ const TEMPLATES = [
         height: 40,
         properties: {
           label: 'Submit',
-          backgroundColor: theme.colors.white,
-          color: theme.colors.black
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
+          color: theme.colors.text.primary
         }
       }
     ]
@@ -434,8 +434,8 @@ const TEMPLATES = [
         height: 40,
         properties: {
           label: 'Submit Product',
-          backgroundColor: theme.colors.white,
-          color: theme.colors.black
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
+          color: theme.colors.text.primary
         }
       }
     ]
@@ -567,8 +567,8 @@ const TEMPLATES = [
         height: 40,
         properties: {
           label: 'Register',
-          backgroundColor: theme.colors.white,
-          color: theme.colors.black
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
+          color: theme.colors.text.primary
         }
       }
     ]
@@ -685,8 +685,8 @@ const TEMPLATES = [
         height: 40,
         properties: {
           label: 'Submit Brief',
-          backgroundColor: theme.colors.white,
-          color: theme.colors.black
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
+          color: theme.colors.text.primary
         }
       }
     ]
@@ -843,8 +843,8 @@ const TEMPLATES = [
         height: 40,
         properties: {
           label: 'Submit Application',
-          backgroundColor: theme.colors.white,
-          color: theme.colors.black
+          backgroundColor: "rgba(255, 255, 255, 0.08)",
+          color: theme.colors.text.primary
         }
       }
     ]
@@ -961,8 +961,8 @@ const DEFAULT_PROPERTIES = {
   },
   'button': {
     label: 'Submit',
-    backgroundColor: theme.colors.white,
-    color: theme.colors.black
+    backgroundColor: "rgba(255, 255, 255, 0.08)",
+    color: theme.colors.text.primary
   },
   'rich-text': {
     label: 'Rich Text',
@@ -1707,8 +1707,8 @@ function Requests() {
               position: 'absolute',
               top: '-8px',
               right: '-8px',
-              background: theme.colors.white,
-              color: theme.colors.black,
+              background: 'rgba(255, 255, 255, 0.12)',
+              color: theme.colors.text.primary,
               borderRadius: '4px',
               padding: '4px 6px',
               fontSize: '10px',
