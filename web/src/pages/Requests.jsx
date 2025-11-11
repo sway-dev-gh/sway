@@ -2372,15 +2372,15 @@ function Requests() {
                 onClick={handleUndo}
                 disabled={historyIndex <= 0}
                 style={{
-                  ...theme.buttons.secondary.base,
-                  color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                  background: 'transparent',
+                  color: historyIndex <= 0 ? '#6C6C6C' : '#9B9A97',
                   cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
                   opacity: historyIndex <= 0 ? 0.4 : 1,
                   border: 'none',
-                  background: 'transparent',
                   fontSize: '13px',
                   fontWeight: '500',
-                  padding: '8px 12px'
+                  padding: '8px 12px',
+                  fontFamily: 'inherit'
                 }}
               >
                 Undo
@@ -2389,15 +2389,15 @@ function Requests() {
                 onClick={handleRedo}
                 disabled={historyIndex >= history.length - 1}
                 style={{
-                  ...theme.buttons.secondary.base,
-                  color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                  background: 'transparent',
+                  color: historyIndex >= history.length - 1 ? '#6C6C6C' : '#9B9A97',
                   cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
                   opacity: historyIndex >= history.length - 1 ? 0.4 : 1,
                   border: 'none',
-                  background: 'transparent',
                   fontSize: '13px',
                   fontWeight: '500',
-                  padding: '8px 12px'
+                  padding: '8px 12px',
+                  fontFamily: 'inherit'
                 }}
               >
                 Redo
@@ -2408,10 +2408,15 @@ function Requests() {
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <button
                 style={{
-                  ...theme.buttons.secondary.base,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#FFFFFF',
+                  border: '1px solid #373737',
+                  borderRadius: '6px',
                   fontSize: '13px',
                   fontWeight: '500',
-                  padding: '10px 16px'
+                  padding: '10px 16px',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
                 }}
                 onClick={() => setShowPreviewModal(true)}
               >
@@ -2419,10 +2424,15 @@ function Requests() {
               </button>
               <button
                 style={{
-                  ...theme.buttons.secondary.base,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#FFFFFF',
+                  border: '1px solid #373737',
+                  borderRadius: '6px',
                   fontSize: '13px',
                   fontWeight: '500',
-                  padding: '10px 16px'
+                  padding: '10px 16px',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
                 }}
                 onClick={handleSave}
               >
@@ -2430,14 +2440,15 @@ function Requests() {
               </button>
               <button
                 style={{
-                  ...theme.buttons.secondary.base,
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#FFFFFF',
+                  border: '1px solid #373737',
+                  borderRadius: '6px',
                   fontSize: '13px',
                   fontWeight: '600',
                   padding: '10px 20px',
-                  background: 'rgba(255, 255, 255, 0.08)',
-                  color: theme.colors.text.primary,
-                  border: `1px solid ${theme.colors.border.medium}`,
-                  borderRadius: '6px'
+                  cursor: 'pointer',
+                  fontFamily: 'inherit'
                 }}
                 onClick={handlePublish}
               >
