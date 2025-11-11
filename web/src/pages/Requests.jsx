@@ -76,12 +76,12 @@ const TEMPLATES = [
         id: 'template-heading-2',
         type: 'heading',
         x: 100,
-        y: 50,
+        y: 30,
         width: 800,
-        height: 50,
+        height: 40,
         properties: {
           content: 'Get In Touch',
-          fontSize: '32px',
+          fontSize: '28px',
           color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
@@ -91,9 +91,9 @@ const TEMPLATES = [
         id: 'template-input-1',
         type: 'text-input',
         x: 100,
-        y: 130,
+        y: 90,
         width: 800,
-        height: 48,
+        height: 45,
         properties: {
           label: 'Full Name',
           placeholder: 'Enter your name'
@@ -103,9 +103,9 @@ const TEMPLATES = [
         id: 'template-input-2',
         type: 'text-input',
         x: 100,
-        y: 210,
+        y: 155,
         width: 800,
-        height: 48,
+        height: 45,
         properties: {
           label: 'Email',
           placeholder: 'your@email.com'
@@ -115,9 +115,9 @@ const TEMPLATES = [
         id: 'template-textarea-1',
         type: 'textarea',
         x: 100,
-        y: 290,
+        y: 220,
         width: 800,
-        height: 120,
+        height: 90,
         properties: {
           label: 'Message',
           placeholder: 'Your message here...'
@@ -127,9 +127,9 @@ const TEMPLATES = [
         id: 'template-upload-2',
         type: 'file-upload',
         x: 100,
-        y: 440,
+        y: 330,
         width: 800,
-        height: 100,
+        height: 80,
         properties: {
           label: 'Attach Files',
           accept: '*',
@@ -139,10 +139,10 @@ const TEMPLATES = [
       {
         id: 'template-button-2',
         type: 'button',
-        x: 450,
-        y: 580,
+        x: 400,
+        y: 430,
         width: 200,
-        height: 48,
+        height: 45,
         properties: {
           label: 'Send Message',
           backgroundColor: theme.colors.white,
@@ -163,9 +163,9 @@ const TEMPLATES = [
         id: 'pro-image-1',
         type: 'image',
         x: 450,
-        y: 40,
+        y: 20,
         width: 200,
-        height: 80,
+        height: 60,
         properties: {
           src: '',
           alt: 'Company Logo'
@@ -175,12 +175,12 @@ const TEMPLATES = [
         id: 'pro-heading-1',
         type: 'heading',
         x: 100,
-        y: 150,
+        y: 90,
         width: 800,
-        height: 50,
+        height: 40,
         properties: {
           content: 'Client Onboarding',
-          fontSize: '32px',
+          fontSize: '26px',
           color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
@@ -190,7 +190,7 @@ const TEMPLATES = [
         id: 'pro-divider-1',
         type: 'divider',
         x: 100,
-        y: 220,
+        y: 140,
         width: 800,
         height: 2,
         properties: {}
@@ -199,12 +199,12 @@ const TEMPLATES = [
         id: 'pro-text-1',
         type: 'text',
         x: 100,
-        y: 240,
+        y: 152,
         width: 800,
-        height: 30,
+        height: 24,
         properties: {
           content: 'Company Information',
-          fontSize: '18px',
+          fontSize: '16px',
           color: theme.colors.text.primary,
           fontWeight: '600'
         }
@@ -213,9 +213,9 @@ const TEMPLATES = [
         id: 'pro-input-1',
         type: 'text-input',
         x: 100,
-        y: 290,
+        y: 186,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Company Name',
           placeholder: 'Acme Inc.'
@@ -225,9 +225,9 @@ const TEMPLATES = [
         id: 'pro-input-2',
         type: 'text-input',
         x: 510,
-        y: 290,
+        y: 186,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Website',
           placeholder: 'www.example.com'
@@ -237,9 +237,9 @@ const TEMPLATES = [
         id: 'pro-select-1',
         type: 'select',
         x: 100,
-        y: 370,
+        y: 242,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Industry',
           options: 'Technology,Finance,Healthcare,Retail,Other'
@@ -249,9 +249,9 @@ const TEMPLATES = [
         id: 'pro-select-2',
         type: 'select',
         x: 510,
-        y: 370,
+        y: 242,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Project Budget',
           options: 'Under $10k,$10k-$50k,$50k-$100k,$100k+'
@@ -261,7 +261,7 @@ const TEMPLATES = [
         id: 'pro-divider-2',
         type: 'divider',
         x: 100,
-        y: 450,
+        y: 292,
         width: 800,
         height: 2,
         properties: {}
@@ -270,12 +270,12 @@ const TEMPLATES = [
         id: 'pro-text-2',
         type: 'text',
         x: 100,
-        y: 470,
+        y: 304,
         width: 800,
-        height: 30,
+        height: 24,
         properties: {
           content: 'Brand Assets',
-          fontSize: '18px',
+          fontSize: '16px',
           color: theme.colors.text.primary,
           fontWeight: '600'
         }
@@ -284,9 +284,9 @@ const TEMPLATES = [
         id: 'pro-multi-file-1',
         type: 'multi-file',
         x: 100,
-        y: 520,
+        y: 338,
         width: 800,
-        height: 150,
+        height: 100,
         properties: {
           label: 'Upload Brand Guide, Logos, and Assets',
           maxFiles: 10
@@ -296,9 +296,9 @@ const TEMPLATES = [
         id: 'pro-checkbox-1',
         type: 'checkbox',
         x: 100,
-        y: 700,
+        y: 450,
         width: 800,
-        height: 24,
+        height: 20,
         properties: {
           label: 'I agree to the terms and conditions'
         }
@@ -307,9 +307,9 @@ const TEMPLATES = [
         id: 'pro-button-1',
         type: 'button',
         x: 450,
-        y: 750,
+        y: 482,
         width: 200,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Submit',
           backgroundColor: theme.colors.white,
@@ -329,12 +329,12 @@ const TEMPLATES = [
         id: 'prod-heading-1',
         type: 'heading',
         x: 100,
-        y: 40,
+        y: 20,
         width: 800,
-        height: 50,
+        height: 40,
         properties: {
           content: 'Submit New Product',
-          fontSize: '32px',
+          fontSize: '26px',
           color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
@@ -344,9 +344,9 @@ const TEMPLATES = [
         id: 'prod-input-1',
         type: 'text-input',
         x: 100,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Product Name',
           placeholder: 'Product title'
@@ -356,9 +356,9 @@ const TEMPLATES = [
         id: 'prod-input-2',
         type: 'text-input',
         x: 510,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'SKU',
           placeholder: 'SKU-001'
@@ -368,9 +368,9 @@ const TEMPLATES = [
         id: 'prod-select-1',
         type: 'select',
         x: 100,
-        y: 200,
+        y: 130,
         width: 250,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Category',
           options: 'Electronics,Clothing,Home,Sports,Books'
@@ -380,9 +380,9 @@ const TEMPLATES = [
         id: 'prod-input-3',
         type: 'text-input',
         x: 370,
-        y: 200,
+        y: 130,
         width: 250,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Price',
           placeholder: '$99.99'
@@ -392,9 +392,9 @@ const TEMPLATES = [
         id: 'prod-rating-1',
         type: 'star-rating',
         x: 640,
-        y: 200,
+        y: 130,
         width: 260,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Quality Rating'
         }
@@ -403,9 +403,9 @@ const TEMPLATES = [
         id: 'prod-rich-text-1',
         type: 'rich-text',
         x: 100,
-        y: 280,
+        y: 185,
         width: 800,
-        height: 120,
+        height: 90,
         properties: {
           label: 'Product Description',
           placeholder: 'Detailed product description...'
@@ -415,9 +415,9 @@ const TEMPLATES = [
         id: 'prod-gallery-1',
         type: 'image-gallery',
         x: 100,
-        y: 430,
+        y: 290,
         width: 800,
-        height: 250,
+        height: 160,
         properties: {
           label: 'Product Images (up to 6)',
           gridSize: '2x3'
@@ -427,9 +427,9 @@ const TEMPLATES = [
         id: 'prod-button-1',
         type: 'button',
         x: 450,
-        y: 710,
+        y: 465,
         width: 200,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Submit Product',
           backgroundColor: theme.colors.white,
@@ -449,12 +449,12 @@ const TEMPLATES = [
         id: 'event-heading-1',
         type: 'heading',
         x: 100,
-        y: 40,
+        y: 20,
         width: 800,
-        height: 50,
+        height: 40,
         properties: {
           content: 'Event Registration',
-          fontSize: '32px',
+          fontSize: '26px',
           color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
@@ -464,9 +464,9 @@ const TEMPLATES = [
         id: 'event-input-1',
         type: 'text-input',
         x: 100,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Full Name',
           placeholder: 'John Doe'
@@ -476,9 +476,9 @@ const TEMPLATES = [
         id: 'event-input-2',
         type: 'text-input',
         x: 510,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Email',
           placeholder: 'john@example.com'
@@ -488,9 +488,9 @@ const TEMPLATES = [
         id: 'event-input-3',
         type: 'text-input',
         x: 100,
-        y: 200,
+        y: 130,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Company',
           placeholder: 'Company name'
@@ -500,9 +500,9 @@ const TEMPLATES = [
         id: 'event-input-4',
         type: 'text-input',
         x: 510,
-        y: 200,
+        y: 130,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Job Title',
           placeholder: 'Position'
@@ -512,9 +512,9 @@ const TEMPLATES = [
         id: 'event-select-1',
         type: 'select',
         x: 100,
-        y: 280,
+        y: 185,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Ticket Type',
           options: 'VIP Pass,Standard,Press'
@@ -524,9 +524,9 @@ const TEMPLATES = [
         id: 'event-date-1',
         type: 'date-picker',
         x: 510,
-        y: 280,
+        y: 185,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Availability Date'
         }
@@ -535,9 +535,9 @@ const TEMPLATES = [
         id: 'event-upload-1',
         type: 'file-upload',
         x: 100,
-        y: 360,
+        y: 240,
         width: 800,
-        height: 100,
+        height: 80,
         properties: {
           label: 'Upload Photo ID',
           accept: 'image/*',
@@ -548,9 +548,9 @@ const TEMPLATES = [
         id: 'event-textarea-1',
         type: 'textarea',
         x: 100,
-        y: 490,
+        y: 335,
         width: 800,
-        height: 100,
+        height: 90,
         properties: {
           label: 'Special Requests',
           placeholder: 'Dietary restrictions, accessibility needs, etc.'
@@ -560,9 +560,9 @@ const TEMPLATES = [
         id: 'event-button-1',
         type: 'button',
         x: 450,
-        y: 620,
+        y: 440,
         width: 200,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Register',
           backgroundColor: theme.colors.white,
@@ -582,12 +582,12 @@ const TEMPLATES = [
         id: 'creative-heading-1',
         type: 'heading',
         x: 100,
-        y: 40,
+        y: 20,
         width: 800,
-        height: 50,
+        height: 40,
         properties: {
           content: 'Creative Brief',
-          fontSize: '32px',
+          fontSize: '26px',
           color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
@@ -597,9 +597,9 @@ const TEMPLATES = [
         id: 'creative-input-1',
         type: 'text-input',
         x: 100,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Project Name',
           placeholder: 'Project title'
@@ -609,9 +609,9 @@ const TEMPLATES = [
         id: 'creative-input-2',
         type: 'text-input',
         x: 510,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Client Name',
           placeholder: 'Client'
@@ -621,9 +621,9 @@ const TEMPLATES = [
         id: 'creative-multi-file-1',
         type: 'multi-file',
         x: 100,
-        y: 200,
+        y: 130,
         width: 800,
-        height: 120,
+        height: 85,
         properties: {
           label: 'Brand Assets',
           maxFiles: 10
@@ -633,9 +633,9 @@ const TEMPLATES = [
         id: 'creative-gallery-1',
         type: 'image-gallery',
         x: 100,
-        y: 350,
+        y: 230,
         width: 800,
-        height: 300,
+        height: 180,
         properties: {
           label: 'Mood Board (4x4)',
           gridSize: '4x4'
@@ -645,9 +645,9 @@ const TEMPLATES = [
         id: 'creative-color-1',
         type: 'color-picker',
         x: 100,
-        y: 680,
+        y: 425,
         width: 150,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Primary Color'
         }
@@ -656,9 +656,9 @@ const TEMPLATES = [
         id: 'creative-color-2',
         type: 'color-picker',
         x: 270,
-        y: 680,
+        y: 425,
         width: 150,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Secondary'
         }
@@ -667,9 +667,9 @@ const TEMPLATES = [
         id: 'creative-color-3',
         type: 'color-picker',
         x: 440,
-        y: 680,
+        y: 425,
         width: 150,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Accent'
         }
@@ -678,9 +678,9 @@ const TEMPLATES = [
         id: 'creative-button-1',
         type: 'button',
         x: 450,
-        y: 760,
+        y: 480,
         width: 200,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Submit Brief',
           backgroundColor: theme.colors.white,
@@ -700,12 +700,12 @@ const TEMPLATES = [
         id: 'job-heading-1',
         type: 'heading',
         x: 100,
-        y: 40,
+        y: 20,
         width: 800,
-        height: 50,
+        height: 40,
         properties: {
           content: 'Job Application',
-          fontSize: '32px',
+          fontSize: '26px',
           color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
@@ -715,9 +715,9 @@ const TEMPLATES = [
         id: 'job-input-1',
         type: 'text-input',
         x: 100,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Full Name',
           placeholder: 'Your name'
@@ -727,9 +727,9 @@ const TEMPLATES = [
         id: 'job-input-2',
         type: 'text-input',
         x: 510,
-        y: 120,
+        y: 75,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Email',
           placeholder: 'your@email.com'
@@ -739,9 +739,9 @@ const TEMPLATES = [
         id: 'job-input-3',
         type: 'text-input',
         x: 100,
-        y: 200,
+        y: 130,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Phone',
           placeholder: '+1 (555) 000-0000'
@@ -751,9 +751,9 @@ const TEMPLATES = [
         id: 'job-input-4',
         type: 'text-input',
         x: 510,
-        y: 200,
+        y: 130,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Location',
           placeholder: 'City, State'
@@ -763,9 +763,9 @@ const TEMPLATES = [
         id: 'job-upload-1',
         type: 'file-upload',
         x: 100,
-        y: 280,
+        y: 185,
         width: 390,
-        height: 100,
+        height: 75,
         properties: {
           label: 'Resume (PDF)',
           accept: '.pdf',
@@ -776,9 +776,9 @@ const TEMPLATES = [
         id: 'job-upload-2',
         type: 'file-upload',
         x: 510,
-        y: 280,
+        y: 185,
         width: 390,
-        height: 100,
+        height: 75,
         properties: {
           label: 'Cover Letter (PDF)',
           accept: '.pdf',
@@ -789,9 +789,9 @@ const TEMPLATES = [
         id: 'job-input-5',
         type: 'text-input',
         x: 100,
-        y: 410,
+        y: 275,
         width: 800,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Portfolio/Website',
           placeholder: 'https://yourportfolio.com'
@@ -801,9 +801,9 @@ const TEMPLATES = [
         id: 'job-multi-file-1',
         type: 'multi-file',
         x: 100,
-        y: 490,
+        y: 330,
         width: 800,
-        height: 120,
+        height: 85,
         properties: {
           label: 'Work Samples',
           maxFiles: 5
@@ -813,9 +813,9 @@ const TEMPLATES = [
         id: 'job-date-1',
         type: 'date-picker',
         x: 100,
-        y: 640,
+        y: 430,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Available Start Date'
         }
@@ -824,9 +824,9 @@ const TEMPLATES = [
         id: 'job-input-6',
         type: 'text-input',
         x: 510,
-        y: 640,
+        y: 430,
         width: 390,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Salary Expectations',
           placeholder: '$80,000 - $100,000'
@@ -836,9 +836,9 @@ const TEMPLATES = [
         id: 'job-button-1',
         type: 'button',
         x: 450,
-        y: 720,
+        y: 485,
         width: 200,
-        height: 48,
+        height: 40,
         properties: {
           label: 'Submit Application',
           backgroundColor: theme.colors.white,
