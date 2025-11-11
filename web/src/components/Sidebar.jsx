@@ -49,7 +49,7 @@ function Sidebar() {
 
       if (isTyping) return
 
-      const pages = ['/dashboard', '/management', '/notifications', '/settings']
+      const pages = ['/dashboard', '/management', '/plan', '/notifications', '/settings']
       const currentIndex = pages.indexOf(location.pathname)
 
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
@@ -115,6 +115,7 @@ function Sidebar() {
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
         { path: '/management', label: 'Management', planRequired: null },
+        { path: '/plan', label: 'Plan', planRequired: null },
         { path: '/notifications', label: 'Notifications', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
       ]

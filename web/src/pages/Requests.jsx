@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import UpgradeBanner from '../components/UpgradeBanner'
 import theme from '../theme'
 import { canCreateForm } from '../utils/planUtils'
 import api from '../api/axios'
@@ -3980,6 +3981,7 @@ function Requests() {
         </div>
       )}
 
+      <UpgradeBanner user={user} />
       <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </>
   )
