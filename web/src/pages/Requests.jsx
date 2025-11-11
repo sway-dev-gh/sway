@@ -1,3 +1,4 @@
+// COMPLETELY REDESIGNED DASHBOARD - v2.0.0 - Cache Bust: 2024-11-11-FIX
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
@@ -360,7 +361,7 @@ const TEMPLATE_LIBRARY = [
   }
 ]
 
-function RequestsDashboardRedesigned() {
+function Requests() {
   const navigate = useNavigate()
 
   // Core state
@@ -1196,4 +1197,4 @@ function RequestsDashboardRedesigned() {
   )
 }
 
-export default RequestsDashboardRedesigned
+export default Requests
