@@ -716,19 +716,6 @@ function Requests() {
           {/* Header */}
           <div style={{ marginBottom: '40px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
-              <div style={{
-                width: '44px',
-                height: '44px',
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                fontSize: '20px'
-              }}>
-                📝
-              </div>
 
               {isEditingTitle ? (
                 <input
@@ -789,7 +776,7 @@ function Requests() {
             <p style={{
               fontSize: '16px',
               color: '#9B9A97',
-              margin: '0 0 32px 60px',
+              margin: '0 0 32px 0',
               fontWeight: '400',
               lineHeight: '1.5'
             }}>
@@ -797,34 +784,22 @@ function Requests() {
             </p>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginLeft: '60px' }}>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
               <button
                 onClick={() => setShowPreviewModal(true)}
                 style={{
                   background: 'transparent',
                   color: '#9B9A97',
                   border: '1px solid #2A2A2A',
-                  borderRadius: '8px',
-                  fontSize: '14px',
+                  borderRadius: '6px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  padding: '10px 20px',
+                  padding: '8px 16px',
                   cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(255, 255, 255, 0.05)'
-                  e.target.style.borderColor = '#404040'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'transparent'
-                  e.target.style.borderColor = '#2A2A2A'
+                  fontFamily: 'inherit'
                 }}
               >
-                👁️ Preview
+                Preview
               </button>
 
               <button
@@ -833,57 +808,32 @@ function Requests() {
                   background: 'transparent',
                   color: '#9B9A97',
                   border: '1px solid #2A2A2A',
-                  borderRadius: '8px',
-                  fontSize: '14px',
+                  borderRadius: '6px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  padding: '10px 20px',
+                  padding: '8px 16px',
                   cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.background = 'rgba(255, 255, 255, 0.05)'
-                  e.target.style.borderColor = '#404040'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.background = 'transparent'
-                  e.target.style.borderColor = '#2A2A2A'
+                  fontFamily: 'inherit'
                 }}
               >
-                💾 Save Draft
+                Save Draft
               </button>
 
               <button
                 onClick={handlePublish}
                 style={{
-                  background: 'linear-gradient(135deg, #FFFFFF 0%, #F3F4F6 100%)',
+                  background: '#FFFFFF',
                   color: '#000000',
                   border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '14px',
+                  borderRadius: '6px',
+                  fontSize: '13px',
                   fontWeight: '600',
-                  padding: '10px 24px',
+                  padding: '8px 20px',
                   cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  boxShadow: '0 4px 12px rgba(255, 255, 255, 0.1)'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-1px)'
-                  e.target.style.boxShadow = '0 6px 20px rgba(255, 255, 255, 0.15)'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = 'translateY(0)'
-                  e.target.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.1)'
+                  fontFamily: 'inherit'
                 }}
               >
-                🚀 Publish Collection
+                Publish Collection
               </button>
 
               {/* History Controls */}
@@ -1034,27 +984,14 @@ function Requests() {
                           e.target.style.transform = 'translateY(0)'
                         }}
                       >
-                        <div style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          marginBottom: '8px'
+                        <h4 style={{
+                          fontSize: '15px',
+                          fontWeight: '600',
+                          color: '#FFFFFF',
+                          margin: '0 0 8px 0'
                         }}>
-                          <div style={{
-                            width: '8px',
-                            height: '8px',
-                            borderRadius: '50%',
-                            background: template.id === 'blank' ? '#6B7280' : '#34D399'
-                          }} />
-                          <h4 style={{
-                            fontSize: '15px',
-                            fontWeight: '600',
-                            color: '#FFFFFF',
-                            margin: 0
-                          }}>
-                            {template.name}
-                          </h4>
-                        </div>
+                          {template.name}
+                        </h4>
                         <p style={{
                           fontSize: '13px',
                           color: '#9B9A97',
@@ -1311,11 +1248,7 @@ function Requests() {
                 ref={canvasRef}
                 style={{
                   minHeight: '600px',
-                  background: `
-                    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.1) 1px, transparent 0),
-                    rgba(255, 255, 255, 0.015)
-                  `,
-                  backgroundSize: '20px 20px',
+                  background: 'rgba(255, 255, 255, 0.015)',
                   border: '1px solid #1A1A1A',
                   borderRadius: '12px',
                   padding: '40px',
@@ -1332,21 +1265,6 @@ function Requests() {
                     height: '500px',
                     textAlign: 'center'
                   }}>
-                    <div style={{
-                      width: '80px',
-                      height: '80px',
-                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
-                      borderRadius: '20px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      marginBottom: '32px',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                      fontSize: '36px'
-                    }}>
-                      📋
-                    </div>
-
                     <h3 style={{
                       fontSize: '24px',
                       fontWeight: '700',
@@ -1371,31 +1289,18 @@ function Requests() {
                       <button
                         onClick={() => setActiveTab('templates')}
                         style={{
-                          background: 'linear-gradient(135deg, #FFFFFF 0%, #F3F4F6 100%)',
+                          background: '#FFFFFF',
                           color: '#000000',
                           border: 'none',
-                          borderRadius: '10px',
+                          borderRadius: '6px',
                           fontSize: '14px',
                           fontWeight: '600',
                           padding: '12px 24px',
                           cursor: 'pointer',
-                          fontFamily: 'inherit',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          boxShadow: '0 4px 12px rgba(255, 255, 255, 0.1)',
-                          transition: 'all 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.transform = 'translateY(-1px)'
-                          e.target.style.boxShadow = '0 6px 20px rgba(255, 255, 255, 0.15)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.transform = 'translateY(0)'
-                          e.target.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.1)'
+                          fontFamily: 'inherit'
                         }}
                       >
-                        🎨 Browse Templates
+                        Browse Templates
                       </button>
 
                       <button
@@ -1404,29 +1309,15 @@ function Requests() {
                           background: 'transparent',
                           color: '#9B9A97',
                           border: '1px solid #2A2A2A',
-                          borderRadius: '10px',
+                          borderRadius: '6px',
                           fontSize: '14px',
                           fontWeight: '500',
                           padding: '12px 24px',
                           cursor: 'pointer',
-                          fontFamily: 'inherit',
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-                          transition: 'all 0.2s ease'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.background = 'rgba(255, 255, 255, 0.05)'
-                          e.target.style.borderColor = '#404040'
-                          e.target.style.color = '#FFFFFF'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.background = 'transparent'
-                          e.target.style.borderColor = '#2A2A2A'
-                          e.target.style.color = '#9B9A97'
+                          fontFamily: 'inherit'
                         }}
                       >
-                        🧩 Add Elements
+                        Add Elements
                       </button>
                     </div>
                   </div>
