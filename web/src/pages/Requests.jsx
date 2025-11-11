@@ -13,7 +13,6 @@ function Requests() {
   const [selectedElement, setSelectedElement] = useState(null)
   const [formTitle, setFormTitle] = useState('Untitled Request')
   const [isEditingTitle, setIsEditingTitle] = useState(false)
-  const [activeTab, setActiveTab] = useState('templates')
 
   // UI state
   const [searchTerm, setSearchTerm] = useState('')
@@ -271,7 +270,6 @@ function Requests() {
     }))
     setElements(newElements)
     saveToHistory(newElements)
-    setActiveTab('elements')
   }
 
   // Add new element
@@ -293,7 +291,6 @@ function Requests() {
     setElements(newElements)
     saveToHistory(newElements)
     setSelectedElement(newElement)
-    setActiveTab('properties')
   }
 
   // Update element properties
@@ -713,10 +710,20 @@ function Requests() {
           padding: '80px 32px'
         }}>
 
-          {/* Header */}
-          <div style={{ marginBottom: '40px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
-
+          {/* Header - Completely New Layout */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr auto auto',
+            gap: '24px',
+            alignItems: 'start',
+            marginBottom: '48px',
+            padding: '32px',
+            background: '#0A0A0A',
+            border: '1px solid #1A1A1A',
+            borderRadius: '8px'
+          }}>
+            {/* Left: Project Info */}
+            <div>
               {isEditingTitle ? (
                 <input
                   type="text"
@@ -729,29 +736,25 @@ function Requests() {
                   style={{
                     background: 'transparent',
                     border: 'none',
-                    borderBottom: '2px solid #373737',
+                    borderBottom: '1px solid #373737',
                     color: '#FFFFFF',
-                    fontSize: '36px',
-                    fontWeight: '700',
-                    padding: '0 0 4px 0',
+                    fontSize: '28px',
+                    fontWeight: '600',
+                    padding: '0 0 8px 0',
                     outline: 'none',
                     fontFamily: 'inherit',
-                    flex: 1,
-                    letterSpacing: '-0.02em'
+                    width: '100%'
                   }}
                 />
               ) : (
                 <h1
                   onClick={() => setIsEditingTitle(true)}
                   style={{
-                    fontSize: '36px',
-                    fontWeight: '700',
-                    margin: 0,
-                    color: theme.colors.text.primary,
-                    letterSpacing: '-0.02em',
-                    cursor: 'pointer',
-                    fontFamily: 'inherit',
-                    flex: 1
+                    fontSize: '28px',
+                    fontWeight: '600',
+                    margin: '0 0 8px 0',
+                    color: '#FFFFFF',
+                    cursor: 'pointer'
                   }}
                 >
                   {formTitle}
@@ -759,501 +762,290 @@ function Requests() {
               )}
 
               <div style={{
-                padding: '6px 12px',
-                background: 'rgba(52, 211, 153, 0.1)',
-                color: '#34D399',
+                fontSize: '14px',
+                color: '#6B7280',
+                marginBottom: '16px'
+              }}>
+                Collection Form • {elements.length} field{elements.length !== 1 ? 's' : ''} • Last saved 2 min ago
+              </div>
+
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={() => setShowPreviewModal(true)}
+                  style={{
+                    background: 'transparent',
+                    color: '#9B9A97',
+                    border: '1px solid #2A2A2A',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    padding: '6px 12px',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  Preview
+                </button>
+                <button
+                  onClick={handleSave}
+                  style={{
+                    background: 'transparent',
+                    color: '#9B9A97',
+                    border: '1px solid #2A2A2A',
+                    borderRadius: '4px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    padding: '6px 12px',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit'
+                  }}
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+
+            {/* Center: Stats */}
+            <div style={{ textAlign: 'center' }}>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: '700',
+                color: '#FFFFFF',
+                marginBottom: '4px'
+              }}>
+                0
+              </div>
+              <div style={{
                 fontSize: '12px',
-                fontWeight: '600',
-                borderRadius: '20px',
-                border: '1px solid rgba(52, 211, 153, 0.2)',
+                color: '#6B7280',
                 textTransform: 'uppercase',
+                fontWeight: '500',
                 letterSpacing: '0.5px'
               }}>
-                DRAFT
+                Submissions
               </div>
             </div>
 
-            <p style={{
-              fontSize: '16px',
-              color: '#9B9A97',
-              margin: '0 0 32px 0',
-              fontWeight: '400',
-              lineHeight: '1.5'
-            }}>
-              Design custom collection forms to gather files and information from your audience
-            </p>
-
-            {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-              <button
-                onClick={() => setShowPreviewModal(true)}
-                style={{
-                  background: 'transparent',
-                  color: '#9B9A97',
-                  border: '1px solid #2A2A2A',
-                  borderRadius: '6px',
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  padding: '8px 16px',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
-                }}
-              >
-                Preview
-              </button>
-
-              <button
-                onClick={handleSave}
-                style={{
-                  background: 'transparent',
-                  color: '#9B9A97',
-                  border: '1px solid #2A2A2A',
-                  borderRadius: '6px',
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  padding: '8px 16px',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
-                }}
-              >
-                Save Draft
-              </button>
-
-              <button
-                onClick={handlePublish}
-                style={{
-                  background: '#FFFFFF',
-                  color: '#000000',
-                  border: 'none',
-                  borderRadius: '6px',
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  padding: '8px 20px',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
-                }}
-              >
-                Publish Collection
-              </button>
-
-              {/* History Controls */}
-              <div style={{
-                display: 'flex',
-                gap: '4px',
-                marginLeft: '16px',
-                padding: '2px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                borderRadius: '6px',
-                border: '1px solid #2F2F2F'
-              }}>
-                <button
-                  onClick={handleUndo}
-                  disabled={historyIndex <= 0}
-                  title="Undo"
-                  style={{
-                    background: 'transparent',
-                    color: historyIndex <= 0 ? '#6C6C6C' : '#9B9A97',
-                    cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
-                    border: 'none',
-                    fontSize: '12px',
-                    padding: '6px 10px',
-                    fontFamily: 'inherit',
-                    borderRadius: '4px'
-                  }}
-                >
-                  Undo
-                </button>
-                <button
-                  onClick={handleRedo}
-                  disabled={historyIndex >= history.length - 1}
-                  title="Redo"
-                  style={{
-                    background: 'transparent',
-                    color: historyIndex >= history.length - 1 ? '#6C6C6C' : '#9B9A97',
-                    cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
-                    border: 'none',
-                    fontSize: '12px',
-                    padding: '6px 10px',
-                    fontFamily: 'inherit',
-                    borderRadius: '4px'
-                  }}
-                >
-                  Redo
-                </button>
-              </div>
-            </div>
+            {/* Right: Publish */}
+            <button
+              onClick={handlePublish}
+              style={{
+                background: '#FFFFFF',
+                color: '#000000',
+                border: 'none',
+                borderRadius: '4px',
+                fontSize: '14px',
+                fontWeight: '600',
+                padding: '12px 24px',
+                cursor: 'pointer',
+                fontFamily: 'inherit'
+              }}
+            >
+              Publish Collection
+            </button>
           </div>
 
-          {/* Main Content */}
-          <div style={{ display: 'flex', gap: '48px' }}>
+          {/* Main Builder - Horizontal Layout */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '280px 1fr',
+            gap: '32px',
+            height: '700px'
+          }}>
 
-            {/* Left Sidebar */}
+            {/* Left: Tools Panel */}
             <div style={{
-              width: '340px',
-              flexShrink: 0,
-              background: 'rgba(255, 255, 255, 0.01)',
+              background: '#0A0A0A',
               border: '1px solid #1A1A1A',
-              borderRadius: '12px',
+              borderRadius: '8px',
               padding: '24px',
-              height: 'fit-content'
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px'
             }}>
+              {/* Add Fields Section */}
+              <div>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#FFFFFF',
+                  margin: '0 0 16px 0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  Add Fields
+                </h3>
 
-              {/* Tab Navigation */}
-              <div style={{
-                display: 'flex',
-                gap: '4px',
-                marginBottom: '32px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                borderRadius: '8px',
-                padding: '4px',
-                border: '1px solid #1A1A1A'
-              }}>
-                {[
-                  { key: 'templates', label: 'Templates' },
-                  { key: 'elements', label: 'Elements' },
-                  { key: 'properties', label: 'Properties' }
-                ].map((tab) => (
-                  <button
-                    key={tab.key}
-                    onClick={() => setActiveTab(tab.key)}
-                    style={{
-                      background: activeTab === tab.key ? '#FFFFFF' : 'transparent',
-                      color: activeTab === tab.key ? '#000000' : '#9B9A97',
-                      border: 'none',
-                      borderRadius: '6px',
-                      fontSize: '13px',
-                      fontWeight: activeTab === tab.key ? '600' : '500',
-                      padding: '10px 16px',
-                      cursor: 'pointer',
-                      fontFamily: 'inherit',
-                      flex: 1,
-                      textAlign: 'center',
-                      transition: 'all 0.2s ease'
-                    }}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {COMPONENT_LIBRARY.filter(c => c.category === 'input').map((component) => (
+                    <button
+                      key={component.id}
+                      onClick={() => addElement(component.id)}
+                      style={{
+                        background: 'transparent',
+                        color: '#9B9A97',
+                        border: '1px solid #2A2A2A',
+                        borderRadius: '4px',
+                        padding: '10px 12px',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        textAlign: 'left',
+                        width: '100%'
+                      }}
+                    >
+                      + {component.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              {/* Tab Content */}
-              {activeTab === 'templates' && (
-                <div>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    marginBottom: '20px'
-                  }}>
-                    <div style={{
-                      fontSize: '16px',
-                      fontWeight: '700',
-                      color: '#FFFFFF',
-                      letterSpacing: '-0.01em'
-                    }}>
-                      Collection Templates
-                    </div>
-                  </div>
+              {/* Content Section */}
+              <div>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#FFFFFF',
+                  margin: '0 0 16px 0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  Content
+                </h3>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {TEMPLATE_LIBRARY.map((template) => (
-                      <div
-                        key={template.id}
-                        onClick={() => loadTemplate(template)}
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          border: '1px solid #1A1A1A',
-                          borderRadius: '10px',
-                          padding: '20px',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s ease',
-                          ':hover': {
-                            background: 'rgba(255, 255, 255, 0.04)',
-                            border: '1px solid #2A2A2A',
-                            transform: 'translateY(-1px)'
-                          }
-                        }}
-                        onMouseEnter={(e) => {
-                          e.target.style.background = 'rgba(255, 255, 255, 0.04)'
-                          e.target.style.border = '1px solid #2A2A2A'
-                          e.target.style.transform = 'translateY(-1px)'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.target.style.background = 'rgba(255, 255, 255, 0.02)'
-                          e.target.style.border = '1px solid #1A1A1A'
-                          e.target.style.transform = 'translateY(0)'
-                        }}
-                      >
-                        <h4 style={{
-                          fontSize: '15px',
-                          fontWeight: '600',
-                          color: '#FFFFFF',
-                          margin: '0 0 8px 0'
-                        }}>
-                          {template.name}
-                        </h4>
-                        <p style={{
-                          fontSize: '13px',
-                          color: '#9B9A97',
-                          margin: 0,
-                          lineHeight: '1.4'
-                        }}>
-                          {template.description}
-                        </p>
-                        <div style={{
-                          fontSize: '11px',
-                          color: '#6B7280',
-                          marginTop: '8px'
-                        }}>
-                          {template.elements.length} element{template.elements.length !== 1 ? 's' : ''}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {COMPONENT_LIBRARY.filter(c => c.category === 'text').map((component) => (
+                    <button
+                      key={component.id}
+                      onClick={() => addElement(component.id)}
+                      style={{
+                        background: 'transparent',
+                        color: '#9B9A97',
+                        border: '1px solid #2A2A2A',
+                        borderRadius: '4px',
+                        padding: '10px 12px',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        textAlign: 'left',
+                        width: '100%'
+                      }}
+                    >
+                      + {component.label}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
 
-              {activeTab === 'elements' && (
-                <div>
-                  <h3 style={{
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    color: '#FFFFFF',
-                    margin: '0 0 16px 0'
-                  }}>
-                    Elements
-                  </h3>
+              {/* Templates */}
+              <div>
+                <h3 style={{
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#FFFFFF',
+                  margin: '0 0 16px 0',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px'
+                }}>
+                  Quick Start
+                </h3>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {COMPONENT_LIBRARY.map((component) => (
-                      <div
-                        key={component.id}
-                        onClick={() => addElement(component.id)}
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.03)',
-                          border: '1px solid #2F2F2F',
-                          borderRadius: '6px',
-                          padding: '12px',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          flexDirection: 'column'
-                        }}
-                      >
-                        <div style={{
-                          fontSize: '13px',
-                          fontWeight: '500',
-                          color: '#FFFFFF',
-                          marginBottom: '4px'
-                        }}>
-                          {component.label}
-                        </div>
-                        <div style={{
-                          fontSize: '11px',
-                          color: '#9B9A97'
-                        }}>
-                          {component.description}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {TEMPLATE_LIBRARY.slice(1).map((template) => (
+                    <button
+                      key={template.id}
+                      onClick={() => loadTemplate(template)}
+                      style={{
+                        background: 'transparent',
+                        color: '#9B9A97',
+                        border: '1px solid #2A2A2A',
+                        borderRadius: '4px',
+                        padding: '10px 12px',
+                        fontSize: '13px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        fontFamily: 'inherit',
+                        textAlign: 'left',
+                        width: '100%'
+                      }}
+                    >
+                      {template.name}
+                    </button>
+                  ))}
                 </div>
-              )}
-
-              {activeTab === 'properties' && (
-                <div>
-                  <h3 style={{
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    color: '#FFFFFF',
-                    margin: '0 0 16px 0'
-                  }}>
-                    Properties
-                  </h3>
-
-                  {selectedElement ? (
-                    <div>
-                      <div style={{
-                        background: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid #2F2F2F',
-                        borderRadius: '6px',
-                        padding: '16px',
-                        marginBottom: '16px'
-                      }}>
-                        <div style={{
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          color: '#FFFFFF',
-                          marginBottom: '8px'
-                        }}>
-                          {COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label || selectedElement.type}
-                        </div>
-                        <div style={{
-                          fontSize: '12px',
-                          color: '#9B9A97'
-                        }}>
-                          Configure the properties for this element
-                        </div>
-                      </div>
-
-                      {/* Property Input Fields */}
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        {Object.entries(selectedElement.properties).map(([propertyName, value]) => (
-                          <div key={propertyName}>
-                            <label style={{
-                              display: 'block',
-                              fontSize: '12px',
-                              fontWeight: '600',
-                              color: '#FFFFFF',
-                              marginBottom: '8px',
-                              textTransform: 'capitalize'
-                            }}>
-                              {propertyName.replace(/([A-Z])/g, ' $1')}
-                            </label>
-
-                            {typeof value === 'boolean' ? (
-                              <label style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                cursor: 'pointer'
-                              }}>
-                                <input
-                                  type="checkbox"
-                                  checked={value}
-                                  onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.checked)}
-                                  style={{
-                                    width: '16px',
-                                    height: '16px'
-                                  }}
-                                />
-                                <span style={{ fontSize: '13px', color: '#9B9A97' }}>
-                                  {value ? 'Enabled' : 'Disabled'}
-                                </span>
-                              </label>
-                            ) : typeof value === 'number' ? (
-                              <input
-                                type="number"
-                                value={value}
-                                onChange={(e) => updateElementProperty(selectedElement.id, propertyName, parseInt(e.target.value) || 0)}
-                                style={{
-                                  width: '100%',
-                                  padding: '10px',
-                                  fontSize: '13px',
-                                  border: '1px solid #2F2F2F',
-                                  borderRadius: '6px',
-                                  background: 'rgba(255, 255, 255, 0.03)',
-                                  color: '#FFFFFF',
-                                  outline: 'none'
-                                }}
-                              />
-                            ) : propertyName.toLowerCase().includes('color') ? (
-                              <input
-                                type="color"
-                                value={value}
-                                onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.value)}
-                                style={{
-                                  width: '100%',
-                                  height: '40px',
-                                  border: '1px solid #2F2F2F',
-                                  borderRadius: '6px',
-                                  background: 'rgba(255, 255, 255, 0.03)',
-                                  cursor: 'pointer'
-                                }}
-                              />
-                            ) : (
-                              <textarea
-                                value={value}
-                                onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.value)}
-                                rows={propertyName === 'content' ? 3 : 1}
-                                style={{
-                                  width: '100%',
-                                  padding: '10px',
-                                  fontSize: '13px',
-                                  border: '1px solid #2F2F2F',
-                                  borderRadius: '6px',
-                                  background: 'rgba(255, 255, 255, 0.03)',
-                                  color: '#FFFFFF',
-                                  outline: 'none',
-                                  resize: 'none',
-                                  fontFamily: 'inherit'
-                                }}
-                              />
-                            )}
-                          </div>
-                        ))}
-
-                        {/* Delete Button */}
-                        <button
-                          onClick={() => deleteElement(selectedElement.id)}
-                          style={{
-                            padding: '10px 16px',
-                            fontSize: '13px',
-                            fontWeight: '600',
-                            border: '1px solid #ef4444',
-                            borderRadius: '6px',
-                            background: 'rgba(239, 68, 68, 0.1)',
-                            color: '#ef4444',
-                            cursor: 'pointer',
-                            marginTop: '8px'
-                          }}
-                        >
-                          Delete Element
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div style={{
-                      color: '#9B9A97',
-                      fontSize: '13px',
-                      textAlign: 'center',
-                      padding: '40px 20px'
-                    }}>
-                      Select an element to edit its properties
-                    </div>
-                  )}
-                </div>
-              )}
+              </div>
             </div>
 
-            {/* Canvas Area */}
-            <div style={{ flex: 1 }}>
+            {/* Right: Form Canvas */}
+            <div style={{
+              background: '#0A0A0A',
+              border: '1px solid #1A1A1A',
+              borderRadius: '8px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              {/* Canvas Header */}
               <div style={{
+                padding: '16px 24px',
+                borderBottom: '1px solid #1A1A1A',
+                background: '#000000',
                 display: 'flex',
                 justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '24px'
+                alignItems: 'center'
               }}>
-                <h2 style={{
-                  fontSize: '28px',
-                  fontWeight: '700',
-                  color: '#FFFFFF',
-                  margin: 0,
-                  letterSpacing: '-0.02em'
-                }}>
-                  Canvas
-                </h2>
                 <div style={{
-                  fontSize: '13px',
-                  color: '#6B7280',
-                  padding: '8px 12px',
-                  background: 'rgba(255, 255, 255, 0.03)',
-                  borderRadius: '6px',
-                  border: '1px solid #1A1A1A'
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  color: '#FFFFFF'
                 }}>
-                  {elements.length} element{elements.length !== 1 ? 's' : ''}
+                  Form Preview
+                </div>
+
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                  <button
+                    onClick={handleUndo}
+                    disabled={historyIndex <= 0}
+                    style={{
+                      background: 'transparent',
+                      color: historyIndex <= 0 ? '#4A4A4A' : '#9B9A97',
+                      border: 'none',
+                      fontSize: '12px',
+                      padding: '4px 8px',
+                      cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
+                      fontFamily: 'inherit'
+                    }}
+                  >
+                    Undo
+                  </button>
+                  <button
+                    onClick={handleRedo}
+                    disabled={historyIndex >= history.length - 1}
+                    style={{
+                      background: 'transparent',
+                      color: historyIndex >= history.length - 1 ? '#4A4A4A' : '#9B9A97',
+                      border: 'none',
+                      fontSize: '12px',
+                      padding: '4px 8px',
+                      cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
+                      fontFamily: 'inherit'
+                    }}
+                  >
+                    Redo
+                  </button>
                 </div>
               </div>
 
+              {/* Canvas Content */}
               <div
                 ref={canvasRef}
                 style={{
-                  minHeight: '600px',
-                  background: 'rgba(255, 255, 255, 0.015)',
-                  border: '1px solid #1A1A1A',
-                  borderRadius: '12px',
-                  padding: '40px',
+                  height: 'calc(100% - 57px)',
+                  padding: '32px',
                   position: 'relative',
-                  overflow: 'hidden'
+                  overflow: 'auto',
+                  background: '#0A0A0A'
                 }}
               >
                 {elements.length === 0 ? (
@@ -1262,72 +1054,151 @@ function Requests() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: '500px',
-                    textAlign: 'center'
+                    height: '400px',
+                    color: '#6B7280',
+                    fontSize: '14px'
                   }}>
-                    <h3 style={{
-                      fontSize: '24px',
-                      fontWeight: '700',
-                      color: '#FFFFFF',
-                      margin: '0 0 16px 0',
-                      letterSpacing: '-0.02em'
-                    }}>
-                      Design Your Collection
-                    </h3>
-
-                    <p style={{
-                      fontSize: '16px',
-                      color: '#9B9A97',
-                      margin: '0 0 40px 0',
-                      maxWidth: '420px',
-                      lineHeight: '1.5'
-                    }}>
-                      Create a custom form to collect files, information, and submissions from your audience. Start with a template or build from scratch.
-                    </p>
-
-                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                      <button
-                        onClick={() => setActiveTab('templates')}
-                        style={{
-                          background: '#FFFFFF',
-                          color: '#000000',
-                          border: 'none',
-                          borderRadius: '6px',
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          padding: '12px 24px',
-                          cursor: 'pointer',
-                          fontFamily: 'inherit'
-                        }}
-                      >
-                        Browse Templates
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab('elements')}
-                        style={{
-                          background: 'transparent',
-                          color: '#9B9A97',
-                          border: '1px solid #2A2A2A',
-                          borderRadius: '6px',
-                          fontSize: '14px',
-                          fontWeight: '500',
-                          padding: '12px 24px',
-                          cursor: 'pointer',
-                          fontFamily: 'inherit'
-                        }}
-                      >
-                        Add Elements
-                      </button>
+                    <div style={{ marginBottom: '8px', fontSize: '16px', fontWeight: '600' }}>
+                      Start building your collection form
+                    </div>
+                    <div>
+                      Add fields from the panel on the left
                     </div>
                   </div>
                 ) : (
-                  /* Render Elements */
+                  /* Render Form Elements */
                   elements.map(renderFormElement)
                 )}
               </div>
             </div>
           </div>
+
+          {/* Properties Panel - Shows when element is selected */}
+          {selectedElement && (
+            <div style={{
+              position: 'fixed',
+              right: '32px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '320px',
+              background: '#0A0A0A',
+              border: '1px solid #1A1A1A',
+              borderRadius: '8px',
+              padding: '24px',
+              zIndex: 1000
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '20px'
+              }}>
+                <div>
+                  <div style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#FFFFFF',
+                    marginBottom: '4px'
+                  }}>
+                    {COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label}
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#6B7280'
+                  }}>
+                    Field Properties
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedElement(null)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#9B9A97',
+                    fontSize: '16px',
+                    cursor: 'pointer',
+                    padding: '4px'
+                  }}
+                >
+                  ×
+                </button>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {Object.entries(selectedElement.properties).map(([propertyName, value]) => (
+                  <div key={propertyName}>
+                    <label style={{
+                      display: 'block',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      color: '#FFFFFF',
+                      marginBottom: '6px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.5px'
+                    }}>
+                      {propertyName.replace(/([A-Z])/g, ' $1')}
+                    </label>
+
+                    {typeof value === 'boolean' ? (
+                      <label style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        cursor: 'pointer'
+                      }}>
+                        <input
+                          type="checkbox"
+                          checked={value}
+                          onChange={(e) => updateElementProperty(selectedElement.id, propertyName, e.target.checked)}
+                          style={{ width: '16px', height: '16px' }}
+                        />
+                        <span style={{ fontSize: '13px', color: '#9B9A97' }}>
+                          {value ? 'Enabled' : 'Disabled'}
+                        </span>
+                      </label>
+                    ) : (
+                      <input
+                        type={typeof value === 'number' ? 'number' : 'text'}
+                        value={value}
+                        onChange={(e) => updateElementProperty(
+                          selectedElement.id,
+                          propertyName,
+                          typeof value === 'number' ? parseInt(e.target.value) || 0 : e.target.value
+                        )}
+                        style={{
+                          width: '100%',
+                          padding: '8px 12px',
+                          fontSize: '13px',
+                          border: '1px solid #2A2A2A',
+                          borderRadius: '4px',
+                          background: 'transparent',
+                          color: '#FFFFFF',
+                          outline: 'none'
+                        }}
+                      />
+                    )}
+                  </div>
+                ))}
+
+                <button
+                  onClick={() => deleteElement(selectedElement.id)}
+                  style={{
+                    padding: '8px 12px',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    border: '1px solid #EF4444',
+                    borderRadius: '4px',
+                    background: 'transparent',
+                    color: '#EF4444',
+                    cursor: 'pointer',
+                    marginTop: '8px'
+                  }}
+                >
+                  Delete Field
+                </button>
+              </div>
+            </div>
+          )}
 
         </div>
       </div>
