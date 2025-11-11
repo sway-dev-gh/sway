@@ -113,8 +113,8 @@ function PropertiesPanel({
               onClick={onLockToggle}
               style={{
                 ...buttonStyle,
-                background: isLocked ? theme.colors.white : 'transparent',
-                color: isLocked ? theme.colors.black : theme.colors.text.secondary
+                background: isLocked ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
+                color: isLocked ? theme.colors.text.primary : theme.colors.text.secondary
               }}
             >
               {isLocked ? 'Unlock' : 'Lock'}
