@@ -694,6 +694,8 @@ function Plan() {
       )}
 
       <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
+        </div>
+      </div>
     </>
   )
 }
