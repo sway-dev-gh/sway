@@ -46,7 +46,7 @@ input[type="checkbox"] {
 
 /* Notion-inspired theme variables */
 :root {
-  --black: #191919;
+  --black: #000000;
   --card-black: #202020;
   --white: #FFFFFF;
   --gray: #9b9a97;

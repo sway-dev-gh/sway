@@ -7,13 +7,13 @@ const theme = {
   },
   colors: {
     bg: {
-      page: '#191919',           // Notion's main bg
-      card: '#1E1E1E',           // Elevated surfaces
-      cardHover: '#252525',      // Hover state
-      hover: '#252525',
-      sidebar: '#191919',
-      secondary: '#1E1E1E',
-      tertiary: '#252525'
+      page: '#000000',           // Pure black
+      card: '#000000',           // Pure black
+      cardHover: '#0a0a0a',      // Hover state
+      hover: '#0a0a0a',
+      sidebar: '#000000',
+      secondary: '#000000',
+      tertiary: '#0a0a0a'
     },
     text: {
       primary: '#FFFFFF',        // Primary text
