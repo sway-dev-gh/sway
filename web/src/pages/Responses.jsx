@@ -273,10 +273,10 @@ function Responses() {
               transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.tertiary,
                 marginBottom: '16px',
-                fontWeight: '700',
+                fontWeight: theme.weight.bold,
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px'
               }}>
@@ -295,9 +295,9 @@ function Responses() {
                 {forms.length}
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                fontWeight: '500'
+                fontWeight: theme.weight.medium
               }}>
                 Total created
               </div>
@@ -312,10 +312,10 @@ function Responses() {
               transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.tertiary,
                 marginBottom: '16px',
-                fontWeight: '700',
+                fontWeight: theme.weight.bold,
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px'
               }}>
@@ -334,9 +334,9 @@ function Responses() {
                 {forms.filter(f => getFormStatus(f) === 'Live').length}
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                fontWeight: '500'
+                fontWeight: theme.weight.medium
               }}>
                 Collecting files
               </div>
@@ -351,10 +351,10 @@ function Responses() {
               transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.tertiary,
                 marginBottom: '16px',
-                fontWeight: '700',
+                fontWeight: theme.weight.bold,
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px'
               }}>
@@ -373,9 +373,9 @@ function Responses() {
                 {uploads.length}
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                fontWeight: '500'
+                fontWeight: theme.weight.medium
               }}>
                 Total received
               </div>
@@ -390,10 +390,10 @@ function Responses() {
               transition: 'all 0.2s ease'
             }}>
               <div style={{
-                fontSize: '11px',
+                fontSize: theme.fontSize.xs,
                 color: theme.colors.text.tertiary,
                 marginBottom: '16px',
-                fontWeight: '700',
+                fontWeight: theme.weight.bold,
                 textTransform: 'uppercase',
                 letterSpacing: '1.5px'
               }}>
@@ -428,9 +428,9 @@ function Responses() {
                 }} />
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: theme.fontSize.sm,
                 color: theme.colors.text.secondary,
-                fontWeight: '500'
+                fontWeight: theme.weight.medium
               }}>
                 of {storageStats.limit} GB used
               </div>
@@ -514,15 +514,8 @@ function Responses() {
             <button
               onClick={() => navigate('/requests')}
               style={{
-                padding: '10px 20px',
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
-                borderRadius: theme.radius.md,
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
+                ...theme.buttons.primary.base,
+                fontWeight: theme.weight.semibold,
                 whiteSpace: 'nowrap'
               }}
             >
@@ -560,15 +553,9 @@ function Responses() {
                 <button
                   onClick={() => navigate('/requests')}
                   style={{
+                    ...theme.buttons.primary.base,
                     padding: '12px 24px',
-                    background: theme.colors.white,
-                    color: theme.colors.black,
-                    border: 'none',
-                    borderRadius: theme.radius.md,
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    fontFamily: 'inherit'
+                    fontWeight: theme.weight.semibold
                   }}
                 >
                   Create First Request
@@ -589,8 +576,8 @@ function Responses() {
                 padding: '16px 20px',
                 background: 'rgba(255, 255, 255, 0.03)',
                 borderBottom: `1px solid ${theme.colors.border.light}`,
-                fontSize: '12px',
-                fontWeight: '600',
+                fontSize: theme.fontSize.xs,
+                fontWeight: theme.weight.semibold,
                 color: theme.colors.text.secondary,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
@@ -637,9 +624,9 @@ function Responses() {
                           padding: '4px 10px',
                           background: `${statusColor}15`,
                           color: statusColor,
-                          borderRadius: '12px',
-                          fontSize: '12px',
-                          fontWeight: '600'
+                          borderRadius: theme.radius.lg,
+                          fontSize: theme.fontSize.xs,
+                          fontWeight: theme.weight.semibold
                         }}>
                           {status}
                         </span>
@@ -649,10 +636,10 @@ function Responses() {
                       <div style={{ color: theme.colors.text.secondary, fontVariantNumeric: 'tabular-nums' }}>
                         {formatBytes(storageUsed)}
                       </div>
-                      <div style={{ color: theme.colors.text.secondary, fontSize: '13px' }}>
+                      <div style={{ color: theme.colors.text.secondary, fontSize: theme.fontSize.sm }}>
                         {formatDate(form.createdAt).split(',')[0]}
                       </div>
-                      <div style={{ color: theme.colors.text.secondary, fontSize: '13px' }}>
+                      <div style={{ color: theme.colors.text.secondary, fontSize: theme.fontSize.sm }}>
                         {lastUpload ? getTimeAgo(lastUpload) : '-'}
                       </div>
                       <div style={{ display: 'flex', gap: '8px' }}>
@@ -662,15 +649,9 @@ function Responses() {
                             setSelectedFormId(isExpanded ? null : form.id)
                           }}
                           style={{
+                            ...theme.buttons.secondary.base,
                             padding: '6px 12px',
-                            background: 'transparent',
-                            color: theme.colors.text.secondary,
-                            border: `1px solid ${theme.colors.border.light}`,
-                            borderRadius: theme.radius.sm,
-                            fontSize: '12px',
-                            fontWeight: '500',
-                            cursor: 'pointer',
-                            fontFamily: 'inherit'
+                            fontSize: theme.fontSize.xs
                           }}
                         >
                           View
@@ -681,15 +662,9 @@ function Responses() {
                             handleDelete(form.id)
                           }}
                           style={{
+                            ...theme.buttons.danger.base,
                             padding: '6px 12px',
-                            background: 'transparent',
-                            color: theme.colors.error,
-                            border: `1px solid ${theme.colors.error}`,
-                            borderRadius: theme.radius.sm,
-                            fontSize: '12px',
-                            fontWeight: '500',
-                            cursor: 'pointer',
-                            fontFamily: 'inherit'
+                            fontSize: theme.fontSize.xs
                           }}
                         >
                           Delete
@@ -712,8 +687,8 @@ function Responses() {
                           {/* Left: Form Info */}
                           <div>
                             <h3 style={{
-                              fontSize: '16px',
-                              fontWeight: '600',
+                              fontSize: theme.fontSize.base,
+                              fontWeight: theme.weight.semibold,
                               color: theme.colors.text.primary,
                               margin: '0 0 16px 0'
                             }}>
@@ -722,10 +697,10 @@ function Responses() {
 
                             <div style={{ marginBottom: theme.spacing[4] }}>
                               <div style={{
-                                fontSize: '12px',
+                                fontSize: theme.fontSize.xs,
                                 color: theme.colors.text.secondary,
                                 marginBottom: '6px',
-                                fontWeight: '600'
+                                fontWeight: theme.weight.semibold
                               }}>
                                 Public URL
                               </div>
@@ -755,15 +730,10 @@ function Responses() {
                                     alert('URL copied to clipboard!')
                                   }}
                                   style={{
+                                    ...theme.buttons.primary.base,
                                     padding: '8px 16px',
-                                    background: theme.colors.white,
-                                    color: theme.colors.black,
-                                    border: 'none',
-                                    borderRadius: theme.radius.sm,
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    cursor: 'pointer',
-                                    fontFamily: 'inherit',
+                                    fontSize: theme.fontSize.sm,
+                                    fontWeight: theme.weight.semibold,
                                     whiteSpace: 'nowrap'
                                   }}
                                 >
@@ -779,8 +749,8 @@ function Responses() {
                               borderRadius: theme.radius.md
                             }}>
                               <div style={{
-                                fontSize: '12px',
-                                fontWeight: '600',
+                                fontSize: theme.fontSize.xs,
+                                fontWeight: theme.weight.semibold,
                                 color: theme.colors.text.secondary,
                                 marginBottom: '12px',
                                 textTransform: 'uppercase',
@@ -790,16 +760,16 @@ function Responses() {
                               </div>
                               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                  <span style={{ color: theme.colors.text.secondary, fontSize: '14px' }}>Total Responses:</span>
-                                  <span style={{ color: theme.colors.text.primary, fontWeight: '600', fontSize: '14px' }}>{formUploads.length}</span>
+                                  <span style={{ color: theme.colors.text.secondary, fontSize: theme.fontSize.sm }}>Total Responses:</span>
+                                  <span style={{ color: theme.colors.text.primary, fontWeight: theme.weight.semibold, fontSize: theme.fontSize.sm }}>{formUploads.length}</span>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                  <span style={{ color: theme.colors.text.secondary, fontSize: '14px' }}>Storage Used:</span>
-                                  <span style={{ color: theme.colors.text.primary, fontWeight: '600', fontSize: '14px' }}>{formatBytes(storageUsed)}</span>
+                                  <span style={{ color: theme.colors.text.secondary, fontSize: theme.fontSize.sm }}>Storage Used:</span>
+                                  <span style={{ color: theme.colors.text.primary, fontWeight: theme.weight.semibold, fontSize: theme.fontSize.sm }}>{formatBytes(storageUsed)}</span>
                                 </div>
                                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                  <span style={{ color: theme.colors.text.secondary, fontSize: '14px' }}>Avg File Size:</span>
-                                  <span style={{ color: theme.colors.text.primary, fontWeight: '600', fontSize: '14px' }}>
+                                  <span style={{ color: theme.colors.text.secondary, fontSize: theme.fontSize.sm }}>Avg File Size:</span>
+                                  <span style={{ color: theme.colors.text.primary, fontWeight: theme.weight.semibold, fontSize: theme.fontSize.sm }}>
                                     {formUploads.length > 0 ? formatBytes(storageUsed / formUploads.length) : '-'}
                                   </span>
                                 </div>
@@ -810,8 +780,8 @@ function Responses() {
                           {/* Right: Upload List */}
                           <div>
                             <h3 style={{
-                              fontSize: '16px',
-                              fontWeight: '600',
+                              fontSize: theme.fontSize.base,
+                              fontWeight: theme.weight.semibold,
                               color: theme.colors.text.primary,
                               margin: '0 0 16px 0'
                             }}>
@@ -853,15 +823,15 @@ function Responses() {
                                     }}>
                                       <div style={{ flex: 1 }}>
                                         <div style={{
-                                          fontSize: '14px',
-                                          fontWeight: '500',
+                                          fontSize: theme.fontSize.sm,
+                                          fontWeight: theme.weight.medium,
                                           color: theme.colors.text.primary,
                                           marginBottom: '4px'
                                         }}>
                                           {upload.fileName}
                                         </div>
                                         <div style={{
-                                          fontSize: '12px',
+                                          fontSize: theme.fontSize.xs,
                                           color: theme.colors.text.secondary
                                         }}>
                                           {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
@@ -870,15 +840,10 @@ function Responses() {
                                       <button
                                         onClick={() => handleDownload(upload.id)}
                                         style={{
+                                          ...theme.buttons.primary.base,
                                           padding: '6px 14px',
-                                          background: theme.colors.white,
-                                          color: theme.colors.black,
-                                          border: 'none',
-                                          borderRadius: theme.radius.sm,
-                                          fontSize: '12px',
-                                          fontWeight: '600',
-                                          cursor: 'pointer',
-                                          fontFamily: 'inherit',
+                                          fontSize: theme.fontSize.xs,
+                                          fontWeight: theme.weight.semibold,
                                           whiteSpace: 'nowrap'
                                         }}
                                       >
@@ -888,7 +853,7 @@ function Responses() {
                                     <div style={{
                                       display: 'flex',
                                       gap: '16px',
-                                      fontSize: '12px',
+                                      fontSize: theme.fontSize.xs,
                                       color: theme.colors.text.tertiary
                                     }}>
                                       <span>{formatBytes(upload.fileSize)}</span>

@@ -2193,12 +2193,12 @@ function Requests() {
 
             {/* Plan Badge */}
             <div style={{
-              fontSize: '11px',
-              fontWeight: '600',
+              fontSize: theme.fontSize.xs,
+              fontWeight: theme.weight.semibold,
               color: userPlan === 'pro' ? theme.colors.white : theme.colors.text.secondary,
               background: userPlan === 'pro' ? 'rgba(255, 255, 255, 0.1)' : theme.colors.bg.hover,
               padding: '4px 10px',
-              borderRadius: '4px',
+              borderRadius: theme.radius.sm,
               textTransform: 'uppercase',
               letterSpacing: '0.5px'
             }}>
@@ -2208,7 +2208,7 @@ function Requests() {
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             {/* Keyboard shortcuts hint */}
-            <div style={{ fontSize: '11px', color: theme.colors.text.secondary, marginRight: '8px' }}>
+            <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, marginRight: '8px' }}>
               {userPlan === 'pro' ? 'Shortcuts enabled' : 'Upgrade for shortcuts'}
             </div>
 
@@ -2216,14 +2216,12 @@ function Requests() {
               onClick={handleUndo}
               disabled={historyIndex <= 0}
               style={{
-                background: 'transparent',
-                border: `1px solid ${theme.colors.border.dark}`,
-                color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                ...theme.buttons.secondary.base,
                 padding: '8px 16px',
-                borderRadius: '6px',
-                fontSize: '13px',
-                cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
-                fontFamily: 'inherit'
+                borderRadius: theme.radius.sm,
+                fontSize: theme.fontSize.sm,
+                color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer'
               }}
             >
               Undo
@@ -2232,29 +2230,20 @@ function Requests() {
               onClick={handleRedo}
               disabled={historyIndex >= history.length - 1}
               style={{
-                background: 'transparent',
-                border: `1px solid ${theme.colors.border.dark}`,
-                color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                ...theme.buttons.secondary.base,
                 padding: '8px 16px',
-                borderRadius: '6px',
-                fontSize: '13px',
-                cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
-                fontFamily: 'inherit'
+                borderRadius: theme.radius.sm,
+                fontSize: theme.fontSize.sm,
+                color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer'
               }}
             >
               Redo
             </button>
             <button
               style={{
-                background: 'transparent',
-                color: theme.colors.text.primary,
-                border: `1px solid ${theme.colors.border.dark}`,
-                padding: '10px 20px',
-                borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                fontFamily: 'inherit'
+                ...theme.buttons.secondary.base,
+                borderRadius: theme.radius.sm
               }}
               onClick={() => setShowPreviewModal(true)}
             >
@@ -2262,15 +2251,8 @@ function Requests() {
             </button>
             <button
               style={{
-                background: 'transparent',
-                color: theme.colors.text.primary,
-                border: `1px solid ${theme.colors.border.dark}`,
-                padding: '10px 20px',
-                borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer',
-                fontFamily: 'inherit'
+                ...theme.buttons.secondary.base,
+                borderRadius: theme.radius.sm
               }}
               onClick={handleSave}
             >
@@ -2278,15 +2260,10 @@ function Requests() {
             </button>
             <button
               style={{
-                background: theme.colors.white,
-                color: theme.colors.black,
-                border: 'none',
+                ...theme.buttons.primary.base,
                 padding: '10px 24px',
-                borderRadius: '6px',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                fontFamily: 'inherit'
+                borderRadius: theme.radius.sm,
+                fontWeight: theme.weight.semibold
               }}
               onClick={handlePublish}
             >
@@ -2317,8 +2294,8 @@ function Requests() {
                   border: 'none',
                   borderBottom: activeTab === 'templates' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
                   color: activeTab === 'templates' ? theme.colors.white : theme.colors.text.secondary,
-                  fontSize: '13px',
-                  fontWeight: '600',
+                  fontSize: theme.fontSize.sm,
+                  fontWeight: theme.weight.semibold,
                   cursor: 'pointer',
                   fontFamily: 'inherit'
                 }}
@@ -2334,8 +2311,8 @@ function Requests() {
                   border: 'none',
                   borderBottom: activeTab === 'elements' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
                   color: activeTab === 'elements' ? theme.colors.white : theme.colors.text.secondary,
-                  fontSize: '13px',
-                  fontWeight: '600',
+                  fontSize: theme.fontSize.sm,
+                  fontWeight: theme.weight.semibold,
                   cursor: 'pointer',
                   fontFamily: 'inherit'
                 }}
@@ -2349,8 +2326,8 @@ function Requests() {
               {activeTab === 'templates' ? (
                 <>
                   <div style={{
-                    fontSize: '10px',
-                    fontWeight: '600',
+                    fontSize: theme.fontSize.xs,
+                    fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
                     marginBottom: '10px',
                     textTransform: 'uppercase',
@@ -2384,17 +2361,17 @@ function Requests() {
                           alignItems: 'flex-start',
                           marginBottom: '6px'
                         }}>
-                          <div style={{ fontSize: '14px', fontWeight: '600', color: theme.colors.text.primary }}>
+                          <div style={{ fontSize: theme.fontSize.sm, fontWeight: theme.weight.semibold, color: theme.colors.text.primary }}>
                             {template.name}
                           </div>
                           {isPro && (
                             <div style={{
-                              fontSize: '10px',
-                              fontWeight: '700',
+                              fontSize: theme.fontSize.xs,
+                              fontWeight: theme.weight.bold,
                               color: isLocked ? theme.colors.text.secondary : theme.colors.white,
                               background: isLocked ? theme.colors.border.dark : 'rgba(255, 255, 255, 0.1)',
                               padding: '3px 8px',
-                              borderRadius: '4px',
+                              borderRadius: theme.radius.sm,
                               textTransform: 'uppercase',
                               letterSpacing: '0.5px'
                             }}>
@@ -2402,7 +2379,7 @@ function Requests() {
                             </div>
                           )}
                         </div>
-                        <div style={{ fontSize: '12px', color: theme.colors.text.secondary, lineHeight: '1.4' }}>
+                        <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, lineHeight: '1.4' }}>
                           {template.description}
                         </div>
                       </div>
@@ -2412,8 +2389,8 @@ function Requests() {
               ) : (
                 <>
                   <div style={{
-                    fontSize: '11px',
-                    fontWeight: '600',
+                    fontSize: theme.fontSize.xs,
+                    fontWeight: theme.weight.semibold,
                     color: theme.colors.text.secondary,
                     marginBottom: '16px',
                     textTransform: 'uppercase',
@@ -2445,13 +2422,13 @@ function Requests() {
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <div style={{
-                            fontSize: '18px',
-                            fontWeight: '700',
+                            fontSize: theme.fontSize.lg,
+                            fontWeight: theme.weight.bold,
                             color: theme.colors.text.primary,
                             minWidth: '32px',
                             textAlign: 'center',
                             background: theme.colors.border.dark,
-                            borderRadius: '6px',
+                            borderRadius: theme.radius.sm,
                             padding: '6px',
                             lineHeight: '1'
                           }}>
@@ -2464,17 +2441,17 @@ function Requests() {
                               gap: '6px',
                               marginBottom: '2px'
                             }}>
-                              <div style={{ fontSize: '13px', fontWeight: '500', color: theme.colors.text.primary }}>
+                              <div style={{ fontSize: theme.fontSize.sm, fontWeight: theme.weight.medium, color: theme.colors.text.primary }}>
                                 {component.label}
                               </div>
                               {isPro && (
                                 <div style={{
-                                  fontSize: '9px',
-                                  fontWeight: '700',
+                                  fontSize: theme.fontSize.xs,
+                                  fontWeight: theme.weight.bold,
                                   color: isLocked ? theme.colors.text.secondary : theme.colors.white,
                                   background: isLocked ? theme.colors.border.dark : 'rgba(255, 255, 255, 0.1)',
                                   padding: '2px 6px',
-                                  borderRadius: '3px',
+                                  borderRadius: theme.radius.sm,
                                   textTransform: 'uppercase',
                                   letterSpacing: '0.3px'
                                 }}>
@@ -2482,7 +2459,7 @@ function Requests() {
                                 </div>
                               )}
                             </div>
-                            <div style={{ fontSize: '11px', color: theme.colors.text.secondary }}>
+                            <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary }}>
                               {component.description}
                             </div>
                           </div>
@@ -2723,10 +2700,10 @@ function Requests() {
                   <div>
                     <label style={{
                       display: 'block',
-                      fontSize: '10px',
+                      fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
                       marginBottom: '6px',
-                      fontWeight: '600',
+                      fontWeight: theme.weight.semibold,
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px'
                     }}>
@@ -2749,9 +2726,9 @@ function Requests() {
                       style={{
                         width: '80px',
                         padding: '8px',
-                        fontSize: '13px',
+                        fontSize: theme.fontSize.sm,
                         border: `1px solid ${theme.colors.border.dark}`,
-                        borderRadius: '4px',
+                        borderRadius: theme.radius.sm,
                         background: theme.colors.bg.hover,
                         color: theme.colors.text.primary,
                         fontFamily: 'inherit'
@@ -2761,10 +2738,10 @@ function Requests() {
                   <div>
                     <label style={{
                       display: 'block',
-                      fontSize: '10px',
+                      fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
                       marginBottom: '6px',
-                      fontWeight: '600',
+                      fontWeight: theme.weight.semibold,
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px'
                     }}>
@@ -2787,9 +2764,9 @@ function Requests() {
                       style={{
                         width: '80px',
                         padding: '8px',
-                        fontSize: '13px',
+                        fontSize: theme.fontSize.sm,
                         border: `1px solid ${theme.colors.border.dark}`,
-                        borderRadius: '4px',
+                        borderRadius: theme.radius.sm,
                         background: theme.colors.bg.hover,
                         color: theme.colors.text.primary,
                         fontFamily: 'inherit'
@@ -2811,10 +2788,10 @@ function Requests() {
                   <div key={key} style={{ minWidth: typeof value === 'boolean' ? '120px' : '180px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: '10px',
+                      fontSize: theme.fontSize.xs,
                       color: theme.colors.text.secondary,
                       marginBottom: '6px',
-                      fontWeight: '600',
+                      fontWeight: theme.weight.semibold,
                       textTransform: 'uppercase',
                       letterSpacing: '0.5px'
                     }}>
@@ -2828,7 +2805,7 @@ function Requests() {
                           onChange={(e) => handlePropertyChange(key, e.target.checked)}
                           style={{ width: '18px', height: '18px' }}
                         />
-                        <span style={{ fontSize: '12px', color: theme.colors.text.secondary }}>Enabled</span>
+                        <span style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary }}>Enabled</span>
                       </label>
                     ) : key.toLowerCase().includes('color') ? (
                       <input
@@ -2840,7 +2817,7 @@ function Requests() {
                           height: '36px',
                           padding: '2px',
                           border: `1px solid ${theme.colors.border.dark}`,
-                          borderRadius: '4px',
+                          borderRadius: theme.radius.sm,
                           background: theme.colors.bg.hover,
                           cursor: 'pointer'
                         }}
@@ -2853,9 +2830,9 @@ function Requests() {
                         style={{
                           width: '100px',
                           padding: '8px',
-                          fontSize: '13px',
+                          fontSize: theme.fontSize.sm,
                           border: `1px solid ${theme.colors.border.dark}`,
-                          borderRadius: '4px',
+                          borderRadius: theme.radius.sm,
                           background: theme.colors.bg.hover,
                           color: theme.colors.text.primary,
                           fontFamily: 'inherit'
@@ -2869,9 +2846,9 @@ function Requests() {
                         style={{
                           width: '200px',
                           padding: '8px',
-                          fontSize: '13px',
+                          fontSize: theme.fontSize.sm,
                           border: `1px solid ${theme.colors.border.dark}`,
-                          borderRadius: '4px',
+                          borderRadius: theme.radius.sm,
                           background: theme.colors.bg.hover,
                           color: theme.colors.text.primary,
                           fontFamily: 'inherit'
@@ -2885,9 +2862,9 @@ function Requests() {
                         style={{
                           width: '150px',
                           padding: '8px',
-                          fontSize: '13px',
+                          fontSize: theme.fontSize.sm,
                           border: `1px solid ${theme.colors.border.dark}`,
-                          borderRadius: '4px',
+                          borderRadius: theme.radius.sm,
                           background: theme.colors.bg.hover,
                           color: theme.colors.text.primary,
                           fontFamily: 'inherit'
@@ -2904,9 +2881,9 @@ function Requests() {
                 justifyContent: 'center',
                 height: '100%',
                 color: theme.colors.text.secondary,
-                fontSize: '12px'
+                fontSize: theme.fontSize.xs
               }}>
-                <span style={{ marginRight: '8px', fontSize: '16px', opacity: 0.3 }}>◇</span>
+                <span style={{ marginRight: '8px', fontSize: theme.fontSize.base, opacity: 0.3 }}>◇</span>
                 Select an element to edit its properties
               </div>
             )}
@@ -3102,15 +3079,9 @@ function Requests() {
                   setSelectedTemplate(null)
                 }}
                 style={{
-                  background: 'transparent',
-                  border: `1px solid ${theme.colors.border.dark}`,
-                  color: theme.colors.text.secondary,
+                  ...theme.buttons.secondary.base,
                   padding: '12px 24px',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  borderRadius: theme.radius.sm
                 }}
               >
                 Cancel
@@ -3118,15 +3089,10 @@ function Requests() {
               <button
                 onClick={handleUseTemplate}
                 style={{
-                  background: theme.colors.white,
-                  border: 'none',
-                  color: theme.colors.black,
+                  ...theme.buttons.primary.base,
                   padding: '12px 24px',
-                  borderRadius: '6px',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  borderRadius: theme.radius.sm,
+                  fontWeight: theme.weight.semibold
                 }}
               >
                 Use Template
