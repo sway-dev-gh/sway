@@ -2482,7 +2482,7 @@ function Requests() {
             </div>
 
             {/* Tab Content - Consistent spacing */}
-            <div style={{ padding: '32px 24px' }}>
+            <div style={{ padding: '32px 16px' }}>
               {activeTab === 'branding' ? (
                 <>
                   {/* Section Title */}
@@ -2819,7 +2819,7 @@ function Requests() {
                           key={template.id}
                           onClick={() => handleTemplateClick(template)}
                           style={{
-                            padding: '16px',
+                            padding: '12px',
                             background: 'transparent',
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: theme.radius.md,
@@ -2909,7 +2909,7 @@ function Requests() {
                           onDragStart={() => !isLocked && handleDragStart(component)}
                           onClick={() => isLocked && setShowUpgradeModal(true)}
                           style={{
-                            padding: '16px',
+                            padding: '12px',
                             background: 'transparent',
                             border: `1px solid ${theme.colors.border.medium}`,
                             borderRadius: theme.radius.md,
