@@ -4,7 +4,9 @@ import theme from '../theme';
 export default function UpgradeBanner({ user, onClose }) {
   const navigate = useNavigate();
 
-  // Only show for free users
+  // Don't show if user not loaded yet or not free
+  if (!user || !user.email) return null;
+
   const userPlan = user?.plan?.toLowerCase() || 'free';
   if (userPlan !== 'free') return null;
 
