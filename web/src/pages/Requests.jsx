@@ -2552,29 +2552,29 @@ function Requests() {
             </div>
 
             {/* Tab Content */}
-            <div style={{ padding: '20px 16px' }}>
+            <div style={{ padding: '32px 24px' }}>
               {activeTab === 'branding' ? (
                 <>
                   <div style={{
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.semibold,
-                    color: theme.colors.text.secondary,
-                    marginBottom: '24px',
+                    fontSize: '11px',
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: '32px',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '1px'
                   }}>
                     Customize Your Upload Page
                   </div>
 
                   {/* Accent Color */}
                   {/* Page Title */}
-                  <div style={{ marginBottom: '24px' }}>
+                  <div style={{ marginBottom: '32px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '10px',
-                      fontWeight: theme.weight.medium
+                      fontSize: '13px',
+                      color: theme.colors.text.primary,
+                      marginBottom: '12px',
+                      fontWeight: theme.weight.semibold
                     }}>
                       Page Title
                     </label>
@@ -2598,13 +2598,13 @@ function Requests() {
                   </div>
 
                   {/* Instructions */}
-                  <div style={{ marginBottom: '24px' }}>
+                  <div style={{ marginBottom: '32px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '10px',
-                      fontWeight: theme.weight.medium
+                      fontSize: '13px',
+                      color: theme.colors.text.primary,
+                      marginBottom: '12px',
+                      fontWeight: theme.weight.semibold
                     }}>
                       Instructions Text
                     </label>
@@ -2629,13 +2629,13 @@ function Requests() {
                   </div>
 
                   {/* Success Message */}
-                  <div style={{ marginBottom: '24px' }}>
+                  <div style={{ marginBottom: '32px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '10px',
-                      fontWeight: theme.weight.medium
+                      fontSize: '13px',
+                      color: theme.colors.text.primary,
+                      marginBottom: '12px',
+                      fontWeight: theme.weight.semibold
                     }}>
                       Success Message
                     </label>
@@ -2660,24 +2660,25 @@ function Requests() {
                   </div>
 
                   {/* Show Powered By */}
-                  <div style={{ marginBottom: '24px' }}>
+                  <div style={{ marginBottom: '32px' }}>
                     <label style={{
                       display: 'flex',
                       alignItems: 'center',
-                      fontSize: theme.fontSize.sm,
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
                       cursor: 'pointer',
-                      userSelect: 'none'
+                      userSelect: 'none',
+                      padding: '12px 0'
                     }}>
                       <input
                         type="checkbox"
                         checked={branding.showPoweredBy}
                         onChange={(e) => setBranding({ ...branding, showPoweredBy: e.target.checked })}
                         style={{
-                          marginRight: '12px',
+                          marginRight: '14px',
                           cursor: 'pointer',
-                          width: '18px',
-                          height: '18px'
+                          width: '20px',
+                          height: '20px'
                         }}
                       />
                       Show "Powered by Sway"
@@ -2687,36 +2688,37 @@ function Requests() {
               ) : activeTab === 'settings' ? (
                 <>
                   <div style={{
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.semibold,
-                    color: theme.colors.text.secondary,
-                    marginBottom: '24px',
+                    fontSize: '11px',
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: '32px',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '1px'
                   }}>
                     File Upload Restrictions
                   </div>
 
                   {/* Allowed File Types */}
-                  <div style={{ marginBottom: '28px' }}>
+                  <div style={{ marginBottom: '40px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '12px',
-                      fontWeight: theme.weight.medium
+                      fontSize: '13px',
+                      color: theme.colors.text.primary,
+                      marginBottom: '16px',
+                      fontWeight: theme.weight.semibold
                     }}>
                       Allowed File Types
                     </label>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '16px' }}>
                       {['image', 'document', 'video', 'audio', 'archive'].map(type => (
                         <label key={type} style={{
                           display: 'flex',
                           alignItems: 'center',
-                          fontSize: theme.fontSize.sm,
+                          fontSize: '14px',
                           color: theme.colors.text.primary,
                           cursor: 'pointer',
-                          userSelect: 'none'
+                          userSelect: 'none',
+                          padding: '8px 0'
                         }}>
                           <input
                             type="checkbox"
@@ -2735,10 +2737,10 @@ function Requests() {
                               }
                             }}
                             style={{
-                              marginRight: '12px',
+                              marginRight: '14px',
                               cursor: 'pointer',
-                              width: '18px',
-                              height: '18px'
+                              width: '20px',
+                              height: '20px'
                             }}
                           />
                           {type.charAt(0).toUpperCase() + type.slice(1)}s
@@ -2747,10 +2749,11 @@ function Requests() {
                       <label style={{
                         display: 'flex',
                         alignItems: 'center',
-                        fontSize: theme.fontSize.sm,
+                        fontSize: '14px',
                         color: theme.colors.text.primary,
                         cursor: 'pointer',
-                        userSelect: 'none'
+                        userSelect: 'none',
+                        padding: '8px 0'
                       }}>
                         <input
                           type="checkbox"
@@ -2763,10 +2766,10 @@ function Requests() {
                             }
                           }}
                           style={{
-                            marginRight: '12px',
+                            marginRight: '14px',
                             cursor: 'pointer',
-                            width: '18px',
-                            height: '18px'
+                            width: '20px',
+                            height: '20px'
                           }}
                         />
                         All File Types
@@ -2774,13 +2777,13 @@ function Requests() {
                     </div>
 
                     {/* Custom File Types */}
-                    <div style={{ marginTop: '16px' }}>
+                    <div style={{ marginTop: '20px' }}>
                       <label style={{
                         display: 'block',
-                        fontSize: theme.fontSize.xs,
-                        color: theme.colors.text.secondary,
-                        marginBottom: '10px',
-                        fontWeight: theme.weight.medium
+                        fontSize: '13px',
+                        color: theme.colors.text.primary,
+                        marginBottom: '12px',
+                        fontWeight: theme.weight.semibold
                       }}>
                         Custom File Extensions (optional)
                       </label>
@@ -2812,13 +2815,13 @@ function Requests() {
                   </div>
 
                   {/* Maximum File Size */}
-                  <div style={{ marginBottom: '28px' }}>
+                  <div style={{ marginBottom: '40px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '10px',
-                      fontWeight: theme.weight.medium
+                      fontSize: '13px',
+                      color: theme.colors.text.primary,
+                      marginBottom: '12px',
+                      fontWeight: theme.weight.semibold
                     }}>
                       Maximum File Size Per Upload
                     </label>
@@ -2848,13 +2851,13 @@ function Requests() {
                   </div>
 
                   {/* Maximum Number of Files */}
-                  <div style={{ marginBottom: '28px' }}>
+                  <div style={{ marginBottom: '40px' }}>
                     <label style={{
                       display: 'block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '10px',
-                      fontWeight: theme.weight.medium
+                      fontSize: '13px',
+                      color: theme.colors.text.primary,
+                      marginBottom: '12px',
+                      fontWeight: theme.weight.semibold
                     }}>
                       Maximum Number of Files Per Submission
                     </label>
