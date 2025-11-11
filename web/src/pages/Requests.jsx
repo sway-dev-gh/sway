@@ -32,7 +32,7 @@ const TEMPLATES = [
         properties: {
           content: 'Upload Your Files',
           fontSize: '36px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
         }
@@ -59,8 +59,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Submit',
-          backgroundColor: '#ffffff',
-          color: '#000000'
+          backgroundColor: theme.colors.white,
+          color: theme.colors.black
         }
       }
     ]
@@ -82,7 +82,7 @@ const TEMPLATES = [
         properties: {
           content: 'Get In Touch',
           fontSize: '32px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
         }
@@ -145,8 +145,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Send Message',
-          backgroundColor: '#ffffff',
-          color: '#000000'
+          backgroundColor: theme.colors.white,
+          color: theme.colors.black
         }
       }
     ]
@@ -181,7 +181,7 @@ const TEMPLATES = [
         properties: {
           content: 'Client Onboarding',
           fontSize: '32px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
         }
@@ -205,7 +205,7 @@ const TEMPLATES = [
         properties: {
           content: 'Company Information',
           fontSize: '18px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600'
         }
       },
@@ -276,7 +276,7 @@ const TEMPLATES = [
         properties: {
           content: 'Brand Assets',
           fontSize: '18px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600'
         }
       },
@@ -312,8 +312,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Submit',
-          backgroundColor: '#ffffff',
-          color: '#000000'
+          backgroundColor: theme.colors.white,
+          color: theme.colors.black
         }
       }
     ]
@@ -335,7 +335,7 @@ const TEMPLATES = [
         properties: {
           content: 'Submit New Product',
           fontSize: '32px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
         }
@@ -432,8 +432,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Submit Product',
-          backgroundColor: '#ffffff',
-          color: '#000000'
+          backgroundColor: theme.colors.white,
+          color: theme.colors.black
         }
       }
     ]
@@ -455,7 +455,7 @@ const TEMPLATES = [
         properties: {
           content: 'Event Registration',
           fontSize: '32px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
         }
@@ -565,8 +565,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Register',
-          backgroundColor: '#ffffff',
-          color: '#000000'
+          backgroundColor: theme.colors.white,
+          color: theme.colors.black
         }
       }
     ]
@@ -588,7 +588,7 @@ const TEMPLATES = [
         properties: {
           content: 'Creative Brief',
           fontSize: '32px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
         }
@@ -683,8 +683,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Submit Brief',
-          backgroundColor: '#ffffff',
-          color: '#000000'
+          backgroundColor: theme.colors.white,
+          color: theme.colors.black
         }
       }
     ]
@@ -706,7 +706,7 @@ const TEMPLATES = [
         properties: {
           content: 'Job Application',
           fontSize: '32px',
-          color: '#ffffff',
+          color: theme.colors.text.primary,
           fontWeight: '600',
           textAlign: 'center'
         }
@@ -841,8 +841,8 @@ const TEMPLATES = [
         height: 48,
         properties: {
           label: 'Submit Application',
-          backgroundColor: '#ffffff',
-          color: '#000000'
+          backgroundColor: theme.colors.white,
+          color: theme.colors.black
         }
       }
     ]
@@ -930,14 +930,14 @@ const DEFAULT_PROPERTIES = {
   'text': {
     content: 'Enter your text here',
     fontSize: '16px',
-    color: '#cccccc',
+    color: theme.colors.text.secondary,
     fontWeight: '400',
     textAlign: 'left'
   },
   'heading': {
     content: 'Heading Text',
     fontSize: '32px',
-    color: '#ffffff',
+    color: theme.colors.text.primary,
     fontWeight: '600',
     textAlign: 'center'
   },
@@ -959,8 +959,8 @@ const DEFAULT_PROPERTIES = {
   },
   'button': {
     label: 'Submit',
-    backgroundColor: '#ffffff',
-    color: '#000000'
+    backgroundColor: theme.colors.white,
+    color: theme.colors.black
   },
   'rich-text': {
     label: 'Rich Text',
@@ -986,7 +986,7 @@ const DEFAULT_PROPERTIES = {
   },
   'color-picker': {
     label: 'Choose Color',
-    defaultColor: '#3b82f6'
+    defaultColor: theme.colors.accent
   },
   'range-slider': {
     label: 'Select Value',
@@ -1004,7 +1004,7 @@ const DEFAULT_PROPERTIES = {
   },
   'divider': {
     thickness: '1px',
-    color: '#3a3a3a'
+    color: theme.colors.text.tertiary
   },
   'spacer': {
     height: '40px'
@@ -1559,7 +1559,7 @@ function Requests() {
       height: type === 'textarea' || type === 'rich-text' || type === 'signature' ? `${height}px` : 'auto',
       minHeight: type === 'spacer' ? `${properties.height || '40px'}` : 'auto',
       cursor: isDraggingElement ? 'grabbing' : 'grab',
-      border: isSelected ? '2px solid #3b82f6' : '2px solid transparent',
+      border: isSelected ? `2px solid ${theme.colors.white}` : '2px solid transparent',
       outline: isSelected ? '2px solid rgba(59, 130, 246, 0.3)' : 'none',
       outlineOffset: '2px',
       borderRadius: '4px',
@@ -1611,8 +1611,8 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
-                  {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
+                  {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
                 </div>
               )}
               <input
@@ -1623,10 +1623,10 @@ function Requests() {
                   width: '100%',
                   padding: '10px',
                   fontSize: '14px',
-                  border: '1px solid #3a3a3a',
+                  border: `1px solid ${theme.colors.border.dark}`,
                   borderRadius: '4px',
-                  backgroundColor: '#1a1a1a',
-                  color: '#ffffff',
+                  backgroundColor: theme.colors.bg.hover,
+                  color: theme.colors.text.primary,
                   pointerEvents: 'none'
                 }}
               />
@@ -1639,8 +1639,8 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px', height: '100%' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
-                  {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
+                  {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
                 </div>
               )}
               <textarea
@@ -1651,10 +1651,10 @@ function Requests() {
                   width: '100%',
                   padding: '10px',
                   fontSize: '14px',
-                  border: '1px solid #3a3a3a',
+                  border: `1px solid ${theme.colors.border.dark}`,
                   borderRadius: '4px',
-                  backgroundColor: '#1a1a1a',
-                  color: '#ffffff',
+                  backgroundColor: theme.colors.bg.hover,
+                  color: theme.colors.text.primary,
                   pointerEvents: 'none',
                   resize: 'none',
                   fontFamily: 'inherit'
@@ -1668,8 +1668,8 @@ function Requests() {
         return (
           <div {...commonProps}>
             <div style={{
-              backgroundColor: '#1a1a1a',
-              border: '2px dashed #3a3a3a',
+              backgroundColor: theme.colors.bg.hover,
+              border: `2px dashed ${theme.colors.border.dark}`,
               borderRadius: '8px',
               padding: '24px',
               textAlign: 'center',
@@ -1680,8 +1680,8 @@ function Requests() {
               justifyContent: 'center'
             }}>
               <div style={{ fontSize: '32px', marginBottom: '8px' }}>↑</div>
-              <div style={{ fontSize: '14px', fontWeight: '500', color: '#ffffff' }}>{properties.label}</div>
-              <div style={{ fontSize: '11px', color: '#888', marginTop: '4px' }}>
+              <div style={{ fontSize: '14px', fontWeight: '500', color: theme.colors.text.primary }}>{properties.label}</div>
+              <div style={{ fontSize: '11px', color: theme.colors.text.secondary, marginTop: '4px' }}>
                 {properties.multiple ? 'Multiple files' : 'Single file'}
               </div>
             </div>
@@ -1715,8 +1715,8 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px', height: '100%' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
-                  {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
+                  {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
                 </div>
               )}
               <div style={{
@@ -1724,10 +1724,10 @@ function Requests() {
                 height: 'calc(100% - 32px)',
                 padding: '10px',
                 fontSize: '14px',
-                border: '1px solid #3a3a3a',
+                border: `1px solid ${theme.colors.border.dark}`,
                 borderRadius: '4px',
-                backgroundColor: '#1a1a1a',
-                color: '#888',
+                backgroundColor: theme.colors.bg.hover,
+                color: theme.colors.text.secondary,
                 fontFamily: 'inherit'
               }}>
                 {properties.placeholder}
@@ -1741,23 +1741,23 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px', height: '100%' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
                   {properties.label}
                 </div>
               )}
               <div style={{
                 width: '100%',
                 height: 'calc(100% - 32px)',
-                backgroundColor: '#1a1a1a',
-                border: '2px dashed #3a3a3a',
+                backgroundColor: theme.colors.bg.hover,
+                border: `2px dashed ${theme.colors.border.dark}`,
                 borderRadius: '8px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <div style={{ fontSize: '14px', marginBottom: '8px', fontWeight: '600', color: '#888' }}>MULTI FILE</div>
-                <div style={{ fontSize: '13px', color: '#888' }}>
+                <div style={{ fontSize: '14px', marginBottom: '8px', fontWeight: '600', color: theme.colors.text.secondary }}>MULTI FILE</div>
+                <div style={{ fontSize: '13px', color: theme.colors.text.secondary }}>
                   Upload up to {properties.maxFiles} files
                 </div>
               </div>
@@ -1770,7 +1770,7 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px', height: '100%' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
                   {properties.label}
                 </div>
               )}
@@ -1785,15 +1785,15 @@ function Requests() {
               }}>
                 {Array.from({ length: properties.gridSize === '4x4' ? 16 : properties.gridSize === '3x3' ? 9 : 6 }).map((_, i) => (
                   <div key={i} style={{
-                    backgroundColor: '#1a1a1a',
-                    border: '1px solid #3a3a3a',
+                    backgroundColor: theme.colors.bg.hover,
+                    border: `1px solid ${theme.colors.border.dark}`,
                     borderRadius: '4px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     aspectRatio: '1/1'
                   }}>
-                    <span style={{ fontSize: '20px', color: '#444' }}>+</span>
+                    <span style={{ fontSize: '20px', color: theme.colors.text.tertiary }}>+</span>
                   </div>
                 ))}
               </div>
@@ -1806,8 +1806,8 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
-                  {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
+                  {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
                 </div>
               )}
               <input
@@ -1817,10 +1817,10 @@ function Requests() {
                   width: '100%',
                   padding: '10px',
                   fontSize: '14px',
-                  border: '1px solid #3a3a3a',
+                  border: `1px solid ${theme.colors.border.dark}`,
                   borderRadius: '4px',
-                  backgroundColor: '#1a1a1a',
-                  color: '#ffffff',
+                  backgroundColor: theme.colors.bg.hover,
+                  color: theme.colors.text.primary,
                   pointerEvents: 'none',
                   fontFamily: 'inherit'
                 }}
@@ -1834,8 +1834,8 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
-                  {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
+                  {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
                 </div>
               )}
               <input
@@ -1845,10 +1845,10 @@ function Requests() {
                   width: '100%',
                   padding: '10px',
                   fontSize: '14px',
-                  border: '1px solid #3a3a3a',
+                  border: `1px solid ${theme.colors.border.dark}`,
                   borderRadius: '4px',
-                  backgroundColor: '#1a1a1a',
-                  color: '#ffffff',
+                  backgroundColor: theme.colors.bg.hover,
+                  color: theme.colors.text.primary,
                   pointerEvents: 'none',
                   fontFamily: 'inherit'
                 }}
@@ -1862,7 +1862,7 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
                   {properties.label}
                 </div>
               )}
@@ -1874,9 +1874,9 @@ function Requests() {
                   width: '100%',
                   height: '40px',
                   padding: '4px',
-                  border: '1px solid #3a3a3a',
+                  border: `1px solid ${theme.colors.border.dark}`,
                   borderRadius: '4px',
-                  backgroundColor: '#1a1a1a',
+                  backgroundColor: theme.colors.bg.hover,
                   cursor: 'pointer',
                   pointerEvents: 'none'
                 }}
@@ -1890,7 +1890,7 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
                   {properties.label}
                 </div>
               )}
@@ -1905,7 +1905,7 @@ function Requests() {
                   pointerEvents: 'none'
                 }}
               />
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#888', marginTop: '4px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: theme.colors.text.secondary, marginTop: '4px' }}>
                 <span>{properties.min}</span>
                 <span>{properties.max}</span>
               </div>
@@ -1918,13 +1918,13 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
                   {properties.label}
                 </div>
               )}
               <div style={{ display: 'flex', gap: '4px', fontSize: '24px' }}>
                 {Array.from({ length: properties.maxStars }).map((_, i) => (
-                  <span key={i} style={{ color: '#ffffff' }}>★</span>
+                  <span key={i} style={{ color: theme.colors.text.primary }}>★</span>
                 ))}
               </div>
             </div>
@@ -1936,20 +1936,20 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px', height: '100%' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
-                  {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
+                  {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
                 </div>
               )}
               <div style={{
                 width: '100%',
                 height: 'calc(100% - 32px)',
-                backgroundColor: '#1a1a1a',
-                border: '1px solid #3a3a3a',
+                backgroundColor: theme.colors.bg.hover,
+                border: `1px solid ${theme.colors.border.dark}`,
                 borderRadius: '4px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#666',
+                color: theme.colors.text.secondary,
                 fontSize: '14px'
               }}>
                 Sign here
@@ -1964,7 +1964,7 @@ function Requests() {
             <div style={{
               width: '100%',
               height: properties.thickness || '1px',
-              backgroundColor: properties.color || '#3a3a3a',
+              backgroundColor: properties.color || theme.colors.text.tertiary,
               margin: '16px 0'
             }} />
           </div>
@@ -1977,12 +1977,12 @@ function Requests() {
               width: '100%',
               height: properties.height || '40px',
               backgroundColor: 'transparent',
-              border: '1px dashed #3a3a3a',
+              border: `1px dashed ${theme.colors.border.dark}`,
               borderRadius: '4px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: '#666',
+              color: theme.colors.text.secondary,
               fontSize: '11px'
             }}>
               Spacer
@@ -1995,8 +1995,8 @@ function Requests() {
           <div {...commonProps}>
             <div style={{ padding: '8px' }}>
               {properties.label && (
-                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: '#ffffff' }}>
-                  {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+                <div style={{ fontSize: '14px', fontWeight: '500', marginBottom: '8px', color: theme.colors.text.primary }}>
+                  {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
                 </div>
               )}
               <select
@@ -2005,10 +2005,10 @@ function Requests() {
                   width: '100%',
                   padding: '10px',
                   fontSize: '14px',
-                  border: '1px solid #3a3a3a',
+                  border: `1px solid ${theme.colors.border.dark}`,
                   borderRadius: '4px',
-                  backgroundColor: '#1a1a1a',
-                  color: '#ffffff',
+                  backgroundColor: theme.colors.bg.hover,
+                  color: theme.colors.text.primary,
                   pointerEvents: 'none',
                   fontFamily: 'inherit'
                 }}
@@ -2033,8 +2033,8 @@ function Requests() {
                 readOnly
                 style={{ width: '18px', height: '18px', pointerEvents: 'none' }}
               />
-              <span style={{ fontSize: '14px', color: '#ffffff' }}>
-                {properties.label} {properties.required && <span style={{ color: '#ff4444' }}>*</span>}
+              <span style={{ fontSize: '14px', color: theme.colors.text.primary }}>
+                {properties.label} {properties.required && <span style={{ color: theme.colors.error }}>*</span>}
               </span>
             </div>
           </div>
@@ -2046,8 +2046,8 @@ function Requests() {
             <div style={{
               width: '100%',
               height: '100%',
-              backgroundColor: '#1a1a1a',
-              border: '1px solid #3a3a3a',
+              backgroundColor: theme.colors.bg.hover,
+              border: `1px solid ${theme.colors.border.dark}`,
               borderRadius: '8px',
               display: 'flex',
               alignItems: 'center',
@@ -2065,7 +2065,7 @@ function Requests() {
                   }}
                 />
               ) : (
-                <div style={{ textAlign: 'center', color: '#666' }}>
+                <div style={{ textAlign: 'center', color: theme.colors.text.secondary }}>
                   <div style={{ fontSize: '32px' }}>IMG</div>
                   <div style={{ fontSize: '11px', marginTop: '4px' }}>Image Placeholder</div>
                 </div>
@@ -2088,13 +2088,13 @@ function Requests() {
             }}>
               {Array.from({ length: cols }).map((_, i) => (
                 <div key={i} style={{
-                  backgroundColor: '#1a1a1a',
-                  border: '1px dashed #3a3a3a',
+                  backgroundColor: theme.colors.bg.hover,
+                  border: `1px dashed ${theme.colors.border.dark}`,
                   borderRadius: '4px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#666',
+                  color: theme.colors.text.secondary,
                   fontSize: '11px'
                 }}>
                   Column {i + 1}
@@ -2115,8 +2115,8 @@ function Requests() {
       <div
         style={{
           height: '100vh',
-          background: '#0a0a0a',
-          color: '#ffffff',
+          background: theme.colors.bg.hover,
+          color: theme.colors.text.primary,
           paddingTop: '54px',
           display: 'flex',
           flexDirection: 'column',
@@ -2128,12 +2128,12 @@ function Requests() {
         {/* Top Toolbar */}
         <div style={{
           height: '50px',
-          borderBottom: '1px solid #2a2a2a',
+          borderBottom: `1px solid ${theme.colors.border.dark}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0 20px',
-          background: '#0a0a0a'
+          background: theme.colors.bg.hover
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <button
@@ -2141,7 +2141,7 @@ function Requests() {
               style={{
                 background: 'transparent',
                 border: 'none',
-                color: '#888',
+                color: theme.colors.text.secondary,
                 fontSize: '20px',
                 cursor: 'pointer',
                 padding: '8px'
@@ -2162,8 +2162,8 @@ function Requests() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: '1px solid #3b82f6',
-                  color: '#ffffff',
+                  borderBottom: `1px solid ${theme.colors.white}`,
+                  color: theme.colors.text.primary,
                   fontSize: '18px',
                   fontWeight: '500',
                   padding: '4px 0',
@@ -2192,8 +2192,8 @@ function Requests() {
             <div style={{
               fontSize: '11px',
               fontWeight: '600',
-              color: userPlan === 'pro' ? '#ffffff' : '#888',
-              background: userPlan === 'pro' ? 'rgba(255, 255, 255, 0.1)' : '#1a1a1a',
+              color: userPlan === 'pro' ? theme.colors.white : theme.colors.text.secondary,
+              background: userPlan === 'pro' ? 'rgba(255, 255, 255, 0.1)' : theme.colors.bg.hover,
               padding: '4px 10px',
               borderRadius: '4px',
               textTransform: 'uppercase',
@@ -2205,7 +2205,7 @@ function Requests() {
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             {/* Keyboard shortcuts hint */}
-            <div style={{ fontSize: '11px', color: '#666', marginRight: '8px' }}>
+            <div style={{ fontSize: '11px', color: theme.colors.text.secondary, marginRight: '8px' }}>
               {userPlan === 'pro' ? 'Shortcuts enabled' : 'Upgrade for shortcuts'}
             </div>
 
@@ -2214,8 +2214,8 @@ function Requests() {
               disabled={historyIndex <= 0}
               style={{
                 background: 'transparent',
-                border: '1px solid #2a2a2a',
-                color: historyIndex <= 0 ? '#444' : '#888',
+                border: `1px solid ${theme.colors.border.dark}`,
+                color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
                 padding: '8px 16px',
                 borderRadius: '6px',
                 fontSize: '13px',
@@ -2230,8 +2230,8 @@ function Requests() {
               disabled={historyIndex >= history.length - 1}
               style={{
                 background: 'transparent',
-                border: '1px solid #2a2a2a',
-                color: historyIndex >= history.length - 1 ? '#444' : '#888',
+                border: `1px solid ${theme.colors.border.dark}`,
+                color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
                 padding: '8px 16px',
                 borderRadius: '6px',
                 fontSize: '13px',
@@ -2244,8 +2244,8 @@ function Requests() {
             <button
               style={{
                 background: 'transparent',
-                color: '#ffffff',
-                border: '1px solid #2a2a2a',
+                color: theme.colors.text.primary,
+                border: `1px solid ${theme.colors.border.dark}`,
                 padding: '10px 20px',
                 borderRadius: '6px',
                 fontSize: '14px',
@@ -2260,8 +2260,8 @@ function Requests() {
             <button
               style={{
                 background: 'transparent',
-                color: '#ffffff',
-                border: '1px solid #2a2a2a',
+                color: theme.colors.text.primary,
+                border: `1px solid ${theme.colors.border.dark}`,
                 padding: '10px 20px',
                 borderRadius: '6px',
                 fontSize: '14px',
@@ -2275,8 +2275,8 @@ function Requests() {
             </button>
             <button
               style={{
-                background: '#ffffff',
-                color: '#000000',
+                background: theme.colors.white,
+                color: theme.colors.black,
                 border: 'none',
                 padding: '10px 24px',
                 borderRadius: '6px',
@@ -2297,23 +2297,23 @@ function Requests() {
           {/* LEFT SIDEBAR */}
           <div style={{
             width: '280px',
-            borderRight: '1px solid #2a2a2a',
-            background: '#0a0a0a',
+            borderRight: `1px solid ${theme.colors.border.dark}`,
+            background: theme.colors.bg.hover,
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column'
           }}>
             {/* Tabs */}
-            <div style={{ display: 'flex', borderBottom: '1px solid #2a2a2a' }}>
+            <div style={{ display: 'flex', borderBottom: `1px solid ${theme.colors.border.dark}` }}>
               <button
                 onClick={() => setActiveTab('templates')}
                 style={{
                   flex: 1,
                   padding: '14px',
-                  background: activeTab === 'templates' ? '#1a1a1a' : 'transparent',
+                  background: activeTab === 'templates' ? theme.colors.bg.hover : 'transparent',
                   border: 'none',
-                  borderBottom: activeTab === 'templates' ? '2px solid #ffffff' : '2px solid transparent',
-                  color: activeTab === 'templates' ? '#ffffff' : '#666',
+                  borderBottom: activeTab === 'templates' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
+                  color: activeTab === 'templates' ? theme.colors.white : theme.colors.text.secondary,
                   fontSize: '13px',
                   fontWeight: '600',
                   cursor: 'pointer',
@@ -2327,10 +2327,10 @@ function Requests() {
                 style={{
                   flex: 1,
                   padding: '14px',
-                  background: activeTab === 'elements' ? '#1a1a1a' : 'transparent',
+                  background: activeTab === 'elements' ? theme.colors.bg.hover : 'transparent',
                   border: 'none',
-                  borderBottom: activeTab === 'elements' ? '2px solid #ffffff' : '2px solid transparent',
-                  color: activeTab === 'elements' ? '#ffffff' : '#666',
+                  borderBottom: activeTab === 'elements' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
+                  color: activeTab === 'elements' ? theme.colors.white : theme.colors.text.secondary,
                   fontSize: '13px',
                   fontWeight: '600',
                   cursor: 'pointer',
@@ -2348,7 +2348,7 @@ function Requests() {
                   <div style={{
                     fontSize: '10px',
                     fontWeight: '600',
-                    color: '#666',
+                    color: theme.colors.text.secondary,
                     marginBottom: '10px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
@@ -2381,15 +2381,15 @@ function Requests() {
                           alignItems: 'flex-start',
                           marginBottom: '6px'
                         }}>
-                          <div style={{ fontSize: '14px', fontWeight: '600', color: '#ffffff' }}>
+                          <div style={{ fontSize: '14px', fontWeight: '600', color: theme.colors.text.primary }}>
                             {template.name}
                           </div>
                           {isPro && (
                             <div style={{
                               fontSize: '10px',
                               fontWeight: '700',
-                              color: isLocked ? '#888' : '#ffffff',
-                              background: isLocked ? '#2a2a2a' : 'rgba(255, 255, 255, 0.1)',
+                              color: isLocked ? theme.colors.text.secondary : theme.colors.white,
+                              background: isLocked ? theme.colors.border.dark : 'rgba(255, 255, 255, 0.1)',
                               padding: '3px 8px',
                               borderRadius: '4px',
                               textTransform: 'uppercase',
@@ -2399,7 +2399,7 @@ function Requests() {
                             </div>
                           )}
                         </div>
-                        <div style={{ fontSize: '12px', color: '#999', lineHeight: '1.4' }}>
+                        <div style={{ fontSize: '12px', color: theme.colors.text.secondary, lineHeight: '1.4' }}>
                           {template.description}
                         </div>
                       </div>
@@ -2411,7 +2411,7 @@ function Requests() {
                   <div style={{
                     fontSize: '11px',
                     fontWeight: '600',
-                    color: '#666',
+                    color: theme.colors.text.secondary,
                     marginBottom: '16px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.5px'
@@ -2444,10 +2444,10 @@ function Requests() {
                           <div style={{
                             fontSize: '18px',
                             fontWeight: '700',
-                            color: '#ffffff',
+                            color: theme.colors.text.primary,
                             minWidth: '32px',
                             textAlign: 'center',
-                            background: '#2a2a2a',
+                            background: theme.colors.border.dark,
                             borderRadius: '6px',
                             padding: '6px',
                             lineHeight: '1'
@@ -2461,15 +2461,15 @@ function Requests() {
                               gap: '6px',
                               marginBottom: '2px'
                             }}>
-                              <div style={{ fontSize: '13px', fontWeight: '500', color: '#ffffff' }}>
+                              <div style={{ fontSize: '13px', fontWeight: '500', color: theme.colors.text.primary }}>
                                 {component.label}
                               </div>
                               {isPro && (
                                 <div style={{
                                   fontSize: '9px',
                                   fontWeight: '700',
-                                  color: isLocked ? '#888' : '#ffffff',
-                                  background: isLocked ? '#2a2a2a' : 'rgba(255, 255, 255, 0.1)',
+                                  color: isLocked ? theme.colors.text.secondary : theme.colors.white,
+                                  background: isLocked ? theme.colors.border.dark : 'rgba(255, 255, 255, 0.1)',
                                   padding: '2px 6px',
                                   borderRadius: '3px',
                                   textTransform: 'uppercase',
@@ -2479,7 +2479,7 @@ function Requests() {
                                 </div>
                               )}
                             </div>
-                            <div style={{ fontSize: '11px', color: '#666' }}>
+                            <div style={{ fontSize: '11px', color: theme.colors.text.secondary }}>
                               {component.description}
                             </div>
                           </div>
@@ -2496,7 +2496,7 @@ function Requests() {
           <div style={{
             flex: 1,
             overflow: 'auto',
-            background: '#1a1a1a',
+            background: theme.colors.bg.hover,
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
@@ -2512,10 +2512,10 @@ function Requests() {
               style={{
                 width: '1000px',
                 height: '500px',
-                background: '#000000',
+                background: theme.colors.bg.page,
                 borderRadius: '8px',
                 position: 'relative',
-                border: isDragging ? '2px dashed #3b82f6' : '1px solid #2a2a2a',
+                border: isDragging ? `2px dashed ${theme.colors.white}` : `1px solid ${theme.colors.border.dark}`,
                 overflow: 'hidden'
               }}
             >
@@ -2526,7 +2526,7 @@ function Requests() {
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
                   textAlign: 'center',
-                  color: '#444',
+                  color: theme.colors.text.tertiary,
                   pointerEvents: 'none'
                 }}>
                   <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }}>↓</div>
@@ -2543,7 +2543,7 @@ function Requests() {
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
                   fontSize: '18px',
-                  color: '#666',
+                  color: theme.colors.text.secondary,
                   pointerEvents: 'none'
                 }}>
                   Drop here to add element
@@ -2557,8 +2557,8 @@ function Requests() {
         {/* BOTTOM PROPERTIES BAR */}
         <div style={{
           height: '140px',
-          borderTop: '1px solid #2a2a2a',
-          background: '#0a0a0a',
+          borderTop: `1px solid ${theme.colors.border.dark}`,
+          background: theme.colors.bg.hover,
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden'
@@ -2569,18 +2569,18 @@ function Requests() {
             alignItems: 'center',
             justifyContent: 'space-between',
             padding: '8px 20px',
-            borderBottom: '1px solid #2a2a2a'
+            borderBottom: `1px solid ${theme.colors.border.dark}`
           }}>
             <div style={{
               display: 'flex',
               alignItems: 'center',
               gap: '16px'
             }}>
-              <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: theme.colors.text.primary }}>
                 {selectedElement ? COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label : 'Properties'}
               </div>
               {selectedElement && (
-                <div style={{ fontSize: '11px', color: '#666' }}>
+                <div style={{ fontSize: '11px', color: theme.colors.text.secondary }}>
                   Edit element properties
                 </div>
               )}
@@ -2591,11 +2591,11 @@ function Requests() {
                   onClick={handleDuplicateElement}
                   style={{
                     background: 'transparent',
-                    border: '1px solid #2a2a2a',
+                    border: `1px solid ${theme.colors.border.dark}`,
                     borderRadius: '4px',
                     padding: '6px 16px',
                     fontSize: '12px',
-                    color: '#888',
+                    color: theme.colors.text.secondary,
                     cursor: 'pointer',
                     fontFamily: 'inherit'
                   }}
@@ -2606,11 +2606,11 @@ function Requests() {
                   onClick={handleDeleteElement}
                   style={{
                     background: 'transparent',
-                    border: '1px solid #2a2a2a',
+                    border: `1px solid ${theme.colors.border.dark}`,
                     borderRadius: '4px',
                     padding: '6px 16px',
                     fontSize: '12px',
-                    color: '#ff4444',
+                    color: theme.colors.error,
                     cursor: 'pointer',
                     fontFamily: 'inherit'
                   }}
@@ -2641,7 +2641,7 @@ function Requests() {
                     <label style={{
                       display: 'block',
                       fontSize: '10px',
-                      color: '#888',
+                      color: theme.colors.text.secondary,
                       marginBottom: '6px',
                       fontWeight: '600',
                       textTransform: 'uppercase',
@@ -2667,10 +2667,10 @@ function Requests() {
                         width: '70px',
                         padding: '8px',
                         fontSize: '13px',
-                        border: '1px solid #2a2a2a',
+                        border: `1px solid ${theme.colors.border.dark}`,
                         borderRadius: '4px',
-                        background: '#1a1a1a',
-                        color: '#ffffff',
+                        background: theme.colors.bg.hover,
+                        color: theme.colors.text.primary,
                         fontFamily: 'inherit'
                       }}
                     />
@@ -2679,7 +2679,7 @@ function Requests() {
                     <label style={{
                       display: 'block',
                       fontSize: '10px',
-                      color: '#888',
+                      color: theme.colors.text.secondary,
                       marginBottom: '6px',
                       fontWeight: '600',
                       textTransform: 'uppercase',
@@ -2705,10 +2705,10 @@ function Requests() {
                         width: '70px',
                         padding: '8px',
                         fontSize: '13px',
-                        border: '1px solid #2a2a2a',
+                        border: `1px solid ${theme.colors.border.dark}`,
                         borderRadius: '4px',
-                        background: '#1a1a1a',
-                        color: '#ffffff',
+                        background: theme.colors.bg.hover,
+                        color: theme.colors.text.primary,
                         fontFamily: 'inherit'
                       }}
                     />
@@ -2721,7 +2721,7 @@ function Requests() {
                     <label style={{
                       display: 'block',
                       fontSize: '10px',
-                      color: '#888',
+                      color: theme.colors.text.secondary,
                       marginBottom: '6px',
                       fontWeight: '600',
                       textTransform: 'uppercase',
@@ -2747,10 +2747,10 @@ function Requests() {
                         width: '80px',
                         padding: '8px',
                         fontSize: '13px',
-                        border: '1px solid #2a2a2a',
+                        border: `1px solid ${theme.colors.border.dark}`,
                         borderRadius: '4px',
-                        background: '#1a1a1a',
-                        color: '#ffffff',
+                        background: theme.colors.bg.hover,
+                        color: theme.colors.text.primary,
                         fontFamily: 'inherit'
                       }}
                     />
@@ -2759,7 +2759,7 @@ function Requests() {
                     <label style={{
                       display: 'block',
                       fontSize: '10px',
-                      color: '#888',
+                      color: theme.colors.text.secondary,
                       marginBottom: '6px',
                       fontWeight: '600',
                       textTransform: 'uppercase',
@@ -2785,10 +2785,10 @@ function Requests() {
                         width: '80px',
                         padding: '8px',
                         fontSize: '13px',
-                        border: '1px solid #2a2a2a',
+                        border: `1px solid ${theme.colors.border.dark}`,
                         borderRadius: '4px',
-                        background: '#1a1a1a',
-                        color: '#ffffff',
+                        background: theme.colors.bg.hover,
+                        color: theme.colors.text.primary,
                         fontFamily: 'inherit'
                       }}
                     />
@@ -2799,7 +2799,7 @@ function Requests() {
                 <div style={{
                   width: '1px',
                   height: '60px',
-                  background: '#2a2a2a',
+                  background: theme.colors.border.dark,
                   margin: '10px 0'
                 }} />
 
@@ -2809,7 +2809,7 @@ function Requests() {
                     <label style={{
                       display: 'block',
                       fontSize: '10px',
-                      color: '#888',
+                      color: theme.colors.text.secondary,
                       marginBottom: '6px',
                       fontWeight: '600',
                       textTransform: 'uppercase',
@@ -2825,7 +2825,7 @@ function Requests() {
                           onChange={(e) => handlePropertyChange(key, e.target.checked)}
                           style={{ width: '18px', height: '18px' }}
                         />
-                        <span style={{ fontSize: '12px', color: '#ccc' }}>Enabled</span>
+                        <span style={{ fontSize: '12px', color: theme.colors.text.secondary }}>Enabled</span>
                       </label>
                     ) : key.toLowerCase().includes('color') ? (
                       <input
@@ -2836,9 +2836,9 @@ function Requests() {
                           width: '80px',
                           height: '36px',
                           padding: '2px',
-                          border: '1px solid #2a2a2a',
+                          border: `1px solid ${theme.colors.border.dark}`,
                           borderRadius: '4px',
-                          background: '#1a1a1a',
+                          background: theme.colors.bg.hover,
                           cursor: 'pointer'
                         }}
                       />
@@ -2851,10 +2851,10 @@ function Requests() {
                           width: '100px',
                           padding: '8px',
                           fontSize: '13px',
-                          border: '1px solid #2a2a2a',
+                          border: `1px solid ${theme.colors.border.dark}`,
                           borderRadius: '4px',
-                          background: '#1a1a1a',
-                          color: '#ffffff',
+                          background: theme.colors.bg.hover,
+                          color: theme.colors.text.primary,
                           fontFamily: 'inherit'
                         }}
                       />
@@ -2867,10 +2867,10 @@ function Requests() {
                           width: '200px',
                           padding: '8px',
                           fontSize: '13px',
-                          border: '1px solid #2a2a2a',
+                          border: `1px solid ${theme.colors.border.dark}`,
                           borderRadius: '4px',
-                          background: '#1a1a1a',
-                          color: '#ffffff',
+                          background: theme.colors.bg.hover,
+                          color: theme.colors.text.primary,
                           fontFamily: 'inherit'
                         }}
                       />
@@ -2883,10 +2883,10 @@ function Requests() {
                           width: '150px',
                           padding: '8px',
                           fontSize: '13px',
-                          border: '1px solid #2a2a2a',
+                          border: `1px solid ${theme.colors.border.dark}`,
                           borderRadius: '4px',
-                          background: '#1a1a1a',
-                          color: '#ffffff',
+                          background: theme.colors.bg.hover,
+                          color: theme.colors.text.primary,
                           fontFamily: 'inherit'
                         }}
                       />
@@ -2900,7 +2900,7 @@ function Requests() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 height: '100%',
-                color: '#666',
+                color: theme.colors.text.secondary,
                 fontSize: '12px'
               }}>
                 <span style={{ marginRight: '8px', fontSize: '16px', opacity: 0.3 }}>◇</span>
@@ -2934,8 +2934,8 @@ function Requests() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: '#1a1a1a',
-              border: '1px solid #2a2a2a',
+              background: theme.colors.bg.hover,
+              border: `1px solid ${theme.colors.border.dark}`,
               borderRadius: '12px',
               maxWidth: '600px',
               width: '100%',
@@ -2943,8 +2943,8 @@ function Requests() {
             }}
           >
             <div style={{
-              background: '#0a0a0a',
-              border: '1px solid #2a2a2a',
+              background: theme.colors.bg.hover,
+              border: `1px solid ${theme.colors.border.dark}`,
               borderRadius: '8px',
               padding: '0',
               marginBottom: '24px',
@@ -2956,7 +2956,7 @@ function Requests() {
                 <div style={{
                   width: '100%',
                   minHeight: '500px',
-                  background: '#0a0a0a',
+                  background: theme.colors.bg.hover,
                   padding: '40px',
                   position: 'relative'
                 }}>
@@ -2968,7 +2968,7 @@ function Requests() {
                         <div key={element.id} style={{
                           fontSize: props.fontSize || '32px',
                           fontWeight: props.fontWeight || '600',
-                          color: props.color || '#ffffff',
+                          color: props.color || theme.colors.white,
                           textAlign: props.textAlign || 'left',
                           marginBottom: '16px'
                         }}>
@@ -2982,7 +2982,7 @@ function Requests() {
                         <div key={element.id} style={{
                           fontSize: props.fontSize || '16px',
                           fontWeight: props.fontWeight || '400',
-                          color: props.color || '#b0b0b0',
+                          color: props.color || theme.colors.text.secondary,
                           textAlign: props.textAlign || 'left',
                           marginBottom: '16px',
                           lineHeight: '1.6'
@@ -2995,17 +2995,17 @@ function Requests() {
                     if (element.type === 'file-upload') {
                       return (
                         <div key={element.id} style={{
-                          border: '2px dashed #3a3a3a',
+                          border: `2px dashed ${theme.colors.border.dark}`,
                           borderRadius: '8px',
                           padding: '32px',
                           textAlign: 'center',
                           marginBottom: '16px',
                           background: 'rgba(255, 255, 255, 0.02)'
                         }}>
-                          <div style={{ fontSize: '14px', color: '#888', marginBottom: '8px' }}>
+                          <div style={{ fontSize: '14px', color: theme.colors.text.secondary, marginBottom: '8px' }}>
                             📁 Click or drag files here
                           </div>
-                          <div style={{ fontSize: '12px', color: '#666' }}>
+                          <div style={{ fontSize: '12px', color: theme.colors.text.secondary }}>
                             {props.label || 'File Upload'}
                           </div>
                         </div>
@@ -3016,7 +3016,7 @@ function Requests() {
                       return (
                         <div key={element.id} style={{ marginBottom: '16px' }}>
                           {props.label && (
-                            <div style={{ fontSize: '14px', color: '#b0b0b0', marginBottom: '8px', fontWeight: '500' }}>
+                            <div style={{ fontSize: '14px', color: theme.colors.text.secondary, marginBottom: '8px', fontWeight: '500' }}>
                               {props.label}
                             </div>
                           )}
@@ -3028,9 +3028,9 @@ function Requests() {
                               width: '100%',
                               padding: '12px 16px',
                               background: 'rgba(255, 255, 255, 0.05)',
-                              border: '1px solid #2a2a2a',
+                              border: `1px solid ${theme.colors.border.dark}`,
                               borderRadius: '6px',
-                              color: '#666',
+                              color: theme.colors.text.secondary,
                               fontSize: '15px',
                               fontFamily: 'inherit'
                             }}
@@ -3047,8 +3047,8 @@ function Requests() {
                         }}>
                           <button disabled style={{
                             padding: '12px 32px',
-                            background: '#ffffff',
-                            color: '#000000',
+                            background: theme.colors.white,
+                            color: theme.colors.black,
                             border: 'none',
                             borderRadius: '6px',
                             fontSize: '15px',
@@ -3065,7 +3065,7 @@ function Requests() {
                       return (
                         <div key={element.id} style={{
                           height: '1px',
-                          background: '#2a2a2a',
+                          background: theme.colors.border.dark,
                           margin: '24px 0'
                         }} />
                       )
@@ -3084,7 +3084,7 @@ function Requests() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   height: '280px',
-                  color: '#666',
+                  color: theme.colors.text.secondary,
                   fontSize: '14px'
                 }}>
                   Empty canvas - start from scratch
@@ -3100,8 +3100,8 @@ function Requests() {
                 }}
                 style={{
                   background: 'transparent',
-                  border: '1px solid #2a2a2a',
-                  color: '#888',
+                  border: `1px solid ${theme.colors.border.dark}`,
+                  color: theme.colors.text.secondary,
                   padding: '12px 24px',
                   borderRadius: '6px',
                   fontSize: '14px',
@@ -3115,9 +3115,9 @@ function Requests() {
               <button
                 onClick={handleUseTemplate}
                 style={{
-                  background: '#ffffff',
+                  background: theme.colors.white,
                   border: 'none',
-                  color: '#000000',
+                  color: theme.colors.black,
                   padding: '12px 24px',
                   borderRadius: '6px',
                   fontSize: '14px',
@@ -3153,8 +3153,8 @@ function Requests() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: '#1a1a1a',
-              border: '1px solid #ffffff',
+              background: theme.colors.bg.hover,
+              border: `1px solid ${theme.colors.white}`,
               borderRadius: '12px',
               maxWidth: '500px',
               width: '100%',
@@ -3164,7 +3164,7 @@ function Requests() {
             <div style={{
               fontSize: '28px',
               fontWeight: '700',
-              color: '#ffffff',
+              color: theme.colors.text.primary,
               marginBottom: '16px',
               textAlign: 'center'
             }}>
@@ -3172,7 +3172,7 @@ function Requests() {
             </div>
             <div style={{
               fontSize: '15px',
-              color: '#ccc',
+              color: theme.colors.text.secondary,
               marginBottom: '24px',
               lineHeight: '1.6',
               textAlign: 'center'
@@ -3181,16 +3181,16 @@ function Requests() {
             </div>
 
             <div style={{
-              background: '#0a0a0a',
-              border: '1px solid #2a2a2a',
+              background: theme.colors.bg.hover,
+              border: `1px solid ${theme.colors.border.dark}`,
               borderRadius: '8px',
               padding: '20px',
               marginBottom: '24px'
             }}>
-              <div style={{ fontSize: '12px', fontWeight: '600', color: '#ffffff', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              <div style={{ fontSize: '12px', fontWeight: '600', color: theme.colors.text.primary, marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                 Pro Features Include:
               </div>
-              <ul style={{ margin: 0, paddingLeft: '20px', color: '#999', fontSize: '14px', lineHeight: '2' }}>
+              <ul style={{ margin: 0, paddingLeft: '20px', color: theme.colors.text.secondary, fontSize: '14px', lineHeight: '2' }}>
                 <li>Unlimited elements per form</li>
                 <li>15+ advanced elements (Rich Text, Multi-File, Gallery, Date/Time Pickers, etc.)</li>
                 <li>5 premium templates</li>
@@ -3207,8 +3207,8 @@ function Requests() {
                 style={{
                   flex: 1,
                   background: 'transparent',
-                  border: '1px solid #2a2a2a',
-                  color: '#888',
+                  border: `1px solid ${theme.colors.border.dark}`,
+                  color: theme.colors.text.secondary,
                   padding: '14px',
                   borderRadius: '6px',
                   fontSize: '14px',
@@ -3226,9 +3226,9 @@ function Requests() {
                 }}
                 style={{
                   flex: 1,
-                  background: '#ffffff',
+                  background: theme.colors.white,
                   border: 'none',
-                  color: '#000000',
+                  color: theme.colors.black,
                   padding: '14px',
                   borderRadius: '6px',
                   fontSize: '14px',
@@ -3252,7 +3252,7 @@ function Requests() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: '#000',
+          background: theme.colors.bg.page,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -3265,7 +3265,7 @@ function Requests() {
             style={{
               width: '1200px',
               height: '800px',
-              background: '#0a0a0a',
+              background: theme.colors.bg.hover,
               position: 'relative',
               overflow: 'hidden'
             }}
@@ -3276,7 +3276,7 @@ function Requests() {
                     alignItems: 'center',
                     justifyContent: 'center',
                     height: '100%',
-                    color: '#666',
+                    color: theme.colors.text.secondary,
                     fontSize: '16px'
                   }}>
                     No elements added yet. Start building your form!
@@ -3291,15 +3291,15 @@ function Requests() {
                         top: `${element.y}px`,
                         width: `${element.width}px`,
                         height: `${element.height}px`,
-                        border: '1px solid #333',
+                        border: `1px solid ${theme.colors.border.medium}`,
                         borderRadius: '6px',
-                        background: element.type === 'button' ? '#ffffff' : 'rgba(255, 255, 255, 0.05)',
+                        background: element.type === 'button' ? theme.colors.white : 'rgba(255, 255, 255, 0.05)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: element.properties?.textAlign === 'center' ? 'center' : element.properties?.textAlign === 'right' ? 'flex-end' : 'flex-start',
                         padding: '12px',
                         fontSize: element.properties?.fontSize || '16px',
-                        color: element.type === 'button' ? '#000' : element.properties?.color || '#fff',
+                        color: element.type === 'button' ? theme.colors.black : element.properties?.color || theme.colors.white,
                         fontWeight: element.properties?.fontWeight || '400',
                         overflow: 'hidden',
                         pointerEvents: 'none'
@@ -3308,11 +3308,11 @@ function Requests() {
                       {element.type === 'heading' && element.properties?.content}
                       {element.type === 'text' && element.properties?.content}
                       {element.type === 'button' && element.properties?.label}
-                      {element.type === 'file-upload' && <div style={{ fontSize: '14px', color: '#999' }}>File Upload Zone</div>}
-                      {element.type === 'text-input' && <div style={{ fontSize: '14px', color: '#999', width: '100%' }}>{element.properties?.placeholder || element.properties?.label || 'Text Input'}</div>}
-                      {element.type === 'textarea' && <div style={{ fontSize: '14px', color: '#999' }}>Text Area</div>}
+                      {element.type === 'file-upload' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary }}>File Upload Zone</div>}
+                      {element.type === 'text-input' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary, width: '100%' }}>{element.properties?.placeholder || element.properties?.label || 'Text Input'}</div>}
+                      {element.type === 'textarea' && <div style={{ fontSize: '14px', color: theme.colors.text.secondary }}>Text Area</div>}
                       {!['heading', 'text', 'button', 'file-upload', 'text-input', 'textarea'].includes(element.type) && (
-                        <div style={{ fontSize: '12px', color: '#999', textTransform: 'uppercase' }}>{element.type.replace('-', ' ')}</div>
+                        <div style={{ fontSize: '12px', color: theme.colors.text.secondary, textTransform: 'uppercase' }}>{element.type.replace('-', ' ')}</div>
                       )}
                     </div>
                   ))

@@ -187,7 +187,7 @@ function Settings() {
                     background: 'rgba(239, 68, 68, 0.1)',
                     border: '1px solid rgba(239, 68, 68, 0.3)',
                     borderRadius: theme.radius.md,
-                    color: '#ef4444',
+                    color: theme.colors.error,
                     fontSize: '14px',
                     marginBottom: theme.spacing[4]
                   }}>
@@ -201,7 +201,7 @@ function Settings() {
                     background: 'rgba(34, 197, 94, 0.1)',
                     border: '1px solid rgba(34, 197, 94, 0.3)',
                     borderRadius: theme.radius.md,
-                    color: '#22c55e',
+                    color: theme.colors.success,
                     fontSize: '14px',
                     marginBottom: theme.spacing[4]
                   }}>

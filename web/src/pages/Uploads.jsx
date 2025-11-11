@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import theme from '../theme'
 
 function Uploads() {
   const navigate = useNavigate()
@@ -92,13 +93,13 @@ function Uploads() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000'
+        background: theme.colors.bg.page
       }}>
         <div style={{
           width: '32px',
           height: '32px',
-          border: '2px solid #333',
-          borderTopColor: '#fff',
+          border: `2px solid ${theme.colors.border.medium}`,
+          borderTopColor: theme.colors.white,
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }} />
@@ -112,8 +113,8 @@ function Uploads() {
       <Sidebar />
       <div style={{
         minHeight: '100vh',
-        background: '#000',
-        color: '#fff',
+        background: theme.colors.bg.page,
+        color: theme.colors.text.primary,
         marginTop: '60px'
       }}>
         <div style={{
@@ -134,7 +135,7 @@ function Uploads() {
             </h1>
             <p style={{
               fontSize: '20px',
-              color: '#666',
+              color: theme.colors.text.secondary,
               margin: 0
             }}>
               All uploads across all requests
@@ -146,11 +147,11 @@ function Uploads() {
             <div style={{
               textAlign: 'center',
               padding: '80px 40px',
-              border: '1px solid #333'
+              border: `1px solid ${theme.colors.border.light}`
             }}>
               <p style={{
                 fontSize: '20px',
-                color: '#666',
+                color: theme.colors.text.secondary,
                 margin: 0
               }}>
                 No uploads yet
@@ -158,14 +159,14 @@ function Uploads() {
             </div>
           ) : (
             <div style={{
-              border: '1px solid #333'
+              border: `1px solid ${theme.colors.border.light}`
             }}>
               {uploads.map((upload, index) => (
                 <div
                   key={upload.id}
                   style={{
                     padding: '20px',
-                    borderBottom: index < uploads.length - 1 ? '1px solid #333' : 'none',
+                    borderBottom: index < uploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                     display: 'grid',
                     gridTemplateColumns: '2fr 1.5fr 1.5fr 1.5fr auto',
                     gap: '20px',
@@ -178,7 +179,7 @@ function Uploads() {
                       fontSize: '20px',
                       fontWeight: '400',
                       marginBottom: '4px',
-                      color: '#fff',
+                      color: theme.colors.text.primary,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap',
@@ -188,7 +189,7 @@ function Uploads() {
                     </div>
                     <div style={{
                       fontSize: '19px',
-                      color: '#666'
+                      color: theme.colors.text.secondary
                     }}>
                       {(upload.fileSize / 1024 / 1024).toFixed(2)} MB
                     </div>
@@ -200,7 +201,7 @@ function Uploads() {
                       fontSize: '20px',
                       fontWeight: '400',
                       marginBottom: '4px',
-                      color: '#fff',
+                      color: theme.colors.text.primary,
                       overflow: 'hidden',
                       textOverflow: 'ellipsis',
                       whiteSpace: 'nowrap'
@@ -210,7 +211,7 @@ function Uploads() {
                     {upload.uploaderEmail && (
                       <div style={{
                         fontSize: '19px',
-                        color: '#666',
+                        color: theme.colors.text.secondary,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
@@ -226,7 +227,7 @@ function Uploads() {
                       to={`/requests/${upload.requestId}`}
                       style={{
                         fontSize: '20px',
-                        color: '#fff',
+                        color: theme.colors.text.primary,
                         textDecoration: 'none',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -242,7 +243,7 @@ function Uploads() {
                   <div>
                     <div style={{
                       fontSize: '19px',
-                      color: '#666'
+                      color: theme.colors.text.secondary
                     }}>
                       {new Date(upload.uploadedAt).toLocaleDateString()}
                     </div>
@@ -254,8 +255,8 @@ function Uploads() {
                       onClick={() => downloadFile(upload.id, upload.fileName)}
                       style={{
                         padding: '8px 16px',
-                        background: '#fff',
-                        color: '#000',
+                        background: theme.colors.white,
+                        color: theme.colors.black,
                         border: 'none',
                         fontSize: '19px',
                         fontWeight: '400',

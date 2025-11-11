@@ -238,7 +238,7 @@ function Notifications() {
                         width: '8px',
                         height: '8px',
                         borderRadius: '50%',
-                        background: '#3b82f6',
+                        background: theme.colors.white,
                         flexShrink: 0,
                         marginTop: '6px'
                       }} />

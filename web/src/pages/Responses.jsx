@@ -116,11 +116,11 @@ function Responses() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Live': return '#ffffff'
-      case 'Draft': return '#6b7280'
-      case 'Paused': return '#f59e0b'
-      case 'Expired': return '#ef4444'
-      default: return '#6b7280'
+      case 'Live': return theme.colors.white
+      case 'Draft': return theme.colors.text.secondary
+      case 'Paused': return theme.colors.warning
+      case 'Expired': return theme.colors.error
+      default: return theme.colors.text.secondary
     }
   }
 
@@ -301,7 +301,7 @@ function Responses() {
               <div style={{
                 fontSize: '48px',
                 fontWeight: '700',
-                color: '#ffffff',
+                color: theme.colors.white,
                 lineHeight: '1',
                 marginBottom: '12px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
@@ -400,7 +400,7 @@ function Responses() {
                 <div style={{
                   width: `${Math.min((storageStats.used / storageStats.limit) * 100, 100)}%`,
                   height: '100%',
-                  background: storageStats.used > storageStats.limit * 0.8 ? '#ef4444' : '#ffffff',
+                  background: storageStats.used > storageStats.limit * 0.8 ? theme.colors.error : theme.colors.white,
                   transition: 'width 0.3s ease'
                 }} />
               </div>

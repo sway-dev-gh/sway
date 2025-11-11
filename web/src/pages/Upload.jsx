@@ -139,11 +139,11 @@ function Upload() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000000'
+        background: theme.colors.bg.page
       }}>
         <div style={{
-          fontSize: '18px',
-          color: '#a1a1a1'
+          fontSize: theme.fontSize.lg,
+          color: theme.colors.text.secondary
         }}>
           Loading...
         </div>
@@ -158,22 +158,22 @@ function Upload() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000000'
+        background: theme.colors.bg.page
       }}>
         <div style={{
           textAlign: 'center'
         }}>
           <div style={{
-            fontSize: '24px',
-            fontWeight: 600,
-            color: '#ffffff',
+            fontSize: theme.fontSize['2xl'],
+            fontWeight: theme.weight.semibold,
+            color: theme.colors.text.primary,
             marginBottom: '12px'
           }}>
             Request Not Found
           </div>
           <div style={{
             fontSize: theme.fontSize.base,
-            color: '#a1a1a1'
+            color: theme.colors.text.secondary
           }}>
             This upload link is invalid or has expired.
           </div>

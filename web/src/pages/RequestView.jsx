@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import api from '../api/axios'
+import theme from '../theme'
 
 function RequestView() {
   const { id } = useParams()
@@ -128,13 +129,13 @@ function RequestView() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000'
+        background: theme.colors.bg.page
       }}>
         <div style={{
           width: '32px',
           height: '32px',
-          border: '2px solid #333',
-          borderTopColor: '#fff',
+          border: `2px solid ${theme.colors.border.medium}`,
+          borderTopColor: theme.colors.white,
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }} />
@@ -149,12 +150,12 @@ function RequestView() {
         <Sidebar />
         <div style={{
           minHeight: '100vh',
-          background: '#000',
-          color: '#fff',
+          background: theme.colors.bg.page,
+          color: theme.colors.text.primary,
           marginTop: '60px',
           padding: '60px 40px'
         }}>
-          <p style={{ fontSize: '20px', color: '#666' }}>Request not found</p>
+          <p style={{ fontSize: '20px', color: theme.colors.text.secondary }}>Request not found</p>
         </div>
       </>
     )
@@ -165,8 +166,8 @@ function RequestView() {
       <Sidebar />
       <div style={{
         minHeight: '100vh',
-        background: '#000',
-        color: '#fff',
+        background: theme.colors.bg.page,
+        color: theme.colors.text.primary,
         marginTop: '60px'
       }}>
         <div style={{
@@ -181,7 +182,7 @@ function RequestView() {
             style={{
               display: 'inline-block',
               fontSize: '20px',
-              color: '#666',
+              color: theme.colors.text.secondary,
               textDecoration: 'none',
               marginBottom: '40px'
             }}
@@ -202,7 +203,7 @@ function RequestView() {
             {data.request.description && (
               <p style={{
                 fontSize: '20px',
-                color: '#666',
+                color: theme.colors.text.secondary,
                 margin: '0 0 24px 0',
                 lineHeight: '1.6'
               }}>
@@ -214,14 +215,14 @@ function RequestView() {
             <div style={{
               marginTop: '24px',
               padding: '20px',
-              border: '1px solid #333',
+              border: `1px solid ${theme.colors.border.light}`,
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center'
             }}>
               <code style={{
                 fontSize: '19px',
-                color: '#ccc',
+                color: theme.colors.text.secondary,
                 fontFamily: 'monospace'
               }}>
                 {window.location.origin}/r/{data.request.shortCode}
@@ -230,8 +231,8 @@ function RequestView() {
                 onClick={copyLink}
                 style={{
                   padding: '8px 16px',
-                  background: '#fff',
-                  color: '#000',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
                   border: 'none',
                   fontSize: '19px',
                   fontWeight: '400',
@@ -253,8 +254,8 @@ function RequestView() {
                 style={{
                   padding: '8px 16px',
                   background: 'transparent',
-                  color: '#fff',
-                  border: '1px solid #333',
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border.light}`,
                   fontSize: '19px',
                   fontWeight: '400',
                   cursor: 'pointer'
@@ -268,8 +269,8 @@ function RequestView() {
                   style={{
                     padding: '8px 16px',
                     background: 'transparent',
-                    color: '#fff',
-                    border: '1px solid #fff',
+                    color: theme.colors.text.primary,
+                    border: `1px solid ${theme.colors.white}`,
                     fontSize: '19px',
                     fontWeight: '400',
                     cursor: 'pointer'
@@ -283,8 +284,8 @@ function RequestView() {
                 style={{
                   padding: '8px 16px',
                   background: 'transparent',
-                  color: '#ff3b30',
-                  border: '1px solid #ff3b30',
+                  color: theme.colors.error,
+                  border: `1px solid ${theme.colors.error}`,
                   fontSize: '19px',
                   fontWeight: '400',
                   cursor: 'pointer'
@@ -310,11 +311,11 @@ function RequestView() {
               <div style={{
                 textAlign: 'center',
                 padding: '80px 40px',
-                border: '1px solid #333'
+                border: `1px solid ${theme.colors.border.light}`
               }}>
                 <p style={{
                   fontSize: '20px',
-                  color: '#666',
+                  color: theme.colors.text.secondary,
                   margin: 0
                 }}>
                   No uploads yet. Share the link above to start receiving files.
@@ -322,14 +323,14 @@ function RequestView() {
               </div>
             ) : (
               <div style={{
-                border: '1px solid #333'
+                border: `1px solid ${theme.colors.border.light}`
               }}>
                 {data.uploads.map((upload, index) => (
                   <div
                     key={upload.id}
                     style={{
                       padding: '20px',
-                      borderBottom: index < data.uploads.length - 1 ? '1px solid #333' : 'none',
+                      borderBottom: index < data.uploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center'
@@ -340,14 +341,14 @@ function RequestView() {
                         fontSize: '22px',
                         fontWeight: '400',
                         marginBottom: '4px',
-                        color: '#fff'
+                        color: theme.colors.text.primary
                       }}>
                         {upload.uploaderName}
                       </div>
                       {upload.uploaderEmail && (
                         <div style={{
                           fontSize: '19px',
-                          color: '#666',
+                          color: theme.colors.text.secondary,
                           marginBottom: '8px'
                         }}>
                           {upload.uploaderEmail}
@@ -355,7 +356,7 @@ function RequestView() {
                       )}
                       <div style={{
                         fontSize: '19px',
-                        color: '#ccc',
+                        color: theme.colors.text.secondary,
                         marginBottom: '4px',
                         fontFamily: 'monospace'
                       }}>
@@ -363,7 +364,7 @@ function RequestView() {
                       </div>
                       <div style={{
                         fontSize: '19px',
-                        color: '#666'
+                        color: theme.colors.text.secondary
                       }}>
                         {(upload.fileSize / 1024 / 1024).toFixed(2)} MB · {new Date(upload.uploadedAt).toLocaleString()}
                       </div>
@@ -373,8 +374,8 @@ function RequestView() {
                       onClick={() => downloadFile(upload.id, upload.fileName)}
                       style={{
                         padding: '8px 16px',
-                        background: '#fff',
-                        color: '#000',
+                        background: theme.colors.white,
+                        color: theme.colors.black,
                         border: 'none',
                         fontSize: '19px',
                         fontWeight: '400',
