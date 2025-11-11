@@ -2555,35 +2555,37 @@ function Requests() {
         </div>
 
         {/* BOTTOM PROPERTIES BAR */}
-        {selectedElement ? (
+        <div style={{
+          height: '140px',
+          borderTop: '1px solid #2a2a2a',
+          background: '#0a0a0a',
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden'
+        }}>
+          {/* Properties Header */}
           <div style={{
-            height: '140px',
-            borderTop: '1px solid #2a2a2a',
-            background: '#0a0a0a',
             display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden'
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '8px 20px',
+            borderBottom: '1px solid #2a2a2a'
           }}>
-            {/* Properties Header */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '8px 20px',
-              borderBottom: '1px solid #2a2a2a'
+              gap: '16px'
             }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px'
-              }}>
-                <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
-                  {COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label}
-                </div>
-                <div style={{ fontSize: '11px', color: '#666' }}>
-                  Properties
-                </div>
+              <div style={{ fontSize: '13px', fontWeight: '600', color: '#ffffff' }}>
+                {selectedElement ? COMPONENT_LIBRARY.find(c => c.id === selectedElement.type)?.label : 'Properties'}
               </div>
+              {selectedElement && (
+                <div style={{ fontSize: '11px', color: '#666' }}>
+                  Edit element properties
+                </div>
+              )}
+            </div>
+            {selectedElement && (
               <div style={{ display: 'flex', gap: '8px' }}>
                 <button
                   onClick={handleDuplicateElement}
@@ -2616,15 +2618,17 @@ function Requests() {
                   Delete
                 </button>
               </div>
-            </div>
+            )}
+          </div>
 
-            {/* Properties Content - Horizontal Scroll */}
-            <div style={{
-              flex: 1,
-              overflowX: 'auto',
-              overflowY: 'hidden',
-              padding: '10px 20px'
-            }}>
+          {/* Properties Content - Horizontal Scroll */}
+          <div style={{
+            flex: 1,
+            overflowX: 'auto',
+            overflowY: 'hidden',
+            padding: '10px 20px'
+          }}>
+            {selectedElement ? (
               <div style={{
                 display: 'flex',
                 gap: '24px',
@@ -2890,23 +2894,21 @@ function Requests() {
                   </div>
                 ))}
               </div>
-            </div>
+            ) : (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                color: '#666',
+                fontSize: '12px'
+              }}>
+                <span style={{ marginRight: '8px', fontSize: '16px', opacity: 0.3 }}>◇</span>
+                Select an element to edit its properties
+              </div>
+            )}
           </div>
-        ) : (
-          <div style={{
-            height: '50px',
-            borderTop: '1px solid #2a2a2a',
-            background: '#0a0a0a',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#666',
-            fontSize: '11px'
-          }}>
-            <span style={{ marginRight: '8px', fontSize: '14px', opacity: 0.3 }}>◇</span>
-            Select an element to edit its properties
-          </div>
-        )}
+        </div>
       </div>
 
       {/* TEMPLATE MODAL */}
