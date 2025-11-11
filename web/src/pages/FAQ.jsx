@@ -6,6 +6,7 @@ import theme from '../theme'
 function FAQ() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
+  const [expandedIndex, setExpandedIndex] = useState(null)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -15,6 +16,10 @@ function FAQ() {
     }
     setLoading(false)
   }, [navigate])
+
+  const toggleFAQ = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index)
+  }
 
   const faqs = [
     {
@@ -179,40 +184,77 @@ function FAQ() {
             </p>
           </div>
 
-          {/* FAQ Grid */}
+          {/* FAQ Accordion */}
           <div style={{
-            display: 'grid',
-            gap: theme.spacing[3],
             maxWidth: '900px',
-            margin: '0 auto'
+            margin: '0 auto',
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '8px',
+            overflow: 'hidden'
           }}>
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                style={{
-                  padding: theme.spacing[5],
-                  borderRadius: theme.radius.lg,
-                  border: `1px solid ${theme.colors.border.light}`
-                }}
-              >
-                <div style={{
-                  fontSize: '18px',
-                  color: theme.colors.text.primary,
-                  marginBottom: theme.spacing[3],
-                  fontWeight: '600',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-                }}>
-                  {faq.question}
+            {faqs.map((faq, index) => {
+              const isExpanded = expandedIndex === index
+              const isLast = index === faqs.length - 1
+
+              return (
+                <div
+                  key={index}
+                  style={{
+                    borderBottom: isLast ? 'none' : `1px solid ${theme.colors.border.light}`
+                  }}
+                >
+                  <button
+                    onClick={() => toggleFAQ(index)}
+                    style={{
+                      width: '100%',
+                      padding: '20px 24px',
+                      background: 'transparent',
+                      border: 'none',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                      fontFamily: 'inherit',
+                      transition: 'background 0.15s ease'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                  >
+                    <div style={{
+                      fontSize: '16px',
+                      color: theme.colors.text.primary,
+                      fontWeight: '500',
+                      lineHeight: '1.4',
+                      flex: 1,
+                      paddingRight: '16px'
+                    }}>
+                      {faq.question}
+                    </div>
+                    <div style={{
+                      fontSize: '20px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1',
+                      flexShrink: 0,
+                      transition: 'transform 0.2s ease',
+                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+                    }}>
+                      ↓
+                    </div>
+                  </button>
+                  {isExpanded && (
+                    <div style={{
+                      padding: '0 24px 20px 24px',
+                      fontSize: '15px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.6'
+                    }}>
+                      {faq.answer}
+                    </div>
+                  )}
                 </div>
-                <div style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  lineHeight: '1.7'
-                }}>
-                  {faq.answer}
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
       </div>

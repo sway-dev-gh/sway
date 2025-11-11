@@ -158,12 +158,13 @@ function Sidebar() {
     padding: `6px 12px`,
     color: isActive ? theme.colors.text.primary : theme.colors.text.secondary,
     textDecoration: 'none',
-    fontSize: '15px',
+    fontSize: '14px',
     fontWeight: isActive ? theme.weight.medium : theme.weight.normal,
-    background: isActive ? theme.colors.bg.hover : 'transparent',
-    borderRadius: theme.radius.md,
-        whiteSpace: 'nowrap',
-    height: '30px'
+    background: isActive ? 'rgba(255, 255, 255, 0.06)' : 'transparent',
+    borderRadius: '6px',
+    whiteSpace: 'nowrap',
+    height: '32px',
+    transition: 'all 0.15s ease'
   })
 
   return (
@@ -256,15 +257,15 @@ function Sidebar() {
                     >
                       <span>{item.label}</span>
                       <span style={{
-                        fontSize: '11px',
+                        fontSize: '10px',
                         fontWeight: theme.weight.semibold,
                         color: theme.colors.text.tertiary,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.5px',
-                        padding: '2px 4px',
-                        background: theme.colors.bg.secondary,
-                        border: `1px solid ${theme.colors.border.medium}`,
-                        borderRadius: '2px'
+                        letterSpacing: '0.6px',
+                        padding: '2px 6px',
+                        background: 'rgba(255, 255, 255, 0.04)',
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: '3px'
                       }}>
                         {upgradePlan}
                       </span>
@@ -279,6 +280,18 @@ function Sidebar() {
                     to={item.path}
                     aria-current={isActive ? 'page' : undefined}
                     style={navLinkStyle(isActive)}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+                        e.currentTarget.style.color = theme.colors.text.primary
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.color = theme.colors.text.secondary
+                      }
+                    }}
                   >
                     {item.label}
                   </Link>
@@ -337,33 +350,31 @@ function Sidebar() {
                 {user.email?.split('@')[0] || 'User'}
               </div>
               <div style={{
-                fontSize: '11px',
-                fontWeight: theme.weight.bold,
-                color: effectivePlan?.toLowerCase() === 'pro' ? theme.colors.text.primary :
-                       theme.colors.text.tertiary,
+                fontSize: '10px',
+                fontWeight: theme.weight.semibold,
+                color: theme.colors.text.tertiary,
                 textTransform: 'uppercase',
-                letterSpacing: '0.5px',
-                padding: '2px 6px',
-                background: effectivePlan?.toLowerCase() === 'pro' ? 'rgba(255, 255, 255, 0.1)' :
-                           theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.medium}`,
-                borderRadius: '3px'
+                letterSpacing: '0.8px',
+                padding: '3px 7px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '4px'
               }}>
                 {effectivePlan || 'Free'}
               </div>
               {isAdminMode && (
                 <div style={{
-                  fontSize: '11px',
-                  fontWeight: theme.weight.bold,
+                  fontSize: '10px',
+                  fontWeight: theme.weight.semibold,
                   color: theme.colors.black,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  padding: '2px 6px',
+                  letterSpacing: '0.8px',
+                  padding: '3px 7px',
                   background: theme.colors.white,
-                  border: `1px solid ${theme.colors.white}`,
-                  borderRadius: '3px'
+                  border: 'none',
+                  borderRadius: '4px'
                 }}>
-                  ADMIN
+                  Admin
                 </div>
               )}
             </div>
@@ -373,9 +384,25 @@ function Sidebar() {
             onClick={handleLogout}
             aria-label="Sign out of your account"
             style={{
-              ...theme.buttons.secondary.base,
               padding: '6px 12px',
-              fontSize: '13px'
+              background: 'transparent',
+              color: theme.colors.text.secondary,
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: '500',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
+              e.currentTarget.style.color = theme.colors.text.primary
+              e.currentTarget.style.borderColor = theme.colors.border.medium
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'transparent'
+              e.currentTarget.style.color = theme.colors.text.secondary
+              e.currentTarget.style.borderColor = theme.colors.border.light
             }}
           >
             Sign Out

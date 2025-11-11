@@ -222,7 +222,7 @@ function Plan() {
                   // boxShadow removed: theme.shadows.md
                 }}
               >
-                {/* Badge - Show CURRENT if on this plan, otherwise show PRO badge */}
+                {/* Badge - Show CURRENT if on this plan, otherwise show POPULAR badge */}
                 {plan.id === currentPlan ? (
                   <div style={{
                     position: 'absolute',
@@ -232,13 +232,13 @@ function Plan() {
                     background: theme.colors.white,
                     color: theme.colors.black,
                     padding: '6px 20px',
-                    borderRadius: theme.radius.full,
+                    borderRadius: '4px',
                     fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    Current
+                    Current Plan
                   </div>
                 ) : plan.popular && (
                   <div style={{
@@ -249,13 +249,13 @@ function Plan() {
                     background: theme.colors.white,
                     color: theme.colors.black,
                     padding: '6px 20px',
-                    borderRadius: theme.radius.full,
+                    borderRadius: '4px',
                     fontSize: theme.fontSize.xs,
                     fontWeight: theme.weight.semibold,
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
-                    PRO
+                    Popular
                   </div>
                 )}
 
@@ -322,8 +322,9 @@ function Plan() {
                     >
                       <span style={{
                         color: theme.colors.text.primary,
-                        fontSize: theme.fontSize.xs,
-                        lineHeight: '1'
+                        fontSize: '10px',
+                        lineHeight: '1',
+                        marginRight: '2px'
                       }}>✓</span>
                       <span>{feature.text}</span>
                     </div>

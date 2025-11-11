@@ -365,7 +365,7 @@ function Upload() {
               style={{
                 width: '100%',
                 padding: '12px 20px',
-                background: requestData.branding?.accentColor || theme.colors.white,
+                background: theme.colors.white,
                 color: theme.colors.black,
                 border: 'none',
                 borderRadius: '8px',
@@ -408,12 +408,12 @@ function Upload() {
             width: '60px',
             height: '60px',
             borderRadius: '50%',
-            border: `2px solid ${theme.colors.text.primary}`,
+            border: `2px solid ${theme.colors.white}`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '32px',
-            color: theme.colors.text.primary,
+            fontSize: '28px',
+            color: theme.colors.white,
             margin: '0 auto 24px auto'
           }}>
             ✓
@@ -572,11 +572,10 @@ function Upload() {
                 }}
               />
               <div style={{
-                fontSize: '40px',
-                color: theme.colors.text.primary,
+                fontSize: '32px',
+                color: theme.colors.text.secondary,
                 marginBottom: '16px',
-                lineHeight: '1',
-                opacity: 0.8
+                lineHeight: '1'
               }}>
                 ↑
               </div>
@@ -839,7 +838,7 @@ function Upload() {
             style={{
               width: '100%',
               padding: '12px 20px',
-              background: requestData.branding?.accentColor || theme.colors.white,
+              background: theme.colors.white,
               color: theme.colors.black,
               border: 'none',
               borderRadius: '8px',
@@ -866,7 +865,7 @@ function Upload() {
               <div style={{
                 width: `${uploadProgress}%`,
                 height: '100%',
-                background: requestData.branding?.accentColor || theme.colors.white,
+                background: theme.colors.white,
                 transition: 'width 0.3s ease'
               }} />
             </div>

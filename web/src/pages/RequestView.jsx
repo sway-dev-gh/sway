@@ -184,29 +184,34 @@ function RequestView() {
           <Link
             to="/requests"
             style={{
-              display: 'inline-block',
-              fontSize: '20px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '14px',
               color: theme.colors.text.secondary,
               textDecoration: 'none',
-              marginBottom: '40px'
+              marginBottom: '40px',
+              fontWeight: '500'
             }}
           >
-            ← Back to Requests
+            <span style={{ fontSize: '16px' }}>←</span>
+            <span>Back to Builder</span>
           </Link>
 
           {/* Request Header */}
-          <div style={{ marginBottom: '60px' }}>
+          <div style={{ marginBottom: '48px' }}>
             <h1 style={{
-              fontSize: '32px',
-              fontWeight: '400',
-              margin: '0 0 12px 0',
-              letterSpacing: '-0.01em'
+              fontSize: '28px',
+              fontWeight: '500',
+              margin: '0 0 8px 0',
+              letterSpacing: '-0.02em',
+              color: theme.colors.text.primary
             }}>
               {data.request.title}
             </h1>
             {data.request.description && (
               <p style={{
-                fontSize: '20px',
+                fontSize: '15px',
                 color: theme.colors.text.secondary,
                 margin: '0 0 24px 0',
                 lineHeight: '1.6'
@@ -218,16 +223,23 @@ function RequestView() {
             {/* Shareable Link */}
             <div style={{
               marginTop: '24px',
-              padding: '20px',
+              padding: '16px 20px',
+              background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '8px',
               display: 'flex',
               justifyContent: 'space-between',
-              alignItems: 'center'
+              alignItems: 'center',
+              gap: '16px'
             }}>
               <code style={{
-                fontSize: '19px',
+                fontSize: '14px',
                 color: theme.colors.text.secondary,
-                fontFamily: 'monospace'
+                fontFamily: 'monospace',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+                flex: 1
               }}>
                 {window.location.origin}/r/{data.request.shortCode}
               </code>
@@ -238,9 +250,11 @@ function RequestView() {
                   background: theme.colors.white,
                   color: theme.colors.black,
                   border: 'none',
-                  fontSize: '19px',
-                  fontWeight: '400',
-                  cursor: 'pointer'
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  flexShrink: 0
                 }}
               >
                 Copy Link
@@ -251,32 +265,20 @@ function RequestView() {
             <div style={{
               marginTop: '16px',
               display: 'flex',
-              gap: '8px'
+              gap: '8px',
+              flexWrap: 'wrap'
             }}>
-              <button
-                onClick={() => setConfirmToggle(true)}
-                style={{
-                  padding: '8px 16px',
-                  background: 'transparent',
-                  color: theme.colors.text.primary,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  fontSize: '19px',
-                  fontWeight: '400',
-                  cursor: 'pointer'
-                }}
-              >
-                {data.request.isActive ? 'Close Request' : 'Reactivate Request'}
-              </button>
               {data.uploads && data.uploads.length > 0 && (
                 <button
                   onClick={downloadAll}
                   style={{
                     padding: '8px 16px',
-                    background: 'transparent',
-                    color: theme.colors.text.primary,
-                    border: `1px solid ${theme.colors.white}`,
-                    fontSize: '19px',
-                    fontWeight: '400',
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    border: 'none',
+                    borderRadius: '6px',
+                    fontSize: '14px',
+                    fontWeight: '500',
                     cursor: 'pointer'
                   }}
                 >
@@ -284,18 +286,34 @@ function RequestView() {
                 </button>
               )}
               <button
+                onClick={() => setConfirmToggle(true)}
+                style={{
+                  padding: '8px 16px',
+                  background: 'transparent',
+                  color: theme.colors.text.primary,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer'
+                }}
+              >
+                {data.request.isActive ? 'Close Request' : 'Reactivate Request'}
+              </button>
+              <button
                 onClick={() => setConfirmDelete(true)}
                 style={{
                   padding: '8px 16px',
                   background: 'transparent',
-                  color: theme.colors.error,
-                  border: `1px solid ${theme.colors.error}`,
-                  fontSize: '19px',
-                  fontWeight: '400',
+                  color: theme.colors.text.tertiary,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: '6px',
+                  fontSize: '14px',
+                  fontWeight: '500',
                   cursor: 'pointer'
                 }}
               >
-                Delete Request
+                Delete
               </button>
             </div>
           </div>
@@ -303,47 +321,54 @@ function RequestView() {
           {/* Uploads Section */}
           <div>
             <h2 style={{
-              fontSize: '18px',
-              fontWeight: '400',
-              margin: '0 0 20px 0',
-              letterSpacing: '-0.01em'
+              fontSize: '16px',
+              fontWeight: '500',
+              margin: '0 0 16px 0',
+              letterSpacing: '-0.01em',
+              color: theme.colors.text.primary
             }}>
-              Uploads ({data.uploads.length})
+              Submissions ({data.uploads.length})
             </h2>
 
             {data.uploads.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '80px 40px',
-                border: `1px solid ${theme.colors.border.light}`
+                padding: '60px 40px',
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '8px'
               }}>
                 <p style={{
-                  fontSize: '20px',
+                  fontSize: '15px',
                   color: theme.colors.text.secondary,
-                  margin: 0
+                  margin: 0,
+                  lineHeight: '1.6'
                 }}>
-                  No uploads yet. Share the link above to start receiving files.
+                  No submissions yet. Share the link above to start receiving files.
                 </p>
               </div>
             ) : (
               <div style={{
-                border: `1px solid ${theme.colors.border.light}`
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '8px',
+                overflow: 'hidden'
               }}>
                 {data.uploads.map((upload, index) => (
                   <div
                     key={upload.id}
                     style={{
-                      padding: '20px',
+                      padding: '20px 24px',
                       borderBottom: index < data.uploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'center'
+                      alignItems: 'center',
+                      gap: '20px'
                     }}
                   >
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{
-                        fontSize: '22px',
-                        fontWeight: '400',
+                        fontSize: '15px',
+                        fontWeight: '500',
                         marginBottom: '4px',
                         color: theme.colors.text.primary
                       }}>
@@ -351,7 +376,7 @@ function RequestView() {
                       </div>
                       {upload.uploaderEmail && (
                         <div style={{
-                          fontSize: '19px',
+                          fontSize: '14px',
                           color: theme.colors.text.secondary,
                           marginBottom: '8px'
                         }}>
@@ -359,16 +384,19 @@ function RequestView() {
                         </div>
                       )}
                       <div style={{
-                        fontSize: '19px',
+                        fontSize: '14px',
                         color: theme.colors.text.secondary,
                         marginBottom: '4px',
-                        fontFamily: 'monospace'
+                        fontFamily: 'monospace',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
                       }}>
                         {upload.fileName}
                       </div>
                       <div style={{
-                        fontSize: '19px',
-                        color: theme.colors.text.secondary
+                        fontSize: '13px',
+                        color: theme.colors.text.tertiary
                       }}>
                         {(upload.fileSize / 1024 / 1024).toFixed(2)} MB · {new Date(upload.uploadedAt).toLocaleString()}
                       </div>
@@ -381,9 +409,11 @@ function RequestView() {
                         background: theme.colors.white,
                         color: theme.colors.black,
                         border: 'none',
-                        fontSize: '19px',
-                        fontWeight: '400',
-                        cursor: 'pointer'
+                        borderRadius: '6px',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        flexShrink: 0
                       }}
                     >
                       Download

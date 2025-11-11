@@ -2567,31 +2567,6 @@ function Requests() {
                   </div>
 
                   {/* Accent Color */}
-                  <div style={{ marginBottom: '20px' }}>
-                    <label style={{
-                      display: 'block',
-                      fontSize: theme.fontSize.xs,
-                      color: theme.colors.text.secondary,
-                      marginBottom: '8px',
-                      fontWeight: theme.weight.medium
-                    }}>
-                      Accent Color
-                    </label>
-                    <input
-                      type="color"
-                      value={branding.accentColor}
-                      onChange={(e) => setBranding({ ...branding, accentColor: e.target.value })}
-                      style={{
-                        width: '100%',
-                        height: '40px',
-                        border: `1px solid ${theme.colors.border.medium}`,
-                        borderRadius: theme.radius.md,
-                        background: 'transparent',
-                        cursor: 'pointer'
-                      }}
-                    />
-                  </div>
-
                   {/* Page Title */}
                   <div style={{ marginBottom: '20px' }}>
                     <label style={{
@@ -2763,7 +2738,8 @@ function Requests() {
                               marginRight: '10px',
                               cursor: 'pointer',
                               width: '18px',
-                              height: '18px'
+                              height: '18px',
+                              accentColor: '#fff'
                             }}
                           />
                           {type.charAt(0).toUpperCase() + type.slice(1)}s
