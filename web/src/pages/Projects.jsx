@@ -115,18 +115,18 @@ function Projects() {
         }}>
           <div>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: '800',
+              fontSize: '32px',
+              fontWeight: theme.weight.semibold,
               color: theme.colors.text.primary,
-              letterSpacing: '-2px',
-              marginBottom: '8px'
+              letterSpacing: '-0.03em',
+              marginBottom: '12px'
             }}>
               Reviews
             </h1>
             <p style={{
-              fontSize: '16px',
-              color: theme.colors.text.secondary,
-              fontWeight: '500'
+              fontSize: '15px',
+              color: theme.colors.text.tertiary,
+              lineHeight: '1.6'
             }}>
               Upload drafts, collect feedback, and manage approval workflows
             </p>
@@ -474,22 +474,21 @@ function Projects() {
               ◯
             </div>
             <h3 style={{
-              fontSize: '28px',
-              fontWeight: '700',
+              fontSize: '18px',
+              fontWeight: theme.weight.semibold,
               color: theme.colors.text.primary,
-              marginBottom: '12px',
-              letterSpacing: '-0.5px'
+              marginBottom: '12px'
             }}>
-              {searchTerm || filter !== 'all' ? 'No projects found' : 'No projects yet'}
+              {searchTerm || filter !== 'all' ? 'No reviews found' : 'No reviews yet'}
             </h3>
             <p style={{
-              fontSize: '16px',
-              color: theme.colors.text.secondary,
-              marginBottom: '40px'
+              fontSize: '14px',
+              color: theme.colors.text.tertiary,
+              marginBottom: '32px'
             }}>
               {searchTerm || filter !== 'all'
                 ? 'Try adjusting your search or filters'
-                : 'Create your first project to start managing client work'
+                : 'Upload your first file to start collecting feedback'
               }
             </p>
             {!searchTerm && filter === 'all' && (
@@ -506,7 +505,7 @@ function Projects() {
                   cursor: 'pointer'
                 }}
               >
-                Create First Project
+                Upload for Review
               </button>
             )}
           </div>

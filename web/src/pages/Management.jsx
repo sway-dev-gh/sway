@@ -597,7 +597,7 @@ function Management() {
               margin: 0,
               lineHeight: '1.6'
             }}>
-              Track uploads and schedule automated requests
+              Manage reviewers and workflow analytics
             </p>
           </div>
 
@@ -682,7 +682,7 @@ function Management() {
                     color: theme.colors.text.secondary,
                     fontWeight: theme.weight.medium
                   }}>
-                    Collecting files
+                    Active reviews
                   </div>
                 </div>
 
