@@ -629,7 +629,7 @@ function Management() {
           </div>
 
           {/* Calendar Tab Content */}
-          {activeTab === 'calendar' && (
+          {true && (
             <>
               {/* Top Stats */}
               <div className="stats-grid" style={{
@@ -2065,7 +2065,7 @@ function Management() {
           )}
 
           {/* Scheduling Tab Content */}
-          {activeTab === 'scheduling' && (
+          {true && (
             <div>
               <div style={{
                 display: 'flex',
