@@ -2897,7 +2897,7 @@ function Requests() {
                     fontSize: '11px',
                     fontWeight: theme.weight.bold,
                     color: theme.colors.text.tertiary,
-                    marginBottom: '20px',
+                    marginBottom: '28px',
                     textTransform: 'uppercase',
                     letterSpacing: '1px'
                   }}>
@@ -2905,9 +2905,9 @@ function Requests() {
                   </div>
 
                   <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr',
-                    gap: '12px'
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px'
                   }}>
                     {TEMPLATES.map((template) => {
                       const isPro = template.plan === 'pro'
@@ -2918,13 +2918,12 @@ function Requests() {
                           key={template.id}
                           onClick={() => handleTemplateClick(template)}
                           style={{
-                            padding: '16px',
+                            padding: '20px',
                             background: 'rgba(255, 255, 255, 0.02)',
                             border: `1px solid ${theme.colors.border.light}`,
                             borderRadius: '8px',
                             cursor: isLocked ? 'not-allowed' : 'pointer',
                             opacity: isLocked ? 0.6 : 1,
-                            position: 'relative',
                             transition: 'all 0.15s ease'
                           }}
                         >
@@ -2932,7 +2931,7 @@ function Requests() {
                             display: 'flex',
                             justifyContent: 'space-between',
                             alignItems: 'flex-start',
-                            marginBottom: '8px'
+                            marginBottom: '10px'
                           }}>
                             <div style={{ fontSize: '14px', fontWeight: theme.weight.semibold, color: theme.colors.text.primary }}>
                               {template.name}
@@ -2963,37 +2962,42 @@ function Requests() {
               ) : (
                 <>
                   <div style={{
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.semibold,
-                    color: theme.colors.text.secondary,
-                    marginBottom: '20px',
+                    fontSize: '11px',
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: '28px',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '1px'
                   }}>
                     Drag to Canvas
                   </div>
 
-                  {COMPONENT_LIBRARY.map((component) => {
-                    const isPro = component.plan === 'pro'
-                    const isLocked = isPro && userPlan === 'free'
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '16px'
+                  }}>
+                    {COMPONENT_LIBRARY.map((component) => {
+                      const isPro = component.plan === 'pro'
+                      const isLocked = isPro && userPlan === 'free'
 
-                    return (
-                      <div
-                        key={component.id}
-                        draggable={!isLocked}
-                        onDragStart={() => !isLocked && handleDragStart(component)}
-                        onClick={() => isLocked && setShowUpgradeModal(true)}
-                        style={{
-                          padding: '12px',
-                          marginBottom: '8px',
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          border: `1px solid ${theme.colors.border.light}`,
-                          borderRadius: theme.radius.sm,
-                          cursor: isLocked ? 'not-allowed' : 'grab',
-                          userSelect: 'none',
-                          opacity: isLocked ? 0.6 : 1
-                        }}
-                      >
+                      return (
+                        <div
+                          key={component.id}
+                          draggable={!isLocked}
+                          onDragStart={() => !isLocked && handleDragStart(component)}
+                          onClick={() => isLocked && setShowUpgradeModal(true)}
+                          style={{
+                            padding: '20px',
+                            background: 'rgba(255, 255, 255, 0.02)',
+                            border: `1px solid ${theme.colors.border.light}`,
+                            borderRadius: '8px',
+                            cursor: isLocked ? 'not-allowed' : 'grab',
+                            userSelect: 'none',
+                            opacity: isLocked ? 0.6 : 1,
+                            transition: 'all 0.15s ease'
+                          }}
+                        >
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                           <div style={{
                             fontSize: theme.fontSize.lg,
@@ -3041,6 +3045,7 @@ function Requests() {
                       </div>
                     )
                   })}
+                  </div>
                 </>
               )}
             </div>
