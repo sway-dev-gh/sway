@@ -1082,9 +1082,7 @@ function Requests() {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [isResizing, setIsResizing] = useState(false)
   const [resizeHandle, setResizeHandle] = useState(null)
-  const [zoom, setZoom] = useState(1) // Zoom level
   const [lockedElements, setLockedElements] = useState([]) // Array of locked element IDs
-  const [snapToGrid, setSnapToGrid] = useState(true) // Grid snapping enabled by default
   const [branding, setBranding] = useState({
     accentColor: '#ffffff',
     pageTitle: '',
@@ -1129,11 +1127,6 @@ function Requests() {
     setHistoryIndex(newHistory.length - 1)
   }
 
-  // Snap coordinate to 10px grid
-  const snapToGridValue = (value) => {
-    if (!snapToGrid) return value
-    return Math.round(value / 10) * 10
-  }
 
   // Check if element is locked
   const isElementLocked = (elementId) => {
@@ -1621,20 +1614,16 @@ function Requests() {
     setIsDraggingElement(true)
     const canvasRect = canvasRef.current.getBoundingClientRect()
     setDragOffset({
-      x: (e.clientX - canvasRect.left) / zoom - element.x,
-      y: (e.clientY - canvasRect.top) / zoom - element.y
+      x: (e.clientX - canvasRect.left) - element.x,
+      y: (e.clientY - canvasRect.top) - element.y
     })
   }
 
   const handleMouseMove = (e) => {
     if (isDraggingElement && selectedElement && canvasRef.current) {
       const canvasRect = canvasRef.current.getBoundingClientRect()
-      let newX = (e.clientX - canvasRect.left) / zoom - dragOffset.x
-      let newY = (e.clientY - canvasRect.top) / zoom - dragOffset.y
-
-      // Apply grid snapping
-      newX = snapToGridValue(newX)
-      newY = snapToGridValue(newY)
+      let newX = (e.clientX - canvasRect.left) - dragOffset.x
+      let newY = (e.clientY - canvasRect.top) - dragOffset.y
 
       // Calculate delta for group move
       const deltaX = newX - selectedElement.x
@@ -2343,71 +2332,9 @@ function Requests() {
               </h1>
             )}
 
-            {/* Plan Badge */}
-            <div style={{
-              fontSize: theme.fontSize.xs,
-              fontWeight: theme.weight.semibold,
-              color: userPlan === 'pro' ? theme.colors.white : theme.colors.text.secondary,
-              background: userPlan === 'pro' ? 'rgba(255, 255, 255, 0.1)' : theme.colors.bg.hover,
-              padding: '4px 10px',
-              borderRadius: theme.radius.sm,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
-            }}>
-              {userPlan === 'free' ? `FREE (${canvasElements.length}/5)` : 'PRO'}
-            </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            {/* Zoom Controls */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary }}>Zoom:</span>
-              <select
-                value={zoom}
-                onChange={(e) => setZoom(parseFloat(e.target.value))}
-                style={{
-                  background: theme.colors.bg.hover,
-                  border: `1px solid ${theme.colors.border.dark}`,
-                  borderRadius: theme.radius.sm,
-                  color: theme.colors.text.primary,
-                  padding: '6px 8px',
-                  fontSize: theme.fontSize.xs,
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
-                }}
-              >
-                <option value="0.25">25%</option>
-                <option value="0.5">50%</option>
-                <option value="0.75">75%</option>
-                <option value="1">100%</option>
-                <option value="1.25">125%</option>
-                <option value="1.5">150%</option>
-                <option value="2">200%</option>
-              </select>
-            </div>
-
-            {/* Grid Snap Toggle */}
-            <button
-              onClick={() => setSnapToGrid(!snapToGrid)}
-              style={{
-                background: snapToGrid ? theme.colors.white : 'transparent',
-                border: `1px solid ${theme.colors.border.dark}`,
-                borderRadius: theme.radius.sm,
-                color: snapToGrid ? theme.colors.black : theme.colors.text.secondary,
-                padding: '6px 12px',
-                fontSize: theme.fontSize.xs,
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                fontWeight: '600'
-              }}
-              title={snapToGrid ? 'Grid Snap: ON (10px)' : 'Grid Snap: OFF'}
-            >
-              {snapToGrid ? 'Snap: ON' : 'Snap: OFF'}
-            </button>
-
-            {/* Divider */}
-            <div style={{ width: '1px', height: '24px', background: theme.colors.border.dark }}></div>
-
             <button
               onClick={handleUndo}
               disabled={historyIndex <= 0}
