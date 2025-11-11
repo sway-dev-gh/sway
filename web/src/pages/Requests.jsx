@@ -820,13 +820,10 @@ function Requests() {
                   padding: '16px 24px',
                   cursor: 'pointer',
                   fontFamily: 'inherit',
-                  transition: 'all 0.2s ease',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '8px'
+                  transition: 'all 0.2s ease'
                 }}
               >
-                ⚡ Quick Send
+                Share
               </button>
               <button
                 onClick={handlePublish}
@@ -1359,19 +1356,19 @@ function Requests() {
                 }}>
                   <div>
                     <h2 style={{
-                      fontSize: '24px',
-                      fontWeight: '700',
+                      fontSize: '20px',
+                      fontWeight: '600',
                       color: '#FFFFFF',
-                      margin: '0 0 8px 0'
+                      margin: '0 0 6px 0'
                     }}>
-                      Quick Send
+                      Share Collection
                     </h2>
                     <p style={{
-                      fontSize: '16px',
+                      fontSize: '14px',
                       color: '#808080',
                       margin: '0'
                     }}>
-                      Share "{formTitle}" instantly
+                      Send "{formTitle}" to contacts or copy the link
                     </p>
                   </div>
                   <button
@@ -1399,7 +1396,7 @@ function Requests() {
                 <div style={{ marginBottom: '24px' }}>
                   <input
                     type="text"
-                    placeholder="Search contacts or enter email..."
+                    placeholder="Search contacts or enter email address..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
@@ -1453,18 +1450,14 @@ function Requests() {
                           width: '44px',
                           height: '44px',
                           borderRadius: '50%',
-                          background: `linear-gradient(135deg, ${
-                            index === 0 ? '#FF6B6B, #4ECDC4' :
-                            index === 1 ? '#A8E6CF, #88D8C0' :
-                            index === 2 ? '#FFD93D, #6BCF7F' :
-                            '#FF8A80, #FF5722'
-                          })`,
+                          background: 'rgba(255, 255, 255, 0.08)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          fontSize: '18px',
+                          fontSize: '16px',
                           fontWeight: '600',
-                          color: '#000000'
+                          color: '#FFFFFF'
                         }}>
                           {name.split(' ').map(n => n[0]).join('')}
                         </div>
@@ -1532,7 +1525,7 @@ function Requests() {
                       gap: '8px'
                     }}
                   >
-                    🔗 Copy Link
+                    Copy Link
                   </button>
 
                   <button
@@ -1559,7 +1552,7 @@ function Requests() {
                       gap: '8px'
                     }}
                   >
-                    📧 Email
+                    Send Email
                   </button>
                 </div>
               </div>
