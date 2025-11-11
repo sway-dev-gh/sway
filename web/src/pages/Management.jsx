@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
-import UpgradeBanner from '../components/UpgradeBanner'
 import theme from '../theme'
 import api from '../api/axios'
 import { getStorageLimit, formatStorageDisplay, getEffectivePlan } from '../utils/planUtils'
@@ -2415,7 +2414,6 @@ function Management() {
         cancelText="Cancel"
         danger={true}
       />
-      <UpgradeBanner user={user} />
     </>
   )
 }
