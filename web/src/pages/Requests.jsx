@@ -2894,65 +2894,71 @@ function Requests() {
               ) : activeTab === 'templates' ? (
                 <>
                   <div style={{
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.semibold,
-                    color: theme.colors.text.secondary,
-                    marginBottom: '16px',
+                    fontSize: '11px',
+                    fontWeight: theme.weight.bold,
+                    color: theme.colors.text.tertiary,
+                    marginBottom: '20px',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.5px'
+                    letterSpacing: '1px'
                   }}>
                     Choose a Template
                   </div>
 
-                  {TEMPLATES.map((template) => {
-                    const isPro = template.plan === 'pro'
-                    const isLocked = isPro && userPlan === 'free'
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr',
+                    gap: '12px'
+                  }}>
+                    {TEMPLATES.map((template) => {
+                      const isPro = template.plan === 'pro'
+                      const isLocked = isPro && userPlan === 'free'
 
-                    return (
-                      <div
-                        key={template.id}
-                        onClick={() => handleTemplateClick(template)}
-                        style={{
-                          padding: '10px',
-                          marginBottom: '8px',
-                          background: 'rgba(255, 255, 255, 0.02)',
-                          border: `1px solid ${theme.colors.border.light}`,
-                          borderRadius: theme.radius.md,
-                          cursor: isLocked ? 'not-allowed' : 'pointer',
-                          opacity: isLocked ? 0.6 : 1,
-                          position: 'relative'
-                        }}
-                      >
-                        <div style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'flex-start',
-                          marginBottom: '6px'
-                        }}>
-                          <div style={{ fontSize: theme.fontSize.sm, fontWeight: theme.weight.semibold, color: theme.colors.text.primary }}>
-                            {template.name}
-                          </div>
-                          {isPro && (
-                            <div style={{
-                              fontSize: theme.fontSize.xs,
-                              fontWeight: theme.weight.bold,
-                              color: isLocked ? theme.colors.text.secondary : theme.colors.white,
-                              background: isLocked ? theme.colors.border.dark : 'rgba(255, 255, 255, 0.1)',
-                              padding: '3px 8px',
-                              borderRadius: theme.radius.sm,
-                              textTransform: 'uppercase',
-                              letterSpacing: '0.5px'
-                            }}>
-                              PRO
+                      return (
+                        <div
+                          key={template.id}
+                          onClick={() => handleTemplateClick(template)}
+                          style={{
+                            padding: '16px',
+                            background: 'rgba(255, 255, 255, 0.02)',
+                            border: `1px solid ${theme.colors.border.light}`,
+                            borderRadius: '8px',
+                            cursor: isLocked ? 'not-allowed' : 'pointer',
+                            opacity: isLocked ? 0.6 : 1,
+                            position: 'relative',
+                            transition: 'all 0.15s ease'
+                          }}
+                        >
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'flex-start',
+                            marginBottom: '8px'
+                          }}>
+                            <div style={{ fontSize: '14px', fontWeight: theme.weight.semibold, color: theme.colors.text.primary }}>
+                              {template.name}
                             </div>
-                          )}
+                            {isPro && (
+                              <div style={{
+                                fontSize: '10px',
+                                fontWeight: theme.weight.bold,
+                                color: isLocked ? theme.colors.text.tertiary : theme.colors.white,
+                                background: isLocked ? theme.colors.border.dark : 'rgba(255, 255, 255, 0.08)',
+                                padding: '4px 8px',
+                                borderRadius: '4px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.5px'
+                              }}>
+                                PRO
+                              </div>
+                            )}
+                          </div>
+                          <div style={{ fontSize: '13px', color: theme.colors.text.secondary, lineHeight: '1.5' }}>
+                            {template.description}
+                          </div>
                         </div>
-                        <div style={{ fontSize: theme.fontSize.xs, color: theme.colors.text.secondary, lineHeight: '1.4' }}>
-                          {template.description}
-                        </div>
-                      </div>
-                    )
-                  })}
+                      )
+                    })}
+                  </div>
                 </>
               ) : (
                 <>
