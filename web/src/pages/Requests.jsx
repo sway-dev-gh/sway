@@ -150,14 +150,14 @@ function Requests() {
   const TEMPLATE_LIBRARY = [
     {
       id: 'blank',
-      name: 'Blank Canvas',
-      description: 'Start from scratch with an empty form',
+      name: 'Start Fresh',
+      description: 'Build your collection from scratch with complete creative control',
       elements: []
     },
     {
       id: 'contact-form',
-      name: 'Contact Form',
-      description: 'Basic contact form with name, email, and message',
+      name: 'Contact Collection',
+      description: 'Gather contact information and messages from visitors',
       elements: [
         {
           id: 'heading-1',
@@ -216,8 +216,8 @@ function Requests() {
     },
     {
       id: 'file-request',
-      name: 'File Request',
-      description: 'Simple file upload form with description',
+      name: 'File Collection',
+      description: 'Streamlined form for collecting documents and files',
       elements: [
         {
           id: 'heading-1',
@@ -714,107 +714,176 @@ function Requests() {
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '48px' }}>
-            {isEditingTitle ? (
-              <input
-                type="text"
-                value={formTitle}
-                maxLength={50}
-                onChange={(e) => setFormTitle(e.target.value)}
-                onBlur={() => setIsEditingTitle(false)}
-                onKeyDown={(e) => e.key === 'Enter' && setIsEditingTitle(false)}
-                autoFocus
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: '2px solid #373737',
-                  color: '#FFFFFF',
-                  fontSize: '48px',
-                  fontWeight: '600',
-                  padding: '0 0 8px 0',
-                  outline: 'none',
-                  fontFamily: 'inherit',
-                  width: '100%',
-                  letterSpacing: '-0.02em'
-                }}
-              />
-            ) : (
-              <h1
-                onClick={() => setIsEditingTitle(true)}
-                style={{
-                  fontSize: '48px',
-                  fontWeight: '600',
-                  margin: '0 0 8px 0',
-                  color: theme.colors.text.primary,
-                  letterSpacing: '-0.02em',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit'
-                }}
-              >
-                {formTitle}
-              </h1>
-            )}
+          <div style={{ marginBottom: '40px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '12px' }}>
+              <div style={{
+                width: '44px',
+                height: '44px',
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                fontSize: '20px'
+              }}>
+                📝
+              </div>
+
+              {isEditingTitle ? (
+                <input
+                  type="text"
+                  value={formTitle}
+                  maxLength={50}
+                  onChange={(e) => setFormTitle(e.target.value)}
+                  onBlur={() => setIsEditingTitle(false)}
+                  onKeyDown={(e) => e.key === 'Enter' && setIsEditingTitle(false)}
+                  autoFocus
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    borderBottom: '2px solid #373737',
+                    color: '#FFFFFF',
+                    fontSize: '36px',
+                    fontWeight: '700',
+                    padding: '0 0 4px 0',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    flex: 1,
+                    letterSpacing: '-0.02em'
+                  }}
+                />
+              ) : (
+                <h1
+                  onClick={() => setIsEditingTitle(true)}
+                  style={{
+                    fontSize: '36px',
+                    fontWeight: '700',
+                    margin: 0,
+                    color: theme.colors.text.primary,
+                    letterSpacing: '-0.02em',
+                    cursor: 'pointer',
+                    fontFamily: 'inherit',
+                    flex: 1
+                  }}
+                >
+                  {formTitle}
+                </h1>
+              )}
+
+              <div style={{
+                padding: '6px 12px',
+                background: 'rgba(52, 211, 153, 0.1)',
+                color: '#34D399',
+                fontSize: '12px',
+                fontWeight: '600',
+                borderRadius: '20px',
+                border: '1px solid rgba(52, 211, 153, 0.2)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                DRAFT
+              </div>
+            </div>
 
             <p style={{
               fontSize: '16px',
-              color: theme.colors.text.secondary,
-              margin: '0 0 24px 0',
-              fontWeight: '400'
+              color: '#9B9A97',
+              margin: '0 0 32px 60px',
+              fontWeight: '400',
+              lineHeight: '1.5'
             }}>
-              Build custom forms to collect files and information
+              Design custom collection forms to gather files and information from your audience
             </p>
 
             {/* Action Buttons */}
-            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginLeft: '60px' }}>
               <button
                 onClick={() => setShowPreviewModal(true)}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  color: '#FFFFFF',
-                  border: '1px solid #373737',
-                  borderRadius: '6px',
-                  fontSize: '13px',
+                  background: 'transparent',
+                  color: '#9B9A97',
+                  border: '1px solid #2A2A2A',
+                  borderRadius: '8px',
+                  fontSize: '14px',
                   fontWeight: '500',
-                  padding: '8px 16px',
+                  padding: '10px 20px',
                   cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  fontFamily: 'inherit',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.05)'
+                  e.target.style.borderColor = '#404040'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent'
+                  e.target.style.borderColor = '#2A2A2A'
                 }}
               >
-                Preview
+                👁️ Preview
               </button>
 
               <button
                 onClick={handleSave}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.06)',
-                  color: '#FFFFFF',
-                  border: '1px solid #373737',
-                  borderRadius: '6px',
-                  fontSize: '13px',
+                  background: 'transparent',
+                  color: '#9B9A97',
+                  border: '1px solid #2A2A2A',
+                  borderRadius: '8px',
+                  fontSize: '14px',
                   fontWeight: '500',
-                  padding: '8px 16px',
+                  padding: '10px 20px',
                   cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  fontFamily: 'inherit',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.05)'
+                  e.target.style.borderColor = '#404040'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent'
+                  e.target.style.borderColor = '#2A2A2A'
                 }}
               >
-                Save Draft
+                💾 Save Draft
               </button>
 
               <button
                 onClick={handlePublish}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.12)',
-                  color: '#FFFFFF',
-                  border: '1px solid #515151',
-                  borderRadius: '6px',
-                  fontSize: '13px',
+                  background: 'linear-gradient(135deg, #FFFFFF 0%, #F3F4F6 100%)',
+                  color: '#000000',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '14px',
                   fontWeight: '600',
-                  padding: '8px 20px',
+                  padding: '10px 24px',
                   cursor: 'pointer',
-                  fontFamily: 'inherit'
+                  fontFamily: 'inherit',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  boxShadow: '0 4px 12px rgba(255, 255, 255, 0.1)'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.transform = 'translateY(-1px)'
+                  e.target.style.boxShadow = '0 6px 20px rgba(255, 255, 255, 0.15)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.transform = 'translateY(0)'
+                  e.target.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.1)'
                 }}
               >
-                Publish
+                🚀 Publish Collection
               </button>
 
               {/* History Controls */}
@@ -920,14 +989,21 @@ function Requests() {
               {/* Tab Content */}
               {activeTab === 'templates' && (
                 <div>
-                  <h3 style={{
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    color: '#FFFFFF',
-                    margin: '0 0 16px 0'
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '20px'
                   }}>
-                    Templates
-                  </h3>
+                    <div style={{
+                      fontSize: '16px',
+                      fontWeight: '700',
+                      color: '#FFFFFF',
+                      letterSpacing: '-0.01em'
+                    }}>
+                      Collection Templates
+                    </div>
+                  </div>
 
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {TEMPLATE_LIBRARY.map((template) => (
@@ -1253,60 +1329,104 @@ function Requests() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    height: '400px',
+                    height: '500px',
                     textAlign: 'center'
                   }}>
-                    <h3 style={{
-                      fontSize: '20px',
-                      fontWeight: '600',
-                      color: '#FFFFFF',
-                      margin: '0 0 12px 0'
+                    <div style={{
+                      width: '80px',
+                      height: '80px',
+                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                      borderRadius: '20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '32px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      fontSize: '36px'
                     }}>
-                      Start Building Your Form
+                      📋
+                    </div>
+
+                    <h3 style={{
+                      fontSize: '24px',
+                      fontWeight: '700',
+                      color: '#FFFFFF',
+                      margin: '0 0 16px 0',
+                      letterSpacing: '-0.02em'
+                    }}>
+                      Design Your Collection
                     </h3>
 
                     <p style={{
-                      fontSize: '14px',
+                      fontSize: '16px',
                       color: '#9B9A97',
-                      margin: '0 0 24px 0',
-                      maxWidth: '300px'
+                      margin: '0 0 40px 0',
+                      maxWidth: '420px',
+                      lineHeight: '1.5'
                     }}>
-                      Choose a template to get started quickly, or add individual elements to build from scratch.
+                      Create a custom form to collect files, information, and submissions from your audience. Start with a template or build from scratch.
                     </p>
 
-                    <div style={{ display: 'flex', gap: '12px' }}>
+                    <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                       <button
                         onClick={() => setActiveTab('templates')}
                         style={{
-                          background: 'rgba(255, 255, 255, 0.12)',
-                          color: '#FFFFFF',
-                          border: '1px solid #515151',
-                          borderRadius: '6px',
-                          fontSize: '13px',
+                          background: 'linear-gradient(135deg, #FFFFFF 0%, #F3F4F6 100%)',
+                          color: '#000000',
+                          border: 'none',
+                          borderRadius: '10px',
+                          fontSize: '14px',
                           fontWeight: '600',
-                          padding: '10px 20px',
+                          padding: '12px 24px',
                           cursor: 'pointer',
-                          fontFamily: 'inherit'
+                          fontFamily: 'inherit',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          boxShadow: '0 4px 12px rgba(255, 255, 255, 0.1)',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.transform = 'translateY(-1px)'
+                          e.target.style.boxShadow = '0 6px 20px rgba(255, 255, 255, 0.15)'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.transform = 'translateY(0)'
+                          e.target.style.boxShadow = '0 4px 12px rgba(255, 255, 255, 0.1)'
                         }}
                       >
-                        Browse Templates
+                        🎨 Browse Templates
                       </button>
 
                       <button
                         onClick={() => setActiveTab('elements')}
                         style={{
-                          background: 'rgba(255, 255, 255, 0.08)',
-                          color: '#FFFFFF',
-                          border: '1px solid #373737',
-                          borderRadius: '6px',
-                          fontSize: '13px',
+                          background: 'transparent',
+                          color: '#9B9A97',
+                          border: '1px solid #2A2A2A',
+                          borderRadius: '10px',
+                          fontSize: '14px',
                           fontWeight: '500',
-                          padding: '10px 20px',
+                          padding: '12px 24px',
                           cursor: 'pointer',
-                          fontFamily: 'inherit'
+                          fontFamily: 'inherit',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                          transition: 'all 0.2s ease'
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.background = 'rgba(255, 255, 255, 0.05)'
+                          e.target.style.borderColor = '#404040'
+                          e.target.style.color = '#FFFFFF'
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.background = 'transparent'
+                          e.target.style.borderColor = '#2A2A2A'
+                          e.target.style.color = '#9B9A97'
                         }}
                       >
-                        Add Elements
+                        🧩 Add Elements
                       </button>
                     </div>
                   </div>
