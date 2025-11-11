@@ -17,6 +17,7 @@ function Requests() {
   // UI state
   const [searchTerm, setSearchTerm] = useState('')
   const [showPreviewModal, setShowPreviewModal] = useState(false)
+  const [showQuickSend, setShowQuickSend] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [draggedElement, setDraggedElement] = useState(null)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
@@ -805,25 +806,47 @@ function Requests() {
               </div>
             </div>
 
-            {/* Right: Publish */}
-            <button
-              onClick={handlePublish}
-              style={{
-                background: '#FFFFFF',
-                color: '#000000',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '15px',
-                fontWeight: '600',
-                padding: '16px 32px',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              Publish Collection
-            </button>
+            {/* Right: Action Buttons */}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <button
+                onClick={() => setShowQuickSend(true)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  color: '#FFFFFF',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: '8px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  padding: '16px 24px',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+              >
+                ⚡ Quick Send
+              </button>
+              <button
+                onClick={handlePublish}
+                style={{
+                  background: '#FFFFFF',
+                  color: '#000000',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '15px',
+                  fontWeight: '600',
+                  padding: '16px 32px',
+                  cursor: 'pointer',
+                  fontFamily: 'inherit',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                Publish Collection
+              </button>
+            </div>
           </div>
 
           {/* Main Builder - Full Width Layout */}
@@ -1297,6 +1320,246 @@ function Requests() {
                     }}
                   >
                     Delete Element
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Quick Send Modal - Venmo-style sharing */}
+          {showQuickSend && (
+            <div style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'rgba(0, 0, 0, 0.8)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 2000,
+              backdropFilter: 'blur(8px)'
+            }}>
+              <div style={{
+                background: '#0F0F0F',
+                borderRadius: '24px',
+                padding: '32px',
+                width: '460px',
+                maxHeight: '80vh',
+                overflow: 'auto',
+                border: '1px solid rgba(255, 255, 255, 0.1)'
+              }}>
+                {/* Header */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '32px'
+                }}>
+                  <div>
+                    <h2 style={{
+                      fontSize: '24px',
+                      fontWeight: '700',
+                      color: '#FFFFFF',
+                      margin: '0 0 8px 0'
+                    }}>
+                      Quick Send
+                    </h2>
+                    <p style={{
+                      fontSize: '16px',
+                      color: '#808080',
+                      margin: '0'
+                    }}>
+                      Share "{formTitle}" instantly
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowQuickSend(false)}
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.05)',
+                      borderRadius: '12px',
+                      color: '#808080',
+                      fontSize: '20px',
+                      cursor: 'pointer',
+                      padding: '8px',
+                      width: '40px',
+                      height: '40px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+
+                {/* Search */}
+                <div style={{ marginBottom: '24px' }}>
+                  <input
+                    type="text"
+                    placeholder="Search contacts or enter email..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '16px 20px',
+                      fontSize: '16px',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      color: '#FFFFFF',
+                      outline: 'none',
+                      fontFamily: 'inherit'
+                    }}
+                  />
+                </div>
+
+                {/* Recent Contacts */}
+                <div style={{ marginBottom: '24px' }}>
+                  <h3 style={{
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#808080',
+                    margin: '0 0 16px 0',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px'
+                  }}>
+                    Recent
+                  </h3>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {['Sarah Chen', 'Mike Johnson', 'Alex Rivera', 'Emma Davis'].map((name, index) => (
+                      <div
+                        key={name}
+                        onClick={() => {
+                          toast.success(`Collection shared with ${name}!`)
+                          setShowQuickSend(false)
+                        }}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '16px',
+                          padding: '16px',
+                          background: 'rgba(255, 255, 255, 0.02)',
+                          border: '1px solid rgba(255, 255, 255, 0.05)',
+                          borderRadius: '12px',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease'
+                        }}
+                      >
+                        <div style={{
+                          width: '44px',
+                          height: '44px',
+                          borderRadius: '50%',
+                          background: `linear-gradient(135deg, ${
+                            index === 0 ? '#FF6B6B, #4ECDC4' :
+                            index === 1 ? '#A8E6CF, #88D8C0' :
+                            index === 2 ? '#FFD93D, #6BCF7F' :
+                            '#FF8A80, #FF5722'
+                          })`,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '18px',
+                          fontWeight: '600',
+                          color: '#000000'
+                        }}>
+                          {name.split(' ').map(n => n[0]).join('')}
+                        </div>
+
+                        <div style={{ flex: 1 }}>
+                          <div style={{
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            color: '#FFFFFF',
+                            marginBottom: '2px'
+                          }}>
+                            {name}
+                          </div>
+                          <div style={{
+                            fontSize: '14px',
+                            color: '#808080'
+                          }}>
+                            {name.toLowerCase().replace(' ', '.')}@email.com
+                          </div>
+                        </div>
+
+                        <div style={{
+                          padding: '8px 16px',
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          border: '1px solid rgba(255, 255, 255, 0.1)',
+                          borderRadius: '8px',
+                          fontSize: '13px',
+                          fontWeight: '600',
+                          color: '#FFFFFF'
+                        }}>
+                          Send
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Quick Actions */}
+                <div style={{
+                  borderTop: '1px solid rgba(255, 255, 255, 0.05)',
+                  paddingTop: '24px',
+                  display: 'flex',
+                  gap: '12px'
+                }}>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText('https://swayfiles.com/c/abc123')
+                      toast.success('Link copied to clipboard!')
+                      setShowQuickSend(false)
+                    }}
+                    style={{
+                      flex: 1,
+                      padding: '16px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#FFFFFF',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      fontFamily: 'inherit',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    🔗 Copy Link
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      const subject = encodeURIComponent(`Collection: ${formTitle}`)
+                      const body = encodeURIComponent(`Hey! I need you to submit some files. Please use this link: https://swayfiles.com/c/abc123`)
+                      window.open(`mailto:?subject=${subject}&body=${body}`)
+                      setShowQuickSend(false)
+                    }}
+                    style={{
+                      flex: 1,
+                      padding: '16px',
+                      background: 'rgba(255, 255, 255, 0.05)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      borderRadius: '12px',
+                      color: '#FFFFFF',
+                      fontSize: '15px',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      fontFamily: 'inherit',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px'
+                    }}
+                  >
+                    📧 Email
                   </button>
                 </div>
               </div>
