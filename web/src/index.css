@@ -185,6 +185,31 @@ textarea:focus {
   box-shadow: 0 0 0 3px var(--accent-glow);
 }
 
+/* Placeholder styling */
+input::placeholder,
+textarea::placeholder {
+  color: #525252;
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder {
+  color: #525252;
+  opacity: 1;
+}
+
+input::-moz-placeholder,
+textarea::-moz-placeholder {
+  color: #525252;
+  opacity: 1;
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: #525252;
+  opacity: 1;
+}
+
 /* Cards */
 .card {
   background-color: var(--bg-card);

@@ -5,7 +5,6 @@ import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 import { getStorageLimit, getEffectivePlan } from '../utils/planUtils'
-import { staggerChildren, staggerItem, cardHoverVariants } from '../lib/animations/variants'
 
 function Dashboard() {
   const navigate = useNavigate()
@@ -169,15 +168,15 @@ function Dashboard() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: theme.colors.bg.page
+        background: '#000000'
       }}>
         <div style={{
-          width: '32px',
-          height: '32px',
-          border: `2px solid ${theme.colors.border.medium}`,
-          borderTopColor: theme.colors.white,
+          width: '20px',
+          height: '20px',
+          border: '2px solid #262626',
+          borderTopColor: '#ffffff',
           borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
+          animation: 'spin 0.8s linear infinite'
         }} />
         <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
@@ -195,87 +194,95 @@ function Dashboard() {
       <Sidebar />
       <div style={{
         minHeight: '100vh',
-        background: theme.colors.bg.page,
-        color: theme.colors.text.primary,
+        background: '#000000',
+        color: '#ffffff',
         paddingTop: '54px'
       }}>
         <div style={{
-          maxWidth: '1400px',
+          maxWidth: '1200px',
           margin: '0 auto',
-          padding: '48px 32px'
+          padding: '80px 40px 120px'
         }}>
           {/* Header */}
-          <div style={{ marginBottom: '64px', maxWidth: '680px', margin: '0 auto 64px', textAlign: 'center' }}>
+          <div style={{
+            marginBottom: '80px',
+            maxWidth: '800px',
+            margin: '0 auto 80px',
+            textAlign: 'center'
+          }}>
             <h1 style={{
-              fontSize: '56px',
-              fontWeight: '700',
-              margin: '0 0 16px 0',
-              color: theme.colors.text.primary,
-              letterSpacing: '-0.03em'
+              fontSize: '64px',
+              fontWeight: '600',
+              margin: '0 0 20px 0',
+              color: '#ffffff',
+              letterSpacing: '-0.011em',
+              lineHeight: '1.1'
             }}>
               Stop Asking For Files
             </h1>
             <p style={{
-              fontSize: '20px',
-              color: theme.colors.text.secondary,
+              fontSize: '18px',
+              color: '#a3a3a3',
               margin: 0,
-              lineHeight: '1.5'
+              lineHeight: '1.6',
+              letterSpacing: '-0.006em',
+              fontWeight: '400'
             }}>
               Build a page. Share the link. Get their files. Done.
             </p>
           </div>
 
-          {/* Actions */}
-          <motion.div
-            className="dashboard-grid"
-            variants={staggerChildren}
-            initial="initial"
-            animate="animate"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2, 1fr)',
-              gap: '24px',
-              maxWidth: '840px',
-              margin: '0 auto'
-            }}
-          >
+          {/* Primary Actions */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '16px',
+            maxWidth: '960px',
+            margin: '0 auto'
+          }}>
             <Link to="/requests" style={{ textDecoration: 'none' }}>
               <motion.div
-                variants={staggerItem}
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
+                initial={{ y: 0, boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)' }}
+                whileHover={{
+                  y: -2,
+                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.6)',
+                  transition: { duration: 0.2 }
+                }}
                 style={{
-                padding: '40px',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: 'rgba(255, 255, 255, 0.02)',
-                cursor: 'pointer',
-                height: '100%'
-              }}>
+                  padding: '48px',
+                  border: '1px solid #1a1a1a',
+                  borderRadius: '12px',
+                  background: '#0F0F0F',
+                  cursor: 'pointer',
+                  height: '100%',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
+                }}
+              >
                 <div style={{
-                  fontSize: '12px',
-                  color: theme.colors.text.tertiary,
+                  fontSize: '11px',
+                  color: '#737373',
                   textTransform: 'uppercase',
-                  letterSpacing: '1.2px',
+                  letterSpacing: '0.08em',
                   fontWeight: '600',
-                  marginBottom: '16px'
+                  marginBottom: '20px'
                 }}>
                   Start Here
                 </div>
                 <div style={{
-                  fontSize: '24px',
-                  color: theme.colors.text.primary,
+                  fontSize: '28px',
+                  color: '#ffffff',
                   fontWeight: '600',
-                  marginBottom: '8px',
-                  letterSpacing: '-0.01em'
+                  marginBottom: '12px',
+                  letterSpacing: '-0.011em'
                 }}>
                   New Request
                 </div>
                 <div style={{
                   fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  lineHeight: '1.5'
+                  color: '#a3a3a3',
+                  lineHeight: '1.5',
+                  letterSpacing: '-0.006em',
+                  fontWeight: '400'
                 }}>
                   Build your upload page in 30 seconds
                 </div>
@@ -284,47 +291,53 @@ function Dashboard() {
 
             <Link to="/responses" style={{ textDecoration: 'none' }}>
               <motion.div
-                variants={staggerItem}
-                initial="rest"
-                whileHover="hover"
-                animate="rest"
+                initial={{ y: 0, boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)' }}
+                whileHover={{
+                  y: -2,
+                  boxShadow: '0 8px 16px rgba(0, 0, 0, 0.6)',
+                  transition: { duration: 0.2 }
+                }}
                 style={{
-                padding: '40px',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: 'rgba(255, 255, 255, 0.02)',
-                cursor: 'pointer',
-                height: '100%'
-              }}>
+                  padding: '48px',
+                  border: '1px solid #1a1a1a',
+                  borderRadius: '12px',
+                  background: '#0F0F0F',
+                  cursor: 'pointer',
+                  height: '100%',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.5)'
+                }}
+              >
                 <div style={{
-                  fontSize: '12px',
-                  color: theme.colors.text.tertiary,
+                  fontSize: '11px',
+                  color: '#737373',
                   textTransform: 'uppercase',
-                  letterSpacing: '1.2px',
+                  letterSpacing: '0.08em',
                   fontWeight: '600',
-                  marginBottom: '16px'
+                  marginBottom: '20px'
                 }}>
                   Your Work
                 </div>
                 <div style={{
-                  fontSize: '24px',
-                  color: theme.colors.text.primary,
+                  fontSize: '28px',
+                  color: '#ffffff',
                   fontWeight: '600',
-                  marginBottom: '8px',
-                  letterSpacing: '-0.01em'
+                  marginBottom: '12px',
+                  letterSpacing: '-0.011em'
                 }}>
                   All Requests
                 </div>
                 <div style={{
                   fontSize: '15px',
-                  color: theme.colors.text.secondary,
-                  lineHeight: '1.5'
+                  color: '#a3a3a3',
+                  lineHeight: '1.5',
+                  letterSpacing: '-0.006em',
+                  fontWeight: '400'
                 }}>
                   Track uploads and download everything
                 </div>
               </motion.div>
             </Link>
-          </motion.div>
+          </div>
 
         </div>
       </div>

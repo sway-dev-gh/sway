@@ -90,13 +90,14 @@ export default function Signup() {
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: theme.layout.formFieldGap }}>
               <label style={theme.inputs.label}>
-                Name
+                Full name
               </label>
               <input
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 required
+                placeholder="John Doe"
                 style={theme.inputs.text.base}
                 onFocus={(e) => {
                   Object.assign(e.currentTarget.style, theme.inputs.text.focus)
@@ -109,13 +110,14 @@ export default function Signup() {
 
             <div style={{ marginBottom: theme.layout.formFieldGap }}>
               <label style={theme.inputs.label}>
-                Email
+                Email address
               </label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
+                placeholder="you@example.com"
                 style={theme.inputs.text.base}
                 onFocus={(e) => {
                   Object.assign(e.currentTarget.style, theme.inputs.text.focus)
@@ -126,7 +128,7 @@ export default function Signup() {
               />
             </div>
 
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: theme.layout.formFieldGap }}>
               <label style={theme.inputs.label}>
                 Password
               </label>
@@ -136,7 +138,7 @@ export default function Signup() {
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
                 minLength={12}
-                placeholder="Min 12 chars: upper, lower, number, special"
+                placeholder="Minimum 12 characters"
                 style={theme.inputs.text.base}
                 onFocus={(e) => {
                   Object.assign(e.currentTarget.style, theme.inputs.text.focus)
@@ -145,6 +147,9 @@ export default function Signup() {
                   Object.assign(e.currentTarget.style, theme.inputs.text.base)
                 }}
               />
+              <div style={theme.inputs.helper}>
+                Must include uppercase, lowercase, number, and special character
+              </div>
             </div>
 
             <button
@@ -156,7 +161,7 @@ export default function Signup() {
                 ...(loading && theme.buttons.primary.disabled)
               }}
             >
-              {loading ? 'Creating account...' : 'Sign Up'}
+              {loading ? 'Creating account...' : 'Create Account'}
             </button>
           </form>
         </div>

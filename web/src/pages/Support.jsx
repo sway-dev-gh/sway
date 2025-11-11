@@ -170,59 +170,35 @@ function Support() {
             </div>
 
             {submitted && (
-              <div style={{
-                padding: '12px 16px',
-                background: 'rgba(34, 197, 94, 0.1)',
-                border: '1px solid rgba(34, 197, 94, 0.3)',
-                borderRadius: theme.radius.md,
-                color: theme.colors.success,
-                fontSize: '14px',
-                marginBottom: '24px'
-              }}>
-                Message sent! We'll get back to you soon.
+              <div style={theme.alerts.success}>
+                Message sent successfully. We'll get back to you soon.
               </div>
             )}
 
             <form onSubmit={handleSubmit}>
-              <div style={{ display: 'grid', gap: '16px' }}>
+              <div style={{ display: 'grid', gap: theme.layout.formFieldGap }}>
                 <div>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    color: theme.colors.text.secondary,
-                    marginBottom: '8px',
-                    fontWeight: '500'
-                  }}>
-                    Email
+                  <label style={theme.inputs.label}>
+                    Email address
                   </label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      background: 'rgba(0, 0, 0, 0.2)',
-                      border: `1px solid ${theme.colors.border.light}`,
-                      borderRadius: theme.radius.md,
-                      color: theme.colors.text.primary,
-                      fontSize: '15px',
-                      fontFamily: 'inherit',
-                      outline: 'none'
+                    placeholder="you@example.com"
+                    style={theme.inputs.text.base}
+                    onFocus={(e) => {
+                      Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                     }}
-                    placeholder="your@email.com"
+                    onBlur={(e) => {
+                      Object.assign(e.currentTarget.style, theme.inputs.text.base)
+                    }}
                   />
                 </div>
 
                 <div>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    color: theme.colors.text.secondary,
-                    marginBottom: '8px',
-                    fontWeight: '500'
-                  }}>
+                  <label style={theme.inputs.label}>
                     Subject
                   </label>
                   <input
@@ -230,49 +206,33 @@ function Support() {
                     required
                     value={subject}
                     onChange={(e) => setSubject(e.target.value)}
-                    style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      background: 'rgba(0, 0, 0, 0.2)',
-                      border: `1px solid ${theme.colors.border.light}`,
-                      borderRadius: theme.radius.md,
-                      color: theme.colors.text.primary,
-                      fontSize: '15px',
-                      fontFamily: 'inherit',
-                      outline: 'none'
+                    placeholder="How can we help you?"
+                    style={theme.inputs.text.base}
+                    onFocus={(e) => {
+                      Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                     }}
-                    placeholder="How can we help?"
+                    onBlur={(e) => {
+                      Object.assign(e.currentTarget.style, theme.inputs.text.base)
+                    }}
                   />
                 </div>
 
                 <div>
-                  <label style={{
-                    display: 'block',
-                    fontSize: '14px',
-                    color: theme.colors.text.secondary,
-                    marginBottom: '8px',
-                    fontWeight: '500'
-                  }}>
+                  <label style={theme.inputs.label}>
                     Message
                   </label>
                   <textarea
                     required
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    rows={6}
-                    style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      background: 'rgba(0, 0, 0, 0.2)',
-                      border: `1px solid ${theme.colors.border.light}`,
-                      borderRadius: theme.radius.md,
-                      color: theme.colors.text.primary,
-                      fontSize: '15px',
-                      fontFamily: 'inherit',
-                      outline: 'none',
-                      resize: 'vertical'
+                    placeholder="Describe your issue or question in detail..."
+                    style={theme.inputs.textarea.base}
+                    onFocus={(e) => {
+                      Object.assign(e.currentTarget.style, theme.inputs.textarea.focus)
                     }}
-                    placeholder="Tell us what you need help with..."
+                    onBlur={(e) => {
+                      Object.assign(e.currentTarget.style, theme.inputs.textarea.base)
+                    }}
                   />
                 </div>
 
@@ -280,7 +240,8 @@ function Support() {
                   type="submit"
                   style={{
                     ...theme.buttons.primary.base,
-                    width: '100%'
+                    width: '100%',
+                    marginTop: '8px'
                   }}
                 >
                   Send Message

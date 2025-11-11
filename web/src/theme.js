@@ -74,38 +74,41 @@ const theme = {
     // Standard card padding
     cardPadding: '24px',
     // Standard form field gap
-    formFieldGap: '16px'
+    formFieldGap: '24px'
   },
   alerts: {
     error: {
       padding: '12px 16px',
-      background: 'rgba(239, 68, 68, 0.1)',
-      border: '1px solid rgba(239, 68, 68, 0.3)',
+      background: 'rgba(255, 68, 68, 0.05)',
+      border: '1px solid rgba(255, 68, 68, 0.2)',
       borderRadius: '8px',
-      color: '#ef4444',
-      fontSize: '14px',
+      color: '#ff4444',
+      fontSize: '13px',
       lineHeight: '1.5',
-      marginBottom: '16px'
+      marginBottom: '24px',
+      fontWeight: '400'
     },
     success: {
       padding: '12px 16px',
-      background: 'rgba(255, 255, 255, 0.1)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
+      background: 'rgba(255, 255, 255, 0.03)',
+      border: '1px solid rgba(255, 255, 255, 0.1)',
       borderRadius: '8px',
       color: '#ffffff',
-      fontSize: '14px',
+      fontSize: '13px',
       lineHeight: '1.5',
-      marginBottom: '16px'
+      marginBottom: '24px',
+      fontWeight: '400'
     },
     info: {
       padding: '12px 16px',
-      background: 'rgba(255, 255, 255, 0.05)',
-      border: '1px solid rgba(255, 255, 255, 0.1)',
+      background: 'rgba(255, 255, 255, 0.02)',
+      border: '1px solid rgba(255, 255, 255, 0.08)',
       borderRadius: '8px',
       color: '#a3a3a3',
-      fontSize: '14px',
+      fontSize: '13px',
       lineHeight: '1.5',
-      marginBottom: '16px'
+      marginBottom: '24px',
+      fontWeight: '400'
     }
   },
   fontSize: {
@@ -152,57 +155,86 @@ const theme = {
     text: {
       base: {
         width: '100%',
-        padding: '10px 12px',
+        height: '44px',
+        padding: '0 16px',
         background: '#0a0a0a',
         border: '1px solid #1a1a1a',
         borderRadius: '8px',
         color: '#ffffff',
-        fontSize: '14px',
+        fontSize: '15px',
         fontFamily: 'inherit',
-        outline: 'none'
+        outline: 'none',
+        transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+        boxSizing: 'border-box'
       },
       focus: {
-        borderColor: '#404040',
-        background: '#000000'
+        borderColor: '#262626',
+        background: '#0a0a0a',
+        boxShadow: '0 0 0 3px rgba(38, 38, 38, 0.1)'
       },
       error: {
-        borderColor: '#ef4444'
+        borderColor: '#ff4444',
+        background: '#0a0a0a'
       }
     },
     // Textarea
     textarea: {
       base: {
         width: '100%',
-        padding: '10px 12px',
+        padding: '12px 16px',
         background: '#0a0a0a',
         border: '1px solid #1a1a1a',
         borderRadius: '8px',
         color: '#ffffff',
-        fontSize: '14px',
+        fontSize: '15px',
         fontFamily: 'inherit',
         outline: 'none',
         resize: 'vertical',
-        minHeight: '80px'
+        minHeight: '120px',
+        lineHeight: '1.5',
+        transition: 'border-color 0.15s ease, box-shadow 0.15s ease',
+        boxSizing: 'border-box'
       },
       focus: {
-        borderColor: '#404040',
-        background: '#000000'
+        borderColor: '#262626',
+        background: '#0a0a0a',
+        boxShadow: '0 0 0 3px rgba(38, 38, 38, 0.1)'
+      },
+      error: {
+        borderColor: '#ff4444',
+        background: '#0a0a0a'
       }
     },
     // Label
     label: {
       display: 'block',
       fontSize: '12px',
-      color: '#8a8a8a',
+      color: '#a3a3a3',
       marginBottom: '8px',
-      fontWeight: '500'
+      fontWeight: '500',
+      letterSpacing: '0.01em'
+    },
+    // Helper text
+    helper: {
+      fontSize: '12px',
+      color: '#737373',
+      marginTop: '6px',
+      lineHeight: '1.4'
+    },
+    // Error text
+    errorText: {
+      fontSize: '12px',
+      color: '#ff4444',
+      marginTop: '6px',
+      lineHeight: '1.4'
     }
   },
   buttons: {
     // Primary button - white background, black text
     primary: {
       base: {
-        padding: '10px 20px',
+        height: '44px',
+        padding: '0 24px',
         background: '#ffffff',
         color: '#000000',
         border: 'none',
@@ -210,20 +242,26 @@ const theme = {
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
-        fontFamily: 'inherit'
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease',
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       },
       hover: {
         background: '#e5e5e5'
       },
       disabled: {
-        opacity: 0.6,
+        opacity: 0.5,
         cursor: 'not-allowed'
       }
     },
     // Secondary button - transparent with border
     secondary: {
       base: {
-        padding: '10px 20px',
+        height: '44px',
+        padding: '0 24px',
         background: 'transparent',
         color: '#ffffff',
         border: '1px solid #262626',
@@ -231,44 +269,56 @@ const theme = {
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
-        fontFamily: 'inherit'
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease',
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       },
       hover: {
         background: 'rgba(255, 255, 255, 0.05)',
         borderColor: '#404040'
       },
       disabled: {
-        opacity: 0.6,
+        opacity: 0.5,
         cursor: 'not-allowed'
       }
     },
     // Danger button - red theme
     danger: {
       base: {
-        padding: '10px 20px',
-        background: 'rgba(239, 68, 68, 0.1)',
-        color: '#ef4444',
-        border: '1px solid rgba(239, 68, 68, 0.4)',
+        height: '44px',
+        padding: '0 24px',
+        background: 'rgba(255, 68, 68, 0.1)',
+        color: '#ff4444',
+        border: '1px solid rgba(255, 68, 68, 0.3)',
         borderRadius: '8px',
         fontSize: '14px',
-        fontWeight: '600',
+        fontWeight: '500',
         cursor: 'pointer',
-        fontFamily: 'inherit'
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease',
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       },
       hover: {
-        background: '#ef4444',
+        background: '#ff4444',
         color: '#ffffff',
-        borderColor: '#ef4444'
+        borderColor: '#ff4444'
       },
       disabled: {
-        opacity: 0.6,
+        opacity: 0.5,
         cursor: 'not-allowed'
       }
     },
     // Ghost button - minimal, text only
     ghost: {
       base: {
-        padding: '10px 20px',
+        height: '44px',
+        padding: '0 24px',
         background: 'transparent',
         color: '#8a8a8a',
         border: 'none',
@@ -276,14 +326,19 @@ const theme = {
         fontSize: '14px',
         fontWeight: '500',
         cursor: 'pointer',
-        fontFamily: 'inherit'
+        fontFamily: 'inherit',
+        transition: 'all 0.15s ease',
+        boxSizing: 'border-box',
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       },
       hover: {
         background: 'rgba(255, 255, 255, 0.05)',
         color: '#ffffff'
       },
       disabled: {
-        opacity: 0.6,
+        opacity: 0.5,
         cursor: 'not-allowed'
       }
     }

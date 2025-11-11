@@ -606,28 +606,37 @@ function Responses() {
           {/* Filter/Search Bar */}
           <div style={{
             display: 'flex',
-            gap: theme.spacing[3],
-            marginBottom: theme.spacing[4],
+            gap: '12px',
+            marginBottom: '24px',
             alignItems: 'center',
             flexWrap: 'wrap'
           }}>
             {/* Search */}
             <input
               type="text"
-              placeholder="Search forms..."
+              placeholder="Search requests..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
                 flex: '1',
                 minWidth: '200px',
-                padding: '10px 16px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.md,
-                color: theme.colors.text.primary,
+                padding: '10px 14px',
+                background: '#0F0F0F',
+                border: '1px solid #262626',
+                borderRadius: '6px',
+                color: '#ffffff',
                 fontSize: '14px',
                 fontFamily: 'inherit',
-                outline: 'none'
+                outline: 'none',
+                transition: 'all 0.15s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#404040'
+                e.target.style.background = '#141414'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#262626'
+                e.target.style.background = '#0F0F0F'
               }}
             />
 
@@ -636,15 +645,24 @@ function Responses() {
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
               style={{
-                padding: '10px 16px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.md,
-                color: theme.colors.text.primary,
+                padding: '10px 14px',
+                background: '#0F0F0F',
+                border: '1px solid #262626',
+                borderRadius: '6px',
+                color: '#ffffff',
                 fontSize: '14px',
                 fontFamily: 'inherit',
                 cursor: 'pointer',
-                outline: 'none'
+                outline: 'none',
+                transition: 'all 0.15s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#404040'
+                e.target.style.background = '#141414'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#262626'
+                e.target.style.background = '#0F0F0F'
               }}
             >
               <option value="all">All Forms</option>
@@ -659,15 +677,24 @@ function Responses() {
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               style={{
-                padding: '10px 16px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.md,
-                color: theme.colors.text.primary,
+                padding: '10px 14px',
+                background: '#0F0F0F',
+                border: '1px solid #262626',
+                borderRadius: '6px',
+                color: '#ffffff',
                 fontSize: '14px',
                 fontFamily: 'inherit',
                 cursor: 'pointer',
-                outline: 'none'
+                outline: 'none',
+                transition: 'all 0.15s ease'
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = '#404040'
+                e.target.style.background = '#141414'
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '#262626'
+                e.target.style.background = '#0F0F0F'
               }}
             >
               <option value="newest">Newest</option>
@@ -680,13 +707,13 @@ function Responses() {
             {selectedForms.length > 0 && (
               <>
                 <div style={{
-                  padding: '10px 16px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: `1px solid ${theme.colors.white}`,
-                  borderRadius: theme.radius.md,
-                  color: theme.colors.text.primary,
-                  fontSize: '14px',
-                  fontWeight: theme.weight.medium
+                  padding: '10px 14px',
+                  background: '#1a1a1a',
+                  border: '1px solid #404040',
+                  borderRadius: '6px',
+                  color: '#ffffff',
+                  fontSize: '13px',
+                  fontWeight: '600'
                 }}>
                   {selectedForms.length} selected
                 </div>
@@ -694,8 +721,10 @@ function Responses() {
                   onClick={handleBulkDownload}
                   style={{
                     ...theme.buttons.primary.base,
-                    fontWeight: theme.weight.semibold,
-                    whiteSpace: 'nowrap'
+                    fontWeight: '500',
+                    whiteSpace: 'nowrap',
+                    fontSize: '13px',
+                    padding: '10px 16px'
                   }}
                 >
                   Download All Files
@@ -703,9 +732,26 @@ function Responses() {
                 <button
                   onClick={() => setConfirmBulkDelete(true)}
                   style={{
-                    ...theme.buttons.danger.base,
-                    fontWeight: theme.weight.semibold,
+                    padding: '10px 16px',
+                    fontSize: '13px',
+                    fontWeight: '500',
+                    background: 'transparent',
+                    border: '1px solid #262626',
+                    borderRadius: '6px',
+                    color: '#737373',
+                    cursor: 'pointer',
+                    transition: 'all 0.15s ease',
                     whiteSpace: 'nowrap'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = '#1a1a1a'
+                    e.currentTarget.style.borderColor = '#404040'
+                    e.currentTarget.style.color = '#ffffff'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.borderColor = '#262626'
+                    e.currentTarget.style.color = '#737373'
                   }}
                 >
                   Delete Selected
@@ -731,24 +777,20 @@ function Responses() {
             forms.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '80px 20px',
+                padding: '120px 20px',
                 maxWidth: '500px',
                 margin: '0 auto'
               }}>
-                <div style={{
-                  fontSize: '48px',
-                  marginBottom: '16px',
-                  opacity: 0.3
-                }}>◇</div>
                 <h2 style={{
-                  fontSize: theme.fontSize['2xl'],
-                  fontWeight: theme.weight.semibold,
-                  color: theme.colors.text.primary,
-                  marginBottom: '12px'
+                  fontSize: '18px',
+                  fontWeight: '500',
+                  color: '#737373',
+                  marginBottom: '8px',
+                  letterSpacing: '-0.01em'
                 }}>No Requests Yet</h2>
                 <p style={{
-                  fontSize: theme.fontSize.base,
-                  color: theme.colors.text.secondary,
+                  fontSize: '14px',
+                  color: '#525252',
                   marginBottom: '32px',
                   lineHeight: '1.6'
                 }}>
@@ -764,21 +806,22 @@ function Responses() {
               <div style={{
                 textAlign: 'center',
                 padding: '80px 40px',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: 'rgba(255, 255, 255, 0.02)'
+                border: '1px solid #1a1a1a',
+                borderRadius: '8px',
+                background: '#0F0F0F'
               }}>
                 <h3 style={{
-                  fontSize: theme.fontSize.lg,
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.primary,
-                  margin: '0 0 8px 0'
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  color: '#737373',
+                  margin: '0 0 6px 0',
+                  letterSpacing: '-0.01em'
                 }}>
                   No requests match your filters
                 </h3>
                 <p style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.secondary,
+                  fontSize: '14px',
+                  color: '#525252',
                   margin: '0'
                 }}>
                   Try adjusting your search or filters
@@ -787,9 +830,9 @@ function Responses() {
             )
           ) : (
             <div style={{
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
-              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid #1a1a1a',
+              borderRadius: '8px',
+              background: '#0F0F0F',
               overflow: 'hidden'
             }}>
               {/* Table Header */}
@@ -797,11 +840,11 @@ function Responses() {
                 display: 'grid',
                 gridTemplateColumns: '40px 2fr 100px 120px 100px 100px 140px 140px 140px',
                 padding: '16px 20px',
-                background: 'rgba(255, 255, 255, 0.03)',
-                borderBottom: `1px solid ${theme.colors.border.light}`,
-                fontSize: theme.fontSize.xs,
-                fontWeight: theme.weight.semibold,
-                color: theme.colors.text.secondary,
+                background: '#0a0a0a',
+                borderBottom: '1px solid #1a1a1a',
+                fontSize: '11px',
+                fontWeight: '600',
+                color: '#a3a3a3',
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
                 alignItems: 'center'
@@ -812,9 +855,10 @@ function Responses() {
                     checked={filteredForms.length > 0 && selectedForms.length === filteredForms.length}
                     onChange={toggleSelectAll}
                     style={{
-                      width: '16px',
-                      height: '16px',
-                      cursor: 'pointer'
+                      width: '14px',
+                      height: '14px',
+                      cursor: 'pointer',
+                      accentColor: '#fff'
                     }}
                   />
                 </div>
@@ -836,6 +880,7 @@ function Responses() {
                 const storageUsed = getFormStorageUsed(form.id)
                 const lastUpload = getLastUploadTime(form.id)
                 const isExpanded = selectedFormId === form.id
+                const isSelected = selectedForms.includes(form.id)
 
                 return (
                   <div key={form.id}>
@@ -845,61 +890,90 @@ function Responses() {
                         display: 'grid',
                         gridTemplateColumns: '40px 2fr 100px 120px 100px 100px 140px 140px 140px',
                         padding: '16px 20px',
-                        background: index % 2 === 0 ? 'rgba(255, 255, 255, 0.01)' : 'transparent',
-                        borderBottom: `1px solid ${theme.colors.border.light}`,
+                        background: isSelected ? '#1a1a1a' : 'transparent',
+                        borderBottom: '1px solid #1a1a1a',
                         fontSize: '14px',
-                        color: theme.colors.text.primary,
+                        color: '#ffffff',
                         alignItems: 'center',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                      onMouseEnter={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = '#141414'
+                          e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)'
+                        }
+                      }}
+                      onMouseLeave={(e) => {
+                        if (!isSelected) {
+                          e.currentTarget.style.background = 'transparent'
+                          e.currentTarget.style.boxShadow = 'none'
+                        }
                       }}
                       onClick={() => setSelectedFormId(isExpanded ? null : form.id)}
                     >
                       <div onClick={(e) => e.stopPropagation()}>
                         <input
                           type="checkbox"
-                          checked={selectedForms.includes(form.id)}
+                          checked={isSelected}
                           onChange={() => toggleSelectForm(form.id)}
                           style={{
-                            width: '16px',
-                            height: '16px',
-                            cursor: 'pointer'
+                            width: '14px',
+                            height: '14px',
+                            cursor: 'pointer',
+                            accentColor: '#fff'
                           }}
                         />
                       </div>
-                      <div style={{ fontWeight: '500' }}>{form.title}</div>
+                      <div style={{ fontWeight: '500', letterSpacing: '-0.01em' }}>{form.title}</div>
                       <div>
                         <span style={{
-                          padding: '4px 10px',
-                          background: `${statusColor}15`,
-                          color: statusColor,
-                          borderRadius: theme.radius.lg,
-                          fontSize: theme.fontSize.xs,
-                          fontWeight: theme.weight.semibold
+                          padding: '4px 8px',
+                          background: '#1a1a1a',
+                          color: '#ffffff',
+                          borderRadius: '4px',
+                          fontSize: '11px',
+                          fontWeight: '600',
+                          letterSpacing: '0.3px'
                         }}>
                           {status}
                         </span>
                       </div>
-                      <div style={{ color: theme.colors.text.secondary }}>Blank</div>
+                      <div style={{ color: '#737373', fontSize: '13px' }}>Blank</div>
                       <div style={{ fontWeight: '600', fontVariantNumeric: 'tabular-nums' }}>{formUploads.length}</div>
-                      <div style={{ color: theme.colors.text.secondary, fontVariantNumeric: 'tabular-nums' }}>
+                      <div style={{ color: '#737373', fontVariantNumeric: 'tabular-nums', fontSize: '13px' }}>
                         {formatBytes(storageUsed)}
                       </div>
-                      <div style={{ color: theme.colors.text.secondary, fontSize: theme.fontSize.sm }}>
+                      <div style={{ color: '#737373', fontSize: '13px' }}>
                         {formatDate(form.createdAt).split(',')[0]}
                       </div>
-                      <div style={{ color: theme.colors.text.secondary, fontSize: theme.fontSize.sm }}>
+                      <div style={{ color: '#737373', fontSize: '13px' }}>
                         {lastUpload ? getTimeAgo(lastUpload) : '-'}
                       </div>
-                      <div style={{ display: 'flex', gap: '8px' }}>
+                      <div style={{ display: 'flex', gap: '6px' }}>
                         <button
                           onClick={(e) => {
                             e.stopPropagation()
                             setSelectedFormId(isExpanded ? null : form.id)
                           }}
                           style={{
-                            ...theme.buttons.secondary.base,
                             padding: '6px 12px',
-                            fontSize: theme.fontSize.xs
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            background: 'transparent',
+                            border: '1px solid #262626',
+                            borderRadius: '4px',
+                            color: '#ffffff',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#1a1a1a'
+                            e.currentTarget.style.borderColor = '#404040'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent'
+                            e.currentTarget.style.borderColor = '#262626'
                           }}
                         >
                           View
@@ -910,9 +984,25 @@ function Responses() {
                             setConfirmDelete({ isOpen: true, formId: form.id })
                           }}
                           style={{
-                            ...theme.buttons.danger.base,
                             padding: '6px 12px',
-                            fontSize: theme.fontSize.xs
+                            fontSize: '12px',
+                            fontWeight: '500',
+                            background: 'transparent',
+                            border: '1px solid #262626',
+                            borderRadius: '4px',
+                            color: '#737373',
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.background = '#1a1a1a'
+                            e.currentTarget.style.borderColor = '#404040'
+                            e.currentTarget.style.color = '#ffffff'
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.background = 'transparent'
+                            e.currentTarget.style.borderColor = '#262626'
+                            e.currentTarget.style.color = '#737373'
                           }}
                         >
                           Delete

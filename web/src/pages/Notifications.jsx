@@ -129,22 +129,23 @@ function Notifications() {
             {notifications.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '80px 32px',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: theme.radius.lg,
-                background: 'rgba(255, 255, 255, 0.02)'
+                padding: '120px 32px',
+                border: '1px solid #1a1a1a',
+                borderRadius: '8px',
+                background: '#0F0F0F'
               }}>
                 <h3 style={{
-                  fontSize: theme.fontSize.lg,
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.primary,
-                  margin: '0 0 8px 0'
+                  fontSize: '16px',
+                  fontWeight: '500',
+                  color: '#737373',
+                  margin: '0 0 6px 0',
+                  letterSpacing: '-0.01em'
                 }}>
                   No activity yet
                 </h3>
                 <p style={{
-                  fontSize: theme.fontSize.sm,
-                  color: theme.colors.text.secondary,
+                  fontSize: '14px',
+                  color: '#525252',
                   margin: '0'
                 }}>
                   Files uploaded to your requests will show up here
@@ -152,57 +153,66 @@ function Notifications() {
               </div>
             ) : (
               <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '12px'
+                border: '1px solid #1a1a1a',
+                borderRadius: '8px',
+                background: '#0F0F0F',
+                overflow: 'hidden'
               }}>
-                {notifications.map((notif) => (
+                {notifications.map((notif, index) => (
                   <div
                     key={notif.id}
                     style={{
-                      padding: '20px 24px',
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      border: `1px solid ${theme.colors.border.light}`,
-                      borderRadius: theme.radius.lg,
+                      padding: '16px 20px',
+                      borderBottom: index < notifications.length - 1 ? '1px solid #1a1a1a' : 'none',
                       display: 'flex',
                       alignItems: 'flex-start',
                       gap: '16px',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease'
                     }}
                     onClick={() => navigate('/responses')}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = '#141414'
+                      e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent'
+                      e.currentTarget.style.boxShadow = 'none'
+                    }}
                   >
                     {/* Icon */}
                     <div style={{
-                      width: '40px',
-                      height: '40px',
-                      borderRadius: theme.radius.md,
-                      background: 'rgba(59, 130, 246, 0.1)',
-                      border: '1px solid rgba(59, 130, 246, 0.2)',
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '4px',
+                      background: '#1a1a1a',
+                      border: '1px solid #262626',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      flexShrink: 0
+                      flexShrink: 0,
+                      fontSize: '14px'
                     }}>
-                      <div style={{
-                        fontSize: '18px'
-                      }}>
-                        📁
-                      </div>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                      </svg>
                     </div>
 
                     {/* Content */}
-                    <div style={{ flex: 1 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{
-                        fontSize: '15px',
-                        fontWeight: '600',
-                        color: theme.colors.text.primary,
-                        marginBottom: '4px'
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        color: '#ffffff',
+                        marginBottom: '4px',
+                        letterSpacing: '-0.01em'
                       }}>
                         {notif.title}
                       </div>
                       <div style={{
-                        fontSize: '14px',
-                        color: theme.colors.text.secondary,
+                        fontSize: '13px',
+                        color: '#737373',
                         marginBottom: '8px',
                         lineHeight: '1.5'
                       }}>
@@ -214,18 +224,20 @@ function Notifications() {
                         gap: '12px'
                       }}>
                         <div style={{
-                          fontSize: '12px',
-                          color: theme.colors.text.tertiary,
-                          padding: '2px 8px',
-                          background: 'rgba(255, 255, 255, 0.05)',
-                          borderRadius: theme.radius.sm,
-                          border: `1px solid ${theme.colors.border.light}`
+                          fontSize: '11px',
+                          color: '#a3a3a3',
+                          padding: '3px 8px',
+                          background: '#1a1a1a',
+                          borderRadius: '4px',
+                          border: '1px solid #262626',
+                          fontWeight: '500',
+                          letterSpacing: '0.3px'
                         }}>
                           {notif.formName}
                         </div>
                         <div style={{
-                          fontSize: '12px',
-                          color: theme.colors.text.tertiary
+                          fontSize: '11px',
+                          color: '#737373'
                         }}>
                           {getTimeAgo(notif.timestamp)}
                         </div>
@@ -235,10 +247,10 @@ function Notifications() {
                     {/* Unread indicator */}
                     {!notif.read && (
                       <div style={{
-                        width: '8px',
-                        height: '8px',
+                        width: '6px',
+                        height: '6px',
                         borderRadius: '50%',
-                        background: theme.colors.white,
+                        background: '#ffffff',
                         flexShrink: 0,
                         marginTop: '6px'
                       }} />

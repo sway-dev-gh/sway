@@ -86,13 +86,14 @@ export default function Login() {
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: theme.layout.formFieldGap }}>
               <label style={theme.inputs.label}>
-                Email
+                Email address
               </label>
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
+                placeholder="you@example.com"
                 style={theme.inputs.text.base}
                 onFocus={(e) => {
                   Object.assign(e.currentTarget.style, theme.inputs.text.focus)
@@ -103,7 +104,7 @@ export default function Login() {
               />
             </div>
 
-            <div style={{ marginBottom: '20px' }}>
+            <div style={{ marginBottom: theme.layout.formFieldGap }}>
               <label style={theme.inputs.label}>
                 Password
               </label>
@@ -112,6 +113,7 @@ export default function Login() {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
+                placeholder="Enter your password"
                 style={theme.inputs.text.base}
                 onFocus={(e) => {
                   Object.assign(e.currentTarget.style, theme.inputs.text.focus)

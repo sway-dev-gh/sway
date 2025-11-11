@@ -187,118 +187,75 @@ function Settings() {
 
               <form onSubmit={handleChangePassword}>
                 {passwordError && (
-                  <div style={{
-                    padding: '12px 16px',
-                    background: 'rgba(239, 68, 68, 0.1)',
-                    border: '1px solid rgba(239, 68, 68, 0.3)',
-                    borderRadius: theme.radius.md,
-                    color: theme.colors.error,
-                    fontSize: '14px',
-                    marginBottom: theme.spacing[4]
-                  }}>
+                  <div style={theme.alerts.error}>
                     {passwordError}
                   </div>
                 )}
 
                 {passwordSuccess && (
-                  <div style={{
-                    padding: '12px 16px',
-                    background: 'rgba(34, 197, 94, 0.1)',
-                    border: '1px solid rgba(34, 197, 94, 0.3)',
-                    borderRadius: theme.radius.md,
-                    color: theme.colors.success,
-                    fontSize: '14px',
-                    marginBottom: theme.spacing[4]
-                  }}>
+                  <div style={theme.alerts.success}>
                     {passwordSuccess}
                   </div>
                 )}
 
-                <div style={{ display: 'grid', gap: theme.spacing[4] }}>
+                <div style={{ display: 'grid', gap: theme.layout.formFieldGap }}>
                   <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '14px',
-                      color: theme.colors.text.secondary,
-                      marginBottom: '8px',
-                      fontWeight: '500'
-                    }}>
-                      Current Password
+                    <label style={theme.inputs.label}>
+                      Current password
                     </label>
                     <input
                       type="password"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '12px 16px',
-                        background: 'rgba(0, 0, 0, 0.2)',
-                        border: `1px solid ${theme.colors.border.light}`,
-                        borderRadius: theme.radius.md,
-                        color: theme.colors.text.primary,
-                        fontSize: '15px',
-                        fontFamily: 'inherit',
-                        outline: 'none'
+                      placeholder="Enter your current password"
+                      style={theme.inputs.text.base}
+                      onFocus={(e) => {
+                        Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                       }}
-                      placeholder="Enter current password"
+                      onBlur={(e) => {
+                        Object.assign(e.currentTarget.style, theme.inputs.text.base)
+                      }}
                     />
                   </div>
 
                   <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '14px',
-                      color: theme.colors.text.secondary,
-                      marginBottom: '8px',
-                      fontWeight: '500'
-                    }}>
-                      New Password
+                    <label style={theme.inputs.label}>
+                      New password
                     </label>
                     <input
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '12px 16px',
-                        background: 'rgba(0, 0, 0, 0.2)',
-                        border: `1px solid ${theme.colors.border.light}`,
-                        borderRadius: theme.radius.md,
-                        color: theme.colors.text.primary,
-                        fontSize: '15px',
-                        fontFamily: 'inherit',
-                        outline: 'none'
+                      placeholder="Enter a new password"
+                      style={theme.inputs.text.base}
+                      onFocus={(e) => {
+                        Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                       }}
-                      placeholder="Enter new password"
+                      onBlur={(e) => {
+                        Object.assign(e.currentTarget.style, theme.inputs.text.base)
+                      }}
                     />
+                    <div style={theme.inputs.helper}>
+                      Minimum 6 characters
+                    </div>
                   </div>
 
                   <div>
-                    <label style={{
-                      display: 'block',
-                      fontSize: '14px',
-                      color: theme.colors.text.secondary,
-                      marginBottom: '8px',
-                      fontWeight: '500'
-                    }}>
-                      Confirm New Password
+                    <label style={theme.inputs.label}>
+                      Confirm new password
                     </label>
                     <input
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      style={{
-                        width: '100%',
-                        padding: '12px 16px',
-                        background: 'rgba(0, 0, 0, 0.2)',
-                        border: `1px solid ${theme.colors.border.light}`,
-                        borderRadius: theme.radius.md,
-                        color: theme.colors.text.primary,
-                        fontSize: '15px',
-                        fontFamily: 'inherit',
-                        outline: 'none'
+                      placeholder="Re-enter your new password"
+                      style={theme.inputs.text.base}
+                      onFocus={(e) => {
+                        Object.assign(e.currentTarget.style, theme.inputs.text.focus)
                       }}
-                      placeholder="Confirm new password"
+                      onBlur={(e) => {
+                        Object.assign(e.currentTarget.style, theme.inputs.text.base)
+                      }}
                     />
                   </div>
 
@@ -307,11 +264,12 @@ function Settings() {
                     disabled={changingPassword}
                     style={{
                       ...theme.buttons.primary.base,
-                      opacity: changingPassword ? 0.5 : 1,
-                      cursor: changingPassword ? 'not-allowed' : 'pointer'
+                      width: '100%',
+                      marginTop: '8px',
+                      ...(changingPassword && theme.buttons.primary.disabled)
                     }}
                   >
-                    {changingPassword ? 'Changing Password...' : 'Change Password'}
+                    {changingPassword ? 'Updating password...' : 'Update Password'}
                   </button>
                 </div>
               </form>
