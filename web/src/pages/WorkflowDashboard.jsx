@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
+import { standardStyles, getFilterButtonStyle, getPrimaryButtonHover } from '../components/StandardStyles'
 
 function WorkflowDashboard() {
   const navigate = useNavigate()
@@ -263,20 +264,10 @@ function WorkflowDashboard() {
           marginBottom: '48px'
         }}>
           <div>
-            <h1 style={{
-              fontSize: '32px',
-              fontWeight: theme.weight.semibold,
-              color: theme.colors.text.primary,
-              marginBottom: '12px',
-              letterSpacing: '-0.03em'
-            }}>
+            <h1 style={standardStyles.pageHeader}>
               Review Workflows
             </h1>
-            <p style={{
-              fontSize: '15px',
-              color: theme.colors.text.tertiary,
-              lineHeight: '1.6'
-            }}>
+            <p style={standardStyles.pageDescription}>
               Upload drafts, collect feedback, and manage approval workflows
             </p>
           </div>

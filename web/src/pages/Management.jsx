@@ -7,6 +7,7 @@ import { getStorageLimit, formatStorageDisplay, getEffectivePlan } from '../util
 import { useToast } from '../hooks/useToast'
 import ToastContainer from '../components/ToastContainer'
 import ConfirmModal from '../components/ConfirmModal'
+import { standardStyles, getFilterButtonStyle } from '../components/StandardStyles'
 
 function Management() {
   const navigate = useNavigate()
@@ -581,22 +582,10 @@ function Management() {
 
           {/* Header */}
           <div style={{ marginBottom: '48px' }}>
-            <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 8px 0',
-              color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
-              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
-            }}>
+            <h1 style={standardStyles.pageHeader}>
               Management
             </h1>
-            <p style={{
-              fontSize: '18px',
-              color: theme.colors.text.secondary,
-              margin: 0,
-              lineHeight: '1.6'
-            }}>
+            <p style={standardStyles.pageDescription}>
               Manage reviewers and workflow analytics
             </p>
           </div>
@@ -617,33 +606,13 @@ function Management() {
                   borderRadius: theme.radius.lg,
                   transition: 'all 0.2s ease'
                 }}>
-                  <div style={{
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.text.tertiary,
-                    marginBottom: '16px',
-                    fontWeight: theme.weight.bold,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1.5px'
-                  }}>
+                  <div style={standardStyles.statsLabel}>
                     Requests
                   </div>
-                  <div style={{
-                    fontSize: '48px',
-                    fontWeight: '700',
-                    color: theme.colors.text.primary,
-                    lineHeight: '1',
-                    marginBottom: '12px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    fontVariantNumeric: 'tabular-nums',
-                    letterSpacing: '-0.02em'
-                  }}>
+                  <div style={standardStyles.statsNumber}>
                     {filterStatus === 'all' ? forms.length : filteredForms.length}
                   </div>
-                  <div style={{
-                    fontSize: theme.fontSize.sm,
-                    color: theme.colors.text.secondary,
-                    fontWeight: theme.weight.medium
-                  }}>
+                  <div style={standardStyles.statsDescription}>
                     {filterStatus === 'all' ? 'Total created' : `${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} requests`}
                   </div>
                 </div>
@@ -655,33 +624,13 @@ function Management() {
                   borderRadius: theme.radius.lg,
                   transition: 'all 0.2s ease'
                 }}>
-                  <div style={{
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.text.tertiary,
-                    marginBottom: '16px',
-                    fontWeight: theme.weight.bold,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1.5px'
-                  }}>
+                  <div style={standardStyles.statsLabel}>
                     Live Now
                   </div>
-                  <div style={{
-                    fontSize: '48px',
-                    fontWeight: '700',
-                    color: theme.colors.white,
-                    lineHeight: '1',
-                    marginBottom: '12px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    fontVariantNumeric: 'tabular-nums',
-                    letterSpacing: '-0.02em'
-                  }}>
+                  <div style={{...standardStyles.statsNumber, color: theme.colors.white}}>
                     {forms.filter(f => getFormStatus(f) === 'Live').length}
                   </div>
-                  <div style={{
-                    fontSize: theme.fontSize.sm,
-                    color: theme.colors.text.secondary,
-                    fontWeight: theme.weight.medium
-                  }}>
+                  <div style={standardStyles.statsDescription}>
                     Active reviews
                   </div>
                 </div>
@@ -693,33 +642,13 @@ function Management() {
                   borderRadius: theme.radius.lg,
                   transition: 'all 0.2s ease'
                 }}>
-                  <div style={{
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.text.tertiary,
-                    marginBottom: '16px',
-                    fontWeight: theme.weight.bold,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1.5px'
-                  }}>
+                  <div style={standardStyles.statsLabel}>
                     Files
                   </div>
-                  <div style={{
-                    fontSize: '48px',
-                    fontWeight: '700',
-                    color: theme.colors.text.primary,
-                    lineHeight: '1',
-                    marginBottom: '12px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    fontVariantNumeric: 'tabular-nums',
-                    letterSpacing: '-0.02em'
-                  }}>
+                  <div style={standardStyles.statsNumber}>
                     {uploads.length}
                   </div>
-                  <div style={{
-                    fontSize: theme.fontSize.sm,
-                    color: theme.colors.text.secondary,
-                    fontWeight: theme.weight.medium
-                  }}>
+                  <div style={standardStyles.statsDescription}>
                     Total received
                   </div>
                 </div>
@@ -1331,13 +1260,7 @@ function Management() {
               alignItems: 'center',
               marginBottom: '32px'
             }}>
-              <h2 style={{
-                fontSize: '24px',
-                fontWeight: '600',
-                color: theme.colors.text.primary,
-                margin: 0,
-                letterSpacing: '-0.02em'
-              }}>
+              <h2 style={standardStyles.sectionHeader}>
                 Request Manager
               </h2>
 
@@ -1359,17 +1282,7 @@ function Management() {
                   <button
                     key={status}
                     onClick={() => setFilterStatus(status)}
-                    style={{
-                      padding: '6px 14px',
-                      background: filterStatus === status ? theme.colors.white : 'transparent',
-                      color: filterStatus === status ? theme.colors.black : theme.colors.text.secondary,
-                      border: `1px solid ${filterStatus === status ? theme.colors.white : theme.colors.border.light}`,
-                      borderRadius: '6px',
-                      fontSize: '14px',
-                      fontWeight: theme.weight.medium,
-                      cursor: 'pointer',
-                      textTransform: 'capitalize'
-                    }}
+                    style={getFilterButtonStyle(filterStatus === status)}
                   >
                     {status === 'all' ? 'All' : status}
                   </button>

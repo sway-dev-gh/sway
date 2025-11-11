@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import Layout from '../components/Layout'
 import theme from '../theme'
 import api from '../api/axios'
+import { standardStyles, getFilterButtonStyle, getPrimaryButtonHover } from '../components/StandardStyles'
 
 /**
  * Review Workflows Page
@@ -115,47 +116,21 @@ function Projects() {
           marginBottom: '48px'
         }}>
           <div>
-            <h1 style={{
-              fontSize: '32px',
-              fontWeight: theme.weight.semibold,
-              color: theme.colors.text.primary,
-              letterSpacing: '-0.03em',
-              marginBottom: '12px'
-            }}>
+            <h1 style={standardStyles.pageHeader}>
               Reviews
             </h1>
-            <p style={{
-              fontSize: '15px',
-              color: theme.colors.text.tertiary,
-              lineHeight: '1.6'
-            }}>
+            <p style={standardStyles.pageDescription}>
               Upload drafts, collect feedback, and manage approval workflows
             </p>
           </div>
           <button
             onClick={() => setShowCreateProject(true)}
-            style={{
-              background: 'rgba(255, 255, 255, 0.08)',
-              color: theme.colors.white,
-              padding: '14px 28px',
-              borderRadius: '100px',
-              fontWeight: '700',
-              fontSize: '15px',
-              letterSpacing: '-0.3px',
-              transition: 'all 200ms cubic-bezier(0.4, 0, 0.2, 1)',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.2)',
-              border: '1px solid #525252',
-              cursor: 'pointer'
-            }}
+            style={standardStyles.primaryButton}
             onMouseEnter={(e) => {
-              e.target.style.transform = 'translateY(-2px)'
-              e.target.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.4)'
-              e.target.style.background = 'rgba(255, 255, 255, 0.12)'
+              Object.assign(e.target.style, getPrimaryButtonHover())
             }}
             onMouseLeave={(e) => {
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)'
-              e.target.style.background = 'rgba(255, 255, 255, 0.08)'
+              Object.assign(e.target.style, standardStyles.primaryButton)
             }}
           >
             + Upload for Review
@@ -175,21 +150,10 @@ function Projects() {
             borderRadius: '16px',
             padding: '24px'
           }}>
-            <div style={{
-              color: theme.colors.text.secondary,
-              fontSize: theme.fontSize.xs,
-              fontWeight: theme.weight.semibold,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              marginBottom: '8px'
-            }}>
+            <div style={standardStyles.statsLabel}>
               Total Reviews
             </div>
-            <div style={{
-              color: theme.colors.text.primary,
-              fontSize: '32px',
-              fontWeight: theme.weight.bold
-            }}>
+            <div style={standardStyles.statsNumber}>
               {stats.total}
             </div>
           </div>
@@ -200,21 +164,10 @@ function Projects() {
             borderRadius: '16px',
             padding: '24px'
           }}>
-            <div style={{
-              color: theme.colors.text.secondary,
-              fontSize: theme.fontSize.xs,
-              fontWeight: theme.weight.semibold,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              marginBottom: '8px'
-            }}>
+            <div style={standardStyles.statsLabel}>
               Pending Review
             </div>
-            <div style={{
-              color: '#a3a3a3',
-              fontSize: '32px',
-              fontWeight: theme.weight.bold
-            }}>
+            <div style={{...standardStyles.statsNumber, color: '#a3a3a3'}}>
               {stats.pending}
             </div>
           </div>
@@ -225,21 +178,10 @@ function Projects() {
             borderRadius: '16px',
             padding: '24px'
           }}>
-            <div style={{
-              color: theme.colors.text.secondary,
-              fontSize: theme.fontSize.xs,
-              fontWeight: theme.weight.semibold,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              marginBottom: '8px'
-            }}>
+            <div style={standardStyles.statsLabel}>
               Approved
             </div>
-            <div style={{
-              color: theme.colors.white,
-              fontSize: '32px',
-              fontWeight: theme.weight.bold
-            }}>
+            <div style={{...standardStyles.statsNumber, color: theme.colors.white}}>
               {stats.approved}
             </div>
           </div>
@@ -250,21 +192,10 @@ function Projects() {
             borderRadius: '16px',
             padding: '24px'
           }}>
-            <div style={{
-              color: theme.colors.text.secondary,
-              fontSize: theme.fontSize.xs,
-              fontWeight: theme.weight.semibold,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              marginBottom: '8px'
-            }}>
+            <div style={standardStyles.statsLabel}>
               Avg Review Time
             </div>
-            <div style={{
-              color: theme.colors.text.primary,
-              fontSize: '32px',
-              fontWeight: theme.weight.bold
-            }}>
+            <div style={standardStyles.statsNumber}>
               {stats.avgReviewTime}d
             </div>
           </div>
@@ -290,17 +221,7 @@ function Projects() {
                 <button
                   key={status}
                   onClick={() => setFilter(status)}
-                  style={{
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    background: filter === status ? theme.colors.white : 'rgba(255, 255, 255, 0.08)',
-                    color: filter === status ? theme.colors.black : theme.colors.text.secondary,
-                    fontSize: theme.fontSize.sm,
-                    fontWeight: theme.weight.medium,
-                    cursor: 'pointer',
-                    transition: 'all 200ms'
-                  }}
+                  style={getFilterButtonStyle(filter === status)}
                 >
                   {statusLabels[status]}
                 </button>
@@ -313,16 +234,7 @@ function Projects() {
             placeholder="Search reviews or reviewers..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: '10px 16px',
-              background: theme.colors.bg.hover,
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '8px',
-              color: theme.colors.text.primary,
-              fontSize: theme.fontSize.sm,
-              width: '300px',
-              fontFamily: 'inherit'
-            }}
+            style={standardStyles.searchInput}
           />
         </div>
 
