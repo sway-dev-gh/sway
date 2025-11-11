@@ -2275,17 +2275,18 @@ function Requests() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
-        {/* Top Toolbar - Clean minimal design */}
+        {/* Enhanced Dark Theme Header */}
         <div style={{
-          height: '64px',
+          height: '80px',
           borderBottom: `1px solid ${theme.colors.border.medium}`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 32px',
+          padding: '0 40px',
           background: theme.colors.bg.card
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Left Section - Title with Status */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             {isEditingTitle ? (
               <input
                 type="text"
@@ -2305,184 +2306,231 @@ function Requests() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: `1px solid ${theme.colors.border.medium}`,
+                  borderBottom: `2px solid ${theme.colors.border.medium}`,
                   color: theme.colors.text.primary,
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  padding: '8px 0',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  padding: '12px 0',
                   outline: 'none',
-                  fontFamily: 'inherit',
-                  minWidth: '300px'
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  minWidth: '350px',
+                  letterSpacing: '-0.02em'
                 }}
               />
             ) : (
               <h1
                 onClick={() => setIsEditingTitle(true)}
                 style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
+                  fontSize: '24px',
+                  fontWeight: '700',
                   margin: 0,
                   cursor: 'pointer',
-                  padding: '8px',
-                  borderRadius: theme.radius.sm,
-                  maxWidth: '400px',
+                  padding: '12px',
+                  borderRadius: theme.radius.md,
+                  maxWidth: '500px',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap',
-                  color: theme.colors.text.primary
+                  color: theme.colors.text.primary,
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  letterSpacing: '-0.02em'
                 }}
               >
                 {formTitle}
               </h1>
             )}
+
+            {/* Status Badge */}
+            <div style={{
+              padding: '6px 12px',
+              background: 'rgba(115, 115, 115, 0.15)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '6px',
+              fontSize: '12px',
+              fontWeight: '600',
+              color: theme.colors.text.secondary,
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px'
+            }}>
+              Draft
+            </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <button
-              onClick={handleUndo}
-              disabled={historyIndex <= 0}
-              style={{
-                ...theme.buttons.secondary.base,
-                color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
-                cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
-                opacity: historyIndex <= 0 ? 0.4 : 1
-              }}
-            >
-              Undo
-            </button>
-            <button
-              onClick={handleRedo}
-              disabled={historyIndex >= history.length - 1}
-              style={{
-                ...theme.buttons.secondary.base,
-                color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
-                cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
-                opacity: historyIndex >= history.length - 1 ? 0.4 : 1
-              }}
-            >
-              Redo
-            </button>
+          {/* Right Section - Action Groups */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+
+            {/* History Controls Group */}
             <div style={{
-              width: '1px',
-              height: '20px',
-              background: theme.colors.border.medium,
-              margin: '0 8px'
-            }}></div>
-            <button
-              style={theme.buttons.secondary.base}
-              onClick={() => setShowPreviewModal(true)}
-            >
-              Preview
-            </button>
-            <button
-              style={theme.buttons.secondary.base}
-              onClick={handleSave}
-            >
-              Save
-            </button>
-            <button
-              style={theme.buttons.primary.base}
-              onClick={handlePublish}
-            >
-              Publish
-            </button>
+              display: 'flex',
+              gap: '4px',
+              padding: '4px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              borderRadius: '8px',
+              border: `1px solid ${theme.colors.border.light}`
+            }}>
+              <button
+                onClick={handleUndo}
+                disabled={historyIndex <= 0}
+                style={{
+                  ...theme.buttons.secondary.base,
+                  color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                  cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
+                  opacity: historyIndex <= 0 ? 0.4 : 1,
+                  border: 'none',
+                  background: 'transparent',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  padding: '8px 12px'
+                }}
+              >
+                Undo
+              </button>
+              <button
+                onClick={handleRedo}
+                disabled={historyIndex >= history.length - 1}
+                style={{
+                  ...theme.buttons.secondary.base,
+                  color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
+                  cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
+                  opacity: historyIndex >= history.length - 1 ? 0.4 : 1,
+                  border: 'none',
+                  background: 'transparent',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  padding: '8px 12px'
+                }}
+              >
+                Redo
+              </button>
+            </div>
+
+            {/* Action Buttons Group */}
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <button
+                style={{
+                  ...theme.buttons.secondary.base,
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  padding: '10px 16px'
+                }}
+                onClick={() => setShowPreviewModal(true)}
+              >
+                Preview
+              </button>
+              <button
+                style={{
+                  ...theme.buttons.secondary.base,
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  padding: '10px 16px'
+                }}
+                onClick={handleSave}
+              >
+                Save
+              </button>
+              <button
+                style={{
+                  ...theme.buttons.primary.base,
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  padding: '10px 20px'
+                }}
+                onClick={handlePublish}
+              >
+                Publish
+              </button>
+            </div>
           </div>
         </div>
 
         {/* Workspace Layout - Sidebar + Canvas */}
         <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
-          {/* LEFT SIDEBAR - Clean minimal design */}
+          {/* ENHANCED LEFT SIDEBAR - Professional Dark Design */}
           <div style={{
-            width: '280px',
+            width: '320px',
             borderRight: `1px solid ${theme.colors.border.medium}`,
             background: theme.colors.bg.card,
             overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column'
           }}>
-            {/* Tabs - Clean design */}
+
+            {/* Sidebar Header */}
             <div style={{
-              display: 'flex',
-              gap: '0',
-              borderBottom: `1px solid ${theme.colors.border.medium}`,
-              padding: '0'
+              padding: '24px 24px 16px 24px',
+              borderBottom: `1px solid ${theme.colors.border.light}`
             }}>
-              <button
-                onClick={() => setActiveTab('templates')}
-                style={{
-                  flex: 1,
-                  padding: '16px 0',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: activeTab === 'templates' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-                  color: activeTab === 'templates' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                Templates
-              </button>
-              <button
-                onClick={() => setActiveTab('elements')}
-                style={{
-                  flex: 1,
-                  padding: '16px 0',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: activeTab === 'elements' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-                  color: activeTab === 'elements' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                Elements
-              </button>
-              <button
-                onClick={() => setActiveTab('branding')}
-                style={{
-                  flex: 1,
-                  padding: '16px 0',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: activeTab === 'branding' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-                  color: activeTab === 'branding' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                Branding
-              </button>
-              <button
-                onClick={() => setActiveTab('settings')}
-                style={{
-                  flex: 1,
-                  padding: '16px 0',
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: activeTab === 'settings' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
-                  color: activeTab === 'settings' ? theme.colors.text.primary : theme.colors.text.secondary,
-                  fontSize: '13px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  fontFamily: 'inherit',
-                  whiteSpace: 'nowrap'
-                }}
-              >
-                Settings
-              </button>
+              <h3 style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                margin: 0,
+                marginBottom: '8px',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                letterSpacing: '-0.01em'
+              }}>
+                Design Tools
+              </h3>
+              <p style={{
+                fontSize: '13px',
+                color: theme.colors.text.secondary,
+                margin: 0,
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+              }}>
+                Build your file request form
+              </p>
             </div>
 
-            {/* Tab Content - Consistent spacing */}
-            <div style={{ padding: '32px 16px' }}>
+            {/* Enhanced Navigation Tabs */}
+            <div style={{
+              display: 'flex',
+              gap: '2px',
+              borderBottom: `1px solid ${theme.colors.border.medium}`,
+              padding: '8px 16px 0 16px',
+              background: 'rgba(255, 255, 255, 0.01)'
+            }}>
+              {[
+                { key: 'templates', label: 'Templates', icon: '📋' },
+                { key: 'elements', label: 'Elements', icon: '🔧' },
+                { key: 'branding', label: 'Branding', icon: '🎨' },
+                { key: 'settings', label: 'Settings', icon: '⚙️' }
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setActiveTab(tab.key)}
+                  style={{
+                    flex: 1,
+                    padding: '12px 8px',
+                    background: activeTab === tab.key ? 'rgba(255, 255, 255, 0.06)' : 'transparent',
+                    border: 'none',
+                    borderRadius: '6px 6px 0 0',
+                    color: activeTab === tab.key ? theme.colors.text.primary : theme.colors.text.secondary,
+                    fontSize: '12px',
+                    fontWeight: activeTab === tab.key ? '600' : '500',
+                    cursor: 'pointer',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    whiteSpace: 'nowrap',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '4px',
+                    transition: 'all 0.15s ease',
+                    borderBottom: activeTab === tab.key ? `2px solid ${theme.colors.white}` : '2px solid transparent',
+                    letterSpacing: '0.01em'
+                  }}
+                >
+                  <span style={{ fontSize: '10px' }}>{tab.icon}</span>
+                  <span>{tab.label}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Enhanced Tab Content Area */}
+            <div style={{
+              padding: '24px',
+              flex: 1,
+              overflowY: 'auto'
+            }}>
               {activeTab === 'branding' ? (
                 <>
                   {/* Section Title */}
@@ -2974,7 +3022,7 @@ function Requests() {
             </div>
           </div>
 
-          {/* CENTER - Canvas */}
+          {/* ENHANCED CANVAS AREA - Professional Dark Design */}
           <div style={{
             flex: 1,
             overflow: 'auto',
@@ -2982,42 +3030,133 @@ function Requests() {
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            padding: '24px'
+            padding: '32px'
           }}>
-            <div
-              ref={canvasRef}
-              onDrop={handleCanvasDrop}
-              onDragOver={(e) => e.preventDefault()}
-              onClick={handleCanvasClick}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              style={{
-                width: '100%',
-                maxWidth: '1200px',
-                minHeight: '500px',
-                aspectRatio: '16/9',
-                background: theme.colors.bg.card,
-                borderRadius: theme.radius.md,
-                position: 'relative',
-                border: `1px solid ${theme.colors.border.medium}`,
-                overflow: 'visible'
-              }}
-            >
-              {canvasElements.length === 0 && !isDragging && (
-                <div style={{
-                  position: 'absolute',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%, -50%)',
-                  textAlign: 'center',
-                  color: theme.colors.text.tertiary,
-                  pointerEvents: 'none'
-                }}>
-                  <div style={{ fontSize: '14px', fontWeight: '400' }}>Drag elements or choose a template to start</div>
-                </div>
-              )}
+            {/* Canvas Container */}
+            <div style={{
+              width: '100%',
+              maxWidth: '1200px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px'
+            }}>
 
-              {canvasElements.map(renderCanvasElement)}
+              {/* Canvas Header */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0 4px'
+              }}>
+                <div>
+                  <h2 style={{
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: theme.colors.text.primary,
+                    margin: 0,
+                    marginBottom: '4px',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                  }}>
+                    Form Canvas
+                  </h2>
+                  <p style={{
+                    fontSize: '13px',
+                    color: theme.colors.text.secondary,
+                    margin: 0,
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                  }}>
+                    Design your file request form by dragging elements from the sidebar
+                  </p>
+                </div>
+
+                {/* Canvas Tools */}
+                <div style={{
+                  display: 'flex',
+                  gap: '8px',
+                  alignItems: 'center'
+                }}>
+                  <div style={{
+                    fontSize: '12px',
+                    color: theme.colors.text.tertiary,
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                  }}>
+                    16:9 Ratio
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Canvas */}
+              <div
+                ref={canvasRef}
+                onDrop={handleCanvasDrop}
+                onDragOver={(e) => e.preventDefault()}
+                onClick={handleCanvasClick}
+                onMouseMove={handleMouseMove}
+                onMouseUp={handleMouseUp}
+                style={{
+                  width: '100%',
+                  minHeight: '600px',
+                  aspectRatio: '16/9',
+                  background: theme.colors.bg.card,
+                  borderRadius: '12px',
+                  position: 'relative',
+                  border: `2px solid ${theme.colors.border.medium}`,
+                  overflow: 'visible',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                  transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+                }}
+              >
+                {/* Enhanced Empty State */}
+                {canvasElements.length === 0 && !isDragging && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    textAlign: 'center',
+                    color: theme.colors.text.tertiary,
+                    pointerEvents: 'none',
+                    maxWidth: '400px'
+                  }}>
+                    <div style={{
+                      width: '80px',
+                      height: '80px',
+                      margin: '0 auto 24px',
+                      borderRadius: '50%',
+                      background: 'rgba(255, 255, 255, 0.03)',
+                      border: `2px dashed ${theme.colors.border.light}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '32px'
+                    }}>
+                      ✨
+                    </div>
+                    <h3 style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: theme.colors.text.secondary,
+                      margin: '0 0 12px 0',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                    }}>
+                      Start Building Your Form
+                    </h3>
+                    <p style={{
+                      fontSize: '14px',
+                      fontWeight: '400',
+                      color: theme.colors.text.tertiary,
+                      margin: 0,
+                      lineHeight: '1.5',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+                    }}>
+                      Drag elements from the sidebar or choose a template to begin designing your file request form
+                    </p>
+                  </div>
+                )}
+                {/* Canvas Elements */}
+                {canvasElements.map(renderCanvasElement)}
+              </div>
+            </div>
 
               {isDragging && (
                 <div style={{
