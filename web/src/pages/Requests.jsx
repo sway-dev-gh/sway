@@ -2275,17 +2275,18 @@ function Requests() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
-        {/* Top Toolbar - Clean minimal design */}
+        {/* Modern Clean Header */}
         <div style={{
-          height: '64px',
-          borderBottom: `1px solid ${theme.colors.border.medium}`,
+          height: '80px',
+          borderBottom: '1px solid #E1E5E9',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 32px',
-          background: theme.colors.bg.card
+          padding: '0 40px',
+          background: '#FFFFFF'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Left Section */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
             {isEditingTitle ? (
               <input
                 type="text"
@@ -2305,84 +2306,154 @@ function Requests() {
                 style={{
                   background: 'transparent',
                   border: 'none',
-                  borderBottom: `1px solid ${theme.colors.border.medium}`,
-                  color: theme.colors.text.primary,
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  padding: '8px 0',
+                  borderBottom: '2px solid #000',
+                  color: '#000',
+                  fontSize: '28px',
+                  fontWeight: '700',
+                  padding: '4px 0',
                   outline: 'none',
-                  fontFamily: 'inherit',
-                  minWidth: '300px'
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  minWidth: '300px',
+                  letterSpacing: '-0.02em'
                 }}
               />
             ) : (
               <h1
                 onClick={() => setIsEditingTitle(true)}
                 style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
+                  fontSize: '28px',
+                  fontWeight: '700',
                   margin: 0,
                   cursor: 'pointer',
-                  padding: '8px',
-                  borderRadius: theme.radius.sm,
-                  maxWidth: '400px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  color: theme.colors.text.primary
+                  color: '#000',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  letterSpacing: '-0.02em'
                 }}
               >
                 {formTitle}
               </h1>
             )}
+
+            <div style={{
+              padding: '4px 8px',
+              background: '#F3F4F6',
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: '500',
+              color: '#6B7280',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em'
+            }}>
+              Draft
+            </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <button
-              onClick={handleUndo}
-              disabled={historyIndex <= 0}
-              style={{
-                ...theme.buttons.secondary.base,
-                color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
-                cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
-                opacity: historyIndex <= 0 ? 0.4 : 1
-              }}
-            >
-              Undo
-            </button>
-            <button
-              onClick={handleRedo}
-              disabled={historyIndex >= history.length - 1}
-              style={{
-                ...theme.buttons.secondary.base,
-                color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
-                cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
-                opacity: historyIndex >= history.length - 1 ? 0.4 : 1
-              }}
-            >
-              Redo
-            </button>
+          {/* Right Section */}
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            {/* History Controls */}
+            <div style={{
+              display: 'flex',
+              gap: '2px',
+              background: '#F9FAFB',
+              borderRadius: '8px',
+              padding: '2px'
+            }}>
+              <button
+                onClick={handleUndo}
+                disabled={historyIndex <= 0}
+                style={{
+                  background: historyIndex <= 0 ? 'transparent' : '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  color: historyIndex <= 0 ? '#9CA3AF' : '#374151',
+                  cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  boxShadow: historyIndex <= 0 ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              >
+                ⟲ Undo
+              </button>
+              <button
+                onClick={handleRedo}
+                disabled={historyIndex >= history.length - 1}
+                style={{
+                  background: historyIndex >= history.length - 1 ? 'transparent' : '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  color: historyIndex >= history.length - 1 ? '#9CA3AF' : '#374151',
+                  cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  boxShadow: historyIndex >= history.length - 1 ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.05)'
+                }}
+              >
+                ⟳ Redo
+              </button>
+            </div>
+
+            {/* Divider */}
             <div style={{
               width: '1px',
-              height: '20px',
-              background: theme.colors.border.medium,
-              margin: '0 8px'
+              height: '24px',
+              background: '#E5E7EB'
             }}></div>
+
+            {/* Action Buttons */}
             <button
-              style={theme.buttons.secondary.base}
               onClick={() => setShowPreviewModal(true)}
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #D1D5DB',
+                borderRadius: '8px',
+                padding: '10px 16px',
+                color: '#374151',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+              }}
             >
               Preview
             </button>
+
             <button
-              style={theme.buttons.secondary.base}
               onClick={handleSave}
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #D1D5DB',
+                borderRadius: '8px',
+                padding: '10px 16px',
+                color: '#374151',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+              }}
             >
               Save
             </button>
+
             <button
-              style={theme.buttons.primary.base}
               onClick={handlePublish}
+              style={{
+                background: '#111827',
+                border: '1px solid #111827',
+                borderRadius: '8px',
+                padding: '10px 20px',
+                color: '#FFFFFF',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                boxShadow: '0 1px 2px rgba(0, 0, 0, 0.05)'
+              }}
             >
               Publish
             </button>
