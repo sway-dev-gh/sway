@@ -382,6 +382,13 @@ function Management() {
     })
   }
 
+  const getScheduledForDate = (date) => {
+    return scheduledRequests.filter(scheduled => {
+      const scheduledDate = new Date(scheduled.scheduledFor)
+      return isSameDay(scheduledDate, date)
+    })
+  }
+
   const generateCalendarDays = () => {
     const year = currentMonth.getFullYear()
     const month = currentMonth.getMonth()
@@ -414,17 +421,9 @@ function Management() {
   }
 
   const handleDayClick = (date, uploadsForDay) => {
-    if (uploadsForDay.length > 0) {
-      // Show uploads for this day
-      setSelectedDate(date)
-      setDayModalOpen(true)
-    } else {
-      // Open scheduling modal with date pre-filled
-      const formattedDate = date.toISOString().split('T')[0]
-      setScheduledDate(formattedDate)
-      setScheduledTime('09:00')
-      setShowCreateModal(true)
-    }
+    // Always open the modal to show uploads and/or scheduled requests
+    setSelectedDate(date)
+    setDayModalOpen(true)
   }
 
   // Scheduling functions
@@ -1201,8 +1200,10 @@ function Management() {
                         }
 
                         const uploadsForDay = getUploadsForDate(date)
+                        const scheduledForDay = getScheduledForDate(date)
                         const isToday = isSameDay(date, new Date())
                         const hasUploads = uploadsForDay.length > 0
+                        const hasScheduled = scheduledForDay.length > 0
 
                         return (
                           <div
@@ -1233,6 +1234,17 @@ function Management() {
                             }}>
                               {date.getDate()}
                             </div>
+                            {hasScheduled && (
+                              <div style={{
+                                position: 'absolute',
+                                top: '8px',
+                                right: '8px',
+                                width: '6px',
+                                height: '6px',
+                                background: '#3b82f6',
+                                borderRadius: '50%'
+                              }} />
+                            )}
                             {hasUploads && (
                               <div style={{
                                 position: 'absolute',
@@ -1933,8 +1945,8 @@ function Management() {
                 >
                   <div
                     style={{
-                      background: '#0F0F0F',
-                      border: '1px solid #262626',
+                      background: '#000000',
+                      border: '1px solid #373737',
                       borderRadius: '12px',
                       maxWidth: '800px',
                       width: '100%',
@@ -1947,7 +1959,7 @@ function Management() {
                   >
                     <div style={{
                       padding: '24px',
-                      borderBottom: '1px solid #262626',
+                      borderBottom: '1px solid #373737',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center'
@@ -1958,7 +1970,7 @@ function Management() {
                         color: '#ffffff',
                         margin: 0
                       }}>
-                        Uploads on {selectedDate.toLocaleDateString('en-US', {
+                        {selectedDate.toLocaleDateString('en-US', {
                           weekday: 'long',
                           year: 'numeric',
                           month: 'long',
@@ -1971,16 +1983,12 @@ function Management() {
                           background: 'transparent',
                           border: 'none',
                           color: '#737373',
-                          fontSize: '24px',
+                          fontSize: '14px',
                           cursor: 'pointer',
-                          padding: '0',
-                          width: '32px',
-                          height: '32px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
+                          padding: '8px 16px',
                           borderRadius: '4px',
-                          transition: 'all 0.15s ease'
+                          transition: 'all 0.15s ease',
+                          fontWeight: '500'
                         }}
                         onMouseEnter={(e) => {
                           e.currentTarget.style.background = '#1a1a1a'
@@ -2000,73 +2008,246 @@ function Management() {
                       overflowY: 'auto',
                       flex: 1
                     }}>
-                      {getUploadsForDate(selectedDate).map((upload, idx) => (
-                        <div
-                          key={upload.id}
-                          style={{
-                            padding: '20px',
-                            background: 'rgba(255, 255, 255, 0.02)',
-                            border: '1px solid #262626',
-                            borderRadius: '8px',
-                            marginBottom: idx < getUploadsForDate(selectedDate).length - 1 ? '16px' : '0'
-                          }}
-                        >
+                      {/* Uploads Received Section */}
+                      <div style={{ marginBottom: '32px' }}>
+                        <h4 style={{
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          color: '#ffffff',
+                          marginBottom: '16px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}>
+                          Uploads Received
+                        </h4>
+                        {getUploadsForDate(selectedDate).length === 0 ? (
                           <div style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'flex-start',
-                            marginBottom: '12px'
+                            padding: '20px',
+                            background: '#0a0a0a',
+                            border: '1px solid #373737',
+                            borderRadius: '8px',
+                            color: '#737373',
+                            fontSize: '14px',
+                            textAlign: 'center'
                           }}>
-                            <div style={{ flex: 1 }}>
-                              <div style={{
-                                fontSize: '16px',
-                                fontWeight: '600',
-                                color: '#ffffff',
-                                marginBottom: '8px'
-                              }}>
-                                {upload.fileName}
-                              </div>
-                              <div style={{
-                                fontSize: '14px',
-                                color: '#737373',
-                                marginBottom: '4px'
-                              }}>
-                                {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
-                              </div>
-                              <div style={{
-                                fontSize: '13px',
-                                color: '#525252'
-                              }}>
-                                Request: {forms.find(f => f.shortCode === upload.requestCode)?.title || 'Unknown'}
-                              </div>
-                            </div>
-                            <button
-                              onClick={() => handleDownload(upload.id)}
+                            No uploads received on this day
+                          </div>
+                        ) : (
+                          getUploadsForDate(selectedDate).map((upload, idx) => (
+                            <div
+                              key={upload.id}
                               style={{
-                                ...theme.buttons.primary.base,
-                                padding: '8px 16px',
-                                fontSize: '14px',
-                                fontWeight: '600',
-                                whiteSpace: 'nowrap',
-                                marginLeft: '16px'
+                                padding: '20px',
+                                background: '#0a0a0a',
+                                border: '1px solid #373737',
+                                borderRadius: '8px',
+                                marginBottom: idx < getUploadsForDate(selectedDate).length - 1 ? '12px' : '0'
                               }}
                             >
-                              Download
-                            </button>
-                          </div>
+                              <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-start',
+                                marginBottom: '12px'
+                              }}>
+                                <div style={{ flex: 1 }}>
+                                  <div style={{
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    color: '#ffffff',
+                                    marginBottom: '8px'
+                                  }}>
+                                    {upload.fileName}
+                                  </div>
+                                  <div style={{
+                                    fontSize: '14px',
+                                    color: '#737373',
+                                    marginBottom: '4px'
+                                  }}>
+                                    {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
+                                  </div>
+                                  <div style={{
+                                    fontSize: '14px',
+                                    color: '#525252'
+                                  }}>
+                                    Request: {forms.find(f => f.shortCode === upload.requestCode)?.title || 'Unknown'}
+                                  </div>
+                                </div>
+                                <button
+                                  onClick={() => handleDownload(upload.id)}
+                                  style={{
+                                    padding: '8px 16px',
+                                    background: '#ffffff',
+                                    color: '#000000',
+                                    border: 'none',
+                                    borderRadius: '6px',
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    cursor: 'pointer',
+                                    whiteSpace: 'nowrap',
+                                    marginLeft: '16px',
+                                    transition: 'all 0.15s ease'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = '#e5e5e5'
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = '#ffffff'
+                                  }}
+                                >
+                                  Download
+                                </button>
+                              </div>
+                              <div style={{
+                                display: 'flex',
+                                gap: '20px',
+                                fontSize: '14px',
+                                color: '#737373',
+                                paddingTop: '12px',
+                                borderTop: '1px solid #373737'
+                              }}>
+                                <span>Size: {formatBytes(upload.fileSize)}</span>
+                                <span>Time: {formatDate(upload.uploadedAt)}</span>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+
+                      {/* Scheduled Requests Section */}
+                      <div>
+                        <h4 style={{
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          color: '#ffffff',
+                          marginBottom: '16px',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.5px'
+                        }}>
+                          Scheduled Requests
+                        </h4>
+                        {getScheduledForDate(selectedDate).length === 0 ? (
                           <div style={{
-                            display: 'flex',
-                            gap: '20px',
-                            fontSize: '13px',
+                            padding: '20px',
+                            background: '#0a0a0a',
+                            border: '1px solid #373737',
+                            borderRadius: '8px',
                             color: '#737373',
-                            paddingTop: '12px',
-                            borderTop: '1px solid #1a1a1a'
+                            fontSize: '14px',
+                            textAlign: 'center'
                           }}>
-                            <span>Size: {formatBytes(upload.fileSize)}</span>
-                            <span>Time: {formatDate(upload.uploadedAt)}</span>
+                            No scheduled requests for this day
                           </div>
-                        </div>
-                      ))}
+                        ) : (
+                          getScheduledForDate(selectedDate).map((scheduled, idx) => (
+                            <div
+                              key={scheduled._id}
+                              style={{
+                                padding: '20px',
+                                background: '#0a0a0a',
+                                border: '1px solid #373737',
+                                borderRadius: '8px',
+                                marginBottom: idx < getScheduledForDate(selectedDate).length - 1 ? '12px' : '0'
+                              }}
+                            >
+                              <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'flex-start'
+                              }}>
+                                <div style={{ flex: 1 }}>
+                                  <div style={{
+                                    fontSize: '14px',
+                                    fontWeight: '600',
+                                    color: '#ffffff',
+                                    marginBottom: '8px'
+                                  }}>
+                                    {getRequestTitle(scheduled.requestId)}
+                                  </div>
+                                  <div style={{
+                                    fontSize: '14px',
+                                    color: '#737373',
+                                    marginBottom: '8px'
+                                  }}>
+                                    Scheduled: {formatDateTime(scheduled.scheduledFor)}
+                                  </div>
+                                  <div style={{
+                                    display: 'inline-block',
+                                    fontSize: '11px',
+                                    fontWeight: '600',
+                                    color: '#ffffff',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.5px',
+                                    padding: '4px 8px',
+                                    background: '#1a1a1a',
+                                    border: '1px solid #373737',
+                                    borderRadius: '4px'
+                                  }}>
+                                    {scheduled.status || 'pending'}
+                                  </div>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px', marginLeft: '16px' }}>
+                                  <button
+                                    onClick={() => {
+                                      const request = requests.find(r => r._id === scheduled.requestId)
+                                      if (request) {
+                                        const url = `${window.location.origin}/upload/${request.shortCode}`
+                                        navigator.clipboard.writeText(url)
+                                        toast.success('Request URL copied!')
+                                      }
+                                    }}
+                                    style={{
+                                      padding: '6px 12px',
+                                      background: 'transparent',
+                                      color: '#ffffff',
+                                      border: '1px solid #373737',
+                                      borderRadius: '6px',
+                                      fontSize: '14px',
+                                      fontWeight: '500',
+                                      cursor: 'pointer',
+                                      whiteSpace: 'nowrap',
+                                      transition: 'all 0.15s ease'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      e.currentTarget.style.background = '#1a1a1a'
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.currentTarget.style.background = 'transparent'
+                                    }}
+                                  >
+                                    Copy Link
+                                  </button>
+                                  <button
+                                    onClick={() => handleCancelScheduled(scheduled._id)}
+                                    style={{
+                                      padding: '6px 12px',
+                                      background: 'transparent',
+                                      color: '#737373',
+                                      border: '1px solid #373737',
+                                      borderRadius: '6px',
+                                      fontSize: '14px',
+                                      fontWeight: '500',
+                                      cursor: 'pointer',
+                                      whiteSpace: 'nowrap',
+                                      transition: 'all 0.15s ease'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                      e.currentTarget.style.background = '#1a1a1a'
+                                      e.currentTarget.style.color = '#ffffff'
+                                    }}
+                                    onMouseLeave={(e) => {
+                                      e.currentTarget.style.background = 'transparent'
+                                      e.currentTarget.style.color = '#737373'
+                                    }}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

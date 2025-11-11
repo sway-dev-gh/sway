@@ -2462,12 +2462,12 @@ function Requests() {
             flexDirection: 'column'
           }}>
             {/* Tabs */}
-            <div style={{ display: 'flex', gap: '6px', borderBottom: `1px solid ${theme.colors.border.medium}`, padding: '0 6px' }}>
+            <div style={{ display: 'flex', gap: '12px', borderBottom: `1px solid ${theme.colors.border.medium}`, padding: '0 12px' }}>
               <button
                 onClick={() => setActiveTab('templates')}
                 style={{
                   flex: 1,
-                  padding: '8px 6px',
+                  padding: '8px 4px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'templates' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2487,7 +2487,7 @@ function Requests() {
                 onClick={() => setActiveTab('elements')}
                 style={{
                   flex: 1,
-                  padding: '8px 6px',
+                  padding: '8px 4px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'elements' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2507,7 +2507,7 @@ function Requests() {
                 onClick={() => setActiveTab('branding')}
                 style={{
                   flex: 1,
-                  padding: '8px 6px',
+                  padding: '8px 4px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'branding' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
@@ -2527,7 +2527,7 @@ function Requests() {
                 onClick={() => setActiveTab('settings')}
                 style={{
                   flex: 1,
-                  padding: '8px 6px',
+                  padding: '8px 4px',
                   background: 'transparent',
                   border: 'none',
                   borderBottom: activeTab === 'settings' ? `2px solid ${theme.colors.white}` : '2px solid transparent',
