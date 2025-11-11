@@ -110,9 +110,19 @@ function Sidebar() {
 
   const navSections = [
     {
+      label: 'Business Platform',
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
-        { path: '/management', label: 'Management', planRequired: null },
+        { path: '/projects', label: 'Projects', planRequired: null },
+        { path: '/clients', label: 'Clients', planRequired: null },
+        { path: '/messages', label: 'Messages', planRequired: null },
+        { path: '/payments', label: 'Payments', planRequired: null },
+        { path: '/calendar', label: 'Calendar', planRequired: null }
+      ]
+    },
+    {
+      label: 'Account',
+      items: [
         { path: '/plan', label: 'Plan', planRequired: null },
         { path: '/notifications', label: 'Notifications', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
