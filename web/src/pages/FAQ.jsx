@@ -156,102 +156,116 @@ function FAQ() {
         paddingTop: '54px'
       }}>
         <div style={{
-          maxWidth: '1400px',
+          maxWidth: '900px',
           margin: '0 auto',
-          padding: '48px 32px',
-          paddingBottom: '120px'
+          padding: '80px 48px',
+          paddingBottom: '160px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '48px', textAlign: 'center' }}>
+          <div style={{
+            marginBottom: '80px'
+          }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 8px 0',
+              fontSize: '40px',
+              fontWeight: '500',
+              margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.025em',
+              lineHeight: '1.2',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
             }}>
               Frequently Asked Questions
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '16px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6'
+              lineHeight: '1.6',
+              fontWeight: '400'
             }}>
               Everything you need to know about Sway
             </p>
           </div>
 
-          {/* FAQ Accordion */}
-          <div style={{
-            maxWidth: '900px',
-            margin: '0 auto',
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '8px',
-            overflow: 'hidden'
-          }}>
+          {/* FAQ Items */}
+          <div>
             {faqs.map((faq, index) => {
               const isExpanded = expandedIndex === index
-              const isLast = index === faqs.length - 1
 
               return (
                 <div
                   key={index}
                   style={{
-                    borderBottom: isLast ? 'none' : `1px solid ${theme.colors.border.light}`
+                    marginBottom: '48px',
+                    paddingBottom: '48px',
+                    borderBottom: index === faqs.length - 1 ? 'none' : `1px solid ${theme.colors.border.light}`
                   }}
                 >
                   <button
                     onClick={() => toggleFAQ(index)}
                     style={{
                       width: '100%',
-                      padding: '20px 24px',
+                      padding: 0,
                       background: 'transparent',
                       border: 'none',
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'center',
+                      alignItems: 'flex-start',
+                      gap: '24px',
                       cursor: 'pointer',
                       textAlign: 'left',
                       fontFamily: 'inherit',
-                      transition: 'background 0.15s ease'
+                      transition: 'opacity 0.2s ease'
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'}
-                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.opacity = '0.7'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.opacity = '1'
+                    }}
                   >
                     <div style={{
-                      fontSize: '16px',
+                      fontSize: '14px',
                       color: theme.colors.text.primary,
                       fontWeight: '500',
-                      lineHeight: '1.4',
+                      lineHeight: '1.5',
                       flex: 1,
-                      paddingRight: '16px'
+                      letterSpacing: '-0.01em'
                     }}>
                       {faq.question}
                     </div>
                     <div style={{
-                      fontSize: '20px',
+                      fontSize: '18px',
                       color: theme.colors.text.secondary,
                       lineHeight: '1',
                       flexShrink: 0,
-                      transition: 'transform 0.2s ease',
-                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+                      transition: 'transform 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                      transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                      marginTop: '2px'
                     }}>
                       ↓
                     </div>
                   </button>
-                  {isExpanded && (
+
+                  <div style={{
+                    overflow: 'hidden',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    maxHeight: isExpanded ? '500px' : '0',
+                    opacity: isExpanded ? '1' : '0'
+                  }}>
                     <div style={{
-                      padding: '0 24px 20px 24px',
+                      paddingTop: isExpanded ? '20px' : '0',
                       fontSize: '15px',
                       color: theme.colors.text.secondary,
-                      lineHeight: '1.6'
+                      lineHeight: '1.7',
+                      fontWeight: '400',
+                      letterSpacing: '-0.005em',
+                      paddingRight: '48px'
                     }}>
                       {faq.answer}
                     </div>
-                  )}
+                  </div>
                 </div>
               )
             })}

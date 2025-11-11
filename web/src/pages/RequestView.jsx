@@ -157,9 +157,9 @@ function RequestView() {
           background: theme.colors.bg.page,
           color: theme.colors.text.primary,
           marginTop: '60px',
-          padding: '60px 40px'
+          padding: '80px 48px'
         }}>
-          <p style={{ fontSize: '20px', color: theme.colors.text.secondary }}>Request not found</p>
+          <p style={{ fontSize: '14px', color: theme.colors.text.secondary, fontWeight: '400' }}>Request not found</p>
         </div>
       </>
     )
@@ -175,9 +175,9 @@ function RequestView() {
         marginTop: '60px'
       }}>
         <div style={{
-          maxWidth: '1200px',
+          maxWidth: '1000px',
           margin: '0 auto',
-          padding: '60px 40px'
+          padding: '80px 48px 120px'
         }}>
 
           {/* Back Button */}
@@ -186,84 +186,116 @@ function RequestView() {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '8px',
-              fontSize: '14px',
-              color: theme.colors.text.secondary,
+              gap: '6px',
+              fontSize: '13px',
+              color: theme.colors.text.tertiary,
               textDecoration: 'none',
-              marginBottom: '40px',
-              fontWeight: '500'
+              marginBottom: '56px',
+              fontWeight: '400',
+              transition: 'color 0.15s ease'
             }}
+            onMouseEnter={(e) => e.target.style.color = theme.colors.text.secondary}
+            onMouseLeave={(e) => e.target.style.color = theme.colors.text.tertiary}
           >
-            <span style={{ fontSize: '16px' }}>←</span>
+            <span style={{ fontSize: '14px' }}>←</span>
             <span>Back to Builder</span>
           </Link>
 
           {/* Request Header */}
-          <div style={{ marginBottom: '48px' }}>
+          <div style={{ marginBottom: '80px' }}>
             <h1 style={{
-              fontSize: '28px',
+              fontSize: '32px',
               fontWeight: '500',
-              margin: '0 0 8px 0',
-              letterSpacing: '-0.02em',
-              color: theme.colors.text.primary
+              margin: '0 0 16px 0',
+              letterSpacing: '-0.025em',
+              color: theme.colors.text.primary,
+              lineHeight: '1.2'
             }}>
               {data.request.title}
             </h1>
             {data.request.description && (
               <p style={{
-                fontSize: '15px',
+                fontSize: '14px',
                 color: theme.colors.text.secondary,
-                margin: '0 0 24px 0',
-                lineHeight: '1.6'
+                margin: '0',
+                lineHeight: '1.7',
+                fontWeight: '400',
+                maxWidth: '600px'
               }}>
                 {data.request.description}
               </p>
             )}
+          </div>
 
-            {/* Shareable Link */}
+          {/* Shareable Link Section */}
+          <div style={{ marginBottom: '80px' }}>
             <div style={{
-              marginTop: '24px',
+              fontSize: '11px',
+              fontWeight: '500',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              color: theme.colors.text.tertiary,
+              marginBottom: '16px'
+            }}>
+              Share Link
+            </div>
+            <div style={{
               padding: '16px 20px',
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '8px',
+              borderRadius: '6px',
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              gap: '16px'
+              gap: '20px'
             }}>
               <code style={{
-                fontSize: '14px',
+                fontSize: '13px',
                 color: theme.colors.text.secondary,
                 fontFamily: 'monospace',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
-                flex: 1
+                flex: 1,
+                fontWeight: '400'
               }}>
                 {window.location.origin}/r/{data.request.shortCode}
               </code>
               <button
                 onClick={copyLink}
                 style={{
-                  padding: '8px 16px',
+                  padding: '7px 14px',
                   background: theme.colors.white,
                   color: theme.colors.black,
                   border: 'none',
-                  borderRadius: '6px',
-                  fontSize: '14px',
+                  borderRadius: '5px',
+                  fontSize: '13px',
                   fontWeight: '500',
                   cursor: 'pointer',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  transition: 'opacity 0.15s ease'
                 }}
+                onMouseEnter={(e) => e.target.style.opacity = '0.85'}
+                onMouseLeave={(e) => e.target.style.opacity = '1'}
               >
                 Copy Link
               </button>
             </div>
+          </div>
 
-            {/* Request Actions */}
+          {/* Request Actions */}
+          <div style={{ marginBottom: '80px' }}>
             <div style={{
-              marginTop: '16px',
+              fontSize: '11px',
+              fontWeight: '500',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              color: theme.colors.text.tertiary,
+              marginBottom: '16px'
+            }}>
+              Actions
+            </div>
+            <div style={{
               display: 'flex',
               gap: '8px',
               flexWrap: 'wrap'
@@ -272,15 +304,18 @@ function RequestView() {
                 <button
                   onClick={downloadAll}
                   style={{
-                    padding: '8px 16px',
+                    padding: '7px 14px',
                     background: theme.colors.white,
                     color: theme.colors.black,
                     border: 'none',
-                    borderRadius: '6px',
-                    fontSize: '14px',
+                    borderRadius: '5px',
+                    fontSize: '13px',
                     fontWeight: '500',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    transition: 'opacity 0.15s ease'
                   }}
+                  onMouseEnter={(e) => e.target.style.opacity = '0.85'}
+                  onMouseLeave={(e) => e.target.style.opacity = '1'}
                 >
                   Download All ({data.uploads.length})
                 </button>
@@ -288,29 +323,41 @@ function RequestView() {
               <button
                 onClick={() => setConfirmToggle(true)}
                 style={{
-                  padding: '8px 16px',
+                  padding: '7px 14px',
                   background: 'transparent',
                   color: theme.colors.text.primary,
                   border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: '6px',
-                  fontSize: '14px',
+                  borderRadius: '5px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  transition: 'background 0.15s ease'
                 }}
+                onMouseEnter={(e) => e.target.style.background = theme.colors.bg.secondary}
+                onMouseLeave={(e) => e.target.style.background = 'transparent'}
               >
                 {data.request.isActive ? 'Close Request' : 'Reactivate Request'}
               </button>
               <button
                 onClick={() => setConfirmDelete(true)}
                 style={{
-                  padding: '8px 16px',
+                  padding: '7px 14px',
                   background: 'transparent',
                   color: theme.colors.text.tertiary,
                   border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: '6px',
-                  fontSize: '14px',
+                  borderRadius: '5px',
+                  fontSize: '13px',
                   fontWeight: '500',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  transition: 'background 0.15s ease, color 0.15s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = theme.colors.bg.secondary
+                  e.target.style.color = theme.colors.text.secondary
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent'
+                  e.target.style.color = theme.colors.text.tertiary
                 }}
               >
                 Delete
@@ -318,103 +365,123 @@ function RequestView() {
             </div>
           </div>
 
-          {/* Uploads Section */}
+          {/* Submissions Section */}
           <div>
-            <h2 style={{
-              fontSize: '16px',
+            <div style={{
+              fontSize: '11px',
               fontWeight: '500',
-              margin: '0 0 16px 0',
-              letterSpacing: '-0.01em',
-              color: theme.colors.text.primary
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              color: theme.colors.text.tertiary,
+              marginBottom: '16px'
             }}>
               Submissions ({data.uploads.length})
-            </h2>
+            </div>
 
             {data.uploads.length === 0 ? (
               <div style={{
                 textAlign: 'center',
-                padding: '60px 40px',
+                padding: '80px 48px',
                 background: theme.colors.bg.secondary,
                 border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '8px'
+                borderRadius: '6px'
               }}>
                 <p style={{
-                  fontSize: '15px',
-                  color: theme.colors.text.secondary,
+                  fontSize: '13px',
+                  color: theme.colors.text.tertiary,
                   margin: 0,
-                  lineHeight: '1.6'
+                  lineHeight: '1.6',
+                  fontWeight: '400'
                 }}>
                   No submissions yet. Share the link above to start receiving files.
                 </p>
               </div>
             ) : (
               <div style={{
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '8px',
-                overflow: 'hidden'
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '12px'
               }}>
-                {data.uploads.map((upload, index) => (
+                {data.uploads.map((upload) => (
                   <div
                     key={upload.id}
                     style={{
-                      padding: '20px 24px',
-                      borderBottom: index < data.uploads.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
+                      padding: '24px',
+                      background: theme.colors.bg.secondary,
+                      border: `1px solid ${theme.colors.border.light}`,
+                      borderRadius: '6px',
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'center',
-                      gap: '20px'
+                      alignItems: 'flex-start',
+                      gap: '24px',
+                      transition: 'border-color 0.15s ease'
                     }}
+                    onMouseEnter={(e) => e.currentTarget.style.borderColor = theme.colors.border.medium}
+                    onMouseLeave={(e) => e.currentTarget.style.borderColor = theme.colors.border.light}
                   >
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{
-                        fontSize: '15px',
-                        fontWeight: '500',
-                        marginBottom: '4px',
-                        color: theme.colors.text.primary
-                      }}>
-                        {upload.uploaderName}
-                      </div>
-                      {upload.uploaderEmail && (
+                      {/* Uploader Info */}
+                      <div style={{ marginBottom: '20px' }}>
                         <div style={{
-                          fontSize: '14px',
-                          color: theme.colors.text.secondary,
-                          marginBottom: '8px'
+                          fontSize: '13px',
+                          fontWeight: '500',
+                          marginBottom: '4px',
+                          color: theme.colors.text.primary,
+                          letterSpacing: '-0.01em'
                         }}>
-                          {upload.uploaderEmail}
+                          {upload.uploaderName}
                         </div>
-                      )}
-                      <div style={{
-                        fontSize: '14px',
-                        color: theme.colors.text.secondary,
-                        marginBottom: '4px',
-                        fontFamily: 'monospace',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap'
-                      }}>
-                        {upload.fileName}
+                        {upload.uploaderEmail && (
+                          <div style={{
+                            fontSize: '12px',
+                            color: theme.colors.text.tertiary,
+                            fontWeight: '400'
+                          }}>
+                            {upload.uploaderEmail}
+                          </div>
+                        )}
                       </div>
-                      <div style={{
-                        fontSize: '13px',
-                        color: theme.colors.text.tertiary
-                      }}>
-                        {(upload.fileSize / 1024 / 1024).toFixed(2)} MB · {new Date(upload.uploadedAt).toLocaleString()}
+
+                      {/* File Info */}
+                      <div>
+                        <div style={{
+                          fontSize: '12px',
+                          color: theme.colors.text.secondary,
+                          marginBottom: '6px',
+                          fontFamily: 'monospace',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          fontWeight: '400'
+                        }}>
+                          {upload.fileName}
+                        </div>
+                        <div style={{
+                          fontSize: '11px',
+                          color: theme.colors.text.tertiary,
+                          fontWeight: '400'
+                        }}>
+                          {(upload.fileSize / 1024 / 1024).toFixed(2)} MB · {new Date(upload.uploadedAt).toLocaleString()}
+                        </div>
                       </div>
                     </div>
 
                     <button
                       onClick={() => downloadFile(upload.id, upload.fileName)}
                       style={{
-                        padding: '8px 16px',
+                        padding: '7px 14px',
                         background: theme.colors.white,
                         color: theme.colors.black,
                         border: 'none',
-                        borderRadius: '6px',
-                        fontSize: '14px',
+                        borderRadius: '5px',
+                        fontSize: '13px',
                         fontWeight: '500',
                         cursor: 'pointer',
-                        flexShrink: 0
+                        flexShrink: 0,
+                        transition: 'opacity 0.15s ease'
                       }}
+                      onMouseEnter={(e) => e.target.style.opacity = '0.85'}
+                      onMouseLeave={(e) => e.target.style.opacity = '1'}
                     >
                       Download
                     </button>

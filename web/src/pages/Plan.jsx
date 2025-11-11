@@ -174,29 +174,30 @@ function Plan() {
         paddingTop: '54px'
       }}>
         <div style={{
-          maxWidth: '1400px',
+          maxWidth: '1200px',
           margin: '0 auto',
-          padding: '48px 32px',
-          paddingBottom: '120px'
+          padding: '80px 40px',
+          paddingBottom: '160px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '48px', textAlign: 'center' }}>
+          <div style={{ marginBottom: '80px', textAlign: 'center' }}>
             <h1 style={{
-              fontSize: '48px',
+              fontSize: '56px',
               fontWeight: '600',
-              margin: '0 0 8px 0',
+              margin: '0 0 16px 0',
               color: theme.colors.text.primary,
-              letterSpacing: '-0.02em',
+              letterSpacing: '-0.03em',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif'
             }}>
               Pricing
             </h1>
             <p style={{
-              fontSize: '18px',
+              fontSize: '17px',
               color: theme.colors.text.secondary,
               margin: 0,
-              lineHeight: '1.6'
+              lineHeight: '1.5',
+              fontWeight: '400'
             }}>
               Simple, transparent pricing for everyone
             </p>
@@ -206,54 +207,53 @@ function Plan() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: theme.spacing[6],
+            gap: '24px',
             maxWidth: '1000px',
-            margin: '0 auto 60px auto'
+            margin: '0 auto 120px auto'
           }}>
             {plans.map((plan) => (
               <div
                 key={plan.id}
                 style={{
                   background: theme.colors.bg.secondary,
-                  padding: '20px',
-                  borderRadius: '10px',
+                  padding: '40px',
+                  borderRadius: '12px',
                   border: plan.popular ? `1px solid ${theme.colors.white}` : `1px solid ${theme.colors.border.light}`,
-                  position: 'relative',
-                  // boxShadow removed: theme.shadows.md
+                  position: 'relative'
                 }}
               >
                 {/* Badge - Show CURRENT if on this plan, otherwise show POPULAR badge */}
                 {plan.id === currentPlan ? (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-14px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     background: theme.colors.white,
                     color: theme.colors.black,
-                    padding: '6px 20px',
-                    borderRadius: '4px',
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.semibold,
+                    padding: '8px 24px',
+                    borderRadius: '6px',
+                    fontSize: '11px',
+                    fontWeight: '600',
                     textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    letterSpacing: '0.5px'
                   }}>
                     Current Plan
                   </div>
                 ) : plan.popular && (
                   <div style={{
                     position: 'absolute',
-                    top: '-12px',
+                    top: '-14px',
                     left: '50%',
                     transform: 'translateX(-50%)',
                     background: theme.colors.white,
                     color: theme.colors.black,
-                    padding: '6px 20px',
-                    borderRadius: '4px',
-                    fontSize: theme.fontSize.xs,
-                    fontWeight: theme.weight.semibold,
+                    padding: '8px 24px',
+                    borderRadius: '6px',
+                    fontSize: '11px',
+                    fontWeight: '600',
                     textTransform: 'uppercase',
-                    letterSpacing: '1px'
+                    letterSpacing: '0.5px'
                   }}>
                     Popular
                   </div>
@@ -261,24 +261,24 @@ function Plan() {
 
                 {/* Plan Name */}
                 <div style={{
-                  fontSize: '11px',
+                  fontSize: '13px',
                   color: theme.colors.text.tertiary,
-                  marginBottom: theme.spacing[2],
+                  marginBottom: '12px',
                   textTransform: 'uppercase',
-                  letterSpacing: '1.2px',
+                  letterSpacing: '0.5px',
                   fontWeight: '600'
                 }}>
                   {plan.name}
                 </div>
 
                 {/* Price */}
-                <div style={{ marginBottom: theme.spacing[5] }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: theme.spacing[1] }}>
+                <div style={{ marginBottom: '32px' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                     <div style={{
-                      fontSize: '42px',
-                      fontWeight: '700',
+                      fontSize: '48px',
+                      fontWeight: '600',
                       color: theme.colors.text.primary,
-                      letterSpacing: '-0.02em',
+                      letterSpacing: '-0.03em',
                       lineHeight: '1',
                       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
                       fontVariantNumeric: 'tabular-nums'
@@ -286,9 +286,10 @@ function Plan() {
                       {plan.price}
                     </div>
                     <div style={{
-                      fontSize: theme.fontSize.sm,
+                      fontSize: '16px',
                       color: theme.colors.text.muted,
-                      marginBottom: '4px'
+                      marginBottom: '6px',
+                      fontWeight: '400'
                     }}>
                       {plan.period}
                     </div>
@@ -297,34 +298,37 @@ function Plan() {
 
                 {/* Description */}
                 <div style={{
-                  fontSize: theme.fontSize.xs,
+                  fontSize: '14px',
                   color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[5],
-                  lineHeight: '1.5'
+                  marginBottom: '40px',
+                  lineHeight: '1.5',
+                  fontWeight: '400'
                 }}>
                   {plan.description}
                 </div>
 
                 {/* Features */}
-                <div style={{ marginBottom: theme.spacing[5] }}>
+                <div style={{ marginBottom: '40px' }}>
                   {plan.features.map((feature, index) => (
                     <div
                       key={index}
                       style={{
                         fontSize: '14px',
                         color: feature.highlight ? theme.colors.text.primary : theme.colors.text.secondary,
-                        marginBottom: theme.spacing[2],
+                        marginBottom: '16px',
                         display: 'flex',
-                        alignItems: 'center',
-                        gap: theme.spacing[2],
-                        fontWeight: feature.highlight ? theme.weight.medium : theme.weight.normal
+                        alignItems: 'flex-start',
+                        gap: '12px',
+                        fontWeight: feature.highlight ? '500' : '400',
+                        lineHeight: '1.5'
                       }}
                     >
                       <span style={{
                         color: theme.colors.text.primary,
-                        fontSize: '10px',
+                        fontSize: '20px',
                         lineHeight: '1',
-                        marginRight: '2px'
+                        marginTop: '-2px',
+                        flexShrink: 0
                       }}>✓</span>
                       <span>{feature.text}</span>
                     </div>
@@ -337,12 +341,39 @@ function Plan() {
                   disabled={plan.id === currentPlan || upgrading}
                   style={{
                     width: '100%',
-                    ...(plan.id === currentPlan
-                      ? { ...theme.buttons.secondary.base, cursor: 'not-allowed', opacity: 0.6 }
+                    padding: '14px 24px',
+                    fontSize: '14px',
+                    fontWeight: '500',
+                    borderRadius: '8px',
+                    border: plan.id === currentPlan
+                      ? `1px solid ${theme.colors.border.medium}`
                       : plan.popular
-                        ? { ...theme.buttons.primary.base, ...(upgrading && theme.buttons.primary.disabled) }
-                        : { ...theme.buttons.secondary.base, ...(upgrading && theme.buttons.secondary.disabled) }
-                    )
+                        ? 'none'
+                        : `1px solid ${theme.colors.border.medium}`,
+                    background: plan.id === currentPlan
+                      ? 'transparent'
+                      : plan.popular
+                        ? theme.colors.white
+                        : 'transparent',
+                    color: plan.id === currentPlan
+                      ? theme.colors.text.muted
+                      : plan.popular
+                        ? theme.colors.black
+                        : theme.colors.text.primary,
+                    cursor: plan.id === currentPlan ? 'not-allowed' : 'pointer',
+                    opacity: plan.id === currentPlan ? 0.5 : 1,
+                    transition: 'all 0.15s ease',
+                    outline: 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (plan.id !== currentPlan && !upgrading) {
+                      e.target.style.opacity = '0.85'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (plan.id !== currentPlan) {
+                      e.target.style.opacity = '1'
+                    }
                   }}
                 >
                   {upgrading ? 'Processing...' : (plan.id === currentPlan ? 'Current Plan' : (plan.id === 'free' ? (currentPlan === 'pro' ? 'Switch to Free' : 'Get Started') : 'Upgrade to Pro'))}
@@ -354,22 +385,23 @@ function Plan() {
           {/* Feature Comparison Table */}
           <div style={{
             maxWidth: '1000px',
-            margin: '0 auto 80px auto'
+            margin: '0 auto 120px auto'
           }}>
             <h2 style={{
               fontSize: '32px',
               fontWeight: '600',
               textAlign: 'center',
-              marginBottom: '40px',
-              color: theme.colors.text.primary
+              marginBottom: '56px',
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em'
             }}>
               Compare Plans
             </h2>
 
             <div style={{
-              background: 'rgba(255, 255, 255, 0.02)',
+              background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: theme.radius.lg,
+              borderRadius: '12px',
               overflow: 'hidden'
             }}>
               {[
@@ -384,9 +416,8 @@ function Plan() {
                 <div key={index} style={{
                   display: 'grid',
                   gridTemplateColumns: '2fr 1fr 1fr',
-                  padding: '16px 24px',
-                  borderBottom: index < 7 ? `1px solid ${theme.colors.border.light}` : 'none',
-                  background: index % 2 === 0 ? 'transparent' : 'rgba(255, 255, 255, 0.01)'
+                  padding: '24px 32px',
+                  borderBottom: index < 6 ? `1px solid ${theme.colors.border.light}` : 'none'
                 }}>
                   <div style={{
                     fontSize: '14px',
@@ -398,14 +429,15 @@ function Plan() {
                   <div style={{
                     fontSize: '14px',
                     color: theme.colors.text.secondary,
-                    textAlign: 'center'
+                    textAlign: 'center',
+                    fontWeight: '400'
                   }}>
                     {row.free}
                   </div>
                   <div style={{
                     fontSize: '14px',
                     color: theme.colors.white,
-                    fontWeight: '600',
+                    fontWeight: '500',
                     textAlign: 'center'
                   }}>
                     {row.pro}
@@ -417,22 +449,23 @@ function Plan() {
 
           {/* Pricing FAQ */}
           <div style={{
-            maxWidth: '900px',
+            maxWidth: '800px',
             margin: '0 auto'
           }}>
             <h2 style={{
               fontSize: '32px',
               fontWeight: '600',
               textAlign: 'center',
-              marginBottom: '40px',
-              color: theme.colors.text.primary
+              marginBottom: '56px',
+              color: theme.colors.text.primary,
+              letterSpacing: '-0.02em'
             }}>
               Pricing FAQ
             </h2>
 
             <div style={{
               display: 'grid',
-              gap: '16px'
+              gap: '20px'
             }}>
               {[
                 {
@@ -453,23 +486,25 @@ function Plan() {
                 }
               ].map((faq, index) => (
                 <div key={index} style={{
-                  padding: '20px 24px',
-                  background: 'rgba(255, 255, 255, 0.02)',
+                  padding: '32px',
+                  background: theme.colors.bg.secondary,
                   border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.lg
+                  borderRadius: '12px'
                 }}>
                   <div style={{
                     fontSize: '16px',
                     fontWeight: '600',
                     color: theme.colors.text.primary,
-                    marginBottom: '8px'
+                    marginBottom: '12px',
+                    lineHeight: '1.5'
                   }}>
                     {faq.q}
                   </div>
                   <div style={{
                     fontSize: '14px',
                     color: theme.colors.text.secondary,
-                    lineHeight: '1.6'
+                    lineHeight: '1.6',
+                    fontWeight: '400'
                   }}>
                     {faq.a}
                   </div>
@@ -481,36 +516,47 @@ function Plan() {
           {/* CTA Section */}
           <div style={{
             maxWidth: '700px',
-            margin: '80px auto 0',
+            margin: '120px auto 0',
             textAlign: 'center',
-            padding: '40px',
-            background: 'rgba(255, 255, 255, 0.02)',
+            padding: '48px',
+            background: theme.colors.bg.secondary,
             border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: theme.radius.xl
+            borderRadius: '12px'
           }}>
             <h3 style={{
               fontSize: '24px',
               fontWeight: '600',
               color: theme.colors.text.primary,
-              marginBottom: '12px'
+              marginBottom: '16px',
+              letterSpacing: '-0.02em'
             }}>
               Ready to get started?
             </h3>
             <p style={{
-              fontSize: '16px',
+              fontSize: '15px',
               color: theme.colors.text.secondary,
-              marginBottom: '24px',
-              lineHeight: '1.6'
+              marginBottom: '32px',
+              lineHeight: '1.6',
+              fontWeight: '400'
             }}>
               Start sharing files today with our Free plan. Upgrade to Pro anytime for unlimited forms and advanced features.
             </p>
             <button
               onClick={() => navigate('/requests')}
               style={{
-                ...theme.buttons.primary.base,
-                padding: '12px 32px',
-                fontSize: '16px'
+                padding: '14px 32px',
+                fontSize: '14px',
+                fontWeight: '500',
+                borderRadius: '8px',
+                border: 'none',
+                background: theme.colors.white,
+                color: theme.colors.black,
+                cursor: 'pointer',
+                transition: 'opacity 0.15s ease',
+                outline: 'none'
               }}
+              onMouseEnter={(e) => { e.target.style.opacity = '0.85' }}
+              onMouseLeave={(e) => { e.target.style.opacity = '1' }}
             >
               Get Started
             </button>
@@ -530,51 +576,54 @@ function Plan() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 1000
+          zIndex: 1000,
+          backdropFilter: 'blur(4px)'
         }}
         onClick={() => setShowDowngradeModal(false)}
         >
           <div style={{
             background: theme.colors.bg.secondary,
-            borderRadius: theme.radius['2xl'],
-            padding: theme.spacing[12],
+            borderRadius: '12px',
+            padding: '40px',
             maxWidth: '500px',
             width: '90%',
-            border: `1px solid ${theme.colors.border.light}`,
-            // boxShadow removed
+            border: `1px solid ${theme.colors.border.light}`
           }}
           onClick={(e) => e.stopPropagation()}
           >
             <div style={{
-              fontSize: theme.fontSize['2xl'],
-              fontWeight: theme.weight.bold,
+              fontSize: '24px',
+              fontWeight: '600',
               color: theme.colors.text.primary,
-              marginBottom: theme.spacing[4]
+              marginBottom: '16px',
+              letterSpacing: '-0.02em'
             }}>
               Switch to Free Plan?
             </div>
 
             <div style={{
-              fontSize: theme.fontSize.base,
+              fontSize: '14px',
               color: theme.colors.text.secondary,
-              marginBottom: theme.spacing[6],
-              lineHeight: '1.6'
+              marginBottom: '24px',
+              lineHeight: '1.6',
+              fontWeight: '400'
             }}>
               You'll lose access to these Pro features:
             </div>
 
             <div style={{
               background: theme.colors.bg.tertiary,
-              padding: theme.spacing[6],
-              borderRadius: theme.radius.xl,
-              marginBottom: theme.spacing[8]
+              padding: '24px',
+              borderRadius: '8px',
+              marginBottom: '32px'
             }}>
               <ul style={{
                 margin: 0,
-                paddingLeft: theme.spacing[6],
+                paddingLeft: '20px',
                 color: theme.colors.text.primary,
-                fontSize: theme.fontSize.sm,
-                lineHeight: '1.8'
+                fontSize: '14px',
+                lineHeight: '1.8',
+                fontWeight: '400'
               }}>
                 <li>Advanced analytics & insights</li>
                 <li>Password-protected requests</li>
@@ -589,25 +638,45 @@ function Plan() {
 
             <div style={{
               display: 'flex',
-              gap: theme.spacing[4]
+              gap: '12px'
             }}>
               <button
                 onClick={() => setShowDowngradeModal(false)}
                 style={{
-                  ...theme.buttons.secondary.base,
                   flex: 1,
-                  padding: '12px 24px'
+                  padding: '14px 24px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  borderRadius: '8px',
+                  border: `1px solid ${theme.colors.border.medium}`,
+                  background: 'transparent',
+                  color: theme.colors.text.primary,
+                  cursor: 'pointer',
+                  transition: 'opacity 0.15s ease',
+                  outline: 'none'
                 }}
+                onMouseEnter={(e) => { e.target.style.opacity = '0.7' }}
+                onMouseLeave={(e) => { e.target.style.opacity = '1' }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleDowngradeToFree}
                 style={{
-                  ...theme.buttons.danger.base,
                   flex: 1,
-                  padding: '12px 24px'
+                  padding: '14px 24px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  borderRadius: '8px',
+                  border: 'none',
+                  background: theme.colors.white,
+                  color: theme.colors.black,
+                  cursor: 'pointer',
+                  transition: 'opacity 0.15s ease',
+                  outline: 'none'
                 }}
+                onMouseEnter={(e) => { e.target.style.opacity = '0.85' }}
+                onMouseLeave={(e) => { e.target.style.opacity = '1' }}
               >
                 Yes, Switch to Free
               </button>
