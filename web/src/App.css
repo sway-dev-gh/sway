@@ -36,6 +36,12 @@ body {
   background: #404040;
 }
 
+/* WHITE CHECKBOXES - NO BLUE */
+input[type="checkbox"] {
+  accent-color: #ffffff;
+  cursor: pointer;
+}
+
 /* ALIEN PREMIUM THEME - Apple x Travis Scott at 3am */
 :root {
   --black: #000000;
