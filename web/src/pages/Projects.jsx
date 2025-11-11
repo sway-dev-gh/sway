@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
 import Layout from '../components/Layout'
 import theme from '../theme'
 import api from '../api/axios'
@@ -105,7 +106,7 @@ function Projects() {
 
   return (
     <Layout>
-      <div style={{ padding: '48px 60px', maxWidth: '1600px', margin: '0 auto' }}>
+      <div style={{ padding: '80px 60px', maxWidth: '1600px', margin: '0 auto' }}>
         {/* Page Header */}
         <div style={{
           display: 'flex',
@@ -541,30 +542,124 @@ function Projects() {
               fontWeight: theme.weight.bold,
               marginBottom: '24px'
             }}>
-              Create New Project
+              Create New Review
             </h2>
-            <p style={{
-              color: theme.colors.text.secondary,
-              fontSize: theme.fontSize.sm,
-              marginBottom: '32px'
+            <form onSubmit={async (e) => {
+              e.preventDefault()
+              const formData = new FormData(e.target)
+              const title = formData.get('title')
+              const description = formData.get('description')
+
+              try {
+                const token = localStorage.getItem('token')
+                const { data } = await api.post('/api/projects', {
+                  title,
+                  description,
+                  type: 'review',
+                  status: 'active',
+                  priority: 'medium'
+                }, {
+                  headers: { Authorization: `Bearer ${token}` }
+                })
+
+                fetchProjects()
+                setShowCreateProject(false)
+                toast.success('Review created successfully!')
+              } catch (error) {
+                console.error('Failed to create review:', error)
+                toast.error('Failed to create review')
+              }
             }}>
-              This feature is coming soon. Projects will integrate with your existing request system.
-            </p>
-            <button
-              onClick={() => setShowCreateProject(false)}
-              style={{
-                background: theme.colors.white,
-                color: theme.colors.black,
-                padding: '12px 24px',
-                borderRadius: '8px',
-                border: 'none',
-                fontSize: theme.fontSize.sm,
-                fontWeight: theme.weight.medium,
-                cursor: 'pointer'
-              }}
-            >
-              Close
-            </button>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.primary,
+                  marginBottom: '8px'
+                }}>
+                  Review Title *
+                </label>
+                <input
+                  name="title"
+                  type="text"
+                  required
+                  placeholder="Enter review title..."
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: theme.colors.bg.secondary,
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    borderRadius: '6px',
+                    color: theme.colors.text.primary,
+                    fontSize: '14px',
+                    fontFamily: 'inherit'
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '32px' }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '14px',
+                  fontWeight: theme.weight.medium,
+                  color: theme.colors.text.primary,
+                  marginBottom: '8px'
+                }}>
+                  Description
+                </label>
+                <textarea
+                  name="description"
+                  rows={3}
+                  placeholder="Describe what needs to be reviewed..."
+                  style={{
+                    width: '100%',
+                    padding: '12px',
+                    background: theme.colors.bg.secondary,
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    borderRadius: '6px',
+                    color: theme.colors.text.primary,
+                    fontSize: '14px',
+                    fontFamily: 'inherit',
+                    resize: 'vertical'
+                  }}
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                <button
+                  type="button"
+                  onClick={() => setShowCreateProject(false)}
+                  style={{
+                    background: 'transparent',
+                    color: theme.colors.text.secondary,
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    border: `1px solid ${theme.colors.border.medium}`,
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: theme.weight.medium,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  style={{
+                    background: theme.colors.white,
+                    color: theme.colors.black,
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: theme.weight.semibold,
+                    cursor: 'pointer'
+                  }}
+                >
+                  Create Review
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
