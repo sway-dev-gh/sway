@@ -552,7 +552,7 @@ function Sidebar() {
     <AdminModeActivator onActivate={handleAdminActivate} />
 
     {/* AI Assistant Modal */}
-    <AIAssistant isOpen={showAIAssistant} onClose={() => setShowAIAssistant(false)} />
+    <AIAssistant isOpen={showAIAssistant} onClose={() => setShowAIAssistant(false)} userPlan={effectivePlan} />
     </>
   )
 }

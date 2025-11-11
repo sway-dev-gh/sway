@@ -126,7 +126,7 @@ function Plan() {
       description: 'AI-powered workflow automation',
       popular: true,
       features: [
-        { text: 'AI Assistant with GPT-4o integration', highlight: true },
+        { text: 'AI Knowledge Assistant (30 questions/month)', highlight: true },
         { text: 'AI file summarization & missing doc detection', highlight: true },
         { text: 'Smart scheduling suggestions & insights', highlight: true },
         { text: 'AI-powered follow-up email generation', highlight: true },

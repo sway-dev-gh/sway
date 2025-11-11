@@ -4,10 +4,27 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Sway brand voice system prompt
-const SWAY_VOICE = `You are Sway's AI assistant. Sway is a modern, minimal file workflow platform.
-Your tone should be: professional yet friendly, concise, actionable, and empowering.
-Keep responses brief and practical. Use clean, simple language that matches Sway's timeless design aesthetic.`;
+// Sway Knowledge Assistant system prompt
+const SWAY_KNOWLEDGE_PROMPT = `You are Sway's Knowledge Assistant - a helpful guide for users learning about Sway's file workflow platform.
+
+Your role is to:
+- Answer questions about how to use Sway features
+- Provide best practices for file collection workflows
+- Explain security and privacy features
+- Help users understand pricing and plans
+- Give tips for organizing file requests
+- Clarify any Sway-related concepts
+
+Your tone should be: professional yet friendly, concise, clear, and helpful.
+Keep responses brief (2-3 paragraphs max). Use clean, simple language.
+
+You should NOT:
+- Generate actual workflow content (emails, schedules, etc.)
+- Access or analyze user's specific data
+- Provide technical support for bugs
+- Make changes to user accounts
+
+Focus on being an educational knowledge resource about Sway itself.`;
 
 /**
  * Summarize uploaded files and detect missing documents
@@ -16,7 +33,7 @@ async function summarizeFiles(files, requestContext = '') {
   try {
     const fileList = files.map(f => `- ${f.name || f.filename} (${f.type || 'unknown type'})`).join('\n');
 
-    const prompt = `${SWAY_VOICE}
+    const prompt = `You are Sway's AI assistant. Sway is a modern file workflow platform.
 
 Context: ${requestContext || 'A file request workflow'}
 
@@ -54,7 +71,7 @@ Format as JSON:
  */
 async function generateFollowUp(requestDetails, filesReceived) {
   try {
-    const prompt = `${SWAY_VOICE}
+    const prompt = `You are Sway's AI assistant for a file workflow platform.
 
 Request: ${requestDetails.title || 'File request'}
 ${requestDetails.description ? `Description: ${requestDetails.description}` : ''}
@@ -91,7 +108,7 @@ async function generateSchedulingSuggestions(workflowData) {
   try {
     const { upcomingRequests = [], recentActivity = [] } = workflowData;
 
-    const prompt = `${SWAY_VOICE}
+    const prompt = `You are Sway's AI assistant for file workflow management.
 
 Upcoming requests: ${upcomingRequests.length}
 Recent activity: ${recentActivity.length} events
@@ -138,7 +155,7 @@ async function generateWorkflowInsights(analytics) {
       mostUsedTemplates = [],
     } = analytics;
 
-    const prompt = `${SWAY_VOICE}
+    const prompt = `You are Sway's AI assistant for file workflow analytics.
 
 Workflow analytics:
 - Total requests: ${totalRequests}
@@ -176,22 +193,19 @@ Format as JSON:
 }
 
 /**
- * General AI chat for asking questions about workflows
+ * Knowledge Assistant chat - for answering questions about Sway
+ * This is a knowledge tool, not a workflow automation tool
  */
 async function chat(message, context = {}) {
   try {
-    const contextStr = Object.keys(context).length > 0
-      ? `\n\nContext: ${JSON.stringify(context)}`
-      : '';
-
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       messages: [
-        { role: 'system', content: SWAY_VOICE },
-        { role: 'user', content: message + contextStr }
+        { role: 'system', content: SWAY_KNOWLEDGE_PROMPT },
+        { role: 'user', content: message }
       ],
-      temperature: 0.8,
-      max_tokens: 500,
+      temperature: 0.7,
+      max_tokens: 400,
     });
 
     return {
