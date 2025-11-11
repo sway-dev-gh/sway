@@ -2276,7 +2276,7 @@ function Requests() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 20px',
+          padding: '0 32px',
           background: theme.colors.bg.hover
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
@@ -3069,8 +3069,8 @@ function Requests() {
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               style={{
-                width: '1000px',
-                minHeight: '1400px',
+                width: '1600px',
+                minHeight: '900px',
                 background: theme.colors.bg.page,
                 borderRadius: '4px',
                 position: 'relative',
@@ -3969,8 +3969,8 @@ function Requests() {
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              width: '1000px',
-              minHeight: '1400px',
+              width: '1600px',
+              minHeight: '900px',
               background: theme.colors.bg.hover,
               position: 'relative',
               overflow: 'visible'
