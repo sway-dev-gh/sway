@@ -2275,118 +2275,280 @@ function Requests() {
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
       >
-        {/* Top Toolbar - Clean minimal design */}
+        {/* PREMIUM REDESIGNED HEADER */}
         <div style={{
-          height: '64px',
-          borderBottom: `1px solid ${theme.colors.border.medium}`,
+          height: '84px',
+          background: `linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, rgba(79, 70, 229, 0.01) 100%)`,
+          borderBottom: `1px solid rgba(255, 255, 255, 0.08)`,
+          backdropFilter: 'blur(12px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 32px',
-          background: theme.colors.bg.card
+          padding: '0 40px',
+          position: 'relative',
+          overflow: 'hidden'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Subtle background patterns */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'radial-gradient(circle at 80% 20%, rgba(79, 70, 229, 0.04) 0%, transparent 50%)',
+            pointerEvents: 'none'
+          }}></div>
+
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '20px',
+            position: 'relative',
+            zIndex: 2
+          }}>
+            {/* Project status indicator */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              background: 'rgba(34, 197, 94, 0.1)',
+              border: '1px solid rgba(34, 197, 94, 0.2)',
+              borderRadius: '20px',
+              padding: '6px 14px'
+            }}>
+              <div style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                background: '#22C55E',
+                animation: 'pulse 2s infinite'
+              }}></div>
+              <span style={{
+                fontSize: '12px',
+                fontWeight: '500',
+                color: '#22C55E',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                Live Editor
+              </span>
+            </div>
+
+            {/* Enhanced title section */}
             {isEditingTitle ? (
-              <input
-                type="text"
-                value={formTitle}
-                maxLength={50}
-                onChange={(e) => {
-                  const value = e.target.value
-                  if (value.length <= 50) {
-                    setFormTitle(value)
-                  }
-                }}
-                onBlur={() => setIsEditingTitle(false)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') setIsEditingTitle(false)
-                }}
-                autoFocus
-                style={{
-                  background: 'transparent',
-                  border: 'none',
-                  borderBottom: `1px solid ${theme.colors.border.medium}`,
-                  color: theme.colors.text.primary,
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  padding: '8px 0',
-                  outline: 'none',
-                  fontFamily: 'inherit',
-                  minWidth: '300px'
-                }}
-              />
+              <div style={{
+                position: 'relative',
+                background: 'rgba(255, 255, 255, 0.02)',
+                borderRadius: '12px',
+                padding: '2px',
+                border: '1px solid rgba(79, 70, 229, 0.3)'
+              }}>
+                <input
+                  type="text"
+                  value={formTitle}
+                  maxLength={50}
+                  onChange={(e) => {
+                    const value = e.target.value
+                    if (value.length <= 50) {
+                      setFormTitle(value)
+                    }
+                  }}
+                  onBlur={() => setIsEditingTitle(false)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') setIsEditingTitle(false)
+                  }}
+                  autoFocus
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: theme.colors.text.primary,
+                    fontSize: '22px',
+                    fontWeight: '700',
+                    padding: '12px 18px',
+                    outline: 'none',
+                    fontFamily: 'inherit',
+                    minWidth: '350px',
+                    borderRadius: '10px'
+                  }}
+                />
+              </div>
             ) : (
-              <h1
-                onClick={() => setIsEditingTitle(true)}
-                style={{
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  margin: 0,
-                  cursor: 'pointer',
-                  padding: '8px',
-                  borderRadius: theme.radius.sm,
-                  maxWidth: '400px',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                  color: theme.colors.text.primary
-                }}
-              >
-                {formTitle}
-              </h1>
+              <div style={{ position: 'relative' }}>
+                <h1
+                  onClick={() => setIsEditingTitle(true)}
+                  style={{
+                    fontSize: '22px',
+                    fontWeight: '700',
+                    margin: 0,
+                    cursor: 'pointer',
+                    padding: '12px 18px',
+                    borderRadius: '12px',
+                    maxWidth: '400px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    color: theme.colors.text.primary,
+                    background: 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(8px)',
+                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                >
+                  {formTitle}
+                </h1>
+                <div style={{
+                  position: 'absolute',
+                  bottom: '-2px',
+                  left: '18px',
+                  fontSize: '11px',
+                  color: theme.colors.text.tertiary,
+                  fontWeight: '500',
+                  opacity: 0.6
+                }}>
+                  Click to edit
+                </div>
+              </div>
             )}
           </div>
 
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-            <button
-              onClick={handleUndo}
-              disabled={historyIndex <= 0}
-              style={{
-                ...theme.buttons.secondary.base,
-                color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.secondary,
-                cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
-                opacity: historyIndex <= 0 ? 0.4 : 1
-              }}
-            >
-              Undo
-            </button>
-            <button
-              onClick={handleRedo}
-              disabled={historyIndex >= history.length - 1}
-              style={{
-                ...theme.buttons.secondary.base,
-                color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.secondary,
-                cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
-                opacity: historyIndex >= history.length - 1 ? 0.4 : 1
-              }}
-            >
-              Redo
-            </button>
+          {/* Premium action buttons */}
+          <div style={{
+            display: 'flex',
+            gap: '12px',
+            alignItems: 'center',
+            position: 'relative',
+            zIndex: 2
+          }}>
+            {/* History controls with enhanced styling */}
+            <div style={{
+              display: 'flex',
+              gap: '4px',
+              background: 'rgba(255, 255, 255, 0.03)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '10px',
+              padding: '4px'
+            }}>
+              <button
+                onClick={handleUndo}
+                disabled={historyIndex <= 0}
+                style={{
+                  background: historyIndex <= 0 ? 'transparent' : 'rgba(255, 255, 255, 0.06)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  color: historyIndex <= 0 ? theme.colors.text.tertiary : theme.colors.text.primary,
+                  cursor: historyIndex <= 0 ? 'not-allowed' : 'pointer',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  opacity: historyIndex <= 0 ? 0.4 : 1,
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                ↶ Undo
+              </button>
+              <button
+                onClick={handleRedo}
+                disabled={historyIndex >= history.length - 1}
+                style={{
+                  background: historyIndex >= history.length - 1 ? 'transparent' : 'rgba(255, 255, 255, 0.06)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  padding: '8px 12px',
+                  color: historyIndex >= history.length - 1 ? theme.colors.text.tertiary : theme.colors.text.primary,
+                  cursor: historyIndex >= history.length - 1 ? 'not-allowed' : 'pointer',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  opacity: historyIndex >= history.length - 1 ? 0.4 : 1,
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                ↷ Redo
+              </button>
+            </div>
+
+            {/* Elegant divider */}
             <div style={{
               width: '1px',
-              height: '20px',
-              background: theme.colors.border.medium,
+              height: '32px',
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
               margin: '0 8px'
             }}></div>
+
+            {/* Premium action buttons */}
             <button
-              style={theme.buttons.secondary.base}
               onClick={() => setShowPreviewModal(true)}
+              style={{
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.12)',
+                borderRadius: '10px',
+                padding: '10px 20px',
+                color: theme.colors.text.primary,
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                backdropFilter: 'blur(8px)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
             >
+              <span style={{ fontSize: '16px' }}>👁</span>
               Preview
             </button>
+
             <button
-              style={theme.buttons.secondary.base}
               onClick={handleSave}
+              style={{
+                background: 'linear-gradient(135deg, rgba(34, 197, 94, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%)',
+                border: '1px solid rgba(34, 197, 94, 0.3)',
+                borderRadius: '10px',
+                padding: '10px 20px',
+                color: '#22C55E',
+                fontSize: '14px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                backdropFilter: 'blur(8px)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
             >
-              Save
+              <span style={{ fontSize: '16px' }}>💾</span>
+              Save Draft
             </button>
+
             <button
-              style={theme.buttons.primary.base}
               onClick={handlePublish}
+              style={{
+                background: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
+                border: 'none',
+                borderRadius: '10px',
+                padding: '12px 28px',
+                color: 'white',
+                fontSize: '14px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 4px 20px rgba(79, 70, 229, 0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
             >
-              Publish
+              <span style={{ fontSize: '16px' }}>🚀</span>
+              Publish Live
             </button>
           </div>
+
+          {/* Pulse animation styles */}
+          <style>{`
+            @keyframes pulse {
+              0%, 100% { opacity: 1; transform: scale(1); }
+              50% { opacity: 0.8; transform: scale(1.1); }
+            }
+          `}</style>
         </div>
 
         {/* Workspace Layout - Sidebar + Canvas */}
