@@ -47,7 +47,7 @@ function Sidebar() {
 
       if (isTyping) return
 
-      const pages = ['/dashboard', '/management', '/plan', '/notifications', '/settings']
+      const pages = ['/dashboard', '/projects', '/clients', '/plan', '/notifications', '/settings']
       const currentIndex = pages.indexOf(location.pathname)
 
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
@@ -110,14 +110,11 @@ function Sidebar() {
 
   const navSections = [
     {
-      label: 'Business Platform',
+      label: 'Workflow Platform',
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
-        { path: '/projects', label: 'Projects', planRequired: null },
-        { path: '/clients', label: 'Clients', planRequired: null },
-        { path: '/messages', label: 'Messages', planRequired: null },
-        { path: '/payments', label: 'Payments', planRequired: null },
-        { path: '/calendar', label: 'Calendar', planRequired: null }
+        { path: '/projects', label: 'Reviews', planRequired: null },
+        { path: '/clients', label: 'Clients', planRequired: null }
       ]
     },
     {

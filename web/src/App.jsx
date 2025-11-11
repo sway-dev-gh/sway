@@ -17,12 +17,9 @@ const Upload = lazy(() => import('./pages/Upload'))
 // Dashboard (Builder) - critical route with custom skeleton
 const Dashboard = lazy(() => import('./pages/Requests'))
 
-// Business Platform Routes
+// Workflow Platform Routes
 const Projects = lazy(() => import('./pages/Projects'))
 const Clients = lazy(() => import('./pages/Management'))
-const Messages = lazy(() => import('./pages/Messages'))
-const Payments = lazy(() => import('./pages/Payments'))
-const Calendar = lazy(() => import('./pages/Calendar'))
 
 // Legacy routes for backward compatibility
 const RequestView = lazy(() => import('./pages/RequestView'))
@@ -101,7 +98,7 @@ function App() {
           </Suspense>
         } />
 
-        {/* Business Platform Routes */}
+        {/* Workflow Platform Routes */}
         <Route path="/projects" element={
           <Suspense fallback={<TableSkeleton />}>
             <Projects />
@@ -110,21 +107,6 @@ function App() {
         <Route path="/clients" element={
           <Suspense fallback={<TableSkeleton />}>
             <Clients />
-          </Suspense>
-        } />
-        <Route path="/messages" element={
-          <Suspense fallback={<PageLoadingFallback />}>
-            <Messages />
-          </Suspense>
-        } />
-        <Route path="/payments" element={
-          <Suspense fallback={<TableSkeleton />}>
-            <Payments />
-          </Suspense>
-        } />
-        <Route path="/calendar" element={
-          <Suspense fallback={<PageLoadingFallback />}>
-            <Calendar />
           </Suspense>
         } />
 

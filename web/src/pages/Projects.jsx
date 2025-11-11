@@ -5,10 +5,10 @@ import theme from '../theme'
 import api from '../api/axios'
 
 /**
- * Projects Management Page
+ * Review Workflows Page
  *
- * Business owner interface for managing all client projects.
- * Replaces traditional "requests" with full project workspaces.
+ * Central hub for managing all review and approval workflows.
+ * Upload drafts, collect feedback, track approvals, and manage versions.
  */
 function Projects() {
   const navigate = useNavigate()
@@ -48,10 +48,10 @@ function Projects() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return theme.colors.white
-      case 'completed': return '#a3a3a3'
-      case 'review': return '#a3a3a3'
-      case 'cancelled': return '#525252'
+      case 'active': return '#a3a3a3'    // Needs Changes
+      case 'completed': return theme.colors.white  // Approved
+      case 'review': return '#525252'    // Pending Review
+      case 'cancelled': return '#808080' // Rejected
       default: return theme.colors.text.secondary
     }
   }
@@ -73,19 +73,19 @@ function Projects() {
     }).format(amount)
   }
 
-  const getProjectStats = () => {
+  const getReviewStats = () => {
     const stats = {
       total: projects.length,
-      active: projects.filter(p => p.status === 'active').length,
-      completed: projects.filter(p => p.status === 'completed').length,
-      review: projects.filter(p => p.status === 'review').length,
-      totalValue: projects.reduce((sum, p) => sum + (p.quotedAmount || 0), 0),
-      activeValue: projects.filter(p => p.status === 'active').reduce((sum, p) => sum + (p.quotedAmount || 0), 0)
+      pending: projects.filter(p => p.status === 'review').length,
+      approved: projects.filter(p => p.status === 'completed').length,
+      needsChanges: projects.filter(p => p.status === 'active').length,
+      avgReviewTime: projects.length > 0 ? Math.round(projects.reduce((sum, p) => sum + (p.reviewDays || 2), 0) / projects.length) : 0,
+      totalFeedback: projects.reduce((sum, p) => sum + (p.commentCount || 0), 0)
     }
     return stats
   }
 
-  const stats = getProjectStats()
+  const stats = getReviewStats()
 
   if (loading) {
     return (
@@ -121,14 +121,14 @@ function Projects() {
               letterSpacing: '-2px',
               marginBottom: '8px'
             }}>
-              Projects
+              Reviews
             </h1>
             <p style={{
               fontSize: '16px',
               color: theme.colors.text.secondary,
               fontWeight: '500'
             }}>
-              Manage all client projects and workspaces
+              Upload drafts, collect feedback, and manage approval workflows
             </p>
           </div>
           <button
@@ -157,7 +157,7 @@ function Projects() {
               e.target.style.background = 'rgba(255, 255, 255, 0.08)'
             }}
           >
-            + Create Project
+            + Upload for Review
           </button>
         </div>
 
@@ -182,7 +182,7 @@ function Projects() {
               letterSpacing: '0.5px',
               marginBottom: '8px'
             }}>
-              Total Projects
+              Total Reviews
             </div>
             <div style={{
               color: theme.colors.text.primary,
@@ -207,14 +207,14 @@ function Projects() {
               letterSpacing: '0.5px',
               marginBottom: '8px'
             }}>
-              Active Projects
+              Pending Review
             </div>
             <div style={{
-              color: theme.colors.white,
+              color: '#a3a3a3',
               fontSize: '32px',
               fontWeight: theme.weight.bold
             }}>
-              {stats.active}
+              {stats.pending}
             </div>
           </div>
 
@@ -232,39 +232,39 @@ function Projects() {
               letterSpacing: '0.5px',
               marginBottom: '8px'
             }}>
-              Total Value
+              Approved
+            </div>
+            <div style={{
+              color: theme.colors.white,
+              fontSize: '32px',
+              fontWeight: theme.weight.bold
+            }}>
+              {stats.approved}
+            </div>
+          </div>
+
+          <div style={{
+            background: theme.colors.bg.hover,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '16px',
+            padding: '24px'
+          }}>
+            <div style={{
+              color: theme.colors.text.secondary,
+              fontSize: theme.fontSize.xs,
+              fontWeight: theme.weight.semibold,
+              textTransform: 'uppercase',
+              letterSpacing: '0.5px',
+              marginBottom: '8px'
+            }}>
+              Avg Review Time
             </div>
             <div style={{
               color: theme.colors.text.primary,
               fontSize: '32px',
               fontWeight: theme.weight.bold
             }}>
-              {formatCurrency(stats.totalValue)}
-            </div>
-          </div>
-
-          <div style={{
-            background: theme.colors.bg.hover,
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '16px',
-            padding: '24px'
-          }}>
-            <div style={{
-              color: theme.colors.text.secondary,
-              fontSize: theme.fontSize.xs,
-              fontWeight: theme.weight.semibold,
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px',
-              marginBottom: '8px'
-            }}>
-              Active Value
-            </div>
-            <div style={{
-              color: theme.colors.white,
-              fontSize: '32px',
-              fontWeight: theme.weight.bold
-            }}>
-              {formatCurrency(stats.activeValue)}
+              {stats.avgReviewTime}d
             </div>
           </div>
         </div>
@@ -278,31 +278,38 @@ function Projects() {
           gap: '20px'
         }}>
           <div style={{ display: 'flex', gap: '8px' }}>
-            {['all', 'active', 'review', 'completed'].map(status => (
-              <button
-                key={status}
-                onClick={() => setFilter(status)}
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  border: 'none',
-                  background: filter === status ? theme.colors.white : 'rgba(255, 255, 255, 0.08)',
-                  color: filter === status ? theme.colors.black : theme.colors.text.secondary,
-                  fontSize: theme.fontSize.sm,
-                  fontWeight: theme.weight.medium,
-                  cursor: 'pointer',
-                  textTransform: 'capitalize',
-                  transition: 'all 200ms'
-                }}
-              >
-                {status}
-              </button>
-            ))}
+            {['all', 'active', 'review', 'completed'].map(status => {
+              const statusLabels = {
+                all: 'All',
+                active: 'Needs Changes',
+                review: 'Pending Review',
+                completed: 'Approved'
+              }
+              return (
+                <button
+                  key={status}
+                  onClick={() => setFilter(status)}
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    background: filter === status ? theme.colors.white : 'rgba(255, 255, 255, 0.08)',
+                    color: filter === status ? theme.colors.black : theme.colors.text.secondary,
+                    fontSize: theme.fontSize.sm,
+                    fontWeight: theme.weight.medium,
+                    cursor: 'pointer',
+                    transition: 'all 200ms'
+                  }}
+                >
+                  {statusLabels[status]}
+                </button>
+              )
+            })}
           </div>
 
           <input
             type="text"
-            placeholder="Search projects or clients..."
+            placeholder="Search reviews or reviewers..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
