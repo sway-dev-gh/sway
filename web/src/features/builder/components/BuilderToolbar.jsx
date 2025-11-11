@@ -63,7 +63,7 @@ function BuilderToolbar({
             fontSize: theme.fontSize.sm
           }}
         >
-          ← Back
+          Back
         </button>
 
         {isEditingTitle ? (

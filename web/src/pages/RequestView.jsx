@@ -197,7 +197,6 @@ function RequestView() {
             onMouseEnter={(e) => e.target.style.color = theme.colors.text.secondary}
             onMouseLeave={(e) => e.target.style.color = theme.colors.text.tertiary}
           >
-            <span style={{ fontSize: '14px' }}>←</span>
             <span>Back to Builder</span>
           </Link>
 

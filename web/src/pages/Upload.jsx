@@ -427,7 +427,7 @@ function Upload() {
             margin: '0 auto 32px auto',
             fontWeight: '400'
           }}>
-            ✓
+            Success
           </div>
 
           <h1 style={{
@@ -591,7 +591,7 @@ function Upload() {
                 lineHeight: '1',
                 fontWeight: '300'
               }}>
-                ↑
+
               </div>
               <div style={{
                 fontSize: '14px',
@@ -680,7 +680,7 @@ function Upload() {
                         fontWeight: '300'
                       }}
                     >
-                      ×
+                      Close
                     </button>
                   </div>
                 ))}

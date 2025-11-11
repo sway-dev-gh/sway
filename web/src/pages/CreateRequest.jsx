@@ -10,37 +10,37 @@ const PRESETS = [
     id: 'tax-documents',
     title: 'Tax Documents',
     description: 'Please upload W-2, 1099, and any other tax-related forms',
-    icon: '📋'
+    icon: ''
   },
   {
     id: 'receipts',
     title: 'Expense Receipts',
     description: 'Upload receipts for business expenses and reimbursements',
-    icon: '🧾'
+    icon: ''
   },
   {
     id: 'invoices',
     title: 'Invoice Submissions',
     description: 'Submit invoices for payment processing',
-    icon: '💰'
+    icon: ''
   },
   {
     id: 'photos',
     title: 'Photo Collection',
     description: 'Share photos and images for this project',
-    icon: '📸'
+    icon: ''
   },
   {
     id: 'documents',
     title: 'General Documents',
     description: 'Upload documents and files',
-    icon: '📄'
+    icon: ''
   },
   {
     id: 'custom',
     title: 'Custom Request',
     description: 'Create your own custom file request',
-    icon: '✏️'
+    icon: ''
   }
 ]
 

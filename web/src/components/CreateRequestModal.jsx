@@ -34,10 +34,10 @@ export default function CreateRequestModal({ isOpen, onClose, onSuccess }) {
   }
 
   const requestTypes = [
-    { id: 'document', label: 'Document Request', icon: '📄' },
-    { id: 'code', label: 'Code Snippet', icon: '💻' },
-    { id: 'file', label: 'File Upload', icon: '📁' },
-    { id: 'form', label: 'Form Submission', icon: '📝' }
+    { id: 'document', label: 'Document Request', icon: '' },
+    { id: 'code', label: 'Code Snippet', icon: '' },
+    { id: 'file', label: 'File Upload', icon: '' },
+    { id: 'form', label: 'Form Submission', icon: '' }
   ]
 
   const availableFileTypes = ['PDF', 'PNG', 'JPG', 'JPEG', 'DOCX', 'TXT', 'ZIP', 'CSV']

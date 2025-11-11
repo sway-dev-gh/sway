@@ -1083,7 +1083,7 @@ function Management() {
                         e.currentTarget.style.borderColor = '#262626'
                       }}
                     >
-                      ← Previous
+                      Previous
                     </button>
 
                     <h2 style={{
@@ -1145,7 +1145,7 @@ function Management() {
                           e.currentTarget.style.borderColor = '#262626'
                         }}
                       >
-                        Next →
+                        Next
                       </button>
                     </div>
                   </div>
@@ -1989,7 +1989,7 @@ function Management() {
                           e.currentTarget.style.color = '#737373'
                         }}
                       >
-                        ×
+                        Close
                       </button>
                     </div>
 
@@ -2119,7 +2119,7 @@ function Management() {
                     marginBottom: '24px',
                     opacity: 0.3
                   }}>
-                    📅
+
                   </div>
                   <h3 style={{
                     fontSize: '18px',

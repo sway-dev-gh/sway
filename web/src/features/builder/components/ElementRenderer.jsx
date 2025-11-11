@@ -27,7 +27,6 @@ function ElementRenderer({ element, isSelected, isLocked, isDragging, onMouseDow
     },
     dragging: {
       scale: 1.02,
-      boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
       transition: { duration: 0.1, ease: [0.22, 1, 0.36, 1] }
     }
   }
@@ -190,7 +189,6 @@ function ElementRenderer({ element, isSelected, isLocked, isDragging, onMouseDow
         alignItems: 'center',
         justifyContent: 'center'
       }}>
-        <div style={{ fontSize: '32px', marginBottom: '8px' }}>↑</div>
         <div style={{ fontSize: '14px', fontWeight: '500', color: theme.colors.text.primary }}>{properties.label}</div>
         <div style={{ fontSize: '11px', color: theme.colors.text.secondary, marginTop: '4px' }}>
           {properties.multiple ? 'Multiple files' : 'Single file'}

@@ -252,7 +252,7 @@ function ErrorHandlingExample() {
           Demonstrates React Error Boundary catching component errors
         </p>
         <p style={{ color: '#ff6666', fontSize: '13px', marginBottom: '12px' }}>
-          ⚠️ Warning: This will crash the component and show the error boundary page!
+          Warning: This will crash the component and show the error boundary page!
         </p>
 
         <button

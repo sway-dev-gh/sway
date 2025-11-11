@@ -322,7 +322,7 @@ function Sidebar() {
           aria-label="Open AI Assistant"
           style={{
             padding: '6px 14px',
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04))',
+            background: 'rgba(255, 255, 255, 0.08)',
             color: theme.colors.text.primary,
             border: `1px solid ${theme.colors.border.light}`,
             borderRadius: '6px',
@@ -335,15 +335,14 @@ function Sidebar() {
             gap: '6px'
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06))'
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.12)'
             e.currentTarget.style.borderColor = theme.colors.border.medium
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04))'
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.08)'
             e.currentTarget.style.borderColor = theme.colors.border.light
           }}
         >
-          <span style={{ fontSize: '14px' }}>✨</span>
           AI Assistant
         </button>
       </div>

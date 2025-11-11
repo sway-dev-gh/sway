@@ -331,7 +331,7 @@ function Plan() {
                         lineHeight: '1',
                         marginTop: '-2px',
                         flexShrink: 0
-                      }}>✓</span>
+                      }}>•</span>
                       <span>{feature.text}</span>
                     </div>
                   ))}
@@ -407,17 +407,22 @@ function Plan() {
               overflow: 'hidden'
             }}>
               {[
-                { feature: 'AI Assistant', free: '—', pro: '✓' },
-                { feature: 'AI File Summarization', free: '—', pro: '✓' },
-                { feature: 'Smart Scheduling', free: '—', pro: '✓' },
+                { feature: 'AI Assistant', free: '-', pro: 'Yes' },
+                { feature: 'AI File Summarization', free: '-', pro: 'Yes' },
+                { feature: 'Smart Scheduling', free: '-', pro: 'Yes' },
                 { feature: 'Active Forms', free: '5', pro: 'Unlimited' },
                 { feature: 'Storage', free: '2GB', pro: '50GB' },
-                { feature: 'Visual Builder', free: '—', pro: '✓' },
-                { feature: 'Password Protection', free: '—', pro: '✓' },
-                { feature: 'Bulk Download', free: '—', pro: '✓' },
-                { feature: 'Advanced Analytics', free: '—', pro: '✓' },
-                { feature: 'Priority Support', free: '—', pro: '✓' }
-              ].map((row, index) => (
+                { feature: 'Visual Builder', free: '-', pro: 'Yes' },
+                { feature: 'Password Protection', free: '-', pro: 'Yes' },
+                { feature: 'Bulk Download', free: '-', pro: 'Yes' },
+                { feature: 'Advanced Analytics', free: '-', pro: 'Yes' },
+                { feature: 'Priority Support', free: '-', pro: 'Yes' }
+              ].map((row, index) => {
+                const formatCell = (val) => {
+                  if (val === '-') return '-';
+                  return val;
+                };
+                return (
                 <div key={index} style={{
                   display: 'grid',
                   gridTemplateColumns: '2fr 1fr 1fr',
@@ -437,7 +442,7 @@ function Plan() {
                     textAlign: 'center',
                     fontWeight: '400'
                   }}>
-                    {row.free}
+                    {formatCell(row.free)}
                   </div>
                   <div style={{
                     fontSize: '14px',
@@ -445,12 +450,10 @@ function Plan() {
                     fontWeight: '500',
                     textAlign: 'center'
                   }}>
-                    {row.pro}
+                    {formatCell(row.pro)}
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              )})}
 
           {/* Pricing FAQ */}
           <div style={{
@@ -636,8 +639,8 @@ function Plan() {
                 <li>Bulk download (Download All)</li>
                 <li>File type breakdown</li>
                 <li>Top performing requests</li>
-                <li>200 active requests → 20 active requests</li>
-                <li>50GB storage → 2GB storage</li>
+                <li>200 active requests to 20 active requests</li>
+                <li>50GB storage to 2GB storage</li>
               </ul>
             </div>
 

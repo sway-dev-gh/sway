@@ -244,7 +244,7 @@ function FAQ() {
                       transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                       marginTop: '2px'
                     }}>
-                      ↓
+                      v
                     </div>
                   </button>
 

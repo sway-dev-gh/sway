@@ -957,7 +957,7 @@ function Responses() {
                     e.currentTarget.style.borderColor = '#262626'
                   }}
                 >
-                  ← Previous
+                  Previous
                 </button>
 
                 <h2 style={{
@@ -1019,7 +1019,7 @@ function Responses() {
                       e.currentTarget.style.borderColor = '#262626'
                     }}
                   >
-                    Next →
+                    Next
                   </button>
                 </div>
               </div>
@@ -1884,7 +1884,7 @@ function Responses() {
                   e.currentTarget.style.color = '#737373'
                 }}
               >
-                ×
+                Close
               </button>
             </div>
 

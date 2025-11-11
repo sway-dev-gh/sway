@@ -87,7 +87,6 @@ function BuilderCanvas({
             color: theme.colors.text.tertiary,
             pointerEvents: 'none'
           }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }}>↓</div>
             <div style={{ fontSize: '16px' }}>Drag elements or choose a template to start</div>
           </div>
         )}

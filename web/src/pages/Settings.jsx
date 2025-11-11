@@ -643,7 +643,7 @@ function Settings() {
                     lineHeight: '1',
                     marginTop: '-2px',
                     flexShrink: 0
-                  }}>✓</span>
+                  }}>•</span>
                   <span>{feature.text}</span>
                 </div>
               ))}
@@ -721,11 +721,11 @@ function Settings() {
           {[
             { feature: 'Active Forms', free: '5', pro: 'Unlimited' },
             { feature: 'Storage', free: '2GB', pro: '50GB' },
-            { feature: 'Visual Builder', free: '—', pro: '✓' },
-            { feature: 'Password Protection', free: '—', pro: '✓' },
-            { feature: 'Bulk Download', free: '—', pro: '✓' },
-            { feature: 'Advanced Analytics', free: '—', pro: '✓' },
-            { feature: 'Priority Support', free: '—', pro: '✓' }
+            { feature: 'Visual Builder', free: '-', pro: 'Yes' },
+            { feature: 'Password Protection', free: '-', pro: 'Yes' },
+            { feature: 'Bulk Download', free: '-', pro: 'Yes' },
+            { feature: 'Advanced Analytics', free: '-', pro: 'Yes' },
+            { feature: 'Priority Support', free: '-', pro: 'Yes' }
           ].map((row, index) => (
             <div key={index} style={{
               display: 'grid',
@@ -823,7 +823,7 @@ function Settings() {
                 transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
                 marginTop: '2px'
               }}>
-                ↓
+
               </div>
             </button>
 
@@ -937,7 +937,7 @@ function Settings() {
             Get help within 4 hours, Monday-Friday
           </div>
           <button
-            onClick={() => setActiveTab('plan')}
+            onClick={() => navigate('/plan')}
             style={{
               ...theme.buttons.primary.base
             }}
@@ -1118,7 +1118,6 @@ function Settings() {
             }}>
               {[
                 { id: 'account', label: 'Account' },
-                { id: 'plan', label: 'Plan' },
                 { id: 'faq', label: 'FAQ' },
                 { id: 'support', label: 'Support' }
               ].map(tab => (
@@ -1157,7 +1156,6 @@ function Settings() {
 
           {/* Tab Content */}
           {activeTab === 'account' && renderAccountTab()}
-          {activeTab === 'plan' && renderPlanTab()}
           {activeTab === 'faq' && renderFAQTab()}
           {activeTab === 'support' && renderSupportTab()}
 
@@ -1231,8 +1229,8 @@ function Settings() {
                 <li>Bulk download (Download All)</li>
                 <li>File type breakdown</li>
                 <li>Top performing requests</li>
-                <li>200 active requests → 20 active requests</li>
-                <li>50GB storage → 2GB storage</li>
+                <li>200 active requests to 20 active requests</li>
+                <li>50GB storage to 2GB storage</li>
               </ul>
             </div>
 

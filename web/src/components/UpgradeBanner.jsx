@@ -47,11 +47,10 @@ export default function UpgradeBanner({ user, plan, onClose }) {
       bottom: '32px',
       right: '32px',
       maxWidth: '380px',
-      background: 'linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%)',
-      border: `2px solid ${theme.colors.white}`,
+      background: '#FFFFFF',
       borderRadius: '12px',
       padding: '24px',
-      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5)',
+      border: '1px solid #000',
       zIndex: 999,
       animation: 'slideInFromBottom 0.4s ease'
     }}>
@@ -82,7 +81,7 @@ export default function UpgradeBanner({ user, plan, onClose }) {
           padding: '4px 8px'
         }}
       >
-        ×
+        Close
       </button>
 
       <div style={{
@@ -91,7 +90,6 @@ export default function UpgradeBanner({ user, plan, onClose }) {
         gap: '12px',
         marginBottom: '16px'
       }}>
-        <span style={{ fontSize: '28px' }}>✨</span>
         <div>
           <div style={{
             fontSize: '18px',
@@ -133,7 +131,7 @@ export default function UpgradeBanner({ user, plan, onClose }) {
               fontWeight: '500'
             }}
           >
-            <span style={{ color: '#000', fontSize: '16px' }}>✓</span>
+            <span style={{ color: '#000', fontSize: '16px' }}>•</span>
             {feature}
           </div>
         ))}
@@ -154,12 +152,10 @@ export default function UpgradeBanner({ user, plan, onClose }) {
           transition: 'all 0.2s ease'
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'translateY(-2px)';
-          e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+          e.currentTarget.style.opacity = '0.9';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'translateY(0)';
-          e.currentTarget.style.boxShadow = 'none';
+          e.currentTarget.style.opacity = '1';
         }}
       >
         Upgrade to Pro

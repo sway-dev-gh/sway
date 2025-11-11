@@ -153,7 +153,7 @@ export default function AIAssistant({ isOpen, onClose }) {
               padding: '4px 8px',
             }}
           >
-            ×
+            Close
           </button>
         </div>
 
