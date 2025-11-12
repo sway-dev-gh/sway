@@ -14,7 +14,7 @@ const statsRoutes = require('./routes/stats')
 const stripeRoutes = require('./routes/stripe')
 const adminRoutes = require('./routes/admin')
 const analyticsRoutes = require('./routes/analytics')
-const aiRoutes = require('./routes/ai')
+// const aiRoutes = require('./routes/ai') // Disabled - no OpenAI API key
 const migrateRoutes = require('./routes/migrate')
 
 // Collaboration features
@@ -55,7 +55,7 @@ app.use('/api/stats', statsRoutes)
 app.use('/api/stripe', stripeRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/analytics', analyticsRoutes)
-app.use('/api/ai', aiRoutes)
+// app.use('/api/ai', aiRoutes) // Disabled - no OpenAI API key
 app.use('/api/migrate', migrateRoutes)
 
 // Collaboration features
