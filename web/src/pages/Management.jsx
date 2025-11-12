@@ -583,10 +583,10 @@ function Management() {
           {/* Header */}
           <div style={{ marginBottom: '48px' }}>
             <h1 style={standardStyles.pageHeader}>
-              Management
+              Reviewers
             </h1>
             <p style={standardStyles.pageDescription}>
-              Manage reviewers and workflow analytics
+              Manage review teams, track feedback, and analyze workflow performance
             </p>
           </div>
 

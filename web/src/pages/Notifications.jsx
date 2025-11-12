@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
+import { standardStyles } from '../components/StandardStyles'
 
 function Notifications() {
   const navigate = useNavigate()
@@ -23,30 +24,86 @@ function Notifications() {
     try {
       const token = localStorage.getItem('token')
 
-      // Fetch all uploads/files which represent notifications
-      const uploadsResponse = await api.get('/api/files', {
+      // Fetch reviews to create review-related notifications
+      const reviewsResponse = await api.get('/api/reviews', {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      const files = uploadsResponse.data.files || []
+      const reviews = reviewsResponse.data.reviews || []
 
-      // Transform files into notifications
-      const notifs = files.map(file => ({
-        id: file.id,
-        type: 'upload',
-        title: 'New file uploaded',
-        message: `${file.uploaderName || 'Anonymous'} uploaded ${file.fileName}`,
-        formName: file.requestTitle || 'Unknown Form',
-        timestamp: file.uploadedAt,
-        read: false
-      }))
+      // Create review-related notifications
+      const notifs = []
 
-      // Sort by newest first
-      notifs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+      reviews.forEach(review => {
+        // Review created notification
+        notifs.push({
+          id: `review-created-${review.id}`,
+          type: 'review_created',
+          title: 'Review Workflow Started',
+          message: `Review "${review.title}" sent to ${review.reviewers?.length || 0} reviewer${(review.reviewers?.length || 0) !== 1 ? 's' : ''}`,
+          reviewId: review.id,
+          timestamp: review.createdAt,
+          priority: 'normal',
+          read: false
+        })
+
+        // Status change notifications
+        if (review.status === 'approved') {
+          notifs.push({
+            id: `review-approved-${review.id}`,
+            type: 'review_approved',
+            title: 'Review Approved ✓',
+            message: `"${review.title}" has been approved and is ready to proceed`,
+            reviewId: review.id,
+            timestamp: review.updatedAt || review.createdAt,
+            priority: 'high',
+            read: false
+          })
+        } else if (review.status === 'changes_requested') {
+          notifs.push({
+            id: `review-changes-${review.id}`,
+            type: 'review_changes',
+            title: 'Changes Requested',
+            message: `Reviewers have requested changes to "${review.title}"`,
+            reviewId: review.id,
+            timestamp: review.updatedAt || review.createdAt,
+            priority: 'high',
+            read: false
+          })
+        } else if (review.status === 'pending' && review.deadline) {
+          const deadline = new Date(review.deadline)
+          const now = new Date()
+          const daysDiff = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24))
+
+          if (daysDiff <= 1 && daysDiff >= 0) {
+            notifs.push({
+              id: `review-deadline-${review.id}`,
+              type: 'review_deadline',
+              title: 'Review Deadline Approaching',
+              message: `"${review.title}" deadline is ${daysDiff === 0 ? 'today' : 'tomorrow'}`,
+              reviewId: review.id,
+              timestamp: new Date(),
+              priority: 'urgent',
+              read: false
+            })
+          }
+        }
+      })
+
+      // Sort by priority and newest first
+      notifs.sort((a, b) => {
+        const priorityOrder = { urgent: 3, high: 2, normal: 1 }
+        const aPriority = priorityOrder[a.priority] || 1
+        const bPriority = priorityOrder[b.priority] || 1
+
+        if (aPriority !== bPriority) return bPriority - aPriority
+        return new Date(b.timestamp) - new Date(a.timestamp)
+      })
 
       setNotifications(notifs)
     } catch (err) {
       console.error('Failed to fetch notifications:', err)
+      setNotifications([])
     } finally {
       setLoading(false)
     }
@@ -62,6 +119,38 @@ function Notifications() {
     const days = Math.floor(hours / 24)
     if (days < 7) return `${days}d ago`
     return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+  }
+
+  const getNotificationStyle = (type, priority) => {
+    let icon, color
+
+    switch (type) {
+      case 'review_created':
+        icon = '📝'
+        color = '#a3a3a3'
+        break
+      case 'review_approved':
+        icon = '✅'
+        color = theme.colors.white
+        break
+      case 'review_changes':
+        icon = '🔄'
+        color = '#808080'
+        break
+      case 'review_deadline':
+        icon = '⏰'
+        color = '#525252'
+        break
+      default:
+        icon = '📌'
+        color = theme.colors.text.secondary
+    }
+
+    const borderColor = priority === 'urgent' ? '#525252' :
+                       priority === 'high' ? '#808080' :
+                       'rgba(255, 255, 255, 0.1)'
+
+    return { icon, color, borderColor }
   }
 
   if (loading) {
@@ -101,23 +190,12 @@ function Notifications() {
           padding: '48px 32px'
         }}>
           {/* Header */}
-          <div style={{ marginBottom: '48px', maxWidth: '900px', margin: '0 auto 48px', textAlign: 'center' }}>
-            <h1 style={{
-              fontSize: '56px',
-              fontWeight: '700',
-              margin: '0 0 16px 0',
-              color: theme.colors.text.primary,
-              letterSpacing: '-0.03em'
-            }}>
-              Activity
+          <div style={{ marginBottom: '48px' }}>
+            <h1 style={standardStyles.pageHeader}>
+              Review Notifications
             </h1>
-            <p style={{
-              fontSize: '20px',
-              color: theme.colors.text.secondary,
-              margin: 0,
-              lineHeight: '1.5'
-            }}>
-              Real-time updates for uploads, form views, and more
+            <p style={standardStyles.pageDescription}>
+              Stay updated on review progress, feedback, approvals, and deadlines
             </p>
           </div>
 
@@ -130,25 +208,30 @@ function Notifications() {
               <div style={{
                 textAlign: 'center',
                 padding: '120px 32px',
-                border: '1px solid #000000',
-                borderRadius: '8px',
-                background: '#000000'
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '16px',
+                background: theme.colors.bg.hover
               }}>
+                <div style={{
+                  fontSize: '48px',
+                  marginBottom: '24px'
+                }}>
+                  🔔
+                </div>
                 <h3 style={{
                   fontSize: '16px',
-                  fontWeight: '500',
-                  color: '#a3a3a3',
-                  margin: '0 0 6px 0',
-                  letterSpacing: '-0.01em'
+                  fontWeight: theme.weight.semibold,
+                  color: theme.colors.text.primary,
+                  margin: '0 0 8px 0'
                 }}>
-                  No activity yet
+                  No review notifications yet
                 </h3>
                 <p style={{
                   fontSize: '14px',
-                  color: '#525252',
+                  color: theme.colors.text.secondary,
                   margin: '0'
                 }}>
-                  Files uploaded to your requests will show up here
+                  You'll see updates when reviews are started, completed, or need attention
                 </p>
               </div>
             ) : (

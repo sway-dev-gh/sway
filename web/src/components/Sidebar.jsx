@@ -14,6 +14,7 @@ function Sidebar() {
   const [isAdminMode, setIsAdminMode] = useState(false)
   const [showMoreDropdown, setShowMoreDropdown] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showUserDropdown, setShowUserDropdown] = useState(false)
 
   // Calculate effective plan using centralized utility
   const effectivePlan = getEffectivePlan()
@@ -47,7 +48,7 @@ function Sidebar() {
 
       if (isTyping) return
 
-      const pages = ['/dashboard', '/projects', '/clients', '/plan', '/notifications', '/settings']
+      const pages = ['/dashboard', '/projects', '/clients', '/notifications', '/settings']
       const currentIndex = pages.indexOf(location.pathname)
 
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
@@ -59,9 +60,20 @@ function Sidebar() {
       }
     }
 
+    // Click outside handler for dropdown
+    const handleClickOutside = (e) => {
+      if (showUserDropdown && !e.target.closest('[data-user-dropdown]')) {
+        setShowUserDropdown(false)
+      }
+    }
+
     window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [location.pathname, navigate])
+    document.addEventListener('click', handleClickOutside)
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+      document.removeEventListener('click', handleClickOutside)
+    }
+  }, [location.pathname, navigate, showUserDropdown])
 
   const fetchData = async () => {
     try {
@@ -114,13 +126,12 @@ function Sidebar() {
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
         { path: '/projects', label: 'Reviews', planRequired: null },
-        { path: '/clients', label: 'Clients', planRequired: null }
+        { path: '/clients', label: 'Reviewers', planRequired: null }
       ]
     },
     {
       label: 'Account',
       items: [
-        { path: '/plan', label: 'Plan', planRequired: null },
         { path: '/notifications', label: 'Notifications', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
       ]
@@ -312,19 +323,28 @@ function Sidebar() {
 
       <div style={{
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        position: 'relative'
       }}>
-        {/* User Section */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: theme.spacing[3]
-        }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: theme.spacing[2]
-          }}>
+        {/* User Dropdown */}
+        <div style={{ position: 'relative' }} data-user-dropdown>
+          <button
+            onClick={() => setShowUserDropdown(!showUserDropdown)}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: theme.spacing[2],
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '6px 12px',
+              borderRadius: '6px',
+              transition: 'background 0.15s ease',
+              ':hover': {
+                background: 'rgba(255, 255, 255, 0.05)'
+              }
+            }}
+          >
             <div style={{
               width: '28px',
               height: '28px',
@@ -377,24 +397,83 @@ function Sidebar() {
                 </div>
               )}
             </div>
-          </div>
-
-          <button
-            onClick={handleLogout}
-            aria-label="Sign out of your account"
-            style={{
-              padding: '6px 12px',
-              background: 'transparent',
+            <div style={{
+              fontSize: '12px',
               color: theme.colors.text.secondary,
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '6px',
-              fontSize: '13px',
-              fontWeight: '500',
-              cursor: 'pointer'
-            }}
-          >
-            Sign Out
+              transform: showUserDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: 'transform 0.15s ease'
+            }}>
+              ▼
+            </div>
           </button>
+
+          {/* Dropdown Menu */}
+          {showUserDropdown && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              right: 0,
+              marginTop: '8px',
+              background: theme.colors.bg.sidebar,
+              border: `1px solid ${theme.colors.border.medium}`,
+              borderRadius: '8px',
+              padding: '8px',
+              minWidth: '160px',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+              zIndex: 1000
+            }}>
+              <Link
+                to="/plan"
+                onClick={() => setShowUserDropdown(false)}
+                style={{
+                  display: 'block',
+                  padding: '8px 12px',
+                  color: theme.colors.text.secondary,
+                  textDecoration: 'none',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  borderRadius: '6px',
+                  transition: 'all 0.15s ease',
+                  ':hover': {
+                    background: 'rgba(255, 255, 255, 0.05)',
+                    color: theme.colors.text.primary
+                  }
+                }}
+              >
+                Plan & Billing
+              </Link>
+              <button
+                onClick={() => {
+                  setShowUserDropdown(false)
+                  handleLogout()
+                }}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '8px 12px',
+                  background: 'transparent',
+                  color: theme.colors.text.secondary,
+                  border: 'none',
+                  fontSize: '13px',
+                  fontWeight: '500',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.15s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.05)'
+                  e.target.style.color = theme.colors.text.primary
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'transparent'
+                  e.target.style.color = theme.colors.text.secondary
+                }}
+              >
+                Sign Out
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -487,6 +566,24 @@ function Sidebar() {
           }}>
             {effectivePlan || 'Free'} Plan
           </div>
+          <Link
+            to="/plan"
+            onClick={() => setMobileMenuOpen(false)}
+            style={{
+              display: 'block',
+              padding: '12px 16px',
+              marginBottom: '12px',
+              color: theme.colors.text.secondary,
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: theme.weight.medium,
+              background: theme.colors.bg.hover,
+              borderRadius: theme.radius.md,
+              textAlign: 'center'
+            }}
+          >
+            Plan & Billing
+          </Link>
           <button
             onClick={handleLogout}
             style={{

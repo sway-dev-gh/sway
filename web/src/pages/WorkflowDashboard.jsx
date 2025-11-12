@@ -55,47 +55,7 @@ function WorkflowDashboard() {
       setReviews(data.reviews || [])
     } catch (error) {
       console.error('Failed to fetch reviews:', error)
-      // For now, use sample data
-      setReviews([
-        {
-          id: 1,
-          title: 'Q4 Marketing Campaign Review',
-          description: 'Final review of marketing materials before launch',
-          status: 'pending',
-          createdAt: new Date().toISOString(),
-          deadline: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-          files: [
-            { name: 'campaign-overview.pdf', size: '2.3 MB', type: 'pdf' },
-            { name: 'creative-assets.zip', size: '15.7 MB', type: 'zip' }
-          ],
-          reviewers: [
-            { email: 'sarah@company.com', status: 'pending', feedback: '' },
-            { email: 'mike@company.com', status: 'approved', feedback: 'Looks great!' }
-          ],
-          comments: 2,
-          approvals: 1,
-          version: 'v1.2'
-        },
-        {
-          id: 2,
-          title: 'Website Redesign Mockups',
-          description: 'Initial mockups for homepage redesign',
-          status: 'approved',
-          createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          deadline: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-          files: [
-            { name: 'homepage-mockup.figma', size: '8.1 MB', type: 'figma' },
-            { name: 'style-guide.pdf', size: '1.2 MB', type: 'pdf' }
-          ],
-          reviewers: [
-            { email: 'design@company.com', status: 'approved', feedback: 'Perfect direction!' },
-            { email: 'product@company.com', status: 'approved', feedback: 'Ready to implement' }
-          ],
-          comments: 5,
-          approvals: 2,
-          version: 'v2.0'
-        }
-      ])
+      setReviews([])
     }
   }
 
@@ -251,6 +211,21 @@ function WorkflowDashboard() {
     }
   }
 
+  // Calculate review statistics
+  const getReviewStats = () => {
+    const stats = {
+      total: reviews.length,
+      pending: reviews.filter(r => r.status === 'pending').length,
+      approved: reviews.filter(r => r.status === 'approved').length,
+      changesRequested: reviews.filter(r => r.status === 'changes_requested').length,
+      avgReviewTime: reviews.length > 0 ? Math.round(reviews.reduce((sum, r) => sum + (r.reviewDays || 3), 0) / reviews.length) : 0,
+      totalComments: reviews.reduce((sum, r) => sum + (r.comments || 0), 0)
+    }
+    return stats
+  }
+
+  const stats = getReviewStats()
+
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: theme.colors.bg.page }}>
       <Sidebar />
@@ -274,28 +249,92 @@ function WorkflowDashboard() {
 
           <button
             onClick={() => setShowUploadModal(true)}
-            style={{
-              padding: '12px 24px',
-              background: theme.colors.white,
-              color: theme.colors.black,
-              border: 'none',
-              borderRadius: '6px',
-              fontSize: '14px',
-              fontWeight: theme.weight.semibold,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
+            style={standardStyles.primaryButton}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#a3a3a3'
-              e.currentTarget.style.transform = 'translateY(-1px)'
+              Object.assign(e.target.style, getPrimaryButtonHover())
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = theme.colors.white
-              e.currentTarget.style.transform = 'translateY(0)'
+              Object.assign(e.target.style, standardStyles.primaryButton)
             }}
           >
             + Upload for Review
           </button>
+        </div>
+
+        {/* Review Statistics */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '20px',
+          marginBottom: '48px'
+        }}>
+          <div style={{
+            background: theme.colors.bg.hover,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '16px',
+            padding: '24px'
+          }}>
+            <div style={standardStyles.statsLabel}>
+              Total Reviews
+            </div>
+            <div style={standardStyles.statsNumber}>
+              {stats.total}
+            </div>
+            <div style={standardStyles.statsDescription}>
+              All workflows
+            </div>
+          </div>
+
+          <div style={{
+            background: theme.colors.bg.hover,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '16px',
+            padding: '24px'
+          }}>
+            <div style={standardStyles.statsLabel}>
+              Pending Review
+            </div>
+            <div style={{...standardStyles.statsNumber, color: '#a3a3a3'}}>
+              {stats.pending}
+            </div>
+            <div style={standardStyles.statsDescription}>
+              Awaiting feedback
+            </div>
+          </div>
+
+          <div style={{
+            background: theme.colors.bg.hover,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '16px',
+            padding: '24px'
+          }}>
+            <div style={standardStyles.statsLabel}>
+              Approved
+            </div>
+            <div style={{...standardStyles.statsNumber, color: theme.colors.white}}>
+              {stats.approved}
+            </div>
+            <div style={standardStyles.statsDescription}>
+              Ready to proceed
+            </div>
+          </div>
+
+          <div style={{
+            background: theme.colors.bg.hover,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '16px',
+            padding: '24px'
+          }}>
+            <div style={standardStyles.statsLabel}>
+              Avg Review Time
+            </div>
+            <div style={standardStyles.statsNumber}>
+              {stats.avgReviewTime}d
+            </div>
+            <div style={standardStyles.statsDescription}>
+              Days to completion
+            </div>
+          </div>
         </div>
 
         {/* Filters & Search */}

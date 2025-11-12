@@ -18,7 +18,6 @@ const Upload = lazy(() => import('./pages/Upload'))
 const Dashboard = lazy(() => import('./pages/WorkflowDashboard'))
 
 // Workflow Platform Routes
-const Projects = lazy(() => import('./pages/Projects'))
 const Clients = lazy(() => import('./pages/Management'))
 
 // Legacy routes for backward compatibility
@@ -99,11 +98,7 @@ function App() {
         } />
 
         {/* Workflow Platform Routes */}
-        <Route path="/projects" element={
-          <Suspense fallback={<TableSkeleton />}>
-            <Projects />
-          </Suspense>
-        } />
+        <Route path="/projects" element={<Navigate to="/dashboard" replace />} />
         <Route path="/clients" element={
           <Suspense fallback={<TableSkeleton />}>
             <Clients />
