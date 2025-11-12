@@ -66,8 +66,8 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
     }
 
     ownedProjectsQuery += `
-      GROUP BY p.id, p.user_id, p.title, p.description, p.project_type, p.status, p.visibility, p.settings, p.due_date, p.completed_at, p.created_at, p.updated_at
-      ORDER BY p.updated_at DESC
+      GROUP BY p.id, p.user_id, p.title, p.description, p.project_type, p.status, p.visibility, p.settings, p.due_date, p.completed_at, p.created_at
+      ORDER BY p.created_at DESC
     `
 
     // Get projects where user is collaborator
