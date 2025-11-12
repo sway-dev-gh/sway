@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import Layout from '../components/Layout'
+import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 import { standardStyles, getFilterButtonStyle, getPrimaryButtonHover } from '../components/StandardStyles'
@@ -89,7 +89,8 @@ function Projects() {
 
   if (loading) {
     return (
-      <Layout>
+      <>
+        <Sidebar />
         <div style={{ padding: '80px 60px', maxWidth: '1600px', margin: '0 auto' }}>
           <div style={{
             display: 'flex',
@@ -147,12 +148,13 @@ function Projects() {
             ))}
           </div>
         </div>
-      </Layout>
+      </>
     )
   }
 
   return (
-    <Sidebar>
+    <>
+      <Sidebar />
       <div style={{
         minHeight: '100vh',
         background: theme.colors.bg.page,
@@ -716,6 +718,7 @@ function Projects() {
           </div>
         )}
       </div>
+      </div>
 
       {/* Create Project Modal (placeholder) */}
       {showCreateProject && (
@@ -867,7 +870,7 @@ function Projects() {
           </div>
         </div>
       )}
-    </Layout>
+    </>
   )
 }
 
