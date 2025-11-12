@@ -37,8 +37,8 @@ router.post('/create-checkout-session', authenticateToken, stripeLimiter, async 
       return res.status(400).json({ error: 'Invalid plan ID' })
     }
 
-    // SwayFiles Pro Plan Price ID
-    const priceId = 'price_1SRM4OHh6kpeQiCo8U0xxGT5'
+    // SwayFiles Pro Plan Price ID from environment
+    const priceId = process.env.STRIPE_PRO_PRICE_ID
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
