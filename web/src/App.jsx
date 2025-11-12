@@ -19,7 +19,8 @@ const Upload = lazy(() => import('./pages/Upload'))
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 
 // Workflow Platform Routes
-const Projects = lazy(() => import('./pages/Projects'))
+const Projects = lazy(() => import('./pages/EnhancedProjects'))
+const ProjectWorkspace = lazy(() => import('./components/ProjectWorkspace'))
 const Clients = lazy(() => import('./pages/Management'))
 const Collaboration = lazy(() => import('./pages/Collaboration'))
 
@@ -44,11 +45,13 @@ function prefetchCriticalRoutes() {
     requestIdleCallback(() => {
       // Prefetch likely next routes
       import('./pages/Dashboard').catch(() => {}) // Dashboard (workspace-centric)
+      import('./pages/EnhancedProjects').catch(() => {}) // Enhanced Projects with review workflow
       import('./pages/Management').catch(() => {})
     }, { timeout: 2000 })
   } else {
     setTimeout(() => {
       import('./pages/Dashboard').catch(() => {})
+      import('./pages/EnhancedProjects').catch(() => {})
       import('./pages/Management').catch(() => {})
     }, 2000)
   }
@@ -109,6 +112,11 @@ function App() {
         <Route path="/projects" element={
           <Suspense fallback={<TableSkeleton />}>
             <Projects />
+          </Suspense>
+        } />
+        <Route path="/projects/:id" element={
+          <Suspense fallback={<DashboardSkeleton />}>
+            <ProjectWorkspace />
           </Suspense>
         } />
         <Route path="/clients" element={
