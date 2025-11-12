@@ -508,7 +508,7 @@ function Dashboard() {
         }}>
           {/* Workspace Header */}
           <div style={{
-            marginBottom: '48px',
+            marginBottom: '32px',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'flex-start',
@@ -602,6 +602,125 @@ function Dashboard() {
                 + New Project
               </Link>
             </div>
+          </div>
+
+          {/* Integrated Navigation Within Workspace */}
+          <div style={{
+            background: '#ffffff',
+            border: '1px solid #e2e8f0',
+            borderRadius: '12px',
+            padding: '8px',
+            marginBottom: '32px',
+            display: 'flex',
+            gap: '4px',
+            overflowX: 'auto'
+          }}>
+            <Link to="/projects" style={{
+              padding: '12px 20px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#334155',
+              background: selectedWorkspace.color,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.15s ease'
+            }}>
+              🚀 Projects
+            </Link>
+            <Link to="/collaboration" style={{
+              padding: '12px 20px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#334155',
+              background: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+              ✅ Reviews
+            </Link>
+            <Link to="/uploads" style={{
+              padding: '12px 20px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#334155',
+              background: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+              📁 Files
+            </Link>
+            <Link to="/clients" style={{
+              padding: '12px 20px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#334155',
+              background: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+              👥 Team
+            </Link>
+            <Link to="/notifications" style={{
+              padding: '12px 20px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#334155',
+              background: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+              🔔 Activity
+            </Link>
+            <Link to="/settings" style={{
+              padding: '12px 20px',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#334155',
+              background: 'transparent',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              whiteSpace: 'nowrap',
+              transition: 'all 0.15s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
+              ⚙️ Settings
+            </Link>
           </div>
 
           {/* Workspace Stats */}
