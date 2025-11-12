@@ -43,7 +43,7 @@ function TopNavigation() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
-      padding: '0 32px'
+      padding: '0 40px'
     }}>
 
       {/* Left side - Logo and Navigation */}
@@ -57,7 +57,7 @@ function TopNavigation() {
         <Link to="/dashboard" style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '12px',
+          gap: '10px',
           textDecoration: 'none',
           color: theme.colors.white
         }}>
@@ -65,14 +65,14 @@ function TopNavigation() {
             src="/logo.png"
             alt="Sway Logo"
             style={{
-              width: '32px',
-              height: '32px'
+              width: '28px',
+              height: '28px'
             }}
           />
           <span style={{
-            fontSize: '18px',
+            fontSize: '17px',
             fontWeight: '600',
-            letterSpacing: '-0.01em'
+            letterSpacing: '-0.02em'
           }}>
             Sway
           </span>
@@ -82,7 +82,7 @@ function TopNavigation() {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '32px'
+          gap: '24px'
         }}>
           {navItems.map((item) => (
             <Link
@@ -93,7 +93,7 @@ function TopNavigation() {
                 fontWeight: '500',
                 color: isActive(item.path) ? theme.colors.white : theme.colors.text.secondary,
                 textDecoration: 'none',
-                padding: '8px 12px',
+                padding: '12px 16px',
                 borderRadius: '6px',
                 transition: 'all 0.15s ease',
                 position: 'relative'
@@ -115,9 +115,9 @@ function TopNavigation() {
               {isActive(item.path) && (
                 <div style={{
                   position: 'absolute',
-                  bottom: '-17px',
-                  left: '12px',
-                  right: '12px',
+                  bottom: '-9px',
+                  left: '16px',
+                  right: '16px',
                   height: '2px',
                   background: theme.colors.white,
                   borderRadius: '1px'
