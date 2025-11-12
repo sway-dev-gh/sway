@@ -64,8 +64,8 @@ router.post('/signup', signupLimiter, async (req, res) => {
 
     // Create user
     const result = await pool.query(
-      'INSERT INTO users (email, password_hash, name) VALUES ($1, $2, $3) RETURNING id, email, name, plan',
-      [email, passwordHash, name || null]
+      'INSERT INTO users (email, password_hash, name, plan) VALUES ($1, $2, $3, $4) RETURNING id, email, name, plan',
+      [email, passwordHash, name || null, 'free']
     )
 
     const user = result.rows[0]

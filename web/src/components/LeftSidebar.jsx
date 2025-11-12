@@ -574,7 +574,7 @@ const LeftSidebar = () => {
             </span>
           </div>
           <div style={{ fontSize: '10px', color: '#666666', marginBottom: '10px' }}>
-            $29/month • Unlimited workspaces & files
+            $15/month • Unlimited workspaces & files
           </div>
           <button
             onClick={() => {
@@ -600,6 +600,79 @@ const LeftSidebar = () => {
           >
             Manage Subscription
           </button>
+
+          {/* Admin Controls - Only visible for testing */}
+          <div style={{ marginTop: '12px', padding: '8px', border: '1px solid #333333', borderRadius: '3px' }}>
+            <div style={{ fontSize: '9px', color: '#666666', marginBottom: '6px' }}>Admin Controls (Testing)</div>
+            <div style={{ display: 'flex', gap: '4px' }}>
+              <button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/admin/user-plan', {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-key': 'admin123' // You should set this as an env var
+                      },
+                      body: JSON.stringify({
+                        userEmail: state.user?.email,
+                        plan: 'free'
+                      })
+                    })
+                    if (response.ok) {
+                      window.location.reload()
+                    }
+                  } catch (error) {
+                    console.error('Failed to switch to free plan:', error)
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  background: '#333333',
+                  border: '1px solid #555555',
+                  color: '#ffffff',
+                  padding: '4px 6px',
+                  fontSize: '8px',
+                  borderRadius: '2px',
+                  cursor: 'pointer'
+                }}>
+                → Free
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    const response = await fetch('/api/admin/user-plan', {
+                      method: 'PUT',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'x-admin-key': 'admin123' // You should set this as an env var
+                      },
+                      body: JSON.stringify({
+                        userEmail: state.user?.email,
+                        plan: 'pro'
+                      })
+                    })
+                    if (response.ok) {
+                      window.location.reload()
+                    }
+                  } catch (error) {
+                    console.error('Failed to switch to pro plan:', error)
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  background: '#333333',
+                  border: '1px solid #555555',
+                  color: '#ffffff',
+                  padding: '4px 6px',
+                  fontSize: '8px',
+                  borderRadius: '2px',
+                  cursor: 'pointer'
+                }}>
+                → Pro
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -621,7 +694,13 @@ const LeftSidebar = () => {
             type="checkbox"
             checked={state.focusedView}
             onChange={actions.toggleFocusedView}
-            style={{ margin: 0 }}
+            style={{
+              margin: 0,
+              marginRight: '6px',
+              accentColor: '#ffffff',
+              backgroundColor: '#000000',
+              borderColor: '#666666'
+            }}
           />
           Focused View
         </label>

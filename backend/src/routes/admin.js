@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const rateLimit = require('express-rate-limit')
+const pool = require('../db/pool')
+const { authenticateToken } = require('../middleware/auth')
 
 // Rate limit for admin verification - strict limit
 const adminVerifyLimiter = rateLimit({
@@ -43,6 +45,66 @@ router.post('/verify', adminVerifyLimiter, async (req, res) => {
   } catch (error) {
     console.error('Admin verification error:', error)
     res.status(500).json({ error: 'Verification failed', valid: false })
+  }
+})
+
+// Require admin authentication for all subsequent routes
+const requireAdmin = (req, res, next) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({ error: 'Admin access required' })
+  }
+  next()
+}
+
+// PUT /api/admin/user-plan - Change a user's plan (admin only)
+router.put('/user-plan', authenticateToken, requireAdmin, async (req, res) => {
+  try {
+    const { userEmail, plan } = req.body
+
+    if (!userEmail || !plan) {
+      return res.status(400).json({ error: 'User email and plan are required' })
+    }
+
+    if (!['free', 'pro'].includes(plan.toLowerCase())) {
+      return res.status(400).json({ error: 'Plan must be "free" or "pro"' })
+    }
+
+    // Check if user exists
+    const userQuery = await pool.query('SELECT id, name, plan FROM users WHERE email = $1', [userEmail.toLowerCase()])
+
+    if (userQuery.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+    const user = userQuery.rows[0]
+    const newPlan = plan.toLowerCase()
+
+    // Update user's plan
+    const updateQuery = await pool.query(
+      'UPDATE users SET plan = $1, updated_at = NOW() WHERE email = $2 RETURNING *',
+      [newPlan, userEmail.toLowerCase()]
+    )
+
+    console.log(`Admin changed user ${userEmail} plan from ${user.plan} to ${newPlan}`)
+
+    res.json({
+      success: true,
+      message: `User ${userEmail} plan changed to ${newPlan}`,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: userEmail,
+        previousPlan: user.plan,
+        newPlan: newPlan
+      }
+    })
+
+  } catch (error) {
+    console.error('Admin plan change error:', error)
+    res.status(500).json({
+      error: 'Failed to change user plan',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
   }
 })
 
