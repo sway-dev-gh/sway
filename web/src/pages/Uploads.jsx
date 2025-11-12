@@ -189,12 +189,6 @@ const Uploads = () => {
                       navigate(`/projects/${upload.project_id}`)
                     }
                   }}
-                  onMouseEnter={(e) => {
-                    e.target.style.borderColor = '#666666'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.borderColor = '#ffffff'
-                  }}
                 >
                   <div style={{
                     display: 'flex',

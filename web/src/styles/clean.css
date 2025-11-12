@@ -2,7 +2,7 @@
 
 /* Remove all colored backgrounds and borders */
 * {
-  transition: all 0.15s ease !important;
+  /* Removed global transition to eliminate all animations */
 }
 
 /* Clean button styles - pure white/black */

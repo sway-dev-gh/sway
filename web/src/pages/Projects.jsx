@@ -261,12 +261,6 @@ const Projects = () => {
                     padding: '24px',
                     cursor: 'pointer',
                   }}
-                  onMouseEnter={(e) => {
-                    e.target.style.borderColor = '#ffffff'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.target.style.borderColor = '#ffffff'
-                  }}
                 >
                   <div style={{
                     display: 'flex',
