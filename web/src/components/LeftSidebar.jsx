@@ -242,25 +242,44 @@ const LeftSidebar = () => {
                 }}>
                   {workspace.name}
                 </div>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    if (confirm(`Delete workspace "${workspace.name}"?\n\nThis will permanently delete all files and sections in this workspace.`)) {
-                      actions.deleteWorkspace(workspace.id)
-                    }
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: '#666666',
-                    cursor: 'pointer',
-                    fontSize: '10px',
-                    padding: '2px'
-                  }}
-                  title="Delete workspace"
-                >
-                  ×
-                </button>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      actions.generateGuestLink(workspace.id)
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#666666',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      padding: '2px'
+                    }}
+                    title="Share workspace with guest collaborators"
+                  >
+                    ↗
+                  </button>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (confirm(`Delete workspace "${workspace.name}"?\n\nThis will permanently delete all files and sections in this workspace.`)) {
+                        actions.deleteWorkspace(workspace.id)
+                      }
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#666666',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      padding: '2px'
+                    }}
+                    title="Delete workspace"
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
               {workspace.description && (
                 <div style={{
@@ -604,6 +623,17 @@ const LeftSidebar = () => {
           alignItems: 'center',
           gap: '8px'
         }}>
+          {state.isGuest && (
+            <div style={{
+              fontSize: '10px',
+              color: '#ffa502',
+              background: '#333333',
+              padding: '2px 4px',
+              borderRadius: '2px'
+            }}>
+              GUEST
+            </div>
+          )}
           <div style={{
             fontSize: '10px',
             color: '#666666'
@@ -611,7 +641,7 @@ const LeftSidebar = () => {
             v2.0
           </div>
           <button
-            onClick={actions.logout}
+            onClick={state.isGuest ? actions.guestLogout : actions.logout}
             style={{
               background: 'none',
               border: '1px solid #333333',
@@ -620,7 +650,7 @@ const LeftSidebar = () => {
               fontSize: '10px',
               padding: '2px 4px'
             }}
-            title="Sign out"
+            title={state.isGuest ? "Leave workspace" : "Sign out"}
           >
             ⏻
           </button>

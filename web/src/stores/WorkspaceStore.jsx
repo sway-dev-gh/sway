@@ -20,6 +20,11 @@ const initialState = {
   user: null,
   token: localStorage.getItem('token') || null,
 
+  // Guest collaboration
+  isGuest: false,
+  guestName: null,
+  guestWorkspaceId: null,
+
   // Current workspace
   currentWorkspace: null,
 
@@ -83,7 +88,11 @@ const ACTIONS = {
   TOGGLE_FOCUSED_VIEW: 'TOGGLE_FOCUSED_VIEW',
 
   DELETE_FILE: 'DELETE_FILE',
-  DELETE_WORKSPACE: 'DELETE_WORKSPACE'
+  DELETE_WORKSPACE: 'DELETE_WORKSPACE',
+
+  GUEST_JOIN: 'GUEST_JOIN',
+  GUEST_LOGOUT: 'GUEST_LOGOUT',
+  GENERATE_GUEST_LINK: 'GENERATE_GUEST_LINK'
 }
 
 // Reducer
@@ -327,6 +336,23 @@ function workspaceReducer(state, action) {
         sections: state.currentWorkspace?.id === action.payload.workspaceId ? {} : state.sections,
         selectedFile: state.currentWorkspace?.id === action.payload.workspaceId ? null : state.selectedFile,
         selectedSection: state.currentWorkspace?.id === action.payload.workspaceId ? null : state.selectedSection
+      }
+
+    case ACTIONS.GUEST_JOIN:
+      return {
+        ...state,
+        isGuest: true,
+        guestName: action.payload.guestName,
+        guestWorkspaceId: action.payload.workspaceId,
+        currentWorkspace: action.payload.workspace,
+        isAuthenticated: true, // Treat guest as authenticated for UI purposes
+        user: { name: action.payload.guestName, email: null, isGuest: true }
+      }
+
+    case ACTIONS.GUEST_LOGOUT:
+      return {
+        ...initialState,
+        token: null
       }
 
     default:
@@ -626,6 +652,54 @@ export const WorkspaceProvider = ({ children }) => {
           payload: { error: error.message }
         })
       }
+    },
+
+    generateGuestLink: (workspaceId) => {
+      // Generate a secure guest link for this workspace
+      const guestToken = btoa(`${workspaceId}:${Date.now()}:${Math.random()}`)
+      const guestLink = `${window.location.origin}/guest/${guestToken}`
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(guestLink).then(() => {
+        alert(`Guest link copied to clipboard!\n\n${guestLink}\n\nShare this link with external collaborators. They can join without creating an account.`)
+      }).catch(() => {
+        alert(`Guest link generated:\n\n${guestLink}\n\nShare this link with external collaborators. They can join without creating an account.`)
+      })
+
+      actions.addActivity('guest_link_generated', 'Generated guest collaboration link', 'You')
+    },
+
+    joinAsGuest: async (guestToken, guestName, workspaceId) => {
+      try {
+        // For demo purposes, we'll simulate fetching workspace info
+        // In a real app, you'd validate the guest token with the backend
+        const workspace = state.workspaces.find(w => w.id === workspaceId) || {
+          id: workspaceId,
+          name: 'Guest Workspace',
+          description: 'Collaborating as guest'
+        }
+
+        dispatch({
+          type: ACTIONS.GUEST_JOIN,
+          payload: { guestName, workspaceId, workspace }
+        })
+
+        actions.addActivity('guest_joined', `${guestName} joined as guest collaborator`, guestName)
+
+        // Load files for the workspace
+        if (workspace) {
+          actions.selectWorkspace(workspace)
+        }
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+      }
+    },
+
+    guestLogout: () => {
+      dispatch({ type: ACTIONS.GUEST_LOGOUT })
     }
   }
 

@@ -3,16 +3,31 @@ import LeftSidebar from './components/LeftSidebar'
 import CenterWorkspace from './components/CenterWorkspace'
 import RightPanel from './components/RightPanel'
 import AuthForm from './components/AuthForm'
+import GuestForm from './components/GuestForm'
 import { WorkspaceProvider, useWorkspace } from './stores/WorkspaceStore'
 
 const AuthenticatedApp = () => {
   const { state, actions } = useWorkspace()
   const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false)
 
+  // Check if this is a guest link
+  const currentUrl = window.location.href
+  const guestMatch = currentUrl.match(/\/guest\/([^/?]+)/)
+  const guestToken = guestMatch ? guestMatch[1] : null
+
   // Initialize authentication on app start
   useEffect(() => {
+    if (guestToken) {
+      // Don't initialize regular auth for guest links
+      return
+    }
     actions.initializeAuth()
-  }, [])
+  }, [guestToken])
+
+  // Show guest form if accessing via guest link
+  if (guestToken && !state.isAuthenticated) {
+    return <GuestForm guestToken={guestToken} />
+  }
 
   // Show loading state while checking authentication
   if (state.isLoading && !state.isAuthenticated) {
