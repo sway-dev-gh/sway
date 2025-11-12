@@ -195,127 +195,517 @@ function Dashboard() {
         minHeight: '100vh',
         background: '#000000',
         color: '#ffffff',
-        paddingTop: '54px'
+        paddingTop: '68px'
       }}>
         <div style={{
           maxWidth: '1200px',
           margin: '0 auto',
           padding: '80px 40px 120px'
         }}>
-          {/* Header */}
+          {/* Welcome Header */}
           <div style={{
-            marginBottom: '64px',
-            maxWidth: '800px',
-            margin: '0 auto 64px',
-            textAlign: 'center'
+            marginBottom: '48px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            flexWrap: 'wrap',
+            gap: '24px'
           }}>
-            <h1 style={{
-              fontSize: '48px',
-              fontWeight: '600',
-              margin: '0 0 16px 0',
-              color: '#ffffff',
-              letterSpacing: '-0.02em',
-              lineHeight: '1.1'
+            <div>
+              <h1 style={{
+                fontSize: '32px',
+                fontWeight: '600',
+                margin: '0 0 8px 0',
+                color: '#ffffff',
+                letterSpacing: '-0.01em'
+              }}>
+                Welcome back
+              </h1>
+              <p style={{
+                fontSize: '16px',
+                color: '#a3a3a3',
+                margin: 0,
+                fontWeight: '400'
+              }}>
+                Here's what's happening with your file requests
+              </p>
+            </div>
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              flexWrap: 'wrap'
             }}>
-              Stop Asking For Files
-            </h1>
-            <p style={{
-              fontSize: '16px',
-              color: '#a3a3a3',
-              margin: 0,
-              lineHeight: '1.6',
-              fontWeight: '400'
-            }}>
-              Build a page. Share the link. Get their files. Done.
-            </p>
+              <Link to="/requests" style={{
+                background: '#ffffff',
+                color: '#000000',
+                padding: '12px 20px',
+                borderRadius: '6px',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '500',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                transition: 'all 0.2s ease'
+              }}>
+                + New Request
+              </Link>
+            </div>
           </div>
 
-          {/* Primary Actions */}
+          {/* Quick Stats Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '16px',
-            maxWidth: '960px',
-            margin: '0 auto'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: '24px',
+            marginBottom: '48px'
           }}>
-            <Link to="/requests" style={{ textDecoration: 'none' }}>
+            <div style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+              padding: '24px',
+              position: 'relative'
+            }}>
               <div style={{
-                padding: '32px',
-                border: '1px solid #525252',
-                borderRadius: '8px',
-                background: '#000000',
-                cursor: 'pointer',
-                height: '100%'
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
               }}>
                 <div style={{
-                  fontSize: '10px',
-                  color: '#a3a3a3',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  fontWeight: '600',
-                  marginBottom: '16px'
+                  width: '40px',
+                  height: '40px',
+                  background: '#1f1f1f',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px'
                 }}>
-                  Start Here
+                  📊
                 </div>
-                <div style={{
-                  fontSize: '24px',
+                <h3 style={{
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: '#ffffff',
-                  fontWeight: '600',
-                  marginBottom: '8px',
-                  letterSpacing: '-0.02em'
+                  margin: '0'
                 }}>
-                  New Request
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: '#a3a3a3',
-                  lineHeight: '1.5',
-                  fontWeight: '400'
-                }}>
-                  Build your upload page in 30 seconds
-                </div>
+                  Total Requests
+                </h3>
               </div>
-            </Link>
-
-            <Link to="/responses" style={{ textDecoration: 'none' }}>
               <div style={{
-                padding: '32px',
-                border: '1px solid #525252',
-                borderRadius: '8px',
-                background: '#000000',
-                cursor: 'pointer',
-                height: '100%'
+                fontSize: '28px',
+                fontWeight: '700',
+                color: '#ffffff',
+                marginBottom: '8px'
+              }}>
+                {stats.totalRequests}
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: '#a3a3a3'
+              }}>
+                {stats.activeRequests} currently active
+              </div>
+            </div>
+
+            <div style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+              padding: '24px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
               }}>
                 <div style={{
-                  fontSize: '10px',
-                  color: '#a3a3a3',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
+                  width: '40px',
+                  height: '40px',
+                  background: '#1f1f1f',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px'
+                }}>
+                  📁
+                </div>
+                <h3 style={{
+                  fontSize: '16px',
                   fontWeight: '600',
+                  color: '#ffffff',
+                  margin: '0'
+                }}>
+                  Files Received
+                </h3>
+              </div>
+              <div style={{
+                fontSize: '28px',
+                fontWeight: '700',
+                color: '#ffffff',
+                marginBottom: '8px'
+              }}>
+                {stats.totalUploads}
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: '#a3a3a3'
+              }}>
+                {formatStorageMB(stats.storageUsed)} used
+              </div>
+            </div>
+
+            <div style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+              padding: '24px'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
+              }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  background: '#1f1f1f',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '18px'
+                }}>
+                  💾
+                </div>
+                <h3 style={{
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  color: '#ffffff',
+                  margin: '0'
+                }}>
+                  Storage Used
+                </h3>
+              </div>
+              <div style={{
+                fontSize: '28px',
+                fontWeight: '700',
+                color: '#ffffff',
+                marginBottom: '8px'
+              }}>
+                {getStoragePercentage().toFixed(0)}%
+              </div>
+              <div style={{
+                fontSize: '14px',
+                color: '#a3a3a3',
+                marginBottom: '12px'
+              }}>
+                {formatStorageMB(stats.storageUsed)} / {user.storage_limit_gb}GB
+              </div>
+              <div style={{
+                width: '100%',
+                height: '6px',
+                background: '#2a2a2a',
+                borderRadius: '3px',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  width: `${getStoragePercentage()}%`,
+                  height: '100%',
+                  background: getStoragePercentage() > 80 ? '#dc2626' : '#10b981',
+                  transition: 'width 0.3s ease'
+                }} />
+              </div>
+            </div>
+
+            <Link to="/plan" style={{ textDecoration: 'none' }}>
+              <div style={{
+                background: isPro ? '#111111' : '#1a1a1a',
+                border: isPro ? '1px solid #2a2a2a' : '1px solid #3a3a3a',
+                borderRadius: '12px',
+                padding: '24px',
+                cursor: 'pointer',
+                height: '100%',
+                transition: 'all 0.2s ease'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
                   marginBottom: '16px'
                 }}>
-                  Your Work
+                  <div style={{
+                    width: '40px',
+                    height: '40px',
+                    background: isPro ? '#2d4f3f' : '#1f1f1f',
+                    borderRadius: '8px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '18px'
+                  }}>
+                    {isPro ? '⭐' : '📈'}
+                  </div>
+                  <h3 style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#ffffff',
+                    margin: '0'
+                  }}>
+                    {isPro ? 'Pro Plan' : 'Current Plan'}
+                  </h3>
                 </div>
                 <div style={{
-                  fontSize: '24px',
-                  color: '#ffffff',
-                  fontWeight: '600',
-                  marginBottom: '8px',
-                  letterSpacing: '-0.02em'
+                  fontSize: '28px',
+                  fontWeight: '700',
+                  color: isPro ? '#10b981' : '#ffffff',
+                  marginBottom: '8px'
                 }}>
-                  All Requests
+                  {user.plan?.charAt(0).toUpperCase() + user.plan?.slice(1) || 'Free'}
                 </div>
                 <div style={{
                   fontSize: '14px',
-                  color: '#a3a3a3',
-                  lineHeight: '1.5',
-                  fontWeight: '400'
+                  color: '#a3a3a3'
                 }}>
-                  Track uploads and download everything
+                  {isPro ? 'All features unlocked' : 'Upgrade for more storage →'}
                 </div>
               </div>
             </Link>
           </div>
+
+          {/* Quick Actions */}
+          <div style={{
+            background: '#111111',
+            border: '1px solid #2a2a2a',
+            borderRadius: '12px',
+            padding: '32px',
+            marginBottom: '48px'
+          }}>
+            <h2 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              color: '#ffffff',
+              margin: '0 0 24px 0'
+            }}>
+              Quick Actions
+            </h2>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '20px'
+            }}>
+              <Link to="/requests" style={{ textDecoration: 'none' }}>
+                <div style={{
+                  background: '#1a1a1a',
+                  border: '1px solid #2a2a2a',
+                  borderRadius: '8px',
+                  padding: '24px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}>
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#a3a3a3',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: '600',
+                    marginBottom: '12px'
+                  }}>
+                    Most Popular
+                  </div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    color: '#ffffff',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    margin: '0 0 8px 0'
+                  }}>
+                    Create New Request
+                  </h3>
+                  <p style={{
+                    fontSize: '14px',
+                    color: '#a3a3a3',
+                    lineHeight: '1.5',
+                    margin: '0'
+                  }}>
+                    Set up a new file collection page in under 30 seconds
+                  </p>
+                </div>
+              </Link>
+
+              <Link to="/responses" style={{ textDecoration: 'none' }}>
+                <div style={{
+                  background: '#1a1a1a',
+                  border: '1px solid #2a2a2a',
+                  borderRadius: '8px',
+                  padding: '24px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}>
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#a3a3a3',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: '600',
+                    marginBottom: '12px'
+                  }}>
+                    Your Data
+                  </div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    color: '#ffffff',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    margin: '0 0 8px 0'
+                  }}>
+                    View All Requests
+                  </h3>
+                  <p style={{
+                    fontSize: '14px',
+                    color: '#a3a3a3',
+                    lineHeight: '1.5',
+                    margin: '0'
+                  }}>
+                    Track submissions, download files, and manage your data
+                  </p>
+                </div>
+              </Link>
+
+              <Link to="/collaboration" style={{ textDecoration: 'none' }}>
+                <div style={{
+                  background: '#1a1a1a',
+                  border: '1px solid #2a2a2a',
+                  borderRadius: '8px',
+                  padding: '24px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}>
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#a3a3a3',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontWeight: '600',
+                    marginBottom: '12px'
+                  }}>
+                    Team Features
+                  </div>
+                  <h3 style={{
+                    fontSize: '18px',
+                    color: '#ffffff',
+                    fontWeight: '600',
+                    marginBottom: '8px',
+                    margin: '0 0 8px 0'
+                  }}>
+                    Collaboration Hub
+                  </h3>
+                  <p style={{
+                    fontSize: '14px',
+                    color: '#a3a3a3',
+                    lineHeight: '1.5',
+                    margin: '0'
+                  }}>
+                    Manage approvals, edit requests, and team workflows
+                  </p>
+                </div>
+              </Link>
+            </div>
+          </div>
+
+          {/* Recent Activity */}
+          {stats.recentActivity && stats.recentActivity.length > 0 && (
+            <div style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+              padding: '32px'
+            }}>
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '24px'
+              }}>
+                <h2 style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: '#ffffff',
+                  margin: '0'
+                }}>
+                  Recent Activity
+                </h2>
+                <Link to="/responses" style={{
+                  color: '#a3a3a3',
+                  textDecoration: 'none',
+                  fontSize: '14px',
+                  fontWeight: '500'
+                }}>
+                  View all →
+                </Link>
+              </div>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px'
+              }}>
+                {stats.recentActivity.slice(0, 5).map((activity, index) => (
+                  <div key={activity.id} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '16px',
+                    padding: '16px',
+                    background: '#1a1a1a',
+                    borderRadius: '8px',
+                    border: '1px solid #2a2a2a'
+                  }}>
+                    <div style={{
+                      width: '40px',
+                      height: '40px',
+                      background: '#2a2a2a',
+                      borderRadius: '8px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '16px'
+                    }}>
+                      📄
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{
+                        fontSize: '14px',
+                        color: '#ffffff',
+                        fontWeight: '500',
+                        marginBottom: '4px'
+                      }}>
+                        {activity.fileName}
+                      </div>
+                      <div style={{
+                        fontSize: '12px',
+                        color: '#a3a3a3'
+                      }}>
+                        Uploaded to {activity.formName} • {getTimeAgo(activity.uploadedAt)}
+                      </div>
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: '#a3a3a3',
+                      padding: '4px 8px',
+                      background: '#2a2a2a',
+                      borderRadius: '4px'
+                    }}>
+                      {formatBytes(activity.fileSize)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
         </div>
       </div>
