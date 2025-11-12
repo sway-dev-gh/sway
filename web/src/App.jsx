@@ -20,6 +20,7 @@ const Dashboard = lazy(() => import('./pages/WorkflowDashboard'))
 // Workflow Platform Routes
 const Projects = lazy(() => import('./pages/Projects'))
 const Clients = lazy(() => import('./pages/Management'))
+const Collaboration = lazy(() => import('./pages/Collaboration'))
 
 // Legacy routes for backward compatibility
 const RequestView = lazy(() => import('./pages/RequestView'))
@@ -99,6 +100,11 @@ function App() {
         } />
 
         {/* Workflow Platform Routes */}
+        <Route path="/collaboration" element={
+          <Suspense fallback={<DashboardSkeleton />}>
+            <Collaboration />
+          </Suspense>
+        } />
         <Route path="/projects" element={
           <Suspense fallback={<TableSkeleton />}>
             <Projects />

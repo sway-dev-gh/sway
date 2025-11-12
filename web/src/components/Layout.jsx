@@ -1,4 +1,4 @@
-import Sidebar from './Sidebar'
+import TopNavigation from './TopNavigation'
 import './Layout.css'
 
 export default function Layout({ children }) {
@@ -30,8 +30,8 @@ export default function Layout({ children }) {
       >
         Skip to main content
       </a>
-      <Sidebar />
-      <main id="main-content" className="main-content" tabIndex={-1}>
+      <TopNavigation />
+      <main id="main-content" className="main-content" tabIndex={-1} style={{ paddingTop: '64px' }}>
         {children}
       </main>
     </div>

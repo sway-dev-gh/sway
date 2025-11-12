@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Sidebar from '../components/Sidebar'
+import TopNavigation from '../components/TopNavigation'
 import theme from '../theme'
 import api from '../api/axios'
 import { useToast } from '../hooks/useToast'
@@ -376,12 +376,12 @@ function Settings() {
 
   return (
     <>
-      <Sidebar />
+      <TopNavigation />
       <div style={{
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        paddingTop: '54px'
+        paddingTop: '64px'
       }}>
         <div style={{
           maxWidth: '1200px',

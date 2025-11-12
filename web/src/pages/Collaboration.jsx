@@ -5,15 +5,12 @@ import theme from '../theme'
 import api from '../api/axios'
 import { standardStyles } from '../components/StandardStyles'
 
-function WorkflowDashboard() {
+function Collaboration() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
-  const [stats, setStats] = useState({
-    totalReviews: 0,
-    pendingReviews: 0,
-    approvedReviews: 0,
-    totalReviewers: 0
-  })
+  const [teamMembers, setTeamMembers] = useState([])
+  const [recentActivity, setRecentActivity] = useState([])
+  const [activeCollaborations, setActiveCollaborations] = useState([])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -22,42 +19,36 @@ function WorkflowDashboard() {
       return
     }
 
-    fetchStats()
+    fetchCollaborationData()
   }, [navigate])
 
-  const fetchStats = async () => {
+  const fetchCollaborationData = async () => {
     try {
       setLoading(true)
       const token = localStorage.getItem('token')
 
-      // Fetch real review data from API
-      const [reviewsResponse, reviewersResponse] = await Promise.all([
-        api.get('/api/reviews', {
+      // Fetch collaboration data from APIs
+      const [teamResponse, activityResponse, collaborationsResponse] = await Promise.all([
+        api.get('/api/team', {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        api.get('/api/reviewers', {
+        api.get('/api/activity', {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        api.get('/api/collaborations', {
           headers: { Authorization: `Bearer ${token}` }
         })
       ])
 
-      const reviews = reviewsResponse.data.reviews || []
-      const reviewers = reviewersResponse.data.reviewers || []
-
-      setStats({
-        totalReviews: reviews.length,
-        pendingReviews: reviews.filter(r => r.status === 'pending').length,
-        approvedReviews: reviews.filter(r => r.status === 'approved').length,
-        totalReviewers: reviewers.length
-      })
+      setTeamMembers(teamResponse.data.team || [])
+      setRecentActivity(activityResponse.data.activity || [])
+      setActiveCollaborations(collaborationsResponse.data.collaborations || [])
     } catch (error) {
-      console.error('Failed to fetch stats:', error)
-      // Set to actual zeros, not fake data
-      setStats({
-        totalReviews: 0,
-        pendingReviews: 0,
-        approvedReviews: 0,
-        totalReviewers: 0
-      })
+      console.error('Failed to fetch collaboration data:', error)
+      // Set empty arrays for clean state
+      setTeamMembers([])
+      setRecentActivity([])
+      setActiveCollaborations([])
     } finally {
       setLoading(false)
     }
@@ -103,10 +94,10 @@ function WorkflowDashboard() {
           {/* Header */}
           <div style={{ marginBottom: '48px' }}>
             <h1 style={standardStyles.pageHeader}>
-              Review & Approval Workflows
+              Collaboration
             </h1>
             <p style={standardStyles.pageDescription}>
-              Manage your review processes, track approvals, and collaborate with your team
+              Work together with your team on reviews, share feedback, and track progress
             </p>
           </div>
 
@@ -118,7 +109,7 @@ function WorkflowDashboard() {
             marginBottom: '48px'
           }}>
 
-            {/* Total Reviews */}
+            {/* Active Collaborations */}
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
@@ -134,7 +125,7 @@ function WorkflowDashboard() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>
-                Total Reviews
+                Active Collaborations
               </div>
               <div style={{
                 fontSize: '48px',
@@ -142,7 +133,7 @@ function WorkflowDashboard() {
                 color: theme.colors.text.primary,
                 marginBottom: '8px'
               }}>
-                {stats.totalReviews}
+                {activeCollaborations.length}
               </div>
               <Link to="/projects" style={{
                 color: theme.colors.text.secondary,
@@ -150,11 +141,11 @@ function WorkflowDashboard() {
                 fontSize: '14px',
                 fontWeight: '500'
               }}>
-                View all reviews →
+                View all projects →
               </Link>
             </div>
 
-            {/* Pending Reviews */}
+            {/* Team Members */}
             <div style={{
               background: theme.colors.bg.secondary,
               border: `1px solid ${theme.colors.border.light}`,
@@ -170,75 +161,7 @@ function WorkflowDashboard() {
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
               }}>
-                Pending Review
-              </div>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: '600',
-                color: '#fbbf24',
-                marginBottom: '8px'
-              }}>
-                {stats.pendingReviews}
-              </div>
-              <div style={{
-                color: theme.colors.text.secondary,
-                fontSize: '14px'
-              }}>
-                Awaiting feedback
-              </div>
-            </div>
-
-            {/* Approved Reviews */}
-            <div style={{
-              background: theme.colors.bg.secondary,
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '12px',
-              padding: '32px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: theme.colors.text.secondary,
-                fontWeight: '500',
-                marginBottom: '16px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px'
-              }}>
-                Approved
-              </div>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: '600',
-                color: theme.colors.white,
-                marginBottom: '8px'
-              }}>
-                {stats.approvedReviews}
-              </div>
-              <div style={{
-                color: theme.colors.text.secondary,
-                fontSize: '14px'
-              }}>
-                Ready to proceed
-              </div>
-            </div>
-
-            {/* Total Reviewers */}
-            <div style={{
-              background: theme.colors.bg.secondary,
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '12px',
-              padding: '32px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: theme.colors.text.secondary,
-                fontWeight: '500',
-                marginBottom: '16px',
-                textTransform: 'uppercase',
-                letterSpacing: '0.5px'
-              }}>
-                Active Reviewers
+                Team Members
               </div>
               <div style={{
                 fontSize: '48px',
@@ -246,7 +169,7 @@ function WorkflowDashboard() {
                 color: theme.colors.text.primary,
                 marginBottom: '8px'
               }}>
-                {stats.totalReviewers}
+                {teamMembers.length}
               </div>
               <Link to="/clients" style={{
                 color: theme.colors.text.secondary,
@@ -254,7 +177,43 @@ function WorkflowDashboard() {
                 fontSize: '14px',
                 fontWeight: '500'
               }}>
-                Manage reviewers →
+                Manage team →
+              </Link>
+            </div>
+
+            {/* Recent Activity */}
+            <div style={{
+              background: theme.colors.bg.secondary,
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '12px',
+              padding: '32px',
+              textAlign: 'center'
+            }}>
+              <div style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                fontWeight: '500',
+                marginBottom: '16px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                Recent Actions
+              </div>
+              <div style={{
+                fontSize: '48px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                marginBottom: '8px'
+              }}>
+                {recentActivity.length}
+              </div>
+              <Link to="/notifications" style={{
+                color: theme.colors.text.secondary,
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '500'
+              }}>
+                View activity →
               </Link>
             </div>
           </div>
@@ -291,7 +250,7 @@ function WorkflowDashboard() {
                 fontSize: '14px',
                 transition: 'all 0.2s ease'
               }}>
-                + Create New Review
+                + Start Collaboration
               </Link>
               <Link to="/clients" style={{
                 background: 'transparent',
@@ -305,7 +264,7 @@ function WorkflowDashboard() {
                 border: `1px solid ${theme.colors.border.light}`,
                 transition: 'all 0.2s ease'
               }}>
-                Add Reviewer
+                Invite Team Member
               </Link>
               <Link to="/notifications" style={{
                 background: 'transparent',
@@ -319,13 +278,13 @@ function WorkflowDashboard() {
                 border: `1px solid ${theme.colors.border.light}`,
                 transition: 'all 0.2s ease'
               }}>
-                View Activity
+                View Messages
               </Link>
             </div>
           </div>
 
           {/* Empty State Message */}
-          {stats.totalReviews === 0 && (
+          {activeCollaborations.length === 0 && (
             <div style={{
               textAlign: 'center',
               padding: '80px 32px',
@@ -344,7 +303,7 @@ function WorkflowDashboard() {
                 color: theme.colors.text.primary,
                 margin: '0 0 16px 0'
               }}>
-                Welcome to Your Review Workflows
+                Start Collaborating with Your Team
               </h3>
               <p style={{
                 fontSize: '16px',
@@ -353,7 +312,7 @@ function WorkflowDashboard() {
                 maxWidth: '500px',
                 margin: '0 auto 32px auto'
               }}>
-                Get started by creating your first review workflow to collect feedback, manage approvals, and collaborate with your team.
+                Invite team members, share projects, and collaborate on reviews to get better feedback faster.
               </p>
               <Link to="/projects" style={{
                 background: theme.colors.white,
@@ -365,7 +324,7 @@ function WorkflowDashboard() {
                 fontSize: '14px',
                 display: 'inline-block'
               }}>
-                Create Your First Review
+                Start Your First Collaboration
               </Link>
             </div>
           )}
@@ -376,4 +335,4 @@ function WorkflowDashboard() {
   )
 }
 
-export default WorkflowDashboard
+export default Collaboration
