@@ -85,312 +85,180 @@ const Dashboard = () => {
           padding: '40px 24px'
         }}>
 
-          {/* Header Section */}
-          <div style={{
-            marginBottom: '60px',
-            textAlign: 'center'
-          }}>
-            <h1 style={{
-              fontSize: '32px',
-              fontWeight: '700',
-              color: '#ffffff',
-              margin: '0 0 8px 0'
-            }}>
-              Dashboard
-            </h1>
-            <p style={{
-              fontSize: '20px',
-              color: '#ffffff',
-              margin: '0',
-              fontWeight: '400'
-            }}>
-              Manage your review projects and track progress
-            </p>
-          </div>
-
-          {/* Stats Cards */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: '32px',
-            marginBottom: '80px'
-          }}>
-            <div style={{
-              background: '#000000',
-              border: '1px solid #333333',
-              borderRadius: '8px',
-              padding: '32px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                fontWeight: '600',
-                letterSpacing: '0.1em',
-                marginBottom: '16px'
-              }}>
-                Total Projects
-              </div>
-              <div style={{
-                fontSize: '56px',
-                fontWeight: '900',
-                color: '#ffffff',
-                lineHeight: '1'
-              }}>
-                {stats.totalProjects}
-              </div>
+          {/* Terminal Header */}
+          <div className="terminal-window" style={{ marginBottom: '32px' }}>
+            <div className="terminal-titlebar">
+              > WORKSPACE_STATUS
             </div>
-
-            <div style={{
-              background: '#000000',
-              border: '1px solid #333333',
-              borderRadius: '8px',
-              padding: '32px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                fontWeight: '600',
-                letterSpacing: '0.1em',
-                marginBottom: '16px'
+            <div style={{ padding: '16px' }}>
+              <div className="terminal-prompt" style={{
+                fontSize: '18px',
+                marginBottom: '8px'
               }}>
-                Active Reviews
+                SWAYFILES_DASHBOARD
               </div>
               <div style={{
-                fontSize: '56px',
-                fontWeight: '900',
+                fontSize: '12px',
                 color: '#ffffff',
-                lineHeight: '1'
+                opacity: 0.7,
+                fontFamily: 'Monaco, monospace'
               }}>
-                {stats.activeReviews}
-              </div>
-            </div>
-
-            <div style={{
-              background: '#000000',
-              border: '1px solid #333333',
-              borderRadius: '8px',
-              padding: '32px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                fontWeight: '600',
-                letterSpacing: '0.1em',
-                marginBottom: '16px'
-              }}>
-                Pending Approvals
-              </div>
-              <div style={{
-                fontSize: '56px',
-                fontWeight: '900',
-                color: '#ffffff',
-                lineHeight: '1'
-              }}>
-                {stats.pendingApprovals}
-              </div>
-            </div>
-
-            <div style={{
-              background: '#000000',
-              border: '1px solid #333333',
-              borderRadius: '8px',
-              padding: '32px',
-              textAlign: 'center'
-            }}>
-              <div style={{
-                fontSize: '14px',
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                fontWeight: '600',
-                letterSpacing: '0.1em',
-                marginBottom: '16px'
-              }}>
-                Completed Projects
-              </div>
-              <div style={{
-                fontSize: '56px',
-                fontWeight: '900',
-                color: '#ffffff',
-                lineHeight: '1'
-              }}>
-                {stats.completedProjects}
+                // Review and collaboration management system
               </div>
             </div>
           </div>
 
-          {/* Actions Section */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '24px',
-            marginBottom: '60px'
-          }}>
-            <button
-              onClick={() => navigate('/projects')}
-              style={{
-                background: '#000000',
-                color: '#ffffff',
-                border: '1px solid #333333',
-                borderRadius: '8px',
-                padding: '40px 32px',
-                fontSize: '18px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                textAlign: 'center'
-              }}
-            >
-              <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
-                Manage Projects
+          {/* System Stats */}
+          <div className="terminal-window" style={{ marginBottom: '32px' }}>
+            <div className="terminal-titlebar">
+              > SYSTEM_MONITOR
+            </div>
+            <div className="terminal-grid" style={{
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '1px'
+            }}>
+              <div className="system-stat">
+                <div className="stat-label">TOTAL_PROJECTS</div>
+                <div className="stat-value">{stats.totalProjects}</div>
               </div>
-              <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
-                View all projects and create new ones
+              <div className="system-stat">
+                <div className="stat-label">ACTIVE_REVIEWS</div>
+                <div className="stat-value">{stats.activeReviews}</div>
               </div>
-            </button>
-
-            <button
-              onClick={() => navigate('/uploads')}
-              style={{
-                background: '#000000',
-                color: '#ffffff',
-                border: '1px solid #333333',
-                borderRadius: '8px',
-                padding: '40px 32px',
-                fontSize: '18px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                textAlign: 'center'
-              }}
-            >
-              <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
-                File Management
+              <div className="system-stat">
+                <div className="stat-label">PENDING_APPROVALS</div>
+                <div className="stat-value">{stats.pendingApprovals}</div>
               </div>
-              <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
-                Review and organize uploaded files
+              <div className="system-stat">
+                <div className="stat-label">COMPLETED_PROJECTS</div>
+                <div className="stat-value">{stats.completedProjects}</div>
               </div>
-            </button>
-
-            <button
-              onClick={() => navigate('/settings')}
-              style={{
-                background: '#000000',
-                color: '#ffffff',
-                border: '1px solid #333333',
-                borderRadius: '8px',
-                padding: '40px 32px',
-                fontSize: '18px',
-                fontWeight: '700',
-                cursor: 'pointer',
-                textAlign: 'center'
-              }}
-            >
-              <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
-                Account Settings
-              </div>
-              <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
-                Manage your account preferences
-              </div>
-            </button>
+            </div>
           </div>
 
-          {/* Recent Projects */}
+          {/* Command Actions */}
+          <div className="terminal-window" style={{ marginBottom: '32px' }}>
+            <div className="terminal-titlebar">
+              > QUICK_COMMANDS
+            </div>
+            <div style={{
+              padding: '16px',
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '12px'
+            }}>
+              <button
+                className="cmd-button"
+                onClick={() => navigate('/projects')}
+                style={{ textAlign: 'left', padding: '12px 16px' }}
+              >
+                $ PROJECTS --LIST
+              </button>
+              <button
+                className="cmd-button"
+                onClick={() => navigate('/collaboration')}
+                style={{ textAlign: 'left', padding: '12px 16px' }}
+              >
+                $ COLLAB --INIT
+              </button>
+              <button
+                className="cmd-button"
+                onClick={() => navigate('/uploads')}
+                style={{ textAlign: 'left', padding: '12px 16px' }}
+              >
+                $ FILES --MANAGE
+              </button>
+              <button
+                className="cmd-button"
+                onClick={() => navigate('/settings')}
+                style={{ textAlign: 'left', padding: '12px 16px' }}
+              >
+                $ CONFIG --EDIT
+              </button>
+            </div>
+          </div>
+
+          {/* Repository Listing */}
           {projects.length > 0 && (
-            <div style={{
-              marginBottom: '40px'
-            }}>
-              <h2 style={{
-                fontSize: '32px',
-                fontWeight: '700',
-                color: '#ffffff',
-                margin: '0 0 32px 0',
-                textAlign: 'center'
-              }}>
-                Recent Projects
-              </h2>
-
-              <div style={{
-                display: 'grid',
-                gap: '16px'
-              }}>
-                {projects.slice(0, 3).map(project => (
+            <div className="terminal-window">
+              <div className="terminal-titlebar">
+                > REPOSITORIES
+              </div>
+              <div style={{ padding: '0' }}>
+                {projects.slice(0, 3).map((project, index) => (
                   <div
                     key={project.id}
+                    className="repo-card"
                     onClick={() => navigate(`/projects/${project.id}`)}
                     style={{
-                      background: '#000000',
-                      border: '1px solid #ffffff',
-                      borderRadius: '8px',
-                      padding: '24px',
-                      cursor: 'pointer'
+                      borderTop: index === 0 ? 'none' : '1px solid #ffffff',
+                      borderLeft: 'none',
+                      borderRight: 'none',
+                      borderRadius: '0',
+                      margin: '0'
                     }}
                   >
                     <div style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'center',
+                      alignItems: 'flex-start',
                       gap: '16px'
                     }}>
-                      <div>
-                        <h3 style={{
-                          fontSize: '18px',
-                          fontWeight: '600',
+                      <div style={{ flex: 1 }}>
+                        <div style={{
+                          fontSize: '14px',
+                          fontWeight: 'bold',
                           color: '#ffffff',
-                          margin: '0 0 8px 0'
+                          marginBottom: '4px',
+                          fontFamily: 'Monaco, monospace'
                         }}>
                           {project.title}
-                        </h3>
-                        <p style={{
-                          fontSize: '14px',
+                        </div>
+                        <div style={{
+                          fontSize: '12px',
                           color: '#ffffff',
-                          margin: '0',
-                          opacity: 0.8
+                          opacity: 0.7,
+                          marginBottom: '8px',
+                          fontFamily: 'Monaco, monospace'
                         }}>
-                          {project.description || 'No description'}
-                        </p>
+                          {project.description || 'No description available'}
+                        </div>
+                        <div style={{
+                          fontSize: '10px',
+                          color: '#ffffff',
+                          opacity: 0.5,
+                          textTransform: 'uppercase',
+                          fontFamily: 'Monaco, monospace'
+                        }}>
+                          TYPE: {project.type} | STATUS: {project.status?.replace('_', '-') || 'draft'}
+                        </div>
                       </div>
                       <div style={{
-                        padding: '8px 16px',
-                        background: '#ffffff',
-                        color: '#000000',
-                        borderRadius: '4px',
-                        fontSize: '12px',
-                        fontWeight: '600',
-                        textTransform: 'uppercase'
+                        fontSize: '10px',
+                        color: '#ffffff',
+                        opacity: 0.7,
+                        fontFamily: 'Monaco, monospace'
                       }}>
-                        {project.status?.replace('_', ' ') || 'Draft'}
+                        {new Date(project.created_at || Date.now()).toLocaleDateString()}
                       </div>
                     </div>
                   </div>
                 ))}
+                {projects.length > 3 && (
+                  <div style={{
+                    padding: '16px',
+                    borderTop: '1px solid #ffffff',
+                    textAlign: 'center'
+                  }}>
+                    <button
+                      className="cmd-button"
+                      onClick={() => navigate('/projects')}
+                    >
+                      $ LIST --ALL ({projects.length} REPOS)
+                    </button>
+                  </div>
+                )}
               </div>
-
-              {projects.length > 3 && (
-                <div style={{
-                  textAlign: 'center',
-                  marginTop: '24px'
-                }}>
-                  <button
-                    onClick={() => navigate('/projects')}
-                    style={{
-                      background: 'transparent',
-                      color: '#ffffff',
-                      border: '1px solid #ffffff',
-                      borderRadius: '4px',
-                      padding: '12px 24px',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    View All {projects.length} Projects
-                  </button>
-                </div>
-              )}
             </div>
           )}
 

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './animations.css'
 import './styles/accessibility.css'
+import './styles/terminal.css'
 import { initAccessibility } from './utils/accessibility.js'
 
 // Initialize accessibility features
