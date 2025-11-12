@@ -15,8 +15,8 @@ const Signup = lazy(() => import('./pages/Signup'))
 // Public upload route - separate chunk
 const Upload = lazy(() => import('./pages/Upload'))
 
-// Dashboard (Workflow) - critical route with custom skeleton
-const Dashboard = lazy(() => import('./pages/WorkflowDashboard'))
+// Dashboard (Workspace-Centric) - critical route with custom skeleton
+const Dashboard = lazy(() => import('./pages/Dashboard'))
 
 // Workflow Platform Routes
 const Projects = lazy(() => import('./pages/Projects'))
@@ -43,12 +43,12 @@ function prefetchCriticalRoutes() {
   if (typeof requestIdleCallback !== 'undefined') {
     requestIdleCallback(() => {
       // Prefetch likely next routes
-      import('./pages/WorkflowDashboard').catch(() => {}) // Dashboard (workflow)
+      import('./pages/Dashboard').catch(() => {}) // Dashboard (workspace-centric)
       import('./pages/Management').catch(() => {})
     }, { timeout: 2000 })
   } else {
     setTimeout(() => {
-      import('./pages/WorkflowDashboard').catch(() => {})
+      import('./pages/Dashboard').catch(() => {})
       import('./pages/Management').catch(() => {})
     }, 2000)
   }
