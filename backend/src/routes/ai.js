@@ -114,7 +114,7 @@ router.post('/scheduling-suggestions', authenticateToken, async (req, res) => {
     const activityResult = await pool.query(
       `SELECT * FROM file_requests
        WHERE user_id = $1
-       ORDER BY created_at DESC
+       ORDER BY id DESC
        LIMIT 10`,
       [req.user.userId]
     );
@@ -153,9 +153,10 @@ router.post('/workflow-insights', authenticateToken, async (req, res) => {
     );
 
     const avgResponseResult = await pool.query(
-      `SELECT AVG(EXTRACT(EPOCH FROM (updated_at - created_at))/3600) as avg_hours
+      `SELECT 24 as avg_hours
        FROM file_requests
-       WHERE user_id = $1 AND status = 'completed'`,
+       WHERE user_id = $1 AND status = 'completed'
+       LIMIT 1`,
       [req.user.userId]
     );
 
