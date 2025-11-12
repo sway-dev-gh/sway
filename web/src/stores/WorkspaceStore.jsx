@@ -16,7 +16,7 @@ const WORKFLOW_STATES = {
 // Initial state
 const initialState = {
   // Authentication
-  isAuthenticated: false,
+  isAuthenticated: !!localStorage.getItem('token'), // Auto-authenticate if token exists
   user: null,
   token: localStorage.getItem('token') || null,
 
@@ -446,8 +446,18 @@ export const WorkspaceProvider = ({ children }) => {
           console.log('🎉 Authentication initialization complete!')
         } catch (error) {
           console.error('❌ Token validation failed:', error)
-          localStorage.removeItem('token')
-          dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: false } })
+          // Only remove token if it's actually invalid (401/403), not for network errors
+          if (error.status === 401 || error.status === 403 || error.message?.includes('Invalid token')) {
+            console.log('🚫 Token is invalid, logging out')
+            localStorage.removeItem('token')
+            dispatch({
+              type: ACTIONS.LOGOUT
+            })
+          } else {
+            console.log('⚠️ Network/server error, keeping user authenticated')
+            // Keep user authenticated but stop loading
+            dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: false } })
+          }
         }
       } else {
         console.log('📭 No token found, user needs to sign in')

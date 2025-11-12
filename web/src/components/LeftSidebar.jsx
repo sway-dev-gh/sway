@@ -527,39 +527,88 @@ const LeftSidebar = () => {
   }
 
   const renderSettingsSection = () => (
-    <div style={{ padding: '16px' }}>
+    <div style={{ padding: '20px' }}>
       <span style={{
         fontSize: '11px',
         textTransform: 'uppercase',
         letterSpacing: '1px',
         color: '#999999',
-        marginBottom: '12px',
+        marginBottom: '20px',
         display: 'block'
       }}>
         Settings
       </span>
 
-      <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
-        View Options
+      {/* Billing & Subscription */}
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
+          Billing & Subscription
+        </div>
+        <div style={{
+          background: '#111111',
+          border: '1px solid #333333',
+          borderRadius: '6px',
+          padding: '12px'
+        }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '8px'
+          }}>
+            <span style={{ fontSize: '12px', color: '#ffffff' }}>SwayFiles Pro</span>
+            <span style={{
+              fontSize: '10px',
+              background: '#2ed573',
+              color: '#000000',
+              padding: '2px 6px',
+              borderRadius: '2px',
+              fontWeight: 'bold'
+            }}>
+              ACTIVE
+            </span>
+          </div>
+          <div style={{ fontSize: '10px', color: '#666666', marginBottom: '10px' }}>
+            $29/month • Unlimited workspaces & files
+          </div>
+          <button style={{
+            width: '100%',
+            background: 'transparent',
+            border: '1px solid #333333',
+            color: '#ffffff',
+            padding: '6px 8px',
+            fontSize: '10px',
+            cursor: 'pointer',
+            borderRadius: '3px'
+          }}>
+            Manage Subscription
+          </button>
+        </div>
       </div>
 
-      <label style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '8px',
-        marginBottom: '16px',
-        cursor: 'pointer',
-        fontSize: '11px',
-        color: '#ffffff'
-      }}>
-        <input
-          type="checkbox"
-          checked={state.focusedView}
-          onChange={actions.toggleFocusedView}
-          style={{ margin: 0 }}
-        />
-        Focused View
-      </label>
+      {/* View Options */}
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
+          View Options
+        </div>
+        <label style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          cursor: 'pointer',
+          fontSize: '11px',
+          color: '#ffffff',
+          padding: '4px 0'
+        }}>
+          <input
+            type="checkbox"
+            checked={state.focusedView}
+            onChange={actions.toggleFocusedView}
+            style={{ margin: 0 }}
+          />
+          Focused View
+        </label>
+      </div>
 
       {/* Guest Upgrade Section */}
       {state.isGuest && (
@@ -680,41 +729,64 @@ const LeftSidebar = () => {
         </div>
       )}
 
-      <div style={{ marginBottom: '16px' }}>
-        <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
+      {/* Account */}
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
           Account
         </div>
-        <button
-          onClick={state.isGuest ? actions.guestLogout : actions.logout}
-          style={{
-            width: '100%',
-            background: '#111111',
-            border: '1px solid #333333',
-            color: '#ffffff',
-            padding: '8px 12px',
+        <div style={{
+          background: '#111111',
+          border: '1px solid #333333',
+          borderRadius: '6px',
+          padding: '12px'
+        }}>
+          <div style={{
             fontSize: '11px',
-            cursor: 'pointer',
-            textAlign: 'left'
-          }}
-        >
-          {state.isGuest ? 'Leave Session' : 'Sign Out'}
-        </button>
+            color: '#666666',
+            marginBottom: '8px'
+          }}>
+            {state.user?.name || 'Guest User'}
+          </div>
+          <button
+            onClick={state.isGuest ? actions.guestLogout : actions.logout}
+            style={{
+              width: '100%',
+              background: 'transparent',
+              border: '1px solid #333333',
+              color: '#ffffff',
+              padding: '6px 8px',
+              fontSize: '10px',
+              cursor: 'pointer',
+              borderRadius: '3px'
+            }}
+          >
+            {state.isGuest ? 'Leave Session' : 'Sign Out'}
+          </button>
+        </div>
       </div>
 
-      <div style={{ marginTop: '16px' }}>
-        <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
-          Unique Shortcuts
+      {/* Keyboard Shortcuts */}
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
+          Keyboard Shortcuts
         </div>
-        <div style={{ fontSize: '10px', color: '#666666', lineHeight: '1.6' }}>
-          ⌘ + ⇧ + S - New section<br />
-          ⌘ + ⌥ + Z - Toggle zen mode<br />
-          ⌘ + ⌃ + ↑/↓ - Navigate sections<br />
-          ⌘ + ⇧ + F - Upload file<br />
-          ⌘ + ⌥ + W - New workspace<br />
-          ⌘ + ⇧ + A - Approve section<br />
-          ⌘ + ⇧ + R - Request changes<br />
-          ⌘ + ⌥ + D - Delete item<br />
-          ⌘ + ⌃ + C - Add comment
+        <div style={{
+          background: '#111111',
+          border: '1px solid #333333',
+          borderRadius: '6px',
+          padding: '12px'
+        }}>
+          <div style={{ fontSize: '10px', color: '#666666', lineHeight: '1.6' }}>
+            ⌘ + ⇧ + S - New section<br />
+            ⌘ + ⌥ + Z - Toggle zen mode<br />
+            ⌘ + ⌃ + ↑/↓ - Navigate sections<br />
+            ⌘ + ⇧ + F - Upload file<br />
+            ⌘ + ⌥ + W - New workspace<br />
+            ⌘ + ⇧ + A - Approve section<br />
+            ⌘ + ⇧ + R - Request changes<br />
+            ⌘ + ⌥ + D - Delete item<br />
+            ⌘ + ⌃ + C - Add comment
+          </div>
         </div>
       </div>
     </div>
