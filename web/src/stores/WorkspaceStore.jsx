@@ -80,7 +80,10 @@ const ACTIONS = {
 
   ADD_ACTIVITY: 'ADD_ACTIVITY',
 
-  TOGGLE_FOCUSED_VIEW: 'TOGGLE_FOCUSED_VIEW'
+  TOGGLE_FOCUSED_VIEW: 'TOGGLE_FOCUSED_VIEW',
+
+  DELETE_FILE: 'DELETE_FILE',
+  DELETE_WORKSPACE: 'DELETE_WORKSPACE'
 }
 
 // Reducer
@@ -304,6 +307,26 @@ function workspaceReducer(state, action) {
       return {
         ...state,
         focusedView: !state.focusedView
+      }
+
+    case ACTIONS.DELETE_FILE:
+      const updatedFiles = state.files.filter(file => file.id !== action.payload.fileId)
+      return {
+        ...state,
+        files: updatedFiles,
+        selectedFile: state.selectedFile?.id === action.payload.fileId ? null : state.selectedFile
+      }
+
+    case ACTIONS.DELETE_WORKSPACE:
+      const filteredWorkspaces = state.workspaces.filter(workspace => workspace.id !== action.payload.workspaceId)
+      return {
+        ...state,
+        workspaces: filteredWorkspaces,
+        currentWorkspace: state.currentWorkspace?.id === action.payload.workspaceId ? null : state.currentWorkspace,
+        files: state.currentWorkspace?.id === action.payload.workspaceId ? [] : state.files,
+        sections: state.currentWorkspace?.id === action.payload.workspaceId ? {} : state.sections,
+        selectedFile: state.currentWorkspace?.id === action.payload.workspaceId ? null : state.selectedFile,
+        selectedSection: state.currentWorkspace?.id === action.payload.workspaceId ? null : state.selectedSection
       }
 
     default:
@@ -571,6 +594,38 @@ export const WorkspaceProvider = ({ children }) => {
       dispatch({
         type: ACTIONS.TOGGLE_FOCUSED_VIEW
       })
+    },
+
+    deleteFile: async (fileId) => {
+      try {
+        await apiService.deleteFile(fileId)
+        dispatch({
+          type: ACTIONS.DELETE_FILE,
+          payload: { fileId }
+        })
+        actions.addActivity('file_deleted', `Deleted file`, 'You')
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+      }
+    },
+
+    deleteWorkspace: async (workspaceId) => {
+      try {
+        await apiService.deleteProject(workspaceId)
+        dispatch({
+          type: ACTIONS.DELETE_WORKSPACE,
+          payload: { workspaceId }
+        })
+        actions.addActivity('workspace_deleted', `Deleted workspace`, 'You')
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+      }
     }
   }
 

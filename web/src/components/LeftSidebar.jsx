@@ -28,9 +28,57 @@ const LeftSidebar = () => {
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0]
-    if (file && state.currentWorkspace) {
-      actions.addFile(file)
+
+    if (!file) return
+
+    if (!state.currentWorkspace) {
+      alert('Please select a workspace first')
+      event.target.value = ''
+      return
     }
+
+    // File type restrictions - only allow certain types
+    const allowedTypes = [
+      'image/jpeg', 'image/png', 'image/gif', 'image/svg+xml',
+      'application/pdf',
+      'text/plain', 'text/markdown', 'text/html', 'text/css', 'text/javascript',
+      'application/json', 'application/xml',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+      'application/vnd.openxmlformats-officedocument.presentationml.presentation', // .pptx
+      'application/msword', // .doc
+      'application/vnd.ms-excel', // .xls
+      'application/vnd.ms-powerpoint', // .ppt
+      'application/zip', 'application/x-rar-compressed'
+    ]
+
+    const allowedExtensions = [
+      '.jpg', '.jpeg', '.png', '.gif', '.svg',
+      '.pdf',
+      '.txt', '.md', '.html', '.css', '.js', '.jsx', '.ts', '.tsx',
+      '.json', '.xml', '.yaml', '.yml',
+      '.docx', '.doc', '.xlsx', '.xls', '.pptx', '.ppt',
+      '.zip', '.rar'
+    ]
+
+    const fileExtension = '.' + file.name.split('.').pop().toLowerCase()
+    const isValidType = allowedTypes.includes(file.type) || allowedExtensions.includes(fileExtension)
+
+    if (!isValidType) {
+      alert(`File type not supported. Allowed types:\n• Images: JPG, PNG, GIF, SVG\n• Documents: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX\n• Code: TXT, MD, HTML, CSS, JS, JSX, TS, TSX, JSON, XML, YAML\n• Archives: ZIP, RAR`)
+      event.target.value = ''
+      return
+    }
+
+    // File size limit - 50MB
+    const maxSize = 50 * 1024 * 1024
+    if (file.size > maxSize) {
+      alert(`File size too large. Maximum allowed size is 50MB.\nYour file: ${(file.size / (1024 * 1024)).toFixed(1)}MB`)
+      event.target.value = ''
+      return
+    }
+
+    actions.addFile(file)
     // Reset input value so same file can be uploaded again
     event.target.value = ''
   }
@@ -183,11 +231,36 @@ const LeftSidebar = () => {
               }}
             >
               <div style={{
-                fontSize: '12px',
-                color: '#ffffff',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
                 marginBottom: '2px'
               }}>
-                {workspace.name}
+                <div style={{
+                  fontSize: '12px',
+                  color: '#ffffff'
+                }}>
+                  {workspace.name}
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (confirm(`Delete workspace "${workspace.name}"?\n\nThis will permanently delete all files and sections in this workspace.`)) {
+                      actions.deleteWorkspace(workspace.id)
+                    }
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#666666',
+                    cursor: 'pointer',
+                    fontSize: '10px',
+                    padding: '2px'
+                  }}
+                  title="Delete workspace"
+                >
+                  ×
+                </button>
               </div>
               {workspace.description && (
                 <div style={{
@@ -277,18 +350,41 @@ const LeftSidebar = () => {
               }}>
                 <span style={{
                   fontSize: '12px',
-                  color: '#ffffff'
+                  color: '#ffffff',
+                  flex: 1,
+                  marginRight: '8px'
                 }}>
                   {file.name}
                 </span>
-                <div style={{
-                  padding: '2px 4px',
-                  fontSize: '8px',
-                  background: getWorkflowBadgeColor(file.workflowState),
-                  color: '#ffffff',
-                  textTransform: 'uppercase'
-                }}>
-                  {file.workflowState.replace('_', ' ')}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <div style={{
+                    padding: '2px 4px',
+                    fontSize: '8px',
+                    background: getWorkflowBadgeColor(file.workflowState),
+                    color: '#ffffff',
+                    textTransform: 'uppercase'
+                  }}>
+                    {file.workflowState.replace('_', ' ')}
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      if (confirm(`Delete file "${file.name}"?\n\nThis will permanently delete the file and all its sections.`)) {
+                        actions.deleteFile(file.id)
+                      }
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: '#666666',
+                      cursor: 'pointer',
+                      fontSize: '10px',
+                      padding: '2px'
+                    }}
+                    title="Delete file"
+                  >
+                    ×
+                  </button>
                 </div>
               </div>
               <div style={{
@@ -414,7 +510,7 @@ const LeftSidebar = () => {
         display: 'flex',
         alignItems: 'center',
         gap: '8px',
-        marginBottom: '8px',
+        marginBottom: '16px',
         cursor: 'pointer',
         fontSize: '11px',
         color: '#ffffff'
@@ -428,14 +524,41 @@ const LeftSidebar = () => {
         Focused View
       </label>
 
+      <div style={{ marginBottom: '16px' }}>
+        <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
+          Account
+        </div>
+        <button
+          onClick={actions.logout}
+          style={{
+            width: '100%',
+            background: '#111111',
+            border: '1px solid #333333',
+            color: '#ffffff',
+            padding: '8px 12px',
+            fontSize: '11px',
+            cursor: 'pointer',
+            textAlign: 'left'
+          }}
+        >
+          Sign Out
+        </button>
+      </div>
+
       <div style={{ marginTop: '16px' }}>
         <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
-          Keyboard Shortcuts
+          Unique Shortcuts
         </div>
-        <div style={{ fontSize: '10px', color: '#666666', lineHeight: '1.4' }}>
-          ⌘ + N - New section<br />
-          ⌘ + / - Toggle focused view<br />
-          ⌘ + ↑/↓ - Navigate sections
+        <div style={{ fontSize: '10px', color: '#666666', lineHeight: '1.6' }}>
+          ⌘ + ⇧ + S - New section<br />
+          ⌘ + ⌥ + Z - Toggle zen mode<br />
+          ⌘ + ⌃ + ↑/↓ - Navigate sections<br />
+          ⌘ + ⇧ + F - Upload file<br />
+          ⌘ + ⌥ + W - New workspace<br />
+          ⌘ + ⇧ + A - Approve section<br />
+          ⌘ + ⇧ + R - Request changes<br />
+          ⌘ + ⌥ + D - Delete item<br />
+          ⌘ + ⌃ + C - Add comment
         </div>
       </div>
     </div>
