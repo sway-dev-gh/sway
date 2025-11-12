@@ -28,7 +28,11 @@ class ApiService {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || `HTTP ${response.status}`)
+        // Create a custom error object that preserves all response data
+        const error = new Error(data.error || `HTTP ${response.status}`)
+        error.status = response.status
+        error.data = data
+        throw error
       }
 
       return data

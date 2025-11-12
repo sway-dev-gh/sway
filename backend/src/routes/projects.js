@@ -158,6 +158,27 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Invalid workflow template' })
     }
 
+    // Check project limits based on user's plan (skip for admin)
+    if (!req.isAdmin) {
+      const userResult = await pool.query('SELECT plan FROM users WHERE id = $1', [userId])
+      const userPlan = userResult.rows[0]?.plan || 'free'
+
+      if (userPlan === 'free') {
+        const projectCountResult = await pool.query('SELECT COUNT(*) as count FROM projects WHERE user_id = $1', [userId])
+        const currentProjectCount = parseInt(projectCountResult.rows[0].count)
+
+        if (currentProjectCount >= 3) {
+          return res.status(403).json({
+            error: 'Free plan allows 3 projects. Upgrade to Pro ($15/mo) for unlimited projects.',
+            limitReached: true,
+            currentCount: currentProjectCount,
+            maxCount: 3,
+            upgradeUrl: '/pricing'
+          })
+        }
+      }
+    }
+
     // Create project
     const insertQuery = `
       INSERT INTO projects (user_id, title, description, project_type, visibility, due_date, settings, workspace_type, workflow_template, default_reviewers, auto_assign_reviewers, external_access_enabled)

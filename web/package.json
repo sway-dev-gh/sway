@@ -1,7 +1,7 @@
 {
   "name": "swayfiles-v2",
   "version": "2.0.0",
-  "description": "Developer-first GitHub × Notion-inspired review & approval workspace",
+  "description": "Streamline team collaboration and get projects approved faster with powerful review workflows",
   "type": "module",
   "scripts": {
     "dev": "vite",

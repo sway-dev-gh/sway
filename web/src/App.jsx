@@ -4,6 +4,7 @@ import CenterWorkspace from './components/CenterWorkspace'
 import RightPanel from './components/RightPanel'
 import AuthForm from './components/AuthForm'
 import GuestForm from './components/GuestForm'
+import PricingPage from './components/PricingPage'
 import { WorkspaceProvider, useWorkspace } from './stores/WorkspaceStore'
 import './styles.css'
 
@@ -93,6 +94,24 @@ const AuthenticatedApp = () => {
         collapsed={rightPanelCollapsed}
         onToggleCollapse={() => setRightPanelCollapsed(!rightPanelCollapsed)}
       />
+
+      {/* Pricing Modal - Shows when user hits limits */}
+      {state.showPricingModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <PricingPage onClose={actions.hidePricingModal} />
+        </div>
+      )}
     </div>
   )
 }

@@ -51,6 +51,9 @@ const initialState = {
   focusedView: false,
   viewMode: 'workspace', // 'workspace' | 'settings'
 
+  // Modal state
+  showPricingModal: false,
+
   // Loading states
   isLoading: false,
   error: null
@@ -94,7 +97,11 @@ const ACTIONS = {
 
   GUEST_JOIN: 'GUEST_JOIN',
   GUEST_LOGOUT: 'GUEST_LOGOUT',
-  GENERATE_GUEST_LINK: 'GENERATE_GUEST_LINK'
+  GENERATE_GUEST_LINK: 'GENERATE_GUEST_LINK',
+
+  // Modal actions
+  SHOW_PRICING_MODAL: 'SHOW_PRICING_MODAL',
+  HIDE_PRICING_MODAL: 'HIDE_PRICING_MODAL'
 }
 
 // Reducer
@@ -363,6 +370,18 @@ function workspaceReducer(state, action) {
         token: null
       }
 
+    case ACTIONS.SHOW_PRICING_MODAL:
+      return {
+        ...state,
+        showPricingModal: true
+      }
+
+    case ACTIONS.HIDE_PRICING_MODAL:
+      return {
+        ...state,
+        showPricingModal: false
+      }
+
     default:
       return state
   }
@@ -509,10 +528,17 @@ export const WorkspaceProvider = ({ children }) => {
         })
         actions.addActivity('workspace_created', `Created workspace "${name}"`, 'You')
       } catch (error) {
-        dispatch({
-          type: ACTIONS.SET_ERROR,
-          payload: { error: error.message }
-        })
+        // Check if this is a project limit error
+        if (error.status === 403 && error.data?.limitReached) {
+          // Show pricing modal for upgrade instead of generic error
+          dispatch({ type: ACTIONS.SHOW_PRICING_MODAL })
+        } else {
+          // Show generic error for other cases
+          dispatch({
+            type: ACTIONS.SET_ERROR,
+            payload: { error: error.message }
+          })
+        }
       }
     },
 
@@ -796,6 +822,15 @@ export const WorkspaceProvider = ({ children }) => {
         })
         throw error
       }
+    },
+
+    // Modal actions
+    showPricingModal: () => {
+      dispatch({ type: ACTIONS.SHOW_PRICING_MODAL })
+    },
+
+    hidePricingModal: () => {
+      dispatch({ type: ACTIONS.HIDE_PRICING_MODAL })
     }
   }
 
