@@ -134,6 +134,7 @@ function Sidebar() {
       label: 'Account',
       items: [
         { path: '/notifications', label: 'Notifications', planRequired: null },
+        { path: '/plan', label: 'Plan & Billing', planRequired: null },
         { path: '/settings', label: 'Settings', planRequired: null }
       ]
     }
