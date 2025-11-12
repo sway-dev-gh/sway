@@ -26,9 +26,21 @@ const logActivity = async (userId, action, resourceType, resourceId, metadata = 
 }
 
 // =====================================================
+// GET /api/projects/test - Test endpoint without rate limiter
+// =====================================================
+router.get('/test', authenticateToken, async (req, res) => {
+  res.json({
+    success: true,
+    message: 'Test endpoint works!',
+    userId: req.userId,
+    timestamp: new Date().toISOString()
+  })
+})
+
+// =====================================================
 // GET /api/projects - Get user's projects and shared projects
 // =====================================================
-router.get('/', authenticateToken, projectLimiter, async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
     console.log('=== PROJECTS ROUTE REACHED ===')
     console.log('User ID:', req.userId)
