@@ -287,7 +287,7 @@ router.get('/:projectId', authenticateToken, projectLimiter, async (req, res) =>
       FROM project_files pf
       LEFT JOIN users u ON pf.uploaded_by_id = u.id
       WHERE pf.project_id = $1 AND pf.is_current_version = true
-      ORDER BY pf.created_at DESC
+      ORDER BY pf.id DESC
     `
 
     // Get recent activity
@@ -298,7 +298,7 @@ router.get('/:projectId', authenticateToken, projectLimiter, async (req, res) =>
       FROM activity_log a
       JOIN users u ON a.user_id = u.id
       WHERE a.resource_id = $1 AND a.resource_type = 'project'
-      ORDER BY a.created_at DESC
+      ORDER BY a.id DESC
       LIMIT 20
     `
 
