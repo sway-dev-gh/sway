@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useWorkspace } from '../stores/WorkspaceStore'
 
 const LeftSidebar = () => {
   const { state, actions, WORKFLOW_STATES } = useWorkspace()
-  const [activeSection, setActiveSection] = useState('files')
+  // Load saved tab from localStorage, fallback to 'files' if none saved
+  const [activeSection, setActiveSection] = useState(() => {
+    return localStorage.getItem('swayfiles-active-tab') || 'files'
+  })
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false)
   const [workspaceForm, setWorkspaceForm] = useState({ name: '', description: '', clientLink: '' })
   const [showUpgradeForm, setShowUpgradeForm] = useState(false)
@@ -972,6 +975,8 @@ const LeftSidebar = () => {
             key={section.id}
             onClick={() => {
               setActiveSection(section.id)
+              // Save the selected tab to localStorage so it persists on reload
+              localStorage.setItem('swayfiles-active-tab', section.id)
               if (section.id === 'settings') {
                 actions.setViewMode('settings')
               } else {
