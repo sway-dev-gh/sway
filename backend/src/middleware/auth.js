@@ -13,7 +13,7 @@ const authenticateToken = (req, res, next) => {
     const adminKey = req.headers['x-admin-key']
     if (adminKey && process.env.ADMIN_SECRET_KEY && adminKey === process.env.ADMIN_SECRET_KEY) {
       req.isAdmin = true
-      req.userId = 'admin'
+      req.userId = '00000000-0000-0000-0000-000000000000' // Use proper UUID format for admin
       req.userEmail = 'admin@sway.com'
       return next()
     }
