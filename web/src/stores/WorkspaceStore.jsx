@@ -58,10 +58,12 @@ const ACTIONS = {
   SET_LOADING: 'SET_LOADING',
   SET_ERROR: 'SET_ERROR',
 
+  LOAD_WORKSPACES: 'LOAD_WORKSPACES',
   CREATE_WORKSPACE: 'CREATE_WORKSPACE',
   SELECT_WORKSPACE: 'SELECT_WORKSPACE',
   UPDATE_WORKSPACE: 'UPDATE_WORKSPACE',
 
+  LOAD_FILES: 'LOAD_FILES',
   ADD_FILE: 'ADD_FILE',
   SELECT_FILE: 'SELECT_FILE',
   UPDATE_FILE: 'UPDATE_FILE',
@@ -125,14 +127,21 @@ function workspaceReducer(state, action) {
         isLoading: false
       }
 
+    case ACTIONS.LOAD_WORKSPACES:
+      return {
+        ...state,
+        workspaces: action.payload.workspaces,
+        isLoading: false
+      }
+
     case ACTIONS.CREATE_WORKSPACE:
       const newWorkspace = {
-        id: uuidv4(),
+        id: action.payload.id,
         name: action.payload.name,
         description: action.payload.description || '',
         clientLink: action.payload.clientLink || '',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+        createdAt: action.payload.createdAt,
+        updatedAt: action.payload.updatedAt
       }
       return {
         ...state,
@@ -144,24 +153,21 @@ function workspaceReducer(state, action) {
       return {
         ...state,
         currentWorkspace: action.payload.workspace,
-        // Load workspace-specific data here
-        files: action.payload.files || [],
-        sections: action.payload.sections || {},
+        files: [],
+        sections: {},
         selectedFile: null,
         selectedSection: null
       }
 
-    case ACTIONS.ADD_FILE:
-      const newFile = {
-        id: uuidv4(),
-        workspaceId: state.currentWorkspace.id,
-        name: action.payload.name,
-        type: action.payload.type,
-        content: action.payload.content || '',
-        uploadedAt: new Date().toISOString(),
-        workflowState: WORKFLOW_STATES.DRAFT,
-        sections: []
+    case ACTIONS.LOAD_FILES:
+      return {
+        ...state,
+        files: action.payload.files,
+        isLoading: false
       }
+
+    case ACTIONS.ADD_FILE:
+      const newFile = action.payload
       return {
         ...state,
         files: [...state.files, newFile],
@@ -322,6 +328,8 @@ export const WorkspaceProvider = ({ children }) => {
           payload: { user: response.user, token: response.token }
         })
         actions.addActivity('user_login', `Signed in as ${response.user.name}`, response.user.name)
+        // Load workspaces after successful login
+        actions.loadWorkspaces()
       } catch (error) {
         dispatch({
           type: ACTIONS.SET_ERROR,
@@ -341,6 +349,8 @@ export const WorkspaceProvider = ({ children }) => {
           payload: { user: response.user, token: response.token }
         })
         actions.addActivity('user_signup', `Created account for ${response.user.name}`, response.user.name)
+        // Load workspaces after successful signup
+        actions.loadWorkspaces()
       } catch (error) {
         dispatch({
           type: ACTIONS.SET_ERROR,
@@ -368,6 +378,8 @@ export const WorkspaceProvider = ({ children }) => {
             type: ACTIONS.LOGIN_SUCCESS,
             payload: { user: response.user, token }
           })
+          // Load workspaces after successful auth
+          actions.loadWorkspaces()
         } catch (error) {
           localStorage.removeItem('token')
           console.warn('Token validation failed:', error.message)
@@ -375,27 +387,131 @@ export const WorkspaceProvider = ({ children }) => {
       }
     },
 
-    createWorkspace: (name, description, clientLink) => {
-      dispatch({
-        type: ACTIONS.CREATE_WORKSPACE,
-        payload: { name, description, clientLink }
-      })
-      actions.addActivity('workspace_created', `Created workspace "${name}"`, 'You')
+    loadWorkspaces: async () => {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
+      try {
+        const response = await apiService.getProjects()
+        const workspaces = response.map(project => ({
+          id: project.id,
+          name: project.name,
+          description: project.description,
+          clientLink: project.client_link,
+          createdAt: project.created_at,
+          updatedAt: project.updated_at
+        }))
+        dispatch({
+          type: ACTIONS.LOAD_WORKSPACES,
+          payload: { workspaces }
+        })
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+      }
     },
 
-    selectWorkspace: (workspace, files = [], sections = {}) => {
+    createWorkspace: async (name, description, clientLink) => {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
+      try {
+        const response = await apiService.createProject({
+          name,
+          description,
+          client_link: clientLink
+        })
+        dispatch({
+          type: ACTIONS.CREATE_WORKSPACE,
+          payload: {
+            name: response.name,
+            description: response.description,
+            clientLink: response.client_link,
+            id: response.id,
+            createdAt: response.created_at,
+            updatedAt: response.updated_at
+          }
+        })
+        actions.addActivity('workspace_created', `Created workspace "${name}"`, 'You')
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+      }
+    },
+
+    selectWorkspace: async (workspace) => {
       dispatch({
         type: ACTIONS.SELECT_WORKSPACE,
-        payload: { workspace, files, sections }
+        payload: { workspace }
       })
+      // Load files for this workspace
+      actions.loadFiles(workspace.id)
     },
 
-    addFile: (name, type, content) => {
-      dispatch({
-        type: ACTIONS.ADD_FILE,
-        payload: { name, type, content }
-      })
-      actions.addActivity('file_added', `Added file "${name}"`, 'You')
+    loadFiles: async (projectId) => {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
+      try {
+        const response = await apiService.getProjectFiles(projectId)
+        const files = response.map(file => ({
+          id: file.id,
+          workspaceId: projectId,
+          name: file.original_name,
+          type: file.file_type,
+          content: file.file_content,
+          uploadedAt: file.created_at,
+          workflowState: WORKFLOW_STATES.DRAFT,
+          sections: []
+        }))
+        dispatch({
+          type: ACTIONS.LOAD_FILES,
+          payload: { files }
+        })
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+      }
+    },
+
+    addFile: async (file) => {
+      if (!state.currentWorkspace) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: 'Please select a workspace first' }
+        })
+        return
+      }
+
+      dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+
+        const response = await apiService.uploadFile(state.currentWorkspace.id, formData)
+
+        const newFile = {
+          id: response.id,
+          workspaceId: state.currentWorkspace.id,
+          name: response.original_name,
+          type: response.file_type,
+          content: response.file_content,
+          uploadedAt: response.created_at,
+          workflowState: WORKFLOW_STATES.DRAFT,
+          sections: []
+        }
+
+        dispatch({
+          type: ACTIONS.ADD_FILE,
+          payload: newFile
+        })
+        actions.addActivity('file_added', `Added file "${response.original_name}"`, 'You')
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+      }
     },
 
     selectFile: (file) => {

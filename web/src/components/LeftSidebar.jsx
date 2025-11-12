@@ -29,12 +29,10 @@ const LeftSidebar = () => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0]
     if (file && state.currentWorkspace) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        actions.addFile(file.name, file.type, e.target.result)
-      }
-      reader.readAsText(file)
+      actions.addFile(file)
     }
+    // Reset input value so same file can be uploaded again
+    event.target.value = ''
   }
 
   const getWorkflowBadgeColor = (state) => {
