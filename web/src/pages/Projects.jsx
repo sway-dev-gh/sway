@@ -90,114 +90,408 @@ function Projects() {
   if (loading) {
     return (
       <Layout>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minHeight: '60vh',
-          color: theme.colors.text.secondary
-        }}>
-          Loading your projects...
+        <div style={{ padding: '80px 60px', maxWidth: '1600px', margin: '0 auto' }}>
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '48px'
+          }}>
+            <div>
+              <div style={{
+                height: '36px',
+                width: '120px',
+                background: 'rgba(255, 255, 255, 0.05)',
+                borderRadius: '4px',
+                marginBottom: '12px'
+              }}></div>
+              <div style={{
+                height: '20px',
+                width: '300px',
+                background: 'rgba(255, 255, 255, 0.03)',
+                borderRadius: '4px'
+              }}></div>
+            </div>
+          </div>
+
+          {/* Skeleton for stats cards */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '24px',
+            marginBottom: '48px'
+          }}>
+            {[1,2,3,4].map(i => (
+              <div key={i} style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.05)',
+                borderRadius: '12px',
+                padding: '32px',
+                height: '140px'
+              }}>
+                <div style={{
+                  height: '16px',
+                  width: '100px',
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  borderRadius: '4px',
+                  marginBottom: '16px'
+                }}></div>
+                <div style={{
+                  height: '32px',
+                  width: '60px',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  borderRadius: '4px',
+                  marginBottom: '8px'
+                }}></div>
+              </div>
+            ))}
+          </div>
         </div>
       </Layout>
     )
   }
 
   return (
-    <Layout>
-      <div style={{ padding: '80px 60px', maxWidth: '1600px', margin: '0 auto' }}>
-        {/* Page Header */}
+    <Sidebar>
+      <div style={{
+        minHeight: '100vh',
+        background: theme.colors.bg.page,
+        color: theme.colors.text.primary,
+        paddingTop: '68px'
+      }}>
         <div style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          marginBottom: '48px'
+          maxWidth: '1400px',
+          margin: '0 auto',
+          padding: '48px 32px'
         }}>
-          <div>
-            <h1 style={standardStyles.pageHeader}>
-              Reviews
+
+          {/* Welcome Header */}
+          <div style={{
+            marginBottom: '48px',
+            textAlign: 'center',
+            maxWidth: '800px',
+            margin: '0 auto 48px'
+          }}>
+            <h1 style={{
+              fontSize: '32px',
+              fontWeight: '600',
+              color: theme.colors.text.primary,
+              margin: '0 0 16px 0',
+              letterSpacing: '-0.01em'
+            }}>
+              Review Workflows
             </h1>
-            <p style={standardStyles.pageDescription}>
-              Upload drafts, collect feedback, and manage approval workflows
+            <p style={{
+              fontSize: '18px',
+              color: theme.colors.text.secondary,
+              margin: '0 0 32px 0',
+              lineHeight: '1.6'
+            }}>
+              Get feedback on your work from clients, colleagues, and stakeholders
             </p>
-          </div>
-          <button
-            onClick={() => setShowCreateProject(true)}
-            style={standardStyles.primaryButton}
-            onMouseEnter={(e) => {
-              Object.assign(e.target.style, getPrimaryButtonHover())
-            }}
-            onMouseLeave={(e) => {
-              Object.assign(e.target.style, standardStyles.primaryButton)
-            }}
-          >
-            + Upload for Review
-          </button>
-        </div>
 
-        {/* Quick Stats */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '20px',
-          marginBottom: '40px'
-        }}>
-          <div style={{
-            background: theme.colors.bg.hover,
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '16px',
-            padding: '24px'
-          }}>
-            <div style={standardStyles.statsLabel}>
-              Total Reviews
+            {/* Quick Start Guide */}
+            <div style={{
+              background: theme.colors.bg.secondary,
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '12px',
+              padding: '24px',
+              textAlign: 'left',
+              marginBottom: '32px'
+            }}>
+              <h3 style={{
+                fontSize: '16px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                margin: '0 0 16px 0'
+              }}>
+                How it works:
+              </h3>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                gap: '16px'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px'
+                }}>
+                  <div style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: theme.colors.text.primary,
+                    color: theme.colors.bg.page,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    flexShrink: 0
+                  }}>
+                    1
+                  </div>
+                  <div>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: theme.colors.text.primary,
+                      marginBottom: '4px'
+                    }}>
+                      Upload your draft
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Documents, designs, videos, anything
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px'
+                }}>
+                  <div style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: theme.colors.text.primary,
+                    color: theme.colors.bg.page,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    flexShrink: 0
+                  }}>
+                    2
+                  </div>
+                  <div>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: theme.colors.text.primary,
+                      marginBottom: '4px'
+                    }}>
+                      Add reviewers
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Invite people to give feedback
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px'
+                }}>
+                  <div style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    background: theme.colors.text.primary,
+                    color: theme.colors.bg.page,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '12px',
+                    fontWeight: '600',
+                    flexShrink: 0
+                  }}>
+                    3
+                  </div>
+                  <div>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: theme.colors.text.primary,
+                      marginBottom: '4px'
+                    }}>
+                      Get feedback
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Collect comments and approvals
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div style={standardStyles.statsNumber}>
-              {stats.total}
-            </div>
+
+            <button
+              onClick={() => setShowCreateProject(true)}
+              style={{
+                background: theme.colors.text.primary,
+                color: theme.colors.bg.page,
+                padding: '16px 32px',
+                borderRadius: '8px',
+                border: 'none',
+                fontSize: '16px',
+                fontWeight: '600',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease'
+              }}
+            >
+              Start Your First Review
+            </button>
           </div>
 
+          {/* Progress Overview */}
           <div style={{
-            background: theme.colors.bg.hover,
+            background: theme.colors.bg.secondary,
             border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '16px',
-            padding: '24px'
+            borderRadius: '12px',
+            padding: '32px',
+            marginBottom: '40px'
           }}>
-            <div style={standardStyles.statsLabel}>
-              Pending Review
-            </div>
-            <div style={standardStyles.statsNumber}>
-              {stats.pending}
-            </div>
-          </div>
+            <h2 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              color: theme.colors.text.primary,
+              margin: '0 0 24px 0'
+            }}>
+              Review Progress Overview
+            </h2>
 
-          <div style={{
-            background: theme.colors.bg.hover,
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '16px',
-            padding: '24px'
-          }}>
-            <div style={standardStyles.statsLabel}>
-              Approved
-            </div>
-            <div style={standardStyles.statsNumber}>
-              {stats.approved}
-            </div>
-          </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '24px'
+            }}>
+              <div style={{
+                textAlign: 'center',
+                padding: '20px'
+              }}>
+                <div style={{
+                  fontSize: '12px',
+                  color: theme.colors.text.secondary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  fontWeight: '600',
+                  marginBottom: '12px'
+                }}>
+                  Total Reviews
+                </div>
+                <div style={{
+                  fontSize: '36px',
+                  fontWeight: '700',
+                  color: theme.colors.text.primary,
+                  marginBottom: '8px'
+                }}>
+                  {stats.total}
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.secondary
+                }}>
+                  All time
+                </div>
+              </div>
 
-          <div style={{
-            background: theme.colors.bg.hover,
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '16px',
-            padding: '24px'
-          }}>
-            <div style={standardStyles.statsLabel}>
-              Avg Review Time
-            </div>
-            <div style={standardStyles.statsNumber}>
-              {stats.avgReviewTime}d
+              <div style={{
+                textAlign: 'center',
+                padding: '20px'
+              }}>
+                <div style={{
+                  fontSize: '12px',
+                  color: theme.colors.text.secondary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  fontWeight: '600',
+                  marginBottom: '12px'
+                }}>
+                  Pending Review
+                </div>
+                <div style={{
+                  fontSize: '36px',
+                  fontWeight: '700',
+                  color: '#f59e0b',
+                  marginBottom: '8px'
+                }}>
+                  {stats.pending}
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.secondary
+                }}>
+                  Awaiting feedback
+                </div>
+              </div>
+
+              <div style={{
+                textAlign: 'center',
+                padding: '20px'
+              }}>
+                <div style={{
+                  fontSize: '12px',
+                  color: theme.colors.text.secondary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  fontWeight: '600',
+                  marginBottom: '12px'
+                }}>
+                  Approved
+                </div>
+                <div style={{
+                  fontSize: '36px',
+                  fontWeight: '700',
+                  color: '#10b981',
+                  marginBottom: '8px'
+                }}>
+                  {stats.approved}
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.secondary
+                }}>
+                  Ready to ship
+                </div>
+              </div>
+
+              <div style={{
+                textAlign: 'center',
+                padding: '20px'
+              }}>
+                <div style={{
+                  fontSize: '12px',
+                  color: theme.colors.text.secondary,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  fontWeight: '600',
+                  marginBottom: '12px'
+                }}>
+                  Avg Review Time
+                </div>
+                <div style={{
+                  fontSize: '36px',
+                  fontWeight: '700',
+                  color: theme.colors.text.primary,
+                  marginBottom: '8px'
+                }}>
+                  {stats.avgReviewTime}d
+                </div>
+                <div style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.secondary
+                }}>
+                  Response time
+                </div>
+              </div>
             </div>
           </div>
-        </div>
 
         {/* Filters & Search */}
         <div style={{
