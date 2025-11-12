@@ -8,6 +8,12 @@ import { getStorageLimit, getEffectivePlan } from '../utils/planUtils'
 function Dashboard() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
+  const [selectedWorkspace, setSelectedWorkspace] = useState(null)
+  const [workspaces, setWorkspaces] = useState([
+    { id: 1, name: 'Design Team', members: 8, files: 24, active: true, color: '#3b82f6' },
+    { id: 2, name: 'Marketing', members: 5, files: 12, active: true, color: '#10b981' },
+    { id: 3, name: 'Client Projects', members: 3, files: 8, active: false, color: '#f59e0b' }
+  ])
   const [stats, setStats] = useState({
     totalRequests: 0,
     totalUploads: 0,
@@ -188,6 +194,310 @@ function Dashboard() {
 
   const isPro = (user.plan || 'free').toLowerCase() === 'pro'
 
+  // If no workspace is selected, show workspace selector
+  if (!selectedWorkspace) {
+    return (
+      <>
+        <Sidebar />
+        <div style={{
+          minHeight: '100vh',
+          background: '#000000',
+          color: '#ffffff',
+          paddingTop: '68px'
+        }}>
+          <div style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            padding: '80px 40px 120px'
+          }}>
+            {/* Workspace Gateway Header */}
+            <div style={{
+              textAlign: 'center',
+              marginBottom: '64px'
+            }}>
+              <h1 style={{
+                fontSize: '36px',
+                fontWeight: '700',
+                margin: '0 0 16px 0',
+                color: '#ffffff',
+                letterSpacing: '-0.02em'
+              }}>
+                Choose your workspace
+              </h1>
+              <p style={{
+                fontSize: '18px',
+                color: '#a3a3a3',
+                margin: '0 0 48px 0',
+                maxWidth: '600px',
+                marginLeft: 'auto',
+                marginRight: 'auto',
+                lineHeight: '1.6'
+              }}>
+                Select a workspace to collaborate with your team, share files, and manage projects together
+              </p>
+            </div>
+
+            {/* Workspace Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '24px',
+              marginBottom: '48px'
+            }}>
+              {workspaces.map((workspace) => (
+                <div
+                  key={workspace.id}
+                  onClick={() => setSelectedWorkspace(workspace)}
+                  style={{
+                    background: '#111111',
+                    border: '1px solid #2a2a2a',
+                    borderRadius: '16px',
+                    padding: '32px',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s ease',
+                    position: 'relative',
+                    overflow: 'hidden'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.borderColor = workspace.color
+                    e.currentTarget.style.boxShadow = `0 8px 32px ${workspace.color}20`
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0px)'
+                    e.currentTarget.style.borderColor = '#2a2a2a'
+                    e.currentTarget.style.boxShadow = 'none'
+                  }}
+                >
+                  {/* Status Badge */}
+                  <div style={{
+                    position: 'absolute',
+                    top: '20px',
+                    right: '20px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '11px',
+                    fontWeight: '600',
+                    color: workspace.active ? '#10b981' : '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em'
+                  }}>
+                    <div style={{
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      background: workspace.active ? '#10b981' : '#6b7280'
+                    }} />
+                    {workspace.active ? 'Active' : 'Inactive'}
+                  </div>
+
+                  {/* Workspace Icon */}
+                  <div style={{
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '12px',
+                    background: `${workspace.color}20`,
+                    border: `1px solid ${workspace.color}40`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '24px',
+                    fontSize: '24px'
+                  }}>
+                    🏢
+                  </div>
+
+                  {/* Workspace Info */}
+                  <h3 style={{
+                    fontSize: '20px',
+                    fontWeight: '600',
+                    color: '#ffffff',
+                    margin: '0 0 8px 0'
+                  }}>
+                    {workspace.name}
+                  </h3>
+                  <p style={{
+                    fontSize: '14px',
+                    color: '#a3a3a3',
+                    margin: '0 0 24px 0',
+                    lineHeight: '1.5'
+                  }}>
+                    Collaborate with your team on shared projects and file reviews
+                  </p>
+
+                  {/* Stats */}
+                  <div style={{
+                    display: 'flex',
+                    gap: '24px',
+                    marginBottom: '24px'
+                  }}>
+                    <div>
+                      <div style={{
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        color: '#ffffff',
+                        marginBottom: '4px'
+                      }}>
+                        {workspace.members}
+                      </div>
+                      <div style={{
+                        fontSize: '11px',
+                        color: '#a3a3a3',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                      }}>
+                        Members
+                      </div>
+                    </div>
+                    <div>
+                      <div style={{
+                        fontSize: '18px',
+                        fontWeight: '600',
+                        color: '#ffffff',
+                        marginBottom: '4px'
+                      }}>
+                        {workspace.files}
+                      </div>
+                      <div style={{
+                        fontSize: '11px',
+                        color: '#a3a3a3',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.05em'
+                      }}>
+                        Files
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Enter Button */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                  }}>
+                    <span style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: workspace.color
+                    }}>
+                      Enter workspace →
+                    </span>
+                  </div>
+                </div>
+              ))}
+
+              {/* Create New Workspace Card */}
+              <div style={{
+                background: '#111111',
+                border: '2px dashed #2a2a2a',
+                borderRadius: '16px',
+                padding: '32px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                minHeight: '300px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = '#3b82f6'
+                e.currentTarget.style.background = '#3b82f610'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = '#2a2a2a'
+                e.currentTarget.style.background = '#111111'
+              }}>
+                <div style={{
+                  width: '56px',
+                  height: '56px',
+                  borderRadius: '12px',
+                  background: '#1f2937',
+                  border: '1px solid #374151',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '24px',
+                  fontSize: '24px'
+                }}>
+                  ➕
+                </div>
+                <h3 style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  color: '#ffffff',
+                  margin: '0 0 8px 0'
+                }}>
+                  Create New Workspace
+                </h3>
+                <p style={{
+                  fontSize: '14px',
+                  color: '#a3a3a3',
+                  margin: 0,
+                  lineHeight: '1.5'
+                }}>
+                  Start fresh with a new collaborative workspace
+                </p>
+              </div>
+            </div>
+
+            {/* Recent Activity Preview */}
+            <div style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+              padding: '32px',
+              textAlign: 'center'
+            }}>
+              <h2 style={{
+                fontSize: '18px',
+                fontWeight: '600',
+                color: '#ffffff',
+                margin: '0 0 16px 0'
+              }}>
+                Quick Overview
+              </h2>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                gap: '24px',
+                marginTop: '24px'
+              }}>
+                <div>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                    {workspaces.reduce((sum, w) => sum + w.members, 0)}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Total Members
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                    {workspaces.filter(w => w.active).length}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Active Workspaces
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                    {workspaces.reduce((sum, w) => sum + w.files, 0)}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                    Shared Files
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    )
+  }
+
+  // Workspace-specific dashboard
   return (
     <>
       <Sidebar />
@@ -202,7 +512,7 @@ function Dashboard() {
           margin: '0 auto',
           padding: '80px 40px 120px'
         }}>
-          {/* Welcome Header */}
+          {/* Workspace Header */}
           <div style={{
             marginBottom: '48px',
             display: 'flex',
@@ -211,33 +521,80 @@ function Dashboard() {
             flexWrap: 'wrap',
             gap: '24px'
           }}>
-            <div>
-              <h1 style={{
-                fontSize: '32px',
-                fontWeight: '600',
-                margin: '0 0 8px 0',
-                color: '#ffffff',
-                letterSpacing: '-0.01em'
-              }}>
-                Welcome back
-              </h1>
-              <p style={{
-                fontSize: '16px',
-                color: '#a3a3a3',
-                margin: 0,
-                fontWeight: '400'
-              }}>
-                Here's what's happening with your file requests
-              </p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <button
+                onClick={() => setSelectedWorkspace(null)}
+                style={{
+                  background: 'transparent',
+                  border: '1px solid #2a2a2a',
+                  color: '#a3a3a3',
+                  padding: '8px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                ←
+              </button>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '6px',
+                    background: `${selectedWorkspace.color}20`,
+                    border: `1px solid ${selectedWorkspace.color}40`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    🏢
+                  </div>
+                  <h1 style={{
+                    fontSize: '32px',
+                    fontWeight: '600',
+                    margin: '0',
+                    color: '#ffffff',
+                    letterSpacing: '-0.01em'
+                  }}>
+                    {selectedWorkspace.name}
+                  </h1>
+                </div>
+                <p style={{
+                  fontSize: '16px',
+                  color: '#a3a3a3',
+                  margin: 0,
+                  fontWeight: '400'
+                }}>
+                  {selectedWorkspace.members} members • {selectedWorkspace.files} shared files
+                </p>
+              </div>
             </div>
             <div style={{
               display: 'flex',
               gap: '12px',
               flexWrap: 'wrap'
             }}>
+              <button style={{
+                background: 'transparent',
+                border: '1px solid #2a2a2a',
+                color: '#ffffff',
+                padding: '12px 20px',
+                borderRadius: '6px',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                + Invite Member
+              </button>
               <Link to="/requests" style={{
-                background: '#ffffff',
-                color: '#000000',
+                background: selectedWorkspace.color,
+                color: '#ffffff',
                 padding: '12px 20px',
                 borderRadius: '6px',
                 textDecoration: 'none',
@@ -248,24 +605,23 @@ function Dashboard() {
                 gap: '8px',
                 transition: 'all 0.2s ease'
               }}>
-                + New Request
+                + New Project
               </Link>
             </div>
           </div>
 
-          {/* Quick Stats Grid */}
+          {/* Workspace Stats */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '24px',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '20px',
             marginBottom: '48px'
           }}>
             <div style={{
               background: '#111111',
               border: '1px solid #2a2a2a',
               borderRadius: '12px',
-              padding: '24px',
-              position: 'relative'
+              padding: '24px'
             }}>
               <div style={{
                 display: 'flex',
@@ -276,37 +632,38 @@ function Dashboard() {
                 <div style={{
                   width: '40px',
                   height: '40px',
-                  background: '#1f1f1f',
+                  background: `${selectedWorkspace.color}20`,
+                  border: `1px solid ${selectedWorkspace.color}40`,
                   borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '18px'
+                  fontSize: '16px'
                 }}>
-                  📊
+                  👥
                 </div>
                 <h3 style={{
-                  fontSize: '16px',
+                  fontSize: '14px',
                   fontWeight: '600',
                   color: '#ffffff',
                   margin: '0'
                 }}>
-                  Total Requests
+                  Team Members
                 </h3>
               </div>
               <div style={{
-                fontSize: '28px',
+                fontSize: '24px',
                 fontWeight: '700',
                 color: '#ffffff',
-                marginBottom: '8px'
+                marginBottom: '4px'
               }}>
-                {stats.totalRequests}
+                {selectedWorkspace.members}
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: '12px',
                 color: '#a3a3a3'
               }}>
-                {stats.activeRequests} currently active
+                All active
               </div>
             </div>
 
@@ -325,37 +682,38 @@ function Dashboard() {
                 <div style={{
                   width: '40px',
                   height: '40px',
-                  background: '#1f1f1f',
+                  background: `${selectedWorkspace.color}20`,
+                  border: `1px solid ${selectedWorkspace.color}40`,
                   borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '18px'
+                  fontSize: '16px'
                 }}>
                   📁
                 </div>
                 <h3 style={{
-                  fontSize: '16px',
+                  fontSize: '14px',
                   fontWeight: '600',
                   color: '#ffffff',
                   margin: '0'
                 }}>
-                  Files Received
+                  Shared Files
                 </h3>
               </div>
               <div style={{
-                fontSize: '28px',
+                fontSize: '24px',
                 fontWeight: '700',
                 color: '#ffffff',
-                marginBottom: '8px'
+                marginBottom: '4px'
               }}>
-                {stats.totalUploads}
+                {selectedWorkspace.files}
               </div>
               <div style={{
-                fontSize: '14px',
+                fontSize: '12px',
                 color: '#a3a3a3'
               }}>
-                {formatStorageMB(stats.storageUsed)} used
+                12 this week
               </div>
             </div>
 
@@ -374,338 +732,409 @@ function Dashboard() {
                 <div style={{
                   width: '40px',
                   height: '40px',
-                  background: '#1f1f1f',
+                  background: `${selectedWorkspace.color}20`,
+                  border: `1px solid ${selectedWorkspace.color}40`,
                   borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  fontSize: '18px'
+                  fontSize: '16px'
                 }}>
-                  💾
+                  ✅
                 </div>
                 <h3 style={{
-                  fontSize: '16px',
+                  fontSize: '14px',
                   fontWeight: '600',
                   color: '#ffffff',
                   margin: '0'
                 }}>
-                  Storage Used
+                  Reviews
                 </h3>
               </div>
               <div style={{
-                fontSize: '28px',
+                fontSize: '24px',
                 fontWeight: '700',
                 color: '#ffffff',
-                marginBottom: '8px'
+                marginBottom: '4px'
               }}>
-                {getStoragePercentage().toFixed(0)}%
+                8
               </div>
               <div style={{
-                fontSize: '14px',
-                color: '#a3a3a3',
-                marginBottom: '12px'
+                fontSize: '12px',
+                color: '#a3a3a3'
               }}>
-                {formatStorageMB(stats.storageUsed)} / {user.storage_limit_gb}GB
-              </div>
-              <div style={{
-                width: '100%',
-                height: '6px',
-                background: '#2a2a2a',
-                borderRadius: '3px',
-                overflow: 'hidden'
-              }}>
-                <div style={{
-                  width: `${getStoragePercentage()}%`,
-                  height: '100%',
-                  background: getStoragePercentage() > 80 ? '#dc2626' : '#10b981',
-                  transition: 'width 0.3s ease'
-                }} />
+                3 pending
               </div>
             </div>
 
-            <Link to="/plan" style={{ textDecoration: 'none' }}>
+            <div style={{
+              background: '#111111',
+              border: '1px solid #2a2a2a',
+              borderRadius: '12px',
+              padding: '24px'
+            }}>
               <div style={{
-                background: isPro ? '#111111' : '#1a1a1a',
-                border: isPro ? '1px solid #2a2a2a' : '1px solid #3a3a3a',
-                borderRadius: '12px',
-                padding: '24px',
-                cursor: 'pointer',
-                height: '100%',
-                transition: 'all 0.2s ease'
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                marginBottom: '16px'
               }}>
                 <div style={{
+                  width: '40px',
+                  height: '40px',
+                  background: `${selectedWorkspace.color}20`,
+                  border: `1px solid ${selectedWorkspace.color}40`,
+                  borderRadius: '8px',
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '12px',
-                  marginBottom: '16px'
+                  justifyContent: 'center',
+                  fontSize: '16px'
                 }}>
-                  <div style={{
-                    width: '40px',
-                    height: '40px',
-                    background: isPro ? '#2d4f3f' : '#1f1f1f',
-                    borderRadius: '8px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '18px'
-                  }}>
-                    {isPro ? '⭐' : '📈'}
-                  </div>
-                  <h3 style={{
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    color: '#ffffff',
-                    margin: '0'
-                  }}>
-                    {isPro ? 'Pro Plan' : 'Current Plan'}
-                  </h3>
+                  🚀
                 </div>
-                <div style={{
-                  fontSize: '28px',
-                  fontWeight: '700',
-                  color: isPro ? '#10b981' : '#ffffff',
-                  marginBottom: '8px'
-                }}>
-                  {user.plan?.charAt(0).toUpperCase() + user.plan?.slice(1) || 'Free'}
-                </div>
-                <div style={{
+                <h3 style={{
                   fontSize: '14px',
-                  color: '#a3a3a3'
+                  fontWeight: '600',
+                  color: '#ffffff',
+                  margin: '0'
                 }}>
-                  {isPro ? 'All features unlocked' : 'Upgrade for more storage →'}
-                </div>
+                  Projects
+                </h3>
               </div>
-            </Link>
-          </div>
-
-          {/* Quick Actions */}
-          <div style={{
-            background: '#111111',
-            border: '1px solid #2a2a2a',
-            borderRadius: '12px',
-            padding: '32px',
-            marginBottom: '48px'
-          }}>
-            <h2 style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#ffffff',
-              margin: '0 0 24px 0'
-            }}>
-              Quick Actions
-            </h2>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '20px'
-            }}>
-              <Link to="/requests" style={{ textDecoration: 'none' }}>
-                <div style={{
-                  background: '#1a1a1a',
-                  border: '1px solid #2a2a2a',
-                  borderRadius: '8px',
-                  padding: '24px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}>
-                  <div style={{
-                    fontSize: '12px',
-                    color: '#a3a3a3',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    fontWeight: '600',
-                    marginBottom: '12px'
-                  }}>
-                    Most Popular
-                  </div>
-                  <h3 style={{
-                    fontSize: '18px',
-                    color: '#ffffff',
-                    fontWeight: '600',
-                    marginBottom: '8px',
-                    margin: '0 0 8px 0'
-                  }}>
-                    Create New Request
-                  </h3>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#a3a3a3',
-                    lineHeight: '1.5',
-                    margin: '0'
-                  }}>
-                    Set up a new file collection page in under 30 seconds
-                  </p>
-                </div>
-              </Link>
-
-              <Link to="/responses" style={{ textDecoration: 'none' }}>
-                <div style={{
-                  background: '#1a1a1a',
-                  border: '1px solid #2a2a2a',
-                  borderRadius: '8px',
-                  padding: '24px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}>
-                  <div style={{
-                    fontSize: '12px',
-                    color: '#a3a3a3',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    fontWeight: '600',
-                    marginBottom: '12px'
-                  }}>
-                    Your Data
-                  </div>
-                  <h3 style={{
-                    fontSize: '18px',
-                    color: '#ffffff',
-                    fontWeight: '600',
-                    marginBottom: '8px',
-                    margin: '0 0 8px 0'
-                  }}>
-                    View All Requests
-                  </h3>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#a3a3a3',
-                    lineHeight: '1.5',
-                    margin: '0'
-                  }}>
-                    Track submissions, download files, and manage your data
-                  </p>
-                </div>
-              </Link>
-
-              <Link to="/collaboration" style={{ textDecoration: 'none' }}>
-                <div style={{
-                  background: '#1a1a1a',
-                  border: '1px solid #2a2a2a',
-                  borderRadius: '8px',
-                  padding: '24px',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease'
-                }}>
-                  <div style={{
-                    fontSize: '12px',
-                    color: '#a3a3a3',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    fontWeight: '600',
-                    marginBottom: '12px'
-                  }}>
-                    Team Features
-                  </div>
-                  <h3 style={{
-                    fontSize: '18px',
-                    color: '#ffffff',
-                    fontWeight: '600',
-                    marginBottom: '8px',
-                    margin: '0 0 8px 0'
-                  }}>
-                    Collaboration Hub
-                  </h3>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#a3a3a3',
-                    lineHeight: '1.5',
-                    margin: '0'
-                  }}>
-                    Manage approvals, edit requests, and team workflows
-                  </p>
-                </div>
-              </Link>
+              <div style={{
+                fontSize: '24px',
+                fontWeight: '700',
+                color: '#ffffff',
+                marginBottom: '4px'
+              }}>
+                5
+              </div>
+              <div style={{
+                fontSize: '12px',
+                color: '#a3a3a3'
+              }}>
+                2 in progress
+              </div>
             </div>
           </div>
 
-          {/* Recent Activity */}
-          {stats.recentActivity && stats.recentActivity.length > 0 && (
+          {/* Workspace Hub */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '2fr 1fr',
+            gap: '24px',
+            marginBottom: '48px'
+          }}>
+            {/* Main Workspace Content */}
             <div style={{
               background: '#111111',
               border: '1px solid #2a2a2a',
               borderRadius: '12px',
               padding: '32px'
             }}>
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '24px'
+              <h2 style={{
+                fontSize: '20px',
+                fontWeight: '600',
+                color: '#ffffff',
+                margin: '0 0 24px 0'
               }}>
-                <h2 style={{
-                  fontSize: '20px',
+                Workspace Activity
+              </h2>
+
+              {/* Quick Actions Row */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                gap: '16px',
+                marginBottom: '32px'
+              }}>
+                <button style={{
+                  background: selectedWorkspace.color,
+                  color: '#ffffff',
+                  border: 'none',
+                  padding: '16px 20px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
+                }}>
+                  📄 New Project
+                </button>
+                <button style={{
+                  background: 'transparent',
+                  color: '#ffffff',
+                  border: '1px solid #2a2a2a',
+                  padding: '16px 20px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
+                }}>
+                  📁 Share Files
+                </button>
+                <button style={{
+                  background: 'transparent',
+                  color: '#ffffff',
+                  border: '1px solid #2a2a2a',
+                  padding: '16px 20px',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  transition: 'all 0.2s ease'
+                }}>
+                  ✅ Review
+                </button>
+              </div>
+
+              {/* Recent Files */}
+              <div>
+                <h3 style={{
+                  fontSize: '16px',
                   fontWeight: '600',
                   color: '#ffffff',
-                  margin: '0'
+                  margin: '0 0 16px 0'
                 }}>
-                  Recent Activity
-                </h2>
-                <Link to="/responses" style={{
-                  color: '#a3a3a3',
-                  textDecoration: 'none',
-                  fontSize: '14px',
-                  fontWeight: '500'
+                  Recent Files
+                </h3>
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px'
                 }}>
-                  View all →
-                </Link>
-              </div>
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '16px'
-              }}>
-                {stats.recentActivity.slice(0, 5).map((activity, index) => (
-                  <div key={activity.id} style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '16px',
-                    padding: '16px',
-                    background: '#1a1a1a',
-                    borderRadius: '8px',
-                    border: '1px solid #2a2a2a'
-                  }}>
-                    <div style={{
-                      width: '40px',
-                      height: '40px',
-                      background: '#2a2a2a',
-                      borderRadius: '8px',
+                  {[
+                    { name: 'Brand Guidelines v2.pdf', user: 'Sarah Chen', time: '2h ago', type: 'pdf' },
+                    { name: 'Marketing Assets.zip', user: 'Mike Torres', time: '4h ago', type: 'zip' },
+                    { name: 'Logo Concept 3.ai', user: 'Alex Kim', time: '1d ago', type: 'ai' },
+                    { name: 'Project Timeline.xlsx', user: 'Emma Wilson', time: '2d ago', type: 'excel' }
+                  ].map((file, index) => (
+                    <div key={index} style={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '16px'
+                      gap: '12px',
+                      padding: '12px',
+                      background: '#1a1a1a',
+                      borderRadius: '6px',
+                      border: '1px solid #2a2a2a'
                     }}>
-                      📄
-                    </div>
-                    <div style={{ flex: 1 }}>
                       <div style={{
-                        fontSize: '14px',
-                        color: '#ffffff',
-                        fontWeight: '500',
-                        marginBottom: '4px'
+                        width: '32px',
+                        height: '32px',
+                        background: '#2a2a2a',
+                        borderRadius: '4px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px'
                       }}>
-                        {activity.fileName}
+                        📄
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{
+                          fontSize: '13px',
+                          color: '#ffffff',
+                          fontWeight: '500',
+                          marginBottom: '2px'
+                        }}>
+                          {file.name}
+                        </div>
+                        <div style={{
+                          fontSize: '11px',
+                          color: '#a3a3a3'
+                        }}>
+                          {file.user} • {file.time}
+                        </div>
                       </div>
                       <div style={{
-                        fontSize: '12px',
-                        color: '#a3a3a3'
+                        fontSize: '11px',
+                        color: '#a3a3a3',
+                        padding: '2px 6px',
+                        background: '#2a2a2a',
+                        borderRadius: '3px'
                       }}>
-                        Uploaded to {activity.formName} • {getTimeAgo(activity.uploadedAt)}
+                        {file.type}
                       </div>
                     </div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#a3a3a3',
-                      padding: '4px 8px',
-                      background: '#2a2a2a',
-                      borderRadius: '4px'
-                    }}>
-                      {formatBytes(activity.fileSize)}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
-          )}
+
+            {/* Team Sidebar */}
+            <div>
+              <div style={{
+                background: '#111111',
+                border: '1px solid #2a2a2a',
+                borderRadius: '12px',
+                padding: '24px',
+                marginBottom: '24px'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: '20px'
+                }}>
+                  <h3 style={{
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    color: '#ffffff',
+                    margin: '0'
+                  }}>
+                    Team Members
+                  </h3>
+                  <span style={{
+                    fontSize: '12px',
+                    color: '#a3a3a3',
+                    padding: '2px 6px',
+                    background: '#2a2a2a',
+                    borderRadius: '3px'
+                  }}>
+                    {selectedWorkspace.members}
+                  </span>
+                </div>
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px'
+                }}>
+                  {[
+                    { name: 'Sarah Chen', role: 'Design Lead', avatar: 'S', online: true },
+                    { name: 'Mike Torres', role: 'Developer', avatar: 'M', online: true },
+                    { name: 'Alex Kim', role: 'Designer', avatar: 'A', online: false },
+                    { name: 'Emma Wilson', role: 'PM', avatar: 'E', online: true },
+                    { name: 'Tom Davis', role: 'Developer', avatar: 'T', online: false }
+                  ].map((member, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px'
+                    }}>
+                      <div style={{
+                        position: 'relative',
+                        width: '32px',
+                        height: '32px',
+                        background: selectedWorkspace.color,
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        color: '#ffffff'
+                      }}>
+                        {member.avatar}
+                        {member.online && (
+                          <div style={{
+                            position: 'absolute',
+                            bottom: '-1px',
+                            right: '-1px',
+                            width: '10px',
+                            height: '10px',
+                            background: '#10b981',
+                            border: '2px solid #111111',
+                            borderRadius: '50%'
+                          }} />
+                        )}
+                      </div>
+                      <div>
+                        <div style={{
+                          fontSize: '13px',
+                          color: '#ffffff',
+                          fontWeight: '500'
+                        }}>
+                          {member.name}
+                        </div>
+                        <div style={{
+                          fontSize: '11px',
+                          color: '#a3a3a3'
+                        }}>
+                          {member.role}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Workspace Notifications */}
+              <div style={{
+                background: '#111111',
+                border: '1px solid #2a2a2a',
+                borderRadius: '12px',
+                padding: '24px'
+              }}>
+                <h3 style={{
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  color: '#ffffff',
+                  margin: '0 0 16px 0'
+                }}>
+                  Updates
+                </h3>
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px'
+                }}>
+                  {[
+                    { text: 'New review submitted by Sarah', time: '5m ago', type: 'review' },
+                    { text: '3 files shared by Mike', time: '1h ago', type: 'files' },
+                    { text: 'Project deadline tomorrow', time: '2h ago', type: 'alert' }
+                  ].map((notification, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: '8px',
+                      padding: '8px',
+                      background: '#1a1a1a',
+                      borderRadius: '4px'
+                    }}>
+                      <div style={{
+                        width: '6px',
+                        height: '6px',
+                        borderRadius: '50%',
+                        background: notification.type === 'alert' ? '#f59e0b' :
+                                   notification.type === 'review' ? '#10b981' : selectedWorkspace.color,
+                        marginTop: '6px',
+                        flexShrink: 0
+                      }} />
+                      <div>
+                        <div style={{
+                          fontSize: '12px',
+                          color: '#ffffff',
+                          lineHeight: '1.4'
+                        }}>
+                          {notification.text}
+                        </div>
+                        <div style={{
+                          fontSize: '10px',
+                          color: '#a3a3a3',
+                          marginTop: '2px'
+                        }}>
+                          {notification.time}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
       </div>
