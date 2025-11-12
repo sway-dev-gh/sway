@@ -66,8 +66,31 @@ app.use('/api/collaborations', collaborationRoutes)
 app.use('/api/activity', activityRoutes)
 
 // Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'sway-backend' })
+app.get('/health', async (req, res) => {
+  try {
+    // Run migrations if ?migrate=true
+    if (req.query.migrate === 'true') {
+      const sql = `
+        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        CREATE TABLE IF NOT EXISTS projects (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), user_id UUID NOT NULL, title VARCHAR(255) NOT NULL, description TEXT, created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(), updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW());
+        CREATE TABLE IF NOT EXISTS collaborations (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), project_id UUID NOT NULL, collaborator_id UUID NOT NULL, role VARCHAR(50) DEFAULT 'viewer', created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(), updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW());
+      `
+      await pool.query(sql)
+      res.json({
+        status: 'ok',
+        service: 'sway-backend',
+        migration: '🔥🔥🔥 COLLABORATION PLATFORM IS NOW LIVE! EVERYTHING IS DIALED TF IN!'
+      })
+    } else {
+      res.json({ status: 'ok', service: 'sway-backend' })
+    }
+  } catch (error) {
+    res.json({
+      status: 'ok',
+      service: 'sway-backend',
+      migration_error: error.message
+    })
+  }
 })
 
 // Simple migration endpoint - run migrations with ?migrate=true
