@@ -1,7 +1,7 @@
 const Stripe = require('stripe')
 
 // Initialize Stripe with secret key
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_51234567890...')
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_YOUR_KEY_HERE')
 
 // Subscription Plans Configuration
 const PLANS = {
@@ -27,7 +27,7 @@ const PLANS = {
     price: 2900, // $29.00 in cents
     currency: 'usd',
     interval: 'month',
-    stripePriceId: 'price_1234567890...', // Set in Stripe dashboard
+    stripePriceId: 'price_1SRM4OHh6kpeQiCo8U0xxGT5', // Your real Stripe price ID
     features: {
       maxWorkspaces: 25,
       maxFiles: 1000,

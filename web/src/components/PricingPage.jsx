@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useWorkspace } from '../stores/WorkspaceStore'
 import { loadStripe } from '@stripe/stripe-js'
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_123...')
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_YOUR_PUBLISHABLE_KEY_HERE')
 
 const PricingPage = ({ onClose }) => {
   const { state, actions } = useWorkspace()
