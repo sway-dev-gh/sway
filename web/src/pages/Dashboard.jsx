@@ -177,17 +177,32 @@ const Dashboard = () => {
             marginBottom: '48px'
           }}>
             <div style={{
-              background: '#1a1a1a',
-              border: '1px solid #333333',
-              borderRadius: '8px',
-              padding: '24px'
+              background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              borderRadius: '12px',
+              padding: '24px',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.transform = 'translateY(-2px)'
+              e.target.style.boxShadow = '0 12px 32px rgba(0, 0, 0, 0.6)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.transform = 'translateY(0)'
+              e.target.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.4)'
             }}>
               <div style={{
                 fontSize: '12px',
                 color: '#a3a3a3',
                 textTransform: 'uppercase',
-                marginBottom: '8px'
+                marginBottom: '8px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}>
+                <span style={{ fontSize: '16px' }}>📊</span>
                 Total Projects
               </div>
               <div style={{

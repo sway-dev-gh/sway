@@ -48,7 +48,7 @@ function Sidebar({ children }) {
 
       if (isTyping) return
 
-      const pages = ['/dashboard', '/projects', '/reviews', '/notifications', '/settings']
+      const pages = ['/dashboard', '/projects', '/uploads', '/settings']
       const currentIndex = pages.indexOf(location.pathname)
 
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
@@ -122,20 +122,17 @@ function Sidebar({ children }) {
 
   const navSections = [
     {
-      label: 'Workflow Platform',
+      label: 'Main',
       items: [
-        { path: '/dashboard', label: 'Dashboard', planRequired: null },
-        { path: '/collaboration', label: 'Collaboration', planRequired: null },
-        { path: '/projects', label: 'Reviews', planRequired: null },
-        { path: '/collaboration', label: 'Reviewers', planRequired: null }
+        { path: '/dashboard', label: 'Dashboard', icon: '📊', planRequired: null },
+        { path: '/projects', label: 'Projects', icon: '🚀', planRequired: null }
       ]
     },
     {
-      label: 'Account',
+      label: 'Tools',
       items: [
-        { path: '/notifications', label: 'Notifications', planRequired: null },
-        { path: '/plan', label: 'Plan & Billing', planRequired: null },
-        { path: '/settings', label: 'Settings', planRequired: null }
+        { path: '/uploads', label: 'Files', icon: '📁', planRequired: null },
+        { path: '/settings', label: 'Settings', icon: '⚙️', planRequired: null }
       ]
     }
   ]
@@ -297,6 +294,7 @@ function Sidebar({ children }) {
                     aria-current={isActive ? 'page' : undefined}
                     style={navLinkStyle(isActive)}
                   >
+                    {item.icon && <span style={{ marginRight: '8px', fontSize: '16px' }}>{item.icon}</span>}
                     {item.label}
                   </Link>
                 )
@@ -525,6 +523,7 @@ function Sidebar({ children }) {
                     opacity: locked ? 0.5 : 1
                   }}
                 >
+                  {item.icon && <span style={{ marginRight: '8px', fontSize: '16px' }}>{item.icon}</span>}
                   {item.label}
                   {locked && (
                     <span style={{
