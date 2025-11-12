@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 import { getStorageLimit, getEffectivePlan } from '../utils/planUtils'
@@ -173,7 +172,7 @@ function Dashboard() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#000000'
+        background: '#ffffff'
       }}>
         <div style={{
           width: '20px',
@@ -197,14 +196,12 @@ function Dashboard() {
   // If no workspace is selected, show workspace selector
   if (!selectedWorkspace) {
     return (
-      <>
-        <Sidebar />
-        <div style={{
-          minHeight: '100vh',
-          background: '#000000',
-          color: '#ffffff',
-          paddingTop: '68px'
-        }}>
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+        color: '#334155',
+        padding: '0'
+      }}>
           <div style={{
             maxWidth: '1200px',
             margin: '0 auto',
@@ -219,7 +216,7 @@ function Dashboard() {
                 fontSize: '36px',
                 fontWeight: '700',
                 margin: '0 0 16px 0',
-                color: '#ffffff',
+                color: '#334155',
                 letterSpacing: '-0.02em'
               }}>
                 Choose your workspace
@@ -249,8 +246,8 @@ function Dashboard() {
                   key={workspace.id}
                   onClick={() => setSelectedWorkspace(workspace)}
                   style={{
-                    background: '#111111',
-                    border: '1px solid #2a2a2a',
+                    background: '#ffffff',
+                    border: '1px solid #e2e8f0',
                     borderRadius: '16px',
                     padding: '32px',
                     cursor: 'pointer',
@@ -265,7 +262,7 @@ function Dashboard() {
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0px)'
-                    e.currentTarget.style.borderColor = '#2a2a2a'
+                    e.currentTarget.style.borderColor = '#e2e8f0'
                     e.currentTarget.style.boxShadow = 'none'
                   }}
                 >
@@ -312,7 +309,7 @@ function Dashboard() {
                   <h3 style={{
                     fontSize: '20px',
                     fontWeight: '600',
-                    color: '#ffffff',
+                    color: '#334155',
                     margin: '0 0 8px 0'
                   }}>
                     {workspace.name}
@@ -336,7 +333,7 @@ function Dashboard() {
                       <div style={{
                         fontSize: '18px',
                         fontWeight: '600',
-                        color: '#ffffff',
+                        color: '#334155',
                         marginBottom: '4px'
                       }}>
                         {workspace.members}
@@ -354,7 +351,7 @@ function Dashboard() {
                       <div style={{
                         fontSize: '18px',
                         fontWeight: '600',
-                        color: '#ffffff',
+                        color: '#334155',
                         marginBottom: '4px'
                       }}>
                         {workspace.files}
@@ -389,8 +386,8 @@ function Dashboard() {
 
               {/* Create New Workspace Card */}
               <div style={{
-                background: '#111111',
-                border: '2px dashed #2a2a2a',
+                background: '#ffffff',
+                border: '2px dashed #e2e8f0',
                 borderRadius: '16px',
                 padding: '32px',
                 cursor: 'pointer',
@@ -407,15 +404,15 @@ function Dashboard() {
                 e.currentTarget.style.background = '#3b82f610'
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#2a2a2a'
-                e.currentTarget.style.background = '#111111'
+                e.currentTarget.style.borderColor = '#e2e8f0'
+                e.currentTarget.style.background = '#ffffff'
               }}>
                 <div style={{
                   width: '56px',
                   height: '56px',
                   borderRadius: '12px',
-                  background: '#1f2937',
-                  border: '1px solid #374151',
+                  background: '#f1f5f9',
+                  border: '1px solid #e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -427,7 +424,7 @@ function Dashboard() {
                 <h3 style={{
                   fontSize: '18px',
                   fontWeight: '600',
-                  color: '#ffffff',
+                  color: '#334155',
                   margin: '0 0 8px 0'
                 }}>
                   Create New Workspace
@@ -445,8 +442,8 @@ function Dashboard() {
 
             {/* Recent Activity Preview */}
             <div style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
               borderRadius: '12px',
               padding: '32px',
               textAlign: 'center'
@@ -454,7 +451,7 @@ function Dashboard() {
               <h2 style={{
                 fontSize: '18px',
                 fontWeight: '600',
-                color: '#ffffff',
+                color: '#334155',
                 margin: '0 0 16px 0'
               }}>
                 Quick Overview
@@ -466,7 +463,7 @@ function Dashboard() {
                 marginTop: '24px'
               }}>
                 <div>
-                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#334155', marginBottom: '4px' }}>
                     {workspaces.reduce((sum, w) => sum + w.members, 0)}
                   </div>
                   <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -474,7 +471,7 @@ function Dashboard() {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#334155', marginBottom: '4px' }}>
                     {workspaces.filter(w => w.active).length}
                   </div>
                   <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -482,7 +479,7 @@ function Dashboard() {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#334155', marginBottom: '4px' }}>
                     {workspaces.reduce((sum, w) => sum + w.files, 0)}
                   </div>
                   <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -493,20 +490,17 @@ function Dashboard() {
             </div>
           </div>
         </div>
-      </>
     )
   }
 
   // Workspace-specific dashboard
   return (
-    <>
-      <Sidebar />
-      <div style={{
-        minHeight: '100vh',
-        background: '#000000',
-        color: '#ffffff',
-        paddingTop: '68px'
-      }}>
+    <div style={{
+      minHeight: '100vh',
+      background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+      color: '#1e293b',
+      padding: '0'
+    }}>
         <div style={{
           maxWidth: '1200px',
           margin: '0 auto',
@@ -526,7 +520,7 @@ function Dashboard() {
                 onClick={() => setSelectedWorkspace(null)}
                 style={{
                   background: 'transparent',
-                  border: '1px solid #2a2a2a',
+                  border: '1px solid #e2e8f0',
                   color: '#a3a3a3',
                   padding: '8px',
                   borderRadius: '6px',
@@ -556,7 +550,7 @@ function Dashboard() {
                     fontSize: '32px',
                     fontWeight: '600',
                     margin: '0',
-                    color: '#ffffff',
+                    color: '#334155',
                     letterSpacing: '-0.01em'
                   }}>
                     {selectedWorkspace.name}
@@ -579,8 +573,8 @@ function Dashboard() {
             }}>
               <button style={{
                 background: 'transparent',
-                border: '1px solid #2a2a2a',
-                color: '#ffffff',
+                border: '1px solid #e2e8f0',
+                color: '#334155',
                 padding: '12px 20px',
                 borderRadius: '6px',
                 fontSize: '14px',
@@ -594,7 +588,7 @@ function Dashboard() {
               </button>
               <Link to="/requests" style={{
                 background: selectedWorkspace.color,
-                color: '#ffffff',
+                color: '#334155',
                 padding: '12px 20px',
                 borderRadius: '6px',
                 textDecoration: 'none',
@@ -618,8 +612,8 @@ function Dashboard() {
             marginBottom: '48px'
           }}>
             <div style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
               borderRadius: '12px',
               padding: '24px'
             }}>
@@ -645,7 +639,7 @@ function Dashboard() {
                 <h3 style={{
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#ffffff',
+                  color: '#334155',
                   margin: '0'
                 }}>
                   Team Members
@@ -654,7 +648,7 @@ function Dashboard() {
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#ffffff',
+                color: '#334155',
                 marginBottom: '4px'
               }}>
                 {selectedWorkspace.members}
@@ -668,8 +662,8 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
               borderRadius: '12px',
               padding: '24px'
             }}>
@@ -695,7 +689,7 @@ function Dashboard() {
                 <h3 style={{
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#ffffff',
+                  color: '#334155',
                   margin: '0'
                 }}>
                   Shared Files
@@ -704,7 +698,7 @@ function Dashboard() {
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#ffffff',
+                color: '#334155',
                 marginBottom: '4px'
               }}>
                 {selectedWorkspace.files}
@@ -718,8 +712,8 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
               borderRadius: '12px',
               padding: '24px'
             }}>
@@ -745,7 +739,7 @@ function Dashboard() {
                 <h3 style={{
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#ffffff',
+                  color: '#334155',
                   margin: '0'
                 }}>
                   Reviews
@@ -754,7 +748,7 @@ function Dashboard() {
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#ffffff',
+                color: '#334155',
                 marginBottom: '4px'
               }}>
                 8
@@ -768,8 +762,8 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
               borderRadius: '12px',
               padding: '24px'
             }}>
@@ -795,7 +789,7 @@ function Dashboard() {
                 <h3 style={{
                   fontSize: '14px',
                   fontWeight: '600',
-                  color: '#ffffff',
+                  color: '#334155',
                   margin: '0'
                 }}>
                   Projects
@@ -804,7 +798,7 @@ function Dashboard() {
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#ffffff',
+                color: '#334155',
                 marginBottom: '4px'
               }}>
                 5
@@ -827,15 +821,15 @@ function Dashboard() {
           }}>
             {/* Main Workspace Content */}
             <div style={{
-              background: '#111111',
-              border: '1px solid #2a2a2a',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
               borderRadius: '12px',
               padding: '32px'
             }}>
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: '600',
-                color: '#ffffff',
+                color: '#334155',
                 margin: '0 0 24px 0'
               }}>
                 Workspace Activity
@@ -850,7 +844,7 @@ function Dashboard() {
               }}>
                 <button style={{
                   background: selectedWorkspace.color,
-                  color: '#ffffff',
+                  color: '#334155',
                   border: 'none',
                   padding: '16px 20px',
                   borderRadius: '8px',
@@ -867,8 +861,8 @@ function Dashboard() {
                 </button>
                 <button style={{
                   background: 'transparent',
-                  color: '#ffffff',
-                  border: '1px solid #2a2a2a',
+                  color: '#334155',
+                  border: '1px solid #e2e8f0',
                   padding: '16px 20px',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -884,8 +878,8 @@ function Dashboard() {
                 </button>
                 <button style={{
                   background: 'transparent',
-                  color: '#ffffff',
-                  border: '1px solid #2a2a2a',
+                  color: '#334155',
+                  border: '1px solid #e2e8f0',
                   padding: '16px 20px',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -906,7 +900,7 @@ function Dashboard() {
                 <h3 style={{
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: '#ffffff',
+                  color: '#334155',
                   margin: '0 0 16px 0'
                 }}>
                   Recent Files
@@ -927,14 +921,14 @@ function Dashboard() {
                       alignItems: 'center',
                       gap: '12px',
                       padding: '12px',
-                      background: '#1a1a1a',
+                      background: '#f8fafc',
                       borderRadius: '6px',
-                      border: '1px solid #2a2a2a'
+                      border: '1px solid #e2e8f0'
                     }}>
                       <div style={{
                         width: '32px',
                         height: '32px',
-                        background: '#2a2a2a',
+                        background: '#e2e8f0',
                         borderRadius: '4px',
                         display: 'flex',
                         alignItems: 'center',
@@ -946,7 +940,7 @@ function Dashboard() {
                       <div style={{ flex: 1 }}>
                         <div style={{
                           fontSize: '13px',
-                          color: '#ffffff',
+                          color: '#334155',
                           fontWeight: '500',
                           marginBottom: '2px'
                         }}>
@@ -963,7 +957,7 @@ function Dashboard() {
                         fontSize: '11px',
                         color: '#a3a3a3',
                         padding: '2px 6px',
-                        background: '#2a2a2a',
+                        background: '#e2e8f0',
                         borderRadius: '3px'
                       }}>
                         {file.type}
@@ -977,8 +971,8 @@ function Dashboard() {
             {/* Team Sidebar */}
             <div>
               <div style={{
-                background: '#111111',
-                border: '1px solid #2a2a2a',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 borderRadius: '12px',
                 padding: '24px',
                 marginBottom: '24px'
@@ -992,7 +986,7 @@ function Dashboard() {
                   <h3 style={{
                     fontSize: '16px',
                     fontWeight: '600',
-                    color: '#ffffff',
+                    color: '#334155',
                     margin: '0'
                   }}>
                     Team Members
@@ -1001,7 +995,7 @@ function Dashboard() {
                     fontSize: '12px',
                     color: '#a3a3a3',
                     padding: '2px 6px',
-                    background: '#2a2a2a',
+                    background: '#e2e8f0',
                     borderRadius: '3px'
                   }}>
                     {selectedWorkspace.members}
@@ -1035,7 +1029,7 @@ function Dashboard() {
                         justifyContent: 'center',
                         fontSize: '12px',
                         fontWeight: '600',
-                        color: '#ffffff'
+                        color: '#334155'
                       }}>
                         {member.avatar}
                         {member.online && (
@@ -1046,7 +1040,7 @@ function Dashboard() {
                             width: '10px',
                             height: '10px',
                             background: '#10b981',
-                            border: '2px solid #111111',
+                            border: '2px solid #ffffff',
                             borderRadius: '50%'
                           }} />
                         )}
@@ -1054,7 +1048,7 @@ function Dashboard() {
                       <div>
                         <div style={{
                           fontSize: '13px',
-                          color: '#ffffff',
+                          color: '#334155',
                           fontWeight: '500'
                         }}>
                           {member.name}
@@ -1073,15 +1067,15 @@ function Dashboard() {
 
               {/* Workspace Notifications */}
               <div style={{
-                background: '#111111',
-                border: '1px solid #2a2a2a',
+                background: '#ffffff',
+                border: '1px solid #e2e8f0',
                 borderRadius: '12px',
                 padding: '24px'
               }}>
                 <h3 style={{
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: '#ffffff',
+                  color: '#334155',
                   margin: '0 0 16px 0'
                 }}>
                   Updates
@@ -1101,7 +1095,7 @@ function Dashboard() {
                       alignItems: 'flex-start',
                       gap: '8px',
                       padding: '8px',
-                      background: '#1a1a1a',
+                      background: '#f8fafc',
                       borderRadius: '4px'
                     }}>
                       <div style={{
@@ -1116,7 +1110,7 @@ function Dashboard() {
                       <div>
                         <div style={{
                           fontSize: '12px',
-                          color: '#ffffff',
+                          color: '#334155',
                           lineHeight: '1.4'
                         }}>
                           {notification.text}
@@ -1138,7 +1132,6 @@ function Dashboard() {
 
         </div>
       </div>
-    </>
   )
 }
 
