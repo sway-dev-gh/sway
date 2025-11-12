@@ -31,8 +31,8 @@ const Collaboration = () => {
         ])
 
         setRecentActivity([
-          { id: 1, action: 'You signed up for SwayFiles', time: 'Just now', type: 'user' },
-          { id: 2, action: 'Team workspace created', time: '2 minutes ago', type: 'system' },
+          { id: 1, action: 'You joined the code collaboration workspace', time: 'Just now', type: 'user' },
+          { id: 2, action: 'Code workspace initialized', time: '2 minutes ago', type: 'system' },
         ])
       }
     } catch (error) {
@@ -106,28 +106,45 @@ const Collaboration = () => {
           padding: '40px 24px'
         }}>
 
-          {/* Header Section */}
+          {/* Header */}
           <div style={{
-            marginBottom: '60px',
-            textAlign: 'center'
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '48px'
           }}>
-            <h1 style={{
-              fontSize: '48px',
-              fontWeight: '800',
-              color: '#ffffff',
-              margin: '0 0 16px 0',
-              letterSpacing: '-0.02em'
-            }}>
-              Team Collaboration
-            </h1>
-            <p style={{
-              fontSize: '20px',
-              color: '#ffffff',
-              margin: '0',
-              fontWeight: '400'
-            }}>
-              Work together on projects and reviews
-            </p>
+            <div>
+              <h1 style={{
+                fontSize: '32px',
+                fontWeight: '700',
+                color: '#ffffff',
+                margin: '0 0 8px 0'
+              }}>
+                Code Collaboration
+              </h1>
+              <p style={{
+                fontSize: '16px',
+                color: '#ffffff',
+                margin: '0'
+              }}>
+                Work together on code reviews and development projects
+              </p>
+            </div>
+            <button
+              onClick={() => navigate('/projects')}
+              style={{
+                background: '#ffffff',
+                color: '#000000',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '12px 24px',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer'
+              }}
+            >
+              New Code Project
+            </button>
           </div>
 
           {/* Team Stats Cards */}
@@ -152,7 +169,7 @@ const Collaboration = () => {
                 letterSpacing: '0.1em',
                 marginBottom: '16px'
               }}>
-                Team Members
+                Code Collaborators
               </div>
               <div style={{
                 fontSize: '56px',
@@ -233,7 +250,7 @@ const Collaboration = () => {
                 letterSpacing: '0.1em',
                 marginBottom: '16px'
               }}>
-                Team Activity
+                Code Activity
               </div>
               <div style={{
                 fontSize: '56px',
@@ -267,7 +284,7 @@ const Collaboration = () => {
                 color: '#ffffff',
                 margin: '0 0 24px 0'
               }}>
-                Team Members
+                Code Collaborators
               </h2>
               {teamMembers.map(member => (
                 <div key={member.id} style={{
@@ -333,7 +350,7 @@ const Collaboration = () => {
                   width: '100%'
                 }}
               >
-                Invite Team Members
+                Invite Code Collaborators
               </button>
             </div>
 
@@ -385,7 +402,7 @@ const Collaboration = () => {
                   color: '#ffffff',
                   opacity: 0.7
                 }}>
-                  Start collaborating to see more activity
+                  Start collaborating on code to see more activity
                 </div>
               </div>
             </div>
@@ -412,10 +429,10 @@ const Collaboration = () => {
               }}
             >
               <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
-                Create Project
+                Start Code Review
               </div>
               <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
-                Start a new collaborative project
+                Begin a collaborative code review session
               </div>
             </button>
 
@@ -434,10 +451,10 @@ const Collaboration = () => {
               }}
             >
               <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
-                Share Files
+                Share Code Files
               </div>
               <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
-                Upload files for team review
+                Upload code files for peer review
               </div>
             </button>
 
@@ -456,10 +473,10 @@ const Collaboration = () => {
               }}
             >
               <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
-                Team Settings
+                Code Standards
               </div>
               <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
-                Manage team and permissions
+                Set coding standards and permissions
               </div>
             </button>
           </div>

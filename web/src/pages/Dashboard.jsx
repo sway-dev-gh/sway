@@ -91,11 +91,10 @@ const Dashboard = () => {
             textAlign: 'center'
           }}>
             <h1 style={{
-              fontSize: '48px',
-              fontWeight: '800',
+              fontSize: '32px',
+              fontWeight: '700',
               color: '#ffffff',
-              margin: '0 0 16px 0',
-              letterSpacing: '-0.02em'
+              margin: '0 0 8px 0'
             }}>
               Dashboard
             </h1>
