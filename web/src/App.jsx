@@ -5,6 +5,7 @@ import RightPanel from './components/RightPanel'
 import AuthForm from './components/AuthForm'
 import GuestForm from './components/GuestForm'
 import { WorkspaceProvider, useWorkspace } from './stores/WorkspaceStore'
+import './styles.css'
 
 const AuthenticatedApp = () => {
   const { state, actions } = useWorkspace()

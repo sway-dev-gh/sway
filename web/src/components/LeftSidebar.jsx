@@ -444,16 +444,21 @@ const LeftSidebar = () => {
 
     return (
       <div style={{ padding: '16px' }}>
-        <span style={{
-          fontSize: '11px',
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-          color: '#999999',
-          marginBottom: '12px',
-          display: 'block'
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '12px'
         }}>
-          Pending Approvals ({pendingApprovals.length})
-        </span>
+          <span style={{
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            color: '#999999'
+          }}>
+            Pending Approvals ({pendingApprovals.length})
+          </span>
+        </div>
 
         {pendingApprovals.length === 0 ? (
           <div style={{
@@ -571,16 +576,28 @@ const LeftSidebar = () => {
           <div style={{ fontSize: '10px', color: '#666666', marginBottom: '10px' }}>
             $29/month • Unlimited workspaces & files
           </div>
-          <button style={{
-            width: '100%',
-            background: 'transparent',
-            border: '1px solid #333333',
-            color: '#ffffff',
-            padding: '6px 8px',
-            fontSize: '10px',
-            cursor: 'pointer',
-            borderRadius: '3px'
-          }}>
+          <button
+            onClick={() => {
+              window.open('https://billing.stripe.com/p/login/test_28ocPYdJ1eR3duE000', '_blank')
+            }}
+            style={{
+              width: '100%',
+              background: 'transparent',
+              border: '1px solid #333333',
+              color: '#ffffff',
+              padding: '6px 8px',
+              fontSize: '10px',
+              cursor: 'pointer',
+              borderRadius: '3px',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = '#333333'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'transparent'
+            }}
+          >
             Manage Subscription
           </button>
         </div>
@@ -903,8 +920,12 @@ const LeftSidebar = () => {
       {/* Content Area */}
       <div style={{
         flex: 1,
-        overflow: 'auto'
-      }}>
+        overflow: 'auto',
+        scrollbarWidth: 'none', /* Firefox */
+        msOverflowStyle: 'none', /* Internet Explorer 10+ */
+        WebkitScrollbar: { display: 'none' } /* WebKit */
+      }}
+      className="hide-scrollbar">
         {renderSectionContent()}
       </div>
 
