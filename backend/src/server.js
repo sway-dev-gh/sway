@@ -24,6 +24,7 @@ const reviewRoutes = require('./routes/reviews')
 const reviewerRoutes = require('./routes/reviewers')
 const collaborationRoutes = require('./routes/collaborations')
 const activityRoutes = require('./routes/activity')
+const workflowRoutes = require('./routes/workflow')
 const pool = require('./db/pool')
 
 const app = express()
@@ -66,6 +67,7 @@ app.use('/api/reviews', reviewRoutes)
 app.use('/api/reviewers', reviewerRoutes)
 app.use('/api/collaborations', collaborationRoutes)
 app.use('/api/activity', activityRoutes)
+app.use('/api/workflow', workflowRoutes)
 
 // Health check
 app.get('/health', async (req, res) => {

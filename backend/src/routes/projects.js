@@ -147,7 +147,12 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       project_type = 'review',
       visibility = 'private',
       due_date,
-      settings = {}
+      settings = {},
+      workspace_type = 'review',
+      workflow_template = 'standard',
+      default_reviewers = [],
+      auto_assign_reviewers = false,
+      external_access_enabled = true
     } = req.body
 
     // Input validation
@@ -163,10 +168,18 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       return res.status(400).json({ error: 'Invalid visibility setting' })
     }
 
+    if (!['review', 'approval', 'creative', 'code', 'general'].includes(workspace_type)) {
+      return res.status(400).json({ error: 'Invalid workspace type' })
+    }
+
+    if (!['standard', 'fast', 'thorough', 'custom'].includes(workflow_template)) {
+      return res.status(400).json({ error: 'Invalid workflow template' })
+    }
+
     // Create project
     const insertQuery = `
-      INSERT INTO projects (user_id, title, description, project_type, visibility, due_date, settings)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO projects (user_id, title, description, project_type, visibility, due_date, settings, workspace_type, workflow_template, default_reviewers, auto_assign_reviewers, external_access_enabled)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING *
     `
 
@@ -177,7 +190,12 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       project_type,
       visibility,
       due_date || null,
-      JSON.stringify(settings)
+      JSON.stringify(settings),
+      workspace_type,
+      workflow_template,
+      default_reviewers,
+      auto_assign_reviewers,
+      external_access_enabled
     ])
 
     const project = result.rows[0]
