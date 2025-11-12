@@ -1,115 +1,112 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
-import WorkflowVisualization from '../components/WorkflowVisualization'
-import theme from '../theme'
-import useReviewStore from '../store/reviewStore'
-import toast from 'react-hot-toast'
-import { standardStyles } from '../components/StandardStyles'
 
-function Dashboard() {
+const Dashboard = () => {
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(true)
-  const [dashboardView, setDashboardView] = useState('overview') // overview, workflows, insights
-
-  const {
-    projects,
-    isLoading,
-    error,
-    fetchProjects,
-    createProject,
-    getProjectStats
-  } = useReviewStore()
-
-  const [recentActivity, setRecentActivity] = useState([
-    { id: 1, type: 'review_submitted', project: 'Brand Guidelines', user: 'Sarah Chen', time: '2 minutes ago' },
-    { id: 2, type: 'file_uploaded', project: 'Website Redesign', user: 'Mike Johnson', time: '15 minutes ago' },
-    { id: 3, type: 'approval_granted', project: 'Marketing Campaign', user: 'Lisa Wang', time: '1 hour ago' },
-    { id: 4, type: 'comment_added', project: 'Product Photos', user: 'John Smith', time: '2 hours ago' }
-  ])
-
-  const [quickStats, setQuickStats] = useState({
-    activeReviews: 12,
-    pendingApprovals: 8,
-    completedToday: 15,
-    totalProjects: projects.length || 0
+  const [projects, setProjects] = useState([])
+  const [recentActivity, setRecentActivity] = useState([])
+  const [stats, setStats] = useState({
+    totalProjects: 0,
+    activeReviews: 0,
+    pendingApprovals: 0,
+    completedProjects: 0
   })
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const loadDashboard = async () => {
-      try {
-        await fetchProjects()
+    fetchDashboardData()
+  }, [])
 
-        // Update stats based on actual projects
-        const stats = getProjectStats()
-        setQuickStats(prev => ({
-          ...prev,
-          totalProjects: stats.total,
-          activeReviews: stats.active,
-          completedToday: stats.completed
-        }))
-      } catch (error) {
-        console.error('Failed to load dashboard:', error)
-      } finally {
-        setLoading(false)
+  const fetchDashboardData = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      // Fetch projects
+      const projectsRes = await fetch('/api/projects', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+
+      if (projectsRes.ok) {
+        const projectsData = await projectsRes.json()
+        const projectsList = projectsData.projects || []
+        setProjects(projectsList)
+
+        // Calculate stats
+        setStats({
+          totalProjects: projectsList.length,
+          activeReviews: projectsList.filter(p => p.status === 'under_review').length,
+          pendingApprovals: projectsList.filter(p => p.pending_approvals > 0).length,
+          completedProjects: projectsList.filter(p => p.status === 'approved' || p.status === 'delivered').length
+        })
       }
+
+      // Fetch recent activity
+      const activityRes = await fetch('/api/activity', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+
+      if (activityRes.ok) {
+        const activityData = await activityRes.json()
+        setRecentActivity(activityData.activity || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error)
+    } finally {
+      setLoading(false)
     }
+  }
 
-    loadDashboard()
-  }, [fetchProjects, getProjectStats])
+  const getStatusColor = (status) => {
+    const statusMap = {
+      'draft': '#666666',
+      'under_review': '#ffffff',
+      'changes_requested': '#ff6b6b',
+      'approved': '#51cf66',
+      'delivered': '#4c6ef5'
+    }
+    return statusMap[status] || '#666666'
+  }
 
-  const handleCreateWorkspace = async () => {
-    navigate('/projects')
+  const getStatusLabel = (status) => {
+    const statusMap = {
+      'draft': 'Draft',
+      'under_review': 'Under Review',
+      'changes_requested': 'Changes Requested',
+      'approved': 'Approved',
+      'delivered': 'Delivered'
+    }
+    return statusMap[status] || 'Draft'
   }
 
   const getActivityIcon = (type) => {
-    switch (type) {
-      case 'review_submitted':
-        return '📝'
-      case 'file_uploaded':
-        return '📄'
-      case 'approval_granted':
-        return '✅'
-      case 'comment_added':
-        return '💬'
-      default:
-        return '📋'
+    const iconMap = {
+      'project_created': '📁',
+      'file_uploaded': '📄',
+      'comment_added': '💬',
+      'section_approved': '✅',
+      'changes_requested': '❌',
+      'project_completed': '🎉'
     }
+    return iconMap[type] || '•'
   }
 
-  const getActivityText = (activity) => {
-    switch (activity.type) {
-      case 'review_submitted':
-        return `${activity.user} submitted a review for ${activity.project}`
-      case 'file_uploaded':
-        return `${activity.user} uploaded a file to ${activity.project}`
-      case 'approval_granted':
-        return `${activity.user} approved sections in ${activity.project}`
-      case 'comment_added':
-        return `${activity.user} commented on ${activity.project}`
-      default:
-        return `${activity.user} updated ${activity.project}`
-    }
-  }
-
-  if (loading || isLoading) {
+  if (loading) {
     return (
       <>
         <Sidebar />
         <div style={{
           minHeight: '100vh',
-          background: theme.colors.bg.page,
-          color: theme.colors.text.primary,
+          background: '#000000',
+          color: '#ffffff',
           paddingTop: '68px'
         }}>
           <div style={{
-            maxWidth: '1400px',
+            maxWidth: '1200px',
             margin: '0 auto',
             padding: '48px 32px'
           }}>
-            <div style={{ color: theme.colors.text.secondary }}>
-              Loading your review dashboard...
-            </div>
+            Loading dashboard...
           </div>
         </div>
       </>
@@ -121,203 +118,153 @@ function Dashboard() {
       <Sidebar />
       <div style={{
         minHeight: '100vh',
-        background: theme.colors.bg.page,
-        color: theme.colors.text.primary,
+        background: '#000000',
+        color: '#ffffff',
         paddingTop: '68px'
       }}>
         <div style={{
-          maxWidth: '1400px',
+          maxWidth: '1200px',
           margin: '0 auto',
           padding: '48px 32px'
         }}>
 
           {/* Header */}
           <div style={{
-            marginBottom: '48px',
-            textAlign: 'center',
-            maxWidth: '800px',
-            margin: '0 auto 48px'
-          }}>
-            <h1 style={standardStyles.pageHeader}>
-              Review Dashboard
-            </h1>
-            <p style={standardStyles.pageDescription}>
-              Manage your review workflows, track progress, and collaborate with your team
-            </p>
-          </div>
-
-          {/* Dashboard Navigation */}
-          <div style={{
             display: 'flex',
-            justifyContent: 'center',
-            marginBottom: '32px'
+            justifyContent: 'space-between',
+            alignItems: 'flex-start',
+            marginBottom: '48px'
           }}>
-            <div style={{
-              display: 'flex',
-              background: theme.colors.bg.secondary,
-              border: `1px solid ${theme.colors.border.light}`,
-              borderRadius: '12px',
-              padding: '6px'
-            }}>
-              {[
-                { key: 'overview', label: 'Overview', icon: '📊' },
-                { key: 'workflows', label: 'Workflow Analytics', icon: '🔄' },
-                { key: 'insights', label: 'Team Insights', icon: '💡' }
-              ].map((tab) => (
-                <button
-                  key={tab.key}
-                  onClick={() => setDashboardView(tab.key)}
-                  style={{
-                    padding: '12px 24px',
-                    border: 'none',
-                    borderRadius: '8px',
-                    fontSize: '14px',
-                    fontWeight: '600',
-                    cursor: 'pointer',
-                    background: dashboardView === tab.key ? theme.colors.bg.primary : 'transparent',
-                    color: dashboardView === tab.key ? theme.colors.text.primary : theme.colors.text.secondary,
-                    transition: 'all 0.2s ease',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '8px'
-                  }}
-                >
-                  <span style={{ fontSize: '16px' }}>{tab.icon}</span>
-                  {tab.label}
-                </button>
-              ))}
+            <div>
+              <h1 style={{
+                fontSize: '32px',
+                fontWeight: '700',
+                color: '#ffffff',
+                margin: '0 0 8px 0'
+              }}>
+                Review Dashboard
+              </h1>
+              <p style={{
+                fontSize: '16px',
+                color: '#a3a3a3',
+                margin: '0'
+              }}>
+                Manage your creative and code review projects
+              </p>
             </div>
+            <button
+              onClick={() => navigate('/projects')}
+              style={{
+                background: '#ffffff',
+                color: '#000000',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '12px 24px',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer'
+              }}
+            >
+              View All Projects
+            </button>
           </div>
 
-          {/* Content based on view */}
-          {dashboardView === 'overview' && (
-            <>
-              {/* Quick Stats Overview */}
-              <div style={{
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px',
-                padding: '32px',
-                marginBottom: '40px'
-              }}>
-                <h2 style={{
-                  fontSize: '20px',
-                  fontWeight: '600',
-                  color: theme.colors.text.primary,
-                  margin: '0 0 24px 0'
-                }}>
-                  Review Overview
-                </h2>
-
+          {/* Stats Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '24px',
+            marginBottom: '48px'
+          }}>
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: '24px'
+              background: '#1a1a1a',
+              border: '1px solid #333333',
+              borderRadius: '8px',
+              padding: '24px'
             }}>
               <div style={{
-                textAlign: 'center',
-                padding: '20px'
+                fontSize: '12px',
+                color: '#a3a3a3',
+                textTransform: 'uppercase',
+                marginBottom: '8px'
               }}>
-                <div style={{
-                  fontSize: '12px',
-                  color: theme.colors.text.secondary,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  fontWeight: '600',
-                  marginBottom: '12px'
-                }}>
-                  Active Reviews
-                </div>
-                <div style={standardStyles.statsNumber}>
-                  {quickStats.activeReviews}
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: '#10b981'
-                }}>
-                  +3 since yesterday
-                </div>
+                Total Projects
               </div>
-
               <div style={{
-                textAlign: 'center',
-                padding: '20px'
+                fontSize: '32px',
+                fontWeight: '700',
+                color: '#ffffff'
               }}>
-                <div style={{
-                  fontSize: '12px',
-                  color: theme.colors.text.secondary,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  fontWeight: '600',
-                  marginBottom: '12px'
-                }}>
-                  Pending Approvals
-                </div>
-                <div style={{
-                  ...standardStyles.statsNumber,
-                  color: '#f59e0b'
-                }}>
-                  {quickStats.pendingApprovals}
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.secondary
-                }}>
-                  2 urgent
-                </div>
+                {stats.totalProjects}
               </div>
+            </div>
 
+            <div style={{
+              background: '#1a1a1a',
+              border: '1px solid #333333',
+              borderRadius: '8px',
+              padding: '24px'
+            }}>
               <div style={{
-                textAlign: 'center',
-                padding: '20px'
+                fontSize: '12px',
+                color: '#a3a3a3',
+                textTransform: 'uppercase',
+                marginBottom: '8px'
               }}>
-                <div style={{
-                  fontSize: '12px',
-                  color: theme.colors.text.secondary,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  fontWeight: '600',
-                  marginBottom: '12px'
-                }}>
-                  Completed Today
-                </div>
-                <div style={{
-                  ...standardStyles.statsNumber,
-                  color: '#10b981'
-                }}>
-                  {quickStats.completedToday}
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.secondary
-                }}>
-                  Great progress!
-                </div>
+                Active Reviews
               </div>
-
               <div style={{
-                textAlign: 'center',
-                padding: '20px'
+                fontSize: '32px',
+                fontWeight: '700',
+                color: '#ffffff'
               }}>
-                <div style={{
-                  fontSize: '12px',
-                  color: theme.colors.text.secondary,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.5px',
-                  fontWeight: '600',
-                  marginBottom: '12px'
-                }}>
-                  Total Projects
-                </div>
-                <div style={standardStyles.statsNumber}>
-                  {quickStats.totalProjects}
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.secondary
-                }}>
-                  All workspaces
-                </div>
+                {stats.activeReviews}
+              </div>
+            </div>
+
+            <div style={{
+              background: '#1a1a1a',
+              border: '1px solid #333333',
+              borderRadius: '8px',
+              padding: '24px'
+            }}>
+              <div style={{
+                fontSize: '12px',
+                color: '#a3a3a3',
+                textTransform: 'uppercase',
+                marginBottom: '8px'
+              }}>
+                Pending Approvals
+              </div>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: '700',
+                color: '#ffffff'
+              }}>
+                {stats.pendingApprovals}
+              </div>
+            </div>
+
+            <div style={{
+              background: '#1a1a1a',
+              border: '1px solid #333333',
+              borderRadius: '8px',
+              padding: '24px'
+            }}>
+              <div style={{
+                fontSize: '12px',
+                color: '#a3a3a3',
+                textTransform: 'uppercase',
+                marginBottom: '8px'
+              }}>
+                Completed Projects
+              </div>
+              <div style={{
+                fontSize: '32px',
+                fontWeight: '700',
+                color: '#ffffff'
+              }}>
+                {stats.completedProjects}
               </div>
             </div>
           </div>
@@ -325,351 +272,326 @@ function Dashboard() {
           {/* Main Content Grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '1fr 400px',
+            gridTemplateColumns: '2fr 1fr',
             gap: '32px'
           }}>
-            {/* Quick Actions */}
+
+            {/* Recent Projects */}
             <div>
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: '600',
-                color: theme.colors.text.primary,
-                marginBottom: '16px'
-              }}>
-                Quick Actions
-              </h2>
-
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                gap: '16px',
-                marginBottom: '32px'
-              }}>
-                <button
-                  onClick={handleCreateWorkspace}
-                  style={standardStyles.primaryButton}
-                >
-                  <div style={{ fontSize: '16px', fontWeight: '500', marginBottom: '4px' }}>
-                    Create Review Workspace
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.9 }}>
-                    Start a new project with section-based reviews
-                  </div>
-                </button>
-
-                <Link
-                  to="/projects"
-                  style={{
-                    ...standardStyles.secondaryButton,
-                    textDecoration: 'none',
-                    display: 'block',
-                    textAlign: 'left'
-                  }}
-                >
-                  <div style={{ fontSize: '16px', fontWeight: '500', marginBottom: '4px' }}>
-                    View All Projects
-                  </div>
-                  <div style={{ fontSize: '14px', opacity: 0.7 }}>
-                    Manage your review workflows and track progress
-                  </div>
-                </Link>
-              </div>
-
-              {/* Recent Projects */}
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: theme.colors.text.primary,
-                marginBottom: '16px'
+                color: '#ffffff',
+                margin: '0 0 24px 0'
               }}>
                 Recent Projects
               </h2>
 
               {projects.length > 0 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {projects.slice(0, 3).map((project) => (
-                    <Link
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px'
+                }}>
+                  {projects.slice(0, 5).map(project => (
+                    <div
                       key={project.id}
-                      to={`/projects/${project.id}`}
+                      onClick={() => navigate(`/projects/${project.id}`)}
                       style={{
-                        background: theme.colors.bg.secondary,
-                        border: `1px solid ${theme.colors.border.light}`,
+                        background: '#1a1a1a',
+                        border: '1px solid #333333',
                         borderRadius: '8px',
-                        padding: '16px 20px',
-                        color: theme.colors.text.primary,
-                        textDecoration: 'none',
-                        display: 'block',
+                        padding: '20px',
+                        cursor: 'pointer',
                         transition: 'all 0.2s ease'
                       }}
-                      onMouseEnter={(e) => e.target.style.borderColor = theme.colors.border.medium}
-                      onMouseLeave={(e) => e.target.style.borderColor = theme.colors.border.light}
+                      onMouseEnter={(e) => {
+                        e.target.style.borderColor = '#666666'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.borderColor = '#333333'
+                      }}
                     >
                       <div style={{
                         display: 'flex',
                         justifyContent: 'space-between',
-                        alignItems: 'flex-start'
+                        alignItems: 'flex-start',
+                        gap: '16px'
                       }}>
-                        <div>
-                          <div style={{
+                        <div style={{ flex: 1 }}>
+                          <h3 style={{
                             fontSize: '16px',
-                            fontWeight: '500',
-                            marginBottom: '4px'
+                            fontWeight: '600',
+                            color: '#ffffff',
+                            margin: '0 0 8px 0'
                           }}>
                             {project.title}
-                          </div>
-                          <div style={{
+                          </h3>
+                          <p style={{
                             fontSize: '14px',
-                            color: theme.colors.text.secondary
+                            color: '#a3a3a3',
+                            margin: '0 0 12px 0',
+                            lineHeight: '1.4'
                           }}>
                             {project.description || 'No description'}
+                          </p>
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '16px',
+                            fontSize: '12px',
+                            color: '#a3a3a3'
+                          }}>
+                            <div>Files: {project.file_count || 0}</div>
+                            <div>Type: {project.type}</div>
                           </div>
                         </div>
                         <div style={{
                           padding: '4px 8px',
+                          background: getStatusColor(project.status),
+                          color: '#000000',
                           borderRadius: '4px',
                           fontSize: '12px',
                           fontWeight: '500',
-                          background: project.status === 'active' ? '#065f46' : '#374151',
-                          color: 'white'
+                          textTransform: 'uppercase'
                         }}>
-                          {project.status || 'Active'}
+                          {getStatusLabel(project.status)}
                         </div>
                       </div>
-                    </Link>
+                    </div>
                   ))}
+
+                  {projects.length > 5 && (
+                    <button
+                      onClick={() => navigate('/projects')}
+                      style={{
+                        background: 'transparent',
+                        color: '#a3a3a3',
+                        border: '1px solid #333333',
+                        borderRadius: '8px',
+                        padding: '16px',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        textAlign: 'center'
+                      }}
+                    >
+                      View All {projects.length} Projects →
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div style={{
-                  background: theme.colors.bg.secondary,
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: '12px',
-                  padding: '32px',
+                  background: '#1a1a1a',
+                  border: '1px solid #333333',
+                  borderRadius: '8px',
+                  padding: '40px',
                   textAlign: 'center'
                 }}>
-                  <div style={{
-                    fontSize: '48px',
-                    marginBottom: '16px',
-                    opacity: 0.3
-                  }}>
-                    📋
-                  </div>
-                  <div style={{
+                  <h3 style={{
                     fontSize: '18px',
                     fontWeight: '600',
-                    marginBottom: '8px'
+                    color: '#ffffff',
+                    margin: '0 0 8px 0'
                   }}>
                     No projects yet
-                  </div>
-                  <div style={{
+                  </h3>
+                  <p style={{
                     fontSize: '14px',
-                    color: theme.colors.text.secondary,
-                    marginBottom: '24px'
+                    color: '#a3a3a3',
+                    margin: '0 0 20px 0'
                   }}>
-                    Create your first review workspace to get started
-                  </div>
+                    Create your first review project to get started
+                  </p>
                   <button
-                    onClick={handleCreateWorkspace}
-                    style={standardStyles.primaryButton}
+                    onClick={() => navigate('/projects')}
+                    style={{
+                      background: '#ffffff',
+                      color: '#000000',
+                      border: 'none',
+                      borderRadius: '4px',
+                      padding: '12px 24px',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      cursor: 'pointer'
+                    }}
                   >
-                    Create First Project
+                    Create Project
                   </button>
                 </div>
               )}
             </div>
 
-            {/* Activity Feed */}
+            {/* Recent Activity */}
             <div>
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: '600',
-                color: theme.colors.text.primary,
-                marginBottom: '16px'
+                color: '#ffffff',
+                margin: '0 0 24px 0'
               }}>
                 Recent Activity
               </h2>
 
               <div style={{
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px',
-                overflow: 'hidden'
+                background: '#1a1a1a',
+                border: '1px solid #333333',
+                borderRadius: '8px',
+                padding: '20px'
               }}>
-                {recentActivity.map((activity, index) => (
-                  <div
-                    key={activity.id}
-                    style={{
-                      padding: '16px 20px',
-                      borderBottom: index < recentActivity.length - 1 ?
-                        `1px solid ${theme.colors.border.light}` : 'none',
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '12px'
-                    }}
-                  >
-                    <div style={{ fontSize: '20px', marginTop: '2px' }}>
-                      {getActivityIcon(activity.type)}
-                    </div>
-                    <div style={{ flex: 1 }}>
-                      <div style={{
-                        fontSize: '14px',
-                        color: theme.colors.text.primary,
-                        marginBottom: '4px'
-                      }}>
-                        {getActivityText(activity)}
+                {recentActivity.length > 0 ? (
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px'
+                  }}>
+                    {recentActivity.slice(0, 8).map((activity, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'flex-start',
+                          gap: '12px',
+                          padding: '8px 0'
+                        }}
+                      >
+                        <div style={{
+                          fontSize: '14px',
+                          minWidth: '20px'
+                        }}>
+                          {getActivityIcon(activity.type)}
+                        </div>
+                        <div style={{ flex: 1 }}>
+                          <div style={{
+                            fontSize: '14px',
+                            color: '#ffffff',
+                            lineHeight: '1.4',
+                            marginBottom: '2px'
+                          }}>
+                            {activity.description}
+                          </div>
+                          <div style={{
+                            fontSize: '12px',
+                            color: '#a3a3a3'
+                          }}>
+                            {new Date(activity.created_at).toLocaleString()}
+                          </div>
+                        </div>
                       </div>
-                      <div style={{
-                        fontSize: '12px',
-                        color: theme.colors.text.secondary
-                      }}>
-                        {activity.time}
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
-
-                <div style={{
-                  padding: '16px 20px',
-                  textAlign: 'center'
-                }}>
-                  <Link
-                    to="/collaboration"
-                    style={{
-                      color: theme.colors.text.secondary,
-                      fontSize: '14px',
-                      textDecoration: 'none',
-                      fontWeight: '500'
-                    }}
-                  >
-                    View all activity →
-                  </Link>
-                </div>
+                ) : (
+                  <div style={{
+                    textAlign: 'center',
+                    color: '#a3a3a3',
+                    fontSize: '14px',
+                    padding: '20px'
+                  }}>
+                    No recent activity
+                  </div>
+                )}
               </div>
             </div>
           </div>
-              </>
-            )}
 
-            {/* Workflow Analytics View */}
-            {dashboardView === 'workflows' && (
-              <WorkflowVisualization projects={projects} />
-            )}
+          {/* Quick Actions */}
+          <div style={{
+            marginTop: '48px'
+          }}>
+            <h2 style={{
+              fontSize: '20px',
+              fontWeight: '600',
+              color: '#ffffff',
+              margin: '0 0 24px 0'
+            }}>
+              Quick Actions
+            </h2>
 
-            {/* Team Insights View */}
-            {dashboardView === 'insights' && (
-              <div style={{
-                background: theme.colors.bg.secondary,
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '12px',
-                padding: '32px',
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '64px',
-                  marginBottom: '24px',
-                  opacity: 0.3
-                }}>
-                  🚀
-                </div>
-                <h2 style={{
-                  fontSize: '24px',
-                  fontWeight: '600',
-                  color: theme.colors.text.primary,
-                  marginBottom: '12px'
-                }}>
-                  Advanced Team Insights
-                </h2>
-                <p style={{
-                  fontSize: '16px',
-                  color: theme.colors.text.secondary,
-                  marginBottom: '24px',
-                  lineHeight: '1.6'
-                }}>
-                  Get deep insights into team productivity, collaboration patterns, and workflow optimization opportunities.
-                  This advanced analytics dashboard is coming soon with AI-powered recommendations.
-                </p>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '20px',
-                  marginTop: '32px'
-                }}>
-                  <div style={{
-                    background: theme.colors.bg.primary,
-                    border: `1px solid ${theme.colors.border.light}`,
-                    borderRadius: '8px',
-                    padding: '20px',
-                    textAlign: 'left'
-                  }}>
-                    <div style={{ fontSize: '24px', marginBottom: '8px' }}>📈</div>
-                    <h3 style={{
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      color: theme.colors.text.primary,
-                      marginBottom: '8px'
-                    }}>
-                      Productivity Analytics
-                    </h3>
-                    <p style={{
-                      fontSize: '14px',
-                      color: theme.colors.text.secondary,
-                      lineHeight: '1.4'
-                    }}>
-                      Track review velocity, approval rates, and identify optimization opportunities
-                    </p>
-                  </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+              gap: '16px'
+            }}>
+              <button
+                onClick={() => navigate('/projects')}
+                style={{
+                  background: '#1a1a1a',
+                  border: '1px solid #333333',
+                  borderRadius: '8px',
+                  padding: '20px',
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.borderColor = '#666666'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.borderColor = '#333333'
+                }}
+              >
+                <div style={{ marginBottom: '8px', fontSize: '16px' }}>📁</div>
+                <div style={{ marginBottom: '4px', fontWeight: '600' }}>Create New Project</div>
+                <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Start a new review project</div>
+              </button>
 
-                  <div style={{
-                    background: theme.colors.bg.primary,
-                    border: `1px solid ${theme.colors.border.light}`,
-                    borderRadius: '8px',
-                    padding: '20px',
-                    textAlign: 'left'
-                  }}>
-                    <div style={{ fontSize: '24px', marginBottom: '8px' }}>🤝</div>
-                    <h3 style={{
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      color: theme.colors.text.primary,
-                      marginBottom: '8px'
-                    }}>
-                      Collaboration Insights
-                    </h3>
-                    <p style={{
-                      fontSize: '14px',
-                      color: theme.colors.text.secondary,
-                      lineHeight: '1.4'
-                    }}>
-                      Analyze team communication patterns and reviewer workload distribution
-                    </p>
-                  </div>
+              <button
+                onClick={() => navigate('/projects')}
+                style={{
+                  background: '#1a1a1a',
+                  border: '1px solid #333333',
+                  borderRadius: '8px',
+                  padding: '20px',
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.borderColor = '#666666'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.borderColor = '#333333'
+                }}
+              >
+                <div style={{ marginBottom: '8px', fontSize: '16px' }}>👥</div>
+                <div style={{ marginBottom: '4px', fontWeight: '600' }}>Manage Collaborators</div>
+                <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Invite reviewers to projects</div>
+              </button>
 
-                  <div style={{
-                    background: theme.colors.bg.primary,
-                    border: `1px solid ${theme.colors.border.light}`,
-                    borderRadius: '8px',
-                    padding: '20px',
-                    textAlign: 'left'
-                  }}>
-                    <div style={{ fontSize: '24px', marginBottom: '8px' }}>🎯</div>
-                    <h3 style={{
-                      fontSize: '16px',
-                      fontWeight: '600',
-                      color: theme.colors.text.primary,
-                      marginBottom: '8px'
-                    }}>
-                      AI Recommendations
-                    </h3>
-                    <p style={{
-                      fontSize: '14px',
-                      color: theme.colors.text.secondary,
-                      lineHeight: '1.4'
-                    }}>
-                      Smart suggestions for improving workflow efficiency and team performance
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
+              <button
+                onClick={() => navigate('/settings')}
+                style={{
+                  background: '#1a1a1a',
+                  border: '1px solid #333333',
+                  borderRadius: '8px',
+                  padding: '20px',
+                  color: '#ffffff',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  textAlign: 'left',
+                  transition: 'all 0.2s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.borderColor = '#666666'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.borderColor = '#333333'
+                }}
+              >
+                <div style={{ marginBottom: '8px', fontSize: '16px' }}>⚙️</div>
+                <div style={{ marginBottom: '4px', fontWeight: '600' }}>Account Settings</div>
+                <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Manage your account</div>
+              </button>
+            </div>
+          </div>
+
         </div>
       </div>
     </>

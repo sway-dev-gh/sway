@@ -18,11 +18,11 @@ const Upload = lazy(() => import('./pages/Upload'))
 // Dashboard (Workspace-Centric) - critical route with custom skeleton
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 
-// Review Platform Routes
-const Projects = lazy(() => import('./pages/EnhancedProjects'))
-const ProjectWorkspace = lazy(() => import('./components/ProjectWorkspace'))
-const Collaboration = lazy(() => import('./pages/Collaboration'))
-const Reviews = lazy(() => import('./pages/Management'))
+// Fresh Review Platform Routes
+const Projects = lazy(() => import('./pages/Projects'))
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
+const FileReview = lazy(() => import('./pages/FileReview'))
+const ExternalReview = lazy(() => import('./pages/ExternalReview'))
 
 // Legacy routes for backward compatibility
 const RequestView = lazy(() => import('./pages/RequestView'))
@@ -45,14 +45,14 @@ function prefetchCriticalRoutes() {
     requestIdleCallback(() => {
       // Prefetch likely next routes
       import('./pages/Dashboard').catch(() => {}) // Dashboard (workspace-centric)
-      import('./pages/EnhancedProjects').catch(() => {}) // Enhanced Projects with review workflow
-      import('./pages/Management').catch(() => {})
+      import('./pages/Projects').catch(() => {}) // Fresh Projects with review workflow
+      import('./pages/ProjectDetail').catch(() => {})
     }, { timeout: 2000 })
   } else {
     setTimeout(() => {
       import('./pages/Dashboard').catch(() => {})
-      import('./pages/EnhancedProjects').catch(() => {})
-      import('./pages/Management').catch(() => {})
+      import('./pages/Projects').catch(() => {})
+      import('./pages/ProjectDetail').catch(() => {})
     }, 2000)
   }
 }
@@ -103,12 +103,7 @@ function App() {
           </Suspense>
         } />
 
-        {/* Review Platform Routes */}
-        <Route path="/collaboration" element={
-          <Suspense fallback={<DashboardSkeleton />}>
-            <Collaboration />
-          </Suspense>
-        } />
+        {/* Fresh Review Platform Routes */}
         <Route path="/projects" element={
           <Suspense fallback={<TableSkeleton />}>
             <Projects />
@@ -116,19 +111,19 @@ function App() {
         } />
         <Route path="/projects/:id" element={
           <Suspense fallback={<DashboardSkeleton />}>
-            <ProjectWorkspace />
+            <ProjectDetail />
           </Suspense>
         } />
-        <Route path="/reviews" element={
-          <Suspense fallback={<TableSkeleton />}>
-            <Reviews />
+        <Route path="/projects/:projectId/files/:fileId" element={
+          <Suspense fallback={<DashboardSkeleton />}>
+            <FileReview />
           </Suspense>
         } />
 
-        {/* Legacy Management Route */}
-        <Route path="/management" element={
-          <Suspense fallback={<TableSkeleton />}>
-            <Reviews />
+        {/* External Review Route (no signup required) */}
+        <Route path="/external/:token" element={
+          <Suspense fallback={<PageLoadingFallback />}>
+            <ExternalReview />
           </Suspense>
         } />
 

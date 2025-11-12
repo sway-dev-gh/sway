@@ -1,227 +1,290 @@
-import React, { useState, useEffect } from 'react'
-import useReviewStore from '../store/reviewStore'
-import toast from 'react-hot-toast'
+import { useState, useEffect } from 'react'
 
-const VersionHistory = ({ fileId, filename }) => {
-  const { fetchFileVersions, createFileVersion } = useReviewStore()
+const VersionHistory = ({ projectId, fileId }) => {
   const [versions, setVersions] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [showCreateVersion, setShowCreateVersion] = useState(false)
-  const [versionNotes, setVersionNotes] = useState('')
-  const [isCreating, setIsCreating] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [selectedVersion, setSelectedVersion] = useState(null)
 
   useEffect(() => {
-    loadVersions()
-  }, [fileId])
+    fetchVersions()
+  }, [projectId, fileId])
 
-  const loadVersions = async () => {
+  const fetchVersions = async () => {
     try {
-      setIsLoading(true)
-      const data = await fetchFileVersions(fileId)
-      setVersions(data || [])
-    } catch (error) {
-      console.error('Failed to load versions:', error)
-      toast.error('Failed to load version history')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const handleCreateVersion = async () => {
-    if (!versionNotes.trim()) {
-      toast.error('Please add version notes')
-      return
-    }
-
-    setIsCreating(true)
-    try {
-      await createFileVersion(fileId, {
-        version_notes: versionNotes.trim(),
-        file_changes: [],
-        section_changes: []
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/projects/${projectId}/files/${fileId}/versions`, {
+        headers: { 'Authorization': `Bearer ${token}` }
       })
 
-      toast.success('New version created successfully')
-      setVersionNotes('')
-      setShowCreateVersion(false)
-      loadVersions() // Refresh the list
+      if (response.ok) {
+        const data = await response.json()
+        setVersions(data.versions || [])
+      }
     } catch (error) {
-      console.error('Failed to create version:', error)
-      toast.error('Failed to create version')
+      console.error('Failed to fetch versions:', error)
     } finally {
-      setIsCreating(false)
+      setLoading(false)
     }
   }
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString()
-  }
-
-  const formatFileChanges = (changes) => {
-    if (!changes || changes.length === 0) return null
-
+  const restoreVersion = async (versionId) => {
     try {
-      const parsedChanges = typeof changes === 'string' ? JSON.parse(changes) : changes
-      return parsedChanges.map((change, index) => (
-        <li key={index} className="text-sm text-gray-400">
-          {change.type}: {change.description}
-        </li>
-      ))
-    } catch {
-      return null
+      const token = localStorage.getItem('token')
+      const response = await fetch(`/api/projects/${projectId}/files/${fileId}/versions/${versionId}/restore`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+
+      if (response.ok) {
+        // Refresh parent component
+        window.location.reload()
+      }
+    } catch (error) {
+      console.error('Failed to restore version:', error)
     }
   }
 
-  const getVersionStatus = (version) => {
-    const isLatest = versions[0]?.id === version.id
-    const daysSinceCreated = Math.floor((new Date() - new Date(version.created_at)) / (1000 * 60 * 60 * 24))
-
-    return {
-      isLatest,
-      age: daysSinceCreated === 0 ? 'Today' : `${daysSinceCreated} days ago`
+  const getChangeType = (changeType) => {
+    const typeMap = {
+      'created': { label: 'Created', color: '#51cf66', icon: '✨' },
+      'updated': { label: 'Updated', color: '#ffffff', icon: '✏️' },
+      'section_added': { label: 'Section Added', color: '#4c6ef5', icon: '➕' },
+      'section_removed': { label: 'Section Removed', color: '#ff6b6b', icon: '➖' },
+      'section_modified': { label: 'Section Modified', color: '#ffd43b', icon: '🔄' },
+      'approved': { label: 'Approved', color: '#51cf66', icon: '✅' },
+      'rejected': { label: 'Changes Requested', color: '#ff6b6b', icon: '❌' },
+      'restored': { label: 'Restored', color: '#4c6ef5', icon: '↩️' }
     }
+    return typeMap[changeType] || { label: 'Unknown', color: '#666666', icon: '•' }
   }
 
-  if (isLoading) {
+  if (loading) {
     return (
-      <div className="bg-[#1C1C1C] border border-[#333] rounded-lg p-6">
-        <div className="flex items-center space-x-2 mb-4">
-          <div className="w-4 h-4 bg-gray-600 rounded animate-pulse"></div>
-          <div className="w-32 h-4 bg-gray-600 rounded animate-pulse"></div>
-        </div>
-        <div className="space-y-3">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="w-full h-16 bg-gray-700 rounded animate-pulse"></div>
-          ))}
-        </div>
+      <div style={{
+        padding: '20px',
+        textAlign: 'center',
+        color: '#a3a3a3'
+      }}>
+        Loading version history...
       </div>
     )
   }
 
   return (
-    <div className="bg-[#1C1C1C] border border-[#333] rounded-lg p-6">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-semibold text-white">Version History</h3>
-          <p className="text-sm text-gray-400">{filename}</p>
-        </div>
-        <button
-          onClick={() => setShowCreateVersion(true)}
-          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
-        >
-          Create Version
-        </button>
-      </div>
+    <div style={{
+      background: '#1a1a1a',
+      border: '1px solid #333333',
+      borderRadius: '8px',
+      padding: '24px'
+    }}>
+      <h3 style={{
+        fontSize: '18px',
+        fontWeight: '600',
+        color: '#ffffff',
+        margin: '0 0 20px 0'
+      }}>
+        Version History
+      </h3>
 
-      {versions.length === 0 ? (
-        <div className="text-center py-8">
-          <div className="w-16 h-16 mx-auto mb-4 opacity-50">
-            <svg className="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-          </div>
-          <h3 className="text-lg font-medium text-gray-300 mb-2">No versions yet</h3>
-          <p className="text-gray-400 mb-4">Create your first version to track changes over time</p>
-          <button
-            onClick={() => setShowCreateVersion(true)}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
-          >
-            Create First Version
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-4">
+      {versions.length > 0 ? (
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '16px'
+        }}>
           {versions.map((version, index) => {
-            const status = getVersionStatus(version)
+            const changeInfo = getChangeType(version.change_type)
+            const isLatest = index === 0
+
             return (
-              <div key={version.id} className="bg-[#2A2A2A] border border-[#444] rounded-lg p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center space-x-3">
-                    <span className="font-semibold text-white">Version {version.version_number}</span>
-                    {status.isLatest && (
-                      <span className="px-2 py-1 bg-green-600 text-white text-xs font-medium rounded-full">
-                        Latest
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-sm text-gray-400">{status.age}</span>
-                </div>
-
-                <div className="mb-3">
-                  <p className="text-gray-300">{version.version_notes || 'No notes provided'}</p>
-                </div>
-
-                <div className="flex items-center justify-between text-sm text-gray-400">
-                  <div>
-                    Created by {version.created_by_name || 'Unknown user'}
-                  </div>
-                  <div>
-                    {formatDate(version.created_at)}
-                  </div>
-                </div>
-
-                {/* Show file changes if available */}
-                {version.file_changes && (
-                  <div className="mt-3 pt-3 border-t border-[#444]">
-                    <h4 className="text-sm font-medium text-gray-300 mb-2">Changes:</h4>
-                    <ul className="space-y-1">
-                      {formatFileChanges(version.file_changes)}
-                    </ul>
+              <div
+                key={version.id}
+                style={{
+                  background: isLatest ? '#333333' : '#000000',
+                  border: `1px solid ${isLatest ? '#666666' : '#333333'}`,
+                  borderRadius: '6px',
+                  padding: '16px',
+                  position: 'relative'
+                }}
+              >
+                {isLatest && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '8px',
+                    right: '8px',
+                    background: '#ffffff',
+                    color: '#000000',
+                    fontSize: '10px',
+                    fontWeight: '600',
+                    padding: '2px 6px',
+                    borderRadius: '3px',
+                    textTransform: 'uppercase'
+                  }}>
+                    Current
                   </div>
                 )}
+
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px'
+                }}>
+                  <div style={{
+                    fontSize: '16px',
+                    minWidth: '20px'
+                  }}>
+                    {changeInfo.icon}
+                  </div>
+
+                  <div style={{ flex: 1 }}>
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'flex-start',
+                      marginBottom: '8px'
+                    }}>
+                      <div>
+                        <div style={{
+                          fontSize: '14px',
+                          fontWeight: '500',
+                          color: changeInfo.color,
+                          marginBottom: '2px'
+                        }}>
+                          {changeInfo.label}
+                        </div>
+                        <div style={{
+                          fontSize: '12px',
+                          color: '#a3a3a3'
+                        }}>
+                          Version {version.version_number} • {new Date(version.created_at).toLocaleString()}
+                        </div>
+                      </div>
+
+                      {!isLatest && (
+                        <button
+                          onClick={() => restoreVersion(version.id)}
+                          style={{
+                            background: 'transparent',
+                            color: '#4c6ef5',
+                            border: '1px solid #4c6ef5',
+                            borderRadius: '4px',
+                            padding: '4px 8px',
+                            fontSize: '11px',
+                            fontWeight: '500',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          Restore
+                        </button>
+                      )}
+                    </div>
+
+                    {version.created_by && (
+                      <div style={{
+                        fontSize: '12px',
+                        color: '#a3a3a3',
+                        marginBottom: '8px'
+                      }}>
+                        by {version.created_by}
+                      </div>
+                    )}
+
+                    {version.change_summary && (
+                      <div style={{
+                        fontSize: '13px',
+                        color: '#ffffff',
+                        lineHeight: '1.4',
+                        marginBottom: '8px'
+                      }}>
+                        {version.change_summary}
+                      </div>
+                    )}
+
+                    {version.sections_changed && version.sections_changed.length > 0 && (
+                      <div style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        gap: '6px'
+                      }}>
+                        {version.sections_changed.map((sectionName, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              background: '#000000',
+                              border: '1px solid #333333',
+                              borderRadius: '3px',
+                              padding: '2px 6px',
+                              fontSize: '10px',
+                              color: '#a3a3a3'
+                            }}
+                          >
+                            {sectionName}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Show detailed changes when clicked */}
+                    {selectedVersion === version.id && version.detailed_changes && (
+                      <div style={{
+                        marginTop: '12px',
+                        padding: '12px',
+                        background: '#000000',
+                        border: '1px solid #333333',
+                        borderRadius: '4px'
+                      }}>
+                        <div style={{
+                          fontSize: '12px',
+                          fontWeight: '500',
+                          color: '#ffffff',
+                          marginBottom: '8px'
+                        }}>
+                          Detailed Changes:
+                        </div>
+                        <div style={{
+                          fontSize: '11px',
+                          color: '#a3a3a3',
+                          lineHeight: '1.5',
+                          whiteSpace: 'pre-wrap'
+                        }}>
+                          {version.detailed_changes}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* View details button */}
+                    {version.detailed_changes && (
+                      <button
+                        onClick={() => setSelectedVersion(
+                          selectedVersion === version.id ? null : version.id
+                        )}
+                        style={{
+                          background: 'transparent',
+                          color: '#a3a3a3',
+                          border: 'none',
+                          fontSize: '11px',
+                          cursor: 'pointer',
+                          marginTop: '8px',
+                          padding: 0
+                        }}
+                      >
+                        {selectedVersion === version.id ? 'Hide Details' : 'Show Details'}
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             )
           })}
         </div>
-      )}
-
-      {/* Create Version Modal */}
-      {showCreateVersion && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-[#1C1C1C] border border-[#333] rounded-lg p-6 max-w-lg w-full mx-4">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-white">Create New Version</h3>
-              <button
-                onClick={() => setShowCreateVersion(false)}
-                className="text-gray-400 hover:text-white"
-              >
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Version notes *
-                </label>
-                <textarea
-                  value={versionNotes}
-                  onChange={(e) => setVersionNotes(e.target.value)}
-                  placeholder="Describe the changes made in this version..."
-                  className="w-full px-3 py-2 bg-[#2A2A2A] border border-[#444] rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                  rows="4"
-                />
-              </div>
-
-              <div className="flex space-x-3">
-                <button
-                  onClick={() => setShowCreateVersion(false)}
-                  className="flex-1 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-md transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleCreateVersion}
-                  disabled={!versionNotes.trim() || isCreating}
-                  className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white font-medium rounded-md transition-colors"
-                >
-                  {isCreating ? 'Creating...' : 'Create Version'}
-                </button>
-              </div>
-            </div>
-          </div>
+      ) : (
+        <div style={{
+          textAlign: 'center',
+          color: '#a3a3a3',
+          fontSize: '14px',
+          padding: '20px'
+        }}>
+          No version history available
         </div>
       )}
     </div>
