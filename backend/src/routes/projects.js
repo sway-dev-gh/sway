@@ -30,79 +30,27 @@ const logActivity = async (userId, action, resourceType, resourceId, metadata = 
 // =====================================================
 router.get('/', authenticateToken, projectLimiter, async (req, res) => {
   try {
-    const userId = req.userId
-    const { status, visibility } = req.query
+    console.log('=== PROJECTS ROUTE REACHED ===')
+    console.log('User ID:', req.userId)
 
-    // Simplified query - only query projects table to avoid schema issues
-    let ownedProjectsQuery = `
-      SELECT
-        p.*,
-        0 as collaborator_count,
-        0 as pending_reviews,
-        0 as file_count,
-        '{}' as collaborator_emails
-      FROM projects p
-      WHERE p.user_id = $1
-    `
-
-    const queryParams = [userId]
-    const conditions = []
-
-    if (status) {
-      queryParams.push(status)
-      conditions.push(`p.status = $${queryParams.length}`)
-    }
-
-    if (visibility) {
-      queryParams.push(visibility)
-      conditions.push(`p.visibility = $${queryParams.length}`)
-    }
-
-    if (conditions.length > 0) {
-      ownedProjectsQuery += ` AND ${conditions.join(' AND ')}`
-    }
-
-    ownedProjectsQuery += `
-      ORDER BY p.id DESC
-    `
-
-    // Simplified collaborating projects query - return empty array for now
-    const ownedResult = await pool.query(ownedProjectsQuery, queryParams)
-    const collaboratingResult = { rows: [] }
-
-    // Simple stats calculation
-    const statsQuery = `
-      SELECT
-        COUNT(*) as owned_projects,
-        COUNT(*) FILTER (WHERE p.status = 'active') as active_projects,
-        COUNT(*) FILTER (WHERE p.status = 'completed') as completed_projects
-      FROM projects p
-      WHERE p.user_id = $1
-    `
-
-    const statsResult = await pool.query(statsQuery, [userId])
-    const stats = statsResult.rows[0]
-
+    // Return immediate empty response to test if this route even executes
     res.json({
       success: true,
-      projects: {
-        owned: ownedResult.rows,
-        collaborating: collaboratingResult.rows
-      },
-      stats: {
-        owned_projects: parseInt(stats.owned_projects) || 0,
-        collaborating_projects: 0,
-        active_projects: parseInt(stats.active_projects) || 0,
-        completed_projects: parseInt(stats.completed_projects) || 0,
-        total_projects: ownedResult.rows.length
-      }
+      debug: 'Route handler executed successfully',
+      timestamp: new Date().toISOString(),
+      userId: req.userId,
+      projects: { owned: [], collaborating: [] },
+      stats: { owned_projects: 0, collaborating_projects: 0, active_projects: 0, completed_projects: 0, total_projects: 0 }
     })
 
   } catch (error) {
     console.error('Get projects error:', error)
+    console.error('Error stack:', error.stack)
+    console.error('Error details:', JSON.stringify(error, null, 2))
     res.status(500).json({
       error: 'Failed to fetch projects',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      details: error.message, // Show error message in production for debugging
+      stack: error.stack
     })
   }
 })
