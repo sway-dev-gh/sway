@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const pool = require('../db/pool')
 const rateLimit = require('express-rate-limit')
+const { authenticateToken } = require('../middleware/auth')
 
 // Rate limiter for signup - strict to prevent multi-account abuse
 const signupLimiter = rateLimit({
@@ -135,6 +136,39 @@ router.post('/login', loginLimiter, async (req, res) => {
   } catch (error) {
     console.error('Login error:', error)
     res.status(500).json({ error: 'Login failed' })
+  }
+})
+
+// GET /api/auth/me - Get current user info
+router.get('/me', authenticateToken, async (req, res) => {
+  try {
+    const userId = req.userId
+
+    // Get user details from database
+    const result = await pool.query(
+      'SELECT id, email, name, plan, created_at FROM users WHERE id = $1',
+      [userId]
+    )
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+    const user = result.rows[0]
+
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        plan: user.plan || 'free',
+        created_at: user.created_at
+      }
+    })
+  } catch (error) {
+    console.error('Get current user error:', error)
+    res.status(500).json({ error: 'Failed to get user info' })
   }
 })
 
