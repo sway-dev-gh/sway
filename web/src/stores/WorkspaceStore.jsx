@@ -319,10 +319,10 @@ function workspaceReducer(state, action) {
       }
 
     case ACTIONS.DELETE_FILE:
-      const updatedFiles = state.files.filter(file => file.id !== action.payload.fileId)
+      const filteredFiles = state.files.filter(file => file.id !== action.payload.fileId)
       return {
         ...state,
-        files: updatedFiles,
+        files: filteredFiles,
         selectedFile: state.selectedFile?.id === action.payload.fileId ? null : state.selectedFile
       }
 
@@ -420,21 +420,29 @@ export const WorkspaceProvider = ({ children }) => {
 
     initializeAuth: async () => {
       const token = localStorage.getItem('token')
+      console.log('🔐 initializeAuth called', { token: token ? 'present' : 'missing' })
       if (token) {
+        console.log('🔄 Setting loading state and calling API...')
         dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
         try {
+          console.log('📞 Making API call to getCurrentUser...')
           const response = await apiService.getCurrentUser()
+          console.log('✅ API call successful, user:', response.user?.name)
           dispatch({
             type: ACTIONS.LOGIN_SUCCESS,
             payload: { user: response.user, token }
           })
           // Load workspaces after successful auth
+          console.log('📂 Loading workspaces...')
           await actions.loadWorkspaces()
+          console.log('🎉 Authentication initialization complete!')
         } catch (error) {
+          console.error('❌ Token validation failed:', error)
           localStorage.removeItem('token')
-          console.warn('Token validation failed:', error.message)
           dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: false } })
         }
+      } else {
+        console.log('📭 No token found, user needs to sign in')
       }
     },
 

@@ -17,10 +17,13 @@ const AuthenticatedApp = () => {
 
   // Initialize authentication on app start
   useEffect(() => {
+    console.log('🔍 App.jsx useEffect triggered', { guestToken, isAuthenticated: state.isAuthenticated, isLoading: state.isLoading })
     if (guestToken) {
+      console.log('👻 Guest token detected, skipping auth initialization')
       // Don't initialize regular auth for guest links
       return
     }
+    console.log('🚀 Initializing authentication...')
     actions.initializeAuth()
   }, [guestToken, actions])
 

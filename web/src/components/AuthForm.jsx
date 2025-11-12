@@ -191,7 +191,10 @@ const AuthForm = () => {
                 color: '#ffffff',
                 padding: '12px',
                 fontSize: '14px',
-                outline: 'none'
+                outline: 'none',
+                WebkitTextFillColor: '#ffffff',
+                WebkitBoxShadow: '0 0 0 1000px #111111 inset',
+                transition: 'background-color 5000s ease-in-out 0s'
               }}
               placeholder="Enter your email"
             />
