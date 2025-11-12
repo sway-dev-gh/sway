@@ -240,8 +240,8 @@ function Collaboration() {
               gap: '16px'
             }}>
               <Link to="/projects" style={{
-                background: theme.colors.white,
-                color: theme.colors.black,
+                background: '#3b82f6',
+                color: theme.colors.white,
                 padding: '16px 24px',
                 borderRadius: '8px',
                 textDecoration: 'none',
@@ -315,8 +315,8 @@ function Collaboration() {
                 Invite team members, share projects, and collaborate on reviews to get better feedback faster.
               </p>
               <Link to="/projects" style={{
-                background: theme.colors.white,
-                color: theme.colors.black,
+                background: '#3b82f6',
+                color: theme.colors.white,
                 padding: '16px 32px',
                 borderRadius: '8px',
                 textDecoration: 'none',

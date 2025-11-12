@@ -167,7 +167,7 @@ function Projects() {
             <div style={standardStyles.statsLabel}>
               Pending Review
             </div>
-            <div style={{...standardStyles.statsNumber, color: '#a3a3a3'}}>
+            <div style={{...standardStyles.statsNumber, color: '#f59e0b'}}>
               {stats.pending}
             </div>
           </div>
@@ -181,7 +181,7 @@ function Projects() {
             <div style={standardStyles.statsLabel}>
               Approved
             </div>
-            <div style={{...standardStyles.statsNumber, color: theme.colors.white}}>
+            <div style={{...standardStyles.statsNumber, color: '#10b981'}}>
               {stats.approved}
             </div>
           </div>
@@ -408,8 +408,8 @@ function Projects() {
               <button
                 onClick={() => setShowCreateProject(true)}
                 style={{
-                  background: theme.colors.white,
-                  color: theme.colors.black,
+                  background: '#3b82f6',
+                  color: theme.colors.white,
                   padding: '12px 24px',
                   borderRadius: '8px',
                   border: 'none',
@@ -558,8 +558,8 @@ function Projects() {
                 <button
                   type="submit"
                   style={{
-                    background: theme.colors.white,
-                    color: theme.colors.black,
+                    background: '#3b82f6',
+                    color: theme.colors.white,
                     padding: '12px 24px',
                     borderRadius: '8px',
                     border: 'none',

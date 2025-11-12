@@ -175,7 +175,7 @@ function WorkflowDashboard() {
               <div style={{
                 fontSize: '48px',
                 fontWeight: '600',
-                color: '#fbbf24',
+                color: '#f59e0b',
                 marginBottom: '8px'
               }}>
                 {stats.pendingReviews}
@@ -209,7 +209,7 @@ function WorkflowDashboard() {
               <div style={{
                 fontSize: '48px',
                 fontWeight: '600',
-                color: theme.colors.white,
+                color: '#10b981',
                 marginBottom: '8px'
               }}>
                 {stats.approvedReviews}
@@ -281,8 +281,8 @@ function WorkflowDashboard() {
               gap: '16px'
             }}>
               <Link to="/projects" style={{
-                background: theme.colors.white,
-                color: theme.colors.black,
+                background: '#3b82f6',
+                color: theme.colors.white,
                 padding: '16px 24px',
                 borderRadius: '8px',
                 textDecoration: 'none',
@@ -356,8 +356,8 @@ function WorkflowDashboard() {
                 Get started by creating your first review workflow to collect feedback, manage approvals, and collaborate with your team.
               </p>
               <Link to="/projects" style={{
-                background: theme.colors.white,
-                color: theme.colors.black,
+                background: '#3b82f6',
+                color: theme.colors.white,
                 padding: '16px 32px',
                 borderRadius: '8px',
                 textDecoration: 'none',
