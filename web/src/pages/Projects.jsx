@@ -49,23 +49,13 @@ function Projects() {
   })
 
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'active': return '#a3a3a3'    // Needs Changes
-      case 'completed': return theme.colors.white  // Approved
-      case 'review': return '#525252'    // Pending Review
-      case 'cancelled': return '#808080' // Rejected
-      default: return theme.colors.text.secondary
-    }
+    // Clean white/black aesthetic - no colors
+    return 'rgba(255, 255, 255, 0.7)'
   }
 
   const getPriorityColor = (priority) => {
-    switch (priority) {
-      case 'urgent': return '#525252'
-      case 'high': return '#808080'
-      case 'medium': return '#a3a3a3'
-      case 'low': return theme.colors.text.secondary
-      default: return theme.colors.text.secondary
-    }
+    // Clean white/black aesthetic - no colors
+    return 'rgba(255, 255, 255, 0.5)'
   }
 
   const formatCurrency = (amount) => {
@@ -167,7 +157,7 @@ function Projects() {
             <div style={standardStyles.statsLabel}>
               Pending Review
             </div>
-            <div style={{...standardStyles.statsNumber, color: '#f59e0b'}}>
+            <div style={standardStyles.statsNumber}>
               {stats.pending}
             </div>
           </div>
@@ -181,7 +171,7 @@ function Projects() {
             <div style={standardStyles.statsLabel}>
               Approved
             </div>
-            <div style={{...standardStyles.statsNumber, color: '#10b981'}}>
+            <div style={standardStyles.statsNumber}>
               {stats.approved}
             </div>
           </div>
@@ -408,11 +398,11 @@ function Projects() {
               <button
                 onClick={() => setShowCreateProject(true)}
                 style={{
-                  background: '#3b82f6',
-                  color: theme.colors.white,
+                  background: 'transparent',
+                  color: theme.colors.text.primary,
                   padding: '12px 24px',
                   borderRadius: '8px',
-                  border: 'none',
+                  border: `1px solid ${theme.colors.border.light}`,
                   fontSize: theme.fontSize.sm,
                   fontWeight: theme.weight.medium,
                   cursor: 'pointer'
@@ -558,11 +548,11 @@ function Projects() {
                 <button
                   type="submit"
                   style={{
-                    background: '#3b82f6',
-                    color: theme.colors.white,
+                    background: 'transparent',
+                    color: theme.colors.text.primary,
                     padding: '12px 24px',
                     borderRadius: '8px',
-                    border: 'none',
+                    border: `1px solid ${theme.colors.border.light}`,
                     fontSize: theme.fontSize.sm,
                     fontWeight: theme.weight.semibold,
                     cursor: 'pointer'

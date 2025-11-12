@@ -240,13 +240,14 @@ function Collaboration() {
               gap: '16px'
             }}>
               <Link to="/projects" style={{
-                background: '#3b82f6',
-                color: theme.colors.white,
+                background: 'transparent',
+                color: theme.colors.text.primary,
                 padding: '16px 24px',
                 borderRadius: '8px',
                 textDecoration: 'none',
                 fontWeight: '500',
                 textAlign: 'center',
+                border: `1px solid ${theme.colors.border.light}`,
                 fontSize: '14px',
                 transition: 'all 0.2s ease'
               }}>
@@ -315,12 +316,13 @@ function Collaboration() {
                 Invite team members, share projects, and collaborate on reviews to get better feedback faster.
               </p>
               <Link to="/projects" style={{
-                background: '#3b82f6',
-                color: theme.colors.white,
+                background: 'transparent',
+                color: theme.colors.text.primary,
                 padding: '16px 32px',
                 borderRadius: '8px',
                 textDecoration: 'none',
                 fontWeight: '500',
+                border: `1px solid ${theme.colors.border.light}`,
                 fontSize: '14px',
                 display: 'inline-block'
               }}>

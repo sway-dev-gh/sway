@@ -6,6 +6,7 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { PageLoadingFallback, DashboardSkeleton, TableSkeleton, FormSkeleton } from './components/LoadingFallback'
 import './App.css'
 import './styles/mobile.css'
+import './styles/clean.css'
 
 // Auth routes - separate chunk
 const Login = lazy(() => import('./pages/Login'))

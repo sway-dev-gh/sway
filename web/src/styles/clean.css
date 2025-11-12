@@ -1,0 +1,125 @@
+/* 🔥 CLEAN WHITE/BLACK AESTHETIC - NO COLORS */
+
+/* Remove all colored backgrounds and borders */
+* {
+  transition: all 0.15s ease !important;
+}
+
+/* Clean button styles - pure white/black */
+button, .btn {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  border-radius: 6px !important;
+}
+
+button:hover, .btn:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Primary actions - subtle highlight */
+.btn-primary, button[class*="primary"] {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.btn-primary:hover, button[class*="primary"]:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+/* Remove all color from stats/metrics */
+.text-orange-500, .text-yellow-500, .text-amber-500 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.text-green-500, .text-emerald-500 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.text-blue-500, .text-sky-500, .text-cyan-500 {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Clean number displays */
+.text-4xl, .text-3xl, .text-2xl {
+  color: white !important;
+  font-weight: 300 !important;
+}
+
+/* Remove colored borders */
+.border-orange-500, .border-green-500, .border-blue-500 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Clean cards */
+.bg-gray-900, .bg-gray-800, .bg-gray-700 {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Clean inputs */
+input, textarea, select {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  outline: none !important;
+}
+
+/* Clean tabs/navigation */
+.tab, .nav-item {
+  border-bottom: 1px solid transparent !important;
+}
+
+.tab.active, .nav-item.active {
+  border-bottom-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Remove all background colors */
+.bg-blue-600, .bg-blue-500, .bg-indigo-600 {
+  background: transparent !important;
+}
+
+.bg-orange-500, .bg-yellow-500, .bg-amber-500 {
+  background: transparent !important;
+}
+
+.bg-green-500, .bg-emerald-500 {
+  background: transparent !important;
+}
+
+/* Clean hover states */
+.hover\:bg-blue-700:hover, .hover\:bg-indigo-700:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Clean text colors */
+.text-gray-400, .text-gray-500, .text-gray-600 {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.text-white {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Ultra minimal shadows */
+.shadow, .shadow-sm, .shadow-md, .shadow-lg {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Clean everything else */
+.ring-blue-500, .ring-indigo-500, .ring-green-500 {
+  --tw-ring-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Clean badges/pills */
+.badge, .pill, .tag {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}

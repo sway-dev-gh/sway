@@ -175,7 +175,7 @@ function WorkflowDashboard() {
               <div style={{
                 fontSize: '48px',
                 fontWeight: '600',
-                color: '#f59e0b',
+                color: theme.colors.text.primary,
                 marginBottom: '8px'
               }}>
                 {stats.pendingReviews}
@@ -209,7 +209,7 @@ function WorkflowDashboard() {
               <div style={{
                 fontSize: '48px',
                 fontWeight: '600',
-                color: '#10b981',
+                color: theme.colors.text.primary,
                 marginBottom: '8px'
               }}>
                 {stats.approvedReviews}
@@ -281,14 +281,15 @@ function WorkflowDashboard() {
               gap: '16px'
             }}>
               <Link to="/projects" style={{
-                background: '#3b82f6',
-                color: theme.colors.white,
+                background: 'transparent',
+                color: theme.colors.text.primary,
                 padding: '16px 24px',
                 borderRadius: '8px',
                 textDecoration: 'none',
                 fontWeight: '500',
                 textAlign: 'center',
                 fontSize: '14px',
+                border: `1px solid ${theme.colors.border.light}`,
                 transition: 'all 0.2s ease'
               }}>
                 + Create New Review
@@ -356,13 +357,14 @@ function WorkflowDashboard() {
                 Get started by creating your first review workflow to collect feedback, manage approvals, and collaborate with your team.
               </p>
               <Link to="/projects" style={{
-                background: '#3b82f6',
-                color: theme.colors.white,
+                background: 'transparent',
+                color: theme.colors.text.primary,
                 padding: '16px 32px',
                 borderRadius: '8px',
                 textDecoration: 'none',
                 fontWeight: '500',
                 fontSize: '14px',
+                border: `1px solid ${theme.colors.border.light}`,
                 display: 'inline-block'
               }}>
                 Create Your First Review
