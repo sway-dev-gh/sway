@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
+import WorkflowVisualization from '../components/WorkflowVisualization'
 import theme from '../theme'
 import useReviewStore from '../store/reviewStore'
 import toast from 'react-hot-toast'
@@ -9,6 +10,7 @@ import { standardStyles } from '../components/StandardStyles'
 function Dashboard() {
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
+  const [dashboardView, setDashboardView] = useState('overview') // overview, workflows, insights
 
   const {
     projects,
@@ -144,22 +146,68 @@ function Dashboard() {
             </p>
           </div>
 
-          {/* Quick Stats Overview */}
+          {/* Dashboard Navigation */}
           <div style={{
-            background: theme.colors.bg.secondary,
-            border: `1px solid ${theme.colors.border.light}`,
-            borderRadius: '12px',
-            padding: '32px',
-            marginBottom: '40px'
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '32px'
           }}>
-            <h2 style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: theme.colors.text.primary,
-              margin: '0 0 24px 0'
+            <div style={{
+              display: 'flex',
+              background: theme.colors.bg.secondary,
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '12px',
+              padding: '6px'
             }}>
-              Review Overview
-            </h2>
+              {[
+                { key: 'overview', label: 'Overview', icon: '📊' },
+                { key: 'workflows', label: 'Workflow Analytics', icon: '🔄' },
+                { key: 'insights', label: 'Team Insights', icon: '💡' }
+              ].map((tab) => (
+                <button
+                  key={tab.key}
+                  onClick={() => setDashboardView(tab.key)}
+                  style={{
+                    padding: '12px 24px',
+                    border: 'none',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    background: dashboardView === tab.key ? theme.colors.bg.primary : 'transparent',
+                    color: dashboardView === tab.key ? theme.colors.text.primary : theme.colors.text.secondary,
+                    transition: 'all 0.2s ease',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px'
+                  }}
+                >
+                  <span style={{ fontSize: '16px' }}>{tab.icon}</span>
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Content based on view */}
+          {dashboardView === 'overview' && (
+            <>
+              {/* Quick Stats Overview */}
+              <div style={{
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '12px',
+                padding: '32px',
+                marginBottom: '40px'
+              }}>
+                <h2 style={{
+                  fontSize: '20px',
+                  fontWeight: '600',
+                  color: theme.colors.text.primary,
+                  margin: '0 0 24px 0'
+                }}>
+                  Review Overview
+                </h2>
 
             <div style={{
               display: 'grid',
@@ -498,6 +546,130 @@ function Dashboard() {
               </div>
             </div>
           </div>
+              </>
+            )}
+
+            {/* Workflow Analytics View */}
+            {dashboardView === 'workflows' && (
+              <WorkflowVisualization projects={projects} />
+            )}
+
+            {/* Team Insights View */}
+            {dashboardView === 'insights' && (
+              <div style={{
+                background: theme.colors.bg.secondary,
+                border: `1px solid ${theme.colors.border.light}`,
+                borderRadius: '12px',
+                padding: '32px',
+                textAlign: 'center'
+              }}>
+                <div style={{
+                  fontSize: '64px',
+                  marginBottom: '24px',
+                  opacity: 0.3
+                }}>
+                  🚀
+                </div>
+                <h2 style={{
+                  fontSize: '24px',
+                  fontWeight: '600',
+                  color: theme.colors.text.primary,
+                  marginBottom: '12px'
+                }}>
+                  Advanced Team Insights
+                </h2>
+                <p style={{
+                  fontSize: '16px',
+                  color: theme.colors.text.secondary,
+                  marginBottom: '24px',
+                  lineHeight: '1.6'
+                }}>
+                  Get deep insights into team productivity, collaboration patterns, and workflow optimization opportunities.
+                  This advanced analytics dashboard is coming soon with AI-powered recommendations.
+                </p>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                  gap: '20px',
+                  marginTop: '32px'
+                }}>
+                  <div style={{
+                    background: theme.colors.bg.primary,
+                    border: `1px solid ${theme.colors.border.light}`,
+                    borderRadius: '8px',
+                    padding: '20px',
+                    textAlign: 'left'
+                  }}>
+                    <div style={{ fontSize: '24px', marginBottom: '8px' }}>📈</div>
+                    <h3 style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: theme.colors.text.primary,
+                      marginBottom: '8px'
+                    }}>
+                      Productivity Analytics
+                    </h3>
+                    <p style={{
+                      fontSize: '14px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Track review velocity, approval rates, and identify optimization opportunities
+                    </p>
+                  </div>
+
+                  <div style={{
+                    background: theme.colors.bg.primary,
+                    border: `1px solid ${theme.colors.border.light}`,
+                    borderRadius: '8px',
+                    padding: '20px',
+                    textAlign: 'left'
+                  }}>
+                    <div style={{ fontSize: '24px', marginBottom: '8px' }}>🤝</div>
+                    <h3 style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: theme.colors.text.primary,
+                      marginBottom: '8px'
+                    }}>
+                      Collaboration Insights
+                    </h3>
+                    <p style={{
+                      fontSize: '14px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Analyze team communication patterns and reviewer workload distribution
+                    </p>
+                  </div>
+
+                  <div style={{
+                    background: theme.colors.bg.primary,
+                    border: `1px solid ${theme.colors.border.light}`,
+                    borderRadius: '8px',
+                    padding: '20px',
+                    textAlign: 'left'
+                  }}>
+                    <div style={{ fontSize: '24px', marginBottom: '8px' }}>🎯</div>
+                    <h3 style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: theme.colors.text.primary,
+                      marginBottom: '8px'
+                    }}>
+                      AI Recommendations
+                    </h3>
+                    <p style={{
+                      fontSize: '14px',
+                      color: theme.colors.text.secondary,
+                      lineHeight: '1.4'
+                    }}>
+                      Smart suggestions for improving workflow efficiency and team performance
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
       </div>
     </>

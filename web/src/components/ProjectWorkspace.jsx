@@ -4,6 +4,8 @@ import useReviewStore from '../store/reviewStore'
 import SectionReviewInterface from './SectionReviewInterface'
 import WorkflowStateManager from './WorkflowStateManager'
 import VersionHistory from './VersionHistory'
+import ReviewerManager from './ReviewerManager'
+import ApprovalTracker from './ApprovalTracker'
 import theme from '../theme'
 import { standardStyles } from './StandardStyles'
 import toast from 'react-hot-toast'
@@ -11,6 +13,7 @@ import toast from 'react-hot-toast'
 const ProjectWorkspace = ({ projectId, onClose }) => {
   const [selectedSection, setSelectedSection] = useState(null)
   const [uploadModalOpen, setUploadModalOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState('overview') // overview, reviewers, approvals, workflow, history
   const [uploadData, setUploadData] = useState({
     filename: '',
     filepath: '',
@@ -20,6 +23,7 @@ const ProjectWorkspace = ({ projectId, onClose }) => {
   const [newSectionName, setNewSectionName] = useState('')
   const [activeFileVersions, setActiveFileVersions] = useState(null)
   const [activeFileWorkflow, setActiveFileWorkflow] = useState(null)
+  const [projectSections, setProjectSections] = useState([])
 
   const navigate = useNavigate()
 
@@ -37,6 +41,33 @@ const ProjectWorkspace = ({ projectId, onClose }) => {
       fetchProject(projectId)
     }
   }, [projectId, fetchProject])
+
+  useEffect(() => {
+    // Extract all sections from project files
+    if (currentProject && currentProject.files) {
+      const allSections = currentProject.files.reduce((sections, file) => {
+        if (file.sections) {
+          return [...sections, ...file.sections.map(section => ({
+            ...section,
+            fileId: file.id,
+            filename: file.filename
+          }))]
+        }
+        return sections
+      }, [])
+      setProjectSections(allSections)
+    }
+  }, [currentProject])
+
+  const handleReviewerUpdate = () => {
+    // Refresh project data when reviewers are updated
+    fetchProject(projectId)
+  }
+
+  const handleWorkflowUpdate = () => {
+    // Refresh project data when workflow state changes
+    fetchProject(projectId)
+  }
 
   const getStatusColor = (status) => {
     const colors = {
@@ -392,18 +423,73 @@ const ProjectWorkspace = ({ projectId, onClose }) => {
         </div>
       </div>
 
-      {/* Files and Sections */}
+      {/* Navigation Tabs */}
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto 32px auto',
+        padding: '0 32px'
+      }}>
+        <div style={{
+          display: 'flex',
+          borderBottom: `1px solid ${theme.colors.border.light}`,
+          marginBottom: '32px'
+        }}>
+          {[
+            { key: 'overview', label: 'Files & Sections', icon: '📁' },
+            { key: 'reviewers', label: 'Review Team', icon: '👥' },
+            { key: 'approvals', label: 'Approval Tracking', icon: '✅' },
+            { key: 'workflow', label: 'Workflow Status', icon: '🔄' },
+            { key: 'history', label: 'Version History', icon: '📖' }
+          ].map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              style={{
+                background: 'none',
+                border: 'none',
+                padding: '16px 24px',
+                fontSize: '14px',
+                fontWeight: '500',
+                cursor: 'pointer',
+                color: activeTab === tab.key ? theme.colors.text.primary : theme.colors.text.secondary,
+                borderBottom: activeTab === tab.key ? `2px solid ${theme.colors.primary}` : '2px solid transparent',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                if (activeTab !== tab.key) {
+                  e.target.style.color = theme.colors.text.primary
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (activeTab !== tab.key) {
+                  e.target.style.color = theme.colors.text.secondary
+                }
+              }}
+            >
+              <span style={{ fontSize: '16px' }}>{tab.icon}</span>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab Content */}
       <div style={{
         maxWidth: '1400px',
         margin: '0 auto',
         padding: '0 32px'
       }}>
-        <h2 style={{
-          ...standardStyles.sectionHeader,
-          marginBottom: '24px'
-        }}>
-          Files & Sections
-        </h2>
+        {activeTab === 'overview' && (
+          <div>
+            <h2 style={{
+              ...standardStyles.sectionHeader,
+              marginBottom: '24px'
+            }}>
+              Files & Sections
+            </h2>
 
         {currentProject.files && currentProject.files.length > 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -672,6 +758,38 @@ const ProjectWorkspace = ({ projectId, onClose }) => {
               Upload File
             </button>
           </div>
+        )}
+          </div>
+        )}
+
+        {activeTab === 'reviewers' && (
+          <ReviewerManager
+            projectId={projectId}
+            sections={projectSections}
+            onReviewerUpdate={handleReviewerUpdate}
+          />
+        )}
+
+        {activeTab === 'approvals' && (
+          <ApprovalTracker
+            projectId={projectId}
+            sections={projectSections}
+            onWorkflowUpdate={handleWorkflowUpdate}
+          />
+        )}
+
+        {activeTab === 'workflow' && (
+          <WorkflowStateManager
+            projectId={projectId}
+            onStateChange={handleWorkflowUpdate}
+          />
+        )}
+
+        {activeTab === 'history' && (
+          <VersionHistory
+            projectId={projectId}
+            fileId={activeFileVersions}
+          />
         )}
       </div>
 
