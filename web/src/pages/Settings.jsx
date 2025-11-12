@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import TopNavigation from '../components/TopNavigation'
+import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 import { useToast } from '../hooks/useToast'
@@ -375,8 +375,7 @@ function Settings() {
   }
 
   return (
-    <>
-      <TopNavigation />
+    <Sidebar>
       <div style={{
         minHeight: '100vh',
         background: theme.colors.bg.page,
@@ -546,7 +545,7 @@ function Settings() {
         cancelText="Cancel"
         danger={true}
       />
-    </>
+    </Sidebar>
   )
 }
 

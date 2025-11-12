@@ -125,6 +125,7 @@ function Sidebar() {
       label: 'Workflow Platform',
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
+        { path: '/collaboration', label: 'Collaboration', planRequired: null },
         { path: '/projects', label: 'Reviews', planRequired: null },
         { path: '/clients', label: 'Reviewers', planRequired: null }
       ]

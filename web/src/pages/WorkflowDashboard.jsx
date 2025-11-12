@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import TopNavigation from '../components/TopNavigation'
+import Sidebar from '../components/Sidebar'
 import theme from '../theme'
 import api from '../api/axios'
 import { standardStyles } from '../components/StandardStyles'
@@ -86,8 +86,7 @@ function WorkflowDashboard() {
   }
 
   return (
-    <>
-      <TopNavigation />
+    <Sidebar>
       <div style={{
         minHeight: '100vh',
         background: theme.colors.bg.page,
@@ -374,7 +373,7 @@ function WorkflowDashboard() {
 
         </div>
       </div>
-    </>
+    </Sidebar>
   )
 }
 
