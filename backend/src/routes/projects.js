@@ -93,11 +93,20 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
     const statsResult = await pool.query(statsQuery, [userId])
     const stats = statsResult.rows[0]
 
+    // Extract client_link from settings for frontend compatibility
+    const processProjects = (projects) => projects.map(project => {
+      const settings = JSON.parse(project.settings || '{}')
+      return {
+        ...project,
+        client_link: settings.client_link || null
+      }
+    })
+
     res.json({
       success: true,
       projects: {
-        owned: ownedResult.rows,
-        collaborating: collaboratingResult.rows
+        owned: processProjects(ownedResult.rows),
+        collaborating: processProjects(collaboratingResult.rows)
       },
       stats: {
         owned_projects: parseInt(stats.owned_projects) || 0,
@@ -134,7 +143,8 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       workflow_template = 'standard',
       default_reviewers = [],
       auto_assign_reviewers = false,
-      external_access_enabled = true
+      external_access_enabled = true,
+      client_link
     } = req.body
 
     // Input validation
@@ -179,7 +189,12 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       }
     }
 
-    // Create project
+    // Create project - store client_link in settings
+    const projectSettings = {
+      ...settings,
+      client_link: client_link || null
+    }
+
     const insertQuery = `
       INSERT INTO projects (user_id, title, description, project_type, visibility, due_date, settings, workspace_type, workflow_template, default_reviewers, auto_assign_reviewers, external_access_enabled)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
@@ -193,7 +208,7 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       project_type,
       visibility,
       due_date || null,
-      JSON.stringify(settings),
+      JSON.stringify(projectSettings),
       workspace_type,
       workflow_template,
       default_reviewers,
@@ -210,9 +225,16 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       visibility
     })
 
+    // Extract client_link from settings for frontend compatibility
+    const projectSettings = JSON.parse(project.settings || '{}')
+    const projectResponse = {
+      ...project,
+      client_link: projectSettings.client_link || null
+    }
+
     res.json({
       success: true,
-      project,
+      project: projectResponse,
       message: 'Project created successfully'
     })
 

@@ -324,7 +324,7 @@ const AuthForm = () => {
           fontSize: '10px',
           color: '#333333'
         }}>
-          v2.0 • Secure workspace collaboration
+          v1.0 • Secure workspace collaboration
         </div>
       </div>
     </div>
