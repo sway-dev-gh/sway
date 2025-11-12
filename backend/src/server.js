@@ -12,6 +12,7 @@ const uploadRoutes = require('./routes/uploads')
 const fileRoutes = require('./routes/files')
 const statsRoutes = require('./routes/stats')
 const stripeRoutes = require('./routes/stripe')
+const billingRoutes = require('./routes/billing')
 const adminRoutes = require('./routes/admin')
 const analyticsRoutes = require('./routes/analytics')
 // const aiRoutes = require('./routes/ai') // Disabled - no OpenAI API key
@@ -48,6 +49,12 @@ app.use((req, res, next) => {
   }
 })
 
+// Add database pool to request for billing routes
+app.use('/api/billing', (req, res, next) => {
+  req.db = pool
+  next()
+})
+
 // Routes
 app.use('/api/auth', authRoutes)
 app.use('/api/requests', requestRoutes)
@@ -55,6 +62,7 @@ app.use('/api/r', uploadRoutes)
 app.use('/api/files', fileRoutes)
 app.use('/api/stats', statsRoutes)
 app.use('/api/stripe', stripeRoutes)
+app.use('/api/billing', billingRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/analytics', analyticsRoutes)
 // app.use('/api/ai', aiRoutes) // Disabled - no OpenAI API key
