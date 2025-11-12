@@ -48,7 +48,7 @@ function Sidebar({ children }) {
 
       if (isTyping) return
 
-      const pages = ['/dashboard', '/projects', '/uploads', '/settings']
+      const pages = ['/dashboard', '/collaboration', '/projects', '/uploads', '/settings']
       const currentIndex = pages.indexOf(location.pathname)
 
       if (e.key === 'ArrowLeft' && currentIndex > 0) {
@@ -125,6 +125,7 @@ function Sidebar({ children }) {
       label: 'Main',
       items: [
         { path: '/dashboard', label: 'Dashboard', planRequired: null },
+        { path: '/collaboration', label: 'Collaboration', planRequired: null },
         { path: '/projects', label: 'Projects', planRequired: null }
       ]
     },

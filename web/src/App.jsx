@@ -21,6 +21,7 @@ const Dashboard = lazy(() => import('./pages/Dashboard'))
 // Fresh Review Platform Routes
 const Projects = lazy(() => import('./pages/Projects'))
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'))
+const Collaboration = lazy(() => import('./pages/Collaboration'))
 const FileReview = lazy(() => import('./pages/FileReview'))
 const ExternalReview = lazy(() => import('./pages/ExternalReview'))
 
@@ -107,6 +108,11 @@ function App() {
         <Route path="/projects" element={
           <Suspense fallback={<TableSkeleton />}>
             <Projects />
+          </Suspense>
+        } />
+        <Route path="/collaboration" element={
+          <Suspense fallback={<TableSkeleton />}>
+            <Collaboration />
           </Suspense>
         } />
         <Route path="/projects/:id" element={

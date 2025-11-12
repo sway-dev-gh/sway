@@ -118,7 +118,7 @@ const Dashboard = () => {
           }}>
             <div style={{
               background: '#000000',
-              border: '2px solid #ffffff',
+              border: '1px solid #333333',
               borderRadius: '8px',
               padding: '32px',
               textAlign: 'center'
@@ -145,7 +145,7 @@ const Dashboard = () => {
 
             <div style={{
               background: '#000000',
-              border: '2px solid #ffffff',
+              border: '1px solid #333333',
               borderRadius: '8px',
               padding: '32px',
               textAlign: 'center'
@@ -172,7 +172,7 @@ const Dashboard = () => {
 
             <div style={{
               background: '#000000',
-              border: '2px solid #ffffff',
+              border: '1px solid #333333',
               borderRadius: '8px',
               padding: '32px',
               textAlign: 'center'
@@ -199,7 +199,7 @@ const Dashboard = () => {
 
             <div style={{
               background: '#000000',
-              border: '2px solid #ffffff',
+              border: '1px solid #333333',
               borderRadius: '8px',
               padding: '32px',
               textAlign: 'center'
@@ -235,9 +235,9 @@ const Dashboard = () => {
             <button
               onClick={() => navigate('/projects')}
               style={{
-                background: '#ffffff',
-                color: '#000000',
-                border: '2px solid #ffffff',
+                background: '#000000',
+                color: '#ffffff',
+                border: '1px solid #333333',
                 borderRadius: '8px',
                 padding: '40px 32px',
                 fontSize: '18px',
@@ -259,7 +259,7 @@ const Dashboard = () => {
               style={{
                 background: '#000000',
                 color: '#ffffff',
-                border: '2px solid #ffffff',
+                border: '1px solid #333333',
                 borderRadius: '8px',
                 padding: '40px 32px',
                 fontSize: '18px',
@@ -281,7 +281,7 @@ const Dashboard = () => {
               style={{
                 background: '#000000',
                 color: '#ffffff',
-                border: '2px solid #ffffff',
+                border: '1px solid #333333',
                 borderRadius: '8px',
                 padding: '40px 32px',
                 fontSize: '18px',
