@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const stripeService = require('../services/stripe')
-const authMiddleware = require('../middleware/authMiddleware')
+const { authenticateToken } = require('../middleware/auth')
 
 // GET /api/billing/plans - Get all available plans
 router.get('/plans', (req, res) => {
@@ -33,7 +33,7 @@ router.get('/plans', (req, res) => {
 })
 
 // GET /api/billing/subscription - Get current user's subscription
-router.get('/subscription', authMiddleware, async (req, res) => {
+router.get('/subscription', authenticateToken, async (req, res) => {
   try {
     const user = req.user
 
@@ -74,7 +74,7 @@ router.get('/subscription', authMiddleware, async (req, res) => {
 })
 
 // POST /api/billing/subscribe - Subscribe to a plan
-router.post('/subscribe', authMiddleware, async (req, res) => {
+router.post('/subscribe', authenticateToken, async (req, res) => {
   try {
     const { planId } = req.body
     const user = req.user
@@ -135,7 +135,7 @@ router.post('/subscribe', authMiddleware, async (req, res) => {
 })
 
 // POST /api/billing/cancel - Cancel subscription
-router.post('/cancel', authMiddleware, async (req, res) => {
+router.post('/cancel', authenticateToken, async (req, res) => {
   try {
     const user = req.user
 
@@ -168,7 +168,7 @@ router.post('/cancel', authMiddleware, async (req, res) => {
 })
 
 // POST /api/billing/portal - Create billing portal session
-router.post('/portal', authMiddleware, async (req, res) => {
+router.post('/portal', authenticateToken, async (req, res) => {
   try {
     const user = req.user
 
@@ -198,7 +198,7 @@ router.post('/portal', authMiddleware, async (req, res) => {
 })
 
 // GET /api/billing/usage - Get current usage statistics
-router.get('/usage', authMiddleware, async (req, res) => {
+router.get('/usage', authenticateToken, async (req, res) => {
   try {
     const user = req.user
 
