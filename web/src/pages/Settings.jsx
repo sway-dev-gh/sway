@@ -405,7 +405,7 @@ function Settings() {
               margin: 0,
               lineHeight: '1.6'
             }}>
-              Manage your account and preferences
+              Manage your account and review workflow preferences
             </p>
           </div>
 
@@ -477,14 +477,14 @@ function Settings() {
                 lineHeight: '1.8',
                 fontWeight: '400'
               }}>
-                <li>Advanced analytics & insights</li>
-                <li>Password-protected requests</li>
-                <li>Custom request builder</li>
-                <li>Bulk download (Download All)</li>
-                <li>File type breakdown</li>
-                <li>Top performing requests</li>
-                <li>200 active requests to 20 active requests</li>
-                <li>50GB storage to 2GB storage</li>
+                <li>Advanced review analytics & insights</li>
+                <li>Private review workspaces</li>
+                <li>Custom review workflows</li>
+                <li>Bulk file operations</li>
+                <li>Advanced project templates</li>
+                <li>Multi-reviewer coordination</li>
+                <li>200 active review projects to 20 projects</li>
+                <li>50GB file storage to 2GB storage</li>
               </ul>
             </div>
 

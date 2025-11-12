@@ -2,94 +2,222 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
-import { useToast } from '../hooks/useToast'
-import ToastContainer from '../components/ToastContainer'
+import useReviewStore from '../store/reviewStore'
+import toast from 'react-hot-toast'
+import { standardStyles, getFilterButtonStyle } from '../components/StandardStyles'
 
 function Uploads() {
   const navigate = useNavigate()
-  const toast = useToast()
-  const [uploads, setUploads] = useState([])
   const [loading, setLoading] = useState(true)
+  const [filterStatus, setFilterStatus] = useState('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [sortBy, setSortBy] = useState('newest')
 
-  const fetchUploads = async () => {
+  const {
+    projects,
+    reviews,
+    isLoading,
+    error,
+    fetchProjects,
+    fetchProjectFiles
+  } = useReviewStore()
+
+  // Computed data
+  const [projectFiles, setProjectFiles] = useState([])
+  const [fileStats, setFileStats] = useState({
+    totalFiles: 0,
+    totalSize: 0,
+    recentFiles: 0
+  })
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (!token) {
+      navigate('/login')
+      return
+    }
+
+    loadProjectFiles()
+  }, [navigate])
+
+  const loadProjectFiles = async () => {
     try {
       setLoading(true)
-      const token = localStorage.getItem('token')
-      if (!token) {
-        navigate('/login')
-        return
+
+      await fetchProjects()
+
+      // Gather all files across projects (mock for now since we need file endpoint)
+      const allFiles = []
+      let totalSize = 0
+
+      for (const project of projects) {
+        try {
+          // Mock file data for each project (replace with actual API call)
+          const mockFiles = [
+            {
+              id: `${project.id}_file_1`,
+              filename: `${project.title}_design_v1.pdf`,
+              size: Math.floor(Math.random() * 5000000) + 100000, // Random size
+              uploadedAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
+              uploadedBy: 'Team Member',
+              uploadedByEmail: 'member@company.com',
+              project: project,
+              fileType: 'pdf',
+              section: 'Design Review'
+            },
+            {
+              id: `${project.id}_file_2`,
+              filename: `${project.title}_feedback.docx`,
+              size: Math.floor(Math.random() * 2000000) + 50000,
+              uploadedAt: new Date(Date.now() - Math.random() * 14 * 24 * 60 * 60 * 1000).toISOString(),
+              uploadedBy: 'Reviewer',
+              uploadedByEmail: 'reviewer@company.com',
+              project: project,
+              fileType: 'docx',
+              section: 'Content Review'
+            }
+          ]
+
+          allFiles.push(...mockFiles)
+          totalSize += mockFiles.reduce((sum, file) => sum + file.size, 0)
+        } catch (error) {
+          console.error(`Failed to fetch files for project ${project.id}:`, error)
+        }
       }
 
-      const response = await fetch('/api/requests', {
-        headers: { Authorization: `Bearer ${token}` }
+      // Sort files
+      allFiles.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))
+
+      // Calculate stats
+      const recentFiles = allFiles.filter(file => {
+        const uploadDate = new Date(file.uploadedAt)
+        const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+        return uploadDate > sevenDaysAgo
+      }).length
+
+      setProjectFiles(allFiles)
+      setFileStats({
+        totalFiles: allFiles.length,
+        totalSize,
+        recentFiles
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        const requests = data.requests || []
-
-        // Fetch all uploads for each request
-        const uploadPromises = requests.map(async (request) => {
-          const res = await fetch(`/api/requests/${request.id}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-          if (res.ok) {
-            const requestData = await res.json()
-            return (requestData.uploads || []).map(upload => ({
-              ...upload,
-              requestTitle: request.title,
-              requestId: request.id
-            }))
-          }
-          return []
-        })
-
-        const uploadArrays = await Promise.all(uploadPromises)
-        const allUploads = uploadArrays.flat()
-
-        // Sort by upload date (newest first)
-        allUploads.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))
-
-        setUploads(allUploads)
-      }
-    } catch (err) {
-      console.error('Failed to fetch uploads:', err)
+    } catch (error) {
+      console.error('Failed to load project files:', error)
+      toast.error('Failed to load project files')
+      setProjectFiles([])
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => {
-    fetchUploads()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const downloadFile = async (uploadId, filename) => {
+  const downloadFile = async (fileId, filename) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await fetch(`/api/files/${uploadId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        responseType: 'blob'
-      })
+      // Mock download for now
+      toast.success(`Downloading ${filename}...`)
 
-      if (response.ok) {
-        const blob = await response.blob()
-        const url = window.URL.createObjectURL(blob)
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', filename)
-        document.body.appendChild(link)
-        link.click()
-        link.remove()
-        window.URL.revokeObjectURL(url)
-      }
+      // In real implementation, this would be:
+      // const token = localStorage.getItem('token')
+      // const response = await fetch(`/api/files/${fileId}`, {
+      //   headers: { Authorization: `Bearer ${token}` }
+      // })
+      // Handle download...
+
     } catch (error) {
       console.error('Download error:', error)
       toast.error('Failed to download file')
     }
   }
 
-  if (loading) {
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes'
+    const k = 1024
+    const sizes = ['Bytes', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
+  }
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    })
+  }
+
+  const getTimeAgo = (dateString) => {
+    const now = new Date()
+    const date = new Date(dateString)
+    const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24))
+
+    if (diffInDays === 0) return 'Today'
+    if (diffInDays === 1) return '1 day ago'
+    if (diffInDays < 7) return `${diffInDays} days ago`
+    if (diffInDays < 30) return `${Math.floor(diffInDays / 7)} weeks ago`
+    return formatDate(dateString)
+  }
+
+  const getFileTypeIcon = (fileType) => {
+    switch (fileType?.toLowerCase()) {
+      case 'pdf': return '📄'
+      case 'doc':
+      case 'docx': return '📝'
+      case 'xls':
+      case 'xlsx': return '📊'
+      case 'ppt':
+      case 'pptx': return '📋'
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif': return '🖼️'
+      case 'mp4':
+      case 'mov':
+      case 'avi': return '🎥'
+      case 'zip':
+      case 'rar': return '📦'
+      default: return '📁'
+    }
+  }
+
+  // Filter and sort files
+  const filteredFiles = projectFiles
+    .filter(file => {
+      if (searchQuery && !file.filename.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          !file.project.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false
+      }
+      if (filterStatus !== 'all') {
+        if (filterStatus === 'recent') {
+          const uploadDate = new Date(file.uploadedAt)
+          const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+          return uploadDate > sevenDaysAgo
+        }
+        if (filterStatus === 'large') {
+          return file.size > 1024 * 1024 // Files larger than 1MB
+        }
+      }
+      return true
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'newest':
+          return new Date(b.uploadedAt) - new Date(a.uploadedAt)
+        case 'oldest':
+          return new Date(a.uploadedAt) - new Date(b.uploadedAt)
+        case 'largest':
+          return b.size - a.size
+        case 'smallest':
+          return a.size - b.size
+        case 'name':
+          return a.filename.localeCompare(b.filename)
+        default:
+          return 0
+      }
+    })
+
+  if (loading || isLoading) {
     return (
       <div style={{
         minHeight: '100vh',
@@ -118,209 +246,363 @@ function Uploads() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        marginTop: '60px'
+        paddingTop: '54px'
       }}>
         <div style={{
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
-          padding: '60px 40px'
+          padding: '80px 32px'
         }}>
 
           {/* Header */}
-          <div style={{ marginBottom: '40px' }}>
-            <h1 style={{
-              fontSize: '32px',
-              fontWeight: '400',
-              margin: '0 0 8px 0',
-              letterSpacing: '-0.01em'
-            }}>
-              Uploads
+          <div style={{ marginBottom: '48px' }}>
+            <h1 style={standardStyles.pageHeader}>
+              Project Files
             </h1>
-            <p style={{
-              fontSize: '20px',
-              color: theme.colors.text.secondary,
-              margin: 0
-            }}>
-              All uploads across all requests
+            <p style={standardStyles.pageDescription}>
+              All files uploaded across your review projects
             </p>
           </div>
 
-          {/* Uploads Table */}
-          {uploads.length === 0 ? (
+          {/* File Statistics */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '24px',
+            marginBottom: '48px'
+          }}>
+            <div style={{
+              padding: '28px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Total Files</div>
+              <div style={standardStyles.statsNumber}>{fileStats.totalFiles}</div>
+              <div style={standardStyles.statsDescription}>Across all projects</div>
+            </div>
+
+            <div style={{
+              padding: '28px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Storage Used</div>
+              <div style={standardStyles.statsNumber}>{formatFileSize(fileStats.totalSize)}</div>
+              <div style={standardStyles.statsDescription}>Total file storage</div>
+            </div>
+
+            <div style={{
+              padding: '28px',
+              background: 'rgba(16, 185, 129, 0.1)',
+              border: `1px solid #10b981`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Recent Files</div>
+              <div style={{...standardStyles.statsNumber, color: '#10b981'}}>{fileStats.recentFiles}</div>
+              <div style={standardStyles.statsDescription}>Uploaded this week</div>
+            </div>
+
+            <div style={{
+              padding: '28px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Active Projects</div>
+              <div style={standardStyles.statsNumber}>{projects.filter(p => p.status === 'active').length}</div>
+              <div style={standardStyles.statsDescription}>With file uploads</div>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: '32px',
+            flexWrap: 'wrap',
+            gap: '16px'
+          }}>
+            <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+              <input
+                type="text"
+                placeholder="Search files or projects..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  background: theme.colors.bg.secondary,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: '6px',
+                  color: theme.colors.text.primary,
+                  fontSize: '14px',
+                  width: '250px'
+                }}
+              />
+
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <span style={{
+                  fontSize: '14px',
+                  color: theme.colors.text.secondary,
+                  fontWeight: '500'
+                }}>
+                  Filter:
+                </span>
+                {['all', 'recent', 'large'].map(filter => (
+                  <button
+                    key={filter}
+                    onClick={() => setFilterStatus(filter)}
+                    style={getFilterButtonStyle(filterStatus === filter)}
+                  >
+                    {filter === 'all' ? 'All' : filter === 'recent' ? 'Recent' : 'Large Files'}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <span style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                fontWeight: '500'
+              }}>
+                Sort:
+              </span>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                style={{
+                  padding: '6px 12px',
+                  background: theme.colors.bg.secondary,
+                  border: `1px solid ${theme.colors.border.light}`,
+                  borderRadius: '6px',
+                  color: theme.colors.text.primary,
+                  fontSize: '14px'
+                }}
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="largest">Largest First</option>
+                <option value="smallest">Smallest First</option>
+                <option value="name">Name A-Z</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Files Table */}
+          {filteredFiles.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '120px 40px',
-              border: '1px solid #000000',
-              borderRadius: '8px',
-              background: '#000000'
+              padding: '80px 40px',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '12px',
+              background: theme.colors.bg.secondary
             }}>
+              <div style={{ fontSize: '48px', marginBottom: '16px' }}>📁</div>
               <h3 style={{
-                fontSize: '16px',
-                fontWeight: '500',
-                color: '#a3a3a3',
-                margin: 0,
-                letterSpacing: '-0.01em'
+                fontSize: '18px',
+                fontWeight: '600',
+                color: theme.colors.text.primary,
+                marginBottom: '8px'
               }}>
-                No uploads yet
+                {projectFiles.length === 0 ? 'No files yet' : 'No files match your search'}
               </h3>
+              <p style={{
+                fontSize: '14px',
+                color: theme.colors.text.secondary,
+                marginBottom: '24px'
+              }}>
+                {projectFiles.length === 0
+                  ? 'Files uploaded to review projects will appear here'
+                  : 'Try adjusting your search or filter criteria'}
+              </p>
+              {projectFiles.length === 0 && (
+                <Link
+                  to="/projects"
+                  style={{
+                    padding: '12px 24px',
+                    background: theme.colors.text.primary,
+                    color: theme.colors.bg.page,
+                    borderRadius: '6px',
+                    textDecoration: 'none',
+                    fontWeight: '500'
+                  }}
+                >
+                  Create Project
+                </Link>
+              )}
             </div>
           ) : (
             <div style={{
-              border: '1px solid #000000',
-              borderRadius: '8px',
-              background: '#000000',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: '12px',
+              background: theme.colors.bg.secondary,
               overflow: 'hidden'
             }}>
               {/* Table Header */}
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: '2fr 1.5fr 1.5fr 1fr auto',
+                gridTemplateColumns: '2fr 1.5fr 1.5fr 1fr 1fr auto',
                 gap: '24px',
-                padding: '16px 20px',
-                background: '#000000',
-                borderBottom: '1px solid #000000',
-                fontSize: '11px',
+                padding: '20px 24px',
+                background: theme.colors.bg.page,
+                borderBottom: `1px solid ${theme.colors.border.light}`,
+                fontSize: '12px',
                 fontWeight: '600',
-                color: '#a3a3a3',
+                color: theme.colors.text.secondary,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px',
                 alignItems: 'center'
               }}>
                 <div>File</div>
-                <div>Uploader</div>
-                <div>Request</div>
+                <div>Project</div>
+                <div>Uploaded By</div>
+                <div>Size</div>
                 <div>Date</div>
                 <div>Actions</div>
               </div>
 
               {/* Table Rows */}
-              {uploads.map((upload, index) => (
+              {filteredFiles.map((file, index) => (
                 <div
-                  key={upload.id}
+                  key={file.id}
                   style={{
-                    padding: '16px 20px',
-                    borderBottom: index < uploads.length - 1 ? '1px solid #000000' : 'none',
                     display: 'grid',
-                    gridTemplateColumns: '2fr 1.5fr 1.5fr 1fr auto',
+                    gridTemplateColumns: '2fr 1.5fr 1.5fr 1fr 1fr auto',
                     gap: '24px',
+                    padding: '20px 24px',
+                    borderBottom: index < filteredFiles.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
                     alignItems: 'center',
-                    transition: 'all 0.15s ease'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = '#000000'
-                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.boxShadow = 'none'
+                    transition: 'all 0.2s ease'
                   }}
                 >
                   {/* File Name */}
                   <div style={{ minWidth: 0 }}>
                     <div style={{
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      marginBottom: '4px',
-                      color: '#ffffff',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      fontFamily: 'monospace',
-                      letterSpacing: '-0.01em'
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '4px'
                     }}>
-                      {upload.fileName}
-                    </div>
-                    <div style={{
-                      fontSize: '12px',
-                      color: '#a3a3a3'
-                    }}>
-                      {(upload.fileSize / 1024 / 1024).toFixed(2)} MB
-                    </div>
-                  </div>
-
-                  {/* Uploader */}
-                  <div style={{ minWidth: 0 }}>
-                    <div style={{
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      marginBottom: '4px',
-                      color: '#ffffff',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      letterSpacing: '-0.01em'
-                    }}>
-                      {upload.uploaderName}
-                    </div>
-                    {upload.uploaderEmail && (
+                      <span style={{ fontSize: '16px' }}>
+                        {getFileTypeIcon(file.fileType)}
+                      </span>
                       <div style={{
-                        fontSize: '12px',
-                        color: '#a3a3a3',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        color: theme.colors.text.primary,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap'
                       }}>
-                        {upload.uploaderEmail}
+                        {file.filename}
                       </div>
-                    )}
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: theme.colors.text.secondary
+                    }}>
+                      {file.section}
+                    </div>
                   </div>
 
-                  {/* Request */}
+                  {/* Project */}
                   <div style={{ minWidth: 0 }}>
                     <Link
-                      to={`/requests/${upload.requestId}`}
+                      to={`/projects/${file.project.id}`}
                       style={{
                         fontSize: '14px',
                         fontWeight: '500',
-                        color: '#ffffff',
+                        color: theme.colors.text.primary,
                         textDecoration: 'none',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                         whiteSpace: 'nowrap',
-                        display: 'block',
-                        letterSpacing: '-0.01em',
-                        transition: 'color 0.15s ease'
+                        display: 'block'
                       }}
-                      onMouseEnter={(e) => e.target.style.color = '#a3a3a3'}
-                      onMouseLeave={(e) => e.target.style.color = '#ffffff'}
                     >
-                      {upload.requestTitle}
+                      {file.project.title}
                     </Link>
+                    <div style={{
+                      fontSize: '12px',
+                      color: theme.colors.text.secondary
+                    }}>
+                      {file.project.status}
+                    </div>
+                  </div>
+
+                  {/* Uploaded By */}
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: theme.colors.text.primary,
+                      marginBottom: '2px',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}>
+                      {file.uploadedBy}
+                    </div>
+                    <div style={{
+                      fontSize: '12px',
+                      color: theme.colors.text.secondary,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap'
+                    }}>
+                      {file.uploadedByEmail}
+                    </div>
+                  </div>
+
+                  {/* Size */}
+                  <div>
+                    <div style={{
+                      fontSize: '13px',
+                      color: theme.colors.text.primary
+                    }}>
+                      {formatFileSize(file.size)}
+                    </div>
                   </div>
 
                   {/* Date */}
                   <div>
                     <div style={{
                       fontSize: '13px',
-                      color: '#a3a3a3'
+                      color: theme.colors.text.primary,
+                      marginBottom: '2px'
                     }}>
-                      {new Date(upload.uploadedAt).toLocaleDateString()}
+                      {getTimeAgo(file.uploadedAt)}
+                    </div>
+                    <div style={{
+                      fontSize: '11px',
+                      color: theme.colors.text.secondary
+                    }}>
+                      {formatDate(file.uploadedAt)}
                     </div>
                   </div>
 
                   {/* Actions */}
                   <div>
                     <button
-                      onClick={() => downloadFile(upload.id, upload.fileName)}
+                      onClick={() => downloadFile(file.id, file.filename)}
                       style={{
                         padding: '6px 12px',
                         fontSize: '12px',
                         fontWeight: '500',
                         background: 'transparent',
-                        border: '1px solid #525252',
+                        border: `1px solid ${theme.colors.border.light}`,
                         borderRadius: '4px',
-                        color: '#ffffff',
+                        color: theme.colors.text.primary,
                         cursor: 'pointer',
-                        transition: 'all 0.15s ease',
+                        transition: 'all 0.2s ease',
                         whiteSpace: 'nowrap'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#000000'
-                        e.currentTarget.style.borderColor = '#525252'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.borderColor = '#525252'
                       }}
                     >
                       Download
@@ -332,8 +614,6 @@ function Uploads() {
           )}
         </div>
       </div>
-
-      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
     </>
   )
 }

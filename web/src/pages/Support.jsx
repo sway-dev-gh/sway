@@ -54,7 +54,7 @@ function Support() {
               margin: 0,
               lineHeight: '1.5'
             }}>
-              We're here to help you collect files smoothly
+              We're here to help you manage review workflows smoothly
             </p>
           </div>
 

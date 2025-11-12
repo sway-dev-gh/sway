@@ -108,13 +108,13 @@ function Plan() {
       name: 'Free',
       price: '$0',
       period: '',
-      description: 'Try it out, no credit card',
+      description: 'Perfect for getting started',
       features: [
-        { text: '5 file requests', highlight: false },
+        { text: '5 review projects', highlight: false },
         { text: '2GB storage', highlight: false },
-        { text: 'Basic visual builder (5 elements max)', highlight: false },
-        { text: 'Basic templates (Blank, Simple, Contact)', highlight: false },
-        { text: 'Basic elements (Text, Input, File Upload)', highlight: false },
+        { text: 'Basic review workflow', highlight: false },
+        { text: 'Section-based reviews', highlight: false },
+        { text: 'Comment collaboration', highlight: false },
         { text: 'Basic analytics', highlight: false }
       ]
     },
@@ -123,22 +123,19 @@ function Plan() {
       name: 'Pro',
       price: '$5',
       period: '/month',
-      description: 'AI-powered workflow automation',
+      description: 'Advanced review workflows for teams',
       popular: true,
       features: [
-        { text: 'AI Knowledge Assistant (30 questions/month)', highlight: true },
-        { text: 'AI file summarization & missing doc detection', highlight: true },
-        { text: 'Smart scheduling suggestions & insights', highlight: true },
-        { text: 'AI-powered follow-up email generation', highlight: true },
-        { text: 'Unlimited requests', highlight: true },
+        { text: 'Unlimited review projects', highlight: true },
         { text: '50GB storage', highlight: true },
-        { text: 'Advanced visual builder (unlimited elements)', highlight: true },
-        { text: 'Pro templates (Onboarding, Product, Event, Job)', highlight: true },
-        { text: 'Advanced elements (Dropdowns, Multi-file, Gallery)', highlight: true },
-        { text: 'Rich inputs (Date, Color, Slider, Rating)', highlight: true },
-        { text: 'Password protect pages', highlight: true },
-        { text: 'Download everything (bulk downloads)', highlight: true },
-        { text: 'Advanced analytics', highlight: true },
+        { text: 'Advanced workflow automation', highlight: true },
+        { text: 'Multi-reviewer coordination', highlight: true },
+        { text: 'Version history tracking', highlight: true },
+        { text: 'External collaborator access', highlight: true },
+        { text: 'Custom review templates', highlight: true },
+        { text: 'Advanced project analytics', highlight: true },
+        { text: 'Private review workspaces', highlight: true },
+        { text: 'Bulk file operations', highlight: true },
         { text: 'Priority support (4hr response)', highlight: true }
       ]
     }
@@ -395,15 +392,15 @@ function Plan() {
               overflow: 'hidden'
             }}>
               {[
-                { feature: 'AI Assistant', free: '-', pro: 'Yes' },
-                { feature: 'AI File Summarization', free: '-', pro: 'Yes' },
-                { feature: 'Smart Scheduling', free: '-', pro: 'Yes' },
-                { feature: 'Active Forms', free: '5', pro: 'Unlimited' },
+                { feature: 'Review Projects', free: '5', pro: 'Unlimited' },
                 { feature: 'Storage', free: '2GB', pro: '50GB' },
-                { feature: 'Visual Builder', free: '-', pro: 'Yes' },
-                { feature: 'Password Protection', free: '-', pro: 'Yes' },
-                { feature: 'Bulk Download', free: '-', pro: 'Yes' },
+                { feature: 'Section-based Reviews', free: 'Yes', pro: 'Yes' },
+                { feature: 'Version History', free: '-', pro: 'Yes' },
+                { feature: 'External Collaborators', free: '-', pro: 'Yes' },
+                { feature: 'Private Workspaces', free: '-', pro: 'Yes' },
+                { feature: 'Custom Templates', free: '-', pro: 'Yes' },
                 { feature: 'Advanced Analytics', free: '-', pro: 'Yes' },
+                { feature: 'Multi-reviewer Coordination', free: '-', pro: 'Yes' },
                 { feature: 'Priority Support', free: '-', pro: 'Yes' }
               ].map((row, index) => {
                 const formatCell = (val) => {
@@ -469,16 +466,16 @@ function Plan() {
                   a: 'Yes! You can upgrade or downgrade your plan at any time. Changes take effect immediately.'
                 },
                 {
-                  q: 'What happens if I exceed my limits?',
-                  a: 'We\'ll notify you when you\'re approaching your limits. You can upgrade to Pro for unlimited forms and more storage.'
+                  q: 'What happens if I exceed my project limits?',
+                  a: 'We\'ll notify you when you\'re approaching your limits. You can upgrade to Pro for unlimited review projects and more storage.'
                 },
                 {
                   q: 'Do you offer refunds?',
                   a: 'Yes, we offer a 30-day money-back guarantee on all paid plans. No questions asked.'
                 },
                 {
-                  q: 'Is my payment information secure?',
-                  a: 'Absolutely. We use Stripe for payment processing, which is PCI compliant and trusted by millions of businesses worldwide.'
+                  q: 'Is my data secure in review projects?',
+                  a: 'Absolutely. All review data is encrypted and stored securely. We follow industry best practices for data protection.'
                 }
               ].map((faq, index) => (
                 <div key={index} style={{
@@ -535,10 +532,10 @@ function Plan() {
               lineHeight: '1.6',
               fontWeight: '400'
             }}>
-              Start sharing files today with our Free plan. Upgrade to Pro anytime for unlimited forms and advanced features.
+              Start your review workflow today with our Free plan. Upgrade to Pro anytime for unlimited projects and advanced features.
             </p>
             <button
-              onClick={() => navigate('/requests')}
+              onClick={() => navigate('/projects')}
               style={{
                 padding: '8px 16px',
                 fontSize: '13px',
@@ -551,7 +548,7 @@ function Plan() {
                 outline: 'none'
               }}
             >
-              Get Started
+              Create First Project
             </button>
           </div>
         </div>
@@ -618,14 +615,14 @@ function Plan() {
                 lineHeight: '1.8',
                 fontWeight: '400'
               }}>
-                <li>Advanced analytics & insights</li>
-                <li>Password-protected requests</li>
-                <li>Custom request builder</li>
-                <li>Bulk download (Download All)</li>
-                <li>File type breakdown</li>
-                <li>Top performing requests</li>
-                <li>200 active requests to 20 active requests</li>
-                <li>50GB storage to 2GB storage</li>
+                <li>Advanced review analytics & insights</li>
+                <li>Private review workspaces</li>
+                <li>Custom review workflows</li>
+                <li>Bulk file operations</li>
+                <li>Advanced project templates</li>
+                <li>Multi-reviewer coordination</li>
+                <li>Unlimited review projects to 5 projects</li>
+                <li>50GB file storage to 2GB storage</li>
               </ul>
             </div>
 

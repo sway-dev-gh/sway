@@ -18,11 +18,11 @@ const Upload = lazy(() => import('./pages/Upload'))
 // Dashboard (Workspace-Centric) - critical route with custom skeleton
 const Dashboard = lazy(() => import('./pages/Dashboard'))
 
-// Workflow Platform Routes
+// Review Platform Routes
 const Projects = lazy(() => import('./pages/EnhancedProjects'))
 const ProjectWorkspace = lazy(() => import('./components/ProjectWorkspace'))
-const Clients = lazy(() => import('./pages/Management'))
 const Collaboration = lazy(() => import('./pages/Collaboration'))
+const Reviews = lazy(() => import('./pages/Management'))
 
 // Legacy routes for backward compatibility
 const RequestView = lazy(() => import('./pages/RequestView'))
@@ -103,7 +103,7 @@ function App() {
           </Suspense>
         } />
 
-        {/* Workflow Platform Routes */}
+        {/* Review Platform Routes */}
         <Route path="/collaboration" element={
           <Suspense fallback={<DashboardSkeleton />}>
             <Collaboration />
@@ -119,16 +119,16 @@ function App() {
             <ProjectWorkspace />
           </Suspense>
         } />
-        <Route path="/clients" element={
+        <Route path="/reviews" element={
           <Suspense fallback={<TableSkeleton />}>
-            <Clients />
+            <Reviews />
           </Suspense>
         } />
 
         {/* Legacy Management Route */}
         <Route path="/management" element={
           <Suspense fallback={<TableSkeleton />}>
-            <Clients />
+            <Reviews />
           </Suspense>
         } />
 

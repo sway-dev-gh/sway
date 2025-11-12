@@ -255,7 +255,7 @@ function Notifications() {
                       cursor: 'pointer',
                       transition: 'all 0.15s ease'
                     }}
-                    onClick={() => navigate('/responses')}
+                    onClick={() => navigate('/reviews')}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.background = '#000000'
                       e.currentTarget.style.boxShadow = '0 1px 3px rgba(0,0,0,0.3)'

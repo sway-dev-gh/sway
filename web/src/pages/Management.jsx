@@ -2,42 +2,40 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import Sidebar from '../components/Sidebar'
 import theme from '../theme'
-import api from '../api/axios'
-import { getStorageLimit, formatStorageDisplay, getEffectivePlan } from '../utils/planUtils'
-import { useToast } from '../hooks/useToast'
-import ToastContainer from '../components/ToastContainer'
-import ConfirmModal from '../components/ConfirmModal'
+import useReviewStore from '../store/reviewStore'
+import toast from 'react-hot-toast'
 import { standardStyles, getFilterButtonStyle } from '../components/StandardStyles'
 
 function Management() {
   const navigate = useNavigate()
-  const toast = useToast()
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState({ email: '', plan: 'free' })
-
-  // Calendar/Responses state
-  const [forms, setForms] = useState([])
-  const [uploads, setUploads] = useState([])
-  const [selectedFormId, setSelectedFormId] = useState(null)
+  const [activeTab, setActiveTab] = useState('overview')
   const [filterStatus, setFilterStatus] = useState('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [sortBy, setSortBy] = useState('newest')
-  const [storageStats, setStorageStats] = useState({ used: 0, limit: 2 })
-  const [confirmDelete, setConfirmDelete] = useState({ isOpen: false, formId: null })
-  const [selectedForms, setSelectedForms] = useState([])
-  const [confirmBulkDelete, setConfirmBulkDelete] = useState(false)
-  const [currentMonth, setCurrentMonth] = useState(new Date())
-  const [selectedDate, setSelectedDate] = useState(null)
-  const [dayModalOpen, setDayModalOpen] = useState(false)
 
-  // Scheduling state
-  const [scheduledRequests, setScheduledRequests] = useState([])
-  const [requests, setRequests] = useState([])
-  const [showCreateModal, setShowCreateModal] = useState(false)
-  const [selectedRequest, setSelectedRequest] = useState('')
-  const [scheduledDate, setScheduledDate] = useState('')
-  const [scheduledTime, setScheduledTime] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+  const {
+    projects,
+    reviews,
+    comments,
+    isLoading,
+    error,
+    fetchProjects,
+    fetchReviewsByProject,
+    updateProjectStatus,
+    deleteProject,
+    getProjectStats
+  } = useReviewStore()
+
+  // Computed analytics
+  const [analytics, setAnalytics] = useState({
+    totalProjects: 0,
+    activeProjects: 0,
+    completedProjects: 0,
+    totalReviews: 0,
+    avgReviewTime: 0,
+    reviewerActivity: [],
+    projectProgress: []
+  })
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -46,494 +44,153 @@ function Management() {
       return
     }
 
-    // Load user data
-    const userStr = localStorage.getItem('user')
-    if (userStr) {
-      setUser(JSON.parse(userStr))
-    }
-
-    fetchData()
+    loadData()
   }, [navigate])
 
-  const fetchData = async () => {
+  const loadData = async () => {
     try {
-      const token = localStorage.getItem('token')
+      setLoading(true)
 
-      // Use centralized plan utility
-      const storageLimit = getStorageLimit()
+      await fetchProjects()
 
-      // Fetch forms/requests
-      const requestsResponse = await api.get('/api/requests', {
-        headers: { Authorization: `Bearer ${token}` }
+      // Calculate analytics
+      const stats = getProjectStats()
+      const projectReviews = []
+
+      // Gather all reviews across projects
+      for (const project of projects) {
+        try {
+          const projectReviewData = await fetchReviewsByProject(project.id)
+          projectReviews.push(...projectReviewData)
+        } catch (error) {
+          console.error(`Failed to fetch reviews for project ${project.id}:`, error)
+        }
+      }
+
+      // Calculate analytics
+      const totalProjects = projects.length
+      const activeProjects = projects.filter(p => p.status === 'active').length
+      const completedProjects = projects.filter(p => p.status === 'completed').length
+      const totalReviews = projectReviews.length
+
+      // Calculate average review time (mock for now)
+      const avgReviewTime = projectReviews.length > 0 ? 2.5 : 0
+
+      // Get reviewer activity (top reviewers)
+      const reviewerStats = {}
+      projectReviews.forEach(review => {
+        const reviewer = review.reviewer_name || 'Unknown'
+        reviewerStats[reviewer] = (reviewerStats[reviewer] || 0) + 1
       })
 
-      // Fetch all uploads
-      const uploadsResponse = await api.get('/api/files', {
-        headers: { Authorization: `Bearer ${token}` }
+      const reviewerActivity = Object.entries(reviewerStats)
+        .map(([name, count]) => ({ name, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5)
+
+      // Get project progress
+      const projectProgress = projects.map(project => {
+        const projectReviewCount = projectReviews.filter(r => r.project_id === project.id).length
+        const approvedCount = projectReviews.filter(r =>
+          r.project_id === project.id && r.status === 'approved'
+        ).length
+
+        return {
+          id: project.id,
+          title: project.title,
+          progress: projectReviewCount > 0 ? (approvedCount / projectReviewCount) * 100 : 0,
+          reviews: projectReviewCount,
+          status: project.status
+        }
+      }).slice(0, 10)
+
+      setAnalytics({
+        totalProjects,
+        activeProjects,
+        completedProjects,
+        totalReviews,
+        avgReviewTime,
+        reviewerActivity,
+        projectProgress
       })
 
-      // Fetch scheduled requests
-      const scheduledResponse = await api.get('/api/scheduled-requests', {
-        headers: { Authorization: `Bearer ${token}` }
-      }).catch(() => ({ data: { scheduled: [] } }))
-
-      setForms(requestsResponse.data.requests || [])
-      setRequests(requestsResponse.data.requests || [])
-      setUploads(uploadsResponse.data.files || [])
-      setScheduledRequests(scheduledResponse.data.scheduled || [])
-
-      // Calculate storage
-      const totalStorage = (uploadsResponse.data.files || []).reduce((sum, file) => sum + (file.fileSize || 0), 0)
-      setStorageStats({ used: totalStorage / (1024 * 1024 * 1024), limit: storageLimit }) // Convert to GB
-    } catch (err) {
-      console.error('Failed to fetch data:', err)
+    } catch (error) {
+      console.error('Failed to load review data:', error)
+      toast.error('Failed to load review analytics')
     } finally {
       setLoading(false)
     }
   }
 
-  // Calendar/Responses functions
-  const handleDownload = async (id) => {
+  const handleProjectStatusChange = async (projectId, newStatus) => {
     try {
-      const token = localStorage.getItem('token')
-      const response = await api.get(`/api/files/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-        responseType: 'blob'
-      })
-
-      const url = window.URL.createObjectURL(response.data)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = uploads.find(u => u.id === id)?.fileName || 'download'
-      document.body.appendChild(a)
-      a.click()
-      window.URL.revokeObjectURL(url)
-      document.body.removeChild(a)
-    } catch (err) {
-      console.error('Download error:', err)
-      toast.error('Failed to download file')
+      await updateProjectStatus(projectId, newStatus)
+      toast.success(`Project status updated to ${newStatus}`)
+      loadData() // Refresh data
+    } catch (error) {
+      console.error('Failed to update project status:', error)
+      toast.error('Failed to update project status')
     }
   }
 
-  const handleDelete = async () => {
-    const formId = confirmDelete.formId
-    setConfirmDelete({ isOpen: false, formId: null })
+  const handleDeleteProject = async (projectId) => {
+    if (!confirm('Are you sure you want to delete this project? This will also delete all reviews and comments.')) {
+      return
+    }
 
     try {
-      const token = localStorage.getItem('token')
-      await api.delete(`/api/requests/${formId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-
-      fetchData()
-      if (selectedFormId === formId) {
-        setSelectedFormId(null)
-      }
-      toast.success('Request deleted successfully')
-    } catch (err) {
-      console.error('Delete error:', err)
-      toast.error('Failed to delete request. Please try again.')
+      await deleteProject(projectId)
+      toast.success('Project deleted successfully')
+      loadData()
+    } catch (error) {
+      console.error('Failed to delete project:', error)
+      toast.error('Failed to delete project')
     }
   }
 
-  const handleBulkDelete = async () => {
-    setConfirmBulkDelete(false)
-
-    try {
-      const token = localStorage.getItem('token')
-
-      await Promise.all(
-        selectedForms.map(formId =>
-          api.delete(`/api/requests/${formId}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          })
-        )
-      )
-
-      toast.success(`Deleted ${selectedForms.length} requests`)
-      setSelectedForms([])
-      fetchData()
-      setSelectedFormId(null)
-    } catch (err) {
-      console.error('Bulk delete error:', err)
-      toast.error('Failed to delete some requests')
-    }
-  }
-
-  const handleBulkDownload = async () => {
-    if (selectedForms.length === 0) return
-
-    try {
-      const allUploads = selectedForms.flatMap(formId => getFormUploads(formId))
-
-      if (allUploads.length === 0) {
-        toast.info('No files to download from selected requests')
-        return
-      }
-
-      for (const upload of allUploads) {
-        await handleDownload(upload.id)
-        await new Promise(resolve => setTimeout(resolve, 500))
-      }
-
-      toast.success(`Downloaded ${allUploads.length} files from ${selectedForms.length} requests`)
-    } catch (err) {
-      console.error('Bulk download error:', err)
-      toast.error('Failed to download some files')
-    }
-  }
-
-  const toggleSelectForm = (formId) => {
-    setSelectedForms(prev =>
-      prev.includes(formId)
-        ? prev.filter(id => id !== formId)
-        : [...prev, formId]
-    )
-  }
-
-  const toggleSelectAll = () => {
-    if (selectedForms.length === filteredForms.length) {
-      setSelectedForms([])
-    } else {
-      setSelectedForms(filteredForms.map(f => f.id))
-    }
-  }
-
-  const formatBytes = (bytes) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
-    return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
-  }
-
-  const formatDate = (date) => {
-    return new Date(date).toLocaleString('en-US', {
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit'
+      year: 'numeric'
     })
   }
 
-  const getTimeAgo = (date) => {
-    const seconds = Math.floor((new Date() - new Date(date)) / 1000)
-    if (seconds < 60) return 'Just now'
-    const minutes = Math.floor(seconds / 60)
-    if (minutes < 60) return `${minutes}m ago`
-    const hours = Math.floor(minutes / 60)
-    if (hours < 24) return `${hours}h ago`
-    const days = Math.floor(hours / 24)
-    if (days < 7) return `${days}d ago`
-    return formatDate(date)
-  }
+  const getTimeAgo = (dateString) => {
+    const now = new Date()
+    const date = new Date(dateString)
+    const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24))
 
-  const getFormStatus = (form) => {
-    const status = form.status || 'live'
-    switch (status.toLowerCase()) {
-      case 'live': return 'Live'
-      case 'draft': return 'Draft'
-      case 'paused':
-      case 'expired':
-      case 'done': return 'Done'
-      default: return 'Live'
-    }
+    if (diffInDays === 0) return 'Today'
+    if (diffInDays === 1) return '1 day ago'
+    if (diffInDays < 30) return `${diffInDays} days ago`
+    if (diffInDays < 365) return `${Math.floor(diffInDays / 30)} months ago`
+    return `${Math.floor(diffInDays / 365)} years ago`
   }
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Live': return theme.colors.white
-      case 'Draft': return theme.colors.text.secondary
-      case 'Paused': return theme.colors.warning
-      case 'Expired': return theme.colors.error
+      case 'active': return '#10b981'
+      case 'completed': return '#3b82f6'
+      case 'on_hold': return '#f59e0b'
+      case 'cancelled': return '#ef4444'
       default: return theme.colors.text.secondary
     }
   }
 
-  const getFormUploads = (formId) => {
-    return uploads.filter(upload => {
-      const form = forms.find(f => f.id === formId)
-      return form && upload.requestCode === form.shortCode
-    })
-  }
-
-  const getFormStorageUsed = (formId) => {
-    const formUploads = getFormUploads(formId)
-    return formUploads.reduce((sum, upload) => sum + (upload.fileSize || 0), 0)
-  }
-
-  const getLastUploadTime = (formId) => {
-    const formUploads = getFormUploads(formId)
-    if (formUploads.length === 0) return null
-    const latest = formUploads.reduce((latest, upload) => {
-      return new Date(upload.uploadedAt) > new Date(latest.uploadedAt) ? upload : latest
-    }, formUploads[0])
-    return latest.uploadedAt
-  }
-
-  const getFormViews = (shortCode) => {
-    const storageKey = `form_views_${shortCode}`
-    return parseInt(localStorage.getItem(storageKey) || '0', 10)
-  }
-
-  const formatNumber = (num) => {
-    return num.toLocaleString('en-US')
-  }
-
-  const getConversionRate = (views, uploads) => {
-    if (views === 0) return '—'
-    return ((uploads / views) * 100).toFixed(1) + '%'
-  }
-
-  const getTimeSinceCreated = (createdAt) => {
-    const now = new Date()
-    const created = new Date(createdAt)
-    const diffMs = now - created
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-
-    if (diffDays === 0) return 'Today'
-    if (diffDays === 1) return '1 day'
-    if (diffDays < 30) return `${diffDays} days`
-
-    const diffMonths = Math.floor(diffDays / 30)
-    if (diffMonths === 1) return '1 month'
-    if (diffMonths < 12) return `${diffMonths} months`
-
-    const diffYears = Math.floor(diffDays / 365)
-    if (diffYears === 1) return '1 year'
-    return `${diffYears} years`
-  }
-
-  const getTimeToFirstUpload = (createdAt, formUploads) => {
-    if (formUploads.length === 0) return '—'
-
-    const created = new Date(createdAt)
-    const firstUpload = formUploads.reduce((earliest, upload) => {
-      return new Date(upload.uploadedAt) < new Date(earliest.uploadedAt) ? upload : earliest
-    }, formUploads[0])
-
-    const diffMs = new Date(firstUpload.uploadedAt) - created
-    const diffMinutes = Math.floor(diffMs / (1000 * 60))
-
-    if (diffMinutes < 1) return 'Less than 1 min'
-    if (diffMinutes < 60) return `${diffMinutes} min`
-
-    const diffHours = Math.floor(diffMinutes / 60)
-    if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? '' : 's'}`
-
-    const diffDays = Math.floor(diffHours / 24)
-    return `${diffDays} day${diffDays === 1 ? '' : 's'}`
-  }
-
-  const getAverageUploadInterval = (formUploads) => {
-    if (formUploads.length <= 1) return '—'
-
-    const sortedUploads = [...formUploads].sort((a, b) =>
-      new Date(a.uploadedAt) - new Date(b.uploadedAt)
-    )
-
-    const firstTime = new Date(sortedUploads[0].uploadedAt)
-    const lastTime = new Date(sortedUploads[sortedUploads.length - 1].uploadedAt)
-    const totalMs = lastTime - firstTime
-    const avgMs = totalMs / (formUploads.length - 1)
-
-    const avgHours = avgMs / (1000 * 60 * 60)
-
-    if (avgHours < 1) return 'Less than 1 hour'
-    if (avgHours < 24) return `${Math.floor(avgHours)} hours`
-
-    const avgDays = Math.floor(avgHours / 24)
-    return `${avgDays} day${avgDays === 1 ? '' : 's'}`
-  }
-
-  const getFilesPerDay = (createdAt, formUploads) => {
-    if (formUploads.length === 0) return '—'
-
-    const now = new Date()
-    const created = new Date(createdAt)
-    const diffDays = Math.max(1, Math.floor((now - created) / (1000 * 60 * 60 * 24)))
-    const rate = formUploads.length / diffDays
-
-    if (rate < 0.1) {
-      const perWeek = (rate * 7).toFixed(1)
-      return `${perWeek}/week`
-    }
-
-    return rate.toFixed(1) + '/day'
-  }
-
-  // Calendar helper functions
-  const getDaysInMonth = (date) => {
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    return new Date(year, month + 1, 0).getDate()
-  }
-
-  const getFirstDayOfMonth = (date) => {
-    const year = date.getFullYear()
-    const month = date.getMonth()
-    return new Date(year, month, 1).getDay()
-  }
-
-  const isSameDay = (date1, date2) => {
-    return date1.getFullYear() === date2.getFullYear() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getDate() === date2.getDate()
-  }
-
-  const getUploadsForDate = (date) => {
-    return uploads.filter(upload => {
-      const uploadDate = new Date(upload.uploadedAt)
-      return isSameDay(uploadDate, date)
-    })
-  }
-
-  const getScheduledForDate = (date) => {
-    return scheduledRequests.filter(scheduled => {
-      const scheduledDate = new Date(scheduled.scheduledFor)
-      return isSameDay(scheduledDate, date)
-    })
-  }
-
-  const generateCalendarDays = () => {
-    const year = currentMonth.getFullYear()
-    const month = currentMonth.getMonth()
-    const daysInMonth = getDaysInMonth(currentMonth)
-    const firstDay = getFirstDayOfMonth(currentMonth)
-
-    const days = []
-
-    for (let i = 0; i < firstDay; i++) {
-      days.push(null)
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      days.push(new Date(year, month, day))
-    }
-
-    return days
-  }
-
-  const goToPreviousMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))
-  }
-
-  const goToNextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))
-  }
-
-  const goToCurrentMonth = () => {
-    setCurrentMonth(new Date())
-  }
-
-  const handleDayClick = (date, uploadsForDay) => {
-    // Always open the modal to show uploads and/or scheduled requests
-    setSelectedDate(date)
-    setDayModalOpen(true)
-  }
-
-  // Scheduling functions
-  const handleCreateScheduled = async (e) => {
-    e.preventDefault()
-    setSubmitting(true)
-
-    try {
-      const token = localStorage.getItem('token')
-      const scheduledDateTime = new Date(`${scheduledDate}T${scheduledTime}`)
-
-      await api.post('/api/scheduled-requests', {
-        requestId: selectedRequest,
-        scheduledFor: scheduledDateTime.toISOString()
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-
-      setShowCreateModal(false)
-      setSelectedRequest('')
-      setScheduledDate('')
-      setScheduledTime('')
-      fetchData()
-      toast.success('Request scheduled successfully')
-    } catch (error) {
-      console.error('Failed to schedule request:', error)
-      toast.error(error.response?.data?.message || 'Failed to schedule request')
-    } finally {
-      setSubmitting(false)
-    }
-  }
-
-  const handleCancelScheduled = async (id) => {
-    if (!confirm('Cancel this scheduled request?')) return
-
-    try {
-      const token = localStorage.getItem('token')
-      await api.delete(`/api/scheduled-requests/${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-      fetchData()
-      toast.success('Scheduled request cancelled')
-    } catch (error) {
-      console.error('Failed to cancel scheduled request:', error)
-      toast.error('Failed to cancel scheduled request')
-    }
-  }
-
-  const formatDateTime = (dateString) => {
-    const date = new Date(dateString)
-    return date.toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true
-    })
-  }
-
-  const getRequestTitle = (requestId) => {
-    const request = requests.find(r => r._id === requestId)
-    return request?.title || 'Untitled Request'
-  }
-
-  const getMinDateTime = () => {
-    const now = new Date()
-    const year = now.getFullYear()
-    const month = String(now.getMonth() + 1).padStart(2, '0')
-    const day = String(now.getDate()).padStart(2, '0')
-    return `${year}-${month}-${day}`
-  }
-
-  // Filter and sort forms
-  const filteredForms = forms
-    .filter(form => {
-      if (searchQuery && !form.title.toLowerCase().includes(searchQuery.toLowerCase())) {
+  // Filter projects
+  const filteredProjects = projects
+    .filter(project => {
+      if (searchQuery && !project.title.toLowerCase().includes(searchQuery.toLowerCase())) {
         return false
       }
-      if (filterStatus !== 'all') {
-        const status = getFormStatus(form)
-        if (status.toLowerCase() !== filterStatus.toLowerCase()) {
-          return false
-        }
+      if (filterStatus !== 'all' && project.status !== filterStatus) {
+        return false
       }
       return true
     })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'newest':
-          return new Date(b.createdAt) - new Date(a.createdAt)
-        case 'oldest':
-          return new Date(a.createdAt) - new Date(b.createdAt)
-        case 'most-uploads':
-          return getFormUploads(b.id).length - getFormUploads(a.id).length
-        case 'name-az':
-          return a.title.localeCompare(b.title)
-        default:
-          return 0
-      }
-    })
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div style={{
         minHeight: '100vh',
@@ -550,17 +207,7 @@ function Management() {
           borderRadius: '50%',
           animation: 'spin 1s linear infinite'
         }} />
-        <style>{`
-          @keyframes spin { to { transform: rotate(360deg); } }
-          @media (max-width: 768px) {
-            .calendar-nav-mobile {
-              flex-direction: column !important;
-            }
-            .stats-grid {
-              grid-template-columns: repeat(2, 1fr) !important;
-            }
-          }
-        `}</style>
+        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
       </div>
     )
   }
@@ -583,868 +230,605 @@ function Management() {
           {/* Header */}
           <div style={{ marginBottom: '48px' }}>
             <h1 style={standardStyles.pageHeader}>
-              Reviewers
+              Review Management
             </h1>
             <p style={standardStyles.pageDescription}>
-              Manage review teams, track feedback, and analyze workflow performance
+              Monitor review workflows, track project progress, and analyze team performance
             </p>
           </div>
 
+          {/* Analytics Dashboard */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '24px',
+            marginBottom: '48px'
+          }}>
+            <div style={{
+              padding: '28px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Total Projects</div>
+              <div style={standardStyles.statsNumber}>{analytics.totalProjects}</div>
+              <div style={standardStyles.statsDescription}>All review projects</div>
+            </div>
 
-          {/* Calendar Section */}
-              {/* Top Stats */}
-              <div className="stats-grid" style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(4, 1fr)',
-                gap: '20px',
-                marginBottom: '48px'
-              }}>
-                <div style={{
-                  padding: '28px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.lg,
+            <div style={{
+              padding: '28px',
+              background: 'rgba(16, 185, 129, 0.1)',
+              border: `1px solid #10b981`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Active Projects</div>
+              <div style={{...standardStyles.statsNumber, color: '#10b981'}}>{analytics.activeProjects}</div>
+              <div style={standardStyles.statsDescription}>Currently in review</div>
+            </div>
+
+            <div style={{
+              padding: '28px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Total Reviews</div>
+              <div style={standardStyles.statsNumber}>{analytics.totalReviews}</div>
+              <div style={standardStyles.statsDescription}>Submitted reviews</div>
+            </div>
+
+            <div style={{
+              padding: '28px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: `1px solid ${theme.colors.border.light}`,
+              borderRadius: theme.radius.lg,
+              transition: 'all 0.2s ease'
+            }}>
+              <div style={standardStyles.statsLabel}>Avg Review Time</div>
+              <div style={standardStyles.statsNumber}>{analytics.avgReviewTime}</div>
+              <div style={standardStyles.statsDescription}>Days to complete</div>
+            </div>
+          </div>
+
+          {/* Tab Navigation */}
+          <div style={{
+            background: theme.colors.bg.secondary,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderRadius: '12px 12px 0 0',
+            padding: '0 32px',
+            display: 'flex',
+            gap: '0'
+          }}>
+            {['overview', 'projects', 'analytics'].map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: activeTab === tab ? theme.colors.text.primary : theme.colors.text.secondary,
+                  padding: '20px 24px',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  borderBottom: activeTab === tab ? `2px solid ${theme.colors.text.primary}` : '2px solid transparent',
                   transition: 'all 0.2s ease'
-                }}>
-                  <div style={standardStyles.statsLabel}>
-                    Requests
-                  </div>
-                  <div style={standardStyles.statsNumber}>
-                    {filterStatus === 'all' ? forms.length : filteredForms.length}
-                  </div>
-                  <div style={standardStyles.statsDescription}>
-                    {filterStatus === 'all' ? 'Total created' : `${filterStatus.charAt(0).toUpperCase() + filterStatus.slice(1)} requests`}
-                  </div>
-                </div>
+                }}
+              >
+                {tab === 'overview' && 'Overview'}
+                {tab === 'projects' && `Projects (${projects.length})`}
+                {tab === 'analytics' && 'Analytics'}
+              </button>
+            ))}
+          </div>
 
+          {/* Tab Content */}
+          <div style={{
+            background: theme.colors.bg.secondary,
+            border: `1px solid ${theme.colors.border.light}`,
+            borderTop: 'none',
+            borderRadius: '0 0 12px 12px',
+            minHeight: '500px'
+          }}>
+
+            {/* Overview Tab */}
+            {activeTab === 'overview' && (
+              <div style={{ padding: '32px' }}>
                 <div style={{
-                  padding: '28px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  border: `1px solid ${theme.colors.white}`,
-                  borderRadius: theme.radius.lg,
-                  transition: 'all 0.2s ease'
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 400px',
+                  gap: '32px'
                 }}>
-                  <div style={standardStyles.statsLabel}>
-                    Live Now
-                  </div>
-                  <div style={{...standardStyles.statsNumber, color: theme.colors.white}}>
-                    {forms.filter(f => getFormStatus(f) === 'Live').length}
-                  </div>
-                  <div style={standardStyles.statsDescription}>
-                    Active reviews
-                  </div>
-                </div>
-
-                <div style={{
-                  padding: '28px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.lg,
-                  transition: 'all 0.2s ease'
-                }}>
-                  <div style={standardStyles.statsLabel}>
-                    Files
-                  </div>
-                  <div style={standardStyles.statsNumber}>
-                    {uploads.length}
-                  </div>
-                  <div style={standardStyles.statsDescription}>
-                    Total received
-                  </div>
-                </div>
-
-                <div style={{
-                  padding: '28px',
-                  background: 'rgba(255, 255, 255, 0.02)',
-                  border: `1px solid ${theme.colors.border.light}`,
-                  borderRadius: theme.radius.lg,
-                  transition: 'all 0.2s ease'
-                }}>
-                  <div style={{
-                    fontSize: theme.fontSize.xs,
-                    color: theme.colors.text.tertiary,
-                    marginBottom: '16px',
-                    fontWeight: theme.weight.bold,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1.5px'
-                  }}>
-                    Storage
-                  </div>
-                  <div style={{
-                    fontSize: '48px',
-                    fontWeight: '700',
-                    color: theme.colors.text.primary,
-                    lineHeight: '1',
-                    marginBottom: '16px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                    fontVariantNumeric: 'tabular-nums',
-                    letterSpacing: '-0.02em'
-                  }}>
-                    {storageStats.used.toFixed(1)}
-                    <span style={{ fontSize: '24px', fontWeight: '600', marginLeft: '6px', color: theme.colors.text.secondary }}>GB</span>
-                  </div>
-                  <div style={{
-                    width: '100%',
-                    height: '6px',
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    borderRadius: '3px',
-                    overflow: 'hidden',
-                    marginBottom: '10px'
-                  }}>
-                    <div style={{
-                      width: `${Math.min((storageStats.used / storageStats.limit) * 100, 100)}%`,
-                      height: '100%',
-                      background: storageStats.used > storageStats.limit * 0.8 ? theme.colors.error : theme.colors.white,
-                      transition: 'width 0.3s ease'
-                    }} />
-                  </div>
-                  <div style={{
-                    fontSize: theme.fontSize.sm,
-                    color: theme.colors.text.secondary,
-                    fontWeight: theme.weight.medium
-                  }}>
-                    of {storageStats.limit} GB used
-                  </div>
-                </div>
-              </div>
-
-
-              {/* Calendar View */}
-              <div style={{ marginBottom: '48px' }}>
-                  <div className="calendar-nav-mobile" style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '32px',
-                    flexWrap: 'wrap',
-                    gap: '16px'
-                  }}>
-                    <button
-                      onClick={goToPreviousMonth}
-                      style={{
-                        padding: '10px 20px',
-                        background: 'transparent',
-                        border: '1px solid #000000',
-                        borderRadius: '6px',
-                        color: '#ffffff',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                        transition: 'all 0.15s ease',
-                        fontFamily: 'inherit'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.background = '#000000'
-                        e.currentTarget.style.borderColor = '#525252'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.background = 'transparent'
-                        e.currentTarget.style.borderColor = '#000000'
-                      }}
-                    >
-                      Previous
-                    </button>
-
-                    <h2 style={{
-                      fontSize: '24px',
+                  {/* Project Progress */}
+                  <div>
+                    <h3 style={{
+                      fontSize: '18px',
                       fontWeight: '600',
-                      color: '#ffffff',
-                      margin: 0,
-                      letterSpacing: '-0.02em'
+                      color: theme.colors.text.primary,
+                      marginBottom: '24px'
                     }}>
-                      {currentMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' })}
-                    </h2>
+                      Project Progress
+                    </h3>
 
-                    <div style={{ display: 'flex', gap: '12px' }}>
-                      <button
-                        onClick={goToCurrentMonth}
-                        style={{
-                          padding: '10px 20px',
-                          background: 'transparent',
-                          border: '1px solid #000000',
-                          borderRadius: '6px',
-                          color: '#ffffff',
-                          fontSize: '14px',
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s ease',
-                          fontFamily: 'inherit'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#000000'
-                          e.currentTarget.style.borderColor = '#525252'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.borderColor = '#000000'
-                        }}
-                      >
-                        Today
-                      </button>
-                      <button
-                        onClick={goToNextMonth}
-                        style={{
-                          padding: '10px 20px',
-                          background: 'transparent',
-                          border: '1px solid #000000',
-                          borderRadius: '6px',
-                          color: '#ffffff',
-                          fontSize: '14px',
-                          fontWeight: '500',
-                          cursor: 'pointer',
-                          transition: 'all 0.15s ease',
-                          fontFamily: 'inherit'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#000000'
-                          e.currentTarget.style.borderColor = '#525252'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.borderColor = '#000000'
-                        }}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {analytics.projectProgress.slice(0, 5).map(project => (
+                        <div
+                          key={project.id}
+                          style={{
+                            padding: '20px',
+                            border: `1px solid ${theme.colors.border.light}`,
+                            borderRadius: '8px',
+                            background: theme.colors.bg.page
+                          }}
+                        >
+                          <div style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            marginBottom: '12px'
+                          }}>
+                            <h4 style={{
+                              fontSize: '14px',
+                              fontWeight: '500',
+                              color: theme.colors.text.primary,
+                              margin: 0
+                            }}>
+                              {project.title}
+                            </h4>
+                            <span style={{
+                              fontSize: '12px',
+                              fontWeight: '500',
+                              color: getStatusColor(project.status),
+                              textTransform: 'uppercase'
+                            }}>
+                              {project.status}
+                            </span>
+                          </div>
 
-                  <div style={{
-                    border: '1px solid #000000',
-                    borderRadius: '8px',
-                    background: '#000000',
-                    overflow: 'hidden',
-                    padding: '24px'
-                  }}>
-                    <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(7, 1fr)',
-                      gap: '1px',
-                      marginBottom: '16px'
-                    }}>
-                      {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                        <div key={day} style={{
-                          textAlign: 'center',
-                          fontSize: '12px',
-                          fontWeight: '600',
-                          color: '#a3a3a3',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px',
-                          padding: '8px'
-                        }}>
-                          {day}
+                          <div style={{
+                            width: '100%',
+                            height: '6px',
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            borderRadius: '3px',
+                            overflow: 'hidden',
+                            marginBottom: '8px'
+                          }}>
+                            <div style={{
+                              width: `${project.progress}%`,
+                              height: '100%',
+                              background: getStatusColor(project.status),
+                              transition: 'width 0.3s ease'
+                            }} />
+                          </div>
+
+                          <div style={{
+                            fontSize: '12px',
+                            color: theme.colors.text.secondary
+                          }}>
+                            {project.reviews} reviews • {Math.round(project.progress)}% complete
+                          </div>
                         </div>
                       ))}
                     </div>
+                  </div>
+
+                  {/* Top Reviewers */}
+                  <div>
+                    <h3 style={{
+                      fontSize: '18px',
+                      fontWeight: '600',
+                      color: theme.colors.text.primary,
+                      marginBottom: '24px'
+                    }}>
+                      Top Reviewers
+                    </h3>
 
                     <div style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(7, 1fr)',
-                      gap: '1px',
-                      background: '#000000'
+                      background: theme.colors.bg.page,
+                      border: `1px solid ${theme.colors.border.light}`,
+                      borderRadius: '8px',
+                      overflow: 'hidden'
                     }}>
-                      {generateCalendarDays().map((date, index) => {
-                        if (!date) {
-                          return (
-                            <div key={`empty-${index}`} style={{
-                              minHeight: '60px',
-                              background: '#000000'
-                            }} />
-                          )
-                        }
-
-                        const uploadsForDay = getUploadsForDate(date)
-                        const scheduledForDay = getScheduledForDate(date)
-                        const isToday = isSameDay(date, new Date())
-                        const hasUploads = uploadsForDay.length > 0
-                        const hasScheduled = scheduledForDay.length > 0
-
-                        return (
-                          <div
-                            key={date.toISOString()}
-                            onClick={() => handleDayClick(date, uploadsForDay)}
-                            style={{
-                              minHeight: '60px',
-                              background: '#000000',
-                              border: isToday ? '1px solid #ffffff' : '1px solid transparent',
-                              padding: '8px',
-                              position: 'relative',
-                              cursor: 'pointer',
-                              transition: 'all 0.15s ease'
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.background = '#000000'
-                              e.currentTarget.style.borderColor = '#525252'
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.background = '#000000'
-                              e.currentTarget.style.borderColor = isToday ? '#ffffff' : 'transparent'
-                            }}
-                          >
+                      {analytics.reviewerActivity.length > 0 ? analytics.reviewerActivity.map((reviewer, index) => (
+                        <div
+                          key={reviewer.name}
+                          style={{
+                            padding: '16px 20px',
+                            borderBottom: index < analytics.reviewerActivity.length - 1 ?
+                              `1px solid ${theme.colors.border.light}` : 'none',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <div>
                             <div style={{
                               fontSize: '14px',
-                              color: isToday ? '#ffffff' : '#a3a3a3',
-                              fontWeight: isToday ? '600' : '400'
+                              fontWeight: '500',
+                              color: theme.colors.text.primary,
+                              marginBottom: '2px'
                             }}>
-                              {date.getDate()}
+                              {reviewer.name}
                             </div>
-                            {hasScheduled && (
-                              <div style={{
-                                position: 'absolute',
-                                top: '8px',
-                                right: '8px',
-                                width: '6px',
-                                height: '6px',
-                                background: theme.colors.white,
-                                borderRadius: '50%'
-                              }} />
-                            )}
-                            {hasUploads && (
-                              <div style={{
-                                position: 'absolute',
-                                bottom: '8px',
-                                right: '8px',
-                                fontSize: '11px',
-                                fontWeight: '600',
-                                background: '#ffffff',
-                                color: '#000000',
-                                padding: '2px 6px',
-                                borderRadius: '10px',
-                                minWidth: '20px',
-                                textAlign: 'center'
-                              }}>
-                                {uploadsForDay.length}
-                              </div>
-                            )}
+                            <div style={{
+                              fontSize: '12px',
+                              color: theme.colors.text.secondary
+                            }}>
+                              #{index + 1} reviewer
+                            </div>
                           </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-              </div>
-
-
-              {/* Day Modal for Calendar View */}
-              {dayModalOpen && selectedDate && (
-                <div
-                  style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    background: 'rgba(0, 0, 0, 0.8)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    zIndex: 1000,
-                    padding: '20px'
-                  }}
-                  onClick={() => setDayModalOpen(false)}
-                >
-                  <div
-                    style={{
-                      background: '#000000',
-                      border: '1px solid #525252',
-                      borderRadius: '12px',
-                      maxWidth: '800px',
-                      width: '100%',
-                      maxHeight: '80vh',
-                      overflow: 'hidden',
-                      display: 'flex',
-                      flexDirection: 'column'
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <div style={{
-                      padding: '24px',
-                      borderBottom: '1px solid #525252',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}>
-                      <h3 style={{
-                        fontSize: '20px',
-                        fontWeight: '600',
-                        color: '#ffffff',
-                        margin: 0
-                      }}>
-                        {selectedDate.toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </h3>
-                      <button
-                        onClick={() => setDayModalOpen(false)}
-                        style={{
-                          background: 'transparent',
-                          border: 'none',
-                          color: '#a3a3a3',
-                          fontSize: '14px',
-                          cursor: 'pointer',
-                          padding: '8px 16px',
-                          borderRadius: '4px',
-                          transition: 'all 0.15s ease',
-                          fontWeight: '500'
-                        }}
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.background = '#000000'
-                          e.currentTarget.style.color = '#ffffff'
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.background = 'transparent'
-                          e.currentTarget.style.color = '#a3a3a3'
-                        }}
-                      >
-                        Close
-                      </button>
-                    </div>
-
-                    <div style={{
-                      padding: '24px',
-                      overflowY: 'auto',
-                      flex: 1
-                    }}>
-                      {/* Uploads Received Section */}
-                      <div style={{ marginBottom: '32px' }}>
-                        <h4 style={{
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          color: '#ffffff',
-                          marginBottom: '16px',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px'
-                        }}>
-                          Uploads Received
-                        </h4>
-                        {getUploadsForDate(selectedDate).length === 0 ? (
                           <div style={{
-                            padding: '20px',
-                            background: '#000000',
-                            border: '1px solid #525252',
-                            borderRadius: '8px',
-                            color: '#a3a3a3',
-                            fontSize: '14px',
-                            textAlign: 'center'
+                            fontSize: '16px',
+                            fontWeight: '600',
+                            color: theme.colors.text.primary
                           }}>
-                            No uploads received on this day
+                            {reviewer.count}
                           </div>
-                        ) : (
-                          getUploadsForDate(selectedDate).map((upload, idx) => (
-                            <div
-                              key={upload.id}
-                              style={{
-                                padding: '20px',
-                                background: '#000000',
-                                border: '1px solid #525252',
-                                borderRadius: '8px',
-                                marginBottom: idx < getUploadsForDate(selectedDate).length - 1 ? '12px' : '0'
-                              }}
-                            >
-                              <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'flex-start',
-                                marginBottom: '12px'
-                              }}>
-                                <div style={{ flex: 1 }}>
-                                  <div style={{
-                                    fontSize: '14px',
-                                    fontWeight: '600',
-                                    color: '#ffffff',
-                                    marginBottom: '8px'
-                                  }}>
-                                    {upload.fileName}
-                                  </div>
-                                  <div style={{
-                                    fontSize: '14px',
-                                    color: '#a3a3a3',
-                                    marginBottom: '4px'
-                                  }}>
-                                    {upload.uploaderName} {upload.uploaderEmail && `(${upload.uploaderEmail})`}
-                                  </div>
-                                  <div style={{
-                                    fontSize: '14px',
-                                    color: '#525252'
-                                  }}>
-                                    Request: {forms.find(f => f.shortCode === upload.requestCode)?.title || 'Unknown'}
-                                  </div>
-                                </div>
-                                <button
-                                  onClick={() => handleDownload(upload.id)}
-                                  style={{
-                                    padding: '8px 16px',
-                                    background: '#ffffff',
-                                    color: '#000000',
-                                    border: 'none',
-                                    borderRadius: '6px',
-                                    fontSize: '14px',
-                                    fontWeight: '600',
-                                    cursor: 'pointer',
-                                    whiteSpace: 'nowrap',
-                                    marginLeft: '16px',
-                                    transition: 'all 0.15s ease'
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.background = '#a3a3a3'
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.background = '#ffffff'
-                                  }}
-                                >
-                                  Download
-                                </button>
-                              </div>
-                              <div style={{
-                                display: 'flex',
-                                gap: '20px',
-                                fontSize: '14px',
-                                color: '#a3a3a3',
-                                paddingTop: '12px',
-                                borderTop: '1px solid #525252'
-                              }}>
-                                <span>Size: {formatBytes(upload.fileSize)}</span>
-                                <span>Time: {formatDate(upload.uploadedAt)}</span>
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
-
-                      {/* Scheduled Requests Section */}
-                      <div>
-                        <h4 style={{
-                          fontSize: '14px',
-                          fontWeight: '600',
-                          color: '#ffffff',
-                          marginBottom: '16px',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px'
+                        </div>
+                      )) : (
+                        <div style={{
+                          padding: '32px',
+                          textAlign: 'center',
+                          color: theme.colors.text.secondary
                         }}>
-                          Scheduled Requests
-                        </h4>
-                        {getScheduledForDate(selectedDate).length === 0 ? (
-                          <div style={{
-                            padding: '20px',
-                            background: '#000000',
-                            border: '1px solid #525252',
-                            borderRadius: '8px',
-                            color: '#a3a3a3',
-                            fontSize: '14px',
-                            textAlign: 'center'
-                          }}>
-                            No scheduled requests for this day
-                          </div>
-                        ) : (
-                          getScheduledForDate(selectedDate).map((scheduled, idx) => (
-                            <div
-                              key={scheduled._id}
-                              style={{
-                                padding: '20px',
-                                background: '#000000',
-                                border: '1px solid #525252',
-                                borderRadius: '8px',
-                                marginBottom: idx < getScheduledForDate(selectedDate).length - 1 ? '12px' : '0'
-                              }}
-                            >
-                              <div style={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'flex-start'
-                              }}>
-                                <div style={{ flex: 1 }}>
-                                  <div style={{
-                                    fontSize: '14px',
-                                    fontWeight: '600',
-                                    color: '#ffffff',
-                                    marginBottom: '8px'
-                                  }}>
-                                    {getRequestTitle(scheduled.requestId)}
-                                  </div>
-                                  <div style={{
-                                    fontSize: '14px',
-                                    color: '#a3a3a3',
-                                    marginBottom: '8px'
-                                  }}>
-                                    Scheduled: {formatDateTime(scheduled.scheduledFor)}
-                                  </div>
-                                  <div style={{
-                                    display: 'inline-block',
-                                    fontSize: '11px',
-                                    fontWeight: '600',
-                                    color: '#ffffff',
-                                    textTransform: 'uppercase',
-                                    letterSpacing: '0.5px',
-                                    padding: '4px 8px',
-                                    background: '#000000',
-                                    border: '1px solid #525252',
-                                    borderRadius: '4px'
-                                  }}>
-                                    {scheduled.status || 'pending'}
-                                  </div>
-                                </div>
-                                <div style={{ display: 'flex', gap: '8px', marginLeft: '16px' }}>
-                                  <button
-                                    onClick={() => {
-                                      const request = requests.find(r => r._id === scheduled.requestId)
-                                      if (request) {
-                                        const url = `${window.location.origin}/upload/${request.shortCode}`
-                                        navigator.clipboard.writeText(url)
-                                        toast.success('Request URL copied!')
-                                      }
-                                    }}
-                                    style={{
-                                      padding: '6px 12px',
-                                      background: 'transparent',
-                                      color: '#ffffff',
-                                      border: '1px solid #525252',
-                                      borderRadius: '6px',
-                                      fontSize: '14px',
-                                      fontWeight: '500',
-                                      cursor: 'pointer',
-                                      whiteSpace: 'nowrap',
-                                      transition: 'all 0.15s ease'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                      e.currentTarget.style.background = '#000000'
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      e.currentTarget.style.background = 'transparent'
-                                    }}
-                                  >
-                                    Copy Link
-                                  </button>
-                                  <button
-                                    onClick={() => handleCancelScheduled(scheduled._id)}
-                                    style={{
-                                      padding: '6px 12px',
-                                      background: 'transparent',
-                                      color: '#a3a3a3',
-                                      border: '1px solid #525252',
-                                      borderRadius: '6px',
-                                      fontSize: '14px',
-                                      fontWeight: '500',
-                                      cursor: 'pointer',
-                                      whiteSpace: 'nowrap',
-                                      transition: 'all 0.15s ease'
-                                    }}
-                                    onMouseEnter={(e) => {
-                                      e.currentTarget.style.background = '#000000'
-                                      e.currentTarget.style.color = '#ffffff'
-                                    }}
-                                    onMouseLeave={(e) => {
-                                      e.currentTarget.style.background = 'transparent'
-                                      e.currentTarget.style.color = '#a3a3a3'
-                                    }}
-                                  >
-                                    Cancel
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
+                          <div style={{ fontSize: '48px', marginBottom: '16px' }}>👥</div>
+                          <p>No reviewer activity yet</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
-              )}
-
-          {/* Request Management Section */}
-          <div style={{ marginBottom: '64px' }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '32px'
-            }}>
-              <h2 style={standardStyles.sectionHeader}>
-                Request Manager
-              </h2>
-
-              {/* Status Filter */}
-              <div style={{
-                display: 'flex',
-                gap: '8px',
-                alignItems: 'center'
-              }}>
-                <span style={{
-                  fontSize: '14px',
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.secondary,
-                  marginRight: '12px'
-                }}>
-                  Filter:
-                </span>
-                {['all', 'live', 'done', 'draft'].map((status) => (
-                  <button
-                    key={status}
-                    onClick={() => setFilterStatus(status)}
-                    style={getFilterButtonStyle(filterStatus === status)}
-                  >
-                    {status === 'all' ? 'All' : status}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Request List */}
-            {filteredForms.length === 0 ? (
-              <div style={{
-                padding: '80px 40px',
-                textAlign: 'center',
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '8px',
-                background: 'transparent'
-              }}>
-                <div style={{
-                  fontSize: '16px',
-                  fontWeight: theme.weight.medium,
-                  color: theme.colors.text.primary,
-                  marginBottom: '8px'
-                }}>
-                  No {filterStatus === 'all' ? '' : filterStatus + ' '}requests found
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  color: theme.colors.text.tertiary
-                }}>
-                  {filterStatus === 'all'
-                    ? 'Create your first request to start collecting files'
-                    : `No requests with ${filterStatus} status`}
-                </div>
-              </div>
-            ) : (
-              <div style={{
-                border: `1px solid ${theme.colors.border.light}`,
-                borderRadius: '8px',
-                overflow: 'hidden'
-              }}>
-                {filteredForms.map((form, index) => (
-                  <div
-                    key={form.id}
-                    style={{
-                      padding: '20px 24px',
-                      borderBottom: index < filteredForms.length - 1 ? `1px solid ${theme.colors.border.light}` : 'none',
-                      background: 'transparent'
-                    }}
-                  >
-                    <div style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'flex-start'
-                    }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{
-                          fontSize: '16px',
-                          fontWeight: theme.weight.semibold,
-                          color: theme.colors.text.primary,
-                          marginBottom: '8px',
-                          maxWidth: '300px',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}>
-                          {form.title}
-                        </div>
-                        <div style={{
-                          display: 'flex',
-                          gap: '24px',
-                          fontSize: '14px',
-                          color: theme.colors.text.secondary,
-                          marginBottom: '12px'
-                        }}>
-                          <span>Created {getTimeSinceCreated(form.createdAt)} ago</span>
-                          <span>{getFormUploads(form.id).length} files received</span>
-                          <span>{formatBytes(getFormStorageUsed(form.id))}</span>
-                        </div>
-                        <div style={{
-                          fontSize: '12px',
-                          fontWeight: theme.weight.semibold,
-                          color: getStatusColor(getFormStatus(form)),
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.5px'
-                        }}>
-                          {getFormStatus(form)}
-                        </div>
-                      </div>
-                      <div style={{
-                        display: 'flex',
-                        gap: '12px',
-                        marginLeft: '24px'
-                      }}>
-                        <button
-                          onClick={() => {
-                            const url = `${window.location.origin}/upload/${form.shortCode}`
-                            navigator.clipboard.writeText(url)
-                            toast.success('Request URL copied!')
-                          }}
-                          style={{
-                            padding: '6px 12px',
-                            background: 'transparent',
-                            color: theme.colors.text.secondary,
-                            border: `1px solid ${theme.colors.border.light}`,
-                            borderRadius: '4px',
-                            fontSize: '13px',
-                            fontWeight: theme.weight.medium,
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Copy Link
-                        </button>
-                        <button
-                          onClick={() => setConfirmDelete({ isOpen: true, formId: form.id })}
-                          style={{
-                            padding: '6px 12px',
-                            background: 'transparent',
-                            color: theme.colors.text.tertiary,
-                            border: `1px solid ${theme.colors.border.light}`,
-                            borderRadius: '4px',
-                            fontSize: '13px',
-                            fontWeight: theme.weight.medium,
-                            cursor: 'pointer'
-                          }}
-                        >
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
               </div>
             )}
-          </div>
 
+            {/* Projects Tab */}
+            {activeTab === 'projects' && (
+              <div style={{ padding: '32px' }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: '24px'
+                }}>
+                  <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                    <input
+                      type="text"
+                      placeholder="Search projects..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      style={{
+                        padding: '8px 12px',
+                        background: theme.colors.bg.page,
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: '6px',
+                        color: theme.colors.text.primary,
+                        fontSize: '14px',
+                        width: '250px'
+                      }}
+                    />
+
+                    <div style={{ display: 'flex', gap: '8px' }}>
+                      {['all', 'active', 'completed', 'on_hold'].map(status => (
+                        <button
+                          key={status}
+                          onClick={() => setFilterStatus(status)}
+                          style={getFilterButtonStyle(filterStatus === status)}
+                        >
+                          {status === 'all' ? 'All' : status.replace('_', ' ')}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <Link
+                    to="/projects"
+                    style={{
+                      padding: '8px 16px',
+                      background: theme.colors.text.primary,
+                      color: theme.colors.bg.page,
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: '500'
+                    }}
+                  >
+                    + New Project
+                  </Link>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  {filteredProjects.length > 0 ? filteredProjects.map(project => (
+                    <div
+                      key={project.id}
+                      style={{
+                        padding: '24px',
+                        border: `1px solid ${theme.colors.border.light}`,
+                        borderRadius: '8px',
+                        background: theme.colors.bg.page
+                      }}
+                    >
+                      <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start'
+                      }}>
+                        <div style={{ flex: 1 }}>
+                          <Link
+                            to={`/projects/${project.id}`}
+                            style={{
+                              fontSize: '16px',
+                              fontWeight: '600',
+                              color: theme.colors.text.primary,
+                              textDecoration: 'none',
+                              marginBottom: '8px',
+                              display: 'block'
+                            }}
+                          >
+                            {project.title}
+                          </Link>
+
+                          <div style={{
+                            fontSize: '14px',
+                            color: theme.colors.text.secondary,
+                            marginBottom: '12px'
+                          }}>
+                            {project.description || 'No description provided'}
+                          </div>
+
+                          <div style={{
+                            display: 'flex',
+                            gap: '24px',
+                            fontSize: '12px',
+                            color: theme.colors.text.secondary
+                          }}>
+                            <span>Created {getTimeAgo(project.created_at)}</span>
+                            <span>Updated {getTimeAgo(project.updated_at)}</span>
+                            <span>{project.collaborator_count || 0} collaborators</span>
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <span style={{
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                            fontSize: '11px',
+                            fontWeight: '500',
+                            color: 'white',
+                            background: getStatusColor(project.status),
+                            textTransform: 'uppercase'
+                          }}>
+                            {project.status}
+                          </span>
+
+                          <button
+                            onClick={() => handleDeleteProject(project.id)}
+                            style={{
+                              padding: '6px 12px',
+                              background: 'transparent',
+                              color: theme.colors.text.secondary,
+                              border: `1px solid ${theme.colors.border.light}`,
+                              borderRadius: '4px',
+                              fontSize: '12px',
+                              cursor: 'pointer'
+                            }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  )) : (
+                    <div style={{
+                      padding: '48px',
+                      textAlign: 'center',
+                      border: `1px solid ${theme.colors.border.light}`,
+                      borderRadius: '8px',
+                      background: theme.colors.bg.page
+                    }}>
+                      <div style={{ fontSize: '48px', marginBottom: '16px' }}>📋</div>
+                      <h3 style={{ fontSize: '18px', marginBottom: '8px' }}>No projects found</h3>
+                      <p style={{ color: theme.colors.text.secondary, marginBottom: '24px' }}>
+                        {filterStatus === 'all'
+                          ? 'Create your first review project to get started'
+                          : `No ${filterStatus} projects found`}
+                      </p>
+                      <Link
+                        to="/projects"
+                        style={{
+                          padding: '12px 24px',
+                          background: theme.colors.text.primary,
+                          color: theme.colors.bg.page,
+                          borderRadius: '6px',
+                          textDecoration: 'none',
+                          fontWeight: '500'
+                        }}
+                      >
+                        Create Project
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Analytics Tab */}
+            {activeTab === 'analytics' && (
+              <div style={{ padding: '32px' }}>
+                <h2 style={{
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  color: theme.colors.text.primary,
+                  marginBottom: '24px'
+                }}>
+                  Review Workflow Analytics
+                </h2>
+
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '32px'
+                }}>
+                  {/* Workflow Performance */}
+                  <div>
+                    <h3 style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: theme.colors.text.primary,
+                      marginBottom: '16px'
+                    }}>
+                      Workflow Performance
+                    </h3>
+
+                    <div style={{
+                      background: theme.colors.bg.page,
+                      border: `1px solid ${theme.colors.border.light}`,
+                      borderRadius: '8px',
+                      padding: '24px'
+                    }}>
+                      <div style={{ marginBottom: '20px' }}>
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: '8px'
+                        }}>
+                          <span style={{ fontSize: '14px', color: theme.colors.text.secondary }}>
+                            Projects Completed
+                          </span>
+                          <span style={{ fontSize: '14px', fontWeight: '500' }}>
+                            {analytics.completedProjects}/{analytics.totalProjects}
+                          </span>
+                        </div>
+                        <div style={{
+                          width: '100%',
+                          height: '6px',
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          borderRadius: '3px',
+                          overflow: 'hidden'
+                        }}>
+                          <div style={{
+                            width: `${analytics.totalProjects > 0 ? (analytics.completedProjects / analytics.totalProjects) * 100 : 0}%`,
+                            height: '100%',
+                            background: '#10b981',
+                            transition: 'width 0.3s ease'
+                          }} />
+                        </div>
+                      </div>
+
+                      <div style={{ marginBottom: '20px' }}>
+                        <div style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: '8px'
+                        }}>
+                          <span style={{ fontSize: '14px', color: theme.colors.text.secondary }}>
+                            Active Projects
+                          </span>
+                          <span style={{ fontSize: '14px', fontWeight: '500' }}>
+                            {analytics.activeProjects}/{analytics.totalProjects}
+                          </span>
+                        </div>
+                        <div style={{
+                          width: '100%',
+                          height: '6px',
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          borderRadius: '3px',
+                          overflow: 'hidden'
+                        }}>
+                          <div style={{
+                            width: `${analytics.totalProjects > 0 ? (analytics.activeProjects / analytics.totalProjects) * 100 : 0}%`,
+                            height: '100%',
+                            background: '#3b82f6',
+                            transition: 'width 0.3s ease'
+                          }} />
+                        </div>
+                      </div>
+
+                      <div style={{
+                        fontSize: '12px',
+                        color: theme.colors.text.secondary,
+                        textAlign: 'center',
+                        marginTop: '16px'
+                      }}>
+                        Average review completion: {analytics.avgReviewTime} days
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Team Activity */}
+                  <div>
+                    <h3 style={{
+                      fontSize: '16px',
+                      fontWeight: '600',
+                      color: theme.colors.text.primary,
+                      marginBottom: '16px'
+                    }}>
+                      Team Activity Summary
+                    </h3>
+
+                    <div style={{
+                      background: theme.colors.bg.page,
+                      border: `1px solid ${theme.colors.border.light}`,
+                      borderRadius: '8px',
+                      padding: '24px',
+                      textAlign: 'center'
+                    }}>
+                      {analytics.reviewerActivity.length > 0 ? (
+                        <>
+                          <div style={{
+                            fontSize: '32px',
+                            fontWeight: '700',
+                            color: theme.colors.text.primary,
+                            marginBottom: '8px'
+                          }}>
+                            {analytics.reviewerActivity.length}
+                          </div>
+                          <div style={{
+                            fontSize: '14px',
+                            color: theme.colors.text.secondary,
+                            marginBottom: '16px'
+                          }}>
+                            Active reviewers
+                          </div>
+                          <div style={{
+                            fontSize: '12px',
+                            color: theme.colors.text.secondary
+                          }}>
+                            Top contributor: {analytics.reviewerActivity[0]?.name || 'N/A'}
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div style={{ fontSize: '48px', marginBottom: '16px' }}>📈</div>
+                          <div style={{
+                            fontSize: '16px',
+                            fontWeight: '500',
+                            marginBottom: '8px'
+                          }}>
+                            Analytics Coming Soon
+                          </div>
+                          <div style={{
+                            fontSize: '14px',
+                            color: theme.colors.text.secondary
+                          }}>
+                            Start creating reviews to see team activity
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
 
         </div>
       </div>
-
-      {/* Modals and other components continue... */}
-      <ToastContainer toasts={toast.toasts} removeToast={toast.removeToast} />
-
-
-      <ConfirmModal
-        isOpen={confirmDelete.isOpen}
-        title="Delete Request"
-        message="Are you sure you want to delete this request? This will also delete all uploaded files."
-        onConfirm={handleDelete}
-        onCancel={() => setConfirmDelete({ isOpen: false, formId: null })}
-        confirmText="Delete"
-        cancelText="Cancel"
-        danger={true}
-      />
-      <ConfirmModal
-        isOpen={confirmBulkDelete}
-        title="Delete Selected Requests"
-        message={`Are you sure you want to delete ${selectedForms.length} selected requests? This will also delete all uploaded files.`}
-        onConfirm={handleBulkDelete}
-        onCancel={() => setConfirmBulkDelete(false)}
-        confirmText="Delete All"
-        cancelText="Cancel"
-        danger={true}
-      />
     </>
   )
 }
