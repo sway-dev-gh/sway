@@ -158,7 +158,7 @@ function Collaboration() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        paddingTop: '64px'
+        paddingTop: '68px'
       }}>
         <div style={{
           maxWidth: '1400px',

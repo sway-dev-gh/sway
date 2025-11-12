@@ -159,7 +159,7 @@ function Sidebar({ children }) {
     top: 0,
     left: 0,
     right: 0,
-    height: '54px',
+    height: '68px',
     background: theme.colors.bg.sidebar,
     borderBottom: `1px solid ${theme.colors.border.medium}`,
     zIndex: 100,
@@ -490,7 +490,7 @@ function Sidebar({ children }) {
         style={{
           display: 'none',
           position: 'fixed',
-          top: '54px',
+          top: '68px',
           left: 0,
           right: 0,
           bottom: 0,
@@ -604,7 +604,7 @@ function Sidebar({ children }) {
 
     {/* Page Content */}
     {children && (
-      <main style={{ paddingTop: '54px' }}>
+      <main style={{ paddingTop: '68px' }}>
         {children}
       </main>
     )}

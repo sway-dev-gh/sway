@@ -182,7 +182,7 @@ function Notifications() {
         minHeight: '100vh',
         background: theme.colors.bg.page,
         color: theme.colors.text.primary,
-        paddingTop: '54px'
+        paddingTop: '68px'
       }}>
         <div style={{
           maxWidth: '1400px',
@@ -214,9 +214,11 @@ function Notifications() {
               }}>
                 <div style={{
                   fontSize: '48px',
-                  marginBottom: '24px'
+                  marginBottom: '24px',
+                  color: theme.colors.text.secondary,
+                  opacity: 0.3
                 }}>
-                  🔔
+                  ○
                 </div>
                 <h3 style={{
                   fontSize: '16px',
