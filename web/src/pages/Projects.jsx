@@ -27,15 +27,23 @@ function Projects() {
   const fetchProjects = async () => {
     try {
       setLoading(true)
-      const { data } = await api.get('/api/projects', {
+
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('API timeout')), 5000)
+      )
+
+      const apiPromise = api.get('/api/projects', {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       })
+
+      const { data } = await Promise.race([apiPromise, timeoutPromise])
       setProjects(data.projects || [])
     } catch (error) {
       console.error('Failed to fetch projects:', error)
-      setProjects([])
+      setProjects([]) // This will make the page render with empty state
     } finally {
-      setLoading(false)
+      setLoading(false) // CRITICAL: Always set loading to false
     }
   }
 

@@ -27,8 +27,13 @@ function Collaboration() {
       setLoading(true)
       const token = localStorage.getItem('token')
 
-      // Fetch collaboration data from APIs
-      const [teamResponse, activityResponse, collaborationsResponse] = await Promise.all([
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('API timeout')), 5000)
+      )
+
+      // Fetch collaboration data from APIs with timeout
+      const apiPromise = Promise.all([
         api.get('/api/team', {
           headers: { Authorization: `Bearer ${token}` }
         }),
@@ -40,17 +45,22 @@ function Collaboration() {
         })
       ])
 
+      const [teamResponse, activityResponse, collaborationsResponse] = await Promise.race([
+        apiPromise,
+        timeoutPromise
+      ])
+
       setTeamMembers(teamResponse.data.team || [])
       setRecentActivity(activityResponse.data.activity || [])
       setActiveCollaborations(collaborationsResponse.data.collaborations || [])
     } catch (error) {
       console.error('Failed to fetch collaboration data:', error)
-      // Set empty arrays for clean state
+      // Set empty arrays for clean state - this will make the page render
       setTeamMembers([])
       setRecentActivity([])
       setActiveCollaborations([])
     } finally {
-      setLoading(false)
+      setLoading(false) // CRITICAL: Always set loading to false
     }
   }
 

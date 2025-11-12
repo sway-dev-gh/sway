@@ -30,14 +30,24 @@ function WorkflowDashboard() {
       setLoading(true)
       const token = localStorage.getItem('token')
 
-      // Fetch real review data from API
-      const [reviewsResponse, reviewersResponse] = await Promise.all([
+      // Add timeout to prevent hanging
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('API timeout')), 5000)
+      )
+
+      // Fetch real review data from API with timeout
+      const apiPromise = Promise.all([
         api.get('/api/reviews', {
           headers: { Authorization: `Bearer ${token}` }
         }),
         api.get('/api/reviewers', {
           headers: { Authorization: `Bearer ${token}` }
         })
+      ])
+
+      const [reviewsResponse, reviewersResponse] = await Promise.race([
+        apiPromise,
+        timeoutPromise
       ])
 
       const reviews = reviewsResponse.data.reviews || []
@@ -51,7 +61,7 @@ function WorkflowDashboard() {
       })
     } catch (error) {
       console.error('Failed to fetch stats:', error)
-      // Set to actual zeros, not fake data
+      // Set to actual zeros, not fake data - this will make the page render
       setStats({
         totalReviews: 0,
         pendingReviews: 0,
@@ -59,7 +69,7 @@ function WorkflowDashboard() {
         totalReviewers: 0
       })
     } finally {
-      setLoading(false)
+      setLoading(false) // CRITICAL: Always set loading to false
     }
   }
 
