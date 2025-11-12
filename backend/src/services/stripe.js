@@ -24,44 +24,23 @@ const PLANS = {
   PRO: {
     id: 'pro',
     name: 'Pro',
-    price: 2900, // $29.00 in cents
+    price: 1500, // $15.00 in cents
     currency: 'usd',
     interval: 'month',
     stripePriceId: 'price_1SRM4OHh6kpeQiCo8U0xxGT5', // Your real Stripe price ID
     features: {
-      maxWorkspaces: 25,
-      maxFiles: 1000,
-      maxCollaborators: 50,
+      maxWorkspaces: -1, // Unlimited
+      maxFiles: -1, // Unlimited
+      maxCollaborators: -1, // Unlimited
       storageGB: 100,
       maxFileSizeMB: 500,
       guestLinks: true,
       prioritySupport: true,
       advancedCollaboration: true,
       customBranding: true,
-      apiAccess: true
-    }
-  },
-  ENTERPRISE: {
-    id: 'enterprise',
-    name: 'Enterprise',
-    price: 9900, // $99.00 in cents
-    currency: 'usd',
-    interval: 'month',
-    stripePriceId: 'price_0987654321...', // Set in Stripe dashboard
-    features: {
-      maxWorkspaces: -1, // Unlimited
-      maxFiles: -1, // Unlimited
-      maxCollaborators: -1, // Unlimited
-      storageGB: 1000,
-      maxFileSizeMB: 2000,
-      guestLinks: true,
-      prioritySupport: true,
-      advancedCollaboration: true,
-      customBranding: true,
       apiAccess: true,
-      sso: true,
-      auditLogs: true,
-      dedicatedSupport: true
+      teamCollaboration: true,
+      prioritySupport: true
     }
   }
 }
