@@ -15,6 +15,7 @@ const stripeRoutes = require('./routes/stripe')
 const adminRoutes = require('./routes/admin')
 const analyticsRoutes = require('./routes/analytics')
 const aiRoutes = require('./routes/ai')
+const migrateRoutes = require('./routes/migrate')
 
 // Collaboration features
 const teamRoutes = require('./routes/team')
@@ -55,6 +56,7 @@ app.use('/api/stripe', stripeRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/analytics', analyticsRoutes)
 app.use('/api/ai', aiRoutes)
+app.use('/api/migrate', migrateRoutes)
 
 // Collaboration features
 app.use('/api/team', teamRoutes)
