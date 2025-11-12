@@ -15,6 +15,13 @@ const stripeRoutes = require('./routes/stripe')
 const adminRoutes = require('./routes/admin')
 const analyticsRoutes = require('./routes/analytics')
 const aiRoutes = require('./routes/ai')
+
+// Collaboration features
+const teamRoutes = require('./routes/team')
+const projectRoutes = require('./routes/projects')
+const reviewRoutes = require('./routes/reviews')
+const collaborationRoutes = require('./routes/collaborations')
+const activityRoutes = require('./routes/activity')
 const pool = require('./db/pool')
 
 const app = express()
@@ -48,6 +55,13 @@ app.use('/api/stripe', stripeRoutes)
 app.use('/api/admin', adminRoutes)
 app.use('/api/analytics', analyticsRoutes)
 app.use('/api/ai', aiRoutes)
+
+// Collaboration features
+app.use('/api/team', teamRoutes)
+app.use('/api/projects', projectRoutes)
+app.use('/api/reviews', reviewRoutes)
+app.use('/api/collaborations', collaborationRoutes)
+app.use('/api/activity', activityRoutes)
 
 // Health check
 app.get('/health', (req, res) => {
