@@ -59,13 +59,13 @@ const Dashboard = () => {
 
   const getStatusColor = (status) => {
     const statusMap = {
-      'draft': '#666666',
+      'draft': '#ffffff',
       'under_review': '#ffffff',
       'changes_requested': '#ff6b6b',
       'approved': '#51cf66',
       'delivered': '#4c6ef5'
     }
-    return statusMap[status] || '#666666'
+    return statusMap[status] || '#ffffff'
   }
 
   const getStatusLabel = (status) => {
@@ -80,15 +80,7 @@ const Dashboard = () => {
   }
 
   const getActivityIcon = (type) => {
-    const iconMap = {
-      'project_created': '📁',
-      'file_uploaded': '📄',
-      'comment_added': '💬',
-      'section_approved': '✅',
-      'changes_requested': '❌',
-      'project_completed': '🎉'
-    }
-    return iconMap[type] || '•'
+    return '•'
   }
 
   if (loading) {
@@ -146,7 +138,7 @@ const Dashboard = () => {
               </h1>
               <p style={{
                 fontSize: '16px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 margin: '0'
               }}>
                 Manage your creative and code review projects
@@ -177,32 +169,17 @@ const Dashboard = () => {
             marginBottom: '48px'
           }}>
             <div style={{
-              background: 'linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '12px',
-              padding: '24px',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-              transition: 'all 0.3s ease',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.transform = 'translateY(-2px)'
-              e.target.style.boxShadow = '0 12px 32px rgba(0, 0, 0, 0.6)'
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.4)'
+              background: '#000000',
+              border: '1px solid #ffffff',
+              borderRadius: '4px',
+              padding: '24px'
             }}>
               <div style={{
                 fontSize: '12px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 textTransform: 'uppercase',
-                marginBottom: '8px',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px'
+                marginBottom: '8px'
               }}>
-                <span style={{ fontSize: '16px' }}>📊</span>
                 Total Projects
               </div>
               <div style={{
@@ -215,14 +192,14 @@ const Dashboard = () => {
             </div>
 
             <div style={{
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px',
               padding: '24px'
             }}>
               <div style={{
                 fontSize: '12px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 textTransform: 'uppercase',
                 marginBottom: '8px'
               }}>
@@ -238,14 +215,14 @@ const Dashboard = () => {
             </div>
 
             <div style={{
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px',
               padding: '24px'
             }}>
               <div style={{
                 fontSize: '12px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 textTransform: 'uppercase',
                 marginBottom: '8px'
               }}>
@@ -261,14 +238,14 @@ const Dashboard = () => {
             </div>
 
             <div style={{
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px',
               padding: '24px'
             }}>
               <div style={{
                 fontSize: '12px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 textTransform: 'uppercase',
                 marginBottom: '8px'
               }}>
@@ -313,18 +290,17 @@ const Dashboard = () => {
                       key={project.id}
                       onClick={() => navigate(`/projects/${project.id}`)}
                       style={{
-                        background: '#1a1a1a',
+                        background: '#000000',
                         border: '1px solid #333333',
                         borderRadius: '8px',
                         padding: '20px',
                         cursor: 'pointer',
-                        transition: 'all 0.2s ease'
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.borderColor = '#666666'
+                        e.target.style.borderColor = '#ffffff'
                       }}
                       onMouseLeave={(e) => {
-                        e.target.style.borderColor = '#333333'
+                        e.target.style.borderColor = '#ffffff'
                       }}
                     >
                       <div style={{
@@ -344,7 +320,7 @@ const Dashboard = () => {
                           </h3>
                           <p style={{
                             fontSize: '14px',
-                            color: '#a3a3a3',
+                            color: '#ffffff',
                             margin: '0 0 12px 0',
                             lineHeight: '1.4'
                           }}>
@@ -381,7 +357,7 @@ const Dashboard = () => {
                       onClick={() => navigate('/projects')}
                       style={{
                         background: 'transparent',
-                        color: '#a3a3a3',
+                        color: '#ffffff',
                         border: '1px solid #333333',
                         borderRadius: '8px',
                         padding: '16px',
@@ -397,7 +373,7 @@ const Dashboard = () => {
                 </div>
               ) : (
                 <div style={{
-                  background: '#1a1a1a',
+                  background: '#000000',
                   border: '1px solid #333333',
                   borderRadius: '8px',
                   padding: '40px',
@@ -413,7 +389,7 @@ const Dashboard = () => {
                   </h3>
                   <p style={{
                     fontSize: '14px',
-                    color: '#a3a3a3',
+                    color: '#ffffff',
                     margin: '0 0 20px 0'
                   }}>
                     Create your first review project to get started
@@ -449,7 +425,7 @@ const Dashboard = () => {
               </h2>
 
               <div style={{
-                background: '#1a1a1a',
+                background: '#000000',
                 border: '1px solid #333333',
                 borderRadius: '8px',
                 padding: '20px'
@@ -498,7 +474,7 @@ const Dashboard = () => {
                 ) : (
                   <div style={{
                     textAlign: 'center',
-                    color: '#a3a3a3',
+                    color: '#ffffff',
                     fontSize: '14px',
                     padding: '20px'
                   }}>
@@ -530,7 +506,7 @@ const Dashboard = () => {
               <button
                 onClick={() => navigate('/projects')}
                 style={{
-                  background: '#1a1a1a',
+                  background: '#000000',
                   border: '1px solid #333333',
                   borderRadius: '8px',
                   padding: '20px',
@@ -542,13 +518,12 @@ const Dashboard = () => {
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.borderColor = '#666666'
+                  e.target.style.borderColor = '#ffffff'
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#333333'
+                  e.target.style.borderColor = '#ffffff'
                 }}
               >
-                <div style={{ marginBottom: '8px', fontSize: '16px' }}>📁</div>
                 <div style={{ marginBottom: '4px', fontWeight: '600' }}>Create New Project</div>
                 <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Start a new review project</div>
               </button>
@@ -556,7 +531,7 @@ const Dashboard = () => {
               <button
                 onClick={() => navigate('/projects')}
                 style={{
-                  background: '#1a1a1a',
+                  background: '#000000',
                   border: '1px solid #333333',
                   borderRadius: '8px',
                   padding: '20px',
@@ -568,13 +543,12 @@ const Dashboard = () => {
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.borderColor = '#666666'
+                  e.target.style.borderColor = '#ffffff'
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#333333'
+                  e.target.style.borderColor = '#ffffff'
                 }}
               >
-                <div style={{ marginBottom: '8px', fontSize: '16px' }}>👥</div>
                 <div style={{ marginBottom: '4px', fontWeight: '600' }}>Manage Collaborators</div>
                 <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Invite reviewers to projects</div>
               </button>
@@ -582,7 +556,7 @@ const Dashboard = () => {
               <button
                 onClick={() => navigate('/settings')}
                 style={{
-                  background: '#1a1a1a',
+                  background: '#000000',
                   border: '1px solid #333333',
                   borderRadius: '8px',
                   padding: '20px',
@@ -594,13 +568,12 @@ const Dashboard = () => {
                   transition: 'all 0.2s ease'
                 }}
                 onMouseEnter={(e) => {
-                  e.target.style.borderColor = '#666666'
+                  e.target.style.borderColor = '#ffffff'
                 }}
                 onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#333333'
+                  e.target.style.borderColor = '#ffffff'
                 }}
               >
-                <div style={{ marginBottom: '8px', fontSize: '16px' }}>⚙️</div>
                 <div style={{ marginBottom: '4px', fontWeight: '600' }}>Account Settings</div>
                 <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Manage your account</div>
               </button>

@@ -124,15 +124,15 @@ function Sidebar({ children }) {
     {
       label: 'Main',
       items: [
-        { path: '/dashboard', label: 'Dashboard', icon: '📊', planRequired: null },
-        { path: '/projects', label: 'Projects', icon: '🚀', planRequired: null }
+        { path: '/dashboard', label: 'Dashboard', planRequired: null },
+        { path: '/projects', label: 'Projects', planRequired: null }
       ]
     },
     {
       label: 'Tools',
       items: [
-        { path: '/uploads', label: 'Files', icon: '📁', planRequired: null },
-        { path: '/settings', label: 'Settings', icon: '⚙️', planRequired: null }
+        { path: '/uploads', label: 'Files', planRequired: null },
+        { path: '/settings', label: 'Settings', planRequired: null }
       ]
     }
   ]
@@ -294,7 +294,6 @@ function Sidebar({ children }) {
                     aria-current={isActive ? 'page' : undefined}
                     style={navLinkStyle(isActive)}
                   >
-                    {item.icon && <span style={{ marginRight: '8px', fontSize: '16px' }}>{item.icon}</span>}
                     {item.label}
                   </Link>
                 )
@@ -523,7 +522,6 @@ function Sidebar({ children }) {
                     opacity: locked ? 0.5 : 1
                   }}
                 >
-                  {item.icon && <span style={{ marginRight: '8px', fontSize: '16px' }}>{item.icon}</span>}
                   {item.label}
                   {locked && (
                     <span style={{
