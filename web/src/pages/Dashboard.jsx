@@ -198,8 +198,8 @@ function Dashboard() {
     return (
       <div style={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-        color: '#334155',
+        background: '#000000',
+        color: '#ffffff',
         padding: '0'
       }}>
           <div style={{
@@ -216,7 +216,7 @@ function Dashboard() {
                 fontSize: '36px',
                 fontWeight: '700',
                 margin: '0 0 16px 0',
-                color: '#334155',
+                color: '#ffffff',
                 letterSpacing: '-0.02em'
               }}>
                 Choose your workspace
@@ -246,24 +246,11 @@ function Dashboard() {
                   key={workspace.id}
                   onClick={() => setSelectedWorkspace(workspace)}
                   style={{
-                    background: '#ffffff',
-                    border: '1px solid #e2e8f0',
-                    borderRadius: '16px',
+                    background: '#000000',
+                    border: '1px solid #525252',
+                    borderRadius: '8px',
                     padding: '32px',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
-                    position: 'relative',
-                    overflow: 'hidden'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)'
-                    e.currentTarget.style.borderColor = workspace.color
-                    e.currentTarget.style.boxShadow = `0 8px 32px ${workspace.color}20`
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0px)'
-                    e.currentTarget.style.borderColor = '#e2e8f0'
-                    e.currentTarget.style.boxShadow = 'none'
+                    cursor: 'pointer'
                   }}
                 >
                   {/* Status Badge */}
@@ -276,7 +263,7 @@ function Dashboard() {
                     gap: '6px',
                     fontSize: '11px',
                     fontWeight: '600',
-                    color: workspace.active ? '#10b981' : '#6b7280',
+                    color: workspace.active ? '#ffffff' : '#a3a3a3',
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em'
                   }}>
@@ -284,32 +271,16 @@ function Dashboard() {
                       width: '6px',
                       height: '6px',
                       borderRadius: '50%',
-                      background: workspace.active ? '#10b981' : '#6b7280'
+                      background: workspace.active ? '#ffffff' : '#a3a3a3'
                     }} />
                     {workspace.active ? 'Active' : 'Inactive'}
-                  </div>
-
-                  {/* Workspace Icon */}
-                  <div style={{
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '12px',
-                    background: `${workspace.color}20`,
-                    border: `1px solid ${workspace.color}40`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '24px',
-                    fontSize: '24px'
-                  }}>
-                    🏢
                   </div>
 
                   {/* Workspace Info */}
                   <h3 style={{
                     fontSize: '20px',
                     fontWeight: '600',
-                    color: '#334155',
+                    color: '#ffffff',
                     margin: '0 0 8px 0'
                   }}>
                     {workspace.name}
@@ -333,7 +304,7 @@ function Dashboard() {
                       <div style={{
                         fontSize: '18px',
                         fontWeight: '600',
-                        color: '#334155',
+                        color: '#ffffff',
                         marginBottom: '4px'
                       }}>
                         {workspace.members}
@@ -351,7 +322,7 @@ function Dashboard() {
                       <div style={{
                         fontSize: '18px',
                         fontWeight: '600',
-                        color: '#334155',
+                        color: '#ffffff',
                         marginBottom: '4px'
                       }}>
                         {workspace.files}
@@ -376,7 +347,7 @@ function Dashboard() {
                     <span style={{
                       fontSize: '14px',
                       fontWeight: '500',
-                      color: workspace.color
+                      color: '#ffffff'
                     }}>
                       Enter workspace →
                     </span>
@@ -386,45 +357,22 @@ function Dashboard() {
 
               {/* Create New Workspace Card */}
               <div style={{
-                background: '#ffffff',
-                border: '2px dashed #e2e8f0',
-                borderRadius: '16px',
+                background: '#000000',
+                border: '2px dashed #525252',
+                borderRadius: '8px',
                 padding: '32px',
                 cursor: 'pointer',
-                transition: 'all 0.2s ease',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 textAlign: 'center',
                 minHeight: '300px'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#3b82f6'
-                e.currentTarget.style.background = '#3b82f610'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = '#e2e8f0'
-                e.currentTarget.style.background = '#ffffff'
               }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  borderRadius: '12px',
-                  background: '#f1f5f9',
-                  border: '1px solid #e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '24px',
-                  fontSize: '24px'
-                }}>
-                  ➕
-                </div>
                 <h3 style={{
                   fontSize: '18px',
                   fontWeight: '600',
-                  color: '#334155',
+                  color: '#ffffff',
                   margin: '0 0 8px 0'
                 }}>
                   Create New Workspace
@@ -442,16 +390,16 @@ function Dashboard() {
 
             {/* Recent Activity Preview */}
             <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '12px',
+              background: '#000000',
+              border: '1px solid #525252',
+              borderRadius: '8px',
               padding: '32px',
               textAlign: 'center'
             }}>
               <h2 style={{
                 fontSize: '18px',
                 fontWeight: '600',
-                color: '#334155',
+                color: '#ffffff',
                 margin: '0 0 16px 0'
               }}>
                 Quick Overview
@@ -463,7 +411,7 @@ function Dashboard() {
                 marginTop: '24px'
               }}>
                 <div>
-                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#334155', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
                     {workspaces.reduce((sum, w) => sum + w.members, 0)}
                   </div>
                   <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -471,7 +419,7 @@ function Dashboard() {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#334155', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
                     {workspaces.filter(w => w.active).length}
                   </div>
                   <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -479,7 +427,7 @@ function Dashboard() {
                   </div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#334155', marginBottom: '4px' }}>
+                  <div style={{ fontSize: '24px', fontWeight: '700', color: '#ffffff', marginBottom: '4px' }}>
                     {workspaces.reduce((sum, w) => sum + w.files, 0)}
                   </div>
                   <div style={{ fontSize: '12px', color: '#a3a3a3', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -497,8 +445,8 @@ function Dashboard() {
   return (
     <div style={{
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-      color: '#1e293b',
+      background: '#000000',
+      color: '#ffffff',
       padding: '0'
     }}>
         <div style={{
@@ -520,7 +468,7 @@ function Dashboard() {
                 onClick={() => setSelectedWorkspace(null)}
                 style={{
                   background: 'transparent',
-                  border: '1px solid #e2e8f0',
+                  border: '1px solid #525252',
                   color: '#a3a3a3',
                   padding: '8px',
                   borderRadius: '6px',
@@ -534,23 +482,11 @@ function Dashboard() {
               </button>
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '6px',
-                    background: `${selectedWorkspace.color}20`,
-                    border: `1px solid ${selectedWorkspace.color}40`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    🏢
-                  </div>
                   <h1 style={{
                     fontSize: '32px',
                     fontWeight: '600',
                     margin: '0',
-                    color: '#334155',
+                    color: '#ffffff',
                     letterSpacing: '-0.01em'
                   }}>
                     {selectedWorkspace.name}
@@ -573,8 +509,8 @@ function Dashboard() {
             }}>
               <button style={{
                 background: 'transparent',
-                border: '1px solid #e2e8f0',
-                color: '#334155',
+                border: '1px solid #525252',
+                color: '#ffffff',
                 padding: '12px 20px',
                 borderRadius: '6px',
                 fontSize: '14px',
@@ -584,11 +520,11 @@ function Dashboard() {
                 alignItems: 'center',
                 gap: '8px'
               }}>
-                + Invite Member
+                Invite Member
               </button>
               <Link to="/requests" style={{
-                background: selectedWorkspace.color,
-                color: '#334155',
+                background: '#ffffff',
+                color: '#000000',
                 padding: '12px 20px',
                 borderRadius: '6px',
                 textDecoration: 'none',
@@ -596,19 +532,18 @@ function Dashboard() {
                 fontWeight: '500',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px',
-                transition: 'all 0.2s ease'
+                gap: '8px'
               }}>
-                + New Project
+                New Project
               </Link>
             </div>
           </div>
 
           {/* Integrated Navigation Within Workspace */}
           <div style={{
-            background: '#ffffff',
-            border: '1px solid #e2e8f0',
-            borderRadius: '12px',
+            background: '#000000',
+            border: '1px solid #525252',
+            borderRadius: '8px',
             padding: '8px',
             marginBottom: '32px',
             display: 'flex',
@@ -621,15 +556,14 @@ function Dashboard() {
               textDecoration: 'none',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#334155',
-              background: selectedWorkspace.color,
+              color: '#000000',
+              background: '#ffffff',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.15s ease'
+              whiteSpace: 'nowrap'
             }}>
-              🚀 Projects
+              Projects
             </Link>
             <Link to="/collaboration" style={{
               padding: '12px 20px',
@@ -637,17 +571,14 @@ function Dashboard() {
               textDecoration: 'none',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#334155',
+              color: '#ffffff',
               background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.15s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-              ✅ Reviews
+              whiteSpace: 'nowrap'
+            }}>
+              Reviews
             </Link>
             <Link to="/uploads" style={{
               padding: '12px 20px',
@@ -655,17 +586,14 @@ function Dashboard() {
               textDecoration: 'none',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#334155',
+              color: '#ffffff',
               background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.15s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-              📁 Files
+              whiteSpace: 'nowrap'
+            }}>
+              Files
             </Link>
             <Link to="/clients" style={{
               padding: '12px 20px',
@@ -673,17 +601,14 @@ function Dashboard() {
               textDecoration: 'none',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#334155',
+              color: '#ffffff',
               background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.15s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-              👥 Team
+              whiteSpace: 'nowrap'
+            }}>
+              Team
             </Link>
             <Link to="/notifications" style={{
               padding: '12px 20px',
@@ -691,17 +616,14 @@ function Dashboard() {
               textDecoration: 'none',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#334155',
+              color: '#ffffff',
               background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.15s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-              🔔 Activity
+              whiteSpace: 'nowrap'
+            }}>
+              Activity
             </Link>
             <Link to="/settings" style={{
               padding: '12px 20px',
@@ -709,17 +631,14 @@ function Dashboard() {
               textDecoration: 'none',
               fontSize: '14px',
               fontWeight: '500',
-              color: '#334155',
+              color: '#ffffff',
               background: 'transparent',
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              whiteSpace: 'nowrap',
-              transition: 'all 0.15s ease'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.background = '#f8fafc'}
-            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}>
-              ⚙️ Settings
+              whiteSpace: 'nowrap'
+            }}>
+              Settings
             </Link>
           </div>
 
@@ -731,43 +650,23 @@ function Dashboard() {
             marginBottom: '48px'
           }}>
             <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '12px',
+              background: '#000000',
+              border: '1px solid #525252',
+              borderRadius: '8px',
               padding: '24px'
             }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginBottom: '16px'
+              <h3 style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#ffffff',
+                margin: '0 0 16px 0'
               }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  background: `${selectedWorkspace.color}20`,
-                  border: `1px solid ${selectedWorkspace.color}40`,
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '16px'
-                }}>
-                  👥
-                </div>
-                <h3 style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#334155',
-                  margin: '0'
-                }}>
-                  Team Members
-                </h3>
-              </div>
+                Team Members
+              </h3>
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#334155',
+                color: '#ffffff',
                 marginBottom: '4px'
               }}>
                 {selectedWorkspace.members}
@@ -781,43 +680,23 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '12px',
+              background: '#000000',
+              border: '1px solid #525252',
+              borderRadius: '8px',
               padding: '24px'
             }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginBottom: '16px'
+              <h3 style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#ffffff',
+                margin: '0 0 16px 0'
               }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  background: `${selectedWorkspace.color}20`,
-                  border: `1px solid ${selectedWorkspace.color}40`,
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '16px'
-                }}>
-                  📁
-                </div>
-                <h3 style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#334155',
-                  margin: '0'
-                }}>
-                  Shared Files
-                </h3>
-              </div>
+                Shared Files
+              </h3>
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#334155',
+                color: '#ffffff',
                 marginBottom: '4px'
               }}>
                 {selectedWorkspace.files}
@@ -831,43 +710,23 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '12px',
+              background: '#000000',
+              border: '1px solid #525252',
+              borderRadius: '8px',
               padding: '24px'
             }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginBottom: '16px'
+              <h3 style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#ffffff',
+                margin: '0 0 16px 0'
               }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  background: `${selectedWorkspace.color}20`,
-                  border: `1px solid ${selectedWorkspace.color}40`,
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '16px'
-                }}>
-                  ✅
-                </div>
-                <h3 style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#334155',
-                  margin: '0'
-                }}>
-                  Reviews
-                </h3>
-              </div>
+                Reviews
+              </h3>
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#334155',
+                color: '#ffffff',
                 marginBottom: '4px'
               }}>
                 8
@@ -881,43 +740,23 @@ function Dashboard() {
             </div>
 
             <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '12px',
+              background: '#000000',
+              border: '1px solid #525252',
+              borderRadius: '8px',
               padding: '24px'
             }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginBottom: '16px'
+              <h3 style={{
+                fontSize: '14px',
+                fontWeight: '600',
+                color: '#ffffff',
+                margin: '0 0 16px 0'
               }}>
-                <div style={{
-                  width: '40px',
-                  height: '40px',
-                  background: `${selectedWorkspace.color}20`,
-                  border: `1px solid ${selectedWorkspace.color}40`,
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '16px'
-                }}>
-                  🚀
-                </div>
-                <h3 style={{
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  color: '#334155',
-                  margin: '0'
-                }}>
-                  Projects
-                </h3>
-              </div>
+                Projects
+              </h3>
               <div style={{
                 fontSize: '24px',
                 fontWeight: '700',
-                color: '#334155',
+                color: '#ffffff',
                 marginBottom: '4px'
               }}>
                 5
@@ -940,15 +779,15 @@ function Dashboard() {
           }}>
             {/* Main Workspace Content */}
             <div style={{
-              background: '#ffffff',
-              border: '1px solid #e2e8f0',
-              borderRadius: '12px',
+              background: '#000000',
+              border: '1px solid #525252',
+              borderRadius: '8px',
               padding: '32px'
             }}>
               <h2 style={{
                 fontSize: '20px',
                 fontWeight: '600',
-                color: '#334155',
+                color: '#ffffff',
                 margin: '0 0 24px 0'
               }}>
                 Workspace Activity
@@ -962,8 +801,8 @@ function Dashboard() {
                 marginBottom: '32px'
               }}>
                 <button style={{
-                  background: selectedWorkspace.color,
-                  color: '#334155',
+                  background: '#ffffff',
+                  color: '#000000',
                   border: 'none',
                   padding: '16px 20px',
                   borderRadius: '8px',
@@ -973,15 +812,14 @@ function Dashboard() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  transition: 'all 0.2s ease'
+                  gap: '8px'
                 }}>
-                  📄 New Project
+                  New Project
                 </button>
                 <button style={{
                   background: 'transparent',
-                  color: '#334155',
-                  border: '1px solid #e2e8f0',
+                  color: '#ffffff',
+                  border: '1px solid #525252',
                   padding: '16px 20px',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -990,15 +828,14 @@ function Dashboard() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  transition: 'all 0.2s ease'
+                  gap: '8px'
                 }}>
-                  📁 Share Files
+                  Share Files
                 </button>
                 <button style={{
                   background: 'transparent',
-                  color: '#334155',
-                  border: '1px solid #e2e8f0',
+                  color: '#ffffff',
+                  border: '1px solid #525252',
                   padding: '16px 20px',
                   borderRadius: '8px',
                   fontSize: '14px',
@@ -1007,10 +844,9 @@ function Dashboard() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '8px',
-                  transition: 'all 0.2s ease'
+                  gap: '8px'
                 }}>
-                  ✅ Review
+                  Review
                 </button>
               </div>
 
@@ -1019,7 +855,7 @@ function Dashboard() {
                 <h3 style={{
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: '#334155',
+                  color: '#ffffff',
                   margin: '0 0 16px 0'
                 }}>
                   Recent Files
@@ -1040,26 +876,14 @@ function Dashboard() {
                       alignItems: 'center',
                       gap: '12px',
                       padding: '12px',
-                      background: '#f8fafc',
+                      background: '#000000',
                       borderRadius: '6px',
-                      border: '1px solid #e2e8f0'
+                      border: '1px solid #525252'
                     }}>
-                      <div style={{
-                        width: '32px',
-                        height: '32px',
-                        background: '#e2e8f0',
-                        borderRadius: '4px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '12px'
-                      }}>
-                        📄
-                      </div>
                       <div style={{ flex: 1 }}>
                         <div style={{
                           fontSize: '13px',
-                          color: '#334155',
+                          color: '#ffffff',
                           fontWeight: '500',
                           marginBottom: '2px'
                         }}>
@@ -1076,7 +900,7 @@ function Dashboard() {
                         fontSize: '11px',
                         color: '#a3a3a3',
                         padding: '2px 6px',
-                        background: '#e2e8f0',
+                        background: '#525252',
                         borderRadius: '3px'
                       }}>
                         {file.type}
@@ -1090,9 +914,9 @@ function Dashboard() {
             {/* Team Sidebar */}
             <div>
               <div style={{
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                borderRadius: '12px',
+                background: '#000000',
+                border: '1px solid #525252',
+                borderRadius: '8px',
                 padding: '24px',
                 marginBottom: '24px'
               }}>
@@ -1105,7 +929,7 @@ function Dashboard() {
                   <h3 style={{
                     fontSize: '16px',
                     fontWeight: '600',
-                    color: '#334155',
+                    color: '#ffffff',
                     margin: '0'
                   }}>
                     Team Members
@@ -1114,7 +938,7 @@ function Dashboard() {
                     fontSize: '12px',
                     color: '#a3a3a3',
                     padding: '2px 6px',
-                    background: '#e2e8f0',
+                    background: '#525252',
                     borderRadius: '3px'
                   }}>
                     {selectedWorkspace.members}
@@ -1141,14 +965,14 @@ function Dashboard() {
                         position: 'relative',
                         width: '32px',
                         height: '32px',
-                        background: selectedWorkspace.color,
+                        background: '#525252',
                         borderRadius: '50%',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         fontSize: '12px',
                         fontWeight: '600',
-                        color: '#334155'
+                        color: '#ffffff'
                       }}>
                         {member.avatar}
                         {member.online && (
@@ -1158,8 +982,8 @@ function Dashboard() {
                             right: '-1px',
                             width: '10px',
                             height: '10px',
-                            background: '#10b981',
-                            border: '2px solid #ffffff',
+                            background: '#ffffff',
+                            border: '2px solid #000000',
                             borderRadius: '50%'
                           }} />
                         )}
@@ -1167,7 +991,7 @@ function Dashboard() {
                       <div>
                         <div style={{
                           fontSize: '13px',
-                          color: '#334155',
+                          color: '#ffffff',
                           fontWeight: '500'
                         }}>
                           {member.name}
@@ -1186,15 +1010,15 @@ function Dashboard() {
 
               {/* Workspace Notifications */}
               <div style={{
-                background: '#ffffff',
-                border: '1px solid #e2e8f0',
-                borderRadius: '12px',
+                background: '#000000',
+                border: '1px solid #525252',
+                borderRadius: '8px',
                 padding: '24px'
               }}>
                 <h3 style={{
                   fontSize: '16px',
                   fontWeight: '600',
-                  color: '#334155',
+                  color: '#ffffff',
                   margin: '0 0 16px 0'
                 }}>
                   Updates
@@ -1214,22 +1038,21 @@ function Dashboard() {
                       alignItems: 'flex-start',
                       gap: '8px',
                       padding: '8px',
-                      background: '#f8fafc',
+                      background: '#000000',
                       borderRadius: '4px'
                     }}>
                       <div style={{
                         width: '6px',
                         height: '6px',
                         borderRadius: '50%',
-                        background: notification.type === 'alert' ? '#f59e0b' :
-                                   notification.type === 'review' ? '#10b981' : selectedWorkspace.color,
+                        background: '#ffffff',
                         marginTop: '6px',
                         flexShrink: 0
                       }} />
                       <div>
                         <div style={{
                           fontSize: '12px',
-                          color: '#334155',
+                          color: '#ffffff',
                           lineHeight: '1.4'
                         }}>
                           {notification.text}
