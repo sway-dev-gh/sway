@@ -421,6 +421,7 @@ export const WorkspaceProvider = ({ children }) => {
     initializeAuth: async () => {
       const token = localStorage.getItem('token')
       if (token) {
+        dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
         try {
           const response = await apiService.getCurrentUser()
           dispatch({
@@ -428,10 +429,11 @@ export const WorkspaceProvider = ({ children }) => {
             payload: { user: response.user, token }
           })
           // Load workspaces after successful auth
-          actions.loadWorkspaces()
+          await actions.loadWorkspaces()
         } catch (error) {
           localStorage.removeItem('token')
           console.warn('Token validation failed:', error.message)
+          dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: false } })
         }
       }
     },
@@ -671,12 +673,13 @@ export const WorkspaceProvider = ({ children }) => {
 
     joinAsGuest: async (guestToken, guestName, workspaceId) => {
       try {
-        // For demo purposes, we'll simulate fetching workspace info
-        // In a real app, you'd validate the guest token with the backend
-        const workspace = state.workspaces.find(w => w.id === workspaceId) || {
+        // Create a guest workspace object - in a real app, you'd validate with the backend
+        const workspace = {
           id: workspaceId,
           name: 'Guest Workspace',
-          description: 'Collaborating as guest'
+          description: 'Collaborating as guest',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
         }
 
         dispatch({
@@ -686,20 +689,80 @@ export const WorkspaceProvider = ({ children }) => {
 
         actions.addActivity('guest_joined', `${guestName} joined as guest collaborator`, guestName)
 
-        // Load files for the workspace
-        if (workspace) {
-          actions.selectWorkspace(workspace)
-        }
+        // Load files for the guest workspace (simulate with empty array for now)
+        dispatch({
+          type: ACTIONS.LOAD_FILES,
+          payload: { files: [] }
+        })
+
       } catch (error) {
         dispatch({
           type: ACTIONS.SET_ERROR,
           payload: { error: error.message }
         })
+        throw error
       }
     },
 
     guestLogout: () => {
       dispatch({ type: ACTIONS.GUEST_LOGOUT })
+    },
+
+    upgradeGuestToAccount: async (name, email, password) => {
+      if (!state.isGuest) {
+        throw new Error('Only guest users can upgrade to an account')
+      }
+
+      // Store current guest data
+      const guestData = {
+        guestName: state.guestName,
+        workspace: state.currentWorkspace,
+        files: state.files,
+        sections: state.sections,
+        comments: state.comments,
+        activities: state.activities
+      }
+
+      try {
+        // Create new account
+        const response = await apiService.signup(name, email, password)
+        localStorage.setItem('token', response.token)
+
+        // Transfer guest data to new account
+        dispatch({
+          type: ACTIONS.LOGIN_SUCCESS,
+          payload: { user: response.user, token: response.token }
+        })
+
+        // Restore guest data under new account
+        if (guestData.workspace) {
+          dispatch({
+            type: ACTIONS.SELECT_WORKSPACE,
+            payload: { workspace: guestData.workspace }
+          })
+        }
+
+        if (guestData.files.length > 0) {
+          dispatch({
+            type: ACTIONS.LOAD_FILES,
+            payload: { files: guestData.files }
+          })
+        }
+
+        // Add upgrade activity
+        actions.addActivity('guest_upgraded', `${guestData.guestName} upgraded to account: ${response.user.name}`, response.user.name)
+
+        // Load actual workspaces now that user has an account
+        await actions.loadWorkspaces()
+
+        return response
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
     }
   }
 

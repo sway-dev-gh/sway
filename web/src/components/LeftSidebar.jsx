@@ -6,6 +6,8 @@ const LeftSidebar = () => {
   const [activeSection, setActiveSection] = useState('files')
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false)
   const [workspaceForm, setWorkspaceForm] = useState({ name: '', description: '', clientLink: '' })
+  const [showUpgradeForm, setShowUpgradeForm] = useState(false)
+  const [upgradeForm, setUpgradeForm] = useState({ name: '', email: '', password: '' })
 
   const sidebarSections = [
     { id: 'workspaces', label: 'Workspaces', icon: '◧' },
@@ -23,6 +25,22 @@ const LeftSidebar = () => {
       )
       setWorkspaceForm({ name: '', description: '', clientLink: '' })
       setShowCreateWorkspace(false)
+    }
+  }
+
+  const handleUpgradeToAccount = async () => {
+    if (upgradeForm.name.trim() && upgradeForm.email.trim() && upgradeForm.password.trim()) {
+      try {
+        await actions.upgradeGuestToAccount(
+          upgradeForm.name.trim(),
+          upgradeForm.email.trim(),
+          upgradeForm.password.trim()
+        )
+        setUpgradeForm({ name: '', email: '', password: '' })
+        setShowUpgradeForm(false)
+      } catch (error) {
+        alert('Failed to upgrade to account: ' + error.message)
+      }
     }
   }
 
@@ -543,12 +561,131 @@ const LeftSidebar = () => {
         Focused View
       </label>
 
+      {/* Guest Upgrade Section */}
+      {state.isGuest && (
+        <div style={{ marginBottom: '16px' }}>
+          <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
+            Guest Account
+          </div>
+          <div style={{
+            fontSize: '10px',
+            color: '#666666',
+            marginBottom: '8px',
+            lineHeight: '1.4'
+          }}>
+            You're collaborating as {state.guestName}. Create an account to save your work and access more features.
+          </div>
+          {!showUpgradeForm ? (
+            <button
+              onClick={() => setShowUpgradeForm(true)}
+              style={{
+                width: '100%',
+                background: '#2ed573',
+                border: 'none',
+                color: '#000000',
+                padding: '8px 12px',
+                fontSize: '11px',
+                cursor: 'pointer',
+                fontWeight: 'bold'
+              }}
+            >
+              ⬆ Upgrade to Account
+            </button>
+          ) : (
+            <div style={{
+              border: '1px solid #333333',
+              background: '#111111',
+              padding: '12px'
+            }}>
+              <div style={{ fontSize: '10px', color: '#999999', marginBottom: '8px' }}>
+                Create your account - your work will be preserved!
+              </div>
+              <input
+                type="text"
+                placeholder="Your name"
+                value={upgradeForm.name}
+                onChange={(e) => setUpgradeForm({ ...upgradeForm, name: e.target.value })}
+                style={{
+                  width: '100%',
+                  background: '#000000',
+                  border: '1px solid #333333',
+                  color: '#ffffff',
+                  padding: '6px 8px',
+                  fontSize: '11px',
+                  marginBottom: '6px'
+                }}
+              />
+              <input
+                type="email"
+                placeholder="Email address"
+                value={upgradeForm.email}
+                onChange={(e) => setUpgradeForm({ ...upgradeForm, email: e.target.value })}
+                style={{
+                  width: '100%',
+                  background: '#000000',
+                  border: '1px solid #333333',
+                  color: '#ffffff',
+                  padding: '6px 8px',
+                  fontSize: '11px',
+                  marginBottom: '6px'
+                }}
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={upgradeForm.password}
+                onChange={(e) => setUpgradeForm({ ...upgradeForm, password: e.target.value })}
+                style={{
+                  width: '100%',
+                  background: '#000000',
+                  border: '1px solid #333333',
+                  color: '#ffffff',
+                  padding: '6px 8px',
+                  fontSize: '11px',
+                  marginBottom: '8px'
+                }}
+              />
+              <div style={{ display: 'flex', gap: '4px' }}>
+                <button
+                  onClick={handleUpgradeToAccount}
+                  style={{
+                    flex: 1,
+                    background: '#2ed573',
+                    color: '#000000',
+                    border: 'none',
+                    padding: '6px 8px',
+                    fontSize: '10px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Create Account
+                </button>
+                <button
+                  onClick={() => setShowUpgradeForm(false)}
+                  style={{
+                    background: 'none',
+                    color: '#ffffff',
+                    border: '1px solid #666666',
+                    padding: '6px 8px',
+                    fontSize: '10px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       <div style={{ marginBottom: '16px' }}>
         <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
           Account
         </div>
         <button
-          onClick={actions.logout}
+          onClick={state.isGuest ? actions.guestLogout : actions.logout}
           style={{
             width: '100%',
             background: '#111111',
@@ -560,7 +697,7 @@ const LeftSidebar = () => {
             textAlign: 'left'
           }}
         >
-          Sign Out
+          {state.isGuest ? 'Leave Session' : 'Sign Out'}
         </button>
       </div>
 

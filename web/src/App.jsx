@@ -22,7 +22,7 @@ const AuthenticatedApp = () => {
       return
     }
     actions.initializeAuth()
-  }, [guestToken])
+  }, [guestToken, actions])
 
   // Show guest form if accessing via guest link
   if (guestToken && !state.isAuthenticated) {
