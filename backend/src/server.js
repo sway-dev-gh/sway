@@ -152,3 +152,4 @@ app.listen(PORT, () => {
 
 // Export for Vercel serverless (if needed)
 module.exports = app
+// Force redeploy Tue Nov 11 21:13:01 PST 2025
