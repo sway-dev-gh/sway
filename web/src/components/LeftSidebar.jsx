@@ -479,10 +479,30 @@ const LeftSidebar = () => {
           SwayFiles
         </div>
         <div style={{
-          fontSize: '10px',
-          color: '#666666'
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px'
         }}>
-          v2.0
+          <div style={{
+            fontSize: '10px',
+            color: '#666666'
+          }}>
+            v2.0
+          </div>
+          <button
+            onClick={actions.logout}
+            style={{
+              background: 'none',
+              border: '1px solid #333333',
+              color: '#666666',
+              cursor: 'pointer',
+              fontSize: '10px',
+              padding: '2px 4px'
+            }}
+            title="Sign out"
+          >
+            ⏻
+          </button>
         </div>
       </div>
 

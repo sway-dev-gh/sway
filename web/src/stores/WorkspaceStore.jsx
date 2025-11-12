@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from 'react'
 import { v4 as uuidv4 } from 'uuid'
+import apiService from '../services/api'
 
 const WorkspaceContext = createContext()
 
@@ -14,6 +15,11 @@ const WORKFLOW_STATES = {
 
 // Initial state
 const initialState = {
+  // Authentication
+  isAuthenticated: false,
+  user: null,
+  token: localStorage.getItem('token') || null,
+
   // Current workspace
   currentWorkspace: null,
 
@@ -37,11 +43,21 @@ const initialState = {
   // UI state
   selectedFile: null,
   selectedSection: null,
-  focusedView: false
+  focusedView: false,
+
+  // Loading states
+  isLoading: false,
+  error: null
 }
 
 // Action types
 const ACTIONS = {
+  // Authentication
+  LOGIN_SUCCESS: 'LOGIN_SUCCESS',
+  LOGOUT: 'LOGOUT',
+  SET_LOADING: 'SET_LOADING',
+  SET_ERROR: 'SET_ERROR',
+
   CREATE_WORKSPACE: 'CREATE_WORKSPACE',
   SELECT_WORKSPACE: 'SELECT_WORKSPACE',
   UPDATE_WORKSPACE: 'UPDATE_WORKSPACE',
@@ -68,6 +84,47 @@ const ACTIONS = {
 // Reducer
 function workspaceReducer(state, action) {
   switch (action.type) {
+    case ACTIONS.LOGIN_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token,
+        isLoading: false,
+        error: null
+      }
+
+    case ACTIONS.LOGOUT:
+      localStorage.removeItem('token')
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+        token: null,
+        currentWorkspace: null,
+        workspaces: [],
+        files: [],
+        sections: {},
+        comments: {},
+        selectedFile: null,
+        selectedSection: null,
+        activities: [],
+        error: null
+      }
+
+    case ACTIONS.SET_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload.isLoading
+      }
+
+    case ACTIONS.SET_ERROR:
+      return {
+        ...state,
+        error: action.payload.error,
+        isLoading: false
+      }
+
     case ACTIONS.CREATE_WORKSPACE:
       const newWorkspace = {
         id: uuidv4(),
@@ -254,6 +311,70 @@ export const WorkspaceProvider = ({ children }) => {
 
   // Action creators
   const actions = {
+    // Authentication
+    login: async (email, password) => {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
+      try {
+        const response = await apiService.login(email, password)
+        localStorage.setItem('token', response.token)
+        dispatch({
+          type: ACTIONS.LOGIN_SUCCESS,
+          payload: { user: response.user, token: response.token }
+        })
+        actions.addActivity('user_login', `Signed in as ${response.user.name}`, response.user.name)
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    signup: async (name, email, password) => {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
+      try {
+        const response = await apiService.signup(name, email, password)
+        localStorage.setItem('token', response.token)
+        dispatch({
+          type: ACTIONS.LOGIN_SUCCESS,
+          payload: { user: response.user, token: response.token }
+        })
+        actions.addActivity('user_signup', `Created account for ${response.user.name}`, response.user.name)
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    logout: async () => {
+      try {
+        await apiService.logout()
+      } catch (error) {
+        console.warn('Logout API call failed:', error.message)
+      }
+      dispatch({ type: ACTIONS.LOGOUT })
+    },
+
+    initializeAuth: async () => {
+      const token = localStorage.getItem('token')
+      if (token) {
+        try {
+          const response = await apiService.getCurrentUser()
+          dispatch({
+            type: ACTIONS.LOGIN_SUCCESS,
+            payload: { user: response.user, token }
+          })
+        } catch (error) {
+          localStorage.removeItem('token')
+          console.warn('Token validation failed:', error.message)
+        }
+      }
+    },
+
     createWorkspace: (name, description, clientLink) => {
       dispatch({
         type: ACTIONS.CREATE_WORKSPACE,
