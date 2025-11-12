@@ -489,7 +489,7 @@ export const WorkspaceProvider = ({ children }) => {
         const response = await apiService.getProjects()
         const workspaces = response.map(project => ({
           id: project.id,
-          name: project.name,
+          name: project.title,  // Backend stores 'title', map to 'name' for frontend
           description: project.description,
           clientLink: project.client_link,
           createdAt: project.created_at,
@@ -511,14 +511,14 @@ export const WorkspaceProvider = ({ children }) => {
       dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
       try {
         const response = await apiService.createProject({
-          name,
+          title: name,  // Backend expects 'title' field, not 'name'
           description,
           client_link: clientLink
         })
         dispatch({
           type: ACTIONS.CREATE_WORKSPACE,
           payload: {
-            name: response.name,
+            name: response.title,  // Backend returns 'title', map to 'name' for frontend
             description: response.description,
             clientLink: response.client_link,
             id: response.id,
