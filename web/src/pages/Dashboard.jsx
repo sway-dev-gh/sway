@@ -5,14 +5,13 @@ import Sidebar from '../components/Sidebar'
 const Dashboard = () => {
   const navigate = useNavigate()
   const [projects, setProjects] = useState([])
-  const [recentActivity, setRecentActivity] = useState([])
+  const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState({
     totalProjects: 0,
     activeReviews: 0,
     pendingApprovals: 0,
     completedProjects: 0
   })
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     fetchDashboardData()
@@ -40,47 +39,11 @@ const Dashboard = () => {
           completedProjects: projectsList.filter(p => p.status === 'approved' || p.status === 'delivered').length
         })
       }
-
-      // Fetch recent activity
-      const activityRes = await fetch('/api/activity', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-
-      if (activityRes.ok) {
-        const activityData = await activityRes.json()
-        setRecentActivity(activityData.activity || [])
-      }
     } catch (error) {
       console.error('Failed to fetch dashboard data:', error)
     } finally {
       setLoading(false)
     }
-  }
-
-  const getStatusColor = (status) => {
-    const statusMap = {
-      'draft': '#ffffff',
-      'under_review': '#ffffff',
-      'changes_requested': '#ff6b6b',
-      'approved': '#51cf66',
-      'delivered': '#4c6ef5'
-    }
-    return statusMap[status] || '#ffffff'
-  }
-
-  const getStatusLabel = (status) => {
-    const statusMap = {
-      'draft': 'Draft',
-      'under_review': 'Under Review',
-      'changes_requested': 'Changes Requested',
-      'approved': 'Approved',
-      'delivered': 'Delivered'
-    }
-    return statusMap[status] || 'Draft'
-  }
-
-  const getActivityIcon = (type) => {
-    return '•'
   }
 
   if (loading) {
@@ -91,12 +54,14 @@ const Dashboard = () => {
           minHeight: '100vh',
           background: '#000000',
           color: '#ffffff',
-          paddingTop: '68px'
+          paddingTop: '68px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}>
           <div style={{
-            maxWidth: '1200px',
-            margin: '0 auto',
-            padding: '48px 32px'
+            fontSize: '18px',
+            fontWeight: '500'
           }}>
             Loading dashboard...
           </div>
@@ -115,77 +80,64 @@ const Dashboard = () => {
         paddingTop: '68px'
       }}>
         <div style={{
-          maxWidth: '1200px',
+          maxWidth: '1400px',
           margin: '0 auto',
-          padding: '48px 32px'
+          padding: '40px 24px'
         }}>
 
-          {/* Header */}
+          {/* Header Section */}
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: '48px'
+            marginBottom: '60px',
+            textAlign: 'center'
           }}>
-            <div>
-              <h1 style={{
-                fontSize: '32px',
-                fontWeight: '700',
-                color: '#ffffff',
-                margin: '0 0 8px 0'
-              }}>
-                Review Dashboard
-              </h1>
-              <p style={{
-                fontSize: '16px',
-                color: '#ffffff',
-                margin: '0'
-              }}>
-                Manage your creative and code review projects
-              </p>
-            </div>
-            <button
-              onClick={() => navigate('/projects')}
-              style={{
-                background: '#ffffff',
-                color: '#000000',
-                border: 'none',
-                borderRadius: '4px',
-                padding: '12px 24px',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
-            >
-              View All Projects
-            </button>
+            <h1 style={{
+              fontSize: '48px',
+              fontWeight: '800',
+              color: '#ffffff',
+              margin: '0 0 16px 0',
+              letterSpacing: '-0.02em'
+            }}>
+              Dashboard
+            </h1>
+            <p style={{
+              fontSize: '20px',
+              color: '#ffffff',
+              margin: '0',
+              fontWeight: '400'
+            }}>
+              Manage your review projects and track progress
+            </p>
           </div>
 
-          {/* Stats Grid */}
+          {/* Stats Cards */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '24px',
-            marginBottom: '48px'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gap: '32px',
+            marginBottom: '80px'
           }}>
             <div style={{
               background: '#000000',
-              border: '1px solid #ffffff',
-              borderRadius: '4px',
-              padding: '24px'
+              border: '2px solid #ffffff',
+              borderRadius: '8px',
+              padding: '32px',
+              textAlign: 'center'
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '14px',
                 color: '#ffffff',
                 textTransform: 'uppercase',
-                marginBottom: '8px'
+                fontWeight: '600',
+                letterSpacing: '0.1em',
+                marginBottom: '16px'
               }}>
                 Total Projects
               </div>
               <div style={{
-                fontSize: '32px',
-                fontWeight: '700',
-                color: '#ffffff'
+                fontSize: '56px',
+                fontWeight: '900',
+                color: '#ffffff',
+                lineHeight: '1'
               }}>
                 {stats.totalProjects}
               </div>
@@ -193,22 +145,26 @@ const Dashboard = () => {
 
             <div style={{
               background: '#000000',
-              border: '1px solid #333333',
+              border: '2px solid #ffffff',
               borderRadius: '8px',
-              padding: '24px'
+              padding: '32px',
+              textAlign: 'center'
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '14px',
                 color: '#ffffff',
                 textTransform: 'uppercase',
-                marginBottom: '8px'
+                fontWeight: '600',
+                letterSpacing: '0.1em',
+                marginBottom: '16px'
               }}>
                 Active Reviews
               </div>
               <div style={{
-                fontSize: '32px',
-                fontWeight: '700',
-                color: '#ffffff'
+                fontSize: '56px',
+                fontWeight: '900',
+                color: '#ffffff',
+                lineHeight: '1'
               }}>
                 {stats.activeReviews}
               </div>
@@ -216,22 +172,26 @@ const Dashboard = () => {
 
             <div style={{
               background: '#000000',
-              border: '1px solid #333333',
+              border: '2px solid #ffffff',
               borderRadius: '8px',
-              padding: '24px'
+              padding: '32px',
+              textAlign: 'center'
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '14px',
                 color: '#ffffff',
                 textTransform: 'uppercase',
-                marginBottom: '8px'
+                fontWeight: '600',
+                letterSpacing: '0.1em',
+                marginBottom: '16px'
               }}>
                 Pending Approvals
               </div>
               <div style={{
-                fontSize: '32px',
-                fontWeight: '700',
-                color: '#ffffff'
+                fontSize: '56px',
+                fontWeight: '900',
+                color: '#ffffff',
+                lineHeight: '1'
               }}>
                 {stats.pendingApprovals}
               </div>
@@ -239,167 +199,188 @@ const Dashboard = () => {
 
             <div style={{
               background: '#000000',
-              border: '1px solid #333333',
+              border: '2px solid #ffffff',
               borderRadius: '8px',
-              padding: '24px'
+              padding: '32px',
+              textAlign: 'center'
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '14px',
                 color: '#ffffff',
                 textTransform: 'uppercase',
-                marginBottom: '8px'
+                fontWeight: '600',
+                letterSpacing: '0.1em',
+                marginBottom: '16px'
               }}>
                 Completed Projects
               </div>
               <div style={{
-                fontSize: '32px',
-                fontWeight: '700',
-                color: '#ffffff'
+                fontSize: '56px',
+                fontWeight: '900',
+                color: '#ffffff',
+                lineHeight: '1'
               }}>
                 {stats.completedProjects}
               </div>
             </div>
           </div>
 
-          {/* Main Content Grid */}
+          {/* Actions Section */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: '2fr 1fr',
-            gap: '32px'
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+            gap: '24px',
+            marginBottom: '60px'
           }}>
+            <button
+              onClick={() => navigate('/projects')}
+              style={{
+                background: '#ffffff',
+                color: '#000000',
+                border: '2px solid #ffffff',
+                borderRadius: '8px',
+                padding: '40px 32px',
+                fontSize: '18px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                textAlign: 'center'
+              }}
+            >
+              <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
+                Manage Projects
+              </div>
+              <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
+                View all projects and create new ones
+              </div>
+            </button>
 
-            {/* Recent Projects */}
-            <div>
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: '600',
+            <button
+              onClick={() => navigate('/uploads')}
+              style={{
+                background: '#000000',
                 color: '#ffffff',
-                margin: '0 0 24px 0'
+                border: '2px solid #ffffff',
+                borderRadius: '8px',
+                padding: '40px 32px',
+                fontSize: '18px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                textAlign: 'center'
+              }}
+            >
+              <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
+                File Management
+              </div>
+              <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
+                Review and organize uploaded files
+              </div>
+            </button>
+
+            <button
+              onClick={() => navigate('/settings')}
+              style={{
+                background: '#000000',
+                color: '#ffffff',
+                border: '2px solid #ffffff',
+                borderRadius: '8px',
+                padding: '40px 32px',
+                fontSize: '18px',
+                fontWeight: '700',
+                cursor: 'pointer',
+                textAlign: 'center'
+              }}
+            >
+              <div style={{ marginBottom: '8px', fontSize: '20px', fontWeight: '800' }}>
+                Account Settings
+              </div>
+              <div style={{ fontSize: '14px', fontWeight: '500', opacity: 0.8 }}>
+                Manage your account preferences
+              </div>
+            </button>
+          </div>
+
+          {/* Recent Projects */}
+          {projects.length > 0 && (
+            <div style={{
+              marginBottom: '40px'
+            }}>
+              <h2 style={{
+                fontSize: '32px',
+                fontWeight: '700',
+                color: '#ffffff',
+                margin: '0 0 32px 0',
+                textAlign: 'center'
               }}>
                 Recent Projects
               </h2>
 
-              {projects.length > 0 ? (
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '16px'
-                }}>
-                  {projects.slice(0, 5).map(project => (
-                    <div
-                      key={project.id}
-                      onClick={() => navigate(`/projects/${project.id}`)}
-                      style={{
-                        background: '#000000',
-                        border: '1px solid #333333',
-                        borderRadius: '8px',
-                        padding: '20px',
-                        cursor: 'pointer',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.borderColor = '#ffffff'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.borderColor = '#ffffff'
-                      }}
-                    >
-                      <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-start',
-                        gap: '16px'
-                      }}>
-                        <div style={{ flex: 1 }}>
-                          <h3 style={{
-                            fontSize: '16px',
-                            fontWeight: '600',
-                            color: '#ffffff',
-                            margin: '0 0 8px 0'
-                          }}>
-                            {project.title}
-                          </h3>
-                          <p style={{
-                            fontSize: '14px',
-                            color: '#ffffff',
-                            margin: '0 0 12px 0',
-                            lineHeight: '1.4'
-                          }}>
-                            {project.description || 'No description'}
-                          </p>
-                          <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '16px',
-                            fontSize: '12px',
-                            color: '#a3a3a3'
-                          }}>
-                            <div>Files: {project.file_count || 0}</div>
-                            <div>Type: {project.type}</div>
-                          </div>
-                        </div>
-                        <div style={{
-                          padding: '4px 8px',
-                          background: getStatusColor(project.status),
-                          color: '#000000',
-                          borderRadius: '4px',
-                          fontSize: '12px',
-                          fontWeight: '500',
-                          textTransform: 'uppercase'
+              <div style={{
+                display: 'grid',
+                gap: '16px'
+              }}>
+                {projects.slice(0, 3).map(project => (
+                  <div
+                    key={project.id}
+                    onClick={() => navigate(`/projects/${project.id}`)}
+                    style={{
+                      background: '#000000',
+                      border: '1px solid #ffffff',
+                      borderRadius: '8px',
+                      padding: '24px',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '16px'
+                    }}>
+                      <div>
+                        <h3 style={{
+                          fontSize: '18px',
+                          fontWeight: '600',
+                          color: '#ffffff',
+                          margin: '0 0 8px 0'
                         }}>
-                          {getStatusLabel(project.status)}
-                        </div>
+                          {project.title}
+                        </h3>
+                        <p style={{
+                          fontSize: '14px',
+                          color: '#ffffff',
+                          margin: '0',
+                          opacity: 0.8
+                        }}>
+                          {project.description || 'No description'}
+                        </p>
+                      </div>
+                      <div style={{
+                        padding: '8px 16px',
+                        background: '#ffffff',
+                        color: '#000000',
+                        borderRadius: '4px',
+                        fontSize: '12px',
+                        fontWeight: '600',
+                        textTransform: 'uppercase'
+                      }}>
+                        {project.status?.replace('_', ' ') || 'Draft'}
                       </div>
                     </div>
-                  ))}
+                  </div>
+                ))}
+              </div>
 
-                  {projects.length > 5 && (
-                    <button
-                      onClick={() => navigate('/projects')}
-                      style={{
-                        background: 'transparent',
-                        color: '#ffffff',
-                        border: '1px solid #333333',
-                        borderRadius: '8px',
-                        padding: '16px',
-                        fontSize: '14px',
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                        textAlign: 'center'
-                      }}
-                    >
-                      View All {projects.length} Projects →
-                    </button>
-                  )}
-                </div>
-              ) : (
+              {projects.length > 3 && (
                 <div style={{
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  borderRadius: '8px',
-                  padding: '40px',
-                  textAlign: 'center'
+                  textAlign: 'center',
+                  marginTop: '24px'
                 }}>
-                  <h3 style={{
-                    fontSize: '18px',
-                    fontWeight: '600',
-                    color: '#ffffff',
-                    margin: '0 0 8px 0'
-                  }}>
-                    No projects yet
-                  </h3>
-                  <p style={{
-                    fontSize: '14px',
-                    color: '#ffffff',
-                    margin: '0 0 20px 0'
-                  }}>
-                    Create your first review project to get started
-                  </p>
                   <button
                     onClick={() => navigate('/projects')}
                     style={{
-                      background: '#ffffff',
-                      color: '#000000',
-                      border: 'none',
+                      background: 'transparent',
+                      color: '#ffffff',
+                      border: '1px solid #ffffff',
                       borderRadius: '4px',
                       padding: '12px 24px',
                       fontSize: '14px',
@@ -407,178 +388,12 @@ const Dashboard = () => {
                       cursor: 'pointer'
                     }}
                   >
-                    Create Project
+                    View All {projects.length} Projects
                   </button>
                 </div>
               )}
             </div>
-
-            {/* Recent Activity */}
-            <div>
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: '600',
-                color: '#ffffff',
-                margin: '0 0 24px 0'
-              }}>
-                Recent Activity
-              </h2>
-
-              <div style={{
-                background: '#000000',
-                border: '1px solid #333333',
-                borderRadius: '8px',
-                padding: '20px'
-              }}>
-                {recentActivity.length > 0 ? (
-                  <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '12px'
-                  }}>
-                    {recentActivity.slice(0, 8).map((activity, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                          gap: '12px',
-                          padding: '8px 0'
-                        }}
-                      >
-                        <div style={{
-                          fontSize: '14px',
-                          minWidth: '20px'
-                        }}>
-                          {getActivityIcon(activity.type)}
-                        </div>
-                        <div style={{ flex: 1 }}>
-                          <div style={{
-                            fontSize: '14px',
-                            color: '#ffffff',
-                            lineHeight: '1.4',
-                            marginBottom: '2px'
-                          }}>
-                            {activity.description}
-                          </div>
-                          <div style={{
-                            fontSize: '12px',
-                            color: '#a3a3a3'
-                          }}>
-                            {new Date(activity.created_at).toLocaleString()}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div style={{
-                    textAlign: 'center',
-                    color: '#ffffff',
-                    fontSize: '14px',
-                    padding: '20px'
-                  }}>
-                    No recent activity
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div style={{
-            marginTop: '48px'
-          }}>
-            <h2 style={{
-              fontSize: '20px',
-              fontWeight: '600',
-              color: '#ffffff',
-              margin: '0 0 24px 0'
-            }}>
-              Quick Actions
-            </h2>
-
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: '16px'
-            }}>
-              <button
-                onClick={() => navigate('/projects')}
-                style={{
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  borderRadius: '8px',
-                  padding: '20px',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.borderColor = '#ffffff'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#ffffff'
-                }}
-              >
-                <div style={{ marginBottom: '4px', fontWeight: '600' }}>Create New Project</div>
-                <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Start a new review project</div>
-              </button>
-
-              <button
-                onClick={() => navigate('/projects')}
-                style={{
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  borderRadius: '8px',
-                  padding: '20px',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.borderColor = '#ffffff'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#ffffff'
-                }}
-              >
-                <div style={{ marginBottom: '4px', fontWeight: '600' }}>Manage Collaborators</div>
-                <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Invite reviewers to projects</div>
-              </button>
-
-              <button
-                onClick={() => navigate('/settings')}
-                style={{
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  borderRadius: '8px',
-                  padding: '20px',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  fontWeight: '500',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.borderColor = '#ffffff'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.borderColor = '#ffffff'
-                }}
-              >
-                <div style={{ marginBottom: '4px', fontWeight: '600' }}>Account Settings</div>
-                <div style={{ color: '#a3a3a3', fontSize: '12px' }}>Manage your account</div>
-              </button>
-            </div>
-          </div>
+          )}
 
         </div>
       </div>

@@ -111,7 +111,7 @@ const Uploads = () => {
               </h1>
               <p style={{
                 fontSize: '16px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 margin: '0'
               }}>
                 Manage and review uploaded files
@@ -152,7 +152,7 @@ const Uploads = () => {
                 onClick={() => setFilter(tab.key)}
                 style={{
                   background: 'transparent',
-                  color: filter === tab.key ? '#ffffff' : '#a3a3a3',
+                  color: filter === tab.key ? '#ffffff' : '#ffffff',
                   border: 'none',
                   borderBottom: filter === tab.key ? '2px solid #ffffff' : '2px solid transparent',
                   padding: '16px 24px',
@@ -177,7 +177,7 @@ const Uploads = () => {
                 <div
                   key={upload.id}
                   style={{
-                    background: '#1a1a1a',
+                    background: '#000000',
                     border: '1px solid #333333',
                     borderRadius: '8px',
                     padding: '24px',
@@ -193,7 +193,7 @@ const Uploads = () => {
                     e.target.style.borderColor = '#666666'
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.borderColor = '#333333'
+                    e.target.style.borderColor = '#ffffff'
                   }}
                 >
                   <div style={{
@@ -235,7 +235,7 @@ const Uploads = () => {
                         alignItems: 'center',
                         gap: '24px',
                         fontSize: '14px',
-                        color: '#a3a3a3'
+                        color: '#ffffff'
                       }}>
                         <div>Size: {upload.size ? `${(upload.size / 1024 / 1024).toFixed(2)} MB` : 'Unknown'}</div>
                         <div>Type: {upload.type || 'Unknown'}</div>
@@ -248,7 +248,7 @@ const Uploads = () => {
                       {upload.description && (
                         <p style={{
                           fontSize: '14px',
-                          color: '#a3a3a3',
+                          color: '#ffffff',
                           margin: '12px 0 0 0',
                           lineHeight: '1.4'
                         }}>
@@ -268,7 +268,7 @@ const Uploads = () => {
             </div>
           ) : (
             <div style={{
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px',
               padding: '40px',
@@ -278,7 +278,7 @@ const Uploads = () => {
                 fontSize: '48px',
                 marginBottom: '16px'
               }}>
-                📁
+                •
               </div>
               <h3 style={{
                 fontSize: '18px',
@@ -290,7 +290,7 @@ const Uploads = () => {
               </h3>
               <p style={{
                 fontSize: '14px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 margin: '0 0 20px 0'
               }}>
                 {filter === 'all'

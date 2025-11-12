@@ -69,13 +69,13 @@ const Projects = () => {
 
   const getStatusColor = (status) => {
     const statusMap = {
-      'draft': '#666666',
+      'draft': '#ffffff',
       'under_review': '#ffffff',
       'changes_requested': '#ff6b6b',
       'approved': '#51cf66',
       'delivered': '#4c6ef5'
     }
-    return statusMap[status] || '#666666'
+    return statusMap[status] || '#ffffff'
   }
 
   const getStatusLabel = (status) => {
@@ -144,7 +144,7 @@ const Projects = () => {
               </h1>
               <p style={{
                 fontSize: '16px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 margin: '0'
               }}>
                 Manage creative and code review projects with section-based approvals
@@ -175,14 +175,14 @@ const Projects = () => {
             marginBottom: '48px'
           }}>
             <div style={{
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px',
               padding: '24px'
             }}>
               <div style={{
                 fontSize: '12px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 textTransform: 'uppercase',
                 marginBottom: '8px'
               }}>
@@ -198,14 +198,14 @@ const Projects = () => {
             </div>
 
             <div style={{
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px',
               padding: '24px'
             }}>
               <div style={{
                 fontSize: '12px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 textTransform: 'uppercase',
                 marginBottom: '8px'
               }}>
@@ -221,14 +221,14 @@ const Projects = () => {
             </div>
 
             <div style={{
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px',
               padding: '24px'
             }}>
               <div style={{
                 fontSize: '12px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 textTransform: 'uppercase',
                 marginBottom: '8px'
               }}>
@@ -255,18 +255,17 @@ const Projects = () => {
                   key={project.id}
                   onClick={() => openProject(project.id)}
                   style={{
-                    background: '#1a1a1a',
+                    background: '#000000',
                     border: '1px solid #333333',
                     borderRadius: '8px',
                     padding: '24px',
                     cursor: 'pointer',
-                    transition: 'all 0.2s ease'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.borderColor = '#666666'
+                    e.target.style.borderColor = '#ffffff'
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.borderColor = '#333333'
+                    e.target.style.borderColor = '#ffffff'
                   }}
                 >
                   <div style={{
@@ -286,7 +285,7 @@ const Projects = () => {
                       </h3>
                       <p style={{
                         fontSize: '14px',
-                        color: '#a3a3a3',
+                        color: '#ffffff',
                         margin: '0 0 16px 0',
                         lineHeight: '1.5'
                       }}>
@@ -298,7 +297,7 @@ const Projects = () => {
                         alignItems: 'center',
                         gap: '24px',
                         fontSize: '12px',
-                        color: '#a3a3a3'
+                        color: '#ffffff'
                       }}>
                         <div>
                           Files: {project.file_count || 0}
@@ -339,7 +338,7 @@ const Projects = () => {
                           <div style={{
                             width: '80px',
                             height: '4px',
-                            background: '#333333',
+                            background: '#ffffff',
                             borderRadius: '2px'
                           }}>
                             <div style={{
@@ -351,7 +350,7 @@ const Projects = () => {
                           </div>
                           <span style={{
                             fontSize: '12px',
-                            color: '#a3a3a3'
+                            color: '#ffffff'
                           }}>
                             {project.completion_percentage}%
                           </span>
@@ -366,7 +365,7 @@ const Projects = () => {
             <div style={{
               textAlign: 'center',
               padding: '80px 40px',
-              background: '#1a1a1a',
+              background: '#000000',
               border: '1px solid #333333',
               borderRadius: '8px'
             }}>
@@ -380,7 +379,7 @@ const Projects = () => {
               </h3>
               <p style={{
                 fontSize: '14px',
-                color: '#a3a3a3',
+                color: '#ffffff',
                 margin: '0 0 24px 0'
               }}>
                 Create your first review project to get started
@@ -418,7 +417,7 @@ const Projects = () => {
               zIndex: 1000
             }}>
               <div style={{
-                background: '#1a1a1a',
+                background: '#000000',
                 border: '1px solid #333333',
                 borderRadius: '8px',
                 padding: '32px',
@@ -540,7 +539,7 @@ const Projects = () => {
                       onClick={() => setShowCreate(false)}
                       style={{
                         background: 'transparent',
-                        color: '#a3a3a3',
+                        color: '#ffffff',
                         border: '1px solid #333333',
                         borderRadius: '4px',
                         padding: '12px 24px',
@@ -555,7 +554,7 @@ const Projects = () => {
                       type="submit"
                       disabled={creating || !newProject.title.trim()}
                       style={{
-                        background: creating || !newProject.title.trim() ? '#666666' : '#ffffff',
+                        background: creating || !newProject.title.trim() ? '#ffffff' : '#ffffff',
                         color: '#000000',
                         border: 'none',
                         borderRadius: '4px',
