@@ -26,6 +26,7 @@ function TopNavigation() {
     { path: '/dashboard', label: 'Dashboard' },
     { path: '/collaboration', label: 'Collaboration' },
     { path: '/projects', label: 'Reviews' },
+    { path: '/clients', label: 'Reviewers' },
     { path: '/notifications', label: 'Notifications' },
     { path: '/settings', label: 'Settings' }
   ]
@@ -50,7 +51,7 @@ function TopNavigation() {
       <div style={{
         display: 'flex',
         alignItems: 'center',
-        gap: '48px'
+        gap: '40px'
       }}>
 
         {/* Logo */}
@@ -82,7 +83,7 @@ function TopNavigation() {
         <div style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '24px'
+          gap: '20px'
         }}>
           {navItems.map((item) => (
             <Link
