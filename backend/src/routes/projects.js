@@ -4,12 +4,22 @@ const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
 const rateLimit = require('express-rate-limit')
 
-// Rate limiting
+// Rate limiting - production compatible configuration
 const projectLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 100 requests per window
   message: { error: 'Too many project requests. Please try again later.' },
-  validate: false // Disable strict IP validation for production compatibility
+  validate: false, // Disable strict IP validation
+  standardHeaders: true,
+  legacyHeaders: false,
+  // Use user ID for rate limiting if available, fallback to IP
+  keyGenerator: (req) => {
+    return req.userId || req.ip || req.connection.remoteAddress || 'anonymous'
+  },
+  // Skip rate limiting if we can't identify the request
+  skip: (req) => {
+    return !req.userId && !req.ip && !req.connection.remoteAddress
+  }
 })
 
 // Helper function to log activity
@@ -26,43 +36,83 @@ const logActivity = async (userId, action, resourceType, resourceId, metadata = 
 }
 
 // =====================================================
-// GET /api/projects/test - Test endpoint without rate limiter
-// =====================================================
-router.get('/test', authenticateToken, async (req, res) => {
-  res.json({
-    success: true,
-    message: 'Test endpoint works!',
-    userId: req.userId,
-    timestamp: new Date().toISOString()
-  })
-})
-
-// =====================================================
 // GET /api/projects - Get user's projects and shared projects
 // =====================================================
-router.get('/', authenticateToken, async (req, res) => {
+router.get('/', authenticateToken, projectLimiter, async (req, res) => {
   try {
-    console.log('=== PROJECTS ROUTE REACHED ===')
-    console.log('User ID:', req.userId)
+    const userId = req.userId
+    const { status, visibility } = req.query
 
-    // Return immediate empty response to test if this route even executes
+    // Simplified query - only query projects table to avoid schema issues
+    let ownedProjectsQuery = `
+      SELECT
+        p.*,
+        0 as collaborator_count,
+        0 as pending_reviews,
+        0 as file_count,
+        '{}' as collaborator_emails
+      FROM projects p
+      WHERE p.user_id = $1
+    `
+
+    const queryParams = [userId]
+    const conditions = []
+
+    if (status) {
+      queryParams.push(status)
+      conditions.push(`p.status = $${queryParams.length}`)
+    }
+
+    if (visibility) {
+      queryParams.push(visibility)
+      conditions.push(`p.visibility = $${queryParams.length}`)
+    }
+
+    if (conditions.length > 0) {
+      ownedProjectsQuery += ` AND ${conditions.join(' AND ')}`
+    }
+
+    ownedProjectsQuery += `
+      ORDER BY p.id DESC
+    `
+
+    // Simplified collaborating projects query - return empty array for now
+    const ownedResult = await pool.query(ownedProjectsQuery, queryParams)
+    const collaboratingResult = { rows: [] }
+
+    // Simple stats calculation
+    const statsQuery = `
+      SELECT
+        COUNT(*) as owned_projects,
+        COUNT(*) FILTER (WHERE p.status = 'active') as active_projects,
+        COUNT(*) FILTER (WHERE p.status = 'completed') as completed_projects
+      FROM projects p
+      WHERE p.user_id = $1
+    `
+
+    const statsResult = await pool.query(statsQuery, [userId])
+    const stats = statsResult.rows[0]
+
     res.json({
       success: true,
-      debug: 'Route handler executed successfully',
-      timestamp: new Date().toISOString(),
-      userId: req.userId,
-      projects: { owned: [], collaborating: [] },
-      stats: { owned_projects: 0, collaborating_projects: 0, active_projects: 0, completed_projects: 0, total_projects: 0 }
+      projects: {
+        owned: ownedResult.rows,
+        collaborating: collaboratingResult.rows
+      },
+      stats: {
+        owned_projects: parseInt(stats.owned_projects) || 0,
+        collaborating_projects: 0,
+        active_projects: parseInt(stats.active_projects) || 0,
+        completed_projects: parseInt(stats.completed_projects) || 0,
+        total_projects: ownedResult.rows.length
+      }
     })
 
   } catch (error) {
     console.error('Get projects error:', error)
-    console.error('Error stack:', error.stack)
-    console.error('Error details:', JSON.stringify(error, null, 2))
     res.status(500).json({
       error: 'Failed to fetch projects',
-      details: error.message, // Show error message in production for debugging
-      stack: error.stack
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
     })
   }
 })
