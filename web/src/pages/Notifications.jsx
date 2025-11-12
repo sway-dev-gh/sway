@@ -52,7 +52,7 @@ function Notifications() {
           notifs.push({
             id: `review-approved-${review.id}`,
             type: 'review_approved',
-            title: 'Review Approved ✓',
+            title: 'Review Approved',
             message: `"${review.title}" has been approved and is ready to proceed`,
             reviewId: review.id,
             timestamp: review.updatedAt || review.createdAt,
@@ -126,23 +126,23 @@ function Notifications() {
 
     switch (type) {
       case 'review_created':
-        icon = '📝'
+        icon = '•'
         color = '#a3a3a3'
         break
       case 'review_approved':
-        icon = '✅'
+        icon = '✓'
         color = theme.colors.white
         break
       case 'review_changes':
-        icon = '🔄'
+        icon = '↻'
         color = '#808080'
         break
       case 'review_deadline':
-        icon = '⏰'
+        icon = '!'
         color = '#525252'
         break
       default:
-        icon = '📌'
+        icon = '•'
         color = theme.colors.text.secondary
     }
 

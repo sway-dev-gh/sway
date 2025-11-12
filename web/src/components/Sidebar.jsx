@@ -5,7 +5,7 @@ import api from '../api/axios'
 import AdminModeActivator from './AdminModeActivator'
 import { getEffectivePlan, getPlanInfo } from '../utils/planUtils'
 
-function Sidebar() {
+function Sidebar({ children }) {
   const location = useLocation()
   const navigate = useNavigate()
   const [user, setUser] = useState({ email: '' })
@@ -601,6 +601,13 @@ function Sidebar() {
 
     {/* Admin Mode Activator */}
     <AdminModeActivator onActivate={handleAdminActivate} />
+
+    {/* Page Content */}
+    {children && (
+      <main style={{ paddingTop: '54px' }}>
+        {children}
+      </main>
+    )}
     </>
   )
 }
