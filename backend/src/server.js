@@ -145,7 +145,7 @@ cleanupExpiredRequests()
 
 // Start server (for Render, Railway, etc.)
 app.listen(PORT, () => {
-  console.log(`✓ Sway backend running on port ${PORT}`)
+  console.log(`✓ Sway backend running on port ${PORT} - Collaboration platform ready!`)
 })
 
 // Export for Vercel serverless (if needed)
