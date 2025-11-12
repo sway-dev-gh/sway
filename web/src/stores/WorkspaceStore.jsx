@@ -16,7 +16,7 @@ const WORKFLOW_STATES = {
 // Initial state
 const initialState = {
   // Authentication
-  isAuthenticated: !!localStorage.getItem('token'), // Auto-authenticate if token exists
+  isAuthenticated: false, // Don't auto-authenticate, let initializeAuth handle it
   user: null,
   token: localStorage.getItem('token') || null,
 

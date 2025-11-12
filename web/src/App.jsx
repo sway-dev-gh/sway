@@ -23,9 +23,11 @@ const AuthenticatedApp = () => {
       // Don't initialize regular auth for guest links
       return
     }
-    console.log('🚀 Initializing authentication...')
-    actions.initializeAuth()
-  }, [guestToken, actions])
+    if (!state.isAuthenticated && !state.isLoading) {
+      console.log('🚀 Initializing authentication...')
+      actions.initializeAuth()
+    }
+  }, [guestToken])
 
   // Show guest form if accessing via guest link
   if (guestToken && !state.isAuthenticated) {

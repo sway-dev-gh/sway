@@ -901,14 +901,12 @@ const LeftSidebar = () => {
       </div>
 
       {/* Content Area */}
-      {state.viewMode !== 'settings' && (
-        <div style={{
-          flex: 1,
-          overflow: 'auto'
-        }}>
-          {renderSectionContent()}
-        </div>
-      )}
+      <div style={{
+        flex: 1,
+        overflow: 'auto'
+      }}>
+        {renderSectionContent()}
+      </div>
 
       {/* Status Bar */}
       <div style={{
