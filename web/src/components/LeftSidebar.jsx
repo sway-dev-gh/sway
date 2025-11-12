@@ -802,7 +802,14 @@ const LeftSidebar = () => {
         {sidebarSections.map(section => (
           <button
             key={section.id}
-            onClick={() => setActiveSection(section.id)}
+            onClick={() => {
+              setActiveSection(section.id)
+              if (section.id === 'settings') {
+                actions.setViewMode('settings')
+              } else {
+                actions.setViewMode('workspace')
+              }
+            }}
             style={{
               flex: 1,
               background: activeSection === section.id ? '#111111' : 'transparent',
@@ -822,12 +829,14 @@ const LeftSidebar = () => {
       </div>
 
       {/* Content Area */}
-      <div style={{
-        flex: 1,
-        overflow: 'auto'
-      }}>
-        {renderSectionContent()}
-      </div>
+      {state.viewMode !== 'settings' && (
+        <div style={{
+          flex: 1,
+          overflow: 'auto'
+        }}>
+          {renderSectionContent()}
+        </div>
+      )}
 
       {/* Status Bar */}
       <div style={{

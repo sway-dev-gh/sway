@@ -49,6 +49,7 @@ const initialState = {
   selectedFile: null,
   selectedSection: null,
   focusedView: false,
+  viewMode: 'workspace', // 'workspace' | 'settings'
 
   // Loading states
   isLoading: false,
@@ -86,6 +87,7 @@ const ACTIONS = {
   ADD_ACTIVITY: 'ADD_ACTIVITY',
 
   TOGGLE_FOCUSED_VIEW: 'TOGGLE_FOCUSED_VIEW',
+  SET_VIEW_MODE: 'SET_VIEW_MODE',
 
   DELETE_FILE: 'DELETE_FILE',
   DELETE_WORKSPACE: 'DELETE_WORKSPACE',
@@ -316,6 +318,12 @@ function workspaceReducer(state, action) {
       return {
         ...state,
         focusedView: !state.focusedView
+      }
+
+    case ACTIONS.SET_VIEW_MODE:
+      return {
+        ...state,
+        viewMode: action.payload
       }
 
     case ACTIONS.DELETE_FILE:
@@ -629,6 +637,13 @@ export const WorkspaceProvider = ({ children }) => {
     toggleFocusedView: () => {
       dispatch({
         type: ACTIONS.TOGGLE_FOCUSED_VIEW
+      })
+    },
+
+    setViewMode: (mode) => {
+      dispatch({
+        type: ACTIONS.SET_VIEW_MODE,
+        payload: mode
       })
     },
 
