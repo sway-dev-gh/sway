@@ -17,9 +17,9 @@ const LeftSidebar = () => {
   const [recentActivity, setRecentActivity] = useState([])
 
   const sidebarSections = [
-    { id: 'files', label: 'FILES', icon: '◈' },
-    { id: 'requests', label: 'REQUESTS', icon: '◪' },
-    { id: 'workspaces', label: 'WORKSPACES', icon: '◯' },
+    { id: 'explorer', label: 'EXPLORER', icon: '📁' },
+    { id: 'source', label: 'SOURCE CTRL', icon: '🌿' },
+    { id: 'pulls', label: 'PULL REQUESTS', icon: '📋' },
     { id: 'settings', label: 'SETTINGS', icon: '⚙' }
   ]
 
@@ -135,7 +135,7 @@ const LeftSidebar = () => {
     }
   }
 
-  const renderWorkspaceSection = () => (
+  const renderFileExplorerSection = () => (
     <div style={{ padding: '16px' }}>
       <div style={{
         display: 'flex',
@@ -153,10 +153,156 @@ const LeftSidebar = () => {
           fontWeight: 'bold',
           fontFamily: 'monospace'
         }}>
-          WORKSPACES
+          FILE EXPLORER
+        </span>
+        <label style={{
+          background: '#000000',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          color: '#ffffff',
+          padding: '4px 8px',
+          fontSize: '10px',
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          transition: 'all 0.2s ease',
+          letterSpacing: '0.02em',
+          fontFamily: 'monospace',
+          textTransform: 'uppercase'
+        }}>
+          + FILE
+          <input
+            type="file"
+            onChange={handleFileUpload}
+            style={{ display: 'none' }}
+            disabled={!state.currentWorkspace}
+          />
+        </label>
+      </div>
+
+
+      {!state.currentWorkspace ? (
+        <div style={{
+          color: 'rgba(255, 255, 255, 0.4)',
+          fontSize: '11px',
+          textAlign: 'center',
+          padding: '20px 0',
+          fontFamily: 'monospace',
+          background: '#000000',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          SELECT PROJECT FIRST
+        </div>
+      ) : state.files.length === 0 ? (
+        <div style={{
+          color: 'rgba(255, 255, 255, 0.4)',
+          fontSize: '11px',
+          textAlign: 'center',
+          padding: '20px 0',
+          fontFamily: 'monospace',
+          background: '#000000',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          NO FILES YET
+        </div>
+      ) : (
+        <div style={{ maxHeight: '300px', overflow: 'auto' }}>
+          {state.files.map(file => {
+            const fileExtension = file.name.split('.').pop().toLowerCase()
+            const getFileIcon = (ext) => {
+              switch(ext) {
+                case 'js': case 'jsx': return '🟨'
+                case 'ts': case 'tsx': return '🟦'
+                case 'py': return '🟩'
+                case 'html': case 'css': return '🟧'
+                case 'json': return '🟪'
+                case 'md': return '📝'
+                case 'txt': return '📄'
+                default: return '📄'
+              }
+            }
+
+            return (
+              <div
+                key={file.id}
+                onClick={() => actions.selectFile(file)}
+                style={{
+                  padding: '6px 8px',
+                  cursor: 'pointer',
+                  border: '1px solid rgba(255, 255, 255, 0.05)',
+                  marginBottom: '2px',
+                  background: state.selectedFile?.id === file.id ? 'rgba(255, 255, 255, 0.05)' : 'transparent',
+                  fontFamily: 'monospace',
+                  display: 'flex',
+                  alignItems: 'center',
+                  fontSize: '12px'
+                }}
+              >
+                <span style={{ marginRight: '8px', fontSize: '14px' }}>
+                  {getFileIcon(fileExtension)}
+                </span>
+                <span style={{
+                  color: '#ffffff',
+                  flex: 1,
+                  marginRight: '8px',
+                  fontFamily: 'monospace'
+                }}>
+                  {file.name}
+                </span>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    actions.showConfirmDialog({
+                      message: `Delete file "${file.name}"?\n\nThis will permanently delete the file and all its sections.`,
+                      confirmText: 'DELETE',
+                      cancelText: 'CANCEL',
+                      showCancel: true,
+                      onConfirm: () => actions.deleteFile(file.id)
+                    })
+                  }}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: 'rgba(255, 255, 255, 0.4)',
+                    cursor: 'pointer',
+                    fontSize: '10px',
+                    padding: '2px 4px',
+                    fontFamily: 'monospace'
+                  }}
+                  title="Delete file"
+                >
+                  ×
+                </button>
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </div>
+  )
+
+  const renderSourceControlSection = () => (
+    <div style={{ padding: '16px' }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: '12px',
+        paddingBottom: '8px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+      }}>
+        <span style={{
+          fontSize: '11px',
+          textTransform: 'uppercase',
+          letterSpacing: '1px',
+          color: '#ffffff',
+          fontWeight: 'bold',
+          fontFamily: 'monospace'
+        }}>
+          SOURCE CONTROL
         </span>
         <button
-          onClick={() => setShowCreateWorkspace(!showCreateWorkspace)}
+          onClick={() => {
+            // Placeholder for git actions menu
+          }}
           style={{
             background: '#000000',
             border: '1px solid rgba(255, 255, 255, 0.2)',
@@ -165,126 +311,137 @@ const LeftSidebar = () => {
             fontSize: '10px',
             cursor: 'pointer',
             fontWeight: 'bold',
-            transition: 'all 0.2s ease',
-            letterSpacing: '0.02em',
             fontFamily: 'monospace',
             textTransform: 'uppercase'
           }}
-          onMouseEnter={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.05)'
-            e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)'
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.background = '#000000'
-            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-          }}
         >
-          + NEW
+          ⚡ SYNC
         </button>
       </div>
 
-      {showCreateWorkspace && (
+      {/* Git Status - Mock data for now */}
+      <div style={{ marginBottom: '16px' }}>
         <div style={{
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          padding: '16px',
-          marginBottom: '16px',
-          background: '#000000',
+          fontSize: '10px',
+          color: 'rgba(255, 255, 255, 0.6)',
+          marginBottom: '8px',
+          fontFamily: 'monospace',
+          textTransform: 'uppercase'
+        }}>
+          BRANCH: MAIN
+        </div>
+
+        <div style={{ marginBottom: '8px' }}>
+          <div style={{
+            fontSize: '10px',
+            color: '#ffffff',
+            marginBottom: '4px',
+            fontFamily: 'monospace'
+          }}>
+            CHANGES (3)
+          </div>
+          {['M src/components/LeftSidebar.jsx', 'A src/utils/codeHelpers.js', 'D package-lock.json'].map((change, i) => (
+            <div key={i} style={{
+              fontSize: '10px',
+              color: change.startsWith('M') ? '#ffa502' : change.startsWith('A') ? '#2ed573' : '#ff4757',
+              fontFamily: 'monospace',
+              padding: '2px 0',
+              marginLeft: '8px'
+            }}>
+              {change}
+            </div>
+          ))}
+        </div>
+
+        <div style={{
+          fontSize: '10px',
+          color: 'rgba(255, 255, 255, 0.6)',
+          marginBottom: '8px',
           fontFamily: 'monospace'
         }}>
-          <input
-            type="text"
-            placeholder="WORKSPACE NAME"
-            value={workspaceForm.name}
-            onChange={(e) => setWorkspaceForm({ ...workspaceForm, name: e.target.value })}
-            style={{
-              width: '100%',
-              background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
-              padding: '8px 12px',
-              fontSize: '12px',
-              marginBottom: '8px',
-              fontWeight: 'normal',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
-            }}
-          />
-          <input
-            type="text"
-            placeholder="DESCRIPTION (OPTIONAL)"
-            value={workspaceForm.description}
-            onChange={(e) => setWorkspaceForm({ ...workspaceForm, description: e.target.value })}
-            style={{
-              width: '100%',
-              background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
-              padding: '8px 12px',
-              fontSize: '12px',
-              marginBottom: '8px',
-              fontWeight: 'normal',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
-            }}
-          />
-          <input
-            type="text"
-            placeholder="CLIENT LINK (OPTIONAL)"
-            value={workspaceForm.clientLink}
-            onChange={(e) => setWorkspaceForm({ ...workspaceForm, clientLink: e.target.value })}
-            style={{
-              width: '100%',
-              background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
-              padding: '8px 12px',
-              fontSize: '12px',
-              marginBottom: '12px',
-              fontWeight: 'normal',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
-            }}
-          />
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button
-              onClick={handleCreateWorkspace}
-              style={{
-                background: '#000000',
-                color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                padding: '6px 12px',
-                fontSize: '10px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                fontFamily: 'monospace',
-                textTransform: 'uppercase',
-                flex: 1
-              }}
-            >
-              CREATE
-            </button>
-            <button
-              onClick={() => setShowCreateWorkspace(false)}
-              style={{
-                background: '#000000',
-                color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                padding: '6px 12px',
-                fontSize: '10px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                fontFamily: 'monospace',
-                textTransform: 'uppercase'
-              }}
-            >
-              CANCEL
-            </button>
-          </div>
+          LAST COMMIT: 2 hours ago
         </div>
-      )}
 
-      <div style={{ maxHeight: '300px', overflow: 'auto', paddingRight: '4px' }}>
-        {state.workspaces.length === 0 ? (
+        <div style={{ display: 'flex', gap: '4px' }}>
+          <button
+            style={{
+              background: '#000000',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              padding: '4px 8px',
+              fontSize: '10px',
+              cursor: 'pointer',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
+            }}
+          >
+            COMMIT
+          </button>
+          <button
+            style={{
+              background: '#000000',
+              color: '#ffffff',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              padding: '4px 8px',
+              fontSize: '10px',
+              cursor: 'pointer',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
+            }}
+          >
+            PUSH
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+
+  const renderPullRequestsSection = () => {
+    // Mock PR data for code review workflow
+    const mockPRs = [
+      { id: 1, title: 'Add dark mode toggle', author: 'john.dev', status: 'ready', comments: 3 },
+      { id: 2, title: 'Fix memory leak in useEffect', author: 'sarah.eng', status: 'changes', comments: 7 },
+      { id: 3, title: 'Implement user authentication', author: 'mike.full', status: 'approved', comments: 12 }
+    ]
+
+    return (
+      <div style={{ padding: '16px' }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '12px',
+          paddingBottom: '8px',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        }}>
+          <span style={{
+            fontSize: '11px',
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            color: '#ffffff',
+            fontFamily: 'monospace',
+            fontWeight: 'bold'
+          }}>
+            PULL REQUESTS ({mockPRs.length})
+          </span>
+          <button
+            style={{
+              background: '#000000',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              color: '#ffffff',
+              padding: '4px 8px',
+              fontSize: '10px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
+            }}
+          >
+            + NEW PR
+          </button>
+        </div>
+
+        {mockPRs.length === 0 ? (
           <div style={{
             color: 'rgba(255, 255, 255, 0.4)',
             fontSize: '11px',
@@ -294,102 +451,73 @@ const LeftSidebar = () => {
             background: '#000000',
             border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            NO WORKSPACES YET
+            NO ACTIVE PULL REQUESTS
           </div>
         ) : (
-          state.workspaces.map(workspace => (
-            <div
-              key={workspace.id}
-              onClick={() => actions.selectWorkspace(workspace)}
-              style={{
-                padding: '8px',
-                cursor: 'pointer',
-                marginBottom: '4px',
-                background: state.currentWorkspace?.id === workspace.id ? '#000000' : 'transparent',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                fontFamily: 'monospace'
-              }}
-            >
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginBottom: '4px'
-              }}>
-                <div style={{
-                  fontSize: '12px',
-                  color: '#ffffff',
-                  fontWeight: 'normal',
-                  fontFamily: 'monospace'
-                }}>
-                  {workspace.name.toUpperCase()}
+          <div style={{ maxHeight: '300px', overflow: 'auto' }}>
+            {mockPRs.map(pr => {
+              const getStatusColor = (status) => {
+                switch (status) {
+                  case 'ready': return '#ffa502'
+                  case 'changes': return '#ff4757'
+                  case 'approved': return '#2ed573'
+                  default: return '#666666'
+                }
+              }
+
+              return (
+                <div
+                  key={pr.id}
+                  style={{
+                    padding: '8px',
+                    marginBottom: '4px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    background: '#000000',
+                    fontFamily: 'monospace',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div style={{
+                    fontSize: '12px',
+                    color: '#ffffff',
+                    marginBottom: '4px',
+                    fontFamily: 'monospace'
+                  }}>
+                    #{pr.id}: {pr.title}
+                  </div>
+                  <div style={{
+                    fontSize: '10px',
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    marginBottom: '6px',
+                    fontFamily: 'monospace'
+                  }}>
+                    BY {pr.author.toUpperCase()} • {pr.comments} COMMENTS
+                  </div>
+                  <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      borderRadius: '50%',
+                      backgroundColor: getStatusColor(pr.status)
+                    }} />
+                    <span style={{
+                      fontSize: '9px',
+                      color: getStatusColor(pr.status),
+                      textTransform: 'uppercase',
+                      fontFamily: 'monospace',
+                      fontWeight: 'bold'
+                    }}>
+                      {pr.status === 'ready' ? 'READY FOR REVIEW' : pr.status === 'changes' ? 'CHANGES REQUESTED' : 'APPROVED'}
+                    </span>
+                  </div>
                 </div>
-                <div style={{ display: 'flex', gap: '4px' }}>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      actions.generateGuestLink(workspace.id)
-                    }}
-                    style={{
-                      background: '#000000',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      color: '#ffffff',
-                      cursor: 'pointer',
-                      fontSize: '10px',
-                      padding: '2px 4px',
-                      fontFamily: 'monospace'
-                    }}
-                    title="Share workspace with guest collaborators"
-                  >
-                    SHARE
-                  </button>
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      console.log('Delete button clicked for workspace:', workspace.id)
-                      actions.showConfirmDialog({
-                        message: `Delete workspace "${workspace.name}"?\n\nThis will permanently delete all files and sections in this workspace.`,
-                        confirmText: 'DELETE',
-                        cancelText: 'CANCEL',
-                        showCancel: true,
-                        onConfirm: () => {
-                          console.log('Confirming delete for workspace:', workspace.id)
-                          actions.deleteWorkspace(workspace.id)
-                        }
-                      })
-                    }}
-                    style={{
-                      background: '#000000',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      color: '#ffffff',
-                      cursor: 'pointer',
-                      fontSize: '10px',
-                      padding: '2px 4px',
-                      fontFamily: 'monospace'
-                    }}
-                    title="Delete workspace"
-                  >
-                    X
-                  </button>
-                </div>
-              </div>
-              {workspace.description && (
-                <div style={{
-                  fontSize: '10px',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  lineHeight: '1.4',
-                  fontWeight: 'normal',
-                  fontFamily: 'monospace'
-                }}>
-                  {workspace.description.toUpperCase()}
-                </div>
-              )}
-            </div>
-          ))
+              )
+            })}
+          </div>
         )}
       </div>
-    </div>
-  )
+    )
+  }
 
   const renderFilesSection = () => (
     <div style={{ padding: '16px' }}>
@@ -1010,11 +1138,11 @@ const LeftSidebar = () => {
 
   const renderSectionContent = () => {
     switch (activeSection) {
-      case 'files': return renderFilesSection()
-      case 'requests': return renderApprovalsSection()
+      case 'explorer': return renderFileExplorerSection()
+      case 'source': return renderSourceControlSection()
+      case 'pulls': return renderPullRequestsSection()
       case 'settings': return renderSettingsSection()
-      case 'workspaces': return renderWorkspaceSection()
-      default: return renderFilesSection()
+      default: return renderFileExplorerSection()
     }
   }
 
@@ -1049,7 +1177,7 @@ const LeftSidebar = () => {
             letterSpacing: '-0.02em',
             fontFamily: 'system-ui, -apple-system, sans-serif'
           }}>
-            SwayFiles
+            CodeSpace
           </div>
           <div style={{
             display: 'flex',
@@ -1107,7 +1235,7 @@ const LeftSidebar = () => {
           fontWeight: '400',
           letterSpacing: '0.01em'
         }}>
-          v2.0 • {state.workspaces.length} workspace{state.workspaces.length !== 1 ? 's' : ''}
+          Code collaboration workspace • {state.workspaces.length} project{state.workspaces.length !== 1 ? 's' : ''}
         </div>
       </div>
 
@@ -1235,7 +1363,7 @@ const LeftSidebar = () => {
               borderRadius: '50%',
               background: state.currentWorkspace ? '#ffffff' : 'rgba(255, 255, 255, 0.3)'
             }} />
-            {state.currentWorkspace ? state.currentWorkspace.name : 'No workspace'}
+            {state.currentWorkspace ? state.currentWorkspace.name : 'No project'}
           </div>
           <div style={{
             color: 'rgba(255, 255, 255, 0.5)',
