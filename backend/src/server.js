@@ -4,9 +4,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express')
+const http = require('http')
+const { Server } = require('socket.io')
 const { applySecurity } = require('./middleware/security')
 const { errorHandler, notFoundHandler, healthCheck, validateEnvironment, setupGlobalErrorHandlers } = require('./middleware/errorHandler')
 const { encryptSensitiveFields, decryptSensitiveFields } = require('./middleware/encryption')
+const RealtimeService = require('./services/realtimeService')
 
 const authRoutes = require('./routes/auth')
 const guestRoutes = require('./routes/guest')
@@ -74,10 +77,40 @@ const initializeSecurityServices = async () => {
 initializeSecurityServices().catch(console.error)
 
 const app = express()
+const server = http.createServer(app)
 const PORT = process.env.PORT || 5001
 
 // Apply comprehensive security middleware (includes CORS, headers, rate limiting, etc.)
 applySecurity(app)
+
+// Setup Socket.IO with CORS configuration
+const io = new Server(server, {
+  cors: {
+    origin: process.env.NODE_ENV === 'production'
+      ? ["https://swayfiles.com", "https://www.swayfiles.com"]
+      : ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Authorization"],
+    credentials: true
+  },
+  transports: ['polling', 'websocket'],
+  allowEIO3: true
+})
+
+// Initialize real-time collaboration service
+let realtimeService
+try {
+  realtimeService = new RealtimeService(io)
+  console.log('✓ Real-time collaboration service initialized')
+} catch (error) {
+  console.error('❌ Failed to initialize real-time service:', error)
+}
+
+// Make real-time service available to routes
+app.use((req, res, next) => {
+  req.realtime = realtimeService
+  next()
+})
 
 // Dynamic JSON parsing with size limits based on endpoint
 app.use((req, res, next) => {
@@ -271,11 +304,24 @@ setInterval(cleanupExpiredRequests, 60 * 60 * 1000)
 // Run cleanup on startup
 cleanupExpiredRequests()
 
-// Start server (for Render, Railway, etc.)
-app.listen(PORT, () => {
+// Start server with Socket.IO support
+server.listen(PORT, () => {
   console.log(`✓ Sway backend running on port ${PORT} - Collaboration platform ready!`)
+  console.log(`🚀 Real-time collaboration enabled via WebSockets`)
 })
 
+// Graceful shutdown
+const gracefulShutdown = () => {
+  console.log('🔄 Shutting down gracefully...')
+  server.close(() => {
+    console.log('✓ Server closed')
+    process.exit(0)
+  })
+}
+
+process.on('SIGTERM', gracefulShutdown)
+process.on('SIGINT', gracefulShutdown)
+
 // Export for Vercel serverless (if needed)
-module.exports = app
+module.exports = { app, server, io }
 // Force redeploy Tue Nov 11 21:13:01 PST 2025

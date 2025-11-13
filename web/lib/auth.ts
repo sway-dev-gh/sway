@@ -48,19 +48,22 @@ const getCSRFToken = async (): Promise<string | null> => {
 export const authApi = {
   async login(email: string, password: string): Promise<AuthResponse> {
     try {
-      // Get CSRF token first
+      // Try to get CSRF token, but continue without it if blocked
       const csrfToken = await getCSRFToken()
-      if (!csrfToken) {
-        return { success: false, message: 'Security token required. Please refresh and try again.' }
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      }
+
+      // Only add CSRF token if we successfully got one
+      if (csrfToken) {
+        headers['X-CSRF-Token'] = csrfToken
       }
 
       const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         credentials: 'include', // Include cookies for session
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken,
-        },
+        headers,
         body: JSON.stringify({ email, password }),
       })
 
@@ -82,19 +85,22 @@ export const authApi = {
 
   async signup(email: string, password: string, username?: string): Promise<AuthResponse> {
     try {
-      // Get CSRF token first
+      // Try to get CSRF token, but continue without it if blocked
       const csrfToken = await getCSRFToken()
-      if (!csrfToken) {
-        return { success: false, message: 'Security token required. Please refresh and try again.' }
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      }
+
+      // Only add CSRF token if we successfully got one
+      if (csrfToken) {
+        headers['X-CSRF-Token'] = csrfToken
       }
 
       const response = await fetch(`${API_BASE}/api/auth/signup`, {
         method: 'POST',
         credentials: 'include', // Include cookies for session
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken,
-        },
+        headers,
         body: JSON.stringify({ email, password, name: username }),
       })
 
@@ -149,16 +155,19 @@ export const apiRequest = async (endpoint: string, options: RequestInit = {}) =>
     },
   }
 
-  // Add CSRF token for state-changing requests
+  // Add CSRF token for state-changing requests if available
   if (options.method && !['GET', 'HEAD', 'OPTIONS'].includes(options.method.toUpperCase())) {
-    const csrfToken = await getCSRFToken()
-    if (csrfToken) {
-      config.headers = {
-        ...config.headers,
-        'X-CSRF-Token': csrfToken,
+    try {
+      const csrfToken = await getCSRFToken()
+      if (csrfToken) {
+        config.headers = {
+          ...config.headers,
+          'X-CSRF-Token': csrfToken,
+        }
       }
-    } else {
-      console.warn('Could not get CSRF token for API request')
+    } catch (error) {
+      // Continue without CSRF token if it fails
+      console.warn('CSRF token unavailable, continuing without it')
     }
   }
 

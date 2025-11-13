@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
+import NotificationBell from '../src/components/Notifications/NotificationBell'
 import {
   ChevronLeft,
   ChevronRight,
@@ -56,7 +57,7 @@ export default function Sidebar() {
               className="flex items-center space-x-2"
             >
               <img
-                src="/sway-logo.svg"
+                src="/logo.png"
                 alt="Sway"
                 className="h-8"
               />
@@ -68,19 +69,24 @@ export default function Sidebar() {
         {collapsed && (
           <div className="flex items-center justify-center">
             <img
-              src="/sway-logo.svg"
+              src="/logo.png"
               alt="Sway"
               className="h-6 w-6"
             />
           </div>
         )}
 
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="text-terminal-muted hover:text-terminal-text transition-colors p-1"
-        >
-          {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
-        </button>
+        <div className="flex items-center space-x-2">
+          {/* Notification Bell */}
+          <NotificationBell />
+
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-terminal-muted hover:text-terminal-text transition-colors p-1"
+          >
+            {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+          </button>
+        </div>
       </div>
 
       {/* Navigation */}

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Sidebar from './Sidebar'
 import RightTerminal from './RightTerminal'
+import NotificationToast from '../src/components/Notifications/NotificationToast'
 
 interface AppLayoutProps {
   children: React.ReactNode
@@ -26,6 +27,9 @@ export default function AppLayout({ children }: AppLayoutProps) {
 
       {/* Right Terminal */}
       <RightTerminal />
+
+      {/* Global Notification Toasts */}
+      <NotificationToast />
     </div>
   )
 }

@@ -57,6 +57,9 @@ setInterval(cleanupExpiredTokens, 60 * 60 * 1000)
 const CSRF_EXEMPT_PATHS = [
   '/health',
   '/api/stripe/webhook',  // Stripe webhook needs raw body
+  '/api/auth/login',      // Auth endpoints need to work without session
+  '/api/auth/signup',     // Auth endpoints need to work without session
+  '/api/auth/register',   // Auth endpoints need to work without session
   // Add other webhook endpoints here
 ]
 
