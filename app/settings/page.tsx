@@ -1,0 +1,470 @@
+'use client'
+
+import React, { useState } from 'react'
+import AppLayout from '@/components/AppLayout'
+import PricingPlans from '@/components/PricingPlans'
+import { useAuth } from '@/contexts/AuthContext'
+
+export default function Settings() {
+  const [activeTab, setActiveTab] = useState('account')
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [emailNotifications, setEmailNotifications] = useState(false)
+  const [projectUpdates, setProjectUpdates] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const { user } = useAuth()
+
+  // Populate with user data
+  React.useEffect(() => {
+    if (user) {
+      setEmail(user.email)
+      setUsername(user.username || '')
+    }
+  }, [user])
+
+  // Input validation
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const validateUsername = (username: string) => {
+    // Only allow alphanumeric, underscore, hyphen (3-30 chars)
+    const usernameRegex = /^[a-zA-Z0-9_-]{3,30}$/
+    return usernameRegex.test(username)
+  }
+
+  const handleSave = async () => {
+    setSaving(true)
+
+    try {
+      // Validate inputs
+      if (email && !validateEmail(email)) {
+        alert('Please enter a valid email address')
+        return
+      }
+
+      if (username && !validateUsername(username)) {
+        alert('Username must be 3-30 characters and contain only letters, numbers, underscores, and hyphens')
+        return
+      }
+
+      // TODO: Save to backend
+      console.log('Saving settings:', { email, username, emailNotifications, projectUpdates })
+      alert('Settings saved successfully!')
+    } catch (error) {
+      console.error('Save error:', error)
+      alert('Failed to save settings')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const tabs = [
+    { id: 'account', name: 'Account', icon: '👤' },
+    { id: 'workspace', name: 'Workspace', icon: '⚙️' },
+    { id: 'automation', name: 'Automation', icon: '🤖' },
+    { id: 'billing', name: 'Billing', icon: '💳' },
+    { id: 'security', name: 'Security', icon: '🔐' },
+  ]
+
+  return (
+    <AppLayout>
+      <div className="flex-1 overflow-auto bg-terminal-bg">
+        {/* Header */}
+        <div className="bg-terminal-surface border-b border-terminal-border p-6">
+          <h1 className="text-xl text-terminal-text font-medium">Settings</h1>
+          <p className="text-terminal-muted text-sm mt-1">Manage your account and preferences</p>
+        </div>
+
+        <div className="p-6">
+          {/* Tab Navigation */}
+          <div className="mb-6">
+            <div className="border-b border-terminal-border">
+              <nav className="-mb-px flex space-x-8">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                      activeTab === tab.id
+                        ? 'border-terminal-text text-terminal-text'
+                        : 'border-transparent text-terminal-muted hover:text-terminal-text hover:border-terminal-hover'
+                    }`}
+                  >
+                    <span className="mr-2">{tab.icon}</span>
+                    {tab.name}
+                  </button>
+                ))}
+              </nav>
+            </div>
+          </div>
+
+          {/* Account Tab */}
+          {activeTab === 'account' && (
+            <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">Account Information</h2>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm text-terminal-text mb-1">Email *</label>
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="your@email.com"
+                        className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text"
+                        maxLength={100}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-terminal-text mb-1">Username</label>
+                      <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="username"
+                        className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text"
+                        maxLength={30}
+                      />
+                      <p className="text-xs text-terminal-muted mt-1">
+                        3-30 characters, letters, numbers, underscore, and hyphen only
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">Notification Preferences</h2>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Email Notifications</span>
+                      <button
+                        onClick={() => setEmailNotifications(!emailNotifications)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          emailNotifications
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {emailNotifications ? 'Enabled' : 'Disabled'}
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Project Updates</span>
+                      <button
+                        onClick={() => setProjectUpdates(!projectUpdates)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          projectUpdates
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {projectUpdates ? 'Enabled' : 'Disabled'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                  >
+                    {saving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Workspace Tab */}
+          {activeTab === 'workspace' && (
+            <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">Workspace Configuration</h2>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Default Theme</span>
+                      <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
+                        <option value="dark">Dark Terminal</option>
+                        <option value="light" disabled>Light Mode (Coming Soon)</option>
+                        <option value="auto" disabled>Auto (Coming Soon)</option>
+                      </select>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Auto-save Interval</span>
+                      <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
+                        <option value="30">30 seconds</option>
+                        <option value="60">1 minute</option>
+                        <option value="300">5 minutes</option>
+                        <option value="disabled">Disabled</option>
+                      </select>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Show Line Numbers</span>
+                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
+                        Enabled
+                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Command Palette Shortcut</span>
+                      <div className="text-terminal-text text-sm font-mono">⌘ + /</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">Collaboration Defaults</h2>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Auto-assign Reviews</span>
+                      <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
+                        Disabled
+                      </button>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Default Project Visibility</span>
+                      <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
+                        <option value="private">Private</option>
+                        <option value="team">Team</option>
+                        <option value="public" disabled>Public (Coming Soon)</option>
+                      </select>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-terminal-text text-sm">Real-time Presence</span>
+                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
+                        Enabled
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4">
+                  <button
+                    onClick={handleSave}
+                    disabled={saving}
+                    className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                  >
+                    {saving ? 'Saving...' : 'Save Workspace Settings'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Automation Tab */}
+          {activeTab === 'automation' && (
+            <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">🤖 Workflow Automation</h2>
+                  <p className="text-terminal-muted text-sm mb-6">
+                    Create automated workflows that trigger actions when specific events occur in your projects.
+                  </p>
+
+                  {/* Sample Workflow Rules */}
+                  <div className="space-y-4">
+                    <div className="border border-terminal-border rounded p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-terminal-text font-medium">Auto-approve simple changes</h3>
+                        <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
+                          Disabled
+                        </button>
+                      </div>
+                      <div className="text-sm text-terminal-muted">
+                        <div className="mb-2">
+                          <span className="text-terminal-text">When:</span> Block is updated with less than 10 lines changed
+                        </div>
+                        <div>
+                          <span className="text-terminal-text">Then:</span> Auto-approve if no breaking changes detected
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border border-terminal-border rounded p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-terminal-text font-medium">Team notifications</h3>
+                        <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
+                          Enabled
+                        </button>
+                      </div>
+                      <div className="text-sm text-terminal-muted">
+                        <div className="mb-2">
+                          <span className="text-terminal-text">When:</span> Block is approved
+                        </div>
+                        <div>
+                          <span className="text-terminal-text">Then:</span> Notify all project members
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="border border-yellow-500/50 rounded p-4 bg-yellow-900/10">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-terminal-text font-medium">Slack integration</h3>
+                        <button className="px-3 py-1 text-xs bg-yellow-600 text-white">
+                          Coming Soon
+                        </button>
+                      </div>
+                      <div className="text-sm text-terminal-muted">
+                        <div className="mb-2">
+                          <span className="text-terminal-text">When:</span> Review is requested
+                        </div>
+                        <div>
+                          <span className="text-terminal-text">Then:</span> Send message to #reviews channel
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-terminal-border">
+                    <button
+                      disabled
+                      className="bg-terminal-border text-terminal-muted px-4 py-2 text-sm opacity-50 cursor-not-allowed"
+                    >
+                      Add New Automation Rule (Coming Soon)
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">🔌 Integrations</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="border border-terminal-border rounded p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-terminal-text font-medium">GitHub</h3>
+                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                      </div>
+                      <p className="text-terminal-muted text-sm mb-3">
+                        Sync projects with GitHub repositories
+                      </p>
+                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                        Connect
+                      </button>
+                    </div>
+
+                    <div className="border border-terminal-border rounded p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-terminal-text font-medium">Slack</h3>
+                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                      </div>
+                      <p className="text-terminal-muted text-sm mb-3">
+                        Send notifications to Slack channels
+                      </p>
+                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                        Connect
+                      </button>
+                    </div>
+
+                    <div className="border border-terminal-border rounded p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-terminal-text font-medium">Discord</h3>
+                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                      </div>
+                      <p className="text-terminal-muted text-sm mb-3">
+                        Post updates to Discord servers
+                      </p>
+                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                        Connect
+                      </button>
+                    </div>
+
+                    <div className="border border-terminal-border rounded p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-terminal-text font-medium">Zapier</h3>
+                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                      </div>
+                      <p className="text-terminal-muted text-sm mb-3">
+                        Connect to 5000+ apps via Zapier
+                      </p>
+                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                        Connect
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">🔧 API & Webhooks</h2>
+                  <div className="border border-terminal-border rounded p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="text-terminal-text font-medium">API Access</h3>
+                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
+                        Generate API Key
+                      </button>
+                    </div>
+                    <div className="text-sm text-terminal-muted mb-3">
+                      Use our REST API to integrate SwayFiles with your custom applications.
+                    </div>
+                    <div className="bg-terminal-accent rounded p-3 font-mono text-xs text-terminal-text">
+                      curl -H "Authorization: Bearer YOUR_API_KEY" \\<br />
+                      &nbsp;&nbsp;https://api.swayfiles.com/v1/projects
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Billing Tab */}
+          {activeTab === 'billing' && (
+            <div>
+              <PricingPlans />
+            </div>
+          )}
+
+          {/* Security Tab */}
+          {activeTab === 'security' && (
+            <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
+              <div className="space-y-6">
+                <div>
+                  <h2 className="text-terminal-text text-lg mb-4">🔐 Security Settings</h2>
+
+                  <div className="space-y-4">
+                    <div className="border border-terminal-border rounded-sm p-4">
+                      <h3 className="text-terminal-text font-medium mb-2">Password Security</h3>
+                      <p className="text-terminal-muted text-sm mb-3">
+                        Your password meets security requirements: 12+ characters with uppercase, lowercase, numbers, and special characters.
+                      </p>
+                      <button className="bg-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors">
+                        Change Password
+                      </button>
+                    </div>
+
+                    <div className="border border-terminal-border rounded-sm p-4">
+                      <h3 className="text-terminal-text font-medium mb-2">Active Sessions</h3>
+                      <p className="text-terminal-muted text-sm mb-3">
+                        You have 1 active session. Log out of all devices to enhance security.
+                      </p>
+                      <button className="bg-red-600 text-white px-3 py-2 text-sm hover:bg-red-700 transition-colors">
+                        Logout All Devices
+                      </button>
+                    </div>
+
+                    <div className="border border-terminal-border rounded-sm p-4">
+                      <h3 className="text-terminal-text font-medium mb-2">Account Activity</h3>
+                      <p className="text-terminal-muted text-sm mb-3">
+                        Monitor your account for suspicious activity. Last login: {new Date().toLocaleString()}
+                      </p>
+                      <button className="bg-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors">
+                        View Activity Log
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </AppLayout>
+  )
+}

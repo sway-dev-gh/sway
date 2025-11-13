@@ -1,0 +1,5 @@
+# Force Vercel deployment - Swayfiles 2.0 Complete Frontend
+# Timestamp: 2025-11-13 12:59:00 PST
+# Trigger: Deploy complete Swayfiles 2.0 features to production
+
+DEPLOY_COMPLETE_SWAYFILES_2_0=true
