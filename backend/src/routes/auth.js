@@ -39,22 +39,10 @@ router.post('/signup', signupLimiter, validateAuth.signup, async (req, res) => {
       return res.status(400).json({ error: 'Email and password required' })
     }
 
-    // SECURITY: Validate password strength (min 12 characters with complexity)
-    if (password.length < 12) {
+    // SECURITY: Validate password strength (min 8 characters)
+    if (password.length < 8) {
       return res.status(400).json({
-        error: 'Password must be at least 12 characters long'
-      })
-    }
-
-    // Check password complexity
-    const hasUpperCase = /[A-Z]/.test(password)
-    const hasLowerCase = /[a-z]/.test(password)
-    const hasNumber = /[0-9]/.test(password)
-    const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password)
-
-    if (!hasUpperCase || !hasLowerCase || !hasNumber || !hasSpecial) {
-      return res.status(400).json({
-        error: 'Password must contain uppercase, lowercase, number, and special character'
+        error: 'Password must be at least 8 characters long'
       })
     }
 
