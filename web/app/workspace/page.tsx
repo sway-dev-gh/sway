@@ -1,130 +1,95 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useSearchParams } from 'next/navigation'
-import { WorkspaceProvider, useWorkspace } from '../../src/stores/WorkspaceStore'
-import WorkspaceCanvas from '../../src/components/Workspace/WorkspaceCanvas'
-import { LeftSidebar, RightSidebar } from '../../src/components/Workspace/WorkspaceSidebar'
 
-// Inner component that uses the workspace context
-function WorkspaceInner() {
-  const { state, actions } = useWorkspace()
+export default function Workspace() {
   const searchParams = useSearchParams()
-  const [selectedSection, setSelectedSection] = useState(null)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-
-  // Get project ID from URL params
   const projectId = searchParams?.get('id')
 
-  // Initialize authentication when component mounts
-  useEffect(() => {
-    actions.initializeAuth()
-  }, [])
+  return (
+    <div className="min-h-screen bg-terminal-bg font-mono flex">
+      {/* Left Sidebar */}
+      <div className="w-64 bg-terminal-surface border-r border-terminal-border p-6">
+        <div className="space-y-6">
+          <div>
+            <h2 className="text-lg font-medium text-terminal-text mb-4">Workspace</h2>
+            <p className="text-terminal-muted text-sm">
+              Project: {projectId || 'No project selected'}
+            </p>
+          </div>
 
-  // Load workspace when projectId is available
-  useEffect(() => {
-    if (projectId && state.workspaces.length > 0) {
-      const workspace = state.workspaces.find((w: any) => w.id === projectId)
-      if (workspace && state.currentWorkspace?.id !== workspace.id) {
-        actions.selectWorkspace(workspace)
-      }
-    }
-  }, [projectId, state.workspaces])
-
-  const handleFileSelect = (file: any) => {
-    actions.selectFile(file)
-  }
-
-  const handleWorkspaceSelect = (workspace: any) => {
-    actions.selectWorkspace(workspace)
-  }
-
-  if (!state.isAuthenticated && !state.isLoading) {
-    return (
-      <div className="h-screen flex items-center justify-center bg-terminal-bg">
-        <div className="text-center">
-          <h1 className="text-2xl text-terminal-text mb-4">Please sign in</h1>
-          <p className="text-terminal-muted mb-6">You need to be signed in to access workspaces.</p>
-          <button
-            onClick={() => window.location.href = '/login'}
-            className="bg-terminal-text text-terminal-bg px-6 py-3 rounded hover:bg-terminal-text/90"
-          >
-            Go to Login
-          </button>
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-terminal-text">Files</h3>
+            <div className="space-y-1 text-sm text-terminal-muted">
+              <div className="p-2 hover:bg-terminal-bg rounded cursor-pointer">📄 README.md</div>
+              <div className="p-2 hover:bg-terminal-bg rounded cursor-pointer">📁 components/</div>
+              <div className="p-2 hover:bg-terminal-bg rounded cursor-pointer">📁 styles/</div>
+            </div>
+          </div>
         </div>
       </div>
-    )
-  }
-
-  return (
-    <div className="h-screen bg-terminal-bg flex">
-      {/* Left Sidebar */}
-      {!sidebarCollapsed && (
-        <LeftSidebar
-          onFileSelect={handleFileSelect}
-          onWorkspaceSelect={handleWorkspaceSelect}
-        />
-      )}
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Workspace Canvas */}
-        <div className="flex-1 min-h-0">
-          <WorkspaceCanvas
-            projectId={projectId}
-            selectedSection={selectedSection}
-            onSectionSelect={setSelectedSection}
-          />
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="bg-terminal-surface border-b border-terminal-border p-4">
+          <h1 className="text-xl font-medium text-terminal-text">
+            Collaborative Workspace
+          </h1>
+          <p className="text-terminal-muted text-sm mt-1">
+            Real-time collaboration platform - Coming Soon
+          </p>
+        </div>
+
+        {/* Canvas Area */}
+        <div className="flex-1 p-8">
+          <div className="h-full bg-terminal-surface border border-terminal-border rounded-lg flex items-center justify-center">
+            <div className="text-center space-y-4">
+              <div className="text-4xl text-terminal-muted">🚧</div>
+              <div>
+                <h2 className="text-lg font-medium text-terminal-text mb-2">
+                  Workspace Under Development
+                </h2>
+                <p className="text-terminal-muted text-sm max-w-md">
+                  The collaborative workspace feature is being rebuilt for Swayfiles 2.0.
+                  Real-time collaboration, file editing, and team features coming soon.
+                </p>
+              </div>
+              <div className="pt-4">
+                <button
+                  onClick={() => window.location.href = '/dashboard'}
+                  className="bg-terminal-text text-terminal-bg px-6 py-3 font-medium hover:bg-terminal-text/90 transition-colors"
+                >
+                  Return to Dashboard
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Right Sidebar - Comments & Inspector */}
-      <RightSidebar selectedSection={selectedSection} />
+      {/* Right Sidebar */}
+      <div className="w-64 bg-terminal-surface border-l border-terminal-border p-6">
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-sm font-medium text-terminal-text mb-2">Comments</h3>
+            <p className="text-terminal-muted text-xs">
+              No comments yet
+            </p>
+          </div>
 
-      {/* Sidebar toggle button */}
-      <button
-        onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-        className="fixed left-4 top-1/2 transform -translate-y-1/2 z-10 bg-terminal-surface border border-terminal-border rounded p-2 text-terminal-muted hover:text-terminal-text"
-      >
-        {sidebarCollapsed ? '→' : '←'}
-      </button>
-
-      {/* Error Display */}
-      {state.error && (
-        <div className="fixed bottom-4 right-4 bg-red-900/90 border border-red-500 text-red-100 p-4 rounded max-w-md">
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="font-medium">Error</div>
-              <div className="text-sm">{state.error}</div>
+          <div>
+            <h3 className="text-sm font-medium text-terminal-text mb-2">Team</h3>
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-terminal-text">You</span>
+              </div>
             </div>
-            <button
-              onClick={() => window.location.reload()}
-              className="ml-4 text-red-200 hover:text-white"
-            >
-              ✕
-            </button>
           </div>
         </div>
-      )}
-
-      {/* Loading Overlay */}
-      {state.isLoading && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-terminal-surface border border-terminal-border rounded-lg p-6 text-center">
-            <div className="text-terminal-text mb-2">Loading...</div>
-            <div className="text-terminal-muted text-sm">Setting up your workspace</div>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
-  )
-}
-
-// Main component with WorkspaceProvider
-export default function Workspace() {
-  return (
-    <WorkspaceProvider>
-      <WorkspaceInner />
-    </WorkspaceProvider>
   )
 }
