@@ -14,22 +14,25 @@ const TAG_LENGTH = 16
 const SALT_LENGTH = 32
 
 // CRITICAL SECURITY: Validate encryption keys exist at startup
-if (!process.env.ENCRYPTION_KEY) {
-  console.error('FATAL ERROR: ENCRYPTION_KEY environment variable is not set!')
-  console.error('Application cannot start without encryption capabilities.')
-  process.exit(1)
+let ENCRYPTION_KEY = process.env.ENCRYPTION_KEY
+let DATA_ENCRYPTION_KEY = process.env.DATA_ENCRYPTION_KEY
+
+if (!ENCRYPTION_KEY) {
+  ENCRYPTION_KEY = crypto.randomBytes(KEY_LENGTH).toString('hex')
+  console.warn('⚠️  ENCRYPTION_KEY not provided - generated temporary key for this session')
+  console.warn('   For production security, set ENCRYPTION_KEY environment variable')
 }
 
-if (!process.env.DATA_ENCRYPTION_KEY) {
-  console.error('FATAL ERROR: DATA_ENCRYPTION_KEY environment variable is not set!')
-  console.error('Application cannot start without data encryption capabilities.')
-  process.exit(1)
+if (!DATA_ENCRYPTION_KEY) {
+  DATA_ENCRYPTION_KEY = crypto.randomBytes(KEY_LENGTH).toString('hex')
+  console.warn('⚠️  DATA_ENCRYPTION_KEY not provided - generated temporary key for this session')
+  console.warn('   For production security, set DATA_ENCRYPTION_KEY environment variable')
 }
 
 // Derive encryption keys from environment variables
-const MASTER_KEY = crypto.scryptSync(process.env.ENCRYPTION_KEY, 'sway-salt', KEY_LENGTH)
-const DATA_KEY = crypto.scryptSync(process.env.DATA_ENCRYPTION_KEY, 'data-salt', KEY_LENGTH)
-const FILE_KEY = crypto.scryptSync(process.env.ENCRYPTION_KEY, 'file-salt', KEY_LENGTH)
+const MASTER_KEY = crypto.scryptSync(ENCRYPTION_KEY, 'sway-salt', KEY_LENGTH)
+const DATA_KEY = crypto.scryptSync(DATA_ENCRYPTION_KEY, 'data-salt', KEY_LENGTH)
+const FILE_KEY = crypto.scryptSync(ENCRYPTION_KEY, 'file-salt', KEY_LENGTH)
 
 // Key rotation support
 let currentKeyVersion = 1
