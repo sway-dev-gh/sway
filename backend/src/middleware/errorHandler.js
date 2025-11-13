@@ -331,13 +331,15 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // Environment validation function
 const validateEnvironment = () => {
-  const requiredVars = [
-    'JWT_SECRET',
-    'DB_HOST',
-    'DB_NAME',
-    'DB_USER',
-    'DB_PASSWORD'
-  ]
+  const requiredVars = ['JWT_SECRET']
+
+  // Check database configuration - either DATABASE_URL or individual DB vars
+  const hasDBUrl = process.env.DATABASE_URL
+  const hasIndividualDB = process.env.DB_HOST && process.env.DB_NAME && process.env.DB_USER && process.env.DB_PASSWORD
+
+  if (!hasDBUrl && !hasIndividualDB) {
+    requiredVars.push('DATABASE_URL or (DB_HOST, DB_NAME, DB_USER, DB_PASSWORD)')
+  }
 
   const missingVars = requiredVars.filter(varName => !process.env[varName])
 
