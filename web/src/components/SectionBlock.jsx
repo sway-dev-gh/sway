@@ -92,32 +92,45 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
   return (
     <div
       style={{
-        border: '1px solid #333333',
-        marginBottom: '1px',
-        background: isSelected ? '#111111' : '#000000',
+        border: '1px solid rgba(255, 255, 255, 0.06)',
+        marginBottom: '12px',
+        background: isSelected
+          ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.95) 100%)'
+          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.01) 0%, rgba(0, 0, 0, 0.98) 100%)',
         borderLeft: `3px solid ${getWorkflowColor(section.workflowState)}`,
-        position: 'relative'
+        borderRadius: '12px',
+        position: 'relative',
+        backdropFilter: 'blur(10px)',
+        boxShadow: isSelected
+          ? '0 4px 20px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 255, 255, 0.02)'
+          : '0 2px 10px rgba(0, 0, 0, 0.2)',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
       {/* Drag Handle */}
       <div style={{
         position: 'absolute',
-        left: '8px',
-        top: '16px',
+        left: '12px',
+        top: '20px',
         cursor: 'grab',
-        color: '#666666',
-        fontSize: '12px',
-        userSelect: 'none'
-      }}>
+        color: 'rgba(255, 255, 255, 0.3)',
+        fontSize: '14px',
+        userSelect: 'none',
+        transition: 'color 0.2s ease'
+      }}
+      onMouseEnter={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.6)'}
+      onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.3)'}
+      >
         ⋮⋮
       </div>
 
       {/* Section Header */}
       <div style={{
-        padding: '16px 16px 12px 32px',
+        padding: '20px 20px 16px 40px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        borderBottom: !collapsed ? '1px solid rgba(255, 255, 255, 0.04)' : 'none'
       }}>
         <div style={{ flex: 1, marginRight: '12px' }}>
           {isEditing ? (
@@ -126,13 +139,26 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
               value={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
               style={{
-                background: 'transparent',
-                border: 'none',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '6px',
                 color: '#ffffff',
                 fontSize: '16px',
-                fontWeight: 'bold',
+                fontWeight: '600',
                 width: '100%',
-                outline: 'none'
+                outline: 'none',
+                padding: '8px 12px',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                letterSpacing: '-0.01em',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              onFocus={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.04)'
+                e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+              onBlur={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+                e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'
               }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
@@ -151,12 +177,25 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
               <button
                 onClick={() => setCollapsed(!collapsed)}
                 style={{
-                  background: 'none',
-                  border: 'none',
-                  color: '#666666',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  borderRadius: '4px',
+                  color: 'rgba(255, 255, 255, 0.6)',
                   cursor: 'pointer',
-                  fontSize: '12px',
-                  padding: 0
+                  fontSize: '10px',
+                  padding: '4px 6px',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.04)'
+                  e.target.style.color = 'rgba(255, 255, 255, 0.8)'
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+                  e.target.style.color = 'rgba(255, 255, 255, 0.6)'
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.06)'
                 }}
               >
                 {collapsed ? '▶' : '▼'}
@@ -164,18 +203,30 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
               <h3
                 style={{
                   fontSize: '16px',
-                  fontWeight: 'bold',
+                  fontWeight: '600',
                   color: '#ffffff',
                   margin: 0,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  letterSpacing: '-0.01em',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  transition: 'color 0.2s ease'
                 }}
                 onClick={() => setIsEditing(true)}
+                onMouseEnter={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.8)'}
+                onMouseLeave={(e) => e.target.style.color = '#ffffff'}
               >
                 {section.title}
               </h3>
               <div style={{
                 fontSize: '10px',
-                color: '#666666'
+                color: 'rgba(255, 255, 255, 0.4)',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.04)',
+                borderRadius: '12px',
+                padding: '2px 8px',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontWeight: '500',
+                letterSpacing: '0.02em'
               }}>
                 #{index + 1}
               </div>
@@ -191,12 +242,16 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
           flexShrink: 0
         }}>
           <div style={{
-            padding: '2px 6px',
+            padding: '4px 8px',
             fontSize: '9px',
-            background: getWorkflowColor(section.workflowState),
+            background: `linear-gradient(135deg, ${getWorkflowColor(section.workflowState)}90, ${getWorkflowColor(section.workflowState)}60)`,
             color: '#ffffff',
             textTransform: 'uppercase',
-            letterSpacing: '0.5px'
+            letterSpacing: '0.5px',
+            borderRadius: '4px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            fontWeight: '600',
+            boxShadow: `0 0 8px ${getWorkflowColor(section.workflowState)}30`
           }}>
             {section.workflowState.replace('_', ' ')}
           </div>
@@ -204,12 +259,26 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
           <button
             onClick={() => setShowComments(!showComments)}
             style={{
-              background: 'none',
-              border: '1px solid #666666',
-              color: '#ffffff',
-              padding: '2px 6px',
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: 'rgba(255, 255, 255, 0.8)',
+              padding: '4px 8px',
               fontSize: '9px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              borderRadius: '4px',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+              fontWeight: '500',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.04)'
+              e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)'
+              e.target.style.color = '#ffffff'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+              e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'
+              e.target.style.color = 'rgba(255, 255, 255, 0.8)'
             }}
           >
             {comments.length} comments

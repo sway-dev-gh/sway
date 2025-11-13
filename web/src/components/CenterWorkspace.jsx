@@ -78,35 +78,54 @@ const CenterWorkspace = () => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100%',
-      color: '#666666',
       textAlign: 'center',
-      padding: '40px'
+      padding: '60px 40px',
+      background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.95) 70%)',
+      position: 'relative'
     }}>
       <div style={{
-        fontSize: '48px',
-        marginBottom: '16px'
+        fontSize: '64px',
+        marginBottom: '32px',
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4))',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+        textShadow: '0 0 30px rgba(255, 255, 255, 0.1)'
       }}>
         ◧
       </div>
       <h1 style={{
-        fontSize: '24px',
+        fontSize: '28px',
         color: '#ffffff',
-        marginBottom: '8px'
+        marginBottom: '16px',
+        fontWeight: '600',
+        letterSpacing: '-0.02em',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
         Welcome to SwayFiles v2.0
       </h1>
       <p style={{
-        fontSize: '14px',
-        maxWidth: '400px',
-        lineHeight: '1.5'
+        fontSize: '15px',
+        maxWidth: '480px',
+        lineHeight: '1.6',
+        color: 'rgba(255, 255, 255, 0.7)',
+        marginBottom: '32px',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
         A developer-first workspace for reviewing and approving creative projects, code, and files.
         Create a workspace and add files to get started.
       </p>
       <div style={{
-        marginTop: '24px',
+        padding: '12px 24px',
+        background: 'rgba(255, 255, 255, 0.02)',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
+        borderRadius: '24px',
         fontSize: '12px',
-        color: '#333333'
+        color: 'rgba(255, 255, 255, 0.5)',
+        letterSpacing: '0.02em',
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        textTransform: 'uppercase',
+        backdropFilter: 'blur(10px)'
       }}>
         GitHub × Notion-inspired collaboration
       </div>
@@ -120,27 +139,38 @@ const CenterWorkspace = () => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100%',
-      color: '#666666',
       textAlign: 'center',
-      padding: '40px'
+      padding: '60px 40px',
+      background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.01) 0%, rgba(0, 0, 0, 0.98) 60%)',
+      position: 'relative'
     }}>
       <div style={{
-        fontSize: '32px',
-        marginBottom: '16px'
+        fontSize: '48px',
+        marginBottom: '24px',
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3))',
+        WebkitBackgroundClip: 'text',
+        WebkitTextFillColor: 'transparent',
+        backgroundClip: 'text',
+        textShadow: '0 0 20px rgba(255, 255, 255, 0.1)'
       }}>
         ◈
       </div>
       <h2 style={{
-        fontSize: '18px',
+        fontSize: '22px',
         color: '#ffffff',
-        marginBottom: '8px'
+        marginBottom: '12px',
+        fontWeight: '600',
+        letterSpacing: '-0.01em',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
         Select a file to get started
       </h2>
       <p style={{
         fontSize: '14px',
-        maxWidth: '300px',
-        lineHeight: '1.5'
+        maxWidth: '360px',
+        lineHeight: '1.6',
+        color: 'rgba(255, 255, 255, 0.6)',
+        fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
         Choose a file from the sidebar to begin reviewing and adding sections.
       </p>
@@ -159,9 +189,10 @@ const CenterWorkspace = () => {
       }}>
         {/* File header */}
         <div style={{
-          padding: '20px',
-          borderBottom: '1px solid #333333',
-          background: '#111111'
+          padding: '24px 28px',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(0, 0, 0, 0.95) 100%)',
+          backdropFilter: 'blur(8px)'
         }}>
           <div style={{
             display: 'flex',
@@ -170,27 +201,36 @@ const CenterWorkspace = () => {
           }}>
             <div>
               <h1 style={{
-                fontSize: '20px',
+                fontSize: '22px',
                 margin: 0,
-                color: '#ffffff'
+                color: '#ffffff',
+                fontWeight: '600',
+                letterSpacing: '-0.02em',
+                fontFamily: 'system-ui, -apple-system, sans-serif'
               }}>
                 {state.selectedFile.name}
               </h1>
               {state.selectedFile.workflow_status && (
                 <div style={{
-                  marginTop: '8px',
-                  fontSize: '12px',
+                  marginTop: '12px',
+                  fontSize: '11px',
                   display: 'flex',
-                  alignItems: 'center'
+                  alignItems: 'center',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  fontWeight: '500'
                 }}>
                   <span style={{
-                    width: '8px',
-                    height: '8px',
+                    width: '6px',
+                    height: '6px',
                     borderRadius: '50%',
                     backgroundColor: getWorkflowStatusColor(state.selectedFile.workflow_status),
-                    marginRight: '6px'
+                    marginRight: '8px',
+                    boxShadow: `0 0 6px ${getWorkflowStatusColor(state.selectedFile.workflow_status)}40`
                   }}></span>
-                  {state.selectedFile.workflow_status.replace('_', ' ').toUpperCase()}
+                  {state.selectedFile.workflow_status.replace('_', ' ')}
                 </div>
               )}
             </div>
@@ -201,15 +241,34 @@ const CenterWorkspace = () => {
         <div style={{
           flex: 1,
           overflow: 'auto',
-          padding: '20px'
+          padding: '24px 28px'
         }}>
           {sections.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              color: '#666666',
-              padding: '40px'
+              padding: '60px 40px',
+              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.005) 0%, rgba(0, 0, 0, 0.99) 50%)',
+              borderRadius: '12px',
+              border: '1px solid rgba(255, 255, 255, 0.04)'
             }}>
-              <p>No sections yet. Add one to get started.</p>
+              <div style={{
+                fontSize: '32px',
+                marginBottom: '20px',
+                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+                ◎
+              </div>
+              <p style={{
+                color: 'rgba(255, 255, 255, 0.6)',
+                fontSize: '14px',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                lineHeight: '1.5'
+              }}>
+                No sections yet. Add one to get started.
+              </p>
             </div>
           ) : (
             sections.map(section => (
@@ -226,11 +285,12 @@ const CenterWorkspace = () => {
           {/* Add section button */}
           {showAddSection ? (
             <div style={{
-              marginTop: '20px',
-              padding: '16px',
-              border: '1px solid #333333',
-              borderRadius: '8px',
-              background: '#111111'
+              marginTop: '24px',
+              padding: '20px',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.8) 100%)',
+              backdropFilter: 'blur(10px)'
             }}>
               <input
                 type="text"
@@ -239,12 +299,15 @@ const CenterWorkspace = () => {
                 placeholder="Section title"
                 style={{
                   width: '100%',
-                  padding: '8px',
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  borderRadius: '4px',
+                  padding: '12px 16px',
+                  background: 'rgba(0, 0, 0, 0.4)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: '8px',
                   color: '#ffffff',
-                  fontSize: '14px'
+                  fontSize: '14px',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  outline: 'none',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
                 }}
                 autoFocus
                 onKeyPress={(e) => {
@@ -256,22 +319,41 @@ const CenterWorkspace = () => {
                     setNewSectionTitle('')
                   }
                 }}
+                onFocus={(e) => {
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)'
+                  e.target.style.background = 'rgba(0, 0, 0, 0.6)'
+                }}
+                onBlur={(e) => {
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.08)'
+                  e.target.style.background = 'rgba(0, 0, 0, 0.4)'
+                }}
               />
               <div style={{
-                marginTop: '8px',
+                marginTop: '12px',
                 display: 'flex',
-                gap: '8px'
+                gap: '10px'
               }}>
                 <button
                   onClick={handleAddSection}
                   style={{
-                    padding: '6px 12px',
-                    background: '#0070f3',
+                    padding: '8px 16px',
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
                     color: '#ffffff',
-                    border: 'none',
-                    borderRadius: '4px',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
+                    borderRadius: '6px',
                     fontSize: '12px',
-                    cursor: 'pointer'
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%)'
+                    e.target.style.transform = 'translateY(-1px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)'
+                    e.target.style.transform = 'translateY(0)'
                   }}
                 >
                   Add Section
@@ -282,13 +364,24 @@ const CenterWorkspace = () => {
                     setNewSectionTitle('')
                   }}
                   style={{
-                    padding: '6px 12px',
+                    padding: '8px 16px',
                     background: 'transparent',
-                    color: '#666666',
-                    border: '1px solid #333333',
-                    borderRadius: '4px',
+                    color: 'rgba(255, 255, 255, 0.6)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)',
+                    borderRadius: '6px',
                     fontSize: '12px',
-                    cursor: 'pointer'
+                    fontWeight: '500',
+                    cursor: 'pointer',
+                    fontFamily: 'system-ui, -apple-system, sans-serif',
+                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.color = 'rgba(255, 255, 255, 0.8)'
+                    e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.color = 'rgba(255, 255, 255, 0.6)'
+                    e.target.style.background = 'transparent'
                   }}
                 >
                   Cancel
@@ -299,18 +392,33 @@ const CenterWorkspace = () => {
             <button
               onClick={() => setShowAddSection(true)}
               style={{
-                marginTop: '20px',
+                marginTop: '24px',
                 width: '100%',
-                padding: '12px',
+                padding: '16px',
                 background: 'transparent',
-                color: '#666666',
-                border: '1px dashed #333333',
-                borderRadius: '8px',
+                color: 'rgba(255, 255, 255, 0.5)',
+                border: '1px dashed rgba(255, 255, 255, 0.1)',
+                borderRadius: '12px',
                 fontSize: '14px',
+                fontWeight: '500',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
+                justifyContent: 'center',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.color = 'rgba(255, 255, 255, 0.8)'
+                e.target.style.border = '1px dashed rgba(255, 255, 255, 0.2)'
+                e.target.style.background = 'rgba(255, 255, 255, 0.01)'
+                e.target.style.transform = 'translateY(-1px)'
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.color = 'rgba(255, 255, 255, 0.5)'
+                e.target.style.border = '1px dashed rgba(255, 255, 255, 0.1)'
+                e.target.style.background = 'transparent'
+                e.target.style.transform = 'translateY(0)'
               }}
             >
               + Add Section
