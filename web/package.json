@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.4.0",
+    "@types/uuid": "^10.0.0",
     "bcryptjs": "^3.0.3",
     "compression": "^1.8.1",
     "crypto-js": "^4.2.0",
@@ -22,7 +23,7 @@
     "express-slow-down": "^3.0.1",
     "express-validator": "^7.3.0",
     "express-winston": "^4.2.0",
-    "framer-motion": "^10.16.0",
+    "framer-motion": "^10.18.0",
     "helmet": "^8.1.0",
     "hpp": "^0.2.3",
     "joi": "^18.0.1",
@@ -34,6 +35,7 @@
     "react-dom": "^18.2.0",
     "socket.io-client": "^4.8.1",
     "stripe": "^19.3.1",
+    "uuid": "^13.0.0",
     "validator": "^13.15.23",
     "winston": "^3.18.3"
   },
