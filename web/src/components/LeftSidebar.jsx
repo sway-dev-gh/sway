@@ -136,113 +136,90 @@ const LeftSidebar = () => {
   }
 
   const renderWorkspaceSection = () => (
-    <div style={{ padding: '16px' }}>
+    <div style={{ padding: '20px' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '12px',
-        paddingBottom: '8px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        marginBottom: '16px'
       }}>
         <span style={{
-          fontSize: '11px',
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-          color: '#ffffff',
-          fontWeight: 'bold',
-          fontFamily: 'monospace'
+          fontSize: '14px',
+          fontWeight: '600',
+          color: '#000000',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
-          WORKSPACES
+          Workspaces
         </span>
         <button
           onClick={() => setShowCreateWorkspace(!showCreateWorkspace)}
           style={{
-            background: '#000000',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            color: '#ffffff',
+            background: '#ffffff',
+            border: '1px solid #e5e5e5',
+            color: '#666666',
             padding: '4px 8px',
-            fontSize: '10px',
+            fontSize: '12px',
             cursor: 'pointer',
-            fontWeight: 'bold',
-            transition: 'all 0.2s ease',
-            letterSpacing: '0.02em',
-            fontFamily: 'monospace',
-            textTransform: 'uppercase'
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.05)'
-            e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)'
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.background = '#000000'
-            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}
         >
-          + NEW
+          New
         </button>
       </div>
 
       {showCreateWorkspace && (
         <div style={{
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: '1px solid #e5e5e5',
           padding: '16px',
           marginBottom: '16px',
-          background: '#000000',
-          fontFamily: 'monospace'
+          background: '#f8f9fa'
         }}>
           <input
             type="text"
-            placeholder="WORKSPACE NAME"
+            placeholder="Workspace name"
             value={workspaceForm.name}
             onChange={(e) => setWorkspaceForm({ ...workspaceForm, name: e.target.value })}
             style={{
               width: '100%',
-              background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
+              background: '#ffffff',
+              border: '1px solid #e5e5e5',
+              color: '#000000',
               padding: '8px 12px',
-              fontSize: '12px',
+              fontSize: '14px',
               marginBottom: '8px',
-              fontWeight: 'normal',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             }}
           />
           <input
             type="text"
-            placeholder="DESCRIPTION (OPTIONAL)"
+            placeholder="Description (optional)"
             value={workspaceForm.description}
             onChange={(e) => setWorkspaceForm({ ...workspaceForm, description: e.target.value })}
             style={{
               width: '100%',
-              background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
+              background: '#ffffff',
+              border: '1px solid #e5e5e5',
+              color: '#000000',
               padding: '8px 12px',
-              fontSize: '12px',
+              fontSize: '14px',
               marginBottom: '8px',
-              fontWeight: 'normal',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             }}
           />
           <input
             type="text"
-            placeholder="CLIENT LINK (OPTIONAL)"
+            placeholder="Client link (optional)"
             value={workspaceForm.clientLink}
             onChange={(e) => setWorkspaceForm({ ...workspaceForm, clientLink: e.target.value })}
             style={{
               width: '100%',
-              background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
+              background: '#ffffff',
+              border: '1px solid #e5e5e5',
+              color: '#000000',
               padding: '8px 12px',
-              fontSize: '12px',
+              fontSize: '14px',
               marginBottom: '12px',
-              fontWeight: 'normal',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             }}
           />
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -251,50 +228,44 @@ const LeftSidebar = () => {
               style={{
                 background: '#000000',
                 color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid #000000',
                 padding: '6px 12px',
-                fontSize: '10px',
+                fontSize: '12px',
                 cursor: 'pointer',
-                fontWeight: 'bold',
-                fontFamily: 'monospace',
-                textTransform: 'uppercase',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                 flex: 1
               }}
             >
-              CREATE
+              Create
             </button>
             <button
               onClick={() => setShowCreateWorkspace(false)}
               style={{
-                background: '#000000',
-                color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                background: '#ffffff',
+                color: '#666666',
+                border: '1px solid #e5e5e5',
                 padding: '6px 12px',
-                fontSize: '10px',
+                fontSize: '12px',
                 cursor: 'pointer',
-                fontWeight: 'bold',
-                fontFamily: 'monospace',
-                textTransform: 'uppercase'
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}
             >
-              CANCEL
+              Cancel
             </button>
           </div>
         </div>
       )}
 
-      <div style={{ maxHeight: '300px', overflow: 'auto', paddingRight: '4px' }}>
+      <div style={{ maxHeight: '300px', overflow: 'auto' }}>
         {state.workspaces.length === 0 ? (
           <div style={{
-            color: 'rgba(255, 255, 255, 0.4)',
-            fontSize: '11px',
+            color: '#999999',
+            fontSize: '13px',
             textAlign: 'center',
-            padding: '20px 0',
-            fontFamily: 'monospace',
-            background: '#000000',
-            border: '1px solid rgba(255, 255, 255, 0.1)'
+            padding: '20px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}>
-            NO WORKSPACES YET
+            No workspaces yet
           </div>
         ) : (
           state.workspaces.map(workspace => (
@@ -302,12 +273,12 @@ const LeftSidebar = () => {
               key={workspace.id}
               onClick={() => actions.selectWorkspace(workspace)}
               style={{
-                padding: '8px',
+                padding: '12px',
                 cursor: 'pointer',
                 marginBottom: '4px',
-                background: state.currentWorkspace?.id === workspace.id ? '#000000' : 'transparent',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
-                fontFamily: 'monospace'
+                background: state.currentWorkspace?.id === workspace.id ? '#f0f0f0' : '#ffffff',
+                border: '1px solid #e5e5e5',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}
             >
               <div style={{
@@ -317,12 +288,12 @@ const LeftSidebar = () => {
                 marginBottom: '4px'
               }}>
                 <div style={{
-                  fontSize: '12px',
-                  color: '#ffffff',
-                  fontWeight: 'normal',
-                  fontFamily: 'monospace'
+                  fontSize: '14px',
+                  color: '#000000',
+                  fontWeight: '500',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
-                  {workspace.name.toUpperCase()}
+                  {workspace.name}
                 </div>
                 <div style={{ display: 'flex', gap: '4px' }}>
                   <button
@@ -331,17 +302,17 @@ const LeftSidebar = () => {
                       actions.generateGuestLink(workspace.id)
                     }}
                     style={{
-                      background: '#000000',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      color: '#ffffff',
+                      background: '#ffffff',
+                      border: '1px solid #e5e5e5',
+                      color: '#666666',
                       cursor: 'pointer',
-                      fontSize: '10px',
-                      padding: '2px 4px',
-                      fontFamily: 'monospace'
+                      fontSize: '11px',
+                      padding: '4px 6px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                     }}
                     title="Share workspace with guest collaborators"
                   >
-                    SHARE
+                    Share
                   </button>
                   <button
                     onClick={(e) => {
@@ -359,29 +330,28 @@ const LeftSidebar = () => {
                       })
                     }}
                     style={{
-                      background: '#000000',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      color: '#ffffff',
+                      background: '#ffffff',
+                      border: '1px solid #e5e5e5',
+                      color: '#666666',
                       cursor: 'pointer',
-                      fontSize: '10px',
-                      padding: '2px 4px',
-                      fontFamily: 'monospace'
+                      fontSize: '11px',
+                      padding: '4px 6px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                     }}
                     title="Delete workspace"
                   >
-                    X
+                    ×
                   </button>
                 </div>
               </div>
               {workspace.description && (
                 <div style={{
-                  fontSize: '10px',
-                  color: 'rgba(255, 255, 255, 0.6)',
+                  fontSize: '12px',
+                  color: '#666666',
                   lineHeight: '1.4',
-                  fontWeight: 'normal',
-                  fontFamily: 'monospace'
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
-                  {workspace.description.toUpperCase()}
+                  {workspace.description}
                 </div>
               )}
             </div>
@@ -392,36 +362,31 @@ const LeftSidebar = () => {
   )
 
   const renderFilesSection = () => (
-    <div style={{ padding: '16px' }}>
+    <div style={{ padding: '20px' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '12px',
-        paddingBottom: '8px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        marginBottom: '16px'
       }}>
         <span style={{
-          fontSize: '11px',
-          textTransform: 'uppercase',
-          letterSpacing: '1px',
-          color: '#ffffff',
-          fontFamily: 'monospace',
-          fontWeight: 'bold'
+          fontSize: '14px',
+          fontWeight: '600',
+          color: '#000000',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
-          FILES
+          Files
         </span>
         <label style={{
-          background: '#000000',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          color: '#ffffff',
+          background: '#ffffff',
+          border: '1px solid #e5e5e5',
+          color: '#666666',
           padding: '4px 8px',
-          fontSize: '10px',
+          fontSize: '12px',
           cursor: 'pointer',
-          fontFamily: 'monospace',
-          textTransform: 'uppercase'
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
-          + ADD
+          Add
           <input
             type="file"
             onChange={handleFileUpload}
@@ -433,27 +398,23 @@ const LeftSidebar = () => {
 
       {!state.currentWorkspace ? (
         <div style={{
-          color: 'rgba(255, 255, 255, 0.4)',
-          fontSize: '11px',
+          color: '#999999',
+          fontSize: '13px',
           textAlign: 'center',
-          padding: '20px 0',
-          fontFamily: 'monospace',
-          background: '#000000',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
+          padding: '20px',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
-          SELECT WORKSPACE FIRST
+          Select workspace first
         </div>
       ) : state.files.length === 0 ? (
         <div style={{
-          color: 'rgba(255, 255, 255, 0.4)',
-          fontSize: '11px',
+          color: '#999999',
+          fontSize: '13px',
           textAlign: 'center',
-          padding: '20px 0',
-          fontFamily: 'monospace',
-          background: '#000000',
-          border: '1px solid rgba(255, 255, 255, 0.1)'
+          padding: '20px',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
-          NO FILES YET
+          No files yet
         </div>
       ) : (
         <div style={{ maxHeight: '300px', overflow: 'auto' }}>
@@ -462,12 +423,12 @@ const LeftSidebar = () => {
               key={file.id}
               onClick={() => actions.selectFile(file)}
               style={{
-                padding: '8px',
+                padding: '12px',
                 cursor: 'pointer',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid #e5e5e5',
                 marginBottom: '4px',
-                background: state.selectedFile?.id === file.id ? '#000000' : 'transparent',
-                fontFamily: 'monospace'
+                background: state.selectedFile?.id === file.id ? '#f0f0f0' : '#ffffff',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}
             >
               <div style={{
@@ -477,23 +438,23 @@ const LeftSidebar = () => {
                 marginBottom: '4px'
               }}>
                 <span style={{
-                  fontSize: '12px',
-                  color: '#ffffff',
+                  fontSize: '14px',
+                  color: '#000000',
                   flex: 1,
                   marginRight: '8px',
-                  fontFamily: 'monospace'
+                  fontWeight: '500',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
                   {file.name}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <div style={{
-                    padding: '2px 4px',
-                    fontSize: '8px',
-                    background: '#000000',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
-                    color: '#ffffff',
-                    textTransform: 'uppercase',
-                    fontFamily: 'monospace'
+                    padding: '2px 6px',
+                    fontSize: '11px',
+                    background: '#f8f9fa',
+                    border: '1px solid #e5e5e5',
+                    color: '#666666',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                   }}>
                     {file.workflowState.replace('_', ' ')}
                   </div>
@@ -509,26 +470,26 @@ const LeftSidebar = () => {
                       })
                     }}
                     style={{
-                      background: '#000000',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      color: '#ffffff',
+                      background: '#ffffff',
+                      border: '1px solid #e5e5e5',
+                      color: '#666666',
                       cursor: 'pointer',
-                      fontSize: '10px',
-                      padding: '2px 4px',
-                      fontFamily: 'monospace'
+                      fontSize: '11px',
+                      padding: '4px 6px',
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                     }}
                     title="Delete file"
                   >
-                    X
+                    ×
                   </button>
                 </div>
               </div>
               <div style={{
-                fontSize: '10px',
-                color: 'rgba(255, 255, 255, 0.6)',
-                fontFamily: 'monospace'
+                fontSize: '12px',
+                color: '#666666',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}>
-                {file.sections.length} SECTIONS
+                {file.sections.length} section{file.sections.length !== 1 ? 's' : ''}
               </div>
             </div>
           ))}
@@ -543,38 +504,32 @@ const LeftSidebar = () => {
     )
 
     return (
-      <div style={{ padding: '16px' }}>
+      <div style={{ padding: '20px' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '12px',
-          paddingBottom: '8px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+          marginBottom: '16px'
         }}>
           <span style={{
-            fontSize: '11px',
-            textTransform: 'uppercase',
-            letterSpacing: '1px',
-            color: '#ffffff',
-            fontFamily: 'monospace',
-            fontWeight: 'bold'
+            fontSize: '14px',
+            fontWeight: '600',
+            color: '#000000',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}>
-            REQUESTS ({pendingApprovals.length})
+            Requests ({pendingApprovals.length})
           </span>
         </div>
 
         {pendingApprovals.length === 0 ? (
           <div style={{
-            color: 'rgba(255, 255, 255, 0.4)',
-            fontSize: '11px',
+            color: '#999999',
+            fontSize: '13px',
             textAlign: 'center',
-            padding: '20px 0',
-            fontFamily: 'monospace',
-            background: '#000000',
-            border: '1px solid rgba(255, 255, 255, 0.1)'
+            padding: '20px',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}>
-            REVIEW QUEUE EMPTY
+            Review queue empty
           </div>
         ) : (
           <div style={{ maxHeight: '300px', overflow: 'auto' }}>
@@ -582,59 +537,58 @@ const LeftSidebar = () => {
               <div
                 key={section.id}
                 style={{
-                  padding: '8px',
+                  padding: '12px',
                   marginBottom: '4px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  background: '#000000',
-                  fontFamily: 'monospace'
+                  border: '1px solid #e5e5e5',
+                  background: '#ffffff',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}
               >
                 <div style={{
-                  fontSize: '12px',
-                  color: '#ffffff',
+                  fontSize: '14px',
+                  color: '#000000',
                   marginBottom: '4px',
-                  fontFamily: 'monospace'
+                  fontWeight: '500',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
                   {section.title}
                 </div>
                 <div style={{
-                  fontSize: '10px',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  marginBottom: '6px',
-                  fontFamily: 'monospace'
+                  fontSize: '12px',
+                  color: '#666666',
+                  marginBottom: '8px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
-                  {section.comments.length} COMMENTS
+                  {section.comments.length} comment{section.comments.length !== 1 ? 's' : ''}
                 </div>
-                <div style={{ display: 'flex', gap: '4px' }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
                   <button
                     onClick={() => actions.updateWorkflowState(section.id, WORKFLOW_STATES.APPROVED)}
                     style={{
                       background: '#000000',
                       color: '#ffffff',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      padding: '4px 6px',
-                      fontSize: '9px',
+                      border: '1px solid #000000',
+                      padding: '6px 12px',
+                      fontSize: '12px',
                       cursor: 'pointer',
-                      fontFamily: 'monospace',
-                      textTransform: 'uppercase'
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                     }}
                   >
-                    APPROVE
+                    Approve
                   </button>
                   <button
                     onClick={() => actions.updateWorkflowState(section.id, WORKFLOW_STATES.CHANGES_REQUESTED)}
                     style={{
-                      background: '#000000',
-                      color: '#ffffff',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
-                      padding: '4px 6px',
-                      fontSize: '9px',
+                      background: '#ffffff',
+                      color: '#666666',
+                      border: '1px solid #e5e5e5',
+                      padding: '6px 12px',
+                      fontSize: '12px',
                       cursor: 'pointer',
-                      fontFamily: 'monospace',
-                      textTransform: 'uppercase'
+                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                     }}
                   >
-                    REJECT
+                    Request Changes
                   </button>
                 </div>
               </div>
@@ -646,32 +600,27 @@ const LeftSidebar = () => {
   }
 
   const renderSettingsSection = () => (
-    <div style={{ padding: '16px' }}>
+    <div style={{ padding: '20px' }}>
       <span style={{
-        fontSize: '11px',
-        textTransform: 'uppercase',
-        letterSpacing: '1px',
-        color: '#ffffff',
+        fontSize: '14px',
+        fontWeight: '600',
+        color: '#000000',
         marginBottom: '20px',
         display: 'block',
-        fontFamily: 'monospace',
-        fontWeight: 'bold',
-        paddingBottom: '8px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
       }}>
-        SETTINGS
+        Settings
       </span>
 
       {/* Billing & Subscription */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px', fontFamily: 'monospace', textTransform: 'uppercase' }}>
-          BILLING & SUBSCRIPTION
+        <div style={{ fontSize: '13px', color: '#000000', marginBottom: '12px', fontWeight: '600', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
+          Billing & Subscription
         </div>
         <div style={{
-          background: '#000000',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          padding: '12px',
-          fontFamily: 'monospace'
+          background: '#f8f9fa',
+          border: '1px solid #e5e5e5',
+          padding: '16px'
         }}>
           <div style={{
             display: 'flex',
@@ -679,21 +628,20 @@ const LeftSidebar = () => {
             alignItems: 'center',
             marginBottom: '8px'
           }}>
-            <span style={{ fontSize: '12px', color: '#ffffff', fontFamily: 'monospace' }}>SWAYFILES PRO</span>
+            <span style={{ fontSize: '14px', color: '#000000', fontWeight: '500', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>SwayFiles Pro</span>
             <span style={{
-              fontSize: '10px',
+              fontSize: '11px',
               background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#ffffff',
-              padding: '2px 6px',
-              fontWeight: 'bold',
-              fontFamily: 'monospace'
+              padding: '4px 8px',
+              fontWeight: '500',
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             }}>
-              ACTIVE
+              Active
             </span>
           </div>
-          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '10px', fontFamily: 'monospace' }}>
-            $15/MONTH • UNLIMITED WORKSPACES & FILES
+          <div style={{ fontSize: '12px', color: '#666666', marginBottom: '12px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
+            $15/month • Unlimited workspaces & files
           </div>
           <button
             onClick={() => {
@@ -701,30 +649,22 @@ const LeftSidebar = () => {
             }}
             style={{
               width: '100%',
-              background: '#000000',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              color: '#ffffff',
-              padding: '6px 8px',
-              fontSize: '10px',
+              background: '#ffffff',
+              border: '1px solid #e5e5e5',
+              color: '#666666',
+              padding: '8px 12px',
+              fontSize: '12px',
               cursor: 'pointer',
-              transition: 'all 0.2s',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.background = 'rgba(255, 255, 255, 0.05)'
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.background = '#000000'
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             }}
           >
-            MANAGE SUBSCRIPTION
+            Manage Subscription
           </button>
 
           {/* Admin Controls - Only visible for testing */}
-          <div style={{ marginTop: '12px', padding: '8px', border: '1px solid #333333', borderRadius: '3px' }}>
-            <div style={{ fontSize: '9px', color: '#666666', marginBottom: '6px' }}>Admin Controls (Testing)</div>
-            <div style={{ display: 'flex', gap: '4px' }}>
+          <div style={{ marginTop: '12px', padding: '12px', border: '1px solid #e5e5e5', background: '#ffffff' }}>
+            <div style={{ fontSize: '11px', color: '#999999', marginBottom: '8px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>Admin Controls (Testing)</div>
+            <div style={{ display: 'flex', gap: '8px' }}>
               <button
                 onClick={async () => {
                   try {
@@ -748,13 +688,13 @@ const LeftSidebar = () => {
                 }}
                 style={{
                   flex: 1,
-                  background: '#333333',
-                  border: '1px solid #555555',
-                  color: '#ffffff',
-                  padding: '4px 6px',
-                  fontSize: '8px',
-                  borderRadius: '2px',
-                  cursor: 'pointer'
+                  background: '#ffffff',
+                  border: '1px solid #e5e5e5',
+                  color: '#666666',
+                  padding: '6px 8px',
+                  fontSize: '11px',
+                  cursor: 'pointer',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
                 → Free
               </button>
@@ -781,13 +721,13 @@ const LeftSidebar = () => {
                 }}
                 style={{
                   flex: 1,
-                  background: '#333333',
-                  border: '1px solid #555555',
+                  background: '#000000',
+                  border: '1px solid #000000',
                   color: '#ffffff',
-                  padding: '4px 6px',
-                  fontSize: '8px',
-                  borderRadius: '2px',
-                  cursor: 'pointer'
+                  padding: '6px 8px',
+                  fontSize: '11px',
+                  cursor: 'pointer',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}>
                 → Pro
               </button>
@@ -798,7 +738,7 @@ const LeftSidebar = () => {
 
       {/* View Options */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
+        <div style={{ fontSize: '13px', color: '#000000', marginBottom: '12px', fontWeight: '600', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
           View Options
         </div>
         <label style={{
@@ -806,9 +746,10 @@ const LeftSidebar = () => {
           alignItems: 'center',
           gap: '10px',
           cursor: 'pointer',
-          fontSize: '11px',
-          color: '#ffffff',
-          padding: '4px 0'
+          fontSize: '13px',
+          color: '#000000',
+          padding: '4px 0',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
           <input
             type="checkbox"
@@ -816,10 +757,7 @@ const LeftSidebar = () => {
             onChange={actions.toggleFocusedView}
             style={{
               margin: 0,
-              marginRight: '6px',
-              accentColor: '#ffffff',
-              backgroundColor: '#000000',
-              borderColor: '#666666'
+              marginRight: '6px'
             }}
           />
           Focused View
@@ -828,15 +766,16 @@ const LeftSidebar = () => {
 
       {/* Guest Upgrade Section */}
       {state.isGuest && (
-        <div style={{ marginBottom: '16px' }}>
-          <div style={{ fontSize: '12px', color: '#ffffff', marginBottom: '8px' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <div style={{ fontSize: '13px', color: '#000000', marginBottom: '12px', fontWeight: '600', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
             Guest Account
           </div>
           <div style={{
-            fontSize: '10px',
+            fontSize: '12px',
             color: '#666666',
-            marginBottom: '8px',
-            lineHeight: '1.4'
+            marginBottom: '12px',
+            lineHeight: '1.5',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}>
             You're collaborating as {state.guestName}. Create an account to save your work and access more features.
           </div>
@@ -845,24 +784,24 @@ const LeftSidebar = () => {
               onClick={() => setShowUpgradeForm(true)}
               style={{
                 width: '100%',
-                background: '#2ed573',
-                border: 'none',
-                color: '#000000',
+                background: '#000000',
+                border: '1px solid #000000',
+                color: '#ffffff',
                 padding: '8px 12px',
-                fontSize: '11px',
+                fontSize: '12px',
                 cursor: 'pointer',
-                fontWeight: 'bold'
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}
             >
-              ⬆ Upgrade to Account
+              Upgrade to Account
             </button>
           ) : (
             <div style={{
-              border: '1px solid #333333',
-              background: '#111111',
-              padding: '12px'
+              border: '1px solid #e5e5e5',
+              background: '#f8f9fa',
+              padding: '16px'
             }}>
-              <div style={{ fontSize: '10px', color: '#999999', marginBottom: '8px' }}>
+              <div style={{ fontSize: '12px', color: '#666666', marginBottom: '12px', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
                 Create your account - your work will be preserved!
               </div>
               <input
@@ -872,12 +811,13 @@ const LeftSidebar = () => {
                 onChange={(e) => setUpgradeForm({ ...upgradeForm, name: e.target.value })}
                 style={{
                   width: '100%',
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  color: '#ffffff',
-                  padding: '6px 8px',
-                  fontSize: '11px',
-                  marginBottom: '6px'
+                  background: '#ffffff',
+                  border: '1px solid #e5e5e5',
+                  color: '#000000',
+                  padding: '8px 12px',
+                  fontSize: '14px',
+                  marginBottom: '8px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}
               />
               <input
@@ -887,12 +827,13 @@ const LeftSidebar = () => {
                 onChange={(e) => setUpgradeForm({ ...upgradeForm, email: e.target.value })}
                 style={{
                   width: '100%',
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  color: '#ffffff',
-                  padding: '6px 8px',
-                  fontSize: '11px',
-                  marginBottom: '6px'
+                  background: '#ffffff',
+                  border: '1px solid #e5e5e5',
+                  color: '#000000',
+                  padding: '8px 12px',
+                  fontSize: '14px',
+                  marginBottom: '8px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}
               />
               <input
@@ -902,26 +843,27 @@ const LeftSidebar = () => {
                 onChange={(e) => setUpgradeForm({ ...upgradeForm, password: e.target.value })}
                 style={{
                   width: '100%',
-                  background: '#000000',
-                  border: '1px solid #333333',
-                  color: '#ffffff',
-                  padding: '6px 8px',
-                  fontSize: '11px',
-                  marginBottom: '8px'
+                  background: '#ffffff',
+                  border: '1px solid #e5e5e5',
+                  color: '#000000',
+                  padding: '8px 12px',
+                  fontSize: '14px',
+                  marginBottom: '12px',
+                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                 }}
               />
-              <div style={{ display: 'flex', gap: '4px' }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
                 <button
                   onClick={handleUpgradeToAccount}
                   style={{
                     flex: 1,
-                    background: '#2ed573',
-                    color: '#000000',
-                    border: 'none',
-                    padding: '6px 8px',
-                    fontSize: '10px',
+                    background: '#000000',
+                    color: '#ffffff',
+                    border: '1px solid #000000',
+                    padding: '8px 12px',
+                    fontSize: '12px',
                     cursor: 'pointer',
-                    fontWeight: 'bold'
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                   }}
                 >
                   Create Account
@@ -929,12 +871,13 @@ const LeftSidebar = () => {
                 <button
                   onClick={() => setShowUpgradeForm(false)}
                   style={{
-                    background: 'none',
-                    color: '#ffffff',
-                    border: '1px solid #666666',
-                    padding: '6px 8px',
-                    fontSize: '10px',
-                    cursor: 'pointer'
+                    background: '#ffffff',
+                    color: '#666666',
+                    border: '1px solid #e5e5e5',
+                    padding: '8px 12px',
+                    fontSize: '12px',
+                    cursor: 'pointer',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
                   }}
                 >
                   Cancel
@@ -947,19 +890,20 @@ const LeftSidebar = () => {
 
       {/* Account */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
+        <div style={{ fontSize: '13px', color: '#000000', marginBottom: '12px', fontWeight: '600', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
           Account
         </div>
         <div style={{
-          background: '#111111',
-          border: '1px solid #333333',
-          borderRadius: '6px',
-          padding: '12px'
+          background: '#f8f9fa',
+          border: '1px solid #e5e5e5',
+          padding: '16px'
         }}>
           <div style={{
-            fontSize: '11px',
-            color: '#666666',
-            marginBottom: '8px'
+            fontSize: '13px',
+            color: '#000000',
+            marginBottom: '12px',
+            fontWeight: '500',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}>
             {state.user?.name || 'Guest User'}
           </div>
@@ -967,13 +911,13 @@ const LeftSidebar = () => {
             onClick={state.isGuest ? actions.guestLogout : actions.logout}
             style={{
               width: '100%',
-              background: 'transparent',
-              border: '1px solid #333333',
-              color: '#ffffff',
-              padding: '6px 8px',
-              fontSize: '10px',
+              background: '#ffffff',
+              border: '1px solid #e5e5e5',
+              color: '#666666',
+              padding: '8px 12px',
+              fontSize: '12px',
               cursor: 'pointer',
-              borderRadius: '3px'
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             }}
           >
             {state.isGuest ? 'Leave Session' : 'Sign Out'}
@@ -983,16 +927,15 @@ const LeftSidebar = () => {
 
       {/* Keyboard Shortcuts */}
       <div style={{ marginBottom: '20px' }}>
-        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
+        <div style={{ fontSize: '13px', color: '#000000', marginBottom: '12px', fontWeight: '600', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
           Keyboard Shortcuts
         </div>
         <div style={{
-          background: '#111111',
-          border: '1px solid #333333',
-          borderRadius: '6px',
-          padding: '12px'
+          background: '#f8f9fa',
+          border: '1px solid #e5e5e5',
+          padding: '16px'
         }}>
-          <div style={{ fontSize: '10px', color: '#666666', lineHeight: '1.6' }}>
+          <div style={{ fontSize: '12px', color: '#666666', lineHeight: '1.6', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }}>
             ⌘ + ⇧ + S - New section<br />
             ⌘ + ⌥ + Z - Toggle zen mode<br />
             ⌘ + ⌃ + ↑/↓ - Navigate sections<br />
@@ -1022,104 +965,81 @@ const LeftSidebar = () => {
     <div style={{
       width: '320px',
       height: '100vh',
-      background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
-      borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+      background: '#ffffff',
+      borderRight: '1px solid #e5e5e5',
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'hidden',
-      boxShadow: 'inset -1px 0 0 rgba(255, 255, 255, 0.03)'
+      overflow: 'hidden'
     }}>
-      {/* Premium Header */}
+      {/* Clean Header */}
       <div style={{
-        padding: '24px 24px 20px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-        background: 'rgba(255, 255, 255, 0.01)',
-        backdropFilter: 'blur(8px)'
+        padding: '16px 20px',
+        borderBottom: '1px solid #e5e5e5'
       }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '12px'
+          marginBottom: '8px'
         }}>
           <div style={{
-            fontSize: '18px',
+            fontSize: '16px',
             fontWeight: '600',
-            color: '#ffffff',
-            letterSpacing: '-0.02em',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
+            color: '#000000',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           }}>
             SwayFiles
           </div>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px'
+            gap: '8px'
           }}>
             {state.isGuest && (
               <div style={{
-                fontSize: '9px',
-                color: '#ffffff',
-                background: 'rgba(255, 255, 255, 0.08)',
-                padding: '4px 8px',
-                borderRadius: '6px',
+                fontSize: '11px',
+                color: '#666666',
+                background: '#f5f5f5',
+                padding: '2px 6px',
                 fontWeight: '500',
-                letterSpacing: '0.05em',
-                border: '1px solid rgba(255, 255, 255, 0.12)'
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}>
-                GUEST
+                Guest
               </div>
             )}
             <button
               onClick={state.isGuest ? actions.guestLogout : actions.logout}
               style={{
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                color: 'rgba(255, 255, 255, 0.6)',
+                background: '#ffffff',
+                border: '1px solid #e5e5e5',
+                color: '#666666',
                 cursor: 'pointer',
-                fontSize: '12px',
-                padding: '6px',
-                borderRadius: '6px',
-                transition: 'all 0.2s ease',
+                fontSize: '11px',
+                padding: '4px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.08)'
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
-                e.target.style.color = 'rgba(255, 255, 255, 0.8)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.04)'
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'
-                e.target.style.color = 'rgba(255, 255, 255, 0.6)'
+                justifyContent: 'center',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
               }}
               title={state.isGuest ? "Leave workspace" : "Sign out"}
             >
-              ⏻
+              ↗
             </button>
           </div>
         </div>
         <div style={{
-          fontSize: '11px',
-          color: 'rgba(255, 255, 255, 0.4)',
-          fontWeight: '400',
-          letterSpacing: '0.01em'
+          fontSize: '12px',
+          color: '#999999',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
-          v2.0 • {state.workspaces.length} workspace{state.workspaces.length !== 1 ? 's' : ''}
+          {state.workspaces.length} workspace{state.workspaces.length !== 1 ? 's' : ''}
         </div>
       </div>
 
-      {/* Sophisticated Navigation */}
+      {/* Clean Navigation */}
       <div style={{
         display: 'flex',
-        margin: '16px 16px 0',
-        background: 'rgba(255, 255, 255, 0.02)',
-        borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-        overflow: 'hidden',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.04)'
+        borderBottom: '1px solid #e5e5e5'
       }}>
         {sidebarSections.map((section, index) => (
           <button
@@ -1135,68 +1055,27 @@ const LeftSidebar = () => {
             }}
             style={{
               flex: 1,
-              background: activeSection === section.id
-                ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08))'
-                : 'transparent',
+              background: activeSection === section.id ? '#f8f9fa' : '#ffffff',
               border: 'none',
-              color: activeSection === section.id ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-              padding: '14px 12px',
-              fontSize: '10px',
-              fontWeight: activeSection === section.id ? '600' : '500',
+              borderRight: index < sidebarSections.length - 1 ? '1px solid #e5e5e5' : 'none',
+              borderBottom: activeSection === section.id ? '2px solid #000000' : '2px solid transparent',
+              color: activeSection === section.id ? '#000000' : '#666666',
+              padding: '12px 8px',
+              fontSize: '11px',
+              fontWeight: '500',
               cursor: 'pointer',
-              transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-              position: 'relative',
-              borderRight: index < sidebarSections.length - 1 ? '1px solid rgba(255, 255, 255, 0.04)' : 'none',
-              letterSpacing: '0.02em',
-              textTransform: 'uppercase'
-            }}
-            onMouseEnter={(e) => {
-              if (activeSection !== section.id) {
-                e.target.style.background = 'rgba(255, 255, 255, 0.04)'
-                e.target.style.color = 'rgba(255, 255, 255, 0.7)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeSection !== section.id) {
-                e.target.style.background = 'transparent'
-                e.target.style.color = 'rgba(255, 255, 255, 0.5)'
-              }
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             }}
           >
-            <div style={{
-              marginBottom: '4px',
-              fontSize: '14px',
-              opacity: activeSection === section.id ? 1 : 0.6
-            }}>
-              {section.icon}
-            </div>
             {section.label}
-            {activeSection === section.id && (
-              <div style={{
-                position: 'absolute',
-                bottom: '0',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '24px',
-                height: '2px',
-                background: '#ffffff',
-                borderRadius: '1px'
-              }} />
-            )}
           </button>
         ))}
       </div>
 
-      {/* Premium Content Area */}
+      {/* Clean Content Area */}
       <div style={{
         flex: 1,
         overflow: 'auto',
-        margin: '16px',
-        marginTop: '24px',
-        background: 'rgba(255, 255, 255, 0.01)',
-        borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.04)',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.02)',
         scrollbarWidth: 'none',
         msOverflowStyle: 'none'
       }}
@@ -1209,40 +1088,27 @@ const LeftSidebar = () => {
         {renderSectionContent()}
       </div>
 
-      {/* Refined Status Bar */}
+      {/* Clean Status Bar */}
       <div style={{
-        padding: '16px 24px',
-        borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-        background: 'rgba(255, 255, 255, 0.01)',
-        backdropFilter: 'blur(8px)'
+        padding: '12px 20px',
+        borderTop: '1px solid #e5e5e5',
+        background: '#f8f9fa'
       }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
           fontSize: '11px',
-          fontWeight: '500'
+          fontWeight: '400',
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
         }}>
           <div style={{
-            color: 'rgba(255, 255, 255, 0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
+            color: '#666666'
           }}>
-            <div style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: state.currentWorkspace ? '#ffffff' : 'rgba(255, 255, 255, 0.3)'
-            }} />
-            {state.currentWorkspace ? state.currentWorkspace.name : 'No workspace'}
+            {state.currentWorkspace ? state.currentWorkspace.name : 'No workspace selected'}
           </div>
           <div style={{
-            color: 'rgba(255, 255, 255, 0.5)',
-            background: 'rgba(255, 255, 255, 0.04)',
-            padding: '4px 8px',
-            borderRadius: '6px',
-            border: '1px solid rgba(255, 255, 255, 0.06)'
+            color: '#999999'
           }}>
             {state.files.length} file{state.files.length !== 1 ? 's' : ''}
           </div>
