@@ -263,7 +263,7 @@ router.post('/sections/:id/review', authenticateToken, workflowLimiter, async (r
     const permissionCheck = await client.query(`
       SELECT fs.id, fs.project_file_id, fs.assigned_reviewers, p.user_id as project_owner
       FROM file_sections fs
-      JOIN project_files pf ON fs.project_file_id = pf.project_id
+      JOIN project_files pf ON fs.project_file_id = pf.id
       JOIN projects p ON pf.project_id = p.id
       WHERE fs.id = $1 AND (
         p.user_id = $2 OR
