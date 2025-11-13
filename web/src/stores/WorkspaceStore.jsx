@@ -1023,9 +1023,17 @@ export const WorkspaceProvider = ({ children }) => {
 
       // Copy to clipboard
       navigator.clipboard.writeText(guestLink).then(() => {
-        alert(`Guest link copied to clipboard!\n\n${guestLink}\n\nShare this link with external collaborators. They can join without creating an account.`)
+        actions.showConfirmDialog({
+          message: `Guest link copied to clipboard!\n\n${guestLink}\n\nShare this link with external collaborators. They can join without creating an account.`,
+          confirmText: 'Got it',
+          showCancel: false
+        })
       }).catch(() => {
-        alert(`Guest link generated:\n\n${guestLink}\n\nShare this link with external collaborators. They can join without creating an account.`)
+        actions.showConfirmDialog({
+          message: `Guest link generated:\n\n${guestLink}\n\nShare this link with external collaborators. They can join without creating an account.`,
+          confirmText: 'Got it',
+          showCancel: false
+        })
       })
 
       actions.addActivity('guest_link_generated', 'Generated guest collaboration link', 'You')

@@ -6,7 +6,7 @@ const LeftSidebar = () => {
   const { state, actions, WORKFLOW_STATES } = useWorkspace()
   // Load saved tab from localStorage, fallback to 'progress' if none saved
   const [activeSection, setActiveSection] = useState(() => {
-    return localStorage.getItem('swayfiles-active-tab') || 'progress'
+    return localStorage.getItem('swayfiles-active-tab') || 'files'
   })
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false)
   const [workspaceForm, setWorkspaceForm] = useState({ name: '', description: '', clientLink: '' })
@@ -17,10 +17,10 @@ const LeftSidebar = () => {
   const [recentActivity, setRecentActivity] = useState([])
 
   const sidebarSections = [
-    { id: 'progress', label: 'Progress', icon: '◐' },
+    { id: 'files', label: 'Files', icon: '◈' },
     { id: 'requests', label: 'Requests', icon: '◪' },
     { id: 'settings', label: 'Settings', icon: '⚙' },
-    { id: 'collaboration', label: 'Team', icon: '◌' }
+    { id: 'workspaces', label: 'Workspaces', icon: '◯' }
   ]
 
   const handleCreateWorkspace = () => {
@@ -46,7 +46,11 @@ const LeftSidebar = () => {
         setUpgradeForm({ name: '', email: '', password: '' })
         setShowUpgradeForm(false)
       } catch (error) {
-        alert('Failed to upgrade to account: ' + error.message)
+        actions.showConfirmDialog({
+          message: 'Failed to upgrade to account: ' + error.message,
+          confirmText: 'OK',
+          showCancel: false
+        })
       }
     }
   }
@@ -57,7 +61,11 @@ const LeftSidebar = () => {
     if (!file) return
 
     if (!state.currentWorkspace) {
-      alert('Please select a workspace first')
+      actions.showConfirmDialog({
+        message: 'Please select a workspace first',
+        confirmText: 'OK',
+        showCancel: false
+      })
       event.target.value = ''
       return
     }
@@ -90,7 +98,11 @@ const LeftSidebar = () => {
     const isValidType = allowedTypes.includes(file.type) || allowedExtensions.includes(fileExtension)
 
     if (!isValidType) {
-      alert(`File type not supported. Allowed types:\n• Images: JPG, PNG, GIF, SVG\n• Documents: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX\n• Code: TXT, MD, HTML, CSS, JS, JSX, TS, TSX, JSON, XML, YAML\n• Archives: ZIP, RAR`)
+      actions.showConfirmDialog({
+        message: `File type not supported. Allowed types:\n• Images: JPG, PNG, GIF, SVG\n• Documents: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX\n• Code: TXT, MD, HTML, CSS, JS, JSX, TS, TSX, JSON, XML, YAML\n• Archives: ZIP, RAR`,
+        confirmText: 'Got it',
+        showCancel: false
+      })
       event.target.value = ''
       return
     }
@@ -98,7 +110,11 @@ const LeftSidebar = () => {
     // File size limit - 50MB
     const maxSize = 50 * 1024 * 1024
     if (file.size > maxSize) {
-      alert(`File size too large. Maximum allowed size is 50MB.\nYour file: ${(file.size / (1024 * 1024)).toFixed(1)}MB`)
+      actions.showConfirmDialog({
+        message: `File size too large. Maximum allowed size is 50MB.\nYour file: ${(file.size / (1024 * 1024)).toFixed(1)}MB`,
+        confirmText: 'OK',
+        showCancel: false
+      })
       event.target.value = ''
       return
     }
@@ -897,10 +913,10 @@ const LeftSidebar = () => {
 
   const renderSectionContent = () => {
     switch (activeSection) {
-      case 'progress': return renderFilesSection()
+      case 'files': return renderFilesSection()
       case 'requests': return renderApprovalsSection()
       case 'settings': return renderSettingsSection()
-      case 'collaboration': return renderWorkspaceSection()
+      case 'workspaces': return renderWorkspaceSection()
       default: return renderFilesSection()
     }
   }

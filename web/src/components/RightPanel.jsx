@@ -8,8 +8,8 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
 
   const tabs = [
     { id: 'activity', label: 'Activity', icon: '◐' },
-    { id: 'stats', label: 'Stats', icon: '◊' },
-    { id: 'team', label: 'Team', icon: '◯' }
+    { id: 'analytics', label: 'Analytics', icon: '◊' },
+    { id: 'reviews', label: 'Reviews', icon: '◪' }
   ]
 
   const getActivityIcon = (type) => {
@@ -122,7 +122,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
     )
   }
 
-  const renderStatsTab = () => {
+  const renderAnalyticsTab = () => {
     const workflowStats = getWorkflowStats()
     const totalComments = Object.values(state.comments).length
 
@@ -335,8 +335,11 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
     )
   }
 
-  const renderTeamTab = () => {
-    const collaborators = state.collaborators.length || 1 // At least the current user
+  const renderReviewsTab = () => {
+    const sections = Object.values(state.sections)
+    const pendingReviews = sections.filter(s => s.workflowState === WORKFLOW_STATES.UNDER_REVIEW)
+    const changesRequested = sections.filter(s => s.workflowState === WORKFLOW_STATES.CHANGES_REQUESTED)
+    const approved = sections.filter(s => s.workflowState === WORKFLOW_STATES.APPROVED)
 
     return (
       <div style={{
@@ -351,83 +354,126 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           color: '#999999',
           marginBottom: '12px'
         }}>
-          Team Members ({collaborators})
+          Review Status
         </div>
 
+        {/* Pending Reviews */}
         <div style={{
+          marginBottom: '16px',
           padding: '12px',
           border: '1px solid #333333',
-          background: '#111111',
-          marginBottom: '12px'
+          background: '#111111'
         }}>
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            marginBottom: '6px'
+            fontSize: '12px',
+            color: '#ffffff',
+            marginBottom: '8px',
+            fontWeight: 'bold'
+          }}>
+            Pending Reviews ({pendingReviews.length})
+          </div>
+          {pendingReviews.length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              {pendingReviews.slice(0, 3).map(section => (
+                <div key={section.id} style={{
+                  fontSize: '10px',
+                  color: '#ffa502',
+                  padding: '4px',
+                  background: '#222222',
+                  borderRadius: '3px'
+                }}>
+                  {section.title || 'Untitled Section'}
+                </div>
+              ))}
+              {pendingReviews.length > 3 && (
+                <div style={{ fontSize: '9px', color: '#666666' }}>
+                  +{pendingReviews.length - 3} more sections
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ fontSize: '10px', color: '#666666' }}>
+              No sections awaiting review
+            </div>
+          )}
+        </div>
+
+        {/* Changes Requested */}
+        {changesRequested.length > 0 && (
+          <div style={{
+            marginBottom: '16px',
+            padding: '12px',
+            border: '1px solid #333333',
+            background: '#111111'
           }}>
             <div style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              background: '#666666',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '10px',
-              color: '#ffffff'
+              fontSize: '12px',
+              color: '#ffffff',
+              marginBottom: '8px',
+              fontWeight: 'bold'
             }}>
-              Y
+              Changes Requested ({changesRequested.length})
             </div>
-            <div>
-              <div style={{
-                fontSize: '11px',
-                color: '#ffffff',
-                fontWeight: 'bold'
-              }}>
-                You (Owner)
-              </div>
-              <div style={{
-                fontSize: '9px',
-                color: '#666666'
-              }}>
-                Active now
-              </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              {changesRequested.slice(0, 3).map(section => (
+                <div key={section.id} style={{
+                  fontSize: '10px',
+                  color: '#ff4757',
+                  padding: '4px',
+                  background: '#222222',
+                  borderRadius: '3px'
+                }}>
+                  {section.title || 'Untitled Section'}
+                </div>
+              ))}
             </div>
           </div>
+        )}
+
+        {/* Recently Approved */}
+        {approved.length > 0 && (
           <div style={{
-            fontSize: '9px',
-            color: '#999999'
+            marginBottom: '16px',
+            padding: '12px',
+            border: '1px solid #333333',
+            background: '#111111'
           }}>
-            Full access to all files and workflows
+            <div style={{
+              fontSize: '12px',
+              color: '#ffffff',
+              marginBottom: '8px',
+              fontWeight: 'bold'
+            }}>
+              Recently Approved ({approved.length})
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              {approved.slice(0, 3).map(section => (
+                <div key={section.id} style={{
+                  fontSize: '10px',
+                  color: '#2ed573',
+                  padding: '4px',
+                  background: '#222222',
+                  borderRadius: '3px'
+                }}>
+                  {section.title || 'Untitled Section'}
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
-        <div style={{
-          padding: '20px',
-          textAlign: 'center',
-          color: '#666666',
-          fontSize: '11px',
-          lineHeight: '1.5'
-        }}>
-          Invite collaborators to review and approve sections.{'\n'}
-          External collaborators can access via secure links without signing up.
-        </div>
-
-        <button
-          style={{
-            width: '100%',
-            background: 'none',
-            border: '1px solid #666666',
-            color: '#ffffff',
-            padding: '8px',
-            fontSize: '10px',
-            cursor: 'pointer',
-            textAlign: 'center'
-          }}
-        >
-          Invite Collaborators
-        </button>
+        {sections.length === 0 && (
+          <div style={{
+            padding: '20px',
+            textAlign: 'center',
+            color: '#666666',
+            fontSize: '11px',
+            lineHeight: '1.5'
+          }}>
+            No sections to review yet.{'\n'}
+            Add files and create sections to start the review workflow.
+          </div>
+        )}
       </div>
     )
   }
@@ -435,8 +481,8 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'activity': return renderActivityTab()
-      case 'stats': return renderStatsTab()
-      case 'team': return renderTeamTab()
+      case 'analytics': return renderAnalyticsTab()
+      case 'reviews': return renderReviewsTab()
       default: return renderActivityTab()
     }
   }

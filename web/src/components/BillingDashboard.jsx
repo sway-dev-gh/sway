@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useWorkspace } from '../stores/WorkspaceStore'
 
 const BillingDashboard = () => {
-  const { state } = useWorkspace()
+  const { state, actions } = useWorkspace()
   const [subscription, setSubscription] = useState(null)
   const [usage, setUsage] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -57,11 +57,19 @@ const BillingDashboard = () => {
       if (data.success) {
         window.open(data.url, '_blank')
       } else {
-        alert('Unable to open billing portal: ' + data.message)
+        actions.showConfirmDialog({
+          message: 'Unable to open billing portal: ' + data.message,
+          confirmText: 'OK',
+          showCancel: false
+        })
       }
     } catch (error) {
       console.error('Error opening billing portal:', error)
-      alert('An error occurred while opening the billing portal')
+      actions.showConfirmDialog({
+        message: 'An error occurred while opening the billing portal',
+        confirmText: 'OK',
+        showCancel: false
+      })
     }
   }
 
@@ -80,14 +88,26 @@ const BillingDashboard = () => {
       const data = await response.json()
 
       if (data.success) {
-        alert('Subscription canceled successfully')
+        actions.showConfirmDialog({
+          message: 'Subscription canceled successfully',
+          confirmText: 'OK',
+          showCancel: false
+        })
         loadBillingData() // Reload data
       } else {
-        alert('Failed to cancel subscription: ' + data.message)
+        actions.showConfirmDialog({
+          message: 'Failed to cancel subscription: ' + data.message,
+          confirmText: 'OK',
+          showCancel: false
+        })
       }
     } catch (error) {
       console.error('Error canceling subscription:', error)
-      alert('An error occurred while canceling subscription')
+      actions.showConfirmDialog({
+        message: 'An error occurred while canceling subscription',
+        confirmText: 'OK',
+        showCancel: false
+      })
     }
   }
 

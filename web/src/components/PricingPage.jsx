@@ -56,19 +56,35 @@ const PricingPage = ({ onClose }) => {
 
         if (result.error) {
           console.error('Payment failed:', result.error)
-          alert('Payment failed: ' + result.error.message)
+          actions.showConfirmDialog({
+            message: 'Payment failed: ' + result.error.message,
+            confirmText: 'OK',
+            showCancel: false
+          })
         } else {
           // Payment succeeded, refresh user data
           await actions.initializeAuth()
           onClose?.()
-          alert('Successfully subscribed! Welcome to ' + planId.charAt(0).toUpperCase() + planId.slice(1) + ' plan!')
+          actions.showConfirmDialog({
+            message: 'Successfully subscribed! Welcome to ' + planId.charAt(0).toUpperCase() + planId.slice(1) + ' plan!',
+            confirmText: 'Awesome!',
+            showCancel: false
+          })
         }
       } else {
-        alert('Subscription failed: ' + data.message)
+        actions.showConfirmDialog({
+          message: 'Subscription failed: ' + data.message,
+          confirmText: 'OK',
+          showCancel: false
+        })
       }
     } catch (error) {
       console.error('Error subscribing:', error)
-      alert('An error occurred while subscribing')
+      actions.showConfirmDialog({
+        message: 'An error occurred while subscribing',
+        confirmText: 'OK',
+        showCancel: false
+      })
     } finally {
       setSubscribing(null)
     }
