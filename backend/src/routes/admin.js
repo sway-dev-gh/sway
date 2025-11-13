@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const rateLimit = require('express-rate-limit')
+const crypto = require('crypto')
 const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
 
@@ -30,8 +31,19 @@ router.post('/verify', adminVerifyLimiter, async (req, res) => {
       return res.status(500).json({ error: 'Admin mode not configured', valid: false })
     }
 
-    // Constant-time comparison to prevent timing attacks
-    const isValid = password === ADMIN_PASSWORD
+    // Timing-safe comparison to prevent timing attacks
+    let isValid = false
+    try {
+      // Both strings must be same length for timingSafeEqual to work
+      if (password.length === ADMIN_PASSWORD.length) {
+        const passwordBuffer = Buffer.from(password, 'utf8')
+        const adminPasswordBuffer = Buffer.from(ADMIN_PASSWORD, 'utf8')
+        isValid = crypto.timingSafeEqual(passwordBuffer, adminPasswordBuffer)
+      }
+    } catch (error) {
+      // If there's any error in comparison, fail securely
+      isValid = false
+    }
 
     if (isValid) {
       // Log successful admin authentication (for security monitoring)

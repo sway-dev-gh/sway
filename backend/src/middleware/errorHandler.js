@@ -329,11 +329,89 @@ process.on('unhandledRejection', (reason, promise) => {
   process.exit(1) // Exit gracefully
 })
 
+// Environment validation function
+const validateEnvironment = () => {
+  const requiredVars = [
+    'JWT_SECRET',
+    'DB_HOST',
+    'DB_NAME',
+    'DB_USER',
+    'DB_PASSWORD'
+  ]
+
+  const missingVars = requiredVars.filter(varName => !process.env[varName])
+
+  if (missingVars.length > 0) {
+    console.error('🚨 MISSING REQUIRED ENVIRONMENT VARIABLES:')
+    missingVars.forEach(varName => {
+      console.error(`   - ${varName}`)
+    })
+    process.exit(1)
+  }
+
+  console.log('✓ All required environment variables are set')
+}
+
+// Health check endpoint function
+const healthCheck = () => {
+  return (req, res) => {
+    try {
+      const healthData = {
+        success: true,
+        status: 'healthy',
+        service: 'sway-backend',
+        timestamp: new Date().toISOString(),
+        environment: process.env.NODE_ENV || 'development',
+        uptime: Math.floor(process.uptime()),
+        memory: {
+          used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+          total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024),
+        },
+        security: {
+          csrfProtection: 'active',
+          rateLimiting: 'active',
+          tokenBlacklist: 'redis',
+          encryption: 'AES-256-GCM'
+        }
+      }
+
+      res.status(200).json(healthData)
+    } catch (error) {
+      console.error('Health check error:', error)
+      res.status(500).json({
+        success: false,
+        status: 'unhealthy',
+        error: 'Internal server error'
+      })
+    }
+  }
+}
+
+// Setup global error handlers
+const setupGlobalErrorHandlers = () => {
+  // Handle uncaught exceptions
+  process.on('uncaughtException', (error) => {
+    console.error('🚨 UNCAUGHT EXCEPTION:', error)
+    process.exit(1)
+  })
+
+  // Handle unhandled rejections
+  process.on('unhandledRejection', (reason, promise) => {
+    console.error('🚨 UNHANDLED REJECTION at:', promise, 'reason:', reason)
+    process.exit(1)
+  })
+
+  console.log('✓ Global error handlers configured')
+}
+
 module.exports = {
   errorHandler,
   notFoundHandler,
   asyncHandler,
   generateErrorId,
   sanitizeErrorMessage,
-  logError
+  logError,
+  validateEnvironment,
+  healthCheck,
+  setupGlobalErrorHandlers
 }

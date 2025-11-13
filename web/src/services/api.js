@@ -151,6 +151,179 @@ class ApiService {
     return this.request(`/api/requests/${requestId}/comments`)
   }
 
+  // Workflow API endpoints
+  async getProjectWorkflow(projectId) {
+    return this.request(`/api/workflow/projects/${projectId}`)
+  }
+
+  async uploadFileWithWorkflow(projectId, formData) {
+    return this.request(`/api/workflow/projects/${projectId}/files`, {
+      method: 'POST',
+      headers: {
+        // Don't set Content-Type for FormData - browser will set it with boundary
+      },
+      body: formData,
+    })
+  }
+
+  // Section operations
+  async getSection(sectionId) {
+    return this.request(`/api/workflow/sections/${sectionId}`)
+  }
+
+  async submitSectionReview(sectionId, reviewData) {
+    return this.request(`/api/workflow/sections/${sectionId}/review`, {
+      method: 'POST',
+      body: JSON.stringify(reviewData),
+    })
+  }
+
+  async addSectionComment(sectionId, commentData) {
+    return this.request(`/api/workflow/sections/${sectionId}/comments`, {
+      method: 'POST',
+      body: JSON.stringify(commentData),
+    })
+  }
+
+  async getSectionComments(sectionId) {
+    return this.request(`/api/workflow/sections/${sectionId}/comments`)
+  }
+
+  async resolveSectionComment(commentId, resolved = true) {
+    return this.request(`/api/workflow/comments/${commentId}/resolve`, {
+      method: 'PUT',
+      body: JSON.stringify({ resolved }),
+    })
+  }
+
+  // File workflow operations
+  async createFileVersion(fileId, versionData) {
+    return this.request(`/api/workflow/files/${fileId}/version`, {
+      method: 'POST',
+      body: JSON.stringify(versionData),
+    })
+  }
+
+  async getFileVersions(fileId) {
+    return this.request(`/api/workflow/files/${fileId}/versions`)
+  }
+
+  async transitionWorkflowState(fileId, stateData) {
+    return this.request(`/api/workflow/files/${fileId}/state`, {
+      method: 'POST',
+      body: JSON.stringify(stateData),
+    })
+  }
+
+  async getWorkflowStateHistory(fileId) {
+    return this.request(`/api/workflow/files/${fileId}/state-history`)
+  }
+
+  // Edit request workflow
+  async requestSectionEdit(sectionId, editRequestData) {
+    return this.request(`/api/workflow/sections/${sectionId}/edit-requests`, {
+      method: 'POST',
+      body: JSON.stringify(editRequestData),
+    })
+  }
+
+  async getSectionEditRequests(sectionId) {
+    return this.request(`/api/workflow/sections/${sectionId}/edit-requests`)
+  }
+
+  async updateEditRequestStatus(requestId, status, responseData = {}) {
+    return this.request(`/api/workflow/edit-requests/${requestId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, ...responseData }),
+    })
+  }
+
+  async getMyEditRequests(projectId) {
+    return this.request(`/api/workflow/projects/${projectId}/edit-requests`)
+  }
+
+  // External collaboration
+  async generateExternalAccessToken(tokenData) {
+    return this.request('/api/workflow/external-access', {
+      method: 'POST',
+      body: JSON.stringify(tokenData),
+    })
+  }
+
+  async validateExternalToken(token) {
+    return this.request('/api/workflow/external-access/validate', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    })
+  }
+
+  // Collaboration management
+  async getCollaborations(filter = {}) {
+    const params = new URLSearchParams(filter)
+    return this.request(`/api/collaborations?${params}`)
+  }
+
+  async createCollaboration(collaborationData) {
+    return this.request('/api/collaborations', {
+      method: 'POST',
+      body: JSON.stringify(collaborationData),
+    })
+  }
+
+  async updateCollaboration(collaborationId, updates) {
+    return this.request(`/api/collaborations/${collaborationId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(updates),
+    })
+  }
+
+  async deleteCollaboration(collaborationId) {
+    return this.request(`/api/collaborations/${collaborationId}`, {
+      method: 'DELETE',
+    })
+  }
+
+  async getCollaborationDetails(collaborationId) {
+    return this.request(`/api/collaborations/${collaborationId}`)
+  }
+
+  // Activity and notifications
+  async getProjectActivity(projectId, options = {}) {
+    const params = new URLSearchParams(options)
+    return this.request(`/api/activity/projects/${projectId}?${params}`)
+  }
+
+  async getUserActivity(options = {}) {
+    const params = new URLSearchParams(options)
+    return this.request(`/api/activity/user?${params}`)
+  }
+
+  // Guest user API
+  async createGuestSession(displayName) {
+    return this.request('/api/guest/create', {
+      method: 'POST',
+      body: JSON.stringify({ displayName }),
+    })
+  }
+
+  async convertGuestToUser(email, password, name) {
+    return this.request('/api/guest/convert', {
+      method: 'POST',
+      body: JSON.stringify({ email, password, name }),
+    })
+  }
+
+  async getGuestInfo() {
+    return this.request('/api/guest/me')
+  }
+
+  async updateGuestSession(updates) {
+    return this.request('/api/guest/update', {
+      method: 'PUT',
+      body: JSON.stringify(updates),
+    })
+  }
+
   // Health check
   async healthCheck() {
     return this.request('/health')

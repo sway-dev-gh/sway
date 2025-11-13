@@ -299,7 +299,7 @@ const BillingDashboard = () => {
               marginTop: '16px',
               fontSize: '14px'
             }}>
-              ⚠️ You're approaching your plan limits. Consider upgrading to avoid disruptions.
+              You're approaching your plan limits. Consider upgrading to avoid disruptions.
             </div>
           )}
         </div>
@@ -323,33 +323,33 @@ const BillingDashboard = () => {
             gap: '16px'
           }}>
             <div style={{ color: '#cccccc', fontSize: '14px' }}>
-              📁 {usage.plan.features.maxWorkspaces === -1 ? 'Unlimited' : usage.plan.features.maxWorkspaces} workspaces
+              {usage.plan.features.maxWorkspaces === -1 ? 'Unlimited' : usage.plan.features.maxWorkspaces} workspaces
             </div>
             <div style={{ color: '#cccccc', fontSize: '14px' }}>
-              📄 {usage.plan.features.maxFiles === -1 ? 'Unlimited' : usage.plan.features.maxFiles} files
+              {usage.plan.features.maxFiles === -1 ? 'Unlimited' : usage.plan.features.maxFiles} files
             </div>
             <div style={{ color: '#cccccc', fontSize: '14px' }}>
-              👥 {usage.plan.features.maxCollaborators === -1 ? 'Unlimited' : usage.plan.features.maxCollaborators} collaborators
+              {usage.plan.features.maxCollaborators === -1 ? 'Unlimited' : usage.plan.features.maxCollaborators} collaborators
             </div>
             <div style={{ color: '#cccccc', fontSize: '14px' }}>
-              💾 {usage.plan.features.storageGB}GB storage
+              {usage.plan.features.storageGB}GB storage
             </div>
             <div style={{ color: '#cccccc', fontSize: '14px' }}>
-              📤 {usage.plan.features.maxFileSizeMB}MB max file size
+              {usage.plan.features.maxFileSizeMB}MB max file size
             </div>
             {usage.plan.features.guestLinks && (
               <div style={{ color: '#cccccc', fontSize: '14px' }}>
-                🔗 Guest collaboration links
+                Guest collaboration links
               </div>
             )}
             {usage.plan.features.apiAccess && (
               <div style={{ color: '#cccccc', fontSize: '14px' }}>
-                🔌 API access
+                API access
               </div>
             )}
             {usage.plan.features.prioritySupport && (
               <div style={{ color: '#cccccc', fontSize: '14px' }}>
-                🎧 Priority support
+                Priority support
               </div>
             )}
           </div>

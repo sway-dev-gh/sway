@@ -211,7 +211,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
               cursor: 'pointer'
             }}
           >
-            {comments.length} 💬
+            {comments.length} comments
           </button>
 
           {isEditing ? (

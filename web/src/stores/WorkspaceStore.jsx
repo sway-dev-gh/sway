@@ -417,6 +417,89 @@ function workspaceReducer(state, action) {
         }
       }
 
+    // New workflow actions
+    case 'UPDATE_COMMENT_DATA':
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.payload.commentId]: action.payload.comment
+        }
+      }
+
+    case 'LOAD_SECTION_COMMENTS':
+      return {
+        ...state,
+        sections: {
+          ...state.sections,
+          [action.payload.sectionId]: {
+            ...state.sections[action.payload.sectionId],
+            comments: action.payload.comments
+          }
+        },
+        comments: {
+          ...state.comments,
+          ...action.payload.commentsData
+        }
+      }
+
+    case 'UPDATE_COMMENT_RESOLVED':
+      return {
+        ...state,
+        comments: {
+          ...state.comments,
+          [action.payload.commentId]: {
+            ...state.comments[action.payload.commentId],
+            resolved: action.payload.resolved
+          }
+        }
+      }
+
+    case 'ADD_EDIT_REQUEST':
+      return {
+        ...state,
+        sections: {
+          ...state.sections,
+          [action.payload.sectionId]: {
+            ...state.sections[action.payload.sectionId],
+            editRequests: [
+              ...(state.sections[action.payload.sectionId]?.editRequests || []),
+              action.payload.editRequest
+            ]
+          }
+        }
+      }
+
+    case 'LOAD_EDIT_REQUESTS':
+      return {
+        ...state,
+        sections: {
+          ...state.sections,
+          [action.payload.sectionId]: {
+            ...state.sections[action.payload.sectionId],
+            editRequests: action.payload.editRequests
+          }
+        }
+      }
+
+    case 'UPDATE_EDIT_REQUEST_STATUS':
+      const updatedSections = { ...state.sections }
+      Object.keys(updatedSections).forEach(sectionId => {
+        const section = updatedSections[sectionId]
+        if (section.editRequests) {
+          section.editRequests = section.editRequests.map(request =>
+            request.id === action.payload.requestId
+              ? { ...request, status: action.payload.status }
+              : request
+          )
+        }
+      })
+
+      return {
+        ...state,
+        sections: updatedSections
+      }
+
     default:
       return state
   }
@@ -482,39 +565,39 @@ export const WorkspaceProvider = ({ children }) => {
 
     initializeAuth: async () => {
       const token = localStorage.getItem('token')
-      console.log('🔐 initializeAuth called', { token: token ? 'present' : 'missing' })
+      console.log('initializeAuth called', { token: token ? 'present' : 'missing' })
       if (token) {
-        console.log('🔄 Setting loading state and calling API...')
+        console.log('Setting loading state and calling API...')
         dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
         try {
-          console.log('📞 Making API call to getCurrentUser...')
+          console.log('Making API call to getCurrentUser...')
           const response = await apiService.getCurrentUser()
-          console.log('✅ API call successful, user:', response.user?.name)
+          console.log('API call successful, user:', response.user?.name)
           dispatch({
             type: ACTIONS.LOGIN_SUCCESS,
             payload: { user: response.user, token }
           })
           // Load workspaces after successful auth
-          console.log('📂 Loading workspaces...')
+          console.log('Loading workspaces...')
           await actions.loadWorkspaces()
-          console.log('🎉 Authentication initialization complete!')
+          console.log('Authentication initialization complete!')
         } catch (error) {
-          console.error('❌ Token validation failed:', error)
+          console.error('Token validation failed:', error)
           // Only remove token if it's actually invalid (401/403), not for network errors
           if (error.status === 401 || error.status === 403 || error.message?.includes('Invalid token')) {
-            console.log('🚫 Token is invalid, logging out')
+            console.log('Token is invalid, logging out')
             localStorage.removeItem('token')
             dispatch({
               type: ACTIONS.LOGOUT
             })
           } else {
-            console.log('⚠️ Network/server error, keeping user authenticated')
+            console.log('Network/server error, keeping user authenticated')
             // Keep user authenticated but stop loading
             dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: false } })
           }
         }
       } else {
-        console.log('📭 No token found, user needs to sign in')
+        console.log('No token found, user needs to sign in')
       }
     },
 
@@ -689,12 +772,188 @@ export const WorkspaceProvider = ({ children }) => {
       actions.addActivity('sections_reordered', 'Reordered sections', 'You')
     },
 
-    addComment: (sectionId, content, author = 'You') => {
-      dispatch({
-        type: ACTIONS.ADD_COMMENT,
-        payload: { sectionId, content, author }
-      })
-      actions.addActivity('comment_added', `Added comment to section`, author)
+    addComment: async (sectionId, content, author = 'You', commentType = 'general') => {
+      try {
+        // Add comment via backend API
+        const response = await apiService.addSectionComment(sectionId, {
+          comment_text: content,
+          comment_type: commentType,
+          commenter_name: author
+        })
+
+        // Update local state with backend response
+        const comment = {
+          id: response.comment.id,
+          sectionId,
+          author: response.comment.commenter_name,
+          content: response.comment.comment_text,
+          commentType: response.comment.comment_type,
+          createdAt: response.comment.created_at,
+          resolved: response.comment.is_resolved
+        }
+
+        dispatch({
+          type: ACTIONS.ADD_COMMENT,
+          payload: { sectionId, commentId: comment.id }
+        })
+
+        // Update comments object
+        dispatch({
+          type: 'UPDATE_COMMENT_DATA',
+          payload: { commentId: comment.id, comment }
+        })
+
+        actions.addActivity('comment_added', `Added comment to section`, author)
+        return comment
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    loadSectionComments: async (sectionId) => {
+      try {
+        const response = await apiService.getSectionComments(sectionId)
+        const comments = response.comments || []
+
+        // Update comments in state
+        const commentsData = {}
+        comments.forEach(comment => {
+          commentsData[comment.id] = {
+            id: comment.id,
+            sectionId,
+            author: comment.commenter_name,
+            content: comment.comment_text,
+            commentType: comment.comment_type,
+            createdAt: comment.created_at,
+            resolved: comment.is_resolved
+          }
+        })
+
+        dispatch({
+          type: 'LOAD_SECTION_COMMENTS',
+          payload: { sectionId, comments: Object.keys(commentsData), commentsData }
+        })
+
+        return comments
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    resolveComment: async (commentId, resolved = true) => {
+      try {
+        await apiService.resolveSectionComment(commentId, resolved)
+
+        dispatch({
+          type: 'UPDATE_COMMENT_RESOLVED',
+          payload: { commentId, resolved }
+        })
+
+        actions.addActivity('comment_resolved', `${resolved ? 'Resolved' : 'Reopened'} comment`, 'You')
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    requestSectionEdit: async (sectionId, editRequest) => {
+      try {
+        const response = await apiService.requestSectionEdit(sectionId, {
+          title: editRequest.title,
+          description: editRequest.description,
+          edit_type: editRequest.editType || 'content_edit',
+          proposed_changes: editRequest.proposedChanges,
+          change_reason: editRequest.reason,
+          priority: editRequest.priority || 'normal'
+        })
+
+        // Add to local state for immediate feedback
+        dispatch({
+          type: 'ADD_EDIT_REQUEST',
+          payload: {
+            sectionId,
+            editRequest: response.editRequest
+          }
+        })
+
+        actions.addActivity('edit_requested', `Requested edit for section`, 'You')
+        return response.editRequest
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    loadSectionEditRequests: async (sectionId) => {
+      try {
+        const response = await apiService.getSectionEditRequests(sectionId)
+        const editRequests = response.editRequests || []
+
+        dispatch({
+          type: 'LOAD_EDIT_REQUESTS',
+          payload: { sectionId, editRequests }
+        })
+
+        return editRequests
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    approveEditRequest: async (requestId, approvalData = {}) => {
+      try {
+        await apiService.updateEditRequestStatus(requestId, 'approved', approvalData)
+
+        dispatch({
+          type: 'UPDATE_EDIT_REQUEST_STATUS',
+          payload: { requestId, status: 'approved' }
+        })
+
+        actions.addActivity('edit_approved', `Approved edit request`, 'You')
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
+    },
+
+    denyEditRequest: async (requestId, reason = '') => {
+      try {
+        await apiService.updateEditRequestStatus(requestId, 'denied', { denial_reason: reason })
+
+        dispatch({
+          type: 'UPDATE_EDIT_REQUEST_STATUS',
+          payload: { requestId, status: 'denied' }
+        })
+
+        actions.addActivity('edit_denied', `Denied edit request`, 'You')
+      } catch (error) {
+        dispatch({
+          type: ACTIONS.SET_ERROR,
+          payload: { error: error.message }
+        })
+        throw error
+      }
     },
 
     updateWorkflowState: (sectionId, newState) => {

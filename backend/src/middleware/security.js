@@ -8,6 +8,7 @@ const cors = require('cors');
 const hpp = require('hpp');
 const mongoSanitize = require('express-mongo-sanitize');
 const slowDown = require('express-slow-down');
+const { applyCSRFProtection } = require('./csrf');
 
 // CORS configuration for production and development
 const corsOptions = {
@@ -208,6 +209,9 @@ const applySecurity = (app) => {
 
   // Security event logging
   app.use(securityLogger);
+
+  // CSRF protection for all state-changing requests
+  applyCSRFProtection(app);
 
   // Hide powered by Express
   app.disable('x-powered-by');

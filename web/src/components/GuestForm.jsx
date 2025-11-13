@@ -72,7 +72,7 @@ const GuestForm = ({ guestToken }) => {
             background: '#111111',
             border: '1px solid #333333'
           }}>
-            🎉 You've been invited to collaborate!<br />
+            You've been invited to collaborate!<br />
             Enter your name to join this workspace
           </div>
         </div>
@@ -149,7 +149,7 @@ const GuestForm = ({ guestToken }) => {
           color: '#666666'
         }}>
           <div style={{ marginBottom: '8px' }}>
-            ✨ You're joining as a guest collaborator
+            You're joining as a guest collaborator
           </div>
           <div style={{
             fontSize: '10px',

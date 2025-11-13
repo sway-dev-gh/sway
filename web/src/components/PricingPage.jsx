@@ -233,48 +233,48 @@ const PricingPage = ({ onClose }) => {
                 margin: '0 0 32px 0'
               }}>
                 <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                  📁 {plan.features.maxWorkspaces === -1 ? 'Unlimited' : plan.features.maxWorkspaces} workspaces
+                  {plan.features.maxWorkspaces === -1 ? 'Unlimited' : plan.features.maxWorkspaces} workspaces
                 </li>
                 <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                  📄 {plan.features.maxFiles === -1 ? 'Unlimited' : plan.features.maxFiles} files
+                  {plan.features.maxFiles === -1 ? 'Unlimited' : plan.features.maxFiles} files
                 </li>
                 <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                  👥 {plan.features.maxCollaborators === -1 ? 'Unlimited' : plan.features.maxCollaborators} collaborators
+                  {plan.features.maxCollaborators === -1 ? 'Unlimited' : plan.features.maxCollaborators} collaborators
                 </li>
                 <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                  💾 {plan.features.storageGB}GB storage
+                  {plan.features.storageGB}GB storage
                 </li>
                 <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                  📤 {plan.features.maxFileSizeMB}MB max file size
+                  {plan.features.maxFileSizeMB}MB max file size
                 </li>
                 {plan.features.guestLinks && (
                   <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                    🔗 Guest collaboration links
+                    Guest collaboration links
                   </li>
                 )}
                 {plan.features.apiAccess && (
                   <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                    🔌 API access
+                    API access
                   </li>
                 )}
                 {plan.features.prioritySupport && (
                   <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                    🎧 Priority support
+                    Priority support
                   </li>
                 )}
                 {plan.features.customBranding && (
                   <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                    🎨 Custom branding
+                    Custom branding
                   </li>
                 )}
                 {plan.features.sso && (
                   <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                    🔐 Single Sign-On (SSO)
+                    Single Sign-On (SSO)
                   </li>
                 )}
                 {plan.features.auditLogs && (
                   <li style={{ marginBottom: '12px', color: '#cccccc', fontSize: '14px' }}>
-                    📋 Audit logs
+                    Audit logs
                   </li>
                 )}
               </ul>
@@ -312,8 +312,8 @@ const PricingPage = ({ onClose }) => {
           fontSize: '12px',
           lineHeight: '1.5'
         }}>
-          <p>✨ All plans include secure cloud storage, real-time collaboration, and version history</p>
-          <p>💳 Cancel anytime • 🔒 Secure payments powered by Stripe • 🛡️ SOC 2 compliant</p>
+          <p>All plans include secure cloud storage, real-time collaboration, and version history</p>
+          <p>Cancel anytime • Secure payments powered by Stripe • SOC 2 compliant</p>
         </div>
       </div>
     </div>

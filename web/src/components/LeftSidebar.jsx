@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { useWorkspace } from '../stores/WorkspaceStore'
+import EditRequestManager from './EditRequestManager'
 
 const LeftSidebar = () => {
   const { state, actions, WORKFLOW_STATES } = useWorkspace()
-  // Load saved tab from localStorage, fallback to 'files' if none saved
+  // Load saved tab from localStorage, fallback to 'progress' if none saved
   const [activeSection, setActiveSection] = useState(() => {
-    return localStorage.getItem('swayfiles-active-tab') || 'files'
+    return localStorage.getItem('swayfiles-active-tab') || 'progress'
   })
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false)
   const [workspaceForm, setWorkspaceForm] = useState({ name: '', description: '', clientLink: '' })
   const [showUpgradeForm, setShowUpgradeForm] = useState(false)
   const [upgradeForm, setUpgradeForm] = useState({ name: '', email: '', password: '' })
+  const [showEditRequestManager, setShowEditRequestManager] = useState(false)
+  const [editRequests, setEditRequests] = useState([])
+  const [recentActivity, setRecentActivity] = useState([])
 
   const sidebarSections = [
-    { id: 'workspaces', label: 'Workspaces', icon: '◧' },
-    { id: 'files', label: 'Files', icon: '◈' },
-    { id: 'approvals', label: 'Approvals', icon: '✓' },
-    { id: 'settings', label: 'Settings', icon: '⚙' }
+    { id: 'progress', label: 'Progress', icon: '◐' },
+    { id: 'requests', label: 'Requests', icon: '◪' },
+    { id: 'activity', label: 'Activity', icon: '◊' },
+    { id: 'collaboration', label: 'Team', icon: '◌' }
   ]
 
   const handleCreateWorkspace = () => {

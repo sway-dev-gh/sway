@@ -9,6 +9,7 @@ const { errorHandler, notFoundHandler, healthCheck, validateEnvironment, setupGl
 const { encryptSensitiveFields, decryptSensitiveFields } = require('./middleware/encryption')
 
 const authRoutes = require('./routes/auth')
+const guestRoutes = require('./routes/guest')
 const requestRoutes = require('./routes/requests')
 const uploadRoutes = require('./routes/uploads')
 const fileRoutes = require('./routes/files')
@@ -40,12 +41,47 @@ const PORT = process.env.PORT || 5001
 // Apply comprehensive security middleware (includes CORS, headers, rate limiting, etc.)
 applySecurity(app)
 
-// JSON parsing for all routes EXCEPT Stripe webhook
+// Dynamic JSON parsing with size limits based on endpoint
 app.use((req, res, next) => {
   if (req.originalUrl === '/api/stripe/webhook') {
     next() // Skip JSON parsing for webhook
   } else {
-    express.json()(req, res, next)
+    // Set size limits based on endpoint
+    let sizeLimit = '1mb'; // Default limit
+
+    if (req.originalUrl.includes('/upload') || req.originalUrl.includes('/files')) {
+      sizeLimit = '100mb'; // Large limit for file uploads
+    } else if (req.originalUrl.includes('/projects') || req.originalUrl.includes('/collaborations')) {
+      sizeLimit = '10mb';  // Medium limit for project data
+    }
+
+    // Apply JSON parsing with size limit
+    express.json({
+      limit: sizeLimit,
+      strict: true,
+      verify: (req, res, buf, encoding) => {
+        // Log large payloads for monitoring
+        if (buf.length > 1024 * 1024) { // Log if > 1MB
+          console.log(`⚠️ Large JSON payload: ${(buf.length / 1024 / 1024).toFixed(2)}MB from ${req.ip} to ${req.originalUrl}`)
+        }
+      }
+    })(req, res, (err) => {
+      if (err) {
+        next(err)
+      } else {
+        // Also apply URL-encoded parsing with same size limit
+        express.urlencoded({
+          limit: sizeLimit,
+          extended: true,
+          parameterLimit: 1000, // Limit number of parameters
+          verify: (req, res, buf, encoding) => {
+            if (buf.length > 1024 * 1024) {
+              console.log(`⚠️ Large URL-encoded payload: ${(buf.length / 1024 / 1024).toFixed(2)}MB from ${req.ip} to ${req.originalUrl}`)
+            }
+          }
+        })(req, res, next)
+      }
+    })
   }
 })
 
@@ -57,6 +93,7 @@ app.use('/api/billing', (req, res, next) => {
 
 // Routes
 app.use('/api/auth', authRoutes)
+app.use('/api/guest', guestRoutes)
 app.use('/api/requests', requestRoutes)
 app.use('/api/r', uploadRoutes)
 app.use('/api/files', fileRoutes)
@@ -85,14 +122,77 @@ app.get('/health-migrate', async (req, res) => {
   try {
     const sql = `
       CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-      CREATE TABLE IF NOT EXISTS projects (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), user_id UUID NOT NULL, title VARCHAR(255) NOT NULL, description TEXT, project_type VARCHAR(50) DEFAULT 'review', status VARCHAR(50) DEFAULT 'active', visibility VARCHAR(50) DEFAULT 'private', settings JSONB DEFAULT '{}'::jsonb, created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(), updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW());
-      CREATE TABLE IF NOT EXISTS collaborations (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), project_id UUID NOT NULL, collaborator_id UUID NOT NULL, role VARCHAR(50) DEFAULT 'viewer', status VARCHAR(50) DEFAULT 'active', permissions JSONB DEFAULT '{}'::jsonb, created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(), updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW());
+
+      -- Projects and collaborations tables
+      CREATE TABLE IF NOT EXISTS projects (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        user_id UUID,
+        guest_id UUID,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        project_type VARCHAR(50) DEFAULT 'review',
+        status VARCHAR(50) DEFAULT 'active',
+        visibility VARCHAR(50) DEFAULT 'private',
+        settings JSONB DEFAULT '{}'::jsonb,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        CONSTRAINT projects_owner_check CHECK (
+          (user_id IS NOT NULL AND guest_id IS NULL) OR
+          (user_id IS NULL AND guest_id IS NOT NULL)
+        )
+      );
+
+      CREATE TABLE IF NOT EXISTS collaborations (
+        id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+        project_id UUID NOT NULL,
+        collaborator_id UUID NOT NULL,
+        role VARCHAR(50) DEFAULT 'viewer',
+        status VARCHAR(50) DEFAULT 'active',
+        permissions JSONB DEFAULT '{}'::jsonb,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+
+      -- Guest users table for persistent sessions
+      CREATE TABLE IF NOT EXISTS guest_users (
+        id SERIAL PRIMARY KEY,
+        guest_id UUID UNIQUE NOT NULL DEFAULT uuid_generate_v4(),
+        display_name VARCHAR(255) NOT NULL,
+        device_fingerprint VARCHAR(64) UNIQUE NOT NULL,
+        session_data JSONB DEFAULT '{}'::jsonb,
+        is_active BOOLEAN DEFAULT true,
+        converted_user_id UUID NULL,
+        converted_at TIMESTAMP WITH TIME ZONE NULL,
+        created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+        updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
+
+      -- Add guest support to file_requests if column doesn't exist
+      DO $$
+      BEGIN
+        IF NOT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'file_requests' AND column_name = 'guest_id'
+        ) THEN
+          ALTER TABLE file_requests ADD COLUMN guest_id UUID NULL;
+          ALTER TABLE file_requests ADD CONSTRAINT file_requests_owner_check CHECK (
+            (user_id IS NOT NULL AND guest_id IS NULL) OR
+            (user_id IS NULL AND guest_id IS NOT NULL)
+          );
+        END IF;
+      END $$;
+
+      -- Create indexes for performance
+      CREATE INDEX IF NOT EXISTS idx_guest_users_device_fingerprint ON guest_users(device_fingerprint);
+      CREATE INDEX IF NOT EXISTS idx_guest_users_guest_id ON guest_users(guest_id);
+      CREATE INDEX IF NOT EXISTS idx_projects_guest_id ON projects(guest_id);
+      CREATE INDEX IF NOT EXISTS idx_file_requests_guest_id ON file_requests(guest_id);
     `
     await pool.query(sql)
     res.json({
       status: 'ok',
       service: 'sway-backend',
-      migration: '🔥🔥🔥 COLLABORATION PLATFORM IS NOW LIVE! EVERYTHING IS DIALED TF IN!'
+      migration: 'GUEST USER PERSISTENCE IS NOW LIVE! SEAMLESS COLLABORATION ACROSS DEVICES!'
     })
   } catch (error) {
     res.json({

@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const crypto = require('crypto')
 const pool = require('../db/pool')
+const tokenBlacklist = require('../services/tokenBlacklist')
 
 // CRITICAL SECURITY: Validate JWT_SECRET exists at startup
 if (!process.env.JWT_SECRET) {
@@ -8,9 +9,6 @@ if (!process.env.JWT_SECRET) {
   console.error('Application cannot start without a secure JWT secret.')
   process.exit(1)
 }
-
-// In-memory token blacklist (in production, use Redis)
-const blacklistedTokens = new Set()
 
 // Session management - track active sessions
 const activeSessions = new Map()
@@ -56,20 +54,15 @@ const logSecurityEvent = async (event, userId, details = {}) => {
   }
 }
 
-// Clean up expired blacklisted tokens periodically
-setInterval(() => {
-  const now = Date.now() / 1000
-  for (const token of blacklistedTokens) {
-    try {
-      const decoded = jwt.decode(token)
-      if (decoded && decoded.exp && decoded.exp < now) {
-        blacklistedTokens.delete(token)
-      }
-    } catch (e) {
-      blacklistedTokens.delete(token) // Remove invalid tokens
-    }
+// Token blacklist cleanup is now handled automatically by Redis TTL
+// Run periodic cleanup for statistics and health monitoring
+setInterval(async () => {
+  try {
+    await tokenBlacklist.cleanupExpiredTokens()
+  } catch (error) {
+    console.error('Token blacklist cleanup error:', error)
   }
-}, 60 * 60 * 1000) // Clean every hour
+}, 60 * 60 * 1000) // Check stats every hour
 
 const authenticateToken = async (req, res, next) => {
   const ip = req.ip || req.connection.remoteAddress
@@ -77,16 +70,30 @@ const authenticateToken = async (req, res, next) => {
   const fingerprint = generateDeviceFingerprint(req)
 
   try {
-    // Check for admin secret key first
+    // Check for admin secret key first (timing-safe comparison)
     const adminKey = req.headers['x-admin-key']
-    if (adminKey && process.env.ADMIN_SECRET_KEY && adminKey === process.env.ADMIN_SECRET_KEY) {
-      req.isAdmin = true
-      req.userId = '00000000-0000-0000-0000-000000000000'
-      req.userEmail = 'admin@sway.com'
-      req.deviceFingerprint = fingerprint
+    if (adminKey && process.env.ADMIN_SECRET_KEY) {
+      let isValidAdminKey = false
+      try {
+        // Timing-safe comparison to prevent timing attacks
+        if (adminKey.length === process.env.ADMIN_SECRET_KEY.length) {
+          const adminKeyBuffer = Buffer.from(adminKey, 'utf8')
+          const secretBuffer = Buffer.from(process.env.ADMIN_SECRET_KEY, 'utf8')
+          isValidAdminKey = crypto.timingSafeEqual(adminKeyBuffer, secretBuffer)
+        }
+      } catch (error) {
+        isValidAdminKey = false
+      }
 
-      await logSecurityEvent('admin_access', req.userId, { ip, userAgent, fingerprint })
-      return next()
+      if (isValidAdminKey) {
+        req.isAdmin = true
+        req.userId = '00000000-0000-0000-0000-000000000000'
+        req.userEmail = 'admin@sway.com'
+        req.deviceFingerprint = fingerprint
+
+        await logSecurityEvent('admin_access', req.userId, { ip, userAgent, fingerprint })
+        return next()
+      }
     }
 
     // Get token from cookies or Authorization header
@@ -103,8 +110,9 @@ const authenticateToken = async (req, res, next) => {
       return res.status(401).json({ error: 'Authentication required' })
     }
 
-    // Check if token is blacklisted
-    if (blacklistedTokens.has(token)) {
+    // Check if token is blacklisted (using Redis)
+    const isBlacklisted = await tokenBlacklist.isBlacklisted(token)
+    if (isBlacklisted) {
       await logSecurityEvent('auth_failed_blacklisted_token', null, { ip, userAgent, fingerprint, token: token.substring(0, 20) + '...' })
       return res.status(401).json({ error: 'Token has been revoked' })
     }
@@ -115,11 +123,61 @@ const authenticateToken = async (req, res, next) => {
     // Check token expiry (additional validation)
     const now = Math.floor(Date.now() / 1000)
     if (decoded.exp && decoded.exp < now) {
-      await logSecurityEvent('auth_failed_expired_token', decoded.userId, { ip, userAgent, fingerprint })
+      await logSecurityEvent('auth_failed_expired_token', decoded.userId || decoded.guestId, { ip, userAgent, fingerprint })
       return res.status(401).json({ error: 'Token expired' })
     }
 
-    // Check if user still exists in database
+    // Handle guest authentication
+    if (decoded.isGuest && decoded.guestId) {
+      try {
+        // Verify guest exists and is active
+        const guestResult = await pool.query(
+          'SELECT guest_id, display_name, is_active FROM guest_users WHERE guest_id = $1 AND is_active = true',
+          [decoded.guestId]
+        )
+
+        if (guestResult.rows.length === 0) {
+          await logSecurityEvent('auth_failed_guest_not_found', decoded.guestId, { ip, userAgent, fingerprint })
+          return res.status(401).json({ error: 'Guest session not found' })
+        }
+
+        const guest = guestResult.rows[0]
+        req.guestId = guest.guest_id
+        req.displayName = guest.display_name
+        req.isGuest = true
+        req.isAdmin = false
+        req.deviceFingerprint = fingerprint
+
+        // Track guest session
+        const sessionKey = `guest-${decoded.guestId}-${fingerprint}`
+        activeSessions.set(sessionKey, {
+          guestId: decoded.guestId,
+          fingerprint,
+          lastActivity: now,
+          ip,
+          userAgent
+        })
+
+        // Log successful guest authentication (only for sensitive actions)
+        if (req.method !== 'GET' || req.path.includes('/admin')) {
+          await logSecurityEvent('guest_auth_success', decoded.guestId, {
+            ip,
+            userAgent,
+            fingerprint,
+            action: `${req.method} ${req.path}`
+          })
+        }
+
+        return next()
+
+      } catch (dbError) {
+        console.error('Database error during guest auth:', dbError)
+        await logSecurityEvent('auth_failed_db_error', decoded.guestId, { ip, userAgent, fingerprint })
+        return res.status(500).json({ error: 'Authentication service unavailable' })
+      }
+    }
+
+    // Handle regular user authentication
     try {
       const userResult = await pool.query('SELECT id, email, plan FROM users WHERE id = $1', [decoded.userId])
       if (userResult.rows.length === 0) {
@@ -131,6 +189,7 @@ const authenticateToken = async (req, res, next) => {
       req.userId = user.id
       req.userEmail = user.email
       req.userPlan = user.plan
+      req.isGuest = false
       req.isAdmin = false
       req.deviceFingerprint = fingerprint
 
@@ -190,19 +249,23 @@ const authenticateToken = async (req, res, next) => {
   }
 }
 
-// Token blacklisting function
+// Token blacklisting function (using Redis)
 const blacklistToken = async (token, userId, reason = 'logout') => {
   try {
-    blacklistedTokens.add(token)
+    // Blacklist token with automatic expiration
+    const success = await tokenBlacklist.blacklistToken(token, userId, reason)
 
-    // Log the blacklisting
-    await logSecurityEvent('token_blacklisted', userId, {
-      reason,
-      tokenPrefix: token.substring(0, 20) + '...',
-      timestamp: new Date().toISOString()
-    })
+    if (success) {
+      // Log the blacklisting
+      await logSecurityEvent('token_blacklisted', userId, {
+        reason,
+        tokenPrefix: token.substring(0, 20) + '...',
+        timestamp: new Date().toISOString(),
+        storage: 'redis'
+      })
+    }
 
-    return true
+    return success
   } catch (error) {
     console.error('Failed to blacklist token:', error)
     return false
