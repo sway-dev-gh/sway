@@ -479,30 +479,35 @@ const LeftSidebar = () => {
   )
 
   const renderFilesSection = () => (
-    <div style={{ padding: '16px' }}>
+    <div style={{ padding: '8px' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '12px'
+        marginBottom: '8px',
+        borderBottom: '1px solid #ffffff',
+        paddingBottom: '4px'
       }}>
         <span style={{
-          fontSize: '11px',
+          fontSize: '10px',
           textTransform: 'uppercase',
-          letterSpacing: '1px',
-          color: '#999999'
+          color: '#ffffff',
+          fontFamily: 'monospace',
+          fontWeight: 'bold'
         }}>
-          Files
+          FILES
         </span>
         <label style={{
-          background: 'none',
-          border: '1px solid #666666',
-          color: '#ffffff',
+          background: '#ffffff',
+          border: 'none',
+          color: '#000000',
           padding: '2px 6px',
           fontSize: '10px',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          fontFamily: 'monospace',
+          fontWeight: 'bold'
         }}>
-          Add
+          +
           <input
             type="file"
             onChange={handleFileUpload}
@@ -514,21 +519,25 @@ const LeftSidebar = () => {
 
       {!state.currentWorkspace ? (
         <div style={{
-          color: '#666666',
-          fontSize: '11px',
+          color: '#ffffff',
+          fontSize: '10px',
           textAlign: 'center',
-          padding: '20px 0'
+          padding: '16px 0',
+          fontFamily: 'monospace',
+          border: '1px solid #ffffff'
         }}>
-          Select a workspace first
+          [no workspace]
         </div>
       ) : state.files.length === 0 ? (
         <div style={{
-          color: '#666666',
-          fontSize: '11px',
+          color: '#ffffff',
+          fontSize: '10px',
           textAlign: 'center',
-          padding: '20px 0'
+          padding: '16px 0',
+          fontFamily: 'monospace',
+          border: '1px solid #ffffff'
         }}>
-          No files yet
+          [no files]
         </div>
       ) : (
         <div style={{ maxHeight: '300px', overflow: 'auto' }}>
@@ -537,35 +546,39 @@ const LeftSidebar = () => {
               key={file.id}
               onClick={() => actions.selectFile(file)}
               style={{
-                padding: '8px',
+                padding: '4px',
                 cursor: 'pointer',
-                borderLeft: state.selectedFile?.id === file.id ? '2px solid #ffffff' : '2px solid transparent',
-                background: state.selectedFile?.id === file.id ? '#111111' : 'transparent'
+                background: state.selectedFile?.id === file.id ? '#ffffff' : '#000000',
+                color: state.selectedFile?.id === file.id ? '#000000' : '#ffffff',
+                border: '1px solid #ffffff',
+                marginBottom: '1px',
+                fontFamily: 'monospace'
               }}
             >
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '4px'
+                marginBottom: '2px'
               }}>
                 <span style={{
-                  fontSize: '12px',
-                  color: '#ffffff',
+                  fontSize: '10px',
                   flex: 1,
-                  marginRight: '8px'
+                  marginRight: '8px',
+                  fontWeight: 'bold'
                 }}>
                   {file.name}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <div style={{
-                    padding: '2px 4px',
+                    padding: '1px 4px',
                     fontSize: '8px',
-                    background: getWorkflowBadgeColor(file.workflowState),
-                    color: '#ffffff',
-                    textTransform: 'uppercase'
+                    background: state.selectedFile?.id === file.id ? '#000000' : '#ffffff',
+                    color: state.selectedFile?.id === file.id ? '#ffffff' : '#000000',
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold'
                   }}>
-                    {file.workflowState.replace('_', ' ')}
+                    {file.workflowState.replace('_', '')}
                   </div>
                   <button
                     onClick={(e) => {
@@ -579,24 +592,24 @@ const LeftSidebar = () => {
                       })
                     }}
                     style={{
-                      background: 'none',
+                      background: state.selectedFile?.id === file.id ? '#000000' : '#ffffff',
                       border: 'none',
-                      color: '#666666',
+                      color: state.selectedFile?.id === file.id ? '#ffffff' : '#000000',
                       cursor: 'pointer',
                       fontSize: '10px',
-                      padding: '2px'
+                      padding: '2px',
+                      fontWeight: 'bold'
                     }}
                     title="Delete file"
                   >
-                    ×
+                    X
                   </button>
                 </div>
               </div>
               <div style={{
-                fontSize: '10px',
-                color: '#666666'
+                fontSize: '8px'
               }}>
-                {file.sections.length} sections
+                [{file.sections.length}sec]
               </div>
             </div>
           ))}
@@ -1070,50 +1083,45 @@ const LeftSidebar = () => {
     <div style={{
       width: '320px',
       height: '100vh',
-      background: 'linear-gradient(180deg, #000000 0%, #0a0a0a 100%)',
-      borderRight: '1px solid rgba(255, 255, 255, 0.08)',
+      background: '#000000',
+      borderRight: '1px solid #ffffff',
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'hidden',
-      boxShadow: 'inset -1px 0 0 rgba(255, 255, 255, 0.03)'
+      overflow: 'hidden'
     }}>
-      {/* Premium Header */}
+      {/* Terminal Header */}
       <div style={{
-        padding: '24px 24px 20px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-        background: 'rgba(255, 255, 255, 0.01)',
-        backdropFilter: 'blur(8px)'
+        padding: '16px',
+        borderBottom: '1px solid #ffffff',
+        background: '#000000'
       }}>
         <div style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginBottom: '12px'
+          marginBottom: '8px'
         }}>
           <div style={{
-            fontSize: '18px',
-            fontWeight: '600',
+            fontSize: '16px',
+            fontWeight: 'bold',
             color: '#ffffff',
-            letterSpacing: '-0.02em',
-            fontFamily: 'system-ui, -apple-system, sans-serif'
+            fontFamily: 'monospace'
           }}>
-            SwayFiles
+            swayfiles
           </div>
           <div style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '12px'
+            gap: '8px'
           }}>
             {state.isGuest && (
               <div style={{
-                fontSize: '9px',
-                color: '#ffffff',
-                background: 'rgba(255, 255, 255, 0.08)',
-                padding: '4px 8px',
-                borderRadius: '6px',
-                fontWeight: '500',
-                letterSpacing: '0.05em',
-                border: '1px solid rgba(255, 255, 255, 0.12)'
+                fontSize: '10px',
+                color: '#000000',
+                background: '#ffffff',
+                padding: '2px 6px',
+                fontWeight: 'bold',
+                fontFamily: 'monospace'
               }}>
                 GUEST
               </div>
@@ -1121,53 +1129,36 @@ const LeftSidebar = () => {
             <button
               onClick={state.isGuest ? actions.guestLogout : actions.logout}
               style={{
-                background: 'rgba(255, 255, 255, 0.04)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                color: 'rgba(255, 255, 255, 0.6)',
+                background: '#ffffff',
+                border: 'none',
+                color: '#000000',
                 cursor: 'pointer',
                 fontSize: '12px',
-                padding: '6px',
-                borderRadius: '6px',
-                transition: 'all 0.2s ease',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                padding: '4px 8px',
+                fontFamily: 'monospace',
+                fontWeight: 'bold'
               }}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.08)'
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
-                e.target.style.color = 'rgba(255, 255, 255, 0.8)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.04)'
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'
-                e.target.style.color = 'rgba(255, 255, 255, 0.6)'
-              }}
-              title={state.isGuest ? "Leave workspace" : "Sign out"}
+              title={state.isGuest ? "exit" : "logout"}
             >
-              ⏻
+              exit
             </button>
           </div>
         </div>
         <div style={{
-          fontSize: '11px',
-          color: 'rgba(255, 255, 255, 0.4)',
-          fontWeight: '400',
-          letterSpacing: '0.01em'
+          fontSize: '10px',
+          color: '#ffffff',
+          fontFamily: 'monospace'
         }}>
-          v2.0 • {state.workspaces.length} workspace{state.workspaces.length !== 1 ? 's' : ''}
+          v2.0 [{state.workspaces.length}ws]
         </div>
       </div>
 
-      {/* Sophisticated Navigation */}
+      {/* Terminal Navigation */}
       <div style={{
         display: 'flex',
-        margin: '16px 16px 0',
-        background: 'rgba(255, 255, 255, 0.02)',
-        borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.06)',
-        overflow: 'hidden',
-        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.04)'
+        margin: '8px',
+        border: '1px solid #ffffff',
+        background: '#000000'
       }}>
         {sidebarSections.map((section, index) => (
           <button
@@ -1183,116 +1174,53 @@ const LeftSidebar = () => {
             }}
             style={{
               flex: 1,
-              background: activeSection === section.id
-                ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08))'
-                : 'transparent',
+              background: activeSection === section.id ? '#ffffff' : '#000000',
               border: 'none',
-              color: activeSection === section.id ? '#ffffff' : 'rgba(255, 255, 255, 0.5)',
-              padding: '14px 12px',
+              color: activeSection === section.id ? '#000000' : '#ffffff',
+              padding: '8px',
               fontSize: '10px',
-              fontWeight: activeSection === section.id ? '600' : '500',
+              fontWeight: 'bold',
               cursor: 'pointer',
-              transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
-              position: 'relative',
-              borderRight: index < sidebarSections.length - 1 ? '1px solid rgba(255, 255, 255, 0.04)' : 'none',
-              letterSpacing: '0.02em',
+              borderRight: index < sidebarSections.length - 1 ? '1px solid #ffffff' : 'none',
+              fontFamily: 'monospace',
               textTransform: 'uppercase'
             }}
-            onMouseEnter={(e) => {
-              if (activeSection !== section.id) {
-                e.target.style.background = 'rgba(255, 255, 255, 0.04)'
-                e.target.style.color = 'rgba(255, 255, 255, 0.7)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (activeSection !== section.id) {
-                e.target.style.background = 'transparent'
-                e.target.style.color = 'rgba(255, 255, 255, 0.5)'
-              }
-            }}
           >
-            <div style={{
-              marginBottom: '4px',
-              fontSize: '14px',
-              opacity: activeSection === section.id ? 1 : 0.6
-            }}>
-              {section.icon}
-            </div>
             {section.label}
-            {activeSection === section.id && (
-              <div style={{
-                position: 'absolute',
-                bottom: '0',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '24px',
-                height: '2px',
-                background: '#ffffff',
-                borderRadius: '1px'
-              }} />
-            )}
           </button>
         ))}
       </div>
 
-      {/* Premium Content Area */}
+      {/* Terminal Content Area */}
       <div style={{
         flex: 1,
         overflow: 'auto',
-        margin: '16px',
-        marginTop: '24px',
-        background: 'rgba(255, 255, 255, 0.01)',
-        borderRadius: '12px',
-        border: '1px solid rgba(255, 255, 255, 0.04)',
-        boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.02)',
-        scrollbarWidth: 'none',
-        msOverflowStyle: 'none'
-      }}
-      className="hide-scrollbar">
-        <style jsx>{`
-          .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-          }
-        `}</style>
+        margin: '8px',
+        background: '#000000',
+        border: '1px solid #ffffff'
+      }}>
         {renderSectionContent()}
       </div>
 
-      {/* Refined Status Bar */}
+      {/* Terminal Status Bar */}
       <div style={{
-        padding: '16px 24px',
-        borderTop: '1px solid rgba(255, 255, 255, 0.06)',
-        background: 'rgba(255, 255, 255, 0.01)',
-        backdropFilter: 'blur(8px)'
+        padding: '8px',
+        borderTop: '1px solid #ffffff',
+        background: '#000000'
       }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          fontSize: '11px',
-          fontWeight: '500'
+          fontSize: '10px',
+          fontFamily: 'monospace',
+          color: '#ffffff'
         }}>
-          <div style={{
-            color: 'rgba(255, 255, 255, 0.7)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px'
-          }}>
-            <div style={{
-              width: '6px',
-              height: '6px',
-              borderRadius: '50%',
-              background: state.currentWorkspace ? '#ffffff' : 'rgba(255, 255, 255, 0.3)'
-            }} />
-            {state.currentWorkspace ? state.currentWorkspace.name : 'No workspace'}
+          <div>
+            {state.currentWorkspace ? `[${state.currentWorkspace.name}]` : '[no-workspace]'}
           </div>
-          <div style={{
-            color: 'rgba(255, 255, 255, 0.5)',
-            background: 'rgba(255, 255, 255, 0.04)',
-            padding: '4px 8px',
-            borderRadius: '6px',
-            border: '1px solid rgba(255, 255, 255, 0.06)'
-          }}>
-            {state.files.length} file{state.files.length !== 1 ? 's' : ''}
+          <div>
+            {state.files.length}f
           </div>
         </div>
       </div>
