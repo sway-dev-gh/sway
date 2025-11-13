@@ -12,6 +12,7 @@ class TokenBlacklist {
     this.isConnected = false
     this.fallbackSet = new Set() // Fallback to in-memory if Redis unavailable
     this.keyPrefix = 'blacklist:token:'
+    this.redisErrorLogged = false // Prevent spam logging
     this.init()
   }
 
@@ -22,11 +23,17 @@ class TokenBlacklist {
         url: process.env.REDIS_URL || 'redis://localhost:6379',
         retry_strategy: (options) => {
           if (options.error && options.error.code === 'ECONNREFUSED') {
-            console.log('⚠️ Redis connection refused, using fallback in-memory blacklist')
+            if (!this.redisErrorLogged) {
+              console.log('⚠️ Redis connection refused, using fallback in-memory blacklist')
+              this.redisErrorLogged = true
+            }
             return undefined
           }
           if (options.total_retry_time > 1000 * 60 * 60) {
-            console.log('⚠️ Redis retry time exhausted, using fallback')
+            if (!this.redisErrorLogged) {
+              console.log('⚠️ Redis retry time exhausted, using fallback')
+              this.redisErrorLogged = true
+            }
             return undefined
           }
           if (options.attempt > 10) {
@@ -43,19 +50,28 @@ class TokenBlacklist {
       })
 
       this.redisClient.on('error', (err) => {
-        console.log('⚠️ Redis error, falling back to in-memory blacklist:', err.message)
+        if (!this.redisErrorLogged) {
+          console.log('⚠️ Redis error, falling back to in-memory blacklist:', err.message)
+          this.redisErrorLogged = true
+        }
         this.isConnected = false
       })
 
       this.redisClient.on('end', () => {
-        console.log('⚠️ Redis disconnected, using fallback blacklist')
+        if (!this.redisErrorLogged) {
+          console.log('⚠️ Redis disconnected, using fallback blacklist')
+          this.redisErrorLogged = true
+        }
         this.isConnected = false
       })
 
       // Connect to Redis
       await this.redisClient.connect()
     } catch (error) {
-      console.log('⚠️ Redis initialization failed, using in-memory fallback:', error.message)
+      if (!this.redisErrorLogged) {
+        console.log('⚠️ Redis initialization failed, using in-memory fallback:', error.message)
+        this.redisErrorLogged = true
+      }
       this.isConnected = false
     }
   }

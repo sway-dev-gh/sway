@@ -53,7 +53,7 @@ const encryptData = (plaintext, key = MASTER_KEY) => {
     const iv = crypto.randomBytes(IV_LENGTH)
 
     // Create cipher
-    const cipher = crypto.createCipherGCM(ALGORITHM, key, iv)
+    const cipher = crypto.createCipheriv(ALGORITHM, key, iv)
 
     // Encrypt the plaintext
     let encrypted = cipher.update(plaintext, 'utf8', 'hex')
@@ -92,7 +92,7 @@ const decryptData = (encryptedData, key = MASTER_KEY) => {
     const decryptionKey = keyVersions.get(keyVersion) || key
 
     // Create decipher
-    const decipher = crypto.createDecipherGCM(ALGORITHM, decryptionKey, Buffer.from(iv, 'hex'))
+    const decipher = crypto.createDecipheriv(ALGORITHM, decryptionKey, Buffer.from(iv, 'hex'))
 
     // Set authentication tag
     decipher.setAuthTag(Buffer.from(tag, 'hex'))
@@ -181,7 +181,7 @@ const encryptFile = (fileBuffer) => {
 
   try {
     const iv = crypto.randomBytes(IV_LENGTH)
-    const cipher = crypto.createCipherGCM(ALGORITHM, FILE_KEY, iv)
+    const cipher = crypto.createCipheriv(ALGORITHM, FILE_KEY, iv)
 
     const encrypted = Buffer.concat([
       cipher.update(fileBuffer),
@@ -217,7 +217,7 @@ const decryptFile = (encryptedFileData) => {
     const { encrypted, iv, tag, keyVersion } = encryptedFileData
     const decryptionKey = keyVersions.get(keyVersion) || FILE_KEY
 
-    const decipher = crypto.createDecipherGCM(ALGORITHM, decryptionKey, iv)
+    const decipher = crypto.createDecipheriv(ALGORITHM, decryptionKey, iv)
     decipher.setAuthTag(tag)
 
     const decrypted = Buffer.concat([

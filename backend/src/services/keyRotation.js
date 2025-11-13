@@ -13,10 +13,10 @@ class KeyRotationService {
     this.activeKeys = new Map()
     this.keyHistory = new Map()
     this.rotationIntervals = {
-      jwt: 30 * 24 * 60 * 60 * 1000,        // 30 days
-      encryption: 90 * 24 * 60 * 60 * 1000, // 90 days
-      session: 7 * 24 * 60 * 60 * 1000,     // 7 days
-      api: 60 * 24 * 60 * 60 * 1000         // 60 days
+      jwt: 24 * 60 * 60 * 1000,        // 24 hours (for testing)
+      encryption: 48 * 60 * 60 * 1000, // 48 hours (for testing)
+      session: 6 * 60 * 60 * 1000,     // 6 hours (for testing)
+      api: 12 * 60 * 60 * 1000         // 12 hours (for testing)
     }
 
     this.keyTypes = {
@@ -124,7 +124,9 @@ class KeyRotationService {
     const algorithm = 'aes-256-gcm'
     const iv = crypto.randomBytes(12)
 
-    const cipher = crypto.createCipher(algorithm, masterKey)
+    // Use proper key derivation instead of deprecated createCipher
+    const key = crypto.scryptSync(masterKey, 'salt', 32)
+    const cipher = crypto.createCipheriv(algorithm, key, iv)
     cipher.setAAD(Buffer.from('key-rotation-service', 'utf8'))
 
     let encrypted = cipher.update(keyValue, 'utf8', 'base64')
@@ -146,7 +148,10 @@ class KeyRotationService {
   decryptKeyFromStorage(encryptedData) {
     const masterKey = process.env.MASTER_ENCRYPTION_KEY || this.generateMasterKey()
 
-    const decipher = crypto.createDecipher(encryptedData.algorithm, masterKey)
+    // Use proper key derivation instead of deprecated createDecipher
+    const key = crypto.scryptSync(masterKey, 'salt', 32)
+    const iv = Buffer.from(encryptedData.iv, 'base64')
+    const decipher = crypto.createDecipheriv(encryptedData.algorithm, key, iv)
     decipher.setAAD(Buffer.from('key-rotation-service', 'utf8'))
     decipher.setAuthTag(Buffer.from(encryptedData.authTag, 'base64'))
 
@@ -176,7 +181,17 @@ class KeyRotationService {
     try {
       const keyId = crypto.randomUUID()
       const encryptedKey = this.encryptKeyForStorage(keyValue)
-      const expiresAt = new Date(Date.now() + this.rotationIntervals[keyType.split('_')[0].toLowerCase()])
+      // Map keyType to rotation interval
+      const getRotationInterval = (keyType) => {
+        if (keyType.startsWith('jwt_')) return this.rotationIntervals.jwt
+        if (keyType.startsWith('aes_')) return this.rotationIntervals.encryption
+        if (keyType.startsWith('session_')) return this.rotationIntervals.session
+        if (keyType.startsWith('api_')) return this.rotationIntervals.api
+        if (keyType.startsWith('csrf_')) return this.rotationIntervals.session // Use session interval for CSRF
+        return this.rotationIntervals.jwt // Default fallback
+      }
+
+      const expiresAt = new Date(Date.now() + getRotationInterval(keyType))
 
       await pool.query(`
         INSERT INTO encryption_keys
@@ -213,7 +228,7 @@ class KeyRotationService {
       `)
 
       for (const row of result.rows) {
-        const encryptedData = JSON.parse(row.key_value)
+        const encryptedData = typeof row.key_value === 'string' ? JSON.parse(row.key_value) : row.key_value
         const decryptedKey = this.decryptKeyFromStorage(encryptedData)
 
         this.activeKeys.set(row.key_type, {
@@ -222,7 +237,7 @@ class KeyRotationService {
           algorithm: row.algorithm,
           status: row.status,
           expiresAt: row.expires_at,
-          metadata: JSON.parse(row.metadata || '{}')
+          metadata: typeof row.metadata === 'string' ? JSON.parse(row.metadata || '{}') : (row.metadata || {})
         })
       }
 
@@ -331,7 +346,7 @@ class KeyRotationService {
   async updateKeyStatus(keyId, status) {
     await pool.query(`
       UPDATE encryption_keys
-      SET status = $1, rotated_at = CASE WHEN $1 = 'rotating' THEN CURRENT_TIMESTAMP ELSE rotated_at END
+      SET status = $1::VARCHAR, rotated_at = CASE WHEN $1::VARCHAR = 'rotating' THEN CURRENT_TIMESTAMP ELSE rotated_at END
       WHERE key_id = $2
     `, [status, keyId])
   }
@@ -400,7 +415,11 @@ class KeyRotationService {
    * Set up automatic rotation schedules
    */
   setupAutomaticRotation() {
-    // JWT key rotation every 30 days
+    // TEMPORARILY DISABLED - Fix database issues first
+    console.log('⚠️ Automatic key rotation schedules temporarily disabled for debugging')
+    return;
+
+    // JWT key rotation every 24 hours
     setInterval(async () => {
       try {
         await this.rotateKey(this.keyTypes.JWT_PRIMARY)
@@ -409,7 +428,7 @@ class KeyRotationService {
       }
     }, this.rotationIntervals.jwt)
 
-    // Encryption key rotation every 90 days
+    // Encryption key rotation every 48 hours
     setInterval(async () => {
       try {
         await this.rotateKey(this.keyTypes.AES_ENCRYPTION)
@@ -418,7 +437,7 @@ class KeyRotationService {
       }
     }, this.rotationIntervals.encryption)
 
-    // Session secret rotation every 7 days
+    // Session secret rotation every 6 hours
     setInterval(async () => {
       try {
         await this.rotateKey(this.keyTypes.SESSION_SECRET)
