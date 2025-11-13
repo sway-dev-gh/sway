@@ -284,6 +284,5 @@ module.exports = {
   helmetOptions,
   speedLimiter,
   requestSizeLimit,
-  ipWhitelist,
-  securityLogger
+  ipWhitelist
 };
