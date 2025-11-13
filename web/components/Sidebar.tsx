@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
-import NotificationBell from '../src/components/Notifications/NotificationBell'
 import {
   ChevronLeft,
   ChevronRight,
@@ -77,9 +76,6 @@ export default function Sidebar() {
         )}
 
         <div className="flex items-center space-x-2">
-          {/* Notification Bell */}
-          <NotificationBell />
-
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="text-terminal-muted hover:text-terminal-text transition-colors p-1"
