@@ -17,10 +17,10 @@ const LeftSidebar = () => {
   const [recentActivity, setRecentActivity] = useState([])
 
   const sidebarSections = [
-    { id: 'files', label: 'Files', icon: '◈' },
-    { id: 'requests', label: 'Requests', icon: '◪' },
-    { id: 'settings', label: 'Settings', icon: '⚙' },
-    { id: 'workspaces', label: 'Workspaces', icon: '◯' }
+    { id: 'files', label: 'FILES', icon: '◈' },
+    { id: 'requests', label: 'REQUESTS', icon: '◪' },
+    { id: 'workspaces', label: 'WORKSPACES', icon: '◯' },
+    { id: 'settings', label: 'SETTINGS', icon: '⚙' }
   ]
 
   const handleCreateWorkspace = () => {
@@ -136,192 +136,148 @@ const LeftSidebar = () => {
   }
 
   const renderWorkspaceSection = () => (
-    <div style={{ padding: '24px' }}>
+    <div style={{ padding: '16px' }}>
       <div style={{
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '20px'
+        marginBottom: '12px',
+        paddingBottom: '8px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
         <span style={{
-          fontSize: '12px',
+          fontSize: '11px',
           textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          color: 'rgba(255, 255, 255, 0.6)',
-          fontWeight: '600',
-          fontFamily: 'system-ui, -apple-system, sans-serif'
+          letterSpacing: '1px',
+          color: '#ffffff',
+          fontWeight: 'bold',
+          fontFamily: 'monospace'
         }}>
-          Workspaces
+          WORKSPACES
         </span>
         <button
           onClick={() => setShowCreateWorkspace(!showCreateWorkspace)}
           style={{
-            background: 'rgba(255, 255, 255, 0.06)',
-            border: '1px solid rgba(255, 255, 255, 0.12)',
+            background: '#000000',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
             color: '#ffffff',
-            padding: '6px 12px',
-            fontSize: '11px',
+            padding: '4px 8px',
+            fontSize: '10px',
             cursor: 'pointer',
-            borderRadius: '6px',
-            fontWeight: '500',
+            fontWeight: 'bold',
             transition: 'all 0.2s ease',
-            letterSpacing: '0.02em'
+            letterSpacing: '0.02em',
+            fontFamily: 'monospace',
+            textTransform: 'uppercase'
           }}
           onMouseEnter={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.08)'
-            e.target.style.borderColor = 'rgba(255, 255, 255, 0.16)'
+            e.target.style.background = 'rgba(255, 255, 255, 0.05)'
+            e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)'
           }}
           onMouseLeave={(e) => {
-            e.target.style.background = 'rgba(255, 255, 255, 0.06)'
-            e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
+            e.target.style.background = '#000000'
+            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
           }}
         >
-          New
+          + NEW
         </button>
       </div>
 
       {showCreateWorkspace && (
         <div style={{
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          padding: '20px',
-          marginBottom: '20px',
-          background: 'rgba(255, 255, 255, 0.02)',
-          borderRadius: '8px',
-          boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.04)'
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          padding: '16px',
+          marginBottom: '16px',
+          background: '#000000',
+          fontFamily: 'monospace'
         }}>
           <input
             type="text"
-            placeholder="Workspace name"
+            placeholder="WORKSPACE NAME"
             value={workspaceForm.name}
             onChange={(e) => setWorkspaceForm({ ...workspaceForm, name: e.target.value })}
             style={{
               width: '100%',
-              background: 'rgba(0, 0, 0, 0.4)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
+              background: '#000000',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#ffffff',
-              padding: '10px 12px',
-              fontSize: '13px',
-              marginBottom: '12px',
-              borderRadius: '6px',
-              fontWeight: '400',
-              letterSpacing: '0.01em',
-              transition: 'all 0.2s ease',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-              e.target.style.background = 'rgba(0, 0, 0, 0.6)'
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
-              e.target.style.background = 'rgba(0, 0, 0, 0.4)'
+              padding: '8px 12px',
+              fontSize: '12px',
+              marginBottom: '8px',
+              fontWeight: 'normal',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
             }}
           />
           <input
             type="text"
-            placeholder="Description (optional)"
+            placeholder="DESCRIPTION (OPTIONAL)"
             value={workspaceForm.description}
             onChange={(e) => setWorkspaceForm({ ...workspaceForm, description: e.target.value })}
             style={{
               width: '100%',
-              background: 'rgba(0, 0, 0, 0.4)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
+              background: '#000000',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#ffffff',
-              padding: '10px 12px',
-              fontSize: '13px',
-              marginBottom: '12px',
-              borderRadius: '6px',
-              fontWeight: '400',
-              letterSpacing: '0.01em',
-              transition: 'all 0.2s ease',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-              e.target.style.background = 'rgba(0, 0, 0, 0.6)'
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
-              e.target.style.background = 'rgba(0, 0, 0, 0.4)'
+              padding: '8px 12px',
+              fontSize: '12px',
+              marginBottom: '8px',
+              fontWeight: 'normal',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
             }}
           />
           <input
             type="text"
-            placeholder="Client link (optional)"
+            placeholder="CLIENT LINK (OPTIONAL)"
             value={workspaceForm.clientLink}
             onChange={(e) => setWorkspaceForm({ ...workspaceForm, clientLink: e.target.value })}
             style={{
               width: '100%',
-              background: 'rgba(0, 0, 0, 0.4)',
-              border: '1px solid rgba(255, 255, 255, 0.12)',
+              background: '#000000',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#ffffff',
-              padding: '10px 12px',
-              fontSize: '13px',
-              marginBottom: '16px',
-              borderRadius: '6px',
-              fontWeight: '400',
-              letterSpacing: '0.01em',
-              transition: 'all 0.2s ease',
-              fontFamily: 'system-ui, -apple-system, sans-serif'
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
-              e.target.style.background = 'rgba(0, 0, 0, 0.6)'
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
-              e.target.style.background = 'rgba(0, 0, 0, 0.4)'
+              padding: '8px 12px',
+              fontSize: '12px',
+              marginBottom: '12px',
+              fontWeight: 'normal',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
             }}
           />
           <div style={{ display: 'flex', gap: '8px' }}>
             <button
               onClick={handleCreateWorkspace}
               style={{
-                background: '#ffffff',
-                color: '#000000',
-                border: 'none',
-                padding: '8px 16px',
-                fontSize: '12px',
+                background: '#000000',
+                color: '#ffffff',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '6px 12px',
+                fontSize: '10px',
                 cursor: 'pointer',
-                borderRadius: '6px',
-                fontWeight: '600',
-                transition: 'all 0.2s ease',
-                letterSpacing: '0.01em',
+                fontWeight: 'bold',
+                fontFamily: 'monospace',
+                textTransform: 'uppercase',
                 flex: 1
               }}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.9)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#ffffff'
-              }}
             >
-              Create
+              CREATE
             </button>
             <button
               onClick={() => setShowCreateWorkspace(false)}
               style={{
-                background: 'rgba(255, 255, 255, 0.06)',
-                color: 'rgba(255, 255, 255, 0.8)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                padding: '8px 16px',
-                fontSize: '12px',
+                background: '#000000',
+                color: '#ffffff',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '6px 12px',
+                fontSize: '10px',
                 cursor: 'pointer',
-                borderRadius: '6px',
-                fontWeight: '500',
-                transition: 'all 0.2s ease',
-                letterSpacing: '0.01em'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.08)'
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.16)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.06)'
-                e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
+                fontWeight: 'bold',
+                fontFamily: 'monospace',
+                textTransform: 'uppercase'
               }}
             >
-              Cancel
+              CANCEL
             </button>
           </div>
         </div>
@@ -331,13 +287,14 @@ const LeftSidebar = () => {
         {state.workspaces.length === 0 ? (
           <div style={{
             color: 'rgba(255, 255, 255, 0.4)',
-            fontSize: '13px',
+            fontSize: '11px',
             textAlign: 'center',
-            padding: '32px 20px',
-            fontWeight: '400',
-            letterSpacing: '0.01em'
+            padding: '20px 0',
+            fontFamily: 'monospace',
+            background: '#000000',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            No workspaces yet
+            NO WORKSPACES YET
           </div>
         ) : (
           state.workspaces.map(workspace => (
@@ -345,130 +302,86 @@ const LeftSidebar = () => {
               key={workspace.id}
               onClick={() => actions.selectWorkspace(workspace)}
               style={{
-                padding: '12px 16px',
+                padding: '8px',
                 cursor: 'pointer',
-                borderRadius: '8px',
-                marginBottom: '8px',
-                background: state.currentWorkspace?.id === workspace.id
-                  ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04))'
-                  : 'rgba(255, 255, 255, 0.02)',
-                border: state.currentWorkspace?.id === workspace.id
-                  ? '1px solid rgba(255, 255, 255, 0.12)'
-                  : '1px solid rgba(255, 255, 255, 0.04)',
-                boxShadow: state.currentWorkspace?.id === workspace.id
-                  ? '0 2px 8px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
-                  : 'none',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                if (state.currentWorkspace?.id !== workspace.id) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.04)'
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (state.currentWorkspace?.id !== workspace.id) {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.02)'
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.04)'
-                }
+                marginBottom: '4px',
+                background: state.currentWorkspace?.id === workspace.id ? '#000000' : 'transparent',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                fontFamily: 'monospace'
               }}
             >
               <div style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '6px'
+                marginBottom: '4px'
               }}>
                 <div style={{
-                  fontSize: '14px',
+                  fontSize: '12px',
                   color: '#ffffff',
-                  fontWeight: '500',
-                  letterSpacing: '0.01em',
-                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                  fontWeight: 'normal',
+                  fontFamily: 'monospace'
                 }}>
-                  {workspace.name}
+                  {workspace.name.toUpperCase()}
                 </div>
-                <div style={{ display: 'flex', gap: '6px' }}>
+                <div style={{ display: 'flex', gap: '4px' }}>
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
                       actions.generateGuestLink(workspace.id)
                     }}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.06)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      color: 'rgba(255, 255, 255, 0.7)',
+                      background: '#000000',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      color: '#ffffff',
                       cursor: 'pointer',
-                      fontSize: '11px',
-                      padding: '4px 6px',
-                      borderRadius: '4px',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = 'rgba(255, 255, 255, 0.08)'
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
-                      e.target.style.color = '#ffffff'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'rgba(255, 255, 255, 0.06)'
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'
-                      e.target.style.color = 'rgba(255, 255, 255, 0.7)'
+                      fontSize: '10px',
+                      padding: '2px 4px',
+                      fontFamily: 'monospace'
                     }}
                     title="Share workspace with guest collaborators"
                   >
-                    ↗
+                    SHARE
                   </button>
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
+                      console.log('Delete button clicked for workspace:', workspace.id)
                       actions.showConfirmDialog({
                         message: `Delete workspace "${workspace.name}"?\n\nThis will permanently delete all files and sections in this workspace.`,
-                        confirmText: 'Delete',
-                        cancelText: 'Cancel',
+                        confirmText: 'DELETE',
+                        cancelText: 'CANCEL',
                         showCancel: true,
-                        onConfirm: () => actions.deleteWorkspace(workspace.id)
+                        onConfirm: () => {
+                          console.log('Confirming delete for workspace:', workspace.id)
+                          actions.deleteWorkspace(workspace.id)
+                        }
                       })
                     }}
                     style={{
-                      background: 'rgba(255, 255, 255, 0.06)',
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
-                      color: 'rgba(255, 255, 255, 0.5)',
+                      background: '#000000',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      color: '#ffffff',
                       cursor: 'pointer',
-                      fontSize: '12px',
-                      padding: '4px 6px',
-                      borderRadius: '4px',
-                      transition: 'all 0.2s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.background = 'rgba(255, 255, 255, 0.08)'
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.12)'
-                      e.target.style.color = 'rgba(255, 255, 255, 0.8)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.background = 'rgba(255, 255, 255, 0.06)'
-                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.08)'
-                      e.target.style.color = 'rgba(255, 255, 255, 0.5)'
+                      fontSize: '10px',
+                      padding: '2px 4px',
+                      fontFamily: 'monospace'
                     }}
                     title="Delete workspace"
                   >
-                    ×
+                    X
                   </button>
                 </div>
               </div>
               {workspace.description && (
                 <div style={{
-                  fontSize: '12px',
-                  color: 'rgba(255, 255, 255, 0.5)',
+                  fontSize: '10px',
+                  color: 'rgba(255, 255, 255, 0.6)',
                   lineHeight: '1.4',
-                  fontWeight: '400'
+                  fontWeight: 'normal',
+                  fontFamily: 'monospace'
                 }}>
-                  {workspace.description}
+                  {workspace.description.toUpperCase()}
                 </div>
               )}
             </div>
@@ -484,25 +397,31 @@ const LeftSidebar = () => {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        paddingBottom: '8px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
         <span style={{
           fontSize: '11px',
           textTransform: 'uppercase',
           letterSpacing: '1px',
-          color: '#999999'
+          color: '#ffffff',
+          fontFamily: 'monospace',
+          fontWeight: 'bold'
         }}>
-          Files
+          FILES
         </span>
         <label style={{
-          background: 'none',
-          border: '1px solid #666666',
+          background: '#000000',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
           color: '#ffffff',
-          padding: '2px 6px',
+          padding: '4px 8px',
           fontSize: '10px',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          fontFamily: 'monospace',
+          textTransform: 'uppercase'
         }}>
-          Add
+          + ADD
           <input
             type="file"
             onChange={handleFileUpload}
@@ -514,21 +433,27 @@ const LeftSidebar = () => {
 
       {!state.currentWorkspace ? (
         <div style={{
-          color: '#666666',
+          color: 'rgba(255, 255, 255, 0.4)',
           fontSize: '11px',
           textAlign: 'center',
-          padding: '20px 0'
+          padding: '20px 0',
+          fontFamily: 'monospace',
+          background: '#000000',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
-          Select a workspace first
+          SELECT WORKSPACE FIRST
         </div>
       ) : state.files.length === 0 ? (
         <div style={{
-          color: '#666666',
+          color: 'rgba(255, 255, 255, 0.4)',
           fontSize: '11px',
           textAlign: 'center',
-          padding: '20px 0'
+          padding: '20px 0',
+          fontFamily: 'monospace',
+          background: '#000000',
+          border: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
-          No files yet
+          NO FILES YET
         </div>
       ) : (
         <div style={{ maxHeight: '300px', overflow: 'auto' }}>
@@ -539,8 +464,10 @@ const LeftSidebar = () => {
               style={{
                 padding: '8px',
                 cursor: 'pointer',
-                borderLeft: state.selectedFile?.id === file.id ? '2px solid #ffffff' : '2px solid transparent',
-                background: state.selectedFile?.id === file.id ? '#111111' : 'transparent'
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                marginBottom: '4px',
+                background: state.selectedFile?.id === file.id ? '#000000' : 'transparent',
+                fontFamily: 'monospace'
               }}
             >
               <div style={{
@@ -553,7 +480,8 @@ const LeftSidebar = () => {
                   fontSize: '12px',
                   color: '#ffffff',
                   flex: 1,
-                  marginRight: '8px'
+                  marginRight: '8px',
+                  fontFamily: 'monospace'
                 }}>
                   {file.name}
                 </span>
@@ -561,9 +489,11 @@ const LeftSidebar = () => {
                   <div style={{
                     padding: '2px 4px',
                     fontSize: '8px',
-                    background: getWorkflowBadgeColor(file.workflowState),
+                    background: '#000000',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
                     color: '#ffffff',
-                    textTransform: 'uppercase'
+                    textTransform: 'uppercase',
+                    fontFamily: 'monospace'
                   }}>
                     {file.workflowState.replace('_', ' ')}
                   </div>
@@ -572,31 +502,33 @@ const LeftSidebar = () => {
                       e.stopPropagation()
                       actions.showConfirmDialog({
                         message: `Delete file "${file.name}"?\n\nThis will permanently delete the file and all its sections.`,
-                        confirmText: 'Delete',
-                        cancelText: 'Cancel',
+                        confirmText: 'DELETE',
+                        cancelText: 'CANCEL',
                         showCancel: true,
                         onConfirm: () => actions.deleteFile(file.id)
                       })
                     }}
                     style={{
-                      background: 'none',
-                      border: 'none',
-                      color: '#666666',
+                      background: '#000000',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      color: '#ffffff',
                       cursor: 'pointer',
                       fontSize: '10px',
-                      padding: '2px'
+                      padding: '2px 4px',
+                      fontFamily: 'monospace'
                     }}
                     title="Delete file"
                   >
-                    ×
+                    X
                   </button>
                 </div>
               </div>
               <div style={{
                 fontSize: '10px',
-                color: '#666666'
+                color: 'rgba(255, 255, 255, 0.6)',
+                fontFamily: 'monospace'
               }}>
-                {file.sections.length} sections
+                {file.sections.length} SECTIONS
               </div>
             </div>
           ))}
@@ -616,26 +548,33 @@ const LeftSidebar = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          marginBottom: '12px'
+          marginBottom: '12px',
+          paddingBottom: '8px',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
         }}>
           <span style={{
             fontSize: '11px',
             textTransform: 'uppercase',
             letterSpacing: '1px',
-            color: '#999999'
+            color: '#ffffff',
+            fontFamily: 'monospace',
+            fontWeight: 'bold'
           }}>
-            Review Queue ({pendingApprovals.length})
+            REQUESTS ({pendingApprovals.length})
           </span>
         </div>
 
         {pendingApprovals.length === 0 ? (
           <div style={{
-            color: '#666666',
+            color: 'rgba(255, 255, 255, 0.4)',
             fontSize: '11px',
             textAlign: 'center',
-            padding: '20px 0'
+            padding: '20px 0',
+            fontFamily: 'monospace',
+            background: '#000000',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            Review queue is empty
+            REVIEW QUEUE EMPTY
           </div>
         ) : (
           <div style={{ maxHeight: '300px', overflow: 'auto' }}>
@@ -645,50 +584,57 @@ const LeftSidebar = () => {
                 style={{
                   padding: '8px',
                   marginBottom: '4px',
-                  border: '1px solid #333333',
-                  background: '#111111'
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  background: '#000000',
+                  fontFamily: 'monospace'
                 }}
               >
                 <div style={{
                   fontSize: '12px',
                   color: '#ffffff',
-                  marginBottom: '4px'
+                  marginBottom: '4px',
+                  fontFamily: 'monospace'
                 }}>
                   {section.title}
                 </div>
                 <div style={{
                   fontSize: '10px',
-                  color: '#666666',
-                  marginBottom: '6px'
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  marginBottom: '6px',
+                  fontFamily: 'monospace'
                 }}>
-                  {section.comments.length} comments
+                  {section.comments.length} COMMENTS
                 </div>
                 <div style={{ display: 'flex', gap: '4px' }}>
                   <button
                     onClick={() => actions.updateWorkflowState(section.id, WORKFLOW_STATES.APPROVED)}
                     style={{
-                      background: '#2ed573',
-                      color: '#000000',
-                      border: 'none',
-                      padding: '2px 6px',
+                      background: '#000000',
+                      color: '#ffffff',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      padding: '4px 6px',
                       fontSize: '9px',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      fontFamily: 'monospace',
+                      textTransform: 'uppercase'
                     }}
                   >
-                    Approve
+                    APPROVE
                   </button>
                   <button
                     onClick={() => actions.updateWorkflowState(section.id, WORKFLOW_STATES.CHANGES_REQUESTED)}
                     style={{
-                      background: '#ff4757',
+                      background: '#000000',
                       color: '#ffffff',
-                      border: 'none',
-                      padding: '2px 6px',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      padding: '4px 6px',
                       fontSize: '9px',
-                      cursor: 'pointer'
+                      cursor: 'pointer',
+                      fontFamily: 'monospace',
+                      textTransform: 'uppercase'
                     }}
                   >
-                    Request Changes
+                    REJECT
                   </button>
                 </div>
               </div>
@@ -700,28 +646,32 @@ const LeftSidebar = () => {
   }
 
   const renderSettingsSection = () => (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '16px' }}>
       <span style={{
         fontSize: '11px',
         textTransform: 'uppercase',
         letterSpacing: '1px',
-        color: '#999999',
+        color: '#ffffff',
         marginBottom: '20px',
-        display: 'block'
+        display: 'block',
+        fontFamily: 'monospace',
+        fontWeight: 'bold',
+        paddingBottom: '8px',
+        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
-        Settings
+        SETTINGS
       </span>
 
       {/* Billing & Subscription */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px' }}>
-          Billing & Subscription
+        <div style={{ fontSize: '13px', color: '#ffffff', marginBottom: '12px', fontFamily: 'monospace', textTransform: 'uppercase' }}>
+          BILLING & SUBSCRIPTION
         </div>
         <div style={{
-          background: '#111111',
-          border: '1px solid #333333',
-          borderRadius: '6px',
-          padding: '12px'
+          background: '#000000',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          padding: '12px',
+          fontFamily: 'monospace'
         }}>
           <div style={{
             display: 'flex',
@@ -729,20 +679,21 @@ const LeftSidebar = () => {
             alignItems: 'center',
             marginBottom: '8px'
           }}>
-            <span style={{ fontSize: '12px', color: '#ffffff' }}>SwayFiles Pro</span>
+            <span style={{ fontSize: '12px', color: '#ffffff', fontFamily: 'monospace' }}>SWAYFILES PRO</span>
             <span style={{
               fontSize: '10px',
-              background: '#2ed573',
-              color: '#000000',
+              background: '#000000',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
+              color: '#ffffff',
               padding: '2px 6px',
-              borderRadius: '2px',
-              fontWeight: 'bold'
+              fontWeight: 'bold',
+              fontFamily: 'monospace'
             }}>
               ACTIVE
             </span>
           </div>
-          <div style={{ fontSize: '10px', color: '#666666', marginBottom: '10px' }}>
-            $15/month • Unlimited workspaces & files
+          <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '10px', fontFamily: 'monospace' }}>
+            $15/MONTH • UNLIMITED WORKSPACES & FILES
           </div>
           <button
             onClick={() => {
@@ -750,23 +701,24 @@ const LeftSidebar = () => {
             }}
             style={{
               width: '100%',
-              background: 'transparent',
-              border: '1px solid #333333',
+              background: '#000000',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#ffffff',
               padding: '6px 8px',
               fontSize: '10px',
               cursor: 'pointer',
-              borderRadius: '3px',
-              transition: 'all 0.2s'
+              transition: 'all 0.2s',
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
             }}
             onMouseEnter={(e) => {
-              e.target.style.background = '#333333'
+              e.target.style.background = 'rgba(255, 255, 255, 0.05)'
             }}
             onMouseLeave={(e) => {
-              e.target.style.background = 'transparent'
+              e.target.style.background = '#000000'
             }}
           >
-            Manage Subscription
+            MANAGE SUBSCRIPTION
           </button>
 
           {/* Admin Controls - Only visible for testing */}
