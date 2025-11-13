@@ -99,7 +99,7 @@ const LeftSidebar = () => {
 
     if (!isValidType) {
       actions.showConfirmDialog({
-        message: `File type not supported. Allowed types:\n• Images: JPG, PNG, GIF, SVG\n• Documents: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX\n• Code: TXT, MD, HTML, CSS, JS, JSX, TS, TSX, JSON, XML, YAML\n• Archives: ZIP, RAR`,
+        message: `File type not supported for code review. Allowed code file types:\n• Web: HTML, CSS, JS, JSX, TS, TSX\n• Data: JSON, XML, YAML, MD\n• Text: TXT\n• Other: Images for documentation, ZIP/RAR for code packages`,
         confirmText: 'Got it',
         showCancel: false
       })
@@ -574,7 +574,7 @@ const LeftSidebar = () => {
             background: '#000000',
             border: '1px solid rgba(255, 255, 255, 0.1)'
           }}>
-            REVIEW QUEUE EMPTY
+            NO CODE REVIEWS PENDING
           </div>
         ) : (
           <div style={{ maxHeight: '300px', overflow: 'auto' }}>

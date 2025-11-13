@@ -112,8 +112,8 @@ const CenterWorkspace = () => {
         marginBottom: '32px',
         fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
-        A developer-first workspace for reviewing and approving creative projects, code, and files.
-        Create a workspace and add files to get started.
+        A developer-first workspace for reviewing and approving code, managing pull requests, and collaborating on development projects.
+        Create a workspace and add code files to get started.
       </p>
       <div style={{
         padding: '12px 24px',
@@ -127,7 +127,7 @@ const CenterWorkspace = () => {
         textTransform: 'uppercase',
         backdropFilter: 'blur(10px)'
       }}>
-        GitHub × Notion-inspired collaboration
+        Code reviews × Pull requests × Developer collaboration
       </div>
     </div>
   )
@@ -172,7 +172,7 @@ const CenterWorkspace = () => {
         color: 'rgba(255, 255, 255, 0.6)',
         fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
-        Choose a file from the sidebar to begin reviewing and adding sections.
+        Choose a code file from the sidebar to begin reviewing and collaborating on development work.
       </p>
     </div>
   )
