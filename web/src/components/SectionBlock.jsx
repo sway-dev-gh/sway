@@ -92,180 +92,242 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
   return (
     <div
       style={{
-        border: '1px solid #ffffff',
-        marginBottom: '16px',
-        background: '#000000',
-        position: 'relative'
+        border: '1px solid rgba(255, 255, 255, 0.06)',
+        marginBottom: '12px',
+        background: isSelected
+          ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.95) 100%)'
+          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.01) 0%, rgba(0, 0, 0, 0.98) 100%)',
+        borderLeft: `3px solid ${getWorkflowColor(section.workflowState)}`,
+        borderRadius: '12px',
+        position: 'relative',
+        backdropFilter: 'blur(10px)',
+        boxShadow: isSelected
+          ? '0 4px 20px rgba(0, 0, 0, 0.3), 0 0 40px rgba(255, 255, 255, 0.02)'
+          : '0 2px 10px rgba(0, 0, 0, 0.2)',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
       }}
     >
-      {/* Terminal Block Header */}
+      {/* Drag Handle */}
       <div style={{
-        borderBottom: '1px solid #ffffff',
-        padding: '8px 12px',
-        background: '#000000',
-        fontSize: '12px',
-        fontFamily: 'monospace',
-        color: '#ffffff',
-        fontWeight: 'bold',
-        textTransform: 'uppercase'
-      }}>
-        ┌─[SECTION #{index + 1}]───[{section.workflowState.replace('_', '-')}]─┐
+        position: 'absolute',
+        left: '12px',
+        top: '20px',
+        cursor: 'grab',
+        color: 'rgba(255, 255, 255, 0.3)',
+        fontSize: '14px',
+        userSelect: 'none',
+        transition: 'color 0.2s ease'
+      }}
+      onMouseEnter={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.6)'}
+      onMouseLeave={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.3)'}
+      >
+        ⋮⋮
       </div>
 
-      {/* Title and Controls Block */}
+      {/* Section Header */}
       <div style={{
-        padding: '12px',
-        borderBottom: !collapsed ? '1px solid #ffffff' : 'none',
-        background: '#000000'
+        padding: '20px 20px 16px 40px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+        borderBottom: !collapsed ? '1px solid rgba(255, 255, 255, 0.04)' : 'none'
       }}>
-        {isEditing ? (
-          <div>
+        <div style={{ flex: 1, marginRight: '12px' }}>
+          {isEditing ? (
+            <input
+              type="text"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '6px',
+                color: '#ffffff',
+                fontSize: '16px',
+                fontWeight: '600',
+                width: '100%',
+                outline: 'none',
+                padding: '8px 12px',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                letterSpacing: '-0.01em',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+              }}
+              onFocus={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.04)'
+                e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+              onBlur={(e) => {
+                e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+                e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSave()
+                } else if (e.key === 'Escape') {
+                  handleCancel()
+                }
+              }}
+            />
+          ) : (
             <div style={{
-              marginBottom: '8px',
-              fontSize: '10px',
-              fontFamily: 'monospace',
-              color: '#ffffff',
-              textTransform: 'uppercase'
-            }}>
-              │ EDIT TITLE:
-            </div>
-            <div style={{ border: '1px solid #ffffff', background: '#000000' }}>
-              <input
-                type="text"
-                value={editedTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
-                style={{
-                  background: '#000000',
-                  border: 'none',
-                  color: '#ffffff',
-                  fontSize: '14px',
-                  fontFamily: 'monospace',
-                  width: '100%',
-                  outline: 'none',
-                  padding: '8px'
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSave()
-                  } else if (e.key === 'Escape') {
-                    handleCancel()
-                  }
-                }}
-              />
-            </div>
-            <div style={{
-              marginTop: '8px',
-              display: 'flex',
-              gap: '8px'
-            }}>
-              <button
-                onClick={handleSave}
-                style={{
-                  background: '#000000',
-                  color: '#ffffff',
-                  border: '1px solid #ffffff',
-                  padding: '4px 12px',
-                  fontSize: '10px',
-                  fontFamily: 'monospace',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase'
-                }}
-              >
-                [SAVE]
-              </button>
-              <button
-                onClick={handleCancel}
-                style={{
-                  background: '#000000',
-                  color: '#ffffff',
-                  border: '1px solid #ffffff',
-                  padding: '4px 12px',
-                  fontSize: '10px',
-                  fontFamily: 'monospace',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase'
-                }}
-              >
-                [CANCEL]
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div>
-            <div style={{
-              marginBottom: '8px',
               display: 'flex',
               alignItems: 'center',
-              gap: '8px'
+              gap: '12px'
             }}>
               <button
                 onClick={() => setCollapsed(!collapsed)}
                 style={{
-                  background: '#000000',
-                  border: '1px solid #ffffff',
-                  color: '#ffffff',
+                  background: 'rgba(255, 255, 255, 0.02)',
+                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  borderRadius: '4px',
+                  color: 'rgba(255, 255, 255, 0.6)',
                   cursor: 'pointer',
                   fontSize: '10px',
-                  padding: '2px 6px',
-                  fontFamily: 'monospace',
-                  fontWeight: 'bold'
+                  padding: '4px 6px',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  fontFamily: 'system-ui, -apple-system, sans-serif'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.04)'
+                  e.target.style.color = 'rgba(255, 255, 255, 0.8)'
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+                  e.target.style.color = 'rgba(255, 255, 255, 0.6)'
+                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.06)'
                 }}
               >
-                {collapsed ? '[+]' : '[-]'}
+                {collapsed ? '▶' : '▼'}
               </button>
-              <div
+              <h3
                 style={{
-                  fontSize: '14px',
+                  fontSize: '16px',
+                  fontWeight: '600',
                   color: '#ffffff',
-                  fontFamily: 'monospace',
-                  fontWeight: 'bold',
+                  margin: 0,
                   cursor: 'pointer',
-                  flex: 1
+                  letterSpacing: '-0.01em',
+                  fontFamily: 'system-ui, -apple-system, sans-serif',
+                  transition: 'color 0.2s ease'
                 }}
                 onClick={() => setIsEditing(true)}
+                onMouseEnter={(e) => e.target.style.color = 'rgba(255, 255, 255, 0.8)'}
+                onMouseLeave={(e) => e.target.style.color = '#ffffff'}
               >
-                │ {section.title}
+                {section.title}
+              </h3>
+              <div style={{
+                fontSize: '10px',
+                color: 'rgba(255, 255, 255, 0.4)',
+                background: 'rgba(255, 255, 255, 0.02)',
+                border: '1px solid rgba(255, 255, 255, 0.04)',
+                borderRadius: '12px',
+                padding: '2px 8px',
+                fontFamily: 'system-ui, -apple-system, sans-serif',
+                fontWeight: '500',
+                letterSpacing: '0.02em'
+              }}>
+                #{index + 1}
               </div>
             </div>
+          )}
+        </div>
 
-            <div style={{
-              display: 'flex',
-              gap: '8px',
-              fontSize: '10px',
-              fontFamily: 'monospace',
-              textTransform: 'uppercase'
-            }}>
+        {/* Section Controls */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          flexShrink: 0
+        }}>
+          <div style={{
+            padding: '4px 8px',
+            fontSize: '9px',
+            background: `linear-gradient(135deg, ${getWorkflowColor(section.workflowState)}90, ${getWorkflowColor(section.workflowState)}60)`,
+            color: '#ffffff',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            borderRadius: '4px',
+            fontFamily: 'system-ui, -apple-system, sans-serif',
+            fontWeight: '600',
+            boxShadow: `0 0 8px ${getWorkflowColor(section.workflowState)}30`
+          }}>
+            {section.workflowState.replace('_', ' ')}
+          </div>
+
+          <button
+            onClick={() => setShowComments(!showComments)}
+            style={{
+              background: 'rgba(255, 255, 255, 0.02)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              color: 'rgba(255, 255, 255, 0.8)',
+              padding: '4px 8px',
+              fontSize: '9px',
+              cursor: 'pointer',
+              borderRadius: '4px',
+              fontFamily: 'system-ui, -apple-system, sans-serif',
+              fontWeight: '500',
+              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.04)'
+              e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)'
+              e.target.style.color = '#ffffff'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+              e.target.style.border = '1px solid rgba(255, 255, 255, 0.1)'
+              e.target.style.color = 'rgba(255, 255, 255, 0.8)'
+            }}
+          >
+            {comments.length} comments
+          </button>
+
+          {isEditing ? (
+            <div style={{ display: 'flex', gap: '4px' }}>
               <button
-                onClick={() => setShowComments(!showComments)}
+                onClick={handleSave}
                 style={{
-                  background: '#000000',
-                  color: '#ffffff',
-                  border: '1px solid #ffffff',
-                  padding: '2px 8px',
-                  cursor: 'pointer',
-                  fontFamily: 'monospace',
-                  fontWeight: 'bold'
+                  background: '#2ed573',
+                  color: '#000000',
+                  border: 'none',
+                  padding: '2px 6px',
+                  fontSize: '9px',
+                  cursor: 'pointer'
                 }}
               >
-                [COMMENTS: {comments.length}]
+                Save
               </button>
-
+              <button
+                onClick={handleCancel}
+                style={{
+                  background: 'none',
+                  color: '#ffffff',
+                  border: '1px solid #666666',
+                  padding: '2px 6px',
+                  fontSize: '9px',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', gap: '4px' }}>
               {section.workflowState !== WORKFLOW_STATES.DELIVERED && (
                 <button
                   onClick={() => handleWorkflowChange(getNextWorkflowState(section.workflowState))}
                   style={{
-                    background: '#000000',
+                    background: 'none',
+                    border: '1px solid #666666',
                     color: '#ffffff',
-                    border: '1px solid #ffffff',
-                    padding: '2px 8px',
-                    cursor: 'pointer',
-                    fontFamily: 'monospace',
-                    fontWeight: 'bold'
+                    padding: '2px 6px',
+                    fontSize: '9px',
+                    cursor: 'pointer'
                   }}
                 >
-                  [{getWorkflowActionText(section.workflowState).toUpperCase()}]
+                  {getWorkflowActionText(section.workflowState)}
                 </button>
               )}
 
@@ -273,145 +335,131 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 <button
                   onClick={() => handleWorkflowChange(WORKFLOW_STATES.CHANGES_REQUESTED)}
                   style={{
-                    background: '#000000',
+                    background: '#ff4757',
                     color: '#ffffff',
-                    border: '1px solid #ffffff',
-                    padding: '2px 8px',
-                    cursor: 'pointer',
-                    fontFamily: 'monospace',
-                    fontWeight: 'bold'
+                    border: 'none',
+                    padding: '2px 6px',
+                    fontSize: '9px',
+                    cursor: 'pointer'
                   }}
                 >
-                  [REQUEST CHANGES]
+                  Request Changes
                 </button>
               )}
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
-      {/* Content Block */}
+      {/* Section Content */}
       {!collapsed && (
         <div style={{
-          padding: '12px',
-          borderBottom: showComments ? '1px solid #ffffff' : 'none'
+          padding: '0 16px 16px 32px'
         }}>
-          <div style={{
-            marginBottom: '8px',
-            fontSize: '10px',
-            fontFamily: 'monospace',
-            color: '#ffffff',
-            textTransform: 'uppercase'
-          }}>
-            │ CONTENT:
-          </div>
-
           {isEditing ? (
-            <div style={{
-              border: '1px solid #ffffff',
-              background: '#000000'
-            }}>
-              <textarea
-                ref={textareaRef}
-                value={editedContent}
-                onChange={(e) => setEditedContent(e.target.value)}
-                placeholder="> enter content..."
-                style={{
-                  width: '100%',
-                  background: '#000000',
-                  border: 'none',
-                  color: '#ffffff',
-                  padding: '12px',
-                  fontSize: '12px',
-                  lineHeight: '1.5',
-                  resize: 'none',
-                  minHeight: '100px',
-                  outline: 'none',
-                  fontFamily: 'monospace'
-                }}
-                onInput={(e) => {
-                  e.target.style.height = 'auto'
-                  e.target.style.height = e.target.scrollHeight + 'px'
-                }}
-              />
-            </div>
+            <textarea
+              ref={textareaRef}
+              value={editedContent}
+              onChange={(e) => setEditedContent(e.target.value)}
+              placeholder="Enter section content..."
+              style={{
+                width: '100%',
+                background: '#111111',
+                border: '1px solid #333333',
+                color: '#ffffff',
+                padding: '8px',
+                fontSize: '12px',
+                lineHeight: '1.5',
+                resize: 'none',
+                minHeight: '100px',
+                outline: 'none'
+              }}
+              onInput={(e) => {
+                // Auto-resize
+                e.target.style.height = 'auto'
+                e.target.style.height = e.target.scrollHeight + 'px'
+              }}
+            />
           ) : (
             <div
               onClick={() => setIsEditing(true)}
               style={{
-                minHeight: '80px',
-                padding: '12px',
-                border: '1px solid #ffffff',
+                minHeight: '60px',
+                padding: '8px',
+                border: '1px solid transparent',
                 fontSize: '12px',
                 lineHeight: '1.5',
-                color: section.content ? '#ffffff' : '#ffffff',
-                cursor: 'pointer',
-                whiteSpace: 'pre-wrap',
-                fontFamily: 'monospace',
-                background: '#000000'
+                color: section.content ? '#ffffff' : '#666666',
+                cursor: 'text',
+                whiteSpace: 'pre-wrap'
               }}
             >
-              {section.content || '> click to edit content...'}
+              {section.content || 'Click to add content...'}
             </div>
           )}
         </div>
       )}
 
-      {/* Comments Block */}
+      {/* Comments Section */}
       {showComments && !collapsed && (
         <div style={{
-          padding: '12px',
-          background: '#000000'
+          borderTop: '1px solid #333333',
+          background: '#111111',
+          padding: '12px 16px 12px 32px'
         }}>
           <div style={{
+            fontSize: '11px',
+            color: '#999999',
             marginBottom: '8px',
-            fontSize: '10px',
-            fontFamily: 'monospace',
-            color: '#ffffff',
             textTransform: 'uppercase',
-            fontWeight: 'bold'
+            letterSpacing: '0.5px'
           }}>
-            │ COMMENTS ({comments.length}):
+            Comments ({comments.length})
           </div>
 
-          {/* Comment List */}
+          {/* Existing Comments */}
           <div style={{ marginBottom: '12px' }}>
             {comments.length === 0 ? (
               <div style={{
-                border: '1px solid #ffffff',
-                padding: '8px',
-                background: '#000000',
-                color: '#ffffff',
+                color: '#666666',
                 fontSize: '11px',
-                fontFamily: 'monospace'
+                fontStyle: 'italic'
               }}>
-                > no comments
+                No comments yet
               </div>
             ) : (
               comments.map(comment => (
                 <div
                   key={comment.id}
                   style={{
-                    border: '1px solid #ffffff',
-                    padding: '8px',
-                    marginBottom: '4px',
-                    background: '#000000'
+                    padding: '6px 0',
+                    borderBottom: '1px solid #222222'
                   }}
                 >
                   <div style={{
-                    fontSize: '10px',
-                    color: '#ffffff',
-                    fontFamily: 'monospace',
-                    marginBottom: '4px',
-                    fontWeight: 'bold'
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '2px'
                   }}>
-                    [{sanitizeText(comment.author)}] - {new Date(comment.createdAt).toLocaleString()}
+                    <span style={{
+                      fontSize: '10px',
+                      color: '#999999',
+                      fontWeight: 'bold'
+                    }}>
+                      {sanitizeText(comment.author)}
+                    </span>
+                    <span style={{
+                      fontSize: '9px',
+                      color: '#666666'
+                    }}>
+                      {new Date(comment.createdAt).toLocaleString()}
+                    </span>
                   </div>
                   <div style={{
                     fontSize: '11px',
                     color: '#ffffff',
-                    lineHeight: '1.4',
-                    fontFamily: 'monospace'
+                    lineHeight: '1.4'
                   }}>
                     {sanitizeDescription(comment.content)}
                   </div>
@@ -420,75 +468,43 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
             )}
           </div>
 
-          {/* Add Comment Block */}
-          <div style={{
-            border: '1px solid #ffffff',
-            padding: '8px',
-            background: '#000000'
-          }}>
-            <div style={{
-              marginBottom: '6px',
-              fontSize: '10px',
-              fontFamily: 'monospace',
-              color: '#ffffff',
-              fontWeight: 'bold'
-            }}>
-              ADD COMMENT:
-            </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <input
-                type="text"
-                placeholder="> enter comment..."
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                style={{
-                  flex: 1,
-                  background: '#000000',
-                  border: '1px solid #ffffff',
-                  color: '#ffffff',
-                  padding: '6px 8px',
-                  fontSize: '11px',
-                  fontFamily: 'monospace',
-                  outline: 'none'
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleAddComment()
-                  }
-                }}
-              />
-              <button
-                onClick={handleAddComment}
-                style={{
-                  background: '#000000',
-                  color: '#ffffff',
-                  border: '1px solid #ffffff',
-                  padding: '6px 12px',
-                  fontSize: '10px',
-                  cursor: 'pointer',
-                  fontFamily: 'monospace',
-                  fontWeight: 'bold',
-                  textTransform: 'uppercase'
-                }}
-              >
-                [ADD]
-              </button>
-            </div>
+          {/* Add New Comment */}
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              style={{
+                flex: 1,
+                background: '#000000',
+                border: '1px solid #333333',
+                color: '#ffffff',
+                padding: '4px 6px',
+                fontSize: '11px'
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleAddComment()
+                }
+              }}
+            />
+            <button
+              onClick={handleAddComment}
+              style={{
+                background: '#ffffff',
+                color: '#000000',
+                border: 'none',
+                padding: '4px 8px',
+                fontSize: '10px',
+                cursor: 'pointer'
+              }}
+            >
+              Comment
+            </button>
           </div>
         </div>
       )}
-
-      {/* Terminal Block Footer */}
-      <div style={{
-        padding: '8px 12px',
-        background: '#000000',
-        fontSize: '12px',
-        fontFamily: 'monospace',
-        color: '#ffffff',
-        fontWeight: 'bold'
-      }}>
-        └─────────────────────────────────────────┘
-      </div>
     </div>
   )
 }
