@@ -1,6 +1,5 @@
 {
-  "buildCommand": "npm install && cd web && npm install && npm run build",
-  "installCommand": "echo 'Using custom buildCommand'",
+  "buildCommand": "cd web && npm ci && npm run build",
   "outputDirectory": "web/.next",
   "rewrites": [
     {
