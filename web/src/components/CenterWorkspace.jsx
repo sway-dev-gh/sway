@@ -78,56 +78,108 @@ const CenterWorkspace = () => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100%',
-      textAlign: 'center',
-      padding: '60px 40px',
-      background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.95) 70%)',
-      position: 'relative'
+      textAlign: 'left',
+      padding: '40px',
+      background: '#000000',
+      fontFamily: 'monospace'
     }}>
       <div style={{
-        fontSize: '64px',
-        marginBottom: '32px',
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.4))',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
-        textShadow: '0 0 30px rgba(255, 255, 255, 0.1)'
+        border: '2px solid #ffffff',
+        padding: '30px',
+        background: '#000000',
+        width: '100%',
+        maxWidth: '700px'
       }}>
-        ◧
-      </div>
-      <h1 style={{
-        fontSize: '28px',
-        color: '#ffffff',
-        marginBottom: '16px',
-        fontWeight: '600',
-        letterSpacing: '-0.02em',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        Welcome to SwayFiles v2.0
-      </h1>
-      <p style={{
-        fontSize: '15px',
-        maxWidth: '480px',
-        lineHeight: '1.6',
-        color: 'rgba(255, 255, 255, 0.7)',
-        marginBottom: '32px',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        A developer-first workspace for reviewing and approving creative projects, code, and files.
-        Create a workspace and add files to get started.
-      </p>
-      <div style={{
-        padding: '12px 24px',
-        background: 'rgba(255, 255, 255, 0.02)',
-        border: '1px solid rgba(255, 255, 255, 0.05)',
-        borderRadius: '24px',
-        fontSize: '12px',
-        color: 'rgba(255, 255, 255, 0.5)',
-        letterSpacing: '0.02em',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        textTransform: 'uppercase',
-        backdropFilter: 'blur(10px)'
-      }}>
-        GitHub × Notion-inspired collaboration
+        <div style={{
+          fontSize: '18px',
+          marginBottom: '20px',
+          color: '#ffffff',
+          fontFamily: 'monospace',
+          fontWeight: 'bold'
+        }}>
+          > SWAYFILES v2.0 - TERMINAL WORKSPACE
+        </div>
+
+        <div style={{
+          fontSize: '12px',
+          color: '#00ff00',
+          lineHeight: '1.5',
+          fontFamily: 'monospace',
+          marginBottom: '20px'
+        }}>
+          SYSTEM STATUS: [ONLINE] [SECURE] [READY]<br />
+          CONNECTION: 192.168.1.100:443 [ENCRYPTED]<br />
+          USER_MODE: [COLLABORATIVE] [AUTHENTICATED]
+        </div>
+
+        <div style={{
+          border: '1px solid #ffffff',
+          padding: '15px',
+          marginBottom: '20px',
+          background: '#000000'
+        }}>
+          <div style={{
+            color: '#ffff00',
+            fontSize: '11px',
+            fontFamily: 'monospace',
+            marginBottom: '10px',
+            fontWeight: 'bold'
+          }}>
+            === QUICK START TERMINAL ===
+          </div>
+          <div style={{
+            color: '#ffffff',
+            fontSize: '11px',
+            fontFamily: 'monospace',
+            lineHeight: '1.4'
+          }}>
+            $ workspace create [name]    # Create new workspace<br />
+            $ file add [path]           # Add files for review<br />
+            $ review start              # Begin collaboration<br />
+            $ approve --all             # Complete workflow
+          </div>
+        </div>
+
+        <div style={{
+          border: '1px solid #ffffff',
+          padding: '15px',
+          marginBottom: '20px',
+          background: '#000000'
+        }}>
+          <div style={{
+            color: '#00ffff',
+            fontSize: '11px',
+            fontFamily: 'monospace',
+            marginBottom: '8px',
+            fontWeight: 'bold'
+          }}>
+            FEATURES_LOADED:
+          </div>
+          <div style={{
+            color: '#ffffff',
+            fontSize: '10px',
+            fontFamily: 'monospace',
+            lineHeight: '1.3'
+          }}>
+            [✓] Real-time collaboration engine<br />
+            [✓] Git-style approval workflows<br />
+            [✓] Comment & review system<br />
+            [✓] File versioning & history
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          fontSize: '10px',
+          color: '#ffffff',
+          fontFamily: 'monospace',
+          textAlign: 'center'
+        }}>
+          <span>[GITHUB_INSPIRED]</span>
+          <span>[NOTION_POWERED]</span>
+          <span>[TERMINAL_STYLED]</span>
+        </div>
       </div>
     </div>
   )
@@ -139,41 +191,77 @@ const CenterWorkspace = () => {
       alignItems: 'center',
       justifyContent: 'center',
       height: '100%',
-      textAlign: 'center',
-      padding: '60px 40px',
-      background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.01) 0%, rgba(0, 0, 0, 0.98) 60%)',
-      position: 'relative'
+      textAlign: 'left',
+      padding: '40px',
+      background: '#000000',
+      fontFamily: 'monospace'
     }}>
       <div style={{
-        fontSize: '48px',
-        marginBottom: '24px',
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.3))',
-        WebkitBackgroundClip: 'text',
-        WebkitTextFillColor: 'transparent',
-        backgroundClip: 'text',
-        textShadow: '0 0 20px rgba(255, 255, 255, 0.1)'
+        border: '1px solid #ffffff',
+        padding: '25px',
+        background: '#000000',
+        width: '100%',
+        maxWidth: '500px'
       }}>
-        ◈
+        <div style={{
+          fontSize: '14px',
+          marginBottom: '15px',
+          color: '#ffffff',
+          fontFamily: 'monospace',
+          fontWeight: 'bold'
+        }}>
+          > FILE_SELECTOR_MODE
+        </div>
+
+        <div style={{
+          fontSize: '12px',
+          color: '#ffff00',
+          lineHeight: '1.5',
+          fontFamily: 'monospace',
+          marginBottom: '15px'
+        }}>
+          WORKSPACE: [LOADED]<br />
+          FILE_SELECTED: [NONE]<br />
+          STATUS: [WAITING_FOR_INPUT]
+        </div>
+
+        <div style={{
+          border: '1px solid #ffffff',
+          padding: '12px',
+          marginBottom: '15px',
+          background: '#000000'
+        }}>
+          <div style={{
+            color: '#00ff00',
+            fontSize: '11px',
+            fontFamily: 'monospace',
+            marginBottom: '8px',
+            fontWeight: 'bold'
+          }}>
+            NEXT_STEP:
+          </div>
+          <div style={{
+            color: '#ffffff',
+            fontSize: '10px',
+            fontFamily: 'monospace',
+            lineHeight: '1.4'
+          }}>
+            [1] Select file from left sidebar<br />
+            [2] Begin review process<br />
+            [3] Add sections and content<br />
+            [4] Collaborate in real-time
+          </div>
+        </div>
+
+        <div style={{
+          color: '#ffffff',
+          fontSize: '10px',
+          fontFamily: 'monospace',
+          textAlign: 'center'
+        }}>
+          // SELECT_FILE TO CONTINUE //
+        </div>
       </div>
-      <h2 style={{
-        fontSize: '22px',
-        color: '#ffffff',
-        marginBottom: '12px',
-        fontWeight: '600',
-        letterSpacing: '-0.01em',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        Select a file to get started
-      </h2>
-      <p style={{
-        fontSize: '14px',
-        maxWidth: '360px',
-        lineHeight: '1.6',
-        color: 'rgba(255, 255, 255, 0.6)',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
-      }}>
-        Choose a file from the sidebar to begin reviewing and adding sections.
-      </p>
     </div>
   )
 
@@ -189,51 +277,37 @@ const CenterWorkspace = () => {
       }}>
         {/* File header */}
         <div style={{
-          padding: '24px 28px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
-          background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.01) 0%, rgba(0, 0, 0, 0.95) 100%)',
-          backdropFilter: 'blur(8px)'
+          padding: '20px',
+          borderBottom: '1px solid #ffffff',
+          background: '#000000'
         }}>
           <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+            border: '1px solid #ffffff',
+            padding: '15px',
+            background: '#000000'
           }}>
-            <div>
-              <h1 style={{
-                fontSize: '22px',
-                margin: 0,
-                color: '#ffffff',
-                fontWeight: '600',
-                letterSpacing: '-0.02em',
-                fontFamily: 'system-ui, -apple-system, sans-serif'
-              }}>
-                {state.selectedFile.name}
-              </h1>
-              {state.selectedFile.workflow_status && (
-                <div style={{
-                  marginTop: '12px',
-                  fontSize: '11px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  letterSpacing: '0.05em',
-                  textTransform: 'uppercase',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  fontWeight: '500'
-                }}>
-                  <span style={{
-                    width: '6px',
-                    height: '6px',
-                    borderRadius: '50%',
-                    backgroundColor: getWorkflowStatusColor(state.selectedFile.workflow_status),
-                    marginRight: '8px',
-                    boxShadow: `0 0 6px ${getWorkflowStatusColor(state.selectedFile.workflow_status)}40`
-                  }}></span>
-                  {state.selectedFile.workflow_status.replace('_', ' ')}
-                </div>
-              )}
+            <div style={{
+              fontSize: '14px',
+              margin: 0,
+              color: '#ffffff',
+              fontWeight: 'bold',
+              fontFamily: 'monospace',
+              marginBottom: '10px'
+            }}>
+              > FILE: {state.selectedFile.name}
             </div>
+            {state.selectedFile.workflow_status && (
+              <div style={{
+                fontSize: '11px',
+                display: 'flex',
+                alignItems: 'center',
+                color: '#00ff00',
+                fontFamily: 'monospace',
+                fontWeight: 'bold'
+              }}>
+                STATUS: [{state.selectedFile.workflow_status.replace('_', '_').toUpperCase()}]
+              </div>
+            )}
           </div>
         </div>
 
@@ -246,29 +320,29 @@ const CenterWorkspace = () => {
           {sections.length === 0 ? (
             <div style={{
               textAlign: 'center',
-              padding: '60px 40px',
-              background: 'radial-gradient(ellipse at center, rgba(255, 255, 255, 0.005) 0%, rgba(0, 0, 0, 0.99) 50%)',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.04)'
+              padding: '30px',
+              border: '1px solid #ffffff',
+              background: '#000000'
             }}>
               <div style={{
-                fontSize: '32px',
-                marginBottom: '20px',
-                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2))',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
+                fontSize: '12px',
+                marginBottom: '15px',
+                color: '#ffff00',
+                fontFamily: 'monospace',
+                fontWeight: 'bold'
               }}>
-                ◎
+                NO_SECTIONS_FOUND
               </div>
-              <p style={{
-                color: 'rgba(255, 255, 255, 0.6)',
-                fontSize: '14px',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                lineHeight: '1.5'
+              <div style={{
+                color: '#ffffff',
+                fontSize: '11px',
+                fontFamily: 'monospace',
+                lineHeight: '1.4'
               }}>
-                No sections yet. Add one to get started.
-              </p>
+                STATUS: [EMPTY]<br />
+                ACTION_REQUIRED: [ADD_SECTION]<br />
+                READY_TO_START: [TRUE]
+              </div>
             </div>
           ) : (
             sections.map(section => (
@@ -287,27 +361,32 @@ const CenterWorkspace = () => {
             <div style={{
               marginTop: '24px',
               padding: '20px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              borderRadius: '12px',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(0, 0, 0, 0.8) 100%)',
-              backdropFilter: 'blur(10px)'
+              border: '1px solid #ffffff',
+              background: '#000000'
             }}>
+              <div style={{
+                fontSize: '11px',
+                marginBottom: '10px',
+                color: '#ffff00',
+                fontFamily: 'monospace',
+                fontWeight: 'bold'
+              }}>
+                NEW_SECTION_TITLE:
+              </div>
               <input
                 type="text"
                 value={newSectionTitle}
                 onChange={(e) => setNewSectionTitle(e.target.value)}
-                placeholder="Section title"
+                placeholder="> enter section name..."
                 style={{
                   width: '100%',
-                  padding: '12px 16px',
-                  background: 'rgba(0, 0, 0, 0.4)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  borderRadius: '8px',
+                  padding: '10px',
+                  background: '#000000',
+                  border: '1px solid #ffffff',
                   color: '#ffffff',
-                  fontSize: '14px',
-                  fontFamily: 'system-ui, -apple-system, sans-serif',
-                  outline: 'none',
-                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                  fontSize: '12px',
+                  fontFamily: 'monospace',
+                  outline: 'none'
                 }}
                 autoFocus
                 onKeyPress={(e) => {
@@ -319,14 +398,6 @@ const CenterWorkspace = () => {
                     setNewSectionTitle('')
                   }
                 }}
-                onFocus={(e) => {
-                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.2)'
-                  e.target.style.background = 'rgba(0, 0, 0, 0.6)'
-                }}
-                onBlur={(e) => {
-                  e.target.style.border = '1px solid rgba(255, 255, 255, 0.08)'
-                  e.target.style.background = 'rgba(0, 0, 0, 0.4)'
-                }}
               />
               <div style={{
                 marginTop: '12px',
@@ -337,26 +408,25 @@ const CenterWorkspace = () => {
                   onClick={handleAddSection}
                   style={{
                     padding: '8px 16px',
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
+                    background: '#000000',
                     color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: '6px',
-                    fontSize: '12px',
-                    fontWeight: '500',
+                    border: '1px solid #ffffff',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
                     cursor: 'pointer',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%)'
-                    e.target.style.transform = 'translateY(-1px)'
+                    e.target.style.background = '#ffffff'
+                    e.target.style.color = '#000000'
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)'
-                    e.target.style.transform = 'translateY(0)'
+                    e.target.style.background = '#000000'
+                    e.target.style.color = '#ffffff'
                   }}
                 >
-                  Add Section
+                  [ADD]
                 </button>
                 <button
                   onClick={() => {
@@ -365,26 +435,25 @@ const CenterWorkspace = () => {
                   }}
                   style={{
                     padding: '8px 16px',
-                    background: 'transparent',
-                    color: 'rgba(255, 255, 255, 0.6)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)',
-                    borderRadius: '6px',
-                    fontSize: '12px',
-                    fontWeight: '500',
+                    background: '#000000',
+                    color: '#ffffff',
+                    border: '1px solid #ffffff',
+                    fontSize: '11px',
+                    fontWeight: 'bold',
                     cursor: 'pointer',
-                    fontFamily: 'system-ui, -apple-system, sans-serif',
-                    transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+                    fontFamily: 'monospace',
+                    textTransform: 'uppercase'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.color = 'rgba(255, 255, 255, 0.8)'
-                    e.target.style.background = 'rgba(255, 255, 255, 0.02)'
+                    e.target.style.background = '#ffffff'
+                    e.target.style.color = '#000000'
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.color = 'rgba(255, 255, 255, 0.6)'
-                    e.target.style.background = 'transparent'
+                    e.target.style.background = '#000000'
+                    e.target.style.color = '#ffffff'
                   }}
                 >
-                  Cancel
+                  [CANCEL]
                 </button>
               </div>
             </div>
@@ -395,33 +464,28 @@ const CenterWorkspace = () => {
                 marginTop: '24px',
                 width: '100%',
                 padding: '16px',
-                background: 'transparent',
-                color: 'rgba(255, 255, 255, 0.5)',
-                border: '1px dashed rgba(255, 255, 255, 0.1)',
-                borderRadius: '12px',
-                fontSize: '14px',
-                fontWeight: '500',
+                background: '#000000',
+                color: '#ffffff',
+                border: '2px dashed #ffffff',
+                fontSize: '12px',
+                fontWeight: 'bold',
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontFamily: 'system-ui, -apple-system, sans-serif',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+                fontFamily: 'monospace',
+                textTransform: 'uppercase'
               }}
               onMouseEnter={(e) => {
-                e.target.style.color = 'rgba(255, 255, 255, 0.8)'
-                e.target.style.border = '1px dashed rgba(255, 255, 255, 0.2)'
-                e.target.style.background = 'rgba(255, 255, 255, 0.01)'
-                e.target.style.transform = 'translateY(-1px)'
+                e.target.style.background = '#ffffff'
+                e.target.style.color = '#000000'
               }}
               onMouseLeave={(e) => {
-                e.target.style.color = 'rgba(255, 255, 255, 0.5)'
-                e.target.style.border = '1px dashed rgba(255, 255, 255, 0.1)'
-                e.target.style.background = 'transparent'
-                e.target.style.transform = 'translateY(0)'
+                e.target.style.background = '#000000'
+                e.target.style.color = '#ffffff'
               }}
             >
-              + Add Section
+              [+ ADD_SECTION]
             </button>
           )}
         </div>

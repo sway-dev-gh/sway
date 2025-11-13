@@ -4,9 +4,9 @@ const ConfirmDialog = ({
   isOpen,
   title,
   message,
-  confirmText = 'OK',
-  cancelText = 'Cancel',
-  confirmButtonColor = '#ef4444', // Red for destructive actions
+  confirmText = 'DELETE',
+  cancelText = 'CANCEL',
+  confirmButtonColor = '#ff0000', // Red for destructive actions
   onConfirm,
   onCancel
 }) => {
@@ -19,126 +19,104 @@ const ConfirmDialog = ({
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
+      backgroundColor: 'rgba(0, 0, 0, 0.85)',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
       zIndex: 10000,
-      padding: '20px'
+      padding: '20px',
+      fontFamily: 'monospace'
     }}>
       <div style={{
-        backgroundColor: '#1a1a1a',
-        border: '1px solid #333',
-        borderRadius: '12px',
-        padding: '24px',
-        maxWidth: '400px',
-        width: '100%',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-        animation: 'modalSlideIn 0.2s ease-out'
+        backgroundColor: '#000000',
+        border: '2px solid #ffffff',
+        padding: '20px',
+        maxWidth: '450px',
+        width: '100%'
       }}>
         {/* Title */}
         {title && (
-          <h3 style={{
-            color: '#fff',
-            fontSize: '18px',
-            fontWeight: '600',
-            margin: '0 0 16px 0',
-            lineHeight: '1.4'
+          <div style={{
+            color: '#ffffff',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            margin: '0 0 12px 0',
+            fontFamily: 'monospace',
+            textTransform: 'uppercase'
           }}>
-            {title}
-          </h3>
+            > {title}
+          </div>
         )}
 
         {/* Message */}
-        <p style={{
-          color: '#ccc',
-          fontSize: '14px',
-          lineHeight: '1.5',
-          margin: '0 0 24px 0',
-          whiteSpace: 'pre-line'
+        <div style={{
+          color: '#ffffff',
+          fontSize: '12px',
+          lineHeight: '1.4',
+          margin: '0 0 20px 0',
+          whiteSpace: 'pre-line',
+          fontFamily: 'monospace'
         }}>
           {message}
-        </p>
+        </div>
 
         {/* Buttons */}
         <div style={{
           display: 'flex',
-          gap: '12px',
+          gap: '10px',
           justifyContent: 'flex-end'
         }}>
           <button
             onClick={onCancel}
             style={{
-              backgroundColor: 'transparent',
-              border: '1px solid #444',
-              borderRadius: '8px',
-              color: '#ccc',
+              backgroundColor: '#000000',
+              border: '1px solid #ffffff',
+              color: '#ffffff',
               cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '500',
+              fontSize: '11px',
+              fontWeight: 'bold',
               padding: '8px 16px',
-              transition: 'all 0.2s ease',
-              minWidth: '80px'
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = '#333'
-              e.target.style.borderColor = '#555'
-              e.target.style.color = '#fff'
+              e.target.style.backgroundColor = '#ffffff'
+              e.target.style.color = '#000000'
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent'
-              e.target.style.borderColor = '#444'
-              e.target.style.color = '#ccc'
+              e.target.style.backgroundColor = '#000000'
+              e.target.style.color = '#ffffff'
             }}
           >
-            {cancelText}
+            [{cancelText}]
           </button>
 
           <button
             onClick={onConfirm}
             style={{
-              backgroundColor: confirmButtonColor,
-              border: `1px solid ${confirmButtonColor}`,
-              borderRadius: '8px',
-              color: '#fff',
+              backgroundColor: '#000000',
+              border: '1px solid #ff0000',
+              color: '#ff0000',
               cursor: 'pointer',
-              fontSize: '14px',
-              fontWeight: '500',
+              fontSize: '11px',
+              fontWeight: 'bold',
               padding: '8px 16px',
-              transition: 'all 0.2s ease',
-              minWidth: '80px'
+              fontFamily: 'monospace',
+              textTransform: 'uppercase'
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = confirmButtonColor === '#ef4444' ? '#dc2626' : confirmButtonColor
-              e.target.style.transform = 'translateY(-1px)'
-              e.target.style.boxShadow = `0 4px 12px ${confirmButtonColor}40`
+              e.target.style.backgroundColor = '#ff0000'
+              e.target.style.color = '#000000'
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = confirmButtonColor
-              e.target.style.transform = 'translateY(0)'
-              e.target.style.boxShadow = 'none'
+              e.target.style.backgroundColor = '#000000'
+              e.target.style.color = '#ff0000'
             }}
           >
-            {confirmText}
+            [{confirmText}]
           </button>
         </div>
       </div>
-
-      {/* CSS Animation */}
-      <style>
-        {`
-          @keyframes modalSlideIn {
-            from {
-              opacity: 0;
-              transform: translate(-50%, -48%) scale(0.95);
-            }
-            to {
-              opacity: 1;
-              transform: translate(-50%, -50%) scale(1);
-            }
-          }
-        `}
-      </style>
     </div>
   )
 }
