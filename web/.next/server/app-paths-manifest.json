@@ -1,10 +1,3 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/stripe/create-checkout-session/route": "app/api/stripe/create-checkout-session/route.js",
-  "/login/page": "app/login/page.js",
-  "/page": "app/page.js",
-  "/review/page": "app/review/page.js",
-  "/settings/page": "app/settings/page.js",
-  "/teams/page": "app/teams/page.js",
-  "/workspace/page": "app/workspace/page.js"
+  "/login/page": "app/login/page.js"
 }

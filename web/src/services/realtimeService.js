@@ -26,7 +26,7 @@ class RealtimeCollaborationService {
     }
 
     return new Promise((resolve, reject) => {
-      const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'
+      const serverUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
 
       this.socket = io(serverUrl, {
         auth: { token },

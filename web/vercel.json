@@ -6,10 +6,10 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://sway-backend.onrender.com/api/:path*"
+      "destination": "https://api.swayfiles.com/api/:path*"
     }
   ],
   "env": {
-    "NEXT_PUBLIC_API_URL": "https://sway-backend.onrender.com"
+    "NEXT_PUBLIC_API_URL": "https://api.swayfiles.com"
   }
 }

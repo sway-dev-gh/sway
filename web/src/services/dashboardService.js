@@ -3,7 +3,7 @@
  * Handles API calls for dashboard data including projects, stats, and activity
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001/api';
 
 class DashboardService {
   // Helper method for making authenticated requests
