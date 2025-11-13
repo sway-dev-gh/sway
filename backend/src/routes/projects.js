@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
+const { validateProjects, validationRateLimit } = require('../middleware/validation')
 const rateLimit = require('express-rate-limit')
 
 // Rate limiting - production compatible configuration
@@ -129,7 +130,7 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
 // =====================================================
 // POST /api/projects - Create new project
 // =====================================================
-router.post('/', authenticateToken, projectLimiter, async (req, res) => {
+router.post('/', authenticateToken, projectLimiter, validateProjects.create, async (req, res) => {
   try {
     const userId = req.userId
     const {
@@ -211,7 +212,7 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
       JSON.stringify(projectSettings),
       workspace_type,
       workflow_template,
-      default_reviewers,
+      default_reviewers || [],  // Ensure it's always an array
       auto_assign_reviewers,
       external_access_enabled
     ])
@@ -226,10 +227,10 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
     })
 
     // Extract client_link from settings for frontend compatibility
-    const projectSettings = JSON.parse(project.settings || '{}')
+    const responseProjectSettings = JSON.parse(project.settings || '{}')
     const projectResponse = {
       ...project,
-      client_link: projectSettings.client_link || null
+      client_link: responseProjectSettings.client_link || null
     }
 
     res.json({
@@ -240,8 +241,38 @@ router.post('/', authenticateToken, projectLimiter, async (req, res) => {
 
   } catch (error) {
     console.error('Create project error:', error)
-    res.status(500).json({
-      error: 'Failed to create project',
+
+    // Log detailed error information for debugging
+    if (process.env.NODE_ENV === 'development') {
+      console.error('Error details:', {
+        message: error.message,
+        code: error.code,
+        stack: error.stack,
+        userId,
+        title,
+        description,
+        client_link
+      })
+    }
+
+    // Return appropriate error response
+    let statusCode = 500
+    let errorMessage = 'Failed to create project'
+
+    // Handle specific error types
+    if (error.code === '23505') {
+      statusCode = 409
+      errorMessage = 'Project with this name already exists'
+    } else if (error.code === '23503') {
+      statusCode = 400
+      errorMessage = 'Invalid reference data provided'
+    } else if (error.code === '23514') {
+      statusCode = 400
+      errorMessage = 'Invalid data format'
+    }
+
+    res.status(statusCode).json({
+      error: errorMessage,
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     })
   }

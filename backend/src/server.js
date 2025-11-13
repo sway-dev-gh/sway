@@ -4,7 +4,9 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 const express = require('express')
-const cors = require('cors')
+const { applySecurity } = require('./middleware/security')
+const { errorHandler, notFoundHandler, healthCheck, validateEnvironment, setupGlobalErrorHandlers } = require('./middleware/errorHandler')
+const { encryptSensitiveFields, decryptSensitiveFields } = require('./middleware/encryption')
 
 const authRoutes = require('./routes/auth')
 const requestRoutes = require('./routes/requests')
@@ -28,17 +30,15 @@ const activityRoutes = require('./routes/activity')
 const workflowRoutes = require('./routes/workflow')
 const pool = require('./db/pool')
 
+// Validate environment and setup global error handlers
+validateEnvironment()
+setupGlobalErrorHandlers()
+
 const app = express()
 const PORT = process.env.PORT || 5001
 
-// Trust proxy - required for Render and rate limiting
-app.set('trust proxy', 1)
-
-// Middleware
-app.use(cors({
-  origin: ['https://swayfiles.com', 'https://www.swayfiles.com', 'http://localhost:3001', 'http://localhost:5173'],
-  credentials: true
-}))
+// Apply comprehensive security middleware (includes CORS, headers, rate limiting, etc.)
+applySecurity(app)
 
 // JSON parsing for all routes EXCEPT Stripe webhook
 app.use((req, res, next) => {
@@ -77,33 +77,8 @@ app.use('/api/collaborations', collaborationRoutes)
 app.use('/api/activity', activityRoutes)
 app.use('/api/workflow', workflowRoutes)
 
-// Health check
-app.get('/health', async (req, res) => {
-  try {
-    // Run migrations if ?migrate=true
-    if (req.query.migrate === 'true') {
-      const sql = `
-        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-        CREATE TABLE IF NOT EXISTS projects (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), user_id UUID NOT NULL, title VARCHAR(255) NOT NULL, description TEXT, created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(), updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW());
-        CREATE TABLE IF NOT EXISTS collaborations (id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), project_id UUID NOT NULL, collaborator_id UUID NOT NULL, role VARCHAR(50) DEFAULT 'viewer', created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(), updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW());
-      `
-      await pool.query(sql)
-      res.json({
-        status: 'ok',
-        service: 'sway-backend',
-        migration: '🔥🔥🔥 COLLABORATION PLATFORM IS NOW LIVE! EVERYTHING IS DIALED TF IN!'
-      })
-    } else {
-      res.json({ status: 'ok', service: 'sway-backend' })
-    }
-  } catch (error) {
-    res.json({
-      status: 'ok',
-      service: 'sway-backend',
-      migration_error: error.message
-    })
-  }
-})
+// Enhanced health check with security monitoring
+app.get('/health', healthCheck())
 
 // Simple migration endpoint - run migrations with ?migrate=true
 app.get('/health-migrate', async (req, res) => {
@@ -129,11 +104,11 @@ app.get('/health-migrate', async (req, res) => {
   }
 })
 
-// Error handling
-app.use((err, req, res, next) => {
-  console.error('Server error:', err)
-  res.status(500).json({ error: 'Internal server error' })
-})
+// 404 handler for undefined routes (must come before error handler)
+app.use(notFoundHandler)
+
+// Comprehensive error handling middleware (must come last)
+app.use(errorHandler)
 
 // Cleanup job: Deactivate expired requests every hour
 const cleanupExpiredRequests = async () => {

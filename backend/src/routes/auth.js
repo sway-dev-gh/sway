@@ -4,7 +4,13 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const pool = require('../db/pool')
 const rateLimit = require('express-rate-limit')
-const { authenticateToken } = require('../middleware/auth')
+const {
+  authenticateToken,
+  logout,
+  logoutAllDevices,
+  getMyActiveSessions
+} = require('../middleware/auth')
+const { validateAuth, validationRateLimit } = require('../middleware/validation')
 
 // Rate limiter for signup - strict to prevent multi-account abuse
 const signupLimiter = rateLimit({
@@ -25,7 +31,7 @@ const loginLimiter = rateLimit({
 })
 
 // POST /api/auth/signup
-router.post('/signup', signupLimiter, async (req, res) => {
+router.post('/signup', signupLimiter, validateAuth.signup, async (req, res) => {
   try {
     const { name, email, password } = req.body
 
@@ -93,7 +99,7 @@ router.post('/signup', signupLimiter, async (req, res) => {
 })
 
 // POST /api/auth/login
-router.post('/login', loginLimiter, async (req, res) => {
+router.post('/login', loginLimiter, validateAuth.login, async (req, res) => {
   try {
     const { email, password } = req.body
 
@@ -171,5 +177,14 @@ router.get('/me', authenticateToken, async (req, res) => {
     res.status(500).json({ error: 'Failed to get user info' })
   }
 })
+
+// POST /api/auth/logout - Logout current session
+router.post('/logout', authenticateToken, logout)
+
+// POST /api/auth/logout-all - Logout from all devices
+router.post('/logout-all', authenticateToken, logoutAllDevices)
+
+// GET /api/auth/sessions - Get active sessions
+router.get('/sessions', authenticateToken, getMyActiveSessions)
 
 module.exports = router
