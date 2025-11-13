@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit')
 const crypto = require('crypto')
 const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
+const keyRotationRouter = require('./admin/keyRotation')
 
 // Rate limit for admin verification - strict limit
 const adminVerifyLimiter = rateLimit({
@@ -119,5 +120,8 @@ router.put('/user-plan', authenticateToken, requireAdmin, async (req, res) => {
     })
   }
 })
+
+// Mount key rotation admin routes
+router.use('/key-rotation', authenticateToken, keyRotationRouter)
 
 module.exports = router

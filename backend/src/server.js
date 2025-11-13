@@ -31,9 +31,36 @@ const activityRoutes = require('./routes/activity')
 const workflowRoutes = require('./routes/workflow')
 const pool = require('./db/pool')
 
+// Enhanced authentication and security services
+const keyRotationService = require('./services/keyRotation')
+const enhancedAuthService = require('./services/enhancedAuth')
+
 // Validate environment and setup global error handlers
 validateEnvironment()
 setupGlobalErrorHandlers()
+
+// Initialize enhanced authentication system (async)
+const initializeSecurityServices = async () => {
+  try {
+    console.log('🔐 Initializing Enhanced Security Services...')
+
+    // Initialize key rotation service
+    await keyRotationService.initialize()
+    console.log('✓ Key Rotation Service initialized')
+
+    // Initialize enhanced authentication service
+    await enhancedAuthService.initialize()
+    console.log('✓ Enhanced Authentication Service initialized')
+
+    console.log('🛡️ Security services fully operational')
+  } catch (error) {
+    console.error('❌ Failed to initialize security services:', error)
+    console.error('Server will continue with fallback authentication')
+  }
+}
+
+// Start security services initialization (don't block server startup)
+initializeSecurityServices().catch(console.error)
 
 const app = express()
 const PORT = process.env.PORT || 5001
