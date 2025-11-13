@@ -304,9 +304,13 @@ const LeftSidebar = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
-                      if (confirm(`Delete workspace "${workspace.name}"?\n\nThis will permanently delete all files and sections in this workspace.`)) {
-                        actions.deleteWorkspace(workspace.id)
-                      }
+                      actions.showConfirmDialog({
+                        message: `Delete workspace "${workspace.name}"?\n\nThis will permanently delete all files and sections in this workspace.`,
+                        confirmText: 'Delete',
+                        cancelText: 'Cancel',
+                        showCancel: true,
+                        onConfirm: () => actions.deleteWorkspace(workspace.id)
+                      })
                     }}
                     style={{
                       background: 'none',
@@ -429,9 +433,13 @@ const LeftSidebar = () => {
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
-                      if (confirm(`Delete file "${file.name}"?\n\nThis will permanently delete the file and all its sections.`)) {
-                        actions.deleteFile(file.id)
-                      }
+                      actions.showConfirmDialog({
+                        message: `Delete file "${file.name}"?\n\nThis will permanently delete the file and all its sections.`,
+                        confirmText: 'Delete',
+                        cancelText: 'Cancel',
+                        showCancel: true,
+                        onConfirm: () => actions.deleteFile(file.id)
+                      })
                     }}
                     style={{
                       background: 'none',

@@ -113,6 +113,28 @@ const AuthenticatedApp = () => {
           <PricingPage onClose={actions.hidePricingModal} />
         </div>
       )}
+
+      {/* Confirm Dialog - Custom styled confirmation dialogs */}
+      <ConfirmDialog
+        isOpen={state.confirmDialog.isOpen}
+        title={state.confirmDialog.title}
+        message={state.confirmDialog.message}
+        confirmText={state.confirmDialog.confirmText}
+        cancelText={state.confirmDialog.cancelText}
+        confirmButtonColor={state.confirmDialog.confirmButtonColor}
+        onConfirm={() => {
+          if (state.confirmDialog.onConfirm) {
+            state.confirmDialog.onConfirm()
+          }
+          actions.hideConfirmDialog()
+        }}
+        onCancel={() => {
+          if (state.confirmDialog.onCancel) {
+            state.confirmDialog.onCancel()
+          }
+          actions.hideConfirmDialog()
+        }}
+      />
     </div>
   )
 }

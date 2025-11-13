@@ -74,11 +74,13 @@ const BillingDashboard = () => {
   }
 
   const cancelSubscription = async () => {
-    if (!confirm('Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period.')) {
-      return
-    }
-
-    try {
+    actions.showConfirmDialog({
+      message: 'Are you sure you want to cancel your subscription? You will lose access to premium features at the end of your current billing period.',
+      confirmText: 'Cancel Subscription',
+      cancelText: 'Keep Subscription',
+      showCancel: true,
+      onConfirm: async () => {
+        try {
       const token = localStorage.getItem('token')
       const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5001'}/api/billing/cancel`, {
         method: 'POST',
@@ -108,7 +110,9 @@ const BillingDashboard = () => {
         confirmText: 'OK',
         showCancel: false
       })
-    }
+        }
+      }
+    })
   }
 
   const getUsageBarColor = (percentage) => {
