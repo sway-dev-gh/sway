@@ -1,0 +1,16 @@
+# FORCE VERCEL REBUILD - Swayfiles 2.0 Complete
+# Timestamp: Wed Nov 13 13:22:00 PST 2025
+# Status: CRITICAL DEPLOYMENT NEEDED
+#
+# Production site showing old version while localhost has correct code
+# Need to deploy complete Swayfiles 2.0 features:
+# - Terminal aesthetic login with logo.png
+# - Quick Demo Login button
+# - Complete real-time collaboration platform
+# - All advanced features from localhost:3001
+#
+# This file triggers Vercel to rebuild from latest commit
+
+DEPLOY_TIMESTAMP=2025-11-13_13-22-00
+FORCE_REBUILD=true
+SWAYFILES_2_0=complete
