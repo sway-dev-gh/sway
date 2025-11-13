@@ -5,6 +5,7 @@ import RightPanel from './components/RightPanel'
 import AuthForm from './components/AuthForm'
 import GuestForm from './components/GuestForm'
 import PricingPage from './components/PricingPage'
+import ConfirmDialog from './components/ConfirmDialog'
 import { WorkspaceProvider, useWorkspace } from './stores/WorkspaceStore'
 import './styles.css'
 

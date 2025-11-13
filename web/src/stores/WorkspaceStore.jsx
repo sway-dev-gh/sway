@@ -54,6 +54,18 @@ const initialState = {
   // Modal state
   showPricingModal: false,
 
+  // Confirmation dialog state
+  confirmDialog: {
+    isOpen: false,
+    title: '',
+    message: '',
+    confirmText: 'OK',
+    cancelText: 'Cancel',
+    confirmButtonColor: '#ef4444',
+    onConfirm: null,
+    onCancel: null
+  },
+
   // Loading states
   isLoading: false,
   error: null
@@ -101,7 +113,11 @@ const ACTIONS = {
 
   // Modal actions
   SHOW_PRICING_MODAL: 'SHOW_PRICING_MODAL',
-  HIDE_PRICING_MODAL: 'HIDE_PRICING_MODAL'
+  HIDE_PRICING_MODAL: 'HIDE_PRICING_MODAL',
+
+  // Confirm dialog actions
+  SHOW_CONFIRM_DIALOG: 'SHOW_CONFIRM_DIALOG',
+  HIDE_CONFIRM_DIALOG: 'HIDE_CONFIRM_DIALOG'
 }
 
 // Reducer
@@ -380,6 +396,25 @@ function workspaceReducer(state, action) {
       return {
         ...state,
         showPricingModal: false
+      }
+
+    case ACTIONS.SHOW_CONFIRM_DIALOG:
+      return {
+        ...state,
+        confirmDialog: {
+          ...state.confirmDialog,
+          ...action.payload,
+          isOpen: true
+        }
+      }
+
+    case ACTIONS.HIDE_CONFIRM_DIALOG:
+      return {
+        ...state,
+        confirmDialog: {
+          ...state.confirmDialog,
+          isOpen: false
+        }
       }
 
     default:
@@ -838,6 +873,18 @@ export const WorkspaceProvider = ({ children }) => {
 
     hidePricingModal: () => {
       dispatch({ type: ACTIONS.HIDE_PRICING_MODAL })
+    },
+
+    // Confirm dialog actions
+    showConfirmDialog: (options) => {
+      dispatch({
+        type: ACTIONS.SHOW_CONFIRM_DIALOG,
+        payload: options
+      })
+    },
+
+    hideConfirmDialog: () => {
+      dispatch({ type: ACTIONS.HIDE_CONFIRM_DIALOG })
     }
   }
 
