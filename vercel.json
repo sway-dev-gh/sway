@@ -1,13 +1,14 @@
 {
   "buildCommand": "cd web && npm install && npm run build",
-  "outputDirectory": "web/dist",
-  "routes": [
+  "outputDirectory": "web/.next",
+  "framework": "nextjs",
+  "rewrites": [
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/api/:path*",
+      "destination": "https://sway-backend.onrender.com/api/:path*"
     }
-  ]
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://sway-backend.onrender.com"
+  }
 }
