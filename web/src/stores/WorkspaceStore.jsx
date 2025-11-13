@@ -487,7 +487,10 @@ export const WorkspaceProvider = ({ children }) => {
       dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
       try {
         const response = await apiService.getProjects()
-        const workspaces = response.map(project => ({
+
+        // Handle the correct response structure from backend
+        const projectsArray = response.projects?.owned || []
+        const workspaces = projectsArray.map(project => ({
           id: project.id,
           name: project.title,  // Backend stores 'title', map to 'name' for frontend
           description: project.description,
@@ -495,6 +498,7 @@ export const WorkspaceProvider = ({ children }) => {
           createdAt: project.created_at,
           updatedAt: project.updated_at
         }))
+
         dispatch({
           type: ACTIONS.LOAD_WORKSPACES,
           payload: { workspaces }
@@ -515,15 +519,18 @@ export const WorkspaceProvider = ({ children }) => {
           description,
           client_link: clientLink
         })
+
+        // Handle the correct response structure from backend
+        const project = response.project
         dispatch({
           type: ACTIONS.CREATE_WORKSPACE,
           payload: {
-            name: response.title,  // Backend returns 'title', map to 'name' for frontend
-            description: response.description,
-            clientLink: response.client_link,
-            id: response.id,
-            createdAt: response.created_at,
-            updatedAt: response.updated_at
+            name: project.title,  // Backend returns 'title', map to 'name' for frontend
+            description: project.description,
+            clientLink: project.client_link,
+            id: project.id,
+            createdAt: project.created_at,
+            updatedAt: project.updated_at
           }
         })
         actions.addActivity('workspace_created', `Created workspace "${name}"`, 'You')
