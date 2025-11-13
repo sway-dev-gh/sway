@@ -5,7 +5,7 @@ import { authApi } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 
-// FORCE VERCEL REBUILD - Cache Bust
+// FORCE VERCEL REBUILD - Quick Demo Login REMOVED - Cache Bust v2
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

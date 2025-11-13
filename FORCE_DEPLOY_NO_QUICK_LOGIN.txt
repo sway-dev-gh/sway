@@ -1,0 +1,3 @@
+FORCE DEPLOYMENT - Quick Demo Login REMOVED - Timestamp: $(date)
+NO_QUICK_LOGIN_CONFIRMED=true
+CACHE_BUST=$(date +%s)
