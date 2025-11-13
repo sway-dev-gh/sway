@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useWorkspace } from '../stores/WorkspaceStore'
+import { sanitizeText, sanitizeDescription } from '../utils/sanitization'
 
 const SectionBlock = ({ section, isSelected, onSelect, index }) => {
   const { state, actions, WORKFLOW_STATES } = useWorkspace()
@@ -377,7 +378,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                       color: '#999999',
                       fontWeight: 'bold'
                     }}>
-                      {comment.author}
+                      {sanitizeText(comment.author)}
                     </span>
                     <span style={{
                       fontSize: '9px',
@@ -391,7 +392,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                     color: '#ffffff',
                     lineHeight: '1.4'
                   }}>
-                    {comment.content}
+                    {sanitizeDescription(comment.content)}
                   </div>
                 </div>
               ))

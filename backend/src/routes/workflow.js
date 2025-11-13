@@ -4,6 +4,7 @@ const pool = require('../db/pool')
 const { authenticateToken } = require('../middleware/auth')
 const rateLimit = require('express-rate-limit')
 const crypto = require('crypto')
+const { sanitizeComment, sanitizeText, sanitizeRequestBody, schemas } = require('../utils/sanitization')
 
 // Rate limiting
 const workflowLimiter = rateLimit({
@@ -381,12 +382,22 @@ router.post('/sections/:id/comments', authenticateToken, workflowLimiter, async 
       return res.status(403).json({ error: 'You do not have permission to comment on this section' })
     }
 
+    // Sanitize all user inputs before storing in database
+    const sanitizedCommentText = sanitizeComment(comment_text)
+    const sanitizedCommentType = sanitizeText(comment_type || 'general', 50)
+    const sanitizedHighlightedText = sanitizeText(highlighted_text || '', 1000)
+
+    // Validate required fields
+    if (!sanitizedCommentText) {
+      return res.status(400).json({ error: 'Comment text is required and cannot be empty after sanitization' })
+    }
+
     const commentResult = await pool.query(`
       INSERT INTO section_comments
       (section_id, commenter_id, comment_text, comment_type, line_number, highlighted_text, parent_comment_id)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *
-    `, [sectionId, userId, comment_text.trim(), comment_type, line_number, highlighted_text, parent_comment_id])
+    `, [sectionId, userId, sanitizedCommentText, sanitizedCommentType, line_number, sanitizedHighlightedText, parent_comment_id])
 
     // Get commenter details
     const commenterResult = await pool.query(
