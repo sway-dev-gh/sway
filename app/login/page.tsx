@@ -26,7 +26,7 @@ export default function Login() {
         : await authApi.signup(email, password, username)
 
       if (result.success) {
-        router.push('/workspace')
+        router.push('/')
       } else {
         setError(result.message || 'Authentication failed')
       }

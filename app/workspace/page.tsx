@@ -58,10 +58,10 @@ export default function Workspace() {
               </div>
               <div className="pt-4">
                 <button
-                  onClick={() => window.location.href = '/dashboard'}
+                  onClick={() => window.location.href = '/'}
                   className="bg-terminal-text text-terminal-bg px-6 py-3 font-medium hover:bg-terminal-text/90 transition-colors"
                 >
-                  Return to Dashboard
+                  Return to Home
                 </button>
               </div>
             </div>
