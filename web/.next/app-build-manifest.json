@@ -43,16 +43,6 @@
       "static/chunks/346-cb5c76093d24ced7.js",
       "static/chunks/app/review/page-855c3bd2e8611cf5.js"
     ],
-    "/teams/page": [
-      "static/chunks/webpack-41a9ee0a1d65a3d2.js",
-      "static/chunks/fd9d1056-a7129889b45a2c4a.js",
-      "static/chunks/117-bf1cbe64d2cd3587.js",
-      "static/chunks/main-app-fee69ea2b33ab772.js",
-      "static/chunks/141-140ee824847f0a44.js",
-      "static/chunks/452-352db5b8b38431d2.js",
-      "static/chunks/346-cb5c76093d24ced7.js",
-      "static/chunks/app/teams/page-fb917cb90581b369.js"
-    ],
     "/settings/page": [
       "static/chunks/webpack-41a9ee0a1d65a3d2.js",
       "static/chunks/fd9d1056-a7129889b45a2c4a.js",
@@ -62,6 +52,16 @@
       "static/chunks/452-352db5b8b38431d2.js",
       "static/chunks/346-cb5c76093d24ced7.js",
       "static/chunks/app/settings/page-1c00d13c690d1fd6.js"
+    ],
+    "/teams/page": [
+      "static/chunks/webpack-41a9ee0a1d65a3d2.js",
+      "static/chunks/fd9d1056-a7129889b45a2c4a.js",
+      "static/chunks/117-bf1cbe64d2cd3587.js",
+      "static/chunks/main-app-fee69ea2b33ab772.js",
+      "static/chunks/141-140ee824847f0a44.js",
+      "static/chunks/452-352db5b8b38431d2.js",
+      "static/chunks/346-cb5c76093d24ced7.js",
+      "static/chunks/app/teams/page-fb917cb90581b369.js"
     ],
     "/workspace/page": [
       "static/chunks/webpack-41a9ee0a1d65a3d2.js",
