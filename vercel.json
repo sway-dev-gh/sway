@@ -1,14 +1,11 @@
 {
-  "buildCommand": "cd web && npm install && npm run build",
+  "buildCommand": "npm install && cd web && npm install && npm run build",
+  "installCommand": "echo 'Using custom buildCommand'",
   "outputDirectory": "web/.next",
-  "framework": "nextjs",
   "rewrites": [
     {
       "source": "/api/:path*",
       "destination": "https://api.swayfiles.com/api/:path*"
     }
-  ],
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://api.swayfiles.com"
-  }
+  ]
 }
