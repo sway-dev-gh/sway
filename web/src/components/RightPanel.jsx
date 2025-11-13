@@ -50,7 +50,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           fontSize: '11px',
           textTransform: 'uppercase',
           letterSpacing: '1px',
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: '#999999',
           marginBottom: '12px'
         }}>
           Recent Activity
@@ -58,7 +58,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
 
         {state.activities.length === 0 ? (
           <div style={{
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: '#666666',
             fontSize: '11px',
             textAlign: 'center',
             padding: '40px 20px',
@@ -74,7 +74,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
                 key={activity.id}
                 style={{
                   padding: '8px',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid #333333',
                   background: '#111111'
                 }}
               >
@@ -86,7 +86,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
                 }}>
                   <span style={{
                     fontSize: '10px',
-                    color: 'rgba(255, 255, 255, 0.7)',
+                    color: '#999999',
                     marginTop: '1px'
                   }}>
                     {getActivityIcon(activity.type)}
@@ -102,7 +102,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
                     </div>
                     <div style={{
                       fontSize: '9px',
-                      color: 'rgba(255, 255, 255, 0.6)',
+                      color: '#666666',
                       display: 'flex',
                       justifyContent: 'space-between',
                       alignItems: 'center'
@@ -136,7 +136,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           fontSize: '11px',
           textTransform: 'uppercase',
           letterSpacing: '1px',
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: '#999999',
           marginBottom: '12px'
         }}>
           Project Statistics
@@ -146,7 +146,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
         <div style={{
           marginBottom: '20px',
           padding: '12px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: '1px solid #333333',
           background: '#111111'
         }}>
           <div style={{
@@ -202,7 +202,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           <div style={{
             marginBottom: '20px',
             padding: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid #333333',
             background: '#111111'
           }}>
             <div style={{
@@ -215,7 +215,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {[
-                { label: 'Draft', value: workflowStats.draft, color: 'rgba(255, 255, 255, 0.6)' },
+                { label: 'Draft', value: workflowStats.draft, color: '#666666' },
                 { label: 'Under Review', value: workflowStats.underReview, color: '#ffa502' },
                 { label: 'Changes Requested', value: workflowStats.changesRequested, color: '#ff4757' },
                 { label: 'Approved', value: workflowStats.approved, color: '#2ed573' },
@@ -250,7 +250,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
             <div style={{
               marginTop: '8px',
               height: '4px',
-              background: 'rgba(255, 255, 255, 0.1)',
+              background: '#333333',
               borderRadius: '2px',
               overflow: 'hidden',
               display: 'flex'
@@ -272,7 +272,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
             </div>
             <div style={{
               fontSize: '9px',
-              color: 'rgba(255, 255, 255, 0.6)',
+              color: '#666666',
               marginTop: '4px',
               textAlign: 'center'
             }}>
@@ -284,7 +284,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
         {/* Performance Metrics */}
         <div style={{
           padding: '12px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: '1px solid #333333',
           background: '#111111'
         }}>
           <div style={{
@@ -351,7 +351,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           fontSize: '11px',
           textTransform: 'uppercase',
           letterSpacing: '1px',
-          color: 'rgba(255, 255, 255, 0.7)',
+          color: '#999999',
           marginBottom: '12px'
         }}>
           Review Status
@@ -361,7 +361,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
         <div style={{
           marginBottom: '16px',
           padding: '12px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: '1px solid #333333',
           background: '#111111'
         }}>
           <div style={{
@@ -379,20 +379,20 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
                   fontSize: '10px',
                   color: '#ffa502',
                   padding: '4px',
-                  background: '#000000',
+                  background: '#222222',
                   borderRadius: '3px'
                 }}>
                   {section.title || 'Untitled Section'}
                 </div>
               ))}
               {pendingReviews.length > 3 && (
-                <div style={{ fontSize: '9px', color: 'rgba(255, 255, 255, 0.6)' }}>
+                <div style={{ fontSize: '9px', color: '#666666' }}>
                   +{pendingReviews.length - 3} more sections
                 </div>
               )}
             </div>
           ) : (
-            <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.6)' }}>
+            <div style={{ fontSize: '10px', color: '#666666' }}>
               No sections awaiting review
             </div>
           )}
@@ -403,7 +403,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           <div style={{
             marginBottom: '16px',
             padding: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid #333333',
             background: '#111111'
           }}>
             <div style={{
@@ -420,7 +420,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
                   fontSize: '10px',
                   color: '#ff4757',
                   padding: '4px',
-                  background: '#000000',
+                  background: '#222222',
                   borderRadius: '3px'
                 }}>
                   {section.title || 'Untitled Section'}
@@ -435,7 +435,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           <div style={{
             marginBottom: '16px',
             padding: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid #333333',
             background: '#111111'
           }}>
             <div style={{
@@ -452,7 +452,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
                   fontSize: '10px',
                   color: '#2ed573',
                   padding: '4px',
-                  background: '#000000',
+                  background: '#222222',
                   borderRadius: '3px'
                 }}>
                   {section.title || 'Untitled Section'}
@@ -466,7 +466,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           <div style={{
             padding: '20px',
             textAlign: 'center',
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: '#666666',
             fontSize: '11px',
             lineHeight: '1.5'
           }}>
@@ -493,7 +493,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
         width: '40px',
         height: '100vh',
         background: '#000000',
-        borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+        borderLeft: '1px solid #333333',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -504,7 +504,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           style={{
             background: 'none',
             border: 'none',
-            color: 'rgba(255, 255, 255, 0.6)',
+            color: '#666666',
             cursor: 'pointer',
             fontSize: '12px',
             transform: 'rotate(-90deg)',
@@ -517,7 +517,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           writingMode: 'vertical-rl',
           textOrientation: 'mixed',
           fontSize: '10px',
-          color: 'rgba(255, 255, 255, 0.6)',
+          color: '#666666',
           letterSpacing: '2px'
         }}>
           PANEL
@@ -531,7 +531,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
       width: '320px',
       height: '100vh',
       background: '#000000',
-      borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+      borderLeft: '1px solid #333333',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden'
@@ -539,7 +539,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
       {/* Header */}
       <div style={{
         padding: '16px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+        borderBottom: '1px solid #333333',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -556,7 +556,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
           style={{
             background: 'none',
             border: 'none',
-            color: 'rgba(255, 255, 255, 0.5)',
+            color: '#666666',
             cursor: 'pointer',
             fontSize: '12px'
           }}
@@ -568,7 +568,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
       {/* Tab Navigation */}
       <div style={{
         display: 'flex',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+        borderBottom: '1px solid #333333'
       }}>
         {tabs.map(tab => (
           <button
@@ -578,7 +578,7 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
               flex: 1,
               background: activeTab === tab.id ? '#111111' : 'transparent',
               border: 'none',
-              color: activeTab === tab.id ? '#ffffff' : 'rgba(255, 255, 255, 0.6)',
+              color: activeTab === tab.id ? '#ffffff' : '#666666',
               padding: '12px 8px',
               fontSize: '10px',
               cursor: 'pointer',
@@ -600,9 +600,9 @@ const RightPanel = ({ collapsed, onToggleCollapse }) => {
       {/* Footer */}
       <div style={{
         padding: '8px 16px',
-        borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+        borderTop: '1px solid #333333',
         fontSize: '9px',
-        color: 'rgba(255, 255, 255, 0.6)',
+        color: '#666666',
         textAlign: 'center'
       }}>
         {state.currentWorkspace ? (

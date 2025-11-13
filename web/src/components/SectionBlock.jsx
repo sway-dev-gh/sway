@@ -92,32 +92,30 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
   return (
     <div
       style={{
-        border: '1px solid rgba(255, 255, 255, 0.2)',
+        border: '1px solid #ffffff',
         marginBottom: '16px',
         background: '#000000',
         position: 'relative'
       }}
     >
-      {/* Section Header */}
+      {/* Terminal Block Header */}
       <div style={{
-        borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-        padding: '12px',
+        borderBottom: '1px solid #ffffff',
+        padding: '8px 12px',
         background: '#000000',
         fontSize: '12px',
         fontFamily: 'monospace',
-        color: 'rgba(255, 255, 255, 0.6)',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        color: '#ffffff',
+        fontWeight: 'bold',
+        textTransform: 'uppercase'
       }}>
-        <span>Section #{index + 1}</span>
-        <span>{section.workflowState.replace('_', ' ')}</span>
+        ┌─[SECTION #{index + 1}]───[{section.workflowState.replace('_', '-')}]─┐
       </div>
 
       {/* Title and Controls Block */}
       <div style={{
         padding: '12px',
-        borderBottom: !collapsed ? '1px solid rgba(255, 255, 255, 0.2)' : 'none',
+        borderBottom: !collapsed ? '1px solid #ffffff' : 'none',
         background: '#000000'
       }}>
         {isEditing ? (
@@ -131,7 +129,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
             }}>
               │ EDIT TITLE:
             </div>
-            <div style={{ border: '1px solid rgba(255, 255, 255, 0.2)', background: '#000000' }}>
+            <div style={{ border: '1px solid #ffffff', background: '#000000' }}>
               <input
                 type="text"
                 value={editedTitle}
@@ -165,7 +163,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 style={{
                   background: '#000000',
                   color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  border: '1px solid #ffffff',
                   padding: '4px 12px',
                   fontSize: '10px',
                   fontFamily: 'monospace',
@@ -181,7 +179,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 style={{
                   background: '#000000',
                   color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  border: '1px solid #ffffff',
                   padding: '4px 12px',
                   fontSize: '10px',
                   fontFamily: 'monospace',
@@ -206,7 +204,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 onClick={() => setCollapsed(!collapsed)}
                 style={{
                   background: '#000000',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  border: '1px solid #ffffff',
                   color: '#ffffff',
                   cursor: 'pointer',
                   fontSize: '10px',
@@ -244,7 +242,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 style={{
                   background: '#000000',
                   color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  border: '1px solid #ffffff',
                   padding: '2px 8px',
                   cursor: 'pointer',
                   fontFamily: 'monospace',
@@ -260,7 +258,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                   style={{
                     background: '#000000',
                     color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid #ffffff',
                     padding: '2px 8px',
                     cursor: 'pointer',
                     fontFamily: 'monospace',
@@ -277,7 +275,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                   style={{
                     background: '#000000',
                     color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid #ffffff',
                     padding: '2px 8px',
                     cursor: 'pointer',
                     fontFamily: 'monospace',
@@ -296,7 +294,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
       {!collapsed && (
         <div style={{
           padding: '12px',
-          borderBottom: showComments ? '1px solid rgba(255, 255, 255, 0.2)' : 'none'
+          borderBottom: showComments ? '1px solid #ffffff' : 'none'
         }}>
           <div style={{
             marginBottom: '8px',
@@ -310,7 +308,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
 
           {isEditing ? (
             <div style={{
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: '1px solid #ffffff',
               background: '#000000'
             }}>
               <textarea
@@ -343,7 +341,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
               style={{
                 minHeight: '80px',
                 padding: '12px',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid #ffffff',
                 fontSize: '12px',
                 lineHeight: '1.5',
                 color: section.content ? '#ffffff' : '#ffffff',
@@ -380,7 +378,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
           <div style={{ marginBottom: '12px' }}>
             {comments.length === 0 ? (
               <div style={{
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid #ffffff',
                 padding: '8px',
                 background: '#000000',
                 color: '#ffffff',
@@ -394,7 +392,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 <div
                   key={comment.id}
                   style={{
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid #ffffff',
                     padding: '8px',
                     marginBottom: '4px',
                     background: '#000000'
@@ -424,7 +422,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
 
           {/* Add Comment Block */}
           <div style={{
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            border: '1px solid #ffffff',
             padding: '8px',
             background: '#000000'
           }}>
@@ -446,7 +444,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 style={{
                   flex: 1,
                   background: '#000000',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  border: '1px solid #ffffff',
                   color: '#ffffff',
                   padding: '6px 8px',
                   fontSize: '11px',
@@ -464,7 +462,7 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
                 style={{
                   background: '#000000',
                   color: '#ffffff',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  border: '1px solid #ffffff',
                   padding: '6px 12px',
                   fontSize: '10px',
                   cursor: 'pointer',
@@ -480,6 +478,17 @@ const SectionBlock = ({ section, isSelected, onSelect, index }) => {
         </div>
       )}
 
+      {/* Terminal Block Footer */}
+      <div style={{
+        padding: '8px 12px',
+        background: '#000000',
+        fontSize: '12px',
+        fontFamily: 'monospace',
+        color: '#ffffff',
+        fontWeight: 'bold'
+      }}>
+        └─────────────────────────────────────────┘
+      </div>
     </div>
   )
 }

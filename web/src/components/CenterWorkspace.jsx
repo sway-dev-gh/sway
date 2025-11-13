@@ -83,16 +83,15 @@ const CenterWorkspace = () => {
       background: '#000000'
     }}>
       <div style={{
-        fontSize: '24px',
+        fontSize: '48px',
         marginBottom: '24px',
         color: '#ffffff',
-        fontFamily: 'monospace',
-        fontWeight: 'bold'
+        fontFamily: 'monospace'
       }}>
-        SWAY
+        █▀▀ █░█░█ ▄▀█ █▄█
       </div>
       <div style={{
-        border: '1px solid rgba(255, 255, 255, 0.2)',
+        border: '1px solid #ffffff',
         padding: '16px',
         background: '#000000',
         width: '100%',
@@ -148,20 +147,23 @@ const CenterWorkspace = () => {
       background: '#000000'
     }}>
       <div style={{
-        border: '1px solid rgba(255, 255, 255, 0.2)',
+        border: '1px solid #ffffff',
         padding: '24px',
         background: '#000000',
         width: '100%',
         maxWidth: '300px'
       }}>
         <div style={{
-          fontSize: '18px',
+          fontSize: '24px',
           marginBottom: '16px',
           color: '#ffffff',
-          fontFamily: 'monospace',
-          fontWeight: 'bold'
+          fontFamily: 'monospace'
         }}>
-          No File Selected
+          ┌─[FILE]─┐
+          <br />
+          │ NO-SEL │
+          <br />
+          └───────┘
         </div>
         <h2 style={{
           fontSize: '14px',
@@ -200,11 +202,11 @@ const CenterWorkspace = () => {
         {/* File header */}
         <div style={{
           padding: '16px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+          borderBottom: '1px solid #ffffff',
           background: '#000000'
         }}>
           <div style={{
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            border: '1px solid #ffffff',
             padding: '12px',
             background: '#000000'
           }}>
@@ -257,19 +259,22 @@ const CenterWorkspace = () => {
         }}>
           {sections.length === 0 ? (
             <div style={{
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: '1px solid #ffffff',
               padding: '32px',
               background: '#000000',
               textAlign: 'center'
             }}>
               <div style={{
-                fontSize: '16px',
+                fontSize: '24px',
                 marginBottom: '16px',
                 color: '#ffffff',
-                fontFamily: 'monospace',
-                fontWeight: 'bold'
+                fontFamily: 'monospace'
               }}>
-                No Sections
+                ┌─[SECTIONS]─┐
+                <br />
+                │  NO-DATA   │
+                <br />
+                └───────────┘
               </div>
               <div style={{
                 color: '#ffffff',
@@ -296,7 +301,7 @@ const CenterWorkspace = () => {
           {showAddSection ? (
             <div style={{
               marginTop: '24px',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              border: '1px solid #ffffff',
               padding: '16px',
               background: '#000000'
             }}>
@@ -311,7 +316,7 @@ const CenterWorkspace = () => {
               </div>
 
               <div style={{
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid #ffffff',
                 background: '#000000'
               }}>
                 <input
@@ -362,7 +367,7 @@ const CenterWorkspace = () => {
                     padding: '8px 16px',
                     background: '#000000',
                     color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid #ffffff',
                     fontSize: '12px',
                     fontWeight: 'bold',
                     cursor: 'pointer',
@@ -381,7 +386,7 @@ const CenterWorkspace = () => {
                     padding: '8px 16px',
                     background: '#000000',
                     color: '#ffffff',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid #ffffff',
                     fontSize: '12px',
                     fontWeight: 'bold',
                     cursor: 'pointer',
@@ -402,7 +407,7 @@ const CenterWorkspace = () => {
                 padding: '16px',
                 background: '#000000',
                 color: '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid #ffffff',
                 fontSize: '14px',
                 fontWeight: 'bold',
                 cursor: 'pointer',

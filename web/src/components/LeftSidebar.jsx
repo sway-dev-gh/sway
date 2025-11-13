@@ -485,7 +485,7 @@ const LeftSidebar = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         marginBottom: '8px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+        borderBottom: '1px solid #ffffff',
         paddingBottom: '4px'
       }}>
         <span style={{
@@ -524,7 +524,7 @@ const LeftSidebar = () => {
           textAlign: 'center',
           padding: '16px 0',
           fontFamily: 'monospace',
-          border: '1px solid rgba(255, 255, 255, 0.2)'
+          border: '1px solid #ffffff'
         }}>
           [no workspace]
         </div>
@@ -535,7 +535,7 @@ const LeftSidebar = () => {
           textAlign: 'center',
           padding: '16px 0',
           fontFamily: 'monospace',
-          border: '1px solid rgba(255, 255, 255, 0.2)'
+          border: '1px solid #ffffff'
         }}>
           [no files]
         </div>
@@ -550,7 +550,7 @@ const LeftSidebar = () => {
                 cursor: 'pointer',
                 background: state.selectedFile?.id === file.id ? '#ffffff' : '#000000',
                 color: state.selectedFile?.id === file.id ? '#000000' : '#ffffff',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid #ffffff',
                 marginBottom: '1px',
                 fontFamily: 'monospace'
               }}
@@ -1084,7 +1084,7 @@ const LeftSidebar = () => {
       width: '320px',
       height: '100vh',
       background: '#000000',
-      borderRight: '1px solid rgba(255, 255, 255, 0.2)',
+      borderRight: '1px solid #ffffff',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden'
@@ -1092,7 +1092,7 @@ const LeftSidebar = () => {
       {/* Terminal Header */}
       <div style={{
         padding: '16px',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+        borderBottom: '1px solid #ffffff',
         background: '#000000'
       }}>
         <div style={{
@@ -1157,7 +1157,7 @@ const LeftSidebar = () => {
       <div style={{
         display: 'flex',
         margin: '8px',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
+        border: '1px solid #ffffff',
         background: '#000000'
       }}>
         {sidebarSections.map((section, index) => (
@@ -1181,7 +1181,7 @@ const LeftSidebar = () => {
               fontSize: '10px',
               fontWeight: 'bold',
               cursor: 'pointer',
-              borderRight: index < sidebarSections.length - 1 ? '1px solid rgba(255, 255, 255, 0.2)' : 'none',
+              borderRight: index < sidebarSections.length - 1 ? '1px solid #ffffff' : 'none',
               fontFamily: 'monospace',
               textTransform: 'uppercase'
             }}
@@ -1197,7 +1197,7 @@ const LeftSidebar = () => {
         overflow: 'auto',
         margin: '8px',
         background: '#000000',
-        border: '1px solid rgba(255, 255, 255, 0.2)'
+        border: '1px solid #ffffff'
       }}>
         {renderSectionContent()}
       </div>
@@ -1205,7 +1205,7 @@ const LeftSidebar = () => {
       {/* Terminal Status Bar */}
       <div style={{
         padding: '8px',
-        borderTop: '1px solid rgba(255, 255, 255, 0.2)',
+        borderTop: '1px solid #ffffff',
         background: '#000000'
       }}>
         <div style={{
