@@ -1,0 +1,45 @@
+<svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Subtle gradient for depth -->
+    <linearGradient id="swayGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#e5e7eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ffffff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Wave symbol -->
+  <g transform="translate(8, 8)">
+    <!-- First wave curve -->
+    <path d="M 0 12 Q 6 8 12 12 Q 18 16 24 12"
+          stroke="url(#swayGradient)"
+          stroke-width="2.5"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <!-- Second wave curve -->
+    <path d="M 0 16 Q 6 12 12 16 Q 18 20 24 16"
+          stroke="url(#swayGradient)"
+          stroke-width="2.5"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+  </g>
+
+  <!-- SWAY text -->
+  <g transform="translate(40, 8)">
+    <text x="0" y="16"
+          font-family="system-ui, -apple-system, 'Segoe UI', monospace"
+          font-size="18"
+          font-weight="600"
+          fill="url(#swayGradient)"
+          letter-spacing="0.5px">SWAY</text>
+    <text x="0" y="28"
+          font-family="system-ui, -apple-system, 'Segoe UI', monospace"
+          font-size="7"
+          font-weight="400"
+          fill="url(#swayGradient)"
+          letter-spacing="1px"
+          opacity="0.8">COLLABORATE</text>
+  </g>
+</svg>

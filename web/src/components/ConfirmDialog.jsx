@@ -33,8 +33,7 @@ const ConfirmDialog = ({
         padding: '24px',
         maxWidth: '400px',
         width: '100%',
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-        animation: 'modalSlideIn 0.2s ease-out'
+        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
       }}>
         {/* Title */}
         {title && (
@@ -124,21 +123,6 @@ const ConfirmDialog = ({
         </div>
       </div>
 
-      {/* CSS Animation */}
-      <style>
-        {`
-          @keyframes modalSlideIn {
-            from {
-              opacity: 0;
-              transform: translate(-50%, -48%) scale(0.95);
-            }
-            to {
-              opacity: 1;
-              transform: translate(-50%, -50%) scale(1);
-            }
-          }
-        `}
-      </style>
     </div>
   )
 }

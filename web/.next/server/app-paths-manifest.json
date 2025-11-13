@@ -1,0 +1,7 @@
+{
+  "/workspace/page": "app/workspace/page.js",
+  "/teams/page": "app/teams/page.js",
+  "/review/page": "app/review/page.js",
+  "/settings/page": "app/settings/page.js",
+  "/login/page": "app/login/page.js"
+}

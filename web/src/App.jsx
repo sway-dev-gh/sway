@@ -1,149 +1,27 @@
-import React, { useState, useEffect } from 'react'
-import LeftSidebar from './components/LeftSidebar'
-import CenterWorkspace from './components/CenterWorkspace'
-import RightPanel from './components/RightPanel'
-import AuthForm from './components/AuthForm'
-import GuestForm from './components/GuestForm'
-import PricingPage from './components/PricingPage'
-import ConfirmDialog from './components/ConfirmDialog'
-import { WorkspaceProvider, useWorkspace } from './stores/WorkspaceStore'
+import React from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import MainLayout from './components/Layout/MainLayout'
+import Dashboard from './components/Dashboard/Dashboard'
+import CollaborationView from './components/Collaboration/CollaborationView'
+import Settings from './components/Settings/Settings'
 import './styles.css'
-
-const AuthenticatedApp = () => {
-  const { state, actions } = useWorkspace()
-  const [rightPanelCollapsed, setRightPanelCollapsed] = useState(false)
-
-  // Check if this is a guest link
-  const currentUrl = window.location.href
-  const guestMatch = currentUrl.match(/\/guest\/([^/?]+)/)
-  const guestToken = guestMatch ? guestMatch[1] : null
-
-  // Initialize authentication on app start
-  useEffect(() => {
-    console.log('App.jsx useEffect triggered', { guestToken, isAuthenticated: state.isAuthenticated, isLoading: state.isLoading })
-    if (guestToken) {
-      console.log('Guest token detected, skipping auth initialization')
-      // Don't initialize regular auth for guest links
-      return
-    }
-    if (!state.isAuthenticated && !state.isLoading) {
-      console.log('Initializing authentication...')
-      actions.initializeAuth()
-    }
-  }, [guestToken])
-
-  // Show guest form if accessing via guest link
-  if (guestToken && !state.isAuthenticated) {
-    return <GuestForm guestToken={guestToken} />
-  }
-
-  // Show loading state while checking authentication
-  if (state.isLoading && !state.isAuthenticated) {
-    return (
-      <div style={{
-        height: '100vh',
-        width: '100vw',
-        background: '#000000',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#ffffff'
-      }}>
-        <div style={{
-          textAlign: 'center'
-        }}>
-          <div style={{
-            fontSize: '24px',
-            marginBottom: '16px'
-          }}>
-            ◧
-          </div>
-          <div style={{
-            fontSize: '14px',
-            color: '#666666'
-          }}>
-            Initializing SwayFiles...
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  // Show auth form if not authenticated
-  if (!state.isAuthenticated) {
-    return <AuthForm />
-  }
-
-  // Show main workspace interface if authenticated
-  return (
-    <div style={{
-      display: 'flex',
-      height: '100vh',
-      width: '100vw',
-      background: '#000000',
-      color: '#ffffff',
-      overflow: 'hidden'
-    }}>
-      {/* Left Sidebar - Project Navigator */}
-      <LeftSidebar />
-
-      {/* Center Workspace - Main File & Section Workspace */}
-      <CenterWorkspace />
-
-      {/* Right Panel - Activity Feed & Stats (Collapsible) */}
-      <RightPanel
-        collapsed={rightPanelCollapsed}
-        onToggleCollapse={() => setRightPanelCollapsed(!rightPanelCollapsed)}
-      />
-
-      {/* Pricing Modal - Shows when user hits limits */}
-      {state.showPricingModal && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999
-        }}>
-          <PricingPage onClose={actions.hidePricingModal} />
-        </div>
-      )}
-
-      {/* Confirm Dialog - Custom styled confirmation dialogs */}
-      <ConfirmDialog
-        isOpen={state.confirmDialog.isOpen}
-        title={state.confirmDialog.title}
-        message={state.confirmDialog.message}
-        confirmText={state.confirmDialog.confirmText}
-        cancelText={state.confirmDialog.cancelText}
-        confirmButtonColor={state.confirmDialog.confirmButtonColor}
-        onConfirm={() => {
-          if (state.confirmDialog.onConfirm) {
-            state.confirmDialog.onConfirm()
-          }
-          actions.hideConfirmDialog()
-        }}
-        onCancel={() => {
-          if (state.confirmDialog.onCancel) {
-            state.confirmDialog.onCancel()
-          }
-          actions.hideConfirmDialog()
-        }}
-      />
-    </div>
-  )
-}
 
 const App = () => {
   return (
-    <WorkspaceProvider>
-      <AuthenticatedApp />
-    </WorkspaceProvider>
+    <Router>
+      <div className="h-screen w-screen bg-terminal-bg text-terminal-text font-mono overflow-hidden">
+        <MainLayout>
+          <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/collaborate" element={<CollaborationView />} />
+            <Route path="/collaborate/:fileId" element={<CollaborationView />} />
+            <Route path="/settings" element={<Settings />} />
+          </Routes>
+        </MainLayout>
+      </div>
+    </Router>
   )
 }
 
