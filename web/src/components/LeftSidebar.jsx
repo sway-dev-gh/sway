@@ -19,7 +19,7 @@ const LeftSidebar = () => {
   const sidebarSections = [
     { id: 'progress', label: 'Progress', icon: '◐' },
     { id: 'requests', label: 'Requests', icon: '◪' },
-    { id: 'activity', label: 'Activity', icon: '◊' },
+    { id: 'settings', label: 'Settings', icon: '⚙' },
     { id: 'collaboration', label: 'Team', icon: '◌' }
   ]
 
@@ -463,7 +463,7 @@ const LeftSidebar = () => {
             letterSpacing: '1px',
             color: '#999999'
           }}>
-            Pending Approvals ({pendingApprovals.length})
+            Review Queue ({pendingApprovals.length})
           </span>
         </div>
 
@@ -474,7 +474,7 @@ const LeftSidebar = () => {
             textAlign: 'center',
             padding: '20px 0'
           }}>
-            No pending approvals
+            Review queue is empty
           </div>
         ) : (
           <div style={{ maxHeight: '300px', overflow: 'auto' }}>
@@ -897,10 +897,10 @@ const LeftSidebar = () => {
 
   const renderSectionContent = () => {
     switch (activeSection) {
-      case 'workspaces': return renderWorkspaceSection()
-      case 'files': return renderFilesSection()
-      case 'approvals': return renderApprovalsSection()
+      case 'progress': return renderFilesSection()
+      case 'requests': return renderApprovalsSection()
       case 'settings': return renderSettingsSection()
+      case 'collaboration': return renderWorkspaceSection()
       default: return renderFilesSection()
     }
   }

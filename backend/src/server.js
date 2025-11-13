@@ -34,6 +34,17 @@ const pool = require('./db/pool')
 // Enhanced authentication and security services
 const keyRotationService = require('./services/keyRotation')
 const enhancedAuthService = require('./services/enhancedAuth')
+const rateLimitingService = require('./services/rateLimiting')
+
+// Import rate limiting middleware
+const {
+  initializeRateLimiting,
+  intelligentRateLimiter,
+  authRateLimit,
+  adminRateLimit,
+  uploadRateLimit,
+  guestRateLimit
+} = require('./middleware/rateLimiting')
 
 // Validate environment and setup global error handlers
 validateEnvironment()
@@ -118,28 +129,31 @@ app.use('/api/billing', (req, res, next) => {
   next()
 })
 
-// Routes
-app.use('/api/auth', authRoutes)
-app.use('/api/guest', guestRoutes)
-app.use('/api/requests', requestRoutes)
-app.use('/api/r', uploadRoutes)
-app.use('/api/files', fileRoutes)
-app.use('/api/stats', statsRoutes)
-app.use('/api/stripe', stripeRoutes)
-app.use('/api/billing', billingRoutes)
-app.use('/api/admin', adminRoutes)
-app.use('/api/analytics', analyticsRoutes)
-// app.use('/api/ai', aiRoutes) // Disabled - no OpenAI API key
-app.use('/api/migrate', migrateRoutes)
+// Apply rate limiting initialization to all routes
+app.use(initializeRateLimiting)
 
-// Collaboration features
-app.use('/api/team', teamRoutes)
-app.use('/api/projects', projectRoutes)
-app.use('/api/reviews', reviewRoutes)
-app.use('/api/reviewers', reviewerRoutes)
-app.use('/api/collaborations', collaborationRoutes)
-app.use('/api/activity', activityRoutes)
-app.use('/api/workflow', workflowRoutes)
+// Routes with specific rate limiting
+app.use('/api/auth', authRateLimit, authRoutes)
+app.use('/api/guest', guestRateLimit, guestRoutes)
+app.use('/api/requests', intelligentRateLimiter, requestRoutes)
+app.use('/api/r', uploadRateLimit, uploadRoutes)
+app.use('/api/files', uploadRateLimit, fileRoutes)
+app.use('/api/stats', intelligentRateLimiter, statsRoutes)
+app.use('/api/stripe', intelligentRateLimiter, stripeRoutes)
+app.use('/api/billing', intelligentRateLimiter, billingRoutes)
+app.use('/api/admin', adminRateLimit, adminRoutes)
+app.use('/api/analytics', intelligentRateLimiter, analyticsRoutes)
+// app.use('/api/ai', aiRoutes) // Disabled - no OpenAI API key
+app.use('/api/migrate', adminRateLimit, migrateRoutes)
+
+// Collaboration features with intelligent rate limiting
+app.use('/api/team', intelligentRateLimiter, teamRoutes)
+app.use('/api/projects', intelligentRateLimiter, projectRoutes)
+app.use('/api/reviews', intelligentRateLimiter, reviewRoutes)
+app.use('/api/reviewers', intelligentRateLimiter, reviewerRoutes)
+app.use('/api/collaborations', intelligentRateLimiter, collaborationRoutes)
+app.use('/api/activity', intelligentRateLimiter, activityRoutes)
+app.use('/api/workflow', intelligentRateLimiter, workflowRoutes)
 
 // Enhanced health check with security monitoring
 app.get('/health', healthCheck())
