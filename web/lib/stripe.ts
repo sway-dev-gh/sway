@@ -1,7 +1,7 @@
 import { loadStripe } from '@stripe/stripe-js'
 
 // Initialize Stripe
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!)
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!)
 
 export const getStripe = () => stripePromise
 
@@ -14,7 +14,7 @@ export const createCheckoutSession = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        priceId: import.meta.env.VITE_STRIPE_PRO_PRICE_ID,
+        priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
         mode: 'subscription',
         successUrl: `${window.location.origin}/settings?billing=success`,
         cancelUrl: `${window.location.origin}/settings?billing=cancelled`,
@@ -33,7 +33,7 @@ export const createCheckoutSession = async () => {
     }
 
     // Redirect to Stripe checkout
-    const { error } = await stripe.redirectToCheckout({ sessionId })
+    const { error } = await (stripe as any).redirectToCheckout({ sessionId })
 
     if (error) {
       throw error

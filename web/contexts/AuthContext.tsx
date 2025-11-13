@@ -7,6 +7,7 @@ interface User {
   id: string
   email: string
   username?: string
+  plan?: string
 }
 
 interface AuthContextType {
