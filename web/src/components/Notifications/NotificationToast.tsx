@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import notificationService from '../../services/notificationService'
 
 // Individual Toast Component
-const Toast = ({ notification, onDismiss }) => {
+const Toast = ({ notification, onDismiss }: { notification: any; onDismiss: (id: string) => void }) => {
   const icon = notificationService.getNotificationIcon(notification.action)
   const color = notificationService.getNotificationColor(notification.action)
   const priority = notificationService.getNotificationPriority(notification.action)
@@ -90,14 +90,14 @@ const Toast = ({ notification, onDismiss }) => {
 
 // Toast Container Component
 const NotificationToast = () => {
-  const [toasts, setToasts] = useState([])
+  const [toasts, setToasts] = useState<any[]>([])
 
   useEffect(() => {
     // Subscribe to new notifications
-    const unsubscribe = notificationService.subscribe((data) => {
-      const newNotifications = data.notifications.filter(n =>
+    const unsubscribe = notificationService.subscribe((data: any) => {
+      const newNotifications = data.notifications.filter((n: any) =>
         !n.read &&
-        !toasts.find(t => t.id === n.id) &&
+        !toasts.find((t: any) => t.id === n.id) &&
         notificationService.getNotificationPriority(n.action) !== 'low' &&
         !n.local // Don't show local notifications as toasts since they're temporary
       )
@@ -106,27 +106,25 @@ const NotificationToast = () => {
         setToasts(prev => [...newNotifications.slice(0, 3), ...prev].slice(0, 5))
 
         // Show browser notification for high priority items
-        newNotifications.forEach(notification => {
+        newNotifications.forEach((notification: any) => {
           if (notificationService.getNotificationPriority(notification.action) === 'high') {
             notificationService.showBrowserNotification(
               'SwayFiles Notification',
               notification.description,
               null,
-              () => {
-                // Focus window when notification is clicked
-                window.focus()
-                dismissToast(notification.id)
-              }
+              null
             )
           }
         })
       }
     })
 
-    return unsubscribe
+    return () => {
+      unsubscribe()
+    }
   }, [toasts])
 
-  const dismissToast = (toastId) => {
+  const dismissToast = (toastId: string) => {
     setToasts(prev => prev.filter(t => t.id !== toastId))
 
     // Mark notification as read

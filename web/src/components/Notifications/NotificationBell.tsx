@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import notificationService from '../../services/notificationService'
 
 // Individual Notification Item Component
-const NotificationItem = ({ notification, onMarkRead, onClose }) => {
+const NotificationItem = ({ notification, onMarkRead, onClose }: { notification: any; onMarkRead: (ids: string[]) => void; onClose: () => void }) => {
   const icon = notificationService.getNotificationIcon(notification.action)
   const color = notificationService.getNotificationColor(notification.action)
   const time = notificationService.formatNotificationTime(notification.created_at)
@@ -75,11 +75,11 @@ const NotificationBell = () => {
   const [notifications, setNotifications] = useState([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [loading, setLoading] = useState(false)
-  const dropdownRef = useRef(null)
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     // Subscribe to notification updates
-    const unsubscribe = notificationService.subscribe((data) => {
+    const unsubscribe = notificationService.subscribe((data: any) => {
       setNotifications(data.notifications)
       setUnreadCount(data.unreadCount)
     })
@@ -98,7 +98,7 @@ const NotificationBell = () => {
 
   // Close dropdown when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false)
       }
@@ -126,7 +126,7 @@ const NotificationBell = () => {
     notificationService.markAsRead()
   }
 
-  const handleMarkRead = (notificationIds) => {
+  const handleMarkRead = (notificationIds: string[]) => {
     notificationService.markAsRead(notificationIds)
   }
 
@@ -211,7 +211,7 @@ const NotificationBell = () => {
                 </div>
               ) : notifications.length > 0 ? (
                 <AnimatePresence>
-                  {notifications.map((notification) => (
+                  {notifications.map((notification: any) => (
                     <NotificationItem
                       key={notification.id}
                       notification={notification}

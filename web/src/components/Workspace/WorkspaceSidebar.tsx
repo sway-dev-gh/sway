@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useWorkspace } from '../../stores/WorkspaceStore'
 
 // Left Navigation Sidebar
-export const LeftSidebar = ({ onFileSelect, onWorkspaceSelect }) => {
+export const LeftSidebar = ({ onFileSelect, onWorkspaceSelect }: { onFileSelect: any; onWorkspaceSelect: any }) => {
   const { state, actions } = useWorkspace()
   const [expandedWorkspaces, setExpandedWorkspaces] = useState(new Set([state.currentWorkspace?.id]))
 
-  const toggleWorkspace = (workspaceId) => {
+  const toggleWorkspace = (workspaceId: any) => {
     const newExpanded = new Set(expandedWorkspaces)
     if (newExpanded.has(workspaceId)) {
       newExpanded.delete(workspaceId)
@@ -19,7 +19,7 @@ export const LeftSidebar = ({ onFileSelect, onWorkspaceSelect }) => {
     setExpandedWorkspaces(newExpanded)
   }
 
-  const handleFileUpload = async (event) => {
+  const handleFileUpload = async (event: any) => {
     const file = event.target.files?.[0]
     if (file) {
       try {
@@ -45,7 +45,7 @@ export const LeftSidebar = ({ onFileSelect, onWorkspaceSelect }) => {
 
       {/* Workspace Tree */}
       <div className="flex-1 overflow-auto">
-        {state.workspaces.map((workspace) => (
+        {state.workspaces.map((workspace: any) => (
           <div key={workspace.id} className="border-b border-terminal-border/50">
             <button
               onClick={() => toggleWorkspace(workspace.id)}
@@ -75,7 +75,7 @@ export const LeftSidebar = ({ onFileSelect, onWorkspaceSelect }) => {
                 >
                   <div className="pl-6 pb-2">
                     {/* Files in workspace */}
-                    {state.currentWorkspace?.id === workspace.id && state.files.map((file) => (
+                    {state.currentWorkspace?.id === workspace.id && state.files.map((file: any) => (
                       <button
                         key={file.id}
                         onClick={() => onFileSelect(file)}
@@ -132,7 +132,7 @@ export const LeftSidebar = ({ onFileSelect, onWorkspaceSelect }) => {
 }
 
 // Right Inspector/Comments Sidebar
-export const RightSidebar = ({ selectedSection }) => {
+export const RightSidebar = ({ selectedSection }: { selectedSection: any }) => {
   const { state, actions } = useWorkspace()
   const [activeTab, setActiveTab] = useState('comments') // 'comments', 'activity', 'inspector'
   const [newComment, setNewComment] = useState('')
@@ -151,7 +151,7 @@ export const RightSidebar = ({ selectedSection }) => {
   const getComments = () => {
     if (!selectedSection) return []
     return selectedSection.comments
-      ?.map(commentId => state.comments[commentId])
+      ?.map((commentId: any) => state.comments[commentId])
       .filter(Boolean) || []
   }
 
@@ -168,7 +168,7 @@ export const RightSidebar = ({ selectedSection }) => {
             { id: 'comments', label: 'Comments', icon: '💬' },
             { id: 'activity', label: 'Activity', icon: '📋' },
             { id: 'inspector', label: 'Inspector', icon: '🔍' }
-          ].map(tab => (
+          ].map((tab: any) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
@@ -201,7 +201,7 @@ export const RightSidebar = ({ selectedSection }) => {
                   {/* Comments list */}
                   <div className="space-y-3 mb-4">
                     {getComments().length > 0 ? (
-                      getComments().map(comment => (
+                      getComments().map((comment: any) => (
                         <div key={comment.id} className="bg-terminal-accent rounded p-3">
                           <div className="flex items-start justify-between mb-2">
                             <span className="text-xs font-medium text-terminal-text">
@@ -257,7 +257,7 @@ export const RightSidebar = ({ selectedSection }) => {
             <h3 className="text-sm font-medium text-terminal-text mb-3">Recent Activity</h3>
             <div className="space-y-3">
               {getRecentActivity().length > 0 ? (
-                getRecentActivity().map(activity => (
+                getRecentActivity().map((activity: any) => (
                   <div key={activity.id} className="border-l-2 border-terminal-border pl-3">
                     <div className="text-xs text-terminal-muted mb-1">
                       {new Date(activity.timestamp).toLocaleString()}

@@ -7,7 +7,20 @@ import teamService from '../../src/services/teamService'
 import useNotifications from '../../src/hooks/useNotifications'
 
 // Team Member Card Component
-const TeamMemberCard = ({ member, onRemove }) => {
+interface TeamMember {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar?: string;
+  active_projects?: number;
+  last_active?: string;
+  last_activity_at?: string;
+  status?: string;
+  permissions?: string;
+}
+
+const TeamMemberCard = ({ member, onRemove }: { member: TeamMember; onRemove: (id: string) => Promise<void> }) => {
   const [showConfirm, setShowConfirm] = useState(false)
 
   const handleRemove = async () => {
@@ -71,7 +84,7 @@ const TeamMemberCard = ({ member, onRemove }) => {
         <div className="mt-3">
           <div className="text-xs text-terminal-muted mb-2">Permissions:</div>
           <div className="flex flex-wrap gap-1">
-            {Object.entries(JSON.parse(member.permissions)).map(([permission, enabled]) => (
+            {Object.entries(JSON.parse(member.permissions) as Record<string, boolean>).map(([permission, enabled]) => (
               enabled && (
                 <span
                   key={permission}
@@ -130,14 +143,23 @@ const TeamMemberCard = ({ member, onRemove }) => {
 }
 
 // Invite Member Form Component
-const InviteMemberForm = ({ onInvite, onCancel, projects }) => {
+interface Project {
+  id: string;
+  name: string;
+}
+
+const InviteMemberForm = ({ onInvite, onCancel, projects }: {
+  onInvite: (data: { email: string; role: string; projectId: string | null; message: string }) => Promise<void>;
+  onCancel: () => void;
+  projects: Project[]
+}) => {
   const [email, setEmail] = useState('')
   const [role, setRole] = useState('viewer')
   const [projectId, setProjectId] = useState('')
   const [message, setMessage] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -253,7 +275,17 @@ const InviteMemberForm = ({ onInvite, onCancel, projects }) => {
 }
 
 // Pending Invitation Card Component
-const PendingInvitationCard = ({ invitation }) => {
+interface Invitation {
+  id: string;
+  email: string;
+  role: string;
+  project_name?: string;
+  message?: string;
+  expires_at: string;
+  created_at: string;
+}
+
+const PendingInvitationCard = ({ invitation }: { invitation: Invitation }) => {
   return (
     <div className="bg-terminal-surface border border-yellow-500/50 rounded-lg p-4">
       <div className="flex items-center justify-between mb-2">
@@ -282,9 +314,9 @@ const PendingInvitationCard = ({ invitation }) => {
 
 // Main Teams Component
 export default function Teams() {
-  const [teamData, setTeamData] = useState(null)
+  const [teamData, setTeamData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [showInviteForm, setShowInviteForm] = useState(false)
   const [activeTab, setActiveTab] = useState('members') // 'members', 'invitations', 'teams'
   const { showNotification } = useNotifications()
@@ -297,7 +329,7 @@ export default function Teams() {
       const data = await teamService.getTeamOverview()
       setTeamData(data)
     } catch (err) {
-      setError(err.message || 'Failed to load team data')
+      setError(err instanceof Error ? err.message : 'Failed to load team data')
     } finally {
       setLoading(false)
     }
@@ -308,9 +340,12 @@ export default function Teams() {
   }, [])
 
   // Handle invite member
-  const handleInviteMember = async (inviteData) => {
+  const handleInviteMember = async (inviteData: { email: string; role: string; projectId: string | null; message: string }) => {
     try {
-      await teamService.inviteTeamMember(inviteData)
+      await teamService.inviteTeamMember({
+        ...inviteData,
+        permissions: {}
+      })
       await loadTeamData() // Reload data
       showNotification(
         'team_invitation_sent',
@@ -328,7 +363,7 @@ export default function Teams() {
   }
 
   // Handle remove member
-  const handleRemoveMember = async (memberId) => {
+  const handleRemoveMember = async (memberId: string) => {
     try {
       await teamService.removeTeamMember(memberId)
       await loadTeamData() // Reload data
@@ -456,7 +491,7 @@ export default function Teams() {
               {teamData?.team?.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <AnimatePresence>
-                    {teamData.team.map((member) => (
+                    {teamData.team.map((member: TeamMember) => (
                       <TeamMemberCard
                         key={member.id}
                         member={member}
@@ -484,7 +519,7 @@ export default function Teams() {
               <h2 className="text-lg font-medium text-terminal-text mb-4">Pending Invitations</h2>
               {teamData?.pending_invitations?.length > 0 ? (
                 <div className="space-y-3">
-                  {teamData.pending_invitations.map((invitation) => (
+                  {teamData.pending_invitations.map((invitation: Invitation) => (
                     <PendingInvitationCard
                       key={invitation.id}
                       invitation={invitation}
@@ -504,7 +539,7 @@ export default function Teams() {
               <h2 className="text-lg font-medium text-terminal-text mb-4">Teams I'm Part Of</h2>
               {teamData?.member_of_teams?.length > 0 ? (
                 <div className="space-y-3">
-                  {teamData.member_of_teams.map((team) => (
+                  {teamData.member_of_teams.map((team: any) => (
                     <div key={team.team_owner_id} className="bg-terminal-surface border border-terminal-border rounded-lg p-4">
                       <div className="flex items-center justify-between">
                         <div>

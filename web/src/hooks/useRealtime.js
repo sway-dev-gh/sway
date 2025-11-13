@@ -19,7 +19,7 @@ export const useRealtime = (autoConnect = true) => {
   // Connect to real-time service
   const connect = useCallback(async () => {
     try {
-      const token = localStorage.getItem('token')
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
       if (!token) {
         throw new Error('Authentication token not found')
       }

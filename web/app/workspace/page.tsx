@@ -24,18 +24,18 @@ function WorkspaceInner() {
   // Load workspace when projectId is available
   useEffect(() => {
     if (projectId && state.workspaces.length > 0) {
-      const workspace = state.workspaces.find(w => w.id === projectId)
+      const workspace = state.workspaces.find((w: any) => w.id === projectId)
       if (workspace && state.currentWorkspace?.id !== workspace.id) {
         actions.selectWorkspace(workspace)
       }
     }
   }, [projectId, state.workspaces])
 
-  const handleFileSelect = (file) => {
+  const handleFileSelect = (file: any) => {
     actions.selectFile(file)
   }
 
-  const handleWorkspaceSelect = (workspace) => {
+  const handleWorkspaceSelect = (workspace: any) => {
     actions.selectWorkspace(workspace)
   }
 

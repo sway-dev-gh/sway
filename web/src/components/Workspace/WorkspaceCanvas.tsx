@@ -7,7 +7,7 @@ import useNotifications from '../../hooks/useNotifications'
 import useRealtime from '../../hooks/useRealtime'
 
 // Block/Section Component
-const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, onApprove, realtimeData }) => {
+const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, onApprove, realtimeData }: { section: any; onSelect: (section: any) => void; isSelected: boolean; onUpdate: (id: any, data: any) => void; onComment: (section: any) => void; onApprove: (section: any) => void; realtimeData: any }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [content, setContent] = useState(section.content || '')
   const [title, setTitle] = useState(section.title || '')
@@ -15,8 +15,8 @@ const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, on
   const titleRef = useRef(null)
 
   // Get real-time data for this block
-  const activeCursors = realtimeData?.activeCursors?.filter(cursor => cursor.blockId === section.id) || []
-  const typingUsers = realtimeData?.typingUsers?.filter(userId =>
+  const activeCursors = realtimeData?.activeCursors?.filter((cursor: any) => cursor.blockId === section.id) || []
+  const typingUsers = realtimeData?.typingUsers?.filter((userId: any) =>
     realtimeData?.typingOnBlock?.[userId] === section.id
   ) || []
   const presenceData = realtimeData?.presenceData || []
@@ -43,7 +43,7 @@ const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, on
   }
 
   // Handle cursor movement and typing indicators
-  const handleContentChange = (e) => {
+  const handleContentChange = (e: any) => {
     setContent(e.target.value)
     if (realtimeData?.updateCursor) {
       const cursorPosition = e.target.selectionStart
@@ -63,7 +63,7 @@ const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, on
     }
   }
 
-  const getWorkflowColor = (state) => {
+  const getWorkflowColor = (state: any) => {
     const colors = {
       draft: 'border-gray-500 bg-gray-900/50',
       under_review: 'border-yellow-500 bg-yellow-900/20',
@@ -71,10 +71,10 @@ const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, on
       approved: 'border-green-500 bg-green-900/20',
       delivered: 'border-blue-500 bg-blue-900/20'
     }
-    return colors[state] || colors.draft
+    return (colors as any)[state] || colors.draft
   }
 
-  const getWorkflowLabel = (state) => {
+  const getWorkflowLabel = (state: any) => {
     const labels = {
       draft: 'Draft',
       under_review: 'Under Review',
@@ -82,7 +82,7 @@ const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, on
       approved: 'Approved',
       delivered: 'Delivered'
     }
-    return labels[state] || state
+    return (labels as any)[state] || state
   }
 
   return (
@@ -155,7 +155,7 @@ const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, on
               placeholder="Block content..."
             />
             {/* Live cursor indicators */}
-            {activeCursors.map(cursor => (
+            {activeCursors.map((cursor: any) => (
               <div
                 key={cursor.userId}
                 className="absolute bg-blue-400 h-4 w-0.5 pointer-events-none z-10"
@@ -248,7 +248,7 @@ const WorkspaceBlock = ({ section, onSelect, isSelected, onUpdate, onComment, on
 }
 
 // Main Workspace Canvas Component
-const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
+const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }: { projectId: any; selectedSection: any; onSectionSelect: any }) => {
   const { state, actions, WORKFLOW_STATES } = useWorkspace()
   const { showNotification } = useNotifications()
   const [showCommandPalette, setShowCommandPalette] = useState(false)
@@ -272,13 +272,13 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
 
   // Subscribe to real-time events
   useEffect(() => {
-    const unsubscribers = []
+    const unsubscribers: any[] = []
 
     // Listen for block updates from other users
-    const blockUpdateUnsub = realtime.subscribe('block-updated', (data) => {
-      if (data.updatedBy.userId !== realtime.currentUser?.id) {
-        // Update the block content in the workspace
-        actions.updateSection(data.blockId, { content: data.content })
+    const blockUpdateUnsub = realtime.subscribe('block-updated', (data: any) => {
+      // Update the block content in the workspace
+      actions.updateSection(data.blockId, { content: data.content })
+      if (data.updatedBy?.name) {
         showNotification(
           'block_updated',
           'Block Updated',
@@ -289,7 +289,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
     unsubscribers.push(blockUpdateUnsub)
 
     // Listen for new comments
-    const commentUnsub = realtime.subscribe('comment-added', (data) => {
+    const commentUnsub = realtime.subscribe('comment-added', (data: any) => {
       showNotification(
         'comment_added',
         'New Comment',
@@ -299,7 +299,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
     unsubscribers.push(commentUnsub)
 
     // Listen for workflow state changes
-    const workflowUnsub = realtime.subscribe('workflow-state-changed', (data) => {
+    const workflowUnsub = realtime.subscribe('workflow-state-changed', (data: any) => {
       actions.updateWorkflowState(data.blockId, data.newState)
       showNotification(
         'workflow_changed',
@@ -310,7 +310,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
     unsubscribers.push(workflowUnsub)
 
     return () => {
-      unsubscribers.forEach(unsub => unsub())
+      unsubscribers.forEach((unsub: any) => unsub())
     }
   }, [realtime, actions, showNotification])
 
@@ -318,7 +318,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
   useEffect(() => {
     if (projectId && state.currentWorkspace?.id !== projectId) {
       // Find the workspace by ID
-      const workspace = state.workspaces.find(w => w.id === projectId)
+      const workspace = state.workspaces.find((w: any) => w.id === projectId)
       if (workspace) {
         actions.selectWorkspace(workspace)
       }
@@ -327,7 +327,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
 
   // Keyboard shortcuts
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: any) => {
       if (e.key === '/' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault()
         setShowCommandPalette(true)
@@ -358,11 +358,11 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
     }
   }
 
-  const handleUpdateSection = (sectionId, updates) => {
+  const handleUpdateSection = (sectionId: any, updates: any) => {
     actions.updateSection(sectionId, updates)
   }
 
-  const handleCommentOnSection = async (sectionId) => {
+  const handleCommentOnSection = async (sectionId: any) => {
     const comment = prompt('Add a comment:')
     if (comment && comment.trim()) {
       await actions.addComment(sectionId, comment.trim())
@@ -374,7 +374,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
     }
   }
 
-  const handleApproveSection = (sectionId) => {
+  const handleApproveSection = (sectionId: any) => {
     const section = state.sections[sectionId]
     if (section) {
       if (section.workflowState === 'draft') {
@@ -429,8 +429,8 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
 
   // Get sections in order
   const orderedSections = Object.values(state.sections)
-    .filter(section => state.selectedFile ? section.fileId === state.selectedFile.id : true)
-    .sort((a, b) => (a.order || 0) - (b.order || 0))
+    .filter((section: any) => state.selectedFile ? section.fileId === state.selectedFile.id : true)
+    .sort((a: any, b: any) => (a.order || 0) - (b.order || 0))
 
   if (state.isLoading) {
     return (
@@ -491,7 +491,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
             {realtime.presenceData.length > 0 && (
               <div className="flex items-center space-x-2">
                 <div className="flex -space-x-1">
-                  {realtime.presenceData.slice(0, 3).map((user, index) => (
+                  {realtime.presenceData.slice(0, 3).map((user: any, index: number) => (
                     <div
                       key={user.userId}
                       className="w-6 h-6 bg-blue-500 rounded-full border-2 border-terminal-surface flex items-center justify-center text-xs text-white font-medium"
@@ -556,7 +556,7 @@ const WorkspaceCanvas = ({ projectId, selectedSection, onSectionSelect }) => {
           /* Blocks Grid */
           <div className="max-w-4xl mx-auto">
             <AnimatePresence>
-              {orderedSections.map((section) => (
+              {orderedSections.map((section: any) => (
                 <WorkspaceBlock
                   key={section.id}
                   section={section}

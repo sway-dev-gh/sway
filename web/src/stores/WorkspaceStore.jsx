@@ -18,7 +18,7 @@ const initialState = {
   // Authentication
   isAuthenticated: false, // Don't auto-authenticate, let initializeAuth handle it
   user: null,
-  token: localStorage.getItem('token') || null,
+  token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
 
   // Guest collaboration
   isGuest: false,
@@ -134,7 +134,9 @@ function workspaceReducer(state, action) {
       }
 
     case ACTIONS.LOGOUT:
-      localStorage.removeItem('token')
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('token')
+      }
       return {
         ...state,
         isAuthenticated: false,
@@ -516,7 +518,9 @@ export const WorkspaceProvider = ({ children }) => {
       dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
       try {
         const response = await apiService.login(email, password)
-        localStorage.setItem('token', response.token)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', response.token)
+        }
         dispatch({
           type: ACTIONS.LOGIN_SUCCESS,
           payload: { user: response.user, token: response.token }
@@ -537,7 +541,9 @@ export const WorkspaceProvider = ({ children }) => {
       dispatch({ type: ACTIONS.SET_LOADING, payload: { isLoading: true } })
       try {
         const response = await apiService.signup(name, email, password)
-        localStorage.setItem('token', response.token)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', response.token)
+        }
         dispatch({
           type: ACTIONS.LOGIN_SUCCESS,
           payload: { user: response.user, token: response.token }
@@ -564,7 +570,7 @@ export const WorkspaceProvider = ({ children }) => {
     },
 
     initializeAuth: async () => {
-      const token = localStorage.getItem('token')
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
       console.log('initializeAuth called', { token: token ? 'present' : 'missing' })
       if (token) {
         console.log('Setting loading state and calling API...')
@@ -586,7 +592,9 @@ export const WorkspaceProvider = ({ children }) => {
           // Only remove token if it's actually invalid (401/403), not for network errors
           if (error.status === 401 || error.status === 403 || error.message?.includes('Invalid token')) {
             console.log('Token is invalid, logging out')
-            localStorage.removeItem('token')
+            if (typeof window !== 'undefined') {
+              localStorage.removeItem('token')
+            }
             dispatch({
               type: ACTIONS.LOGOUT
             })
@@ -1094,7 +1102,9 @@ export const WorkspaceProvider = ({ children }) => {
       try {
         // Create new account
         const response = await apiService.signup(name, email, password)
-        localStorage.setItem('token', response.token)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', response.token)
+        }
 
         // Transfer guest data to new account
         dispatch({
