@@ -394,13 +394,13 @@ router.get('/recent', authenticateToken, activityLimiter, async (req, res) => {
           AND (r.reviewer_id = $1 OR r.assigned_by_id = $1)
         )
       )
-      AND a.created_at >= NOW() - INTERVAL '${parseInt(hours)} hours'
+      AND a.created_at >= NOW() - $2::interval
       GROUP BY a.action, a.resource_type
       ORDER BY latest_at DESC
       LIMIT 20
     `
 
-    const result = await pool.query(recentQuery, [userId])
+    const result = await pool.query(recentQuery, [userId, `${parseInt(hours)} hours`])
 
     const summary = result.rows.map(row => ({
       action: row.action,
