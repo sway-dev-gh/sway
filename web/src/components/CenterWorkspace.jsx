@@ -102,7 +102,7 @@ const CenterWorkspace = () => {
         letterSpacing: '-0.02em',
         fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
-        Welcome to CodeSpace
+        Welcome to SwayFiles v2.0
       </h1>
       <p style={{
         fontSize: '15px',
@@ -112,8 +112,8 @@ const CenterWorkspace = () => {
         marginBottom: '32px',
         fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
-        A developer-focused collaboration workspace for code reviews, pull requests, and team development.
-        Create a project and start collaborating on code.
+        A developer-first workspace for reviewing and approving creative projects, code, and files.
+        Create a workspace and add files to get started.
       </p>
       <div style={{
         padding: '12px 24px',
@@ -127,7 +127,7 @@ const CenterWorkspace = () => {
         textTransform: 'uppercase',
         backdropFilter: 'blur(10px)'
       }}>
-        GitHub × VS Code × Notion collaboration
+        GitHub × Notion-inspired collaboration
       </div>
     </div>
   )
@@ -163,7 +163,7 @@ const CenterWorkspace = () => {
         letterSpacing: '-0.01em',
         fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
-        Select a code file to start reviewing
+        Select a file to get started
       </h2>
       <p style={{
         fontSize: '14px',
@@ -172,7 +172,7 @@ const CenterWorkspace = () => {
         color: 'rgba(255, 255, 255, 0.6)',
         fontFamily: 'system-ui, -apple-system, sans-serif'
       }}>
-        Choose a file from the explorer to begin code review and collaboration.
+        Choose a file from the sidebar to begin reviewing and adding sections.
       </p>
     </div>
   )
