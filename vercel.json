@@ -1,6 +1,22 @@
 {
-  "framework": "nextjs",
-  "buildCommand": "cd web && npm ci && npm run build",
-  "outputDirectory": "web/.next",
-  "installCommand": "cd web && npm ci"
+  "functions": {
+    "web/app/**/*.tsx": {
+      "runtime": "@vercel/next@latest"
+    }
+  },
+  "builds": [
+    {
+      "src": "web/package.json",
+      "use": "@vercel/next",
+      "config": {
+        "distDir": ".next"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "web/$1"
+    }
+  ]
 }
