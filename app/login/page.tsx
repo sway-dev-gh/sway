@@ -37,43 +37,6 @@ export default function Login() {
     }
   }
 
-  // Quick dev login function
-  const handleQuickLogin = async () => {
-    setLoading(true)
-    setError('')
-
-    // For development, store a fake token and redirect
-    if (process.env.NODE_ENV !== 'production') {
-      localStorage.setItem('token', 'dev-token-demo')
-      localStorage.setItem('user', JSON.stringify({
-        id: 'dev-user',
-        email: 'dev@swayfiles.com',
-        name: 'Demo User'
-      }))
-      router.push('/dashboard')
-      return
-    }
-
-    // Production auth flow
-    try {
-      const result = await authApi.login('dev@swayfiles.com', 'dev123')
-      if (result.success) {
-        router.push('/dashboard')
-      } else {
-        // Try to create dev account if login fails
-        const signupResult = await authApi.signup('dev@swayfiles.com', 'dev123', 'Developer')
-        if (signupResult.success) {
-          router.push('/dashboard')
-        } else {
-          setError('Could not create or login to dev account')
-        }
-      }
-    } catch (error) {
-      setError('Network error occurred')
-    } finally {
-      setLoading(false)
-    }
-  }
 
   return (
     <div className="min-h-screen bg-terminal-bg font-mono flex">
@@ -136,25 +99,6 @@ export default function Login() {
               </p>
             </div>
 
-            {/* Quick Dev Login */}
-            <div className="mb-6">
-              <button
-                onClick={handleQuickLogin}
-                disabled={loading}
-                className="w-full bg-terminal-text text-terminal-bg py-3 px-4 font-medium hover:bg-terminal-text/90 transition-colors disabled:opacity-50"
-              >
-                Quick Demo Login
-              </button>
-              <p className="text-xs text-terminal-muted text-center mt-2">
-                For development - creates/logs into dev@swayfiles.com
-              </p>
-            </div>
-
-            <div className="flex items-center my-6">
-              <div className="flex-1 border-t border-terminal-border"></div>
-              <span className="px-4 text-terminal-muted text-xs">or</span>
-              <div className="flex-1 border-t border-terminal-border"></div>
-            </div>
 
             {/* Error Message */}
             {error && (
