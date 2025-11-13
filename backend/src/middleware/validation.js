@@ -113,7 +113,7 @@ const validationSchemas = {
     },
     login: {
       email: { type: 'email', required: true },
-      password: { type: 'string', required: true }
+      password: { type: 'password', required: true }
     }
   },
 
