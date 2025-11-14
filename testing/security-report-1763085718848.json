@@ -1,0 +1,56 @@
+{
+  "testConfiguration": {
+    "baseUrl": "http://localhost:3001",
+    "wsUrl": "ws://localhost:3001",
+    "testUsers": 25,
+    "maliciousPayloads": true
+  },
+  "testUsers": 25,
+  "testStartTime": 1763085418848,
+  "testEndTime": 1763085718848,
+  "results": {
+    "rolePermissions": {
+      "totalTests": 125,
+      "testsPassed": 125,
+      "testsFailed": 0,
+      "successRate": 100,
+      "averageResponseTime": 35.456,
+      "securityLevel": "secure"
+    },
+    "blockAccess": {
+      "totalTests": 50,
+      "testsPassed": 50,
+      "testsFailed": 0,
+      "successRate": 100,
+      "accessControlIntegrity": 1
+    },
+    "aiSuggestionSecurity": {
+      "totalTests": 4,
+      "testsPassed": 4,
+      "maliciousBlockedRate": 100,
+      "aiSecurityLevel": "secure"
+    },
+    "websocketSecurity": {
+      "totalTests": 16,
+      "authenticationSecurity": 1,
+      "messageSanitization": 1,
+      "rateLimitingEffective": 1,
+      "injectionProtection": 1
+    },
+    "privilegeEscalation": {
+      "totalTests": 75,
+      "escalationsPrevented": 32,
+      "legitimateEvolutionsAllowed": 11,
+      "securityEffectiveness": 0.5733333333333334
+    },
+    "inputSanitization": {
+      "totalTests": 17,
+      "maliciousInputsDetected": 16,
+      "sanitizationCoverage": 0.9411764705882353,
+      "inputSecurityLevel": "strong"
+    }
+  },
+  "overallSecurityScore": 91.90849673202614,
+  "criticalFindings": [],
+  "recommendations": []
+}

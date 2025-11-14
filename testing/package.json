@@ -1,0 +1,22 @@
+{
+  "name": "living-ecosystem-testing",
+  "version": "1.0.0",
+  "description": "Load testing and security validation for the Living Collaboration Ecosystem",
+  "scripts": {
+    "test:load": "node load-testing-suite.js",
+    "test:security": "node security-validation-suite.js",
+    "test:parallel": "node run-parallel-tests.js",
+    "test:all": "npm run test:parallel",
+    "install:deps": "npm install"
+  },
+  "dependencies": {
+    "ws": "^8.14.2",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "author": "Living Ecosystem Team",
+  "license": "MIT"
+}
