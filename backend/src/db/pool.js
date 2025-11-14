@@ -1,15 +1,22 @@
 require('dotenv').config()
 const { Pool } = require('pg')
 
-// SECURITY FIX: Proper SSL configuration with certificate validation
+// SECURITY FIX: Proper SSL configuration for managed databases
 const getSSLConfig = () => {
   if (process.env.NODE_ENV !== 'production') {
     return false // No SSL for development
   }
 
-  // Production SSL with proper certificate validation
+  // For managed databases (Render, etc.) that use self-signed certs
+  if (process.env.DATABASE_URL && process.env.DATABASE_URL.includes('render.com')) {
+    return {
+      rejectUnauthorized: false // Accept self-signed certs from managed providers
+    }
+  }
+
+  // Production SSL with proper certificate validation for custom databases
   return {
-    rejectUnauthorized: true, // SECURITY: Always verify certificates in production
+    rejectUnauthorized: process.env.DB_REJECT_UNAUTHORIZED !== 'false',
     ca: process.env.DB_CA_CERT || undefined, // Optional: Custom CA certificate
     cert: process.env.DB_CLIENT_CERT || undefined, // Optional: Client certificate
     key: process.env.DB_CLIENT_KEY || undefined // Optional: Client key

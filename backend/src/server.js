@@ -217,6 +217,24 @@ app.use('/api/workflow', intelligentRateLimiter, workflowRoutes)
 // Enhanced health check with security monitoring
 app.get('/health', healthCheck())
 
+// Root endpoint to prevent 404s
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'sway-backend',
+    version: '1.0.1',
+    message: 'Sway Backend API is running. Use /health for health checks.',
+    timestamp: new Date().toISOString(),
+    endpoints: [
+      '/health - Health check',
+      '/api/auth - Authentication',
+      '/api/requests - File requests',
+      '/api/files - File management',
+      '/api/stripe - Payment processing'
+    ]
+  })
+})
+
 // Simple migration endpoint - run migrations with ?migrate=true
 app.get('/health-migrate', async (req, res) => {
   try {
