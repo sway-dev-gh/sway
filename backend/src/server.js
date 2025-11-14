@@ -328,4 +328,4 @@ process.on('SIGINT', gracefulShutdown)
 
 // Export for Vercel serverless (if needed)
 module.exports = { app, server, io }
-// Force redeploy Tue Nov 11 21:13:01 PST 2025
+// Force redeploy with Stripe routes - Wed Nov 13 21:44:00 PST 2025
