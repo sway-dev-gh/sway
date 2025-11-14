@@ -107,7 +107,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
-  const { user, token } = useAuth()
+  const { user } = useAuth()
 
   // Expose methods to parent component
   useImperativeHandle(ref, () => ({
@@ -140,14 +140,14 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
 
   // Initialize WebSocket connection
   useEffect(() => {
-    if (!user || !token || !workspaceId || !blockId) return
+    if (!user || !workspaceId || !blockId) return
 
     const backendUrl = process.env.NODE_ENV === 'production'
       ? 'https://api.swayfiles.com'
       : 'http://localhost:5001'
 
     const socket = io(backendUrl, {
-      auth: { token },
+      withCredentials: true, // Include HttpOnly cookies
       transports: ['websocket', 'polling']
     })
 
@@ -238,7 +238,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
       socket.disconnect()
       socketRef.current = null
     }
-  }, [user, token, workspaceId, blockId])
+  }, [user, workspaceId, blockId])
 
   // Apply remote operations to local content
   const applyOperation = useCallback((operation: Operation) => {
