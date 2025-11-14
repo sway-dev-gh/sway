@@ -1,95 +1,156 @@
 'use client'
 
-import React from 'react'
-import { useSearchParams } from 'next/navigation'
+import { useState, useEffect } from 'react'
+import AppLayout from '@/components/AppLayout'
+import { apiRequest } from '@/lib/auth'
+
+interface Project {
+  id: string
+  title: string
+  description: string
+  project_type: string
+  created_at: string
+}
 
 export default function Workspace() {
-  const searchParams = useSearchParams()
-  const projectId = searchParams?.get('id')
+  const [projects, setProjects] = useState<Project[]>([])
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  return (
-    <div className="min-h-screen bg-terminal-bg font-mono flex">
-      {/* Left Sidebar */}
-      <div className="w-64 bg-terminal-surface border-r border-terminal-border p-6">
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-lg font-medium text-terminal-text mb-4">Workspace</h2>
-            <p className="text-terminal-muted text-sm">
-              Project: {projectId || 'No project selected'}
-            </p>
+  useEffect(() => {
+    loadProjects()
+  }, [])
+
+  const loadProjects = async () => {
+    try {
+      const response = await apiRequest('/api/projects')
+      if (response?.ok) {
+        const data = await response.json()
+        const userProjects = data.projects.owned || []
+        setProjects(userProjects)
+        if (userProjects.length > 0) {
+          setSelectedProject(userProjects[0])
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load projects:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="flex-1 overflow-auto bg-terminal-bg flex items-center justify-center">
+          <div className="text-terminal-muted">Loading workspace...</div>
+        </div>
+      </AppLayout>
+    )
+  }
+
+  if (projects.length === 0) {
+    return (
+      <AppLayout>
+        <div className="flex-1 overflow-auto bg-terminal-bg">
+          <div className="bg-terminal-surface border-b border-terminal-border p-6">
+            <h1 className="text-xl text-terminal-text font-medium">Workspace</h1>
+            <p className="text-terminal-muted text-sm mt-1">Project collaboration space</p>
           </div>
 
-          <div className="space-y-2">
-            <h3 className="text-sm font-medium text-terminal-text">Files</h3>
-            <div className="space-y-1 text-sm text-terminal-muted">
-              <div className="p-2 hover:bg-terminal-bg rounded cursor-pointer">📄 README.md</div>
-              <div className="p-2 hover:bg-terminal-bg rounded cursor-pointer">📁 components/</div>
-              <div className="p-2 hover:bg-terminal-bg rounded cursor-pointer">📁 styles/</div>
+          <div className="p-6">
+            <div className="bg-terminal-surface border border-terminal-border rounded-sm p-8 text-center">
+              <h2 className="text-lg text-terminal-text mb-2">No Projects Yet</h2>
+              <p className="text-terminal-muted text-sm mb-4">Create your first project to start collaborating</p>
+              <button
+                onClick={() => window.location.href = '/'}
+                className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors"
+              >
+                Create Project
+              </button>
             </div>
           </div>
         </div>
-      </div>
+      </AppLayout>
+    )
+  }
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
+  return (
+    <AppLayout>
+      <div className="flex-1 overflow-auto bg-terminal-bg">
         {/* Header */}
-        <div className="bg-terminal-surface border-b border-terminal-border p-4">
-          <h1 className="text-xl font-medium text-terminal-text">
-            Collaborative Workspace
-          </h1>
+        <div className="bg-terminal-surface border-b border-terminal-border p-6">
+          <h1 className="text-xl text-terminal-text font-medium">Workspace</h1>
           <p className="text-terminal-muted text-sm mt-1">
-            Real-time collaboration platform - Coming Soon
+            {selectedProject ? `Working on: ${selectedProject.title}` : 'Project collaboration space'}
           </p>
         </div>
 
-        {/* Canvas Area */}
-        <div className="flex-1 p-8">
-          <div className="h-full bg-terminal-surface border border-terminal-border rounded-lg flex items-center justify-center">
-            <div className="text-center space-y-4">
-              <div className="text-4xl text-terminal-muted">🚧</div>
-              <div>
-                <h2 className="text-lg font-medium text-terminal-text mb-2">
-                  Workspace Under Development
-                </h2>
-                <p className="text-terminal-muted text-sm max-w-md">
-                  The collaborative workspace feature is being rebuilt for Swayfiles 2.0.
-                  Real-time collaboration, file editing, and team features coming soon.
-                </p>
-              </div>
-              <div className="pt-4">
-                <button
-                  onClick={() => window.location.href = '/'}
-                  className="bg-terminal-text text-terminal-bg px-6 py-3 font-medium hover:bg-terminal-text/90 transition-colors"
+        <div className="p-6">
+          {/* Project Selection */}
+          <div className="mb-6">
+            <h2 className="text-lg font-medium text-terminal-text mb-4">Your Projects</h2>
+            <div className="space-y-2">
+              {projects.map(project => (
+                <div
+                  key={project.id}
+                  onClick={() => setSelectedProject(project)}
+                  className={`p-4 border rounded-sm cursor-pointer transition-colors ${
+                    selectedProject?.id === project.id
+                      ? 'bg-terminal-hover border-terminal-text'
+                      : 'bg-terminal-surface border-terminal-border hover:bg-terminal-hover'
+                  }`}
                 >
-                  Return to Home
-                </button>
-              </div>
+                  <h3 className="text-terminal-text font-medium">{project.title}</h3>
+                  <p className="text-terminal-muted text-sm mt-1">{project.description}</p>
+                  <div className="flex items-center mt-2 text-xs text-terminal-muted">
+                    <span className="bg-terminal-bg px-2 py-1 rounded">{project.project_type}</span>
+                    <span className="ml-2">{new Date(project.created_at).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </div>
 
-      {/* Right Sidebar */}
-      <div className="w-64 bg-terminal-surface border-l border-terminal-border p-6">
-        <div className="space-y-6">
-          <div>
-            <h3 className="text-sm font-medium text-terminal-text mb-2">Comments</h3>
-            <p className="text-terminal-muted text-xs">
-              No comments yet
-            </p>
-          </div>
+          {/* Project Workspace */}
+          {selectedProject && (
+            <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
+              <h3 className="text-lg font-medium text-terminal-text mb-4">
+                Project: {selectedProject.title}
+              </h3>
 
-          <div>
-            <h3 className="text-sm font-medium text-terminal-text mb-2">Team</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-terminal-text">You</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="text-sm font-medium text-terminal-text mb-2">Files</h4>
+                  <div className="space-y-2 text-sm text-terminal-muted">
+                    <div className="p-2 bg-terminal-bg rounded">README.md</div>
+                    <div className="p-2 bg-terminal-bg rounded">components/</div>
+                    <div className="p-2 bg-terminal-bg rounded">styles/</div>
+                    <button className="w-full p-2 border border-terminal-border text-terminal-text hover:bg-terminal-hover transition-colors">
+                      Upload Files
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="text-sm font-medium text-terminal-text mb-2">Actions</h4>
+                  <div className="space-y-2">
+                    <button className="w-full p-2 bg-terminal-text text-terminal-bg hover:bg-terminal-muted transition-colors">
+                      Open Project
+                    </button>
+                    <button className="w-full p-2 border border-terminal-border text-terminal-text hover:bg-terminal-hover transition-colors">
+                      Share Project
+                    </button>
+                    <button className="w-full p-2 border border-terminal-border text-terminal-text hover:bg-terminal-hover transition-colors">
+                      Project Settings
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
-    </div>
+    </AppLayout>
   )
 }
