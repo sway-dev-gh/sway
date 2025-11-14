@@ -151,9 +151,9 @@ class EnterpriseAnalytics {
 
     if (entry.entryType === 'navigation') {
       const navEntry = entry as PerformanceNavigationTiming
-      details.loadTime = navEntry.loadEventEnd - navEntry.navigationStart
-      details.domContentLoaded = navEntry.domContentLoadedEventEnd - navEntry.navigationStart
-      details.firstByte = navEntry.responseStart - navEntry.navigationStart
+      details.loadTime = navEntry.loadEventEnd - navEntry.startTime
+      details.domContentLoaded = navEntry.domContentLoadedEventEnd - navEntry.startTime
+      details.firstByte = navEntry.responseStart - navEntry.startTime
     }
 
     if (entry.entryType === 'paint') {
