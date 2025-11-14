@@ -40,6 +40,11 @@ const logActivity = async (userId, action, resourceType, resourceId, metadata = 
 // GET /api/projects - Get user's projects and shared projects
 // =====================================================
 router.get('/', authenticateToken, projectLimiter, async (req, res) => {
+  // EMERGENCY: Set CORS headers manually as fallback
+  res.header('Access-Control-Allow-Origin', 'https://swayfiles.com');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token');
+
   try {
     const userId = req.userId
     const { status, visibility } = req.query
@@ -131,6 +136,11 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
 // POST /api/projects - Create new project
 // =====================================================
 router.post('/', authenticateToken, projectLimiter, validateProjects.create, async (req, res) => {
+  // EMERGENCY: Set CORS headers manually as fallback
+  res.header('Access-Control-Allow-Origin', 'https://swayfiles.com');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token');
+
   try {
     const userId = req.userId
     const {

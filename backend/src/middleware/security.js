@@ -26,8 +26,18 @@ const {
 // CORS configuration for production and development
 const corsOptions = {
   origin: (origin, callback) => {
+    // EMERGENCY CORS DEBUGGING
+    console.log('🔍 CORS DEBUG:', {
+      requestOrigin: origin,
+      timestamp: new Date().toISOString(),
+      userAgent: origin ? 'with-origin' : 'no-origin'
+    });
+
     // Allow requests with no origin (mobile apps, curl requests, etc.)
-    if (!origin) return callback(null, true);
+    if (!origin) {
+      console.log('✅ CORS: Allowing request with no origin');
+      return callback(null, true);
+    }
 
     const allowedOrigins = [
       // Development
@@ -44,10 +54,14 @@ const corsOptions = {
       'https://api.swayfiles.com'
     ];
 
+    console.log('🔍 CORS ALLOWED ORIGINS:', allowedOrigins);
+
     if (allowedOrigins.includes(origin)) {
+      console.log(`✅ CORS: Allowing request from origin: ${origin}`);
       callback(null, true);
     } else {
-      console.warn(`CORS blocked request from origin: ${origin}`);
+      console.warn(`❌ CORS: BLOCKED request from origin: ${origin}`);
+      console.warn(`❌ CORS: Origin not in allowed list:`, allowedOrigins);
       callback(new Error('Not allowed by CORS'));
     }
   },
