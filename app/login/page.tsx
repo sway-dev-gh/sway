@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
 import Image from 'next/image'
 
-// FORCE VERCEL REBUILD - Login Route Fix - Living Ecosystem Final Deploy v3
+// FORCE VERCEL REBUILD - Fix Cache Issue v4 - Thu Nov 14 06:16
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
