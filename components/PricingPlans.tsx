@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
 import { createCheckoutSession } from '@/lib/stripe'
+import { apiRequest } from '@/lib/auth'
 
 interface PricingPlan {
   name: string
@@ -12,6 +13,12 @@ interface PricingPlan {
   buttonText: string
   popular?: boolean
   current?: boolean
+}
+
+interface PlanInfo {
+  plan: string
+  storage_limit_gb: number
+  stripe_customer_id?: string
 }
 
 const plans: PricingPlan[] = [
@@ -53,9 +60,29 @@ const plans: PricingPlan[] = [
 
 export default function PricingPlans() {
   const [loading, setLoading] = useState(false)
+  const [planInfo, setPlanInfo] = useState<PlanInfo | null>(null)
   const { user } = useAuth()
 
-  const currentPlan = user?.plan || 'free'
+  // Fetch current plan information from backend
+  useEffect(() => {
+    const fetchPlanInfo = async () => {
+      try {
+        const response = await apiRequest('/api/stripe/plan-info')
+        if (response?.ok) {
+          const data = await response.json()
+          setPlanInfo(data)
+        }
+      } catch (error) {
+        console.error('Failed to fetch plan info:', error)
+      }
+    }
+
+    if (user) {
+      fetchPlanInfo()
+    }
+  }, [user])
+
+  const currentPlan = planInfo?.plan || user?.plan || 'free'
 
   const handleUpgrade = async (planName: string) => {
     if (planName === 'Free') return
@@ -84,6 +111,19 @@ export default function PricingPlans() {
           <p className="text-terminal-muted text-sm max-w-2xl mx-auto">
             Start free and upgrade when you need more power. All plans include our core collaboration features.
           </p>
+
+          {/* Current Plan Info */}
+          {planInfo && (
+            <div className="mt-6 bg-terminal-surface border border-terminal-border rounded-sm p-4 max-w-md mx-auto">
+              <div className="text-sm text-terminal-muted mb-2">Your Current Plan</div>
+              <div className="text-lg text-terminal-text font-medium capitalize">{planInfo.plan}</div>
+              {planInfo.storage_limit_gb && (
+                <div className="text-xs text-terminal-muted mt-2">
+                  {planInfo.storage_limit_gb} GB storage limit
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Plans Grid */}

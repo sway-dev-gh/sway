@@ -14,10 +14,7 @@ export const createCheckoutSession = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        priceId: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID,
-        mode: 'subscription',
-        successUrl: `${window.location.origin}/settings?billing=success`,
-        cancelUrl: `${window.location.origin}/settings?billing=cancelled`,
+        planId: 'pro'
       }),
     })
 
@@ -25,19 +22,14 @@ export const createCheckoutSession = async () => {
       throw new Error('Failed to create checkout session')
     }
 
-    const { sessionId } = await response.json()
+    const { url } = await response.json()
 
-    const stripe = await getStripe()
-    if (!stripe) {
-      throw new Error('Stripe not initialized')
+    if (!url) {
+      throw new Error('No checkout URL returned')
     }
 
     // Redirect to Stripe checkout
-    const { error } = await (stripe as any).redirectToCheckout({ sessionId })
-
-    if (error) {
-      throw error
-    }
+    window.location.href = url
   } catch (error) {
     console.error('Stripe checkout error:', error)
     throw error

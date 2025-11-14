@@ -21,6 +21,8 @@ const stripeRoutes = require('./routes/stripe')
 const billingRoutes = require('./routes/billing')
 const adminRoutes = require('./routes/admin')
 const analyticsRoutes = require('./routes/analytics')
+const userRoutes = require('./routes/user')
+const automationRoutes = require('./routes/automation')
 // const aiRoutes = require('./routes/ai') // Disabled - no OpenAI API key
 const migrateRoutes = require('./routes/migrate')
 
@@ -176,6 +178,8 @@ app.use('/api/stripe', intelligentRateLimiter, stripeRoutes)
 app.use('/api/billing', intelligentRateLimiter, billingRoutes)
 app.use('/api/admin', adminRateLimit, adminRoutes)
 app.use('/api/analytics', intelligentRateLimiter, analyticsRoutes)
+app.use('/api/user', intelligentRateLimiter, userRoutes)
+app.use('/api/automation', intelligentRateLimiter, automationRoutes)
 // app.use('/api/ai', aiRoutes) // Disabled - no OpenAI API key
 app.use('/api/migrate', adminRateLimit, migrateRoutes)
 
