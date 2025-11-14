@@ -31,7 +31,9 @@ class MigrationManager {
         CREATE INDEX IF NOT EXISTS idx_migrations_version ON ${this.tableName}(version);
         CREATE INDEX IF NOT EXISTS idx_migrations_executed_at ON ${this.tableName}(executed_at);
       `)
-      console.log('✓ Migrations table initialized')
+      if (process.env.NODE_ENV === 'development') {
+        console.log('✓ Migrations table initialized')
+      }
     } catch (error) {
       console.error('❌ Failed to initialize migrations table:', error)
       throw error

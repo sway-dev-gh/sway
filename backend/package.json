@@ -6,7 +6,15 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "migrate": "node run-migration.js"
+    "migrate": "node run-migration.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --watchAll=false",
+    "test:debug": "jest --detectOpenHandles --verbose",
+    "test:unit": "jest --testPathPattern=unit",
+    "test:integration": "jest --testPathPattern=integration",
+    "test:api": "jest --testPathPattern=api"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -41,5 +49,12 @@
     "validator": "^13.15.23",
     "winston": "^3.18.3",
     "xss": "^1.0.15"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.1.4"
   }
 }

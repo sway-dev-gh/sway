@@ -266,11 +266,7 @@ const errorHandler = (error, req, res, next) => {
     'Cache-Control': 'no-cache, no-store, must-revalidate',
     'Pragma': 'no-cache',
     'Expires': '0',
-    // CORS headers for error responses
-    'Access-Control-Allow-Origin': 'https://swayfiles.com',
-    'Access-Control-Allow-Credentials': 'true',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
-    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token'
+    // SECURITY FIX: Removed hardcoded CORS headers - using centralized security middleware
   })
 
   res.status(status).json(response)

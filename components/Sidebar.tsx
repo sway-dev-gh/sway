@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
 import { useTheme } from '@/contexts/ThemeContext'
+import NotificationCenter from './NotificationCenter'
 import {
   ChevronLeft,
   ChevronRight,
@@ -80,6 +81,8 @@ export default function Sidebar() {
         )}
 
         <div className="flex items-center space-x-2">
+          {/* Notification Center - Show in both collapsed and expanded states */}
+          <NotificationCenter />
           <button
             onClick={() => setCollapsed(!collapsed)}
             className="text-terminal-muted hover:text-terminal-text transition-colors p-1"

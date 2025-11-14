@@ -34,6 +34,7 @@ const reviewerRoutes = require('./routes/reviewers')
 const collaborationRoutes = require('./routes/collaborations')
 const activityRoutes = require('./routes/activity')
 const workflowRoutes = require('./routes/workflow')
+const notificationRoutes = require('./routes/notifications')
 const pool = require('./db/pool')
 
 // Enhanced authentication and security services
@@ -85,27 +86,7 @@ const PORT = process.env.PORT || 5001
 // Apply comprehensive security middleware (includes CORS, headers, rate limiting, etc.)
 applySecurity(app)
 
-// EMERGENCY: Add global CORS middleware as backup for all endpoints
-app.use((req, res, next) => {
-  // Set CORS headers for ALL requests
-  res.header('Access-Control-Allow-Origin', 'https://swayfiles.com')
-  res.header('Access-Control-Allow-Credentials', 'true')
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token')
-
-  // Handle preflight OPTIONS requests immediately
-  if (req.method === 'OPTIONS') {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('🔧 CORS DEBUG: Handling OPTIONS preflight for:', req.path)
-    }
-    return res.status(200).end()
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    console.log('🔧 CORS DEBUG: Added headers for:', req.method, req.path, 'from origin:', req.get('Origin'))
-  }
-  next()
-})
+// SECURITY FIX: Removed emergency CORS middleware - using centralized security system
 
 // Setup Socket.IO with CORS configuration
 const io = new Server(server, {
@@ -213,6 +194,7 @@ app.use('/api/reviewers', intelligentRateLimiter, reviewerRoutes)
 app.use('/api/collaborations', intelligentRateLimiter, collaborationRoutes)
 app.use('/api/activity', intelligentRateLimiter, activityRoutes)
 app.use('/api/workflow', intelligentRateLimiter, workflowRoutes)
+app.use('/api/notifications', intelligentRateLimiter, notificationRoutes.router)
 
 // Enhanced health check with security monitoring
 app.get('/health', healthCheck())

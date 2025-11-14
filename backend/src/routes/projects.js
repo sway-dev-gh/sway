@@ -40,24 +40,43 @@ const logActivity = async (userId, action, resourceType, resourceId, metadata = 
 // GET /api/projects - Get user's projects and shared projects
 // =====================================================
 router.get('/', authenticateToken, projectLimiter, async (req, res) => {
-  // EMERGENCY: Set CORS headers manually as fallback
-  res.header('Access-Control-Allow-Origin', 'https://swayfiles.com');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token');
+  // SECURITY FIX: Removed hardcoded CORS headers - using centralized security middleware
 
   try {
     const userId = req.userId
     const { status, visibility } = req.query
 
-    // Simplified query - only query projects table to avoid schema issues
+    // SECURITY FIX: Calculate real statistics instead of hardcoded values
     let ownedProjectsQuery = `
       SELECT
         p.*,
-        0 as collaborator_count,
-        0 as pending_reviews,
-        0 as file_count,
-        '{}' as collaborator_emails
+        COALESCE(c.collaborator_count, 0) as collaborator_count,
+        COALESCE(r.pending_reviews, 0) as pending_reviews,
+        COALESCE(f.file_count, 0) as file_count,
+        COALESCE(c.collaborator_emails, '[]'::jsonb) as collaborator_emails
       FROM projects p
+      LEFT JOIN (
+        SELECT
+          project_id,
+          COUNT(*) as collaborator_count,
+          jsonb_agg(DISTINCT u.email) as collaborator_emails
+        FROM collaborations col
+        JOIN users u ON col.collaborator_id = u.id
+        WHERE col.status = 'active'
+        GROUP BY project_id
+      ) c ON p.id = c.project_id
+      LEFT JOIN (
+        SELECT project_id, COUNT(*) as pending_reviews
+        FROM reviews
+        WHERE status = 'pending'
+        GROUP BY project_id
+      ) r ON p.id = r.project_id
+      LEFT JOIN (
+        SELECT project_id, COUNT(*) as file_count
+        FROM project_files
+        WHERE is_current_version = true
+        GROUP BY project_id
+      ) f ON p.id = f.project_id
       WHERE p.user_id = $1
     `
 
@@ -82,18 +101,70 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
       ORDER BY p.id DESC
     `
 
-    // Simplified collaborating projects query - return empty array for now
-    const ownedResult = await pool.query(ownedProjectsQuery, queryParams)
-    const collaboratingResult = { rows: [] }
-
-    // Simple stats calculation
-    const statsQuery = `
+    // SECURITY FIX: Get real collaborating projects instead of empty array
+    const collaboratingProjectsQuery = `
       SELECT
-        COUNT(*) as owned_projects,
-        COUNT(*) FILTER (WHERE p.status = 'active') as active_projects,
-        COUNT(*) FILTER (WHERE p.status = 'completed') as completed_projects
+        p.*,
+        c.role as my_role,
+        c.permissions as my_permissions,
+        COALESCE(collab_stats.collaborator_count, 0) as collaborator_count,
+        COALESCE(r.pending_reviews, 0) as pending_reviews,
+        COALESCE(f.file_count, 0) as file_count,
+        COALESCE(collab_stats.collaborator_emails, '[]'::jsonb) as collaborator_emails
       FROM projects p
-      WHERE p.user_id = $1
+      JOIN collaborations c ON p.id = c.project_id
+      LEFT JOIN (
+        SELECT
+          project_id,
+          COUNT(*) as collaborator_count,
+          jsonb_agg(DISTINCT u.email) as collaborator_emails
+        FROM collaborations col
+        JOIN users u ON col.collaborator_id = u.id
+        WHERE col.status = 'active'
+        GROUP BY project_id
+      ) collab_stats ON p.id = collab_stats.project_id
+      LEFT JOIN (
+        SELECT project_id, COUNT(*) as pending_reviews
+        FROM reviews
+        WHERE status = 'pending'
+        GROUP BY project_id
+      ) r ON p.id = r.project_id
+      LEFT JOIN (
+        SELECT project_id, COUNT(*) as file_count
+        FROM project_files
+        WHERE is_current_version = true
+        GROUP BY project_id
+      ) f ON p.id = f.project_id
+      WHERE c.collaborator_id = $${queryParams.length + 1} AND c.status = 'active'
+      ORDER BY p.updated_at DESC
+    `
+
+    const collaboratingQueryParams = [...queryParams, userId]
+
+    const ownedResult = await pool.query(ownedProjectsQuery, queryParams)
+    const collaboratingResult = await pool.query(collaboratingProjectsQuery, collaboratingQueryParams)
+
+    // SECURITY FIX: Calculate comprehensive project statistics
+    const statsQuery = `
+      WITH owned_stats AS (
+        SELECT
+          COUNT(*) as owned_projects,
+          COUNT(*) FILTER (WHERE p.status = 'active') as owned_active,
+          COUNT(*) FILTER (WHERE p.status = 'completed') as owned_completed
+        FROM projects p
+        WHERE p.user_id = $1
+      ),
+      collaborating_stats AS (
+        SELECT COUNT(*) as collaborating_projects
+        FROM collaborations c
+        WHERE c.collaborator_id = $1 AND c.status = 'active'
+      )
+      SELECT
+        owned_projects,
+        owned_active,
+        owned_completed,
+        collaborating_projects
+      FROM owned_stats, collaborating_stats
     `
 
     const statsResult = await pool.query(statsQuery, [userId])
@@ -116,10 +187,10 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
       },
       stats: {
         owned_projects: parseInt(stats.owned_projects) || 0,
-        collaborating_projects: 0,
-        active_projects: parseInt(stats.active_projects) || 0,
-        completed_projects: parseInt(stats.completed_projects) || 0,
-        total_projects: ownedResult.rows.length
+        collaborating_projects: parseInt(stats.collaborating_projects) || 0,
+        active_projects: parseInt(stats.owned_active) || 0,
+        completed_projects: parseInt(stats.owned_completed) || 0,
+        total_projects: (parseInt(stats.owned_projects) || 0) + (parseInt(stats.collaborating_projects) || 0)
       }
     })
 
@@ -136,10 +207,7 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
 // POST /api/projects - Create new project
 // =====================================================
 router.post('/', authenticateToken, projectLimiter, validateProjects.create, async (req, res) => {
-  // EMERGENCY: Set CORS headers manually as fallback
-  res.header('Access-Control-Allow-Origin', 'https://swayfiles.com');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token');
+  // SECURITY FIX: Removed hardcoded CORS headers - using centralized security middleware
 
   try {
     const userId = req.userId

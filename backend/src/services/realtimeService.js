@@ -114,6 +114,21 @@ class RealtimeService {
         this.handlePresenceUpdate(socket, data)
       })
 
+      // Handle document joining for collaborative editing
+      socket.on('document-join', (data) => {
+        this.handleDocumentJoin(socket, data)
+      })
+
+      // Handle real-time text operations
+      socket.on('operation', (data) => {
+        this.handleOperation(socket, data)
+      })
+
+      // Handle selection updates for collaborative editing
+      socket.on('selection-update', (data) => {
+        this.handleSelectionUpdate(socket, data)
+      })
+
       // Handle disconnection
       socket.on('disconnect', () => {
         this.handleDisconnect(socket)
@@ -410,6 +425,99 @@ class RealtimeService {
     }
   }
 
+  async handleDocumentJoin(socket, { blockId, workspaceId }) {
+    try {
+      // Verify user has access to the document
+      const accessCheck = await pool.query(`
+        SELECT p.id, p.title
+        FROM projects p
+        WHERE p.id = $1 AND (
+          p.user_id = $2 OR
+          EXISTS(SELECT 1 FROM collaborations c
+                 WHERE c.project_id = p.id AND c.collaborator_id = $2 AND c.status = 'active')
+        )
+      `, [workspaceId, socket.userId])
+
+      if (accessCheck.rows.length === 0) {
+        socket.emit('error', { type: 'access_denied', message: 'Access denied to document' })
+        return
+      }
+
+      // Join document-specific room
+      const documentRoom = `document-${blockId}`
+      socket.join(documentRoom)
+      socket.currentDocument = documentRoom
+
+      // Get document content from database (you may need to adjust this query based on your schema)
+      const documentQuery = await pool.query(`
+        SELECT content, updated_at
+        FROM document_blocks
+        WHERE id = $1
+      `, [blockId])
+
+      const documentContent = documentQuery.rows[0]?.content || ''
+
+      // Get existing comments for this block
+      const commentsQuery = await pool.query(`
+        SELECT id, content, user_id, position, created_at
+        FROM block_comments
+        WHERE block_id = $1
+        ORDER BY position, created_at
+      `, [blockId])
+
+      const comments = commentsQuery.rows.map(row => ({
+        id: row.id,
+        content: row.content,
+        author: { id: row.user_id },
+        position: row.position,
+        timestamp: row.created_at
+      }))
+
+      // Send current document state
+      socket.emit('document-state', {
+        content: documentContent,
+        comments: comments,
+        activeUsers: this.getDocumentUsers(documentRoom)
+      })
+
+      console.log(`User ${socket.user.email} joined document ${blockId}`)
+    } catch (error) {
+      console.error('Document join error:', error)
+      socket.emit('error', { type: 'join_failed', message: 'Failed to join document' })
+    }
+  }
+
+  handleOperation(socket, { blockId, workspaceId, type, position, content, length, userId }) {
+    const documentRoom = `document-${blockId}`
+
+    // Broadcast operation to all other users in the document
+    socket.to(documentRoom).emit('operation', {
+      type,
+      position,
+      content,
+      length,
+      userId: socket.userId,
+      blockId,
+      timestamp: new Date()
+    })
+
+    // Log operation for potential conflict resolution
+    console.log(`Operation ${type} by ${socket.user.email} in document ${blockId}`)
+  }
+
+  handleSelectionUpdate(socket, { blockId, workspaceId, selection }) {
+    const documentRoom = `document-${blockId}`
+
+    // Broadcast selection update to other users
+    socket.to(documentRoom).emit('selection-update', {
+      userId: socket.userId,
+      user: socket.user,
+      selection,
+      blockId,
+      timestamp: new Date()
+    })
+  }
+
   handleDisconnect(socket) {
     console.log(`User ${socket.user?.email} disconnected`)
 
@@ -422,6 +530,14 @@ class RealtimeService {
 
       // Notify others of disconnection
       socket.to(socket.currentWorkspace).emit('user-left', {
+        userId: socket.userId,
+        timestamp: new Date()
+      })
+    }
+
+    // Remove from document rooms
+    if (socket.currentDocument) {
+      socket.to(socket.currentDocument).emit('user-left', {
         userId: socket.userId,
         timestamp: new Date()
       })
@@ -514,6 +630,28 @@ class RealtimeService {
   getWorkspaceUsers(workspaceId) {
     const roomId = `workspace-${workspaceId}`
     return this.getWorkspacePresence(roomId)
+  }
+
+  getDocumentUsers(documentRoom) {
+    // Get users currently in the document room
+    const room = this.io.sockets.adapter.rooms.get(documentRoom)
+    if (!room) return []
+
+    const users = []
+    for (const socketId of room) {
+      const socket = this.io.sockets.sockets.get(socketId)
+      if (socket && socket.user) {
+        const connection = this.connectedUsers.get(socket.userId)
+        if (connection) {
+          users.push({
+            userId: socket.userId,
+            user: socket.user,
+            presence: connection.presence
+          })
+        }
+      }
+    }
+    return users
   }
 
   sendToUser(userId, event, data) {

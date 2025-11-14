@@ -101,11 +101,15 @@ class TokenBlacklist {
       if (this.isConnected) {
         // Use Redis with automatic expiration
         await this.redisClient.setEx(key, expiration, JSON.stringify(value))
-        console.log(`✓ Token blacklisted in Redis (expires in ${expiration}s)`)
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`✓ Token blacklisted in Redis (expires in ${expiration}s)`)
+        }
       } else {
         // Fallback to in-memory
         this.fallbackSet.add(token)
-        console.log('✓ Token blacklisted in memory (fallback)')
+        if (process.env.NODE_ENV === 'development') {
+          console.log('✓ Token blacklisted in memory (fallback)')
+        }
 
         // Auto-cleanup for in-memory fallback
         setTimeout(() => {
@@ -162,11 +166,15 @@ class TokenBlacklist {
       if (this.isConnected) {
         // Redis handles expiration automatically, but we can get stats
         const keys = await this.redisClient.keys(`${this.keyPrefix}*`)
-        console.log(`✓ Redis token blacklist contains ${keys.length} active tokens`)
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`✓ Redis token blacklist contains ${keys.length} active tokens`)
+        }
         return keys.length
       } else {
         // For fallback, we rely on setTimeout cleanup
-        console.log(`✓ In-memory token blacklist contains ${this.fallbackSet.size} active tokens`)
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`✓ In-memory token blacklist contains ${this.fallbackSet.size} active tokens`)
+        }
         return this.fallbackSet.size
       }
     } catch (error) {

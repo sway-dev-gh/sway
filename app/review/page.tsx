@@ -1,48 +1,270 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import AppLayout from '@/components/AppLayout'
+import FileVersionHistory from '@/components/FileVersionHistory'
+
+interface Review {
+  id: string
+  title: string
+  status: 'pending' | 'in_progress' | 'approved' | 'rejected' | 'needs_changes'
+  priority: 'low' | 'medium' | 'high' | 'urgent'
+  feedback?: string
+  rating?: number
+  due_date?: string
+  created_at: string
+  updated_at: string
+  comment_count: number
+  project_title?: string
+  request_title?: string
+  original_filename?: string
+  reviewer_email: string
+  reviewer_first_name?: string
+  reviewer_last_name?: string
+  assigned_by_email: string
+  assigned_by_first_name?: string
+  assigned_by_last_name?: string
+}
+
+interface ReviewComment {
+  id: string
+  content: string
+  comment_type: 'comment' | 'suggestion' | 'approval' | 'rejection'
+  parent_id?: string
+  is_resolved: boolean
+  created_at: string
+  author_email: string
+  author_first_name?: string
+  author_last_name?: string
+  depth: number
+  reply_count: number
+}
+
+interface DetailedReview extends Review {
+  project_description?: string
+  project_type?: string
+  request_description?: string
+  file_size?: number
+  content_type?: string
+  storage_path?: string
+  comments: ReviewComment[]
+}
 
 export default function Review() {
-  const [showAllReviews, setShowAllReviews] = useState(false)
-  const [loadedReviewsCount, setLoadedReviewsCount] = useState(4)
-  const [loading, setLoading] = useState(false)
+  const [reviews, setReviews] = useState<Review[]>([])
+  const [selectedReview, setSelectedReview] = useState<DetailedReview | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState<string>('assigned') // assigned, created, all
+  const [statusFilter, setStatusFilter] = useState<string>('all')
 
-  const totalReviews = 12
+  // Comment system state
+  const [newComment, setNewComment] = useState('')
+  const [commentType, setCommentType] = useState<'comment' | 'suggestion' | 'approval' | 'rejection'>('comment')
+  const [replyToComment, setReplyToComment] = useState<string | null>(null)
+  const [submittingComment, setSubmittingComment] = useState(false)
 
-  const handleLoadMore = async () => {
-    setLoading(true)
+  // Review status update
+  const [updatingStatus, setUpdatingStatus] = useState(false)
+  const [newStatus, setNewStatus] = useState<string>('')
+  const [feedback, setFeedback] = useState('')
+  const [rating, setRating] = useState<number>(0)
+
+  // Version history
+  const [showVersionHistory, setShowVersionHistory] = useState(false)
+  const [versionHistoryFileId, setVersionHistoryFileId] = useState<string | null>(null)
+
+  // Fetch reviews
+  const fetchReviews = async () => {
     try {
-      // Simulate loading more reviews
-      setTimeout(() => {
-        const remainingReviews = totalReviews - loadedReviewsCount
-        const reviewsToLoad = Math.min(4, remainingReviews) // Load 4 more or remaining
-        setLoadedReviewsCount(prev => prev + reviewsToLoad)
-        setLoading(false)
-      }, 1000) // Simulate network delay
-    } catch (error) {
-      console.error('Failed to load more reviews:', error)
+      setLoading(true)
+      const params = new URLSearchParams({
+        type: filter,
+        ...(statusFilter !== 'all' && { status: statusFilter })
+      })
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews?${params}`, {
+        credentials: 'include'
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch reviews')
+      }
+
+      const data = await response.json()
+      setReviews(data.reviews || [])
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch reviews')
+    } finally {
       setLoading(false)
     }
   }
 
-  // Generate additional review items for demonstration
-  const additionalReviews = []
-  for (let i = 5; i <= loadedReviewsCount; i++) {
-    additionalReviews.push(
-      <div key={i} className="border border-terminal-border rounded p-4">
-        <div className="flex items-center justify-between mb-2">
-          <div className="text-terminal-text font-medium">Project {String.fromCharCode(64 + i)} - Review #{i}</div>
-          <span className="text-terminal-muted text-sm">{i} weeks ago</span>
-        </div>
-        <div className="text-terminal-muted text-sm mb-2">
-          {i % 2 === 0 ? 'Code refactoring and performance improvements' : 'Feature implementation and testing updates'}
-        </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-terminal-text text-xs">{i % 3 === 0 ? 'Changes Requested' : 'Approved'}</span>
-          <span className="text-terminal-muted text-xs">Reviewed by: {['Sarah Johnson', 'Mike Chen', 'Alex Rivera'][i % 3]}</span>
+  // Fetch detailed review
+  const fetchReviewDetails = async (reviewId: string) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/${reviewId}`, {
+        credentials: 'include'
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch review details')
+      }
+
+      const data = await response.json()
+      setSelectedReview(data.review)
+      setNewStatus(data.review.status)
+      setFeedback(data.review.feedback || '')
+      setRating(data.review.rating || 0)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to fetch review details')
+    }
+  }
+
+  // Update review status
+  const updateReviewStatus = async () => {
+    if (!selectedReview) return
+
+    try {
+      setUpdatingStatus(true)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/${selectedReview.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          status: newStatus,
+          feedback: feedback,
+          rating: rating || undefined
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to update review')
+      }
+
+      const data = await response.json()
+      setSelectedReview(data.review)
+      await fetchReviews() // Refresh the list
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update review')
+    } finally {
+      setUpdatingStatus(false)
+    }
+  }
+
+  // Add comment
+  const addComment = async () => {
+    if (!selectedReview || !newComment.trim()) return
+
+    try {
+      setSubmittingComment(true)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/${selectedReview.id}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          content: newComment,
+          comment_type: commentType,
+          parent_id: replyToComment
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to add comment')
+      }
+
+      const data = await response.json()
+      // Refresh review details to get updated comments
+      await fetchReviewDetails(selectedReview.id)
+      setNewComment('')
+      setReplyToComment(null)
+      setCommentType('comment')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add comment')
+    } finally {
+      setSubmittingComment(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchReviews()
+  }, [filter, statusFilter])
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'approved': return 'text-green-400'
+      case 'rejected': return 'text-red-400'
+      case 'needs_changes': return 'text-yellow-400'
+      case 'in_progress': return 'text-blue-400'
+      default: return 'text-terminal-muted'
+    }
+  }
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'urgent': return 'text-red-400'
+      case 'high': return 'text-orange-400'
+      case 'medium': return 'text-yellow-400'
+      default: return 'text-terminal-muted'
+    }
+  }
+
+  const formatRelativeTime = (dateString: string) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diff = now.getTime() - date.getTime()
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24))
+    const hours = Math.floor(diff / (1000 * 60 * 60))
+
+    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`
+    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`
+    return 'Just now'
+  }
+
+  const renderComments = (comments: ReviewComment[]) => {
+    return comments.map(comment => (
+      <div key={comment.id} className={`border-l-2 border-terminal-border pl-4 ${comment.depth > 0 ? 'ml-4' : ''}`}>
+        <div className="bg-terminal-surface border border-terminal-border rounded p-3 mb-2">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center space-x-2">
+              <span className="text-terminal-text text-sm font-medium">
+                {comment.author_first_name} {comment.author_last_name}
+                <span className="text-terminal-muted">({comment.author_email})</span>
+              </span>
+              <span className={`text-xs px-2 py-1 rounded ${
+                comment.comment_type === 'approval' ? 'bg-green-900 text-green-400' :
+                comment.comment_type === 'rejection' ? 'bg-red-900 text-red-400' :
+                comment.comment_type === 'suggestion' ? 'bg-blue-900 text-blue-400' :
+                'bg-terminal-hover text-terminal-text'
+              }`}>
+                {comment.comment_type}
+              </span>
+            </div>
+            <span className="text-terminal-muted text-xs">{formatRelativeTime(comment.created_at)}</span>
+          </div>
+          <p className="text-terminal-text text-sm mb-2">{comment.content}</p>
+          <button
+            onClick={() => setReplyToComment(comment.id)}
+            className="text-terminal-muted text-xs hover:text-terminal-text"
+          >
+            Reply
+          </button>
         </div>
       </div>
+    ))
+  }
+
+  if (loading) {
+    return (
+      <AppLayout>
+        <div className="flex-1 flex items-center justify-center bg-terminal-bg">
+          <div className="text-terminal-text">Loading reviews...</div>
+        </div>
+      </AppLayout>
     )
   }
 
@@ -51,113 +273,330 @@ export default function Review() {
       <div className="flex-1 overflow-auto bg-terminal-bg">
         {/* Header */}
         <div className="bg-terminal-surface border-b border-terminal-border p-6">
-          <h1 className="text-xl text-terminal-text font-medium">Review</h1>
-          <p className="text-terminal-muted text-sm mt-1">Code reviews and pull requests</p>
-        </div>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl text-terminal-text font-medium">Reviews</h1>
+              <p className="text-terminal-muted text-sm mt-1">Manage file reviews and approvals</p>
+            </div>
 
-        <div className="p-6">
-          {/* Main Content Area */}
-          <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
-            <div className="text-center py-12">
-              <h2 className="text-terminal-text text-lg mb-2">Code Reviews</h2>
-              <p className="text-terminal-muted text-sm">No pending reviews. All caught up!</p>
+            {/* Filters */}
+            <div className="flex items-center space-x-4">
+              <select
+                value={filter}
+                onChange={(e) => setFilter(e.target.value)}
+                className="bg-terminal-surface border border-terminal-border text-terminal-text text-sm px-3 py-2"
+              >
+                <option value="assigned">Assigned to Me</option>
+                <option value="created">Created by Me</option>
+                <option value="all">All Reviews</option>
+              </select>
 
-              <div className="mt-8">
-                <button
-                  onClick={() => setShowAllReviews(true)}
-                  className="border border-terminal-border text-terminal-text px-4 py-2 text-sm hover:bg-terminal-hover transition-colors"
-                >
-                  View All Reviews
-                </button>
-              </div>
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="bg-terminal-surface border border-terminal-border text-terminal-text text-sm px-3 py-2"
+              >
+                <option value="all">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="approved">Approved</option>
+                <option value="rejected">Rejected</option>
+                <option value="needs_changes">Needs Changes</option>
+              </select>
             </div>
           </div>
+        </div>
+
+        {error && (
+          <div className="bg-red-900 border border-red-700 text-red-400 px-4 py-3 mx-6 mt-6">
+            {error}
+            <button
+              onClick={() => setError(null)}
+              className="float-right text-red-400 hover:text-red-300"
+            >
+              ×
+            </button>
+          </div>
+        )}
+
+        <div className="p-6">
+          {reviews.length === 0 ? (
+            <div className="bg-terminal-surface border border-terminal-border rounded p-6 text-center">
+              <h2 className="text-terminal-text text-lg mb-2">No Reviews Found</h2>
+              <p className="text-terminal-muted text-sm">
+                {filter === 'assigned' ? 'No reviews assigned to you' : 'No reviews created by you'}
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {reviews.map(review => (
+                <div key={review.id} className="bg-terminal-surface border border-terminal-border rounded p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center space-x-4">
+                      <h3 className="text-terminal-text font-medium">{review.title}</h3>
+                      <span className={`text-xs px-2 py-1 rounded ${getStatusColor(review.status)}`}>
+                        {review.status.replace('_', ' ').toUpperCase()}
+                      </span>
+                      <span className={`text-xs ${getPriorityColor(review.priority)}`}>
+                        {review.priority.toUpperCase()}
+                      </span>
+                    </div>
+                    <div className="flex items-center space-x-4 text-xs text-terminal-muted">
+                      <span>{formatRelativeTime(review.created_at)}</span>
+                      <span>{review.comment_count} comments</span>
+                    </div>
+                  </div>
+
+                  <div className="text-terminal-muted text-sm mb-3">
+                    {review.project_title && <span>Project: {review.project_title} • </span>}
+                    {review.request_title && <span>Request: {review.request_title} • </span>}
+                    {review.original_filename && <span>File: {review.original_filename} • </span>}
+                    Reviewer: {review.reviewer_first_name} {review.reviewer_last_name} ({review.reviewer_email})
+                  </div>
+
+                  {review.feedback && (
+                    <div className="bg-terminal-bg border border-terminal-border rounded p-3 mb-3">
+                      <p className="text-terminal-text text-sm">{review.feedback}</p>
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      {review.rating && (
+                        <div className="flex items-center space-x-1">
+                          {[1, 2, 3, 4, 5].map(star => (
+                            <span key={star} className={star <= review.rating! ? 'text-yellow-400' : 'text-terminal-muted'}>
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <span className="text-terminal-muted text-xs">
+                        Assigned by: {review.assigned_by_first_name} {review.assigned_by_last_name}
+                      </span>
+                    </div>
+
+                    <button
+                      onClick={() => fetchReviewDetails(review.id)}
+                      className="border border-terminal-border text-terminal-text px-3 py-1 text-sm hover:bg-terminal-hover transition-colors"
+                    >
+                      View Details
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* All Reviews Modal */}
-      {showAllReviews && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-terminal-surface border border-terminal-border p-6 w-full max-w-4xl h-96">
-            <h2 className="text-xl text-terminal-text font-medium mb-4">Review History</h2>
+      {/* Review Details Modal */}
+      {selectedReview && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-terminal-surface border border-terminal-border w-full max-w-6xl h-full max-h-screen overflow-auto">
+            {/* Header */}
+            <div className="border-b border-terminal-border p-6 sticky top-0 bg-terminal-surface">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl text-terminal-text font-medium">{selectedReview.title}</h2>
+                  <div className="flex items-center space-x-4 mt-2 text-sm text-terminal-muted">
+                    <span className={getStatusColor(selectedReview.status)}>
+                      {selectedReview.status.replace('_', ' ').toUpperCase()}
+                    </span>
+                    <span className={getPriorityColor(selectedReview.priority)}>
+                      {selectedReview.priority.toUpperCase()} Priority
+                    </span>
+                    <span>Created: {formatRelativeTime(selectedReview.created_at)}</span>
+                  </div>
+                </div>
 
-            <div className="space-y-3 h-64 overflow-y-auto">
-              <div className="border border-terminal-border rounded p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-terminal-text font-medium">Project Alpha - Bug Fix</div>
-                  <span className="text-terminal-muted text-sm">2 days ago</span>
-                </div>
-                <div className="text-terminal-muted text-sm mb-2">Fixed authentication timeout issue in user login flow</div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-terminal-text text-xs">Approved</span>
-                  <span className="text-terminal-muted text-xs">Reviewed by: Sarah Johnson</span>
-                </div>
+                <button
+                  onClick={() => setSelectedReview(null)}
+                  className="text-terminal-muted hover:text-terminal-text text-2xl"
+                >
+                  ×
+                </button>
               </div>
-
-              <div className="border border-terminal-border rounded p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-terminal-text font-medium">Website Redesign - Header Component</div>
-                  <span className="text-terminal-muted text-sm">1 week ago</span>
-                </div>
-                <div className="text-terminal-muted text-sm mb-2">Updated header navigation with new branding elements</div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-terminal-text text-xs">Approved</span>
-                  <span className="text-terminal-muted text-xs">Reviewed by: Mike Chen</span>
-                </div>
-              </div>
-
-              <div className="border border-terminal-border rounded p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-terminal-text font-medium">API Integration - Payment Gateway</div>
-                  <span className="text-terminal-muted text-sm">2 weeks ago</span>
-                </div>
-                <div className="text-terminal-muted text-sm mb-2">Integrated Stripe payment processing with error handling</div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-terminal-text text-xs">Changes Requested</span>
-                  <span className="text-terminal-muted text-xs">Reviewed by: Alex Rivera</span>
-                </div>
-              </div>
-
-              <div className="border border-terminal-border rounded p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="text-terminal-text font-medium">Database Migration - User Schema</div>
-                  <span className="text-terminal-muted text-sm">3 weeks ago</span>
-                </div>
-                <div className="text-terminal-muted text-sm mb-2">Added new fields for enhanced user profile management</div>
-                <div className="flex items-center space-x-4">
-                  <span className="text-terminal-text text-xs">Approved</span>
-                  <span className="text-terminal-muted text-xs">Reviewed by: Sarah Johnson</span>
-                </div>
-              </div>
-
-              {/* Additional Reviews */}
-              {additionalReviews}
             </div>
 
-            <div className="flex justify-between items-center mt-4">
-              <div className="text-terminal-muted text-sm">
-                Showing {loadedReviewsCount} of {totalReviews} reviews
-              </div>
-              <div className="flex space-x-4">
-                {loadedReviewsCount < totalReviews && (
-                  <button
-                    onClick={handleLoadMore}
-                    disabled={loading}
-                    className="border border-terminal-border text-terminal-text px-3 py-1 text-sm hover:bg-terminal-hover transition-colors disabled:opacity-50"
-                  >
-                    {loading ? 'Loading...' : 'Load More'}
-                  </button>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
+              {/* Left: Review Details & Status */}
+              <div className="space-y-6">
+                {/* File Info */}
+                {selectedReview.original_filename && (
+                  <div className="bg-terminal-bg border border-terminal-border rounded p-4">
+                    <h3 className="text-terminal-text font-medium mb-3">File Details</h3>
+                    <div className="space-y-2 text-sm">
+                      <div className="flex justify-between">
+                        <span className="text-terminal-muted">Filename:</span>
+                        <span className="text-terminal-text">{selectedReview.original_filename}</span>
+                      </div>
+                      {selectedReview.file_size && (
+                        <div className="flex justify-between">
+                          <span className="text-terminal-muted">Size:</span>
+                          <span className="text-terminal-text">{(selectedReview.file_size / 1024).toFixed(1)} KB</span>
+                        </div>
+                      )}
+                      {selectedReview.content_type && (
+                        <div className="flex justify-between">
+                          <span className="text-terminal-muted">Type:</span>
+                          <span className="text-terminal-text">{selectedReview.content_type}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Version History Button */}
+                    <div className="mt-4 pt-4 border-t border-terminal-border">
+                      <button
+                        onClick={() => {
+                          setVersionHistoryFileId(selectedReview.upload_id || selectedReview.id)
+                          setShowVersionHistory(true)
+                        }}
+                        className="w-full border border-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors"
+                      >
+                        📁 View Version History
+                      </button>
+                    </div>
+                  </div>
                 )}
-                <button
-                  onClick={() => setShowAllReviews(false)}
-                  className="bg-terminal-text text-terminal-bg px-3 py-1 text-sm hover:bg-terminal-muted transition-colors"
-                >
-                  Close
-                </button>
+
+                {/* Update Status */}
+                <div className="bg-terminal-bg border border-terminal-border rounded p-4">
+                  <h3 className="text-terminal-text font-medium mb-3">Update Review</h3>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-terminal-muted text-sm mb-1">Status</label>
+                      <select
+                        value={newStatus}
+                        onChange={(e) => setNewStatus(e.target.value)}
+                        className="w-full bg-terminal-surface border border-terminal-border text-terminal-text px-3 py-2"
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                        <option value="needs_changes">Needs Changes</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-terminal-muted text-sm mb-1">Feedback</label>
+                      <textarea
+                        value={feedback}
+                        onChange={(e) => setFeedback(e.target.value)}
+                        className="w-full bg-terminal-surface border border-terminal-border text-terminal-text px-3 py-2 h-24"
+                        placeholder="Provide feedback..."
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-terminal-muted text-sm mb-1">Rating (1-5)</label>
+                      <div className="flex items-center space-x-2">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <button
+                            key={star}
+                            onClick={() => setRating(star)}
+                            className={`text-2xl ${star <= rating ? 'text-yellow-400' : 'text-terminal-muted hover:text-yellow-400'}`}
+                          >
+                            ★
+                          </button>
+                        ))}
+                        <button
+                          onClick={() => setRating(0)}
+                          className="text-terminal-muted text-sm hover:text-terminal-text ml-4"
+                        >
+                          Clear
+                        </button>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={updateReviewStatus}
+                      disabled={updatingStatus}
+                      className="w-full bg-terminal-text text-terminal-bg px-4 py-2 hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                    >
+                      {updatingStatus ? 'Updating...' : 'Update Review'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Comments */}
+              <div className="space-y-6">
+                <div className="bg-terminal-bg border border-terminal-border rounded p-4">
+                  <h3 className="text-terminal-text font-medium mb-4">Comments ({selectedReview.comments.length})</h3>
+
+                  {/* Add Comment */}
+                  <div className="mb-6">
+                    {replyToComment && (
+                      <div className="bg-terminal-hover border border-terminal-border rounded p-2 mb-2">
+                        <div className="flex items-center justify-between">
+                          <span className="text-terminal-muted text-sm">Replying to comment</span>
+                          <button
+                            onClick={() => setReplyToComment(null)}
+                            className="text-terminal-muted hover:text-terminal-text"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    <textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      className="w-full bg-terminal-surface border border-terminal-border text-terminal-text px-3 py-2 h-20 mb-2"
+                      placeholder="Add a comment..."
+                    />
+
+                    <div className="flex items-center justify-between">
+                      <select
+                        value={commentType}
+                        onChange={(e) => setCommentType(e.target.value as any)}
+                        className="bg-terminal-surface border border-terminal-border text-terminal-text text-sm px-3 py-1"
+                      >
+                        <option value="comment">Comment</option>
+                        <option value="suggestion">Suggestion</option>
+                        <option value="approval">Approval</option>
+                        <option value="rejection">Rejection</option>
+                      </select>
+
+                      <button
+                        onClick={addComment}
+                        disabled={submittingComment || !newComment.trim()}
+                        className="bg-terminal-text text-terminal-bg px-4 py-1 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                      >
+                        {submittingComment ? 'Adding...' : 'Add Comment'}
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Comments List */}
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {selectedReview.comments.length === 0 ? (
+                      <p className="text-terminal-muted text-sm text-center py-4">No comments yet</p>
+                    ) : (
+                      renderComments(selectedReview.comments)
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      )}
+
+      {/* File Version History Modal */}
+      {showVersionHistory && versionHistoryFileId && (
+        <FileVersionHistory
+          fileId={versionHistoryFileId}
+          currentFileName={selectedReview?.original_filename}
+          onClose={() => {
+            setShowVersionHistory(false)
+            setVersionHistoryFileId(null)
+          }}
+        />
       )}
     </AppLayout>
   )

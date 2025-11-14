@@ -8,7 +8,14 @@
     "build": "next build",
     "start": "next start -p 3001",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:ci": "jest --ci --coverage --watchAll=false",
+    "test:debug": "jest --detectOpenHandles --verbose",
+    "test:unit": "jest --testPathPattern=components|lib|contexts",
+    "test:integration": "jest --testPathPattern=integration"
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.4.0",
@@ -42,14 +49,23 @@
     "winston": "^3.18.3"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.0.0",
     "eslint-config-next": "^14.0.0",
+    "jest": "^30.2.0",
+    "jest-environment-jsdom": "^30.2.0",
+    "msw": "^2.12.1",
     "postcss": "^8.4.0",
+    "react-router-dom": "^7.9.6",
     "tailwindcss": "^3.3.0",
+    "ts-jest": "^29.4.5",
     "typescript": "^5.0.0"
   }
 }

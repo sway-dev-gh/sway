@@ -78,7 +78,9 @@ const generateCSRFToken = (sessionId, userId) => {
     const token = csrfProtection.create(sessionData.secret)
 
     // Log token generation for security monitoring
-    console.log(`✓ CSRF token generated for session: ${sessionId || userId || 'anonymous'}`)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`✓ CSRF token generated for session: ${sessionId || userId || 'anonymous'}`)
+    }
 
     return {
       token,
@@ -128,7 +130,9 @@ const verifyCSRFToken = (token, sessionId, userId) => {
       sessionData.usedTokens = new Set(tokensArray.slice(-50))
     }
 
-    console.log(`✓ CSRF token verified for session: ${sessionId || userId || 'anonymous'}`)
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`✓ CSRF token verified for session: ${sessionId || userId || 'anonymous'}`)
+    }
     return true
 
   } catch (error) {

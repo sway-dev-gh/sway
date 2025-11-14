@@ -14,7 +14,6 @@ interface AuthContextType {
   user: User | null
   isAuthenticated: boolean
   isLoading: boolean
-  token: string | null
   login: (email: string, password: string) => Promise<boolean>
   signup: (email: string, password: string, username?: string) => Promise<boolean>
   logout: () => void
@@ -24,17 +23,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
-  const [token, setToken] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     // Check if user is already logged in on app start
-    const savedToken = authApi.getToken()
+    // HttpOnly cookies will be automatically validated by backend
     const savedUser = authApi.getUser()
 
-    if (savedToken && savedUser) {
+    if (savedUser) {
       setUser(savedUser)
-      setToken(savedToken)
     }
 
     setIsLoading(false)
@@ -42,9 +39,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     const result = await authApi.login(email, password)
-    if (result.success && result.user && result.token) {
+    if (result.success && result.user) {
       setUser(result.user)
-      setToken(result.token)
       return true
     }
     return false
@@ -52,9 +48,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signup = async (email: string, password: string, username?: string): Promise<boolean> => {
     const result = await authApi.signup(email, password, username)
-    if (result.success && result.user && result.token) {
+    if (result.success && result.user) {
       setUser(result.user)
-      setToken(result.token)
       return true
     }
     return false
@@ -63,14 +58,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     authApi.logout()
     setUser(null)
-    setToken(null)
   }
 
+  // Fixed auth context - removed token for HttpOnly cookies
   const value: AuthContextType = {
     user,
     isAuthenticated: !!user,
     isLoading,
-    token,
     login,
     signup,
     logout
