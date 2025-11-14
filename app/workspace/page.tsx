@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import AppLayout from '@/components/AppLayout'
+import CollaborativeCursors from '@/components/CollaborativeCursors'
 import { apiRequest } from '@/lib/auth'
 
 interface Project {
@@ -250,6 +251,14 @@ export default function Workspace() {
   return (
     <AppLayout>
       <div className="flex-1 overflow-auto bg-terminal-bg">
+        {/* Collaborative Cursors */}
+        {selectedProject && (
+          <CollaborativeCursors
+            workspaceId={selectedProject.id}
+            projectId={selectedProject.id}
+          />
+        )}
+
         {/* Header */}
         <div className="bg-terminal-surface border-b border-terminal-border p-6">
           <h1 className="text-xl text-terminal-text font-medium">Workspace</h1>

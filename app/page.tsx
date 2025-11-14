@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import AppLayout from '@/components/AppLayout'
+import CollaborativeCursors from '@/components/CollaborativeCursors'
 import { apiRequest } from '@/lib/auth'
 
 interface Project {
@@ -115,10 +116,16 @@ export default function Dashboard() {
   return (
     <AppLayout>
       <div className="flex-1 overflow-auto bg-terminal-bg">
+        {/* Global Collaborative Cursors for Dashboard */}
+        <CollaborativeCursors
+          workspaceId="dashboard"
+          projectId="global"
+        />
+
         {/* Header */}
         <div className="bg-terminal-surface border-b border-terminal-border p-6">
           <h1 className="text-xl text-terminal-text font-medium">Dashboard</h1>
-          <p className="text-terminal-muted text-sm mt-1">Welcome to SwayFiles</p>
+          <p className="text-terminal-muted text-sm mt-1">Welcome to SwayFiles - Live Collaboration Platform</p>
         </div>
 
         <div className="p-6">
