@@ -175,8 +175,14 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
       const userPlan = userResult.rows[0]?.plan || 'free'
 
       if (userPlan === 'free') {
-        const projectCountResult = await pool.query('SELECT COUNT(*) as count FROM projects WHERE user_id = $1', [userId])
-        const currentProjectCount = parseInt(projectCountResult.rows[0].count)
+        // More robust project counting with better filtering
+        const projectCountResult = await pool.query(
+          'SELECT COUNT(*) as count FROM projects WHERE user_id = $1 AND deleted_at IS NULL',
+          [userId]
+        )
+        const currentProjectCount = parseInt(projectCountResult.rows[0]?.count || 0)
+
+        console.log(`Project count check for user ${userId}: ${currentProjectCount} projects`)
 
         if (currentProjectCount >= 3) {
           return res.status(403).json({
