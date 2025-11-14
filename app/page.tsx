@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import AppLayout from '@/components/AppLayout'
 import CollaborativeCursors from '@/components/CollaborativeCursors'
 import { apiRequest } from '@/lib/auth'
+import '@/lib/debug' // Load debug utilities
 
 interface Project {
   id: string
@@ -49,30 +50,64 @@ export default function Dashboard() {
     setLoading(true)
     setError('')
 
+    const requestData = {
+      title,
+      description,
+      project_type: projectType,
+      visibility: 'private'
+    }
+
+    console.log('🔄 Creating project with data:', requestData)
+
     try {
       const response = await apiRequest('/api/projects', {
         method: 'POST',
-        body: JSON.stringify({
-          title,
-          description,
-          project_type: projectType,
-          visibility: 'private'
-        })
+        body: JSON.stringify(requestData)
+      })
+
+      console.log('📡 API Response:', {
+        ok: response?.ok,
+        status: response?.status,
+        statusText: response?.statusText,
+        url: response?.url,
+        headers: Object.fromEntries(response?.headers?.entries() || [])
       })
 
       if (response?.ok) {
         const data = await response.json()
+        console.log('✅ Project created successfully:', data)
         setProjects(prev => [data.project, ...prev])
         setShowCreateModal(false)
         setTitle('')
         setDescription('')
         setProjectType('review')
       } else {
-        const data = await response?.json()
-        setError(data?.error || 'Failed to create project')
+        let errorData
+        try {
+          errorData = await response?.json()
+        } catch (jsonError) {
+          console.error('❌ Failed to parse error response as JSON:', jsonError)
+          errorData = { error: 'Invalid response format' }
+        }
+
+        console.error('❌ Project creation failed:', {
+          status: response?.status,
+          statusText: response?.statusText,
+          errorData,
+          requestData
+        })
+
+        const errorMessage = errorData?.error || errorData?.message || `HTTP ${response?.status}: ${response?.statusText}` || 'Failed to create project'
+        setError(`Error: ${errorMessage}`)
       }
-    } catch (error) {
-      setError('Network error occurred')
+    } catch (error: any) {
+      console.error('❌ Network/Request error:', {
+        error: error.message,
+        stack: error.stack,
+        name: error.name,
+        requestData
+      })
+      setError(`Network error: ${error.message || 'Unknown error occurred'}`)
     } finally {
       setLoading(false)
     }

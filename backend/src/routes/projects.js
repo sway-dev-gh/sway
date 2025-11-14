@@ -196,15 +196,20 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
       }
     }
 
-    // Create project - store client_link in settings
+    // Create project - store all extra settings in the settings JSONB column
     const projectSettings = {
       ...settings,
-      client_link: client_link || null
+      client_link: client_link || null,
+      workspace_type: workspace_type || 'review',
+      workflow_template: workflow_template || 'standard',
+      default_reviewers: default_reviewers || [],
+      auto_assign_reviewers: auto_assign_reviewers || false,
+      external_access_enabled: external_access_enabled !== undefined ? external_access_enabled : true
     }
 
     const insertQuery = `
-      INSERT INTO projects (user_id, title, description, project_type, visibility, due_date, settings, workspace_type, workflow_template, default_reviewers, auto_assign_reviewers, external_access_enabled)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+      INSERT INTO projects (user_id, title, description, project_type, visibility, due_date, settings)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING *
     `
 
@@ -215,12 +220,7 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
       project_type,
       visibility,
       due_date || null,
-      JSON.stringify(projectSettings),
-      workspace_type,
-      workflow_template,
-      default_reviewers || [],  // Ensure it's always an array
-      auto_assign_reviewers,
-      external_access_enabled
+      JSON.stringify(projectSettings)
     ])
 
     const project = result.rows[0]
