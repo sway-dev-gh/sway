@@ -1,18 +1,31 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import AppLayout from '@/components/AppLayout'
 import PricingPlans from '@/components/PricingPlans'
 import { useAuth } from '@/contexts/AuthContext'
+import { useSearchParams, useRouter } from 'next/navigation'
 
 export default function Settings() {
-  const [activeTab, setActiveTab] = useState('account')
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const [activeTab, setActiveTab] = useState(() => {
+    return searchParams.get('tab') || 'account'
+  })
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [emailNotifications, setEmailNotifications] = useState(false)
   const [projectUpdates, setProjectUpdates] = useState(false)
   const [saving, setSaving] = useState(false)
   const { user } = useAuth()
+
+  // Handle tab changes with URL persistence
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId)
+    const params = new URLSearchParams(searchParams)
+    params.set('tab', tabId)
+    router.replace(`/settings?${params.toString()}`)
+  }
 
   // Populate with user data
   React.useEffect(() => {
@@ -85,7 +98,7 @@ export default function Settings() {
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => handleTabChange(tab.id)}
                     className={`py-2 px-1 border-b-2 font-medium text-sm ${
                       activeTab === tab.id
                         ? 'border-terminal-text text-terminal-text'
@@ -266,7 +279,7 @@ export default function Settings() {
             <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🤖 Workflow Automation</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">Workflow Automation</h2>
                   <p className="text-terminal-muted text-sm mb-6">
                     Create automated workflows that trigger actions when specific events occur in your projects.
                   </p>
@@ -393,7 +406,7 @@ export default function Settings() {
                 </div>
 
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🔧 API & Webhooks</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">API & Webhooks</h2>
                   <div className="border border-terminal-border rounded p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-terminal-text font-medium">API Access</h3>
