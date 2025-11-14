@@ -184,6 +184,15 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
 
         console.log(`Project count check for user ${userId}: ${currentProjectCount} projects`)
 
+        // EMERGENCY: Debug user info for 500 error troubleshooting
+        console.log('🔍 USER DEBUG INFO:', {
+          userId,
+          userIdType: typeof userId,
+          userEmail: req.userEmail,
+          userPlan: userPlan,
+          projectCount: currentProjectCount
+        })
+
         if (currentProjectCount >= 3) {
           return res.status(403).json({
             error: 'Free plan allows 3 projects. Upgrade to Pro ($15/mo) for unlimited projects.',
@@ -213,7 +222,7 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
       RETURNING *
     `
 
-    const result = await pool.query(insertQuery, [
+    const queryParams = [
       userId,
       title.trim(),
       description?.trim() || '',
@@ -221,7 +230,18 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
       visibility,
       due_date || null,
       JSON.stringify(projectSettings)
-    ])
+    ]
+
+    // EMERGENCY: Debug the exact SQL query and parameters
+    console.log('🗄️ DATABASE INSERT DEBUG:', {
+      query: insertQuery,
+      params: queryParams,
+      userId,
+      userIdType: typeof userId,
+      settingsString: JSON.stringify(projectSettings)
+    })
+
+    const result = await pool.query(insertQuery, queryParams)
 
     const project = result.rows[0]
 
@@ -248,18 +268,25 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
   } catch (error) {
     console.error('Create project error:', error)
 
-    // Log detailed error information for debugging
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Error details:', {
-        message: error.message,
-        code: error.code,
-        stack: error.stack,
-        userId,
-        title,
-        description,
-        client_link
-      })
-    }
+    // EMERGENCY: Log detailed error information for debugging the 500 error
+    console.error('🚨 DETAILED PROJECT CREATION ERROR:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+      constraint: error.constraint,
+      detail: error.detail,
+      hint: error.hint,
+      query: error.query,
+      parameters: error.parameters,
+      userId,
+      title,
+      description,
+      project_type,
+      visibility,
+      due_date,
+      settings: JSON.stringify(projectSettings),
+      timestamp: new Date().toISOString()
+    })
 
     // Return appropriate error response
     let statusCode = 500
