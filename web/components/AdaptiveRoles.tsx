@@ -17,7 +17,9 @@ export default function AdaptiveRoles() {
     collabState.blockActivities.forEach((activity, blockId) => {
       activity.viewers.forEach(viewer => {
         trackContribution(viewer.id, {
-          area: activity.type || 'General Collaboration',
+          area: blockId.includes('project') ? 'Project Management' :
+                blockId.includes('review') ? 'Code Review' :
+                blockId.includes('deploy') ? 'Deployment' : 'General Collaboration',
           quality: Math.min(activity.activityLevel / 10 * 8 + 2, 10),
           impact: activity.activityLevel / 10 * 7 + 3,
           frequency: 0.1

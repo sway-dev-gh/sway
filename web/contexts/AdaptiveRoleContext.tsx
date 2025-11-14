@@ -384,7 +384,7 @@ export function AdaptiveRoleProvider({ children }: { children: React.ReactNode }
         .filter(member =>
           member.primaryRole === roleReq.role ||
           member.emergingRoles.includes(roleReq.role) ||
-          member.contributions.some(c => roleReq.skills.some(skill => c.area.includes(skill)))
+          member.contributions.some(c => roleReq.skills.some((skill: string) => c.area.includes(skill)))
         )
         .sort((a, b) => {
           const aScore = calculateRoleMatch(a, roleReq)

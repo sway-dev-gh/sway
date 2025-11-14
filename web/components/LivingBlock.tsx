@@ -37,8 +37,8 @@ export default function LivingBlock({
 
   // Get block activity from collaboration state
   const blockActivity = state.blockActivities.get(id)
-  const isBeingViewed = blockActivity?.viewers.length > 0
-  const isBeingEdited = blockActivity?.editors.length > 0
+  const isBeingViewed = blockActivity?.viewers ? blockActivity.viewers.length > 0 : false
+  const isBeingEdited = blockActivity?.editors ? blockActivity.editors.length > 0 : false
   const activityLevel = blockActivity?.activityLevel || 0
 
   // Join block when component mounts or becomes active

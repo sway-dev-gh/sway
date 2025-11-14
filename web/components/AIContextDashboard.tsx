@@ -14,7 +14,7 @@ export default function AIContextDashboard() {
   // Continuously feed context data to AI engine
   useEffect(() => {
     const contextData = {
-      timestamps: Array.from(collabState.blockActivities.values()).map(a => a.lastActivity || Date.now()),
+      timestamps: Array.from(collabState.blockActivities.values()).map(a => Date.now()),
       interactions: collabState.activeRequests.map(r => ({ type: r.type, priority: r.priority })),
       workflows: [{ completionTime: Math.random() * 30 + 5 }], // Simulated workflow data
       teamActivity: collabState.onlineCount,

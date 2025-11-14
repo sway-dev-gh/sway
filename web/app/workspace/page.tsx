@@ -89,7 +89,7 @@ export default function LivingWorkspace() {
       currentPhase: determineDevelopmentPhase()
     }
 
-    setWorkspaceContext(prev => ({ ...prev, ...context }))
+    setWorkspaceContext((prev: any) => ({ ...prev, ...context }))
   }
 
   const determineDevelopmentPhase = () => {
