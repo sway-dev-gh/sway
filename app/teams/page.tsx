@@ -113,7 +113,7 @@ export default function Teams() {
       }))
 
       const permissionData = {
-        userId: user?.id || 'current_user',
+        userId: 'current_user',
         permissions: permissions,
         updatedAt: new Date().toISOString(),
         updatedBy: 'admin'

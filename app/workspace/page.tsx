@@ -178,6 +178,7 @@ export default function Workspace() {
         title: formData.get('title') as string,
         description: formData.get('description') as string,
         project_type: formData.get('project_type') as string,
+        created_at: selectedProject.created_at,
         updated_at: new Date().toISOString()
       }
 
