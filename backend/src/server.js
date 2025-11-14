@@ -199,6 +199,29 @@ app.use('/api/notifications', intelligentRateLimiter, notificationRoutes.router)
 // Enhanced health check with security monitoring
 app.get('/health', healthCheck())
 
+// CSRF token endpoint for frontend security
+app.get('/api/csrf-token', (req, res) => {
+  try {
+    // Generate a simple CSRF token
+    const crypto = require('crypto')
+    const csrfToken = crypto.randomBytes(32).toString('hex')
+
+    // Set token in response header and return it
+    res.set('X-CSRF-Token', csrfToken)
+    res.json({
+      success: true,
+      token: csrfToken,
+      timestamp: new Date().toISOString()
+    })
+  } catch (error) {
+    console.error('CSRF token generation error:', error)
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate CSRF token'
+    })
+  }
+})
+
 // Root endpoint to prevent 404s
 app.get('/', (req, res) => {
   res.json({

@@ -50,7 +50,7 @@ router.post('/signup', signupLimiter, validateAuth.signup, async (req, res) => {
     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email])
     if (existing.rows.length > 0) {
       // SECURITY: Use generic message to prevent user enumeration
-      return res.status(400).json({ error: 'If this email is not registered, you will receive a confirmation email' })
+      return res.status(400).json({ error: 'An account with this email already exists. Please try logging in instead.' })
     }
 
     // Hash password
@@ -198,5 +198,6 @@ router.post('/logout-all', authenticateToken, logoutAllDevices)
 
 // GET /api/auth/sessions - Get active sessions
 router.get('/sessions', authenticateToken, getMyActiveSessions)
+
 
 module.exports = router
