@@ -387,9 +387,18 @@ const sessionAnomalyDetection = (req, res, next) => {
 const securityRequestLogger = expressWinston.logger({
   winstonInstance: securityLogger,
   meta: true,
-  msg: 'Security HTTP {{req.method}} {{req.url}}',
-  expressFormat: true,
+  msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+  expressFormat: false,
   colorize: false,
+  skip: (req, res) => {
+    // In production, only log if there are threats or errors
+    if (process.env.NODE_ENV === 'production') {
+      const hasThreats = req.threatInfo && req.threatInfo.totalScore > 0;
+      const isError = res.statusCode >= 400;
+      return !hasThreats && !isError;
+    }
+    return false; // Log everything in development
+  },
   requestFilter: (req, propName) => {
     // Exclude sensitive data from logs
     if (propName === 'headers') {
@@ -405,8 +414,7 @@ const securityRequestLogger = expressWinston.logger({
       ip: req.ip,
       userAgent: req.get('User-Agent'),
       threatInfo: req.threatInfo,
-      userId: req.user ? req.user.id : null,
-      timestamp: new Date()
+      userId: req.user ? req.user.id : null
     };
   }
 });
@@ -438,7 +446,10 @@ const collectSecurityMetrics = () => {
     }
   });
 
-  securityLogger.info('📊 Security Metrics', metrics);
+  // Only log metrics in development or if there are actual threats
+  if (process.env.NODE_ENV !== 'production' || metrics.activeThreats.length > 0 || metrics.blockedRequests > 0) {
+    securityLogger.info('📊 Security Metrics', metrics);
+  }
   return metrics;
 };
 
@@ -458,8 +469,9 @@ const cleanupCaches = () => {
   securityLogger.info('🧹 Security cache cleanup completed');
 };
 
-// Start periodic tasks
-setInterval(collectSecurityMetrics, 5 * 60 * 1000); // Every 5 minutes
+// Start periodic tasks - reduced frequency in production
+const metricsInterval = process.env.NODE_ENV === 'production' ? 30 * 60 * 1000 : 5 * 60 * 1000; // 30 min in prod, 5 min in dev
+setInterval(collectSecurityMetrics, metricsInterval);
 setInterval(cleanupCaches, 60 * 60 * 1000); // Every hour
 
 module.exports = {
