@@ -39,20 +39,34 @@ const corsOptions = {
       return callback(null, true);
     }
 
-    const allowedOrigins = [
-      // Development
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:3002',
-      'http://localhost:5173',
-      'http://127.0.0.1:3000',
-      'http://127.0.0.1:3001',
+    // SECURITY FIX: Configurable CORS origins via environment variables
+    const getAllowedOrigins = () => {
+      // Get custom origins from environment variable (comma-separated)
+      const customOrigins = process.env.CORS_ALLOWED_ORIGINS
+        ? process.env.CORS_ALLOWED_ORIGINS.split(',').map(origin => origin.trim())
+        : []
 
-      // Production
-      'https://swayfiles.com',
-      'https://www.swayfiles.com',
-      'https://api.swayfiles.com'
-    ];
+      // Default origins based on environment
+      const defaultOrigins = process.env.NODE_ENV === 'production'
+        ? [
+            'https://swayfiles.com',
+            'https://www.swayfiles.com',
+            'https://api.swayfiles.com'
+          ]
+        : [
+            'http://localhost:3000',
+            'http://localhost:3001',
+            'http://localhost:3002',
+            'http://localhost:5173',
+            'http://127.0.0.1:3000',
+            'http://127.0.0.1:3001'
+          ]
+
+      // Merge custom and default origins, remove duplicates
+      return [...new Set([...defaultOrigins, ...customOrigins])]
+    }
+
+    const allowedOrigins = getAllowedOrigins()
 
     console.log('🔍 CORS ALLOWED ORIGINS:', allowedOrigins);
 
