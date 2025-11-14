@@ -225,7 +225,7 @@ const WorkspaceDashboard: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-semibold text-terminal-text">
-              Welcome back, {user?.name || user?.email?.split('@')[0] || 'User'}! 👋
+              Welcome back, {user?.username || user?.email?.split('@')[0] || 'User'}! 👋
             </h1>
             <p className="text-terminal-muted mt-1">
               Here's what's happening in your workspace today
