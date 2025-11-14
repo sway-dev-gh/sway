@@ -1,17 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    const apiUrl = process.env.NODE_ENV === 'production'
-      ? 'https://api.swayfiles.com'
-      : 'http://localhost:5001'
-
-    return [
-      {
-        source: '/api/:path*',
-        destination: `${apiUrl}/api/:path*`,
-      },
-    ]
-  },
+  // REMOVED PROXY REWRITES - Using direct API calls to fix CORS issues
+  // The Vercel proxy was interfering with CORS headers
+  // All API calls now go directly to api.swayfiles.com with proper CORS
 }
 
 module.exports = nextConfig

@@ -265,7 +265,12 @@ const errorHandler = (error, req, res, next) => {
     'X-XSS-Protection': '1; mode=block',
     'Cache-Control': 'no-cache, no-store, must-revalidate',
     'Pragma': 'no-cache',
-    'Expires': '0'
+    'Expires': '0',
+    // CORS headers for error responses
+    'Access-Control-Allow-Origin': 'https://swayfiles.com',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS, PATCH',
+    'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token'
   })
 
   res.status(status).json(response)

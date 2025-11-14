@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import AppLayout from '@/components/AppLayout'
+import { apiRequest } from '@/lib/auth'
 
 export default function Teams() {
   const [activeTab, setActiveTab] = useState('members')
@@ -43,16 +44,12 @@ export default function Teams() {
 
       // Try to send invitation via backend
       try {
-        const response = await fetch('/api/teams/invite', {
+        const response = await apiRequest('/api/teams/invite', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
-          },
           body: JSON.stringify(invitationData)
         })
 
-        if (!response.ok) {
+        if (!response?.ok) {
           console.warn('API invitation failed, invitation saved locally')
         } else {
           console.log('Invitation sent via backend successfully')
@@ -127,16 +124,12 @@ export default function Teams() {
 
       // Try to save to backend
       try {
-        const response = await fetch('/api/teams/permissions', {
+        const response = await apiRequest('/api/teams/permissions', {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
-          },
           body: JSON.stringify(permissionData)
         })
 
-        if (!response.ok) {
+        if (!response?.ok) {
           console.warn('API permission save failed, using localStorage')
         } else {
           console.log('Permissions saved to backend successfully')
@@ -187,16 +180,12 @@ export default function Teams() {
 
       // Try to delete from backend
       try {
-        const response = await fetch('/api/teams/current', {
+        const response = await apiRequest('/api/teams/current', {
           method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
-          },
           body: JSON.stringify(teamData)
         })
 
-        if (!response.ok) {
+        if (!response?.ok) {
           console.warn('API delete failed, team removed locally')
         } else {
           console.log('Team deleted from backend successfully')
@@ -251,16 +240,12 @@ export default function Teams() {
 
       // Try to save to backend
       try {
-        const response = await fetch('/api/teams/settings', {
+        const response = await apiRequest('/api/teams/settings', {
           method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
-          },
           body: JSON.stringify(teamSettings)
         })
 
-        if (!response.ok) {
+        if (!response?.ok) {
           console.warn('API team settings save failed, using localStorage')
         } else {
           console.log('Team settings saved to backend successfully')
