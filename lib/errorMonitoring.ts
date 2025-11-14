@@ -143,8 +143,8 @@ class EnterpriseErrorMonitor {
           {
             route: window.location.pathname,
             stackTrace: event.error?.stack,
-            lineNumber: event.lineno,
-            columnNumber: event.colno,
+            // lineNumber: event.lineno,
+            // columnNumber: event.colno,
             filename: event.filename
           }
         )
