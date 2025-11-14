@@ -27,7 +27,7 @@ export default function Login() {
 
       if (result.success) {
         // Force refresh to update auth state everywhere
-        window.location.href = '/dashboard'
+        window.location.href = '/'
       } else {
         setError(result.message || 'Authentication failed')
       }
@@ -142,7 +142,7 @@ export default function Login() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 text-terminal-text placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 text-black placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
                   placeholder="Enter your email"
                   required
                 />
@@ -158,7 +158,7 @@ export default function Login() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 text-terminal-text placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 text-black placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
                   placeholder="Enter your password"
                   required
                 />
