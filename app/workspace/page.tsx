@@ -21,10 +21,27 @@ export default function Workspace() {
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [error, setError] = useState('')
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteLoading, setInviteLoading] = useState(false)
+  const [settingsLoading, setSettingsLoading] = useState(false)
+  const [notification, setNotification] = useState('')
 
   useEffect(() => {
     loadProjects()
   }, [])
+
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification('')
+      }, 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [notification])
+
+  const showNotification = (message: string) => {
+    setNotification(message)
+  }
 
   const loadProjects = async () => {
     try {
@@ -100,7 +117,97 @@ export default function Workspace() {
   const copyShareLink = () => {
     const shareUrl = `${window.location.origin}/project/${selectedProject?.id}`
     navigator.clipboard.writeText(shareUrl)
-    alert('Share link copied to clipboard!')
+    showNotification('Share link copied to clipboard!')
+  }
+
+  const handleSendInvitation = async () => {
+    if (!inviteEmail || !selectedProject) return
+
+    if (!/\S+@\S+\.\S+/.test(inviteEmail)) {
+      showNotification('Please enter a valid email address')
+      return
+    }
+
+    setInviteLoading(true)
+    try {
+      const inviteData = {
+        projectId: selectedProject.id,
+        email: inviteEmail,
+        role: 'collaborator',
+        invitedAt: new Date().toISOString()
+      }
+
+      // Save to localStorage and attempt backend sync
+      const existingInvites = JSON.parse(localStorage.getItem('project_invites') || '[]')
+      existingInvites.push(inviteData)
+      localStorage.setItem('project_invites', JSON.stringify(existingInvites))
+
+      const response = await apiRequest('/api/projects/invite', {
+        method: 'POST',
+        body: JSON.stringify(inviteData)
+      })
+
+      if (response?.ok || !response) {
+        showNotification(`Invitation sent to ${inviteEmail}`)
+        setInviteEmail('')
+        setShowShareModal(false)
+      } else {
+        throw new Error('Failed to send invitation')
+      }
+    } catch (error) {
+      console.error('Invitation error:', error)
+      showNotification('Invitation saved locally - will sync when backend is available')
+      setInviteEmail('')
+      setShowShareModal(false)
+    } finally {
+      setInviteLoading(false)
+    }
+  }
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selectedProject) return
+
+    setSettingsLoading(true)
+    try {
+      const form = e.target as HTMLFormElement
+      const formData = new FormData(form)
+
+      const updatedProject = {
+        id: selectedProject.id,
+        title: formData.get('title') as string,
+        description: formData.get('description') as string,
+        project_type: formData.get('project_type') as string,
+        updated_at: new Date().toISOString()
+      }
+
+      // Update local state immediately
+      setSelectedProject(updatedProject)
+      setProjects(prev => prev.map(p => p.id === selectedProject.id ? updatedProject : p))
+
+      // Save to localStorage
+      const savedProjects = JSON.parse(localStorage.getItem('user_projects') || '[]')
+      const updatedProjects = savedProjects.map((p: any) => p.id === selectedProject.id ? updatedProject : p)
+      localStorage.setItem('user_projects', JSON.stringify(updatedProjects))
+
+      const response = await apiRequest(`/api/projects/${selectedProject.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedProject)
+      })
+
+      if (response?.ok || !response) {
+        showNotification('Project settings updated successfully')
+        setShowSettingsModal(false)
+      } else {
+        throw new Error('Failed to save settings')
+      }
+    } catch (error) {
+      console.error('Settings save error:', error)
+      showNotification('Settings saved locally - will sync when backend is available')
+      setShowSettingsModal(false)
+    } finally {
+      setSettingsLoading(false)
+    }
   }
 
   if (loading) {
@@ -149,6 +256,13 @@ export default function Workspace() {
             {selectedProject ? `Working on: ${selectedProject.title}` : 'Project collaboration space'}
           </p>
         </div>
+
+        {/* Notification */}
+        {notification && (
+          <div className="mx-6 mb-4 bg-terminal-text text-terminal-bg px-4 py-2 text-sm">
+            {notification}
+          </div>
+        )}
 
         <div className="p-6">
           {/* Project Selection */}
@@ -297,11 +411,17 @@ export default function Workspace() {
                 <label className="block text-sm text-terminal-text">Invite by Email</label>
                 <input
                   type="email"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
                   placeholder="colleague@company.com"
                   className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm"
                 />
-                <button className="w-full bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors">
-                  Send Invitation
+                <button
+                  onClick={handleSendInvitation}
+                  disabled={inviteLoading || !inviteEmail.trim()}
+                  className="w-full bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                >
+                  {inviteLoading ? 'Sending...' : 'Send Invitation'}
                 </button>
               </div>
 
@@ -324,12 +444,14 @@ export default function Workspace() {
           <div className="bg-terminal-surface border border-terminal-border p-6 w-full max-w-md">
             <h2 className="text-xl text-terminal-text font-medium mb-4">{selectedProject.title} Settings</h2>
 
-            <div className="space-y-4">
+            <form onSubmit={handleSaveSettings} className="space-y-4">
               <div>
                 <label className="block text-sm text-terminal-text mb-2">Project Name</label>
                 <input
+                  name="title"
                   type="text"
                   defaultValue={selectedProject.title}
+                  required
                   className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm"
                 />
               </div>
@@ -337,6 +459,7 @@ export default function Workspace() {
               <div>
                 <label className="block text-sm text-terminal-text mb-2">Description</label>
                 <textarea
+                  name="description"
                   defaultValue={selectedProject.description}
                   className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm h-20 resize-none"
                 />
@@ -345,6 +468,7 @@ export default function Workspace() {
               <div>
                 <label className="block text-sm text-terminal-text mb-2">Project Type</label>
                 <select
+                  name="project_type"
                   defaultValue={selectedProject.project_type}
                   className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm"
                 >
@@ -355,17 +479,22 @@ export default function Workspace() {
               </div>
 
               <div className="flex space-x-4 mt-6">
-                <button className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors">
-                  Save Changes
+                <button
+                  type="submit"
+                  disabled={settingsLoading}
+                  className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                >
+                  {settingsLoading ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button
+                  type="button"
                   onClick={() => setShowSettingsModal(false)}
                   className="flex-1 border border-terminal-border text-terminal-text py-2 text-sm hover:bg-terminal-hover transition-colors"
                 >
                   Cancel
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       )}

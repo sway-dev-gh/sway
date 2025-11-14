@@ -5,6 +5,47 @@ import AppLayout from '@/components/AppLayout'
 
 export default function Review() {
   const [showAllReviews, setShowAllReviews] = useState(false)
+  const [loadedReviewsCount, setLoadedReviewsCount] = useState(4)
+  const [loading, setLoading] = useState(false)
+
+  const totalReviews = 12
+
+  const handleLoadMore = async () => {
+    setLoading(true)
+    try {
+      // Simulate loading more reviews
+      setTimeout(() => {
+        const remainingReviews = totalReviews - loadedReviewsCount
+        const reviewsToLoad = Math.min(4, remainingReviews) // Load 4 more or remaining
+        setLoadedReviewsCount(prev => prev + reviewsToLoad)
+        setLoading(false)
+      }, 1000) // Simulate network delay
+    } catch (error) {
+      console.error('Failed to load more reviews:', error)
+      setLoading(false)
+    }
+  }
+
+  // Generate additional review items for demonstration
+  const additionalReviews = []
+  for (let i = 5; i <= loadedReviewsCount; i++) {
+    additionalReviews.push(
+      <div key={i} className="border border-terminal-border rounded p-4">
+        <div className="flex items-center justify-between mb-2">
+          <div className="text-terminal-text font-medium">Project {String.fromCharCode(64 + i)} - Review #{i}</div>
+          <span className="text-terminal-muted text-sm">{i} weeks ago</span>
+        </div>
+        <div className="text-terminal-muted text-sm mb-2">
+          {i % 2 === 0 ? 'Code refactoring and performance improvements' : 'Feature implementation and testing updates'}
+        </div>
+        <div className="flex items-center space-x-4">
+          <span className="text-terminal-text text-xs">{i % 3 === 0 ? 'Changes Requested' : 'Approved'}</span>
+          <span className="text-terminal-muted text-xs">Reviewed by: {['Sarah Johnson', 'Mike Chen', 'Alex Rivera'][i % 3]}</span>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <AppLayout>
       <div className="flex-1 overflow-auto bg-terminal-bg">
@@ -88,16 +129,25 @@ export default function Review() {
                   <span className="text-terminal-muted text-xs">Reviewed by: Sarah Johnson</span>
                 </div>
               </div>
+
+              {/* Additional Reviews */}
+              {additionalReviews}
             </div>
 
             <div className="flex justify-between items-center mt-4">
               <div className="text-terminal-muted text-sm">
-                Showing 4 of 12 reviews
+                Showing {loadedReviewsCount} of {totalReviews} reviews
               </div>
               <div className="flex space-x-4">
-                <button className="border border-terminal-border text-terminal-text px-3 py-1 text-sm hover:bg-terminal-hover transition-colors">
-                  Load More
-                </button>
+                {loadedReviewsCount < totalReviews && (
+                  <button
+                    onClick={handleLoadMore}
+                    disabled={loading}
+                    className="border border-terminal-border text-terminal-text px-3 py-1 text-sm hover:bg-terminal-hover transition-colors disabled:opacity-50"
+                  >
+                    {loading ? 'Loading...' : 'Load More'}
+                  </button>
+                )}
                 <button
                   onClick={() => setShowAllReviews(false)}
                   className="bg-terminal-text text-terminal-bg px-3 py-1 text-sm hover:bg-terminal-muted transition-colors"
