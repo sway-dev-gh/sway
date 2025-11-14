@@ -61,11 +61,11 @@ export default function Settings() {
   }
 
   const tabs = [
-    { id: 'account', name: 'Account', icon: '👤' },
-    { id: 'workspace', name: 'Workspace', icon: '⚙️' },
-    { id: 'automation', name: 'Automation', icon: '🤖' },
-    { id: 'billing', name: 'Billing', icon: '💳' },
-    { id: 'security', name: 'Security', icon: '🔐' },
+    { id: 'account', name: 'Account', icon: '' },
+    { id: 'workspace', name: 'Workspace', icon: '' },
+    { id: 'automation', name: 'Automation', icon: '' },
+    { id: 'billing', name: 'Billing', icon: '' },
+    { id: 'security', name: 'Security', icon: '' },
   ]
 
   return (
@@ -215,7 +215,7 @@ export default function Settings() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Command Palette Shortcut</span>
-                      <div className="text-terminal-text text-sm font-mono">⌘ + /</div>
+                      <div className="text-terminal-text text-sm font-mono">Ctrl + /</div>
                     </div>
                   </div>
                 </div>
@@ -307,10 +307,10 @@ export default function Settings() {
                       </div>
                     </div>
 
-                    <div className="border border-yellow-500/50 rounded p-4 bg-yellow-900/10">
+                    <div className="border border-terminal-border rounded p-4 bg-terminal-bg">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-terminal-text font-medium">Slack integration</h3>
-                        <button className="px-3 py-1 text-xs bg-yellow-600 text-white">
+                        <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
                           Coming Soon
                         </button>
                       </div>
@@ -336,12 +336,12 @@ export default function Settings() {
                 </div>
 
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🔌 Integrations</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">Integrations</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">GitHub</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-terminal-text">Coming Soon</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Sync projects with GitHub repositories
@@ -354,7 +354,7 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Slack</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-terminal-text">Coming Soon</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Send notifications to Slack channels
@@ -367,7 +367,7 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Discord</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-terminal-text">Coming Soon</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Post updates to Discord servers
@@ -380,7 +380,7 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Zapier</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-terminal-text">Coming Soon</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Connect to 5000+ apps via Zapier
@@ -426,7 +426,7 @@ export default function Settings() {
             <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🔐 Security Settings</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">Security Settings</h2>
 
                   <div className="space-y-4">
                     <div className="border border-terminal-border rounded-sm p-4">
@@ -444,7 +444,7 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         You have 1 active session. Log out of all devices to enhance security.
                       </p>
-                      <button className="bg-red-600 text-white px-3 py-2 text-sm hover:bg-red-700 transition-colors">
+                      <button className="bg-terminal-text text-terminal-bg px-3 py-2 text-sm hover:bg-terminal-muted transition-colors">
                         Logout All Devices
                       </button>
                     </div>

@@ -113,7 +113,7 @@ export default function PricingPlans() {
                 {/* Current Plan Badge */}
                 {isCurrentPlan && (
                   <div className="absolute -top-3 right-4">
-                    <span className="bg-green-600 text-white px-3 py-1 text-xs font-medium">
+                    <span className="bg-terminal-text text-terminal-bg px-3 py-1 text-xs font-medium">
                       CURRENT
                     </span>
                   </div>
@@ -139,7 +139,7 @@ export default function PricingPlans() {
                   <ul className="space-y-3">
                     {plan.features.map((feature, index) => (
                       <li key={index} className="flex items-start text-sm">
-                        <span className="text-terminal-text mr-3 mt-1">✓</span>
+                        <span className="text-terminal-text mr-3 mt-1">•</span>
                         <span className="text-terminal-muted">{feature}</span>
                       </li>
                     ))}
@@ -168,9 +168,9 @@ export default function PricingPlans() {
                 {/* Security Note */}
                 {plan.name === 'Pro' && (
                   <div className="mt-4 text-xs text-terminal-muted text-center">
-                    <p>✓ Enhanced security features</p>
-                    <p>✓ SOC 2 compliance</p>
-                    <p>✓ Advanced audit logs</p>
+                    <p>• Enhanced security features</p>
+                    <p>• SOC 2 compliance</p>
+                    <p>• Advanced audit logs</p>
                   </div>
                 )}
               </div>
@@ -181,7 +181,7 @@ export default function PricingPlans() {
         {/* Security Features */}
         <div className="mt-16 bg-terminal-surface border border-terminal-border rounded-sm p-6">
           <h3 className="text-lg text-terminal-text font-medium mb-4 text-center">
-            🔐 Security & Trust
+            Security & Trust
           </h3>
           <div className="grid md:grid-cols-3 gap-6 text-sm text-terminal-muted">
             <div className="text-center">

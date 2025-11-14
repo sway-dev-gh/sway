@@ -12,6 +12,15 @@ export default function Settings() {
   const [emailNotifications, setEmailNotifications] = useState(false)
   const [projectUpdates, setProjectUpdates] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [apiKey, setApiKey] = useState('')
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false)
+  const [showPasswordModal, setShowPasswordModal] = useState(false)
+  const [showAutomationModal, setShowAutomationModal] = useState(false)
+  const [showLineNumbers, setShowLineNumbers] = useState(true)
+  const [autoAssignReviews, setAutoAssignReviews] = useState(false)
+  const [realTimePresence, setRealTimePresence] = useState(true)
+  const [autoApproveChanges, setAutoApproveChanges] = useState(false)
+  const [teamNotifications, setTeamNotifications] = useState(true)
   const { user } = useAuth()
 
   // Populate with user data
@@ -41,23 +50,102 @@ export default function Settings() {
       // Validate inputs
       if (email && !validateEmail(email)) {
         alert('Please enter a valid email address')
+        setSaving(false)
         return
       }
 
       if (username && !validateUsername(username)) {
         alert('Username must be 3-30 characters and contain only letters, numbers, underscores, and hyphens')
+        setSaving(false)
         return
       }
 
-      // TODO: Save to backend
-      console.log('Saving settings:', { email, username, emailNotifications, projectUpdates })
-      alert('Settings saved successfully!')
+      // Save to backend
+      const response = await fetch('/api/user/settings', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          username,
+          emailNotifications,
+          projectUpdates
+        })
+      })
+
+      if (response.ok) {
+        alert('Settings saved successfully!')
+      } else {
+        throw new Error('Failed to save settings')
+      }
     } catch (error) {
       console.error('Save error:', error)
       alert('Failed to save settings')
     } finally {
       setSaving(false)
     }
+  }
+
+  const handleGenerateApiKey = async () => {
+    setSaving(true)
+    try {
+      const response = await fetch('/api/user/generate-api-key', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setApiKey(data.apiKey)
+        setShowApiKeyModal(true)
+      } else {
+        alert('Failed to generate API key')
+      }
+    } catch (error) {
+      console.error('API key generation error:', error)
+      alert('Failed to generate API key')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleConnectIntegration = (integration: string) => {
+    // TODO: Implement OAuth flow for each integration
+    alert(`Connecting to ${integration}... This will redirect you to authorize access.`)
+  }
+
+  const handleChangePassword = () => {
+    setShowPasswordModal(true)
+  }
+
+  const handleLogoutAllDevices = async () => {
+    if (confirm('Are you sure you want to log out of all devices? You will need to sign in again on all your devices.')) {
+      try {
+        const response = await fetch('/api/auth/logout-all', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        })
+
+        if (response.ok) {
+          alert('Successfully logged out of all devices')
+          window.location.href = '/login'
+        } else {
+          alert('Failed to logout all devices')
+        }
+      } catch (error) {
+        console.error('Logout all devices error:', error)
+        alert('Failed to logout all devices')
+      }
+    }
+  }
+
+  const handleViewActivityLog = () => {
+    window.open('/security/activity-log', '_blank')
+  }
+
+  const handleAddAutomationRule = () => {
+    setShowAutomationModal(true)
   }
 
   const tabs = [
@@ -208,14 +296,21 @@ export default function Settings() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Show Line Numbers</span>
-                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
-                        Enabled
+                      <button
+                        onClick={() => setShowLineNumbers(!showLineNumbers)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          showLineNumbers
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {showLineNumbers ? 'Enabled' : 'Disabled'}
                       </button>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Command Palette Shortcut</span>
-                      <div className="text-terminal-text text-sm font-mono">⌘ + /</div>
+                      <div className="text-terminal-text text-sm font-mono">Ctrl + /</div>
                     </div>
                   </div>
                 </div>
@@ -225,8 +320,15 @@ export default function Settings() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Auto-assign Reviews</span>
-                      <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
-                        Disabled
+                      <button
+                        onClick={() => setAutoAssignReviews(!autoAssignReviews)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          autoAssignReviews
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {autoAssignReviews ? 'Enabled' : 'Disabled'}
                       </button>
                     </div>
 
@@ -241,8 +343,15 @@ export default function Settings() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Real-time Presence</span>
-                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
-                        Enabled
+                      <button
+                        onClick={() => setRealTimePresence(!realTimePresence)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          realTimePresence
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {realTimePresence ? 'Enabled' : 'Disabled'}
                       </button>
                     </div>
                   </div>
@@ -276,8 +385,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-terminal-text font-medium">Auto-approve simple changes</h3>
-                        <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
-                          Disabled
+                        <button
+                          onClick={() => setAutoApproveChanges(!autoApproveChanges)}
+                          className={`px-3 py-1 text-xs transition-colors ${
+                            autoApproveChanges
+                              ? 'bg-terminal-text text-terminal-bg'
+                              : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                          }`}
+                        >
+                          {autoApproveChanges ? 'Enabled' : 'Disabled'}
                         </button>
                       </div>
                       <div className="text-sm text-terminal-muted">
@@ -293,8 +409,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-terminal-text font-medium">Team notifications</h3>
-                        <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
-                          Enabled
+                        <button
+                          onClick={() => setTeamNotifications(!teamNotifications)}
+                          className={`px-3 py-1 text-xs transition-colors ${
+                            teamNotifications
+                              ? 'bg-terminal-text text-terminal-bg'
+                              : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                          }`}
+                        >
+                          {teamNotifications ? 'Enabled' : 'Disabled'}
                         </button>
                       </div>
                       <div className="text-sm text-terminal-muted">
@@ -307,10 +430,10 @@ export default function Settings() {
                       </div>
                     </div>
 
-                    <div className="border border-yellow-500/50 rounded p-4 bg-yellow-900/10">
+                    <div className="border border-terminal-border rounded p-4 bg-terminal-bg">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-terminal-text font-medium">Slack integration</h3>
-                        <button className="px-3 py-1 text-xs bg-yellow-600 text-white">
+                        <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
                           Coming Soon
                         </button>
                       </div>
@@ -327,6 +450,7 @@ export default function Settings() {
 
                   <div className="mt-6 pt-4 border-t border-terminal-border">
                     <button
+                      onClick={handleAddAutomationRule}
                       className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors"
                     >
                       Add New Automation Rule
@@ -340,12 +464,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">GitHub</h3>
-                        <span className="text-xs text-green-400">Available</span>
+                        <span className="text-xs text-terminal-text">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Sync projects with GitHub repositories
                       </p>
-                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
+                      <button
+                        onClick={() => handleConnectIntegration('GitHub')}
+                        className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -353,12 +480,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Slack</h3>
-                        <span className="text-xs text-green-400">Available</span>
+                        <span className="text-xs text-terminal-text">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Send notifications to Slack channels
                       </p>
-                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
+                      <button
+                        onClick={() => handleConnectIntegration('Slack')}
+                        className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -366,12 +496,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Discord</h3>
-                        <span className="text-xs text-green-400">Available</span>
+                        <span className="text-xs text-terminal-text">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Post updates to Discord servers
                       </p>
-                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
+                      <button
+                        onClick={() => handleConnectIntegration('Discord')}
+                        className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -379,12 +512,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Zapier</h3>
-                        <span className="text-xs text-green-400">Available</span>
+                        <span className="text-xs text-terminal-text">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Connect to 5000+ apps via Zapier
                       </p>
-                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
+                      <button
+                        onClick={() => handleConnectIntegration('Zapier')}
+                        className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -396,8 +532,12 @@ export default function Settings() {
                   <div className="border border-terminal-border rounded p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-terminal-text font-medium">API Access</h3>
-                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
-                        Generate API Key
+                      <button
+                        onClick={handleGenerateApiKey}
+                        disabled={saving}
+                        className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                      >
+                        {saving ? 'Generating...' : 'Generate API Key'}
                       </button>
                     </div>
                     <div className="text-sm text-terminal-muted mb-3">
@@ -433,7 +573,10 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         Your password meets security requirements: 12+ characters with uppercase, lowercase, numbers, and special characters.
                       </p>
-                      <button className="bg-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors">
+                      <button
+                        onClick={handleChangePassword}
+                        className="bg-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors"
+                      >
                         Change Password
                       </button>
                     </div>
@@ -443,7 +586,10 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         You have 1 active session. Log out of all devices to enhance security.
                       </p>
-                      <button className="bg-red-600 text-white px-3 py-2 text-sm hover:bg-red-700 transition-colors">
+                      <button
+                        onClick={handleLogoutAllDevices}
+                        className="bg-terminal-text text-terminal-bg px-3 py-2 text-sm hover:bg-terminal-muted transition-colors"
+                      >
                         Logout All Devices
                       </button>
                     </div>
@@ -453,7 +599,10 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         Monitor your account for suspicious activity. Last login: {new Date().toLocaleString()}
                       </p>
-                      <button className="bg-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors">
+                      <button
+                        onClick={handleViewActivityLog}
+                        className="bg-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors"
+                      >
                         View Activity Log
                       </button>
                     </div>
@@ -464,6 +613,142 @@ export default function Settings() {
           )}
         </div>
       </div>
+
+      {/* Password Change Modal */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-terminal-surface border border-terminal-border p-6 w-full max-w-md">
+            <h2 className="text-xl text-terminal-text font-medium mb-4">Change Password</h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-terminal-text mb-2">Current Password</label>
+                <input
+                  type="password"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm focus:outline-none focus:border-terminal-text"
+                  placeholder="Enter current password"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-terminal-text mb-2">New Password</label>
+                <input
+                  type="password"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm focus:outline-none focus:border-terminal-text"
+                  placeholder="Enter new password"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-terminal-text mb-2">Confirm New Password</label>
+                <input
+                  type="password"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm focus:outline-none focus:border-terminal-text"
+                  placeholder="Confirm new password"
+                />
+              </div>
+
+              <div className="flex space-x-4 mt-6">
+                <button className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors">
+                  Change Password
+                </button>
+                <button
+                  onClick={() => setShowPasswordModal(false)}
+                  className="flex-1 border border-terminal-border text-terminal-text py-2 text-sm hover:bg-terminal-hover transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* API Key Modal */}
+      {showApiKeyModal && apiKey && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-terminal-surface border border-terminal-border p-6 w-full max-w-md">
+            <h2 className="text-xl text-terminal-text font-medium mb-4">API Key Generated</h2>
+
+            <div className="space-y-4">
+              <p className="text-terminal-muted text-sm">
+                Your new API key has been generated. Copy it now as it won't be shown again.
+              </p>
+
+              <div className="bg-terminal-bg border border-terminal-border p-3 rounded">
+                <code className="text-terminal-text text-sm font-mono break-all">{apiKey}</code>
+              </div>
+
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => navigator.clipboard.writeText(apiKey)}
+                  className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors"
+                >
+                  Copy to Clipboard
+                </button>
+                <button
+                  onClick={() => setShowApiKeyModal(false)}
+                  className="flex-1 border border-terminal-border text-terminal-text py-2 text-sm hover:bg-terminal-hover transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Automation Rule Modal */}
+      {showAutomationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-terminal-surface border border-terminal-border p-6 w-full max-w-lg">
+            <h2 className="text-xl text-terminal-text font-medium mb-4">Create Automation Rule</h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-terminal-text mb-2">Rule Name</label>
+                <input
+                  type="text"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm focus:outline-none focus:border-terminal-text"
+                  placeholder="e.g., Auto-approve small changes"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm text-terminal-text mb-2">Trigger Condition</label>
+                <select className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm">
+                  <option value="file_change">File changed</option>
+                  <option value="review_requested">Review requested</option>
+                  <option value="project_created">Project created</option>
+                  <option value="team_member_added">Team member added</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm text-terminal-text mb-2">Action</label>
+                <select className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm">
+                  <option value="auto_approve">Auto-approve</option>
+                  <option value="notify_team">Notify team</option>
+                  <option value="assign_reviewer">Assign reviewer</option>
+                  <option value="send_email">Send email</option>
+                </select>
+              </div>
+
+              <div className="flex space-x-4 mt-6">
+                <button className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors">
+                  Create Rule
+                </button>
+                <button
+                  onClick={() => setShowAutomationModal(false)}
+                  className="flex-1 border border-terminal-border text-terminal-text py-2 text-sm hover:bg-terminal-hover transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   )
 }

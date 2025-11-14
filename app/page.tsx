@@ -77,12 +77,38 @@ export default function Dashboard() {
     }
   }
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      // For now, just show an alert - we can implement full upload later
-      alert(`File "${file.name}" selected. Full upload functionality coming next!`)
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+
+    setLoading(true)
+    setError('')
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i]
+        const formData = new FormData()
+        formData.append('file', file)
+
+        const response = await apiRequest('/api/files/upload', {
+          method: 'POST',
+          body: formData
+        })
+
+        if (!response?.ok) {
+          const errorData = await response?.json()
+          throw new Error(errorData?.error || `Failed to upload ${file.name}`)
+        }
+      }
+
       setShowUploadModal(false)
+      // Refresh projects to show any new uploads
+      loadProjects()
+    } catch (error: any) {
+      console.error('File upload error:', error)
+      setError(error.message || 'Failed to upload files')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -147,7 +173,7 @@ export default function Dashboard() {
             <h2 className="text-xl text-terminal-text font-medium mb-4">Create New Project</h2>
 
             {error && (
-              <div className="bg-red-900 border border-red-700 text-red-100 p-3 mb-4 text-sm">
+              <div className="bg-terminal-bg border border-terminal-border text-terminal-text p-3 mb-4 text-sm">
                 {error}
               </div>
             )}
@@ -215,6 +241,12 @@ export default function Dashboard() {
           <div className="bg-terminal-surface border border-terminal-border p-6 w-full max-w-md">
             <h2 className="text-xl text-terminal-text font-medium mb-4">Upload Files</h2>
 
+            {error && (
+              <div className="bg-terminal-bg border border-terminal-border text-terminal-text p-3 mb-4 text-sm">
+                {error}
+              </div>
+            )}
+
             <div className="space-y-4">
               <div className="border-2 border-dashed border-terminal-border p-8 text-center">
                 <p className="text-terminal-muted mb-4">Choose files to upload</p>
@@ -223,7 +255,11 @@ export default function Dashboard() {
                   onChange={handleFileUpload}
                   className="w-full text-terminal-text text-sm"
                   multiple
+                  disabled={loading}
                 />
+                {loading && (
+                  <p className="text-terminal-muted text-sm mt-2">Uploading files...</p>
+                )}
               </div>
 
               <div className="flex space-x-4">
