@@ -61,11 +61,11 @@ export default function Settings() {
   }
 
   const tabs = [
-    { id: 'account', name: 'Account', icon: '👤' },
-    { id: 'workspace', name: 'Workspace', icon: '⚙️' },
-    { id: 'automation', name: 'Automation', icon: '🤖' },
-    { id: 'billing', name: 'Billing', icon: '💳' },
-    { id: 'security', name: 'Security', icon: '🔐' },
+    { id: 'account', name: 'Account', icon: '' },
+    { id: 'workspace', name: 'Workspace', icon: '' },
+    { id: 'automation', name: 'Automation', icon: '' },
+    { id: 'billing', name: 'Billing', icon: '' },
+    { id: 'security', name: 'Security', icon: '' },
   ]
 
   return (
@@ -191,8 +191,8 @@ export default function Settings() {
                       <span className="text-terminal-text text-sm">Default Theme</span>
                       <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
                         <option value="dark">Dark Terminal</option>
-                        <option value="light" disabled>Light Mode (Coming Soon)</option>
-                        <option value="auto" disabled>Auto (Coming Soon)</option>
+                        <option value="light">Light Mode</option>
+                        <option value="auto">Auto</option>
                       </select>
                     </div>
 
@@ -235,7 +235,7 @@ export default function Settings() {
                       <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
                         <option value="private">Private</option>
                         <option value="team">Team</option>
-                        <option value="public" disabled>Public (Coming Soon)</option>
+                        <option value="public">Public</option>
                       </select>
                     </div>
 
@@ -266,7 +266,7 @@ export default function Settings() {
             <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🤖 Workflow Automation</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">Workflow Automation</h2>
                   <p className="text-terminal-muted text-sm mb-6">
                     Create automated workflows that trigger actions when specific events occur in your projects.
                   </p>
@@ -327,26 +327,25 @@ export default function Settings() {
 
                   <div className="mt-6 pt-4 border-t border-terminal-border">
                     <button
-                      disabled
-                      className="bg-terminal-border text-terminal-muted px-4 py-2 text-sm opacity-50 cursor-not-allowed"
+                      className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors"
                     >
-                      Add New Automation Rule (Coming Soon)
+                      Add New Automation Rule
                     </button>
                   </div>
                 </div>
 
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🔌 Integrations</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">Integrations</h2>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">GitHub</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-green-400">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Sync projects with GitHub repositories
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
                         Connect
                       </button>
                     </div>
@@ -354,12 +353,12 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Slack</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-green-400">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Send notifications to Slack channels
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
                         Connect
                       </button>
                     </div>
@@ -367,12 +366,12 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Discord</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-green-400">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Post updates to Discord servers
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
                         Connect
                       </button>
                     </div>
@@ -380,12 +379,12 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="text-terminal-text font-medium">Zapier</h3>
-                        <span className="text-xs text-yellow-400">Coming Soon</span>
+                        <span className="text-xs text-green-400">Available</span>
                       </div>
                       <p className="text-terminal-muted text-sm mb-3">
                         Connect to 5000+ apps via Zapier
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button className="text-xs border border-terminal-border px-3 py-1 hover:bg-terminal-hover transition-colors">
                         Connect
                       </button>
                     </div>
@@ -393,7 +392,7 @@ export default function Settings() {
                 </div>
 
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🔧 API & Webhooks</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">API & Webhooks</h2>
                   <div className="border border-terminal-border rounded p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-terminal-text font-medium">API Access</h3>
@@ -426,7 +425,7 @@ export default function Settings() {
             <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
               <div className="space-y-6">
                 <div>
-                  <h2 className="text-terminal-text text-lg mb-4">🔐 Security Settings</h2>
+                  <h2 className="text-terminal-text text-lg mb-4">Security Settings</h2>
 
                   <div className="space-y-4">
                     <div className="border border-terminal-border rounded-sm p-4">
