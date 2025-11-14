@@ -70,7 +70,10 @@ export const authApi = {
       const data = await response.json()
 
       if (response.ok && data.token) {
-        // Store token in localStorage
+        // SECURITY WARNING: localStorage is vulnerable to XSS attacks!
+        // TODO: Migrate to HttpOnly secure cookies for production
+        // Current localStorage implementation allows token theft via XSS
+        console.warn('🚨 SECURITY: Using insecure localStorage for tokens. Migrate to HttpOnly cookies!')
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
         return { success: true, user: data.user, token: data.token }
@@ -107,7 +110,9 @@ export const authApi = {
       const data = await response.json()
 
       if (response.ok && data.token) {
-        // Store token in localStorage
+        // SECURITY WARNING: localStorage is vulnerable to XSS attacks!
+        // TODO: Migrate to HttpOnly secure cookies for production
+        console.warn('🚨 SECURITY: Using insecure localStorage for tokens. Migrate to HttpOnly cookies!')
         localStorage.setItem('token', data.token)
         localStorage.setItem('user', JSON.stringify(data.user))
         return { success: true, user: data.user, token: data.token }

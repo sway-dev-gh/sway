@@ -72,14 +72,26 @@ export default function Teams() {
       setShowInviteModal(false)
       setInviteEmail('')
 
-      // Show success notification with invite link
+      // Show success notification with invite link (XSS SAFE)
       const notification = document.createElement('div')
       notification.className = 'fixed top-4 right-4 bg-terminal-text text-terminal-bg px-6 py-4 rounded z-50 max-w-sm'
-      notification.innerHTML = `
-        <div>Invitation sent to ${inviteEmail}</div>
-        <div class="text-xs mt-2 opacity-80">Invite link copied to clipboard</div>
-        <div class="text-xs mt-1 font-mono break-all">${inviteLink}</div>
-      `
+
+      // Create elements safely to prevent XSS
+      const titleDiv = document.createElement('div')
+      titleDiv.textContent = `Invitation sent to ${inviteEmail}`
+
+      const subtitleDiv = document.createElement('div')
+      subtitleDiv.className = 'text-xs mt-2 opacity-80'
+      subtitleDiv.textContent = 'Invite link copied to clipboard'
+
+      const linkDiv = document.createElement('div')
+      linkDiv.className = 'text-xs mt-1 font-mono break-all'
+      linkDiv.textContent = inviteLink
+
+      notification.appendChild(titleDiv)
+      notification.appendChild(subtitleDiv)
+      notification.appendChild(linkDiv)
+
       document.body.appendChild(notification)
       setTimeout(() => document.body.removeChild(notification), 5000)
 
