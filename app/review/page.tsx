@@ -449,7 +449,7 @@ export default function Review() {
                     <div className="mt-4 pt-4 border-t border-terminal-border">
                       <button
                         onClick={() => {
-                          setVersionHistoryFileId(selectedReview.upload_id || selectedReview.id)
+                          setVersionHistoryFileId((selectedReview as any).upload_id || selectedReview.id)
                           setShowVersionHistory(true)
                         }}
                         className="w-full border border-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors"
