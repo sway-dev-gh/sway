@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useAuth } from '@/contexts/AuthContext'
+import { useTheme } from '@/contexts/ThemeContext'
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,7 +15,9 @@ import {
   GitBranch,
   User,
   Cog,
-  LogOut
+  LogOut,
+  Moon,
+  Sun
 } from 'lucide-react'
 
 interface NavigationItem {
@@ -36,6 +39,7 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
   const { user, logout } = useAuth()
+  const { theme, toggleTheme } = useTheme()
 
   return (
     <motion.div
@@ -153,6 +157,15 @@ export default function Sidebar() {
                 <div className="text-[10px]">{user?.email}</div>
               </div>
 
+              {/* Theme Toggle Button */}
+              <button
+                onClick={toggleTheme}
+                className="flex items-center space-x-2 w-full text-xs text-terminal-muted hover:text-terminal-text transition-colors py-2 px-2 hover:bg-terminal-hover rounded-sm"
+              >
+                {theme === 'terminal-dark' ? <Sun size={12} /> : <Moon size={12} />}
+                <span>{theme === 'terminal-dark' ? 'Light' : 'Dark'}</span>
+              </button>
+
               {/* Logout Button */}
               <button
                 onClick={logout}
@@ -168,6 +181,12 @@ export default function Sidebar() {
         {collapsed && (
           <div className="flex flex-col items-center space-y-2">
             <div className="w-2 h-2 bg-terminal-text rounded-full"></div>
+            <button
+              onClick={toggleTheme}
+              className="text-terminal-muted hover:text-terminal-text transition-colors p-1"
+            >
+              {theme === 'terminal-dark' ? <Sun size={12} /> : <Moon size={12} />}
+            </button>
             <button
               onClick={logout}
               className="text-terminal-muted hover:text-terminal-text transition-colors p-1"

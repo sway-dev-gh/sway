@@ -2,6 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Terminal Dark Theme */
+html.terminal-dark {
+  --terminal-bg: #000000;
+  --terminal-surface: #000000;
+  --terminal-card: #080808;
+  --terminal-border: #111111;
+  --terminal-text: #ffffff;
+  --terminal-muted: #666666;
+  --terminal-accent: #111111;
+  --terminal-hover: #0a0a0a;
+  --terminal-scrollbar-track: #1a1a1a;
+  --terminal-scrollbar-thumb: #333333;
+  --terminal-scrollbar-thumb-hover: #444444;
+}
+
+/* Terminal Light Theme */
+html.terminal-light {
+  --terminal-bg: #f8f8f8;
+  --terminal-surface: #ffffff;
+  --terminal-card: #f0f0f0;
+  --terminal-border: #e0e0e0;
+  --terminal-text: #1a1a1a;
+  --terminal-muted: #6b6b6b;
+  --terminal-accent: #f0f0f0;
+  --terminal-hover: #f4f4f4;
+  --terminal-scrollbar-track: #e0e0e0;
+  --terminal-scrollbar-thumb: #c0c0c0;
+  --terminal-scrollbar-thumb-hover: #a0a0a0;
+}
+
+/* Default to dark theme */
+html:not(.terminal-light):not(.terminal-dark) {
+  --terminal-bg: #000000;
+  --terminal-surface: #000000;
+  --terminal-card: #080808;
+  --terminal-border: #111111;
+  --terminal-text: #ffffff;
+  --terminal-muted: #666666;
+  --terminal-accent: #111111;
+  --terminal-hover: #0a0a0a;
+  --terminal-scrollbar-track: #1a1a1a;
+  --terminal-scrollbar-thumb: #333333;
+  --terminal-scrollbar-thumb-hover: #444444;
+}
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -12,9 +57,10 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background-color: #000000;
-  color: #ffffff;
+  background-color: var(--terminal-bg);
+  color: var(--terminal-text);
   font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 a {
@@ -38,14 +84,15 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
+  background: var(--terminal-scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333333;
+  background: var(--terminal-scrollbar-thumb);
   border-radius: 2px;
+  transition: background-color 0.2s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #444444;
+  background: var(--terminal-scrollbar-thumb-hover);
 }

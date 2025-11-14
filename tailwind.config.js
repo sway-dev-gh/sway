@@ -12,14 +12,14 @@ module.exports = {
       },
       colors: {
         terminal: {
-          bg: '#000000',
-          surface: '#000000',
-          card: '#080808',
-          border: '#111111',
-          text: '#ffffff',
-          muted: '#666666',
-          accent: '#111111',
-          hover: '#0a0a0a',
+          bg: 'var(--terminal-bg)',
+          surface: 'var(--terminal-surface)',
+          card: 'var(--terminal-card)',
+          border: 'var(--terminal-border)',
+          text: 'var(--terminal-text)',
+          muted: 'var(--terminal-muted)',
+          accent: 'var(--terminal-accent)',
+          hover: 'var(--terminal-hover)',
         }
       }
     },
