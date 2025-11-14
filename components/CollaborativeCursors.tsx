@@ -244,11 +244,11 @@ export default function CollaborativeCursors({
       setCursors(prev => {
         const newCursors = new Map(prev)
 
-        for (const [userId, cursor] of newCursors.entries()) {
+        Array.from(newCursors.entries()).forEach(([userId, cursor]) => {
           if (now.getTime() - cursor.timestamp.getTime() > 30000) {
             newCursors.delete(userId)
           }
-        }
+        })
 
         return newCursors
       })
