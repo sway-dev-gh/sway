@@ -12,13 +12,17 @@ const {
 } = require('../middleware/auth')
 const { validateAuth, validationRateLimit } = require('../middleware/validation')
 
-// Rate limiter for signup - strict to prevent multi-account abuse
+// Rate limiter for signup - temporarily relaxed for testing
 const signupLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // 3 signups per hour per IP
+  max: 50, // Increased to 50 signups per hour for testing
   message: { error: 'Too many accounts created from this IP. Please try again in an hour.' },
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting in development
+    return process.env.NODE_ENV !== 'production'
+  }
 })
 
 // Rate limiter for login - less strict
