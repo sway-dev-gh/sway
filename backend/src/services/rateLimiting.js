@@ -136,10 +136,15 @@ class RateLimitingService {
       })
 
       await this.redisClient.connect()
-      console.log('✓ Redis connected for rate limiting')
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('✓ Redis connected for rate limiting')
+      }
 
     } catch (error) {
-      console.log('⚠️ Redis unavailable, using in-memory fallback:', error.message)
+      // Only log Redis connection issues in development
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('⚠️ Redis unavailable, using in-memory fallback:', error.message)
+      }
       this.redisClient = null
     }
   }

@@ -227,24 +227,39 @@ class KeyRotationService {
         ORDER BY created_at DESC
       `)
 
-      for (const row of result.rows) {
-        const encryptedData = typeof row.key_value === 'string' ? JSON.parse(row.key_value) : row.key_value
-        const decryptedKey = this.decryptKeyFromStorage(encryptedData)
+      let loadedCount = 0
+      let failedCount = 0
 
-        this.activeKeys.set(row.key_type, {
-          keyId: row.key_id,
-          keyValue: decryptedKey,
-          algorithm: row.algorithm,
-          status: row.status,
-          expiresAt: row.expires_at,
-          metadata: typeof row.metadata === 'string' ? JSON.parse(row.metadata || '{}') : (row.metadata || {})
-        })
+      for (const row of result.rows) {
+        try {
+          const encryptedData = typeof row.key_value === 'string' ? JSON.parse(row.key_value) : row.key_value
+          const decryptedKey = this.decryptKeyFromStorage(encryptedData)
+
+          this.activeKeys.set(row.key_type, {
+            keyId: row.key_id,
+            keyValue: decryptedKey,
+            algorithm: row.algorithm,
+            status: row.status,
+            expiresAt: row.expires_at,
+            metadata: typeof row.metadata === 'string' ? JSON.parse(row.metadata || '{}') : (row.metadata || {})
+          })
+          loadedCount++
+        } catch (decryptError) {
+          // Key was encrypted with different master key - mark for deletion
+          console.warn(`⚠️ Cannot decrypt key ${row.key_type} (encrypted with different master key), will regenerate`)
+          await pool.query('UPDATE encryption_keys SET status = $1 WHERE key_id = $2', ['revoked', row.key_id])
+          failedCount++
+        }
       }
 
-      console.log(`✓ Loaded ${result.rows.length} active keys`)
+      if (failedCount > 0) {
+        console.log(`⚠️ Revoked ${failedCount} incompatible keys, will generate fresh keys`)
+      }
+      console.log(`✓ Loaded ${loadedCount} active keys`)
     } catch (error) {
       console.error('Failed to load existing keys:', error)
-      throw error
+      // Don't throw - continue with fresh key generation
+      console.log('⚠️ Will generate fresh encryption keys')
     }
   }
 

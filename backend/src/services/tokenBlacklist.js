@@ -23,14 +23,14 @@ class TokenBlacklist {
         url: process.env.REDIS_URL || 'redis://localhost:6379',
         retry_strategy: (options) => {
           if (options.error && options.error.code === 'ECONNREFUSED') {
-            if (!this.redisErrorLogged) {
+            if (!this.redisErrorLogged && process.env.NODE_ENV !== 'production') {
               console.log('⚠️ Redis connection refused, using fallback in-memory blacklist')
               this.redisErrorLogged = true
             }
             return undefined
           }
           if (options.total_retry_time > 1000 * 60 * 60) {
-            if (!this.redisErrorLogged) {
+            if (!this.redisErrorLogged && process.env.NODE_ENV !== 'production') {
               console.log('⚠️ Redis retry time exhausted, using fallback')
               this.redisErrorLogged = true
             }
@@ -45,20 +45,25 @@ class TokenBlacklist {
 
       // Handle Redis connection events
       this.redisClient.on('connect', () => {
-        console.log('✓ Redis connected for token blacklist')
+        if (process.env.NODE_ENV !== 'production') {
+          console.log('✓ Redis connected for token blacklist')
+        }
         this.isConnected = true
       })
 
       this.redisClient.on('error', (err) => {
         if (!this.redisErrorLogged) {
-          console.log('⚠️ Redis error, falling back to in-memory blacklist:', err.message)
+          // Only log in development - silent fallback in production
+          if (process.env.NODE_ENV !== 'production') {
+            console.log('⚠️ Redis unavailable, using in-memory fallback:', err.message)
+          }
           this.redisErrorLogged = true
         }
         this.isConnected = false
       })
 
       this.redisClient.on('end', () => {
-        if (!this.redisErrorLogged) {
+        if (!this.redisErrorLogged && process.env.NODE_ENV !== 'production') {
           console.log('⚠️ Redis disconnected, using fallback blacklist')
           this.redisErrorLogged = true
         }
@@ -68,10 +73,10 @@ class TokenBlacklist {
       // Connect to Redis
       await this.redisClient.connect()
     } catch (error) {
-      if (!this.redisErrorLogged) {
+      if (!this.redisErrorLogged && process.env.NODE_ENV !== 'production') {
         console.log('⚠️ Redis initialization failed, using in-memory fallback:', error.message)
-        this.redisErrorLogged = true
       }
+      this.redisErrorLogged = true
       this.isConnected = false
     }
   }
