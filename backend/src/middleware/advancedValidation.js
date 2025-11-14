@@ -360,13 +360,15 @@ const validateContentType = (allowedTypes = ['application/json']) => {
     }
 
     if (!isAllowed && contentType.length > 0) {
-      console.log('🔧 Content-Type validation failed:', {
-        method: req.method,
-        path: req.path,
-        contentType,
-        allowedTypes,
-        timestamp: new Date().toISOString()
-      });
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('🔧 Content-Type validation failed:', {
+          method: req.method,
+          path: req.path,
+          contentType,
+          allowedTypes,
+          timestamp: new Date().toISOString()
+        });
+      }
 
       return res.status(415).json({
         error: 'Unsupported Media Type',

@@ -192,16 +192,18 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
         )
         const currentProjectCount = parseInt(projectCountResult.rows[0]?.count || 0)
 
-        console.log(`Project count check for user ${userId}: ${currentProjectCount} projects`)
+        if (process.env.NODE_ENV !== 'production') {
+          console.log(`Project count check for user ${userId}: ${currentProjectCount} projects`)
 
-        // EMERGENCY: Debug user info for 500 error troubleshooting
-        console.log('🔍 USER DEBUG INFO:', {
-          userId,
-          userIdType: typeof userId,
-          userEmail: req.userEmail,
-          userPlan: userPlan,
-          projectCount: currentProjectCount
-        })
+          // Debug user info for troubleshooting (development only)
+          console.log('🔍 USER DEBUG INFO:', {
+            userId,
+            userIdType: typeof userId,
+            userEmail: req.userEmail,
+            userPlan: userPlan,
+            projectCount: currentProjectCount
+          })
+        }
 
         if (currentProjectCount >= 3) {
           return res.status(403).json({
@@ -242,14 +244,16 @@ router.post('/', authenticateToken, projectLimiter, validateProjects.create, asy
       JSON.stringify(projectSettings)
     ]
 
-    // EMERGENCY: Debug the exact SQL query and parameters
-    console.log('🗄️ DATABASE INSERT DEBUG:', {
-      query: insertQuery,
-      params: queryParams,
-      userId,
-      userIdType: typeof userId,
-      settingsString: JSON.stringify(projectSettings)
-    })
+    // Database insert debugging (development only)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('🗄️ DATABASE INSERT DEBUG:', {
+        query: insertQuery,
+        params: queryParams,
+        userId,
+        userIdType: typeof userId,
+        settingsString: JSON.stringify(projectSettings)
+      })
+    }
 
     const result = await pool.query(insertQuery, queryParams)
 

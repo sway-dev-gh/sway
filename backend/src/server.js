@@ -95,11 +95,15 @@ app.use((req, res, next) => {
 
   // Handle preflight OPTIONS requests immediately
   if (req.method === 'OPTIONS') {
-    console.log('🔧 EMERGENCY CORS: Handling OPTIONS preflight for:', req.path)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('🔧 CORS DEBUG: Handling OPTIONS preflight for:', req.path)
+    }
     return res.status(200).end()
   }
 
-  console.log('🔧 EMERGENCY CORS: Added headers for:', req.method, req.path, 'from origin:', req.get('Origin'))
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('🔧 CORS DEBUG: Added headers for:', req.method, req.path, 'from origin:', req.get('Origin'))
+  }
   next()
 })
 

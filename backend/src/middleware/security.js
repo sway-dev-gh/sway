@@ -26,16 +26,20 @@ const {
 // CORS configuration for production and development
 const corsOptions = {
   origin: (origin, callback) => {
-    // EMERGENCY CORS DEBUGGING
-    console.log('🔍 CORS DEBUG:', {
-      requestOrigin: origin,
-      timestamp: new Date().toISOString(),
-      userAgent: origin ? 'with-origin' : 'no-origin'
-    });
+    // CORS debugging (development only)
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('🔍 CORS DEBUG:', {
+        requestOrigin: origin,
+        timestamp: new Date().toISOString(),
+        userAgent: origin ? 'with-origin' : 'no-origin'
+      });
+    }
 
     // Allow requests with no origin (mobile apps, curl requests, etc.)
     if (!origin) {
-      console.log('✅ CORS: Allowing request with no origin');
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('✅ CORS: Allowing request with no origin');
+      }
       return callback(null, true);
     }
 
@@ -68,10 +72,14 @@ const corsOptions = {
 
     const allowedOrigins = getAllowedOrigins()
 
-    console.log('🔍 CORS ALLOWED ORIGINS:', allowedOrigins);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('🔍 CORS ALLOWED ORIGINS:', allowedOrigins);
+    }
 
     if (allowedOrigins.includes(origin)) {
-      console.log(`✅ CORS: Allowing request from origin: ${origin}`);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`✅ CORS: Allowing request from origin: ${origin}`);
+      }
       callback(null, true);
     } else {
       console.warn(`❌ CORS: BLOCKED request from origin: ${origin}`);

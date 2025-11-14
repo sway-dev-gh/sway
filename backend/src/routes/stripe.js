@@ -234,7 +234,7 @@ router.post('/cancel-subscription', authenticateToken, async (req, res) => {
       cancel_at_period_end: true
     })
 
-    res.json({ message: 'Subscription will be cancelled at the end of the billing period' })
+    res.json({ success: true, message: 'Subscription will be cancelled at the end of the billing period' })
   } catch (error) {
     console.error('Cancel subscription error:', error)
     res.status(500).json({ error: 'Failed to cancel subscription' })
