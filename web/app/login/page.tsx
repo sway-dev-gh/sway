@@ -81,14 +81,25 @@ export default function Login() {
       <div className="hidden lg:flex lg:w-1/2 bg-terminal-surface border-r border-terminal-border items-center justify-center p-12">
         <div className="text-center space-y-8">
           <div className="relative">
-            <Image
-              src="/logo.png"
-              alt="Sway Logo"
-              width={200}
-              height={200}
-              className="mx-auto filter brightness-0 invert opacity-90"
-              priority
-            />
+            <div className="w-48 h-48 mx-auto text-terminal-text opacity-90 flex items-center justify-center">
+              <svg width="160" height="160" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40 120C60 100, 80 140, 100 120C120 100, 140 140, 160 120"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"/>
+                <path d="M40 140C60 120, 80 160, 100 140C120 120, 140 160, 160 140"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"/>
+                <path d="M40 80C60 60, 80 100, 100 80C120 60, 140 100, 160 80"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"/>
+              </svg>
+            </div>
           </div>
           <div className="space-y-4">
             <h1 className="text-3xl font-medium text-terminal-text">
@@ -116,14 +127,25 @@ export default function Login() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <Image
-              src="/logo.png"
-              alt="Sway Logo"
-              width={60}
-              height={60}
-              className="mx-auto filter brightness-0 invert opacity-90"
-              priority
-            />
+            <div className="w-16 h-16 mx-auto text-terminal-text opacity-90 flex items-center justify-center">
+              <svg width="48" height="48" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M40 120C60 100, 80 140, 100 120C120 100, 140 140, 160 120"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      fill="none"
+                      strokeLinecap="round"/>
+                <path d="M40 140C60 120, 80 160, 100 140C120 120, 140 160, 160 140"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      fill="none"
+                      strokeLinecap="round"/>
+                <path d="M40 80C60 60, 80 100, 100 80C120 60, 140 100, 160 80"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      fill="none"
+                      strokeLinecap="round"/>
+              </svg>
+            </div>
           </div>
 
           <div className="bg-terminal-surface border border-terminal-border p-8">
