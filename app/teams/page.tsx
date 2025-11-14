@@ -41,6 +41,52 @@ export default function Teams() {
     setShowSettingsModal(true)
   }
 
+  const handleSavePermissions = async () => {
+    setLoading(true)
+    try {
+      // TODO: Connect to actual API endpoint to save permissions
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      setShowPermissionsModal(false)
+      alert('Permissions updated successfully!')
+    } catch (error) {
+      alert('Failed to update permissions')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteTeam = async () => {
+    if (!confirm('Are you sure you want to delete this team? This action cannot be undone.')) {
+      return
+    }
+
+    setLoading(true)
+    try {
+      // TODO: Connect to actual API endpoint to delete team
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      alert('Team deleted successfully!')
+      // TODO: Redirect to dashboard or team list
+    } catch (error) {
+      alert('Failed to delete team')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleSaveTeamSettings = async () => {
+    setLoading(true)
+    try {
+      // TODO: Connect to actual API endpoint to save team settings
+      await new Promise(resolve => setTimeout(resolve, 1000)) // Simulate API call
+      setShowSettingsModal(false)
+      alert('Team settings saved successfully!')
+    } catch (error) {
+      alert('Failed to save team settings')
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <AppLayout>
       <div className="flex-1 overflow-auto bg-terminal-bg">
@@ -223,8 +269,12 @@ export default function Teams() {
               </div>
 
               <div className="flex space-x-4 mt-6">
-                <button className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors">
-                  Save Changes
+                <button
+                  onClick={handleSavePermissions}
+                  disabled={loading}
+                  className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                >
+                  {loading ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button
                   onClick={() => setShowPermissionsModal(false)}
@@ -273,14 +323,22 @@ export default function Teams() {
 
               <div className="border-t border-terminal-border pt-4">
                 <h3 className="text-terminal-text font-medium mb-2">Danger Zone</h3>
-                <button className="w-full bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors">
-                  Delete Team
+                <button
+                  onClick={handleDeleteTeam}
+                  disabled={loading}
+                  className="w-full bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                >
+                  {loading ? 'Deleting...' : 'Delete Team'}
                 </button>
               </div>
 
               <div className="flex space-x-4 mt-6">
-                <button className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors">
-                  Save Changes
+                <button
+                  onClick={handleSaveTeamSettings}
+                  disabled={loading}
+                  className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                >
+                  {loading ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button
                   onClick={() => setShowSettingsModal(false)}

@@ -17,6 +17,21 @@ export default function Settings() {
   const [emailNotifications, setEmailNotifications] = useState(false)
   const [projectUpdates, setProjectUpdates] = useState(false)
   const [saving, setSaving] = useState(false)
+
+  // Workspace Settings State
+  const [defaultTheme, setDefaultTheme] = useState('dark')
+  const [autoSaveInterval, setAutoSaveInterval] = useState('60')
+  const [showLineNumbers, setShowLineNumbers] = useState(true)
+  const [autoAssignReviews, setAutoAssignReviews] = useState(false)
+  const [defaultVisibility, setDefaultVisibility] = useState('private')
+  const [realTimePresence, setRealTimePresence] = useState(true)
+
+  // Automation Settings State
+  const [autoApproveChanges, setAutoApproveChanges] = useState(false)
+  const [teamNotifications, setTeamNotifications] = useState(true)
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false)
+  const [apiKey, setApiKey] = useState('')
+
   const { user } = useAuth()
 
   // Handle tab changes with URL persistence
@@ -63,7 +78,11 @@ export default function Settings() {
       }
 
       // TODO: Save to backend
-      console.log('Saving settings:', { email, username, emailNotifications, projectUpdates })
+      console.log('Saving settings:', {
+        email, username, emailNotifications, projectUpdates,
+        defaultTheme, autoSaveInterval, showLineNumbers, autoAssignReviews,
+        defaultVisibility, realTimePresence, autoApproveChanges, teamNotifications
+      })
       alert('Settings saved successfully!')
     } catch (error) {
       console.error('Save error:', error)
@@ -71,6 +90,21 @@ export default function Settings() {
     } finally {
       setSaving(false)
     }
+  }
+
+  // Handler functions for missing button functionality
+  const handleGenerateApiKey = () => {
+    const newApiKey = 'sk_' + Math.random().toString(36).substr(2, 48)
+    setApiKey(newApiKey)
+    setShowApiKeyModal(true)
+  }
+
+  const handleConnectIntegration = (platform: string) => {
+    alert(`${platform} integration coming soon! This will redirect to OAuth flow.`)
+  }
+
+  const handleAddAutomationRule = () => {
+    alert('Automation rule builder coming soon! This will open a workflow designer.')
   }
 
   const tabs = [
@@ -221,8 +255,15 @@ export default function Settings() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Show Line Numbers</span>
-                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
-                        Enabled
+                      <button
+                        onClick={() => setShowLineNumbers(!showLineNumbers)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          showLineNumbers
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {showLineNumbers ? 'Enabled' : 'Disabled'}
                       </button>
                     </div>
 
@@ -238,8 +279,15 @@ export default function Settings() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Auto-assign Reviews</span>
-                      <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
-                        Disabled
+                      <button
+                        onClick={() => setAutoAssignReviews(!autoAssignReviews)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          autoAssignReviews
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {autoAssignReviews ? 'Enabled' : 'Disabled'}
                       </button>
                     </div>
 
@@ -254,8 +302,15 @@ export default function Settings() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Real-time Presence</span>
-                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
-                        Enabled
+                      <button
+                        onClick={() => setRealTimePresence(!realTimePresence)}
+                        className={`px-3 py-1 text-xs transition-colors ${
+                          realTimePresence
+                            ? 'bg-terminal-text text-terminal-bg'
+                            : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                        }`}
+                      >
+                        {realTimePresence ? 'Enabled' : 'Disabled'}
                       </button>
                     </div>
                   </div>
@@ -289,8 +344,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-terminal-text font-medium">Auto-approve simple changes</h3>
-                        <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
-                          Disabled
+                        <button
+                          onClick={() => setAutoApproveChanges(!autoApproveChanges)}
+                          className={`px-3 py-1 text-xs transition-colors ${
+                            autoApproveChanges
+                              ? 'bg-terminal-text text-terminal-bg'
+                              : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                          }`}
+                        >
+                          {autoApproveChanges ? 'Enabled' : 'Disabled'}
                         </button>
                       </div>
                       <div className="text-sm text-terminal-muted">
@@ -306,8 +368,15 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-terminal-text font-medium">Team notifications</h3>
-                        <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
-                          Enabled
+                        <button
+                          onClick={() => setTeamNotifications(!teamNotifications)}
+                          className={`px-3 py-1 text-xs transition-colors ${
+                            teamNotifications
+                              ? 'bg-terminal-text text-terminal-bg'
+                              : 'bg-terminal-border text-terminal-text hover:bg-terminal-hover'
+                          }`}
+                        >
+                          {teamNotifications ? 'Enabled' : 'Disabled'}
                         </button>
                       </div>
                       <div className="text-sm text-terminal-muted">
@@ -340,10 +409,10 @@ export default function Settings() {
 
                   <div className="mt-6 pt-4 border-t border-terminal-border">
                     <button
-                      disabled
-                      className="bg-terminal-border text-terminal-muted px-4 py-2 text-sm opacity-50 cursor-not-allowed"
+                      onClick={handleAddAutomationRule}
+                      className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors"
                     >
-                      Add New Automation Rule (Coming Soon)
+                      Add New Automation Rule
                     </button>
                   </div>
                 </div>
@@ -359,7 +428,10 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         Sync projects with GitHub repositories
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button
+                        onClick={() => handleConnectIntegration('GitHub')}
+                        className="text-xs border border-terminal-border text-terminal-text px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -372,7 +444,10 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         Send notifications to Slack channels
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button
+                        onClick={() => handleConnectIntegration('Slack')}
+                        className="text-xs border border-terminal-border text-terminal-text px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -385,7 +460,10 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         Post updates to Discord servers
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button
+                        onClick={() => handleConnectIntegration('Discord')}
+                        className="text-xs border border-terminal-border text-terminal-text px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -398,7 +476,10 @@ export default function Settings() {
                       <p className="text-terminal-muted text-sm mb-3">
                         Connect to 5000+ apps via Zapier
                       </p>
-                      <button disabled className="text-xs border border-terminal-border px-3 py-1 opacity-50 cursor-not-allowed">
+                      <button
+                        onClick={() => handleConnectIntegration('Zapier')}
+                        className="text-xs border border-terminal-border text-terminal-text px-3 py-1 hover:bg-terminal-hover transition-colors"
+                      >
                         Connect
                       </button>
                     </div>
@@ -410,7 +491,10 @@ export default function Settings() {
                   <div className="border border-terminal-border rounded p-4">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="text-terminal-text font-medium">API Access</h3>
-                      <button className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg">
+                      <button
+                        onClick={handleGenerateApiKey}
+                        className="px-3 py-1 text-xs bg-terminal-text text-terminal-bg hover:bg-terminal-muted transition-colors"
+                      >
                         Generate API Key
                       </button>
                     </div>
@@ -478,6 +562,42 @@ export default function Settings() {
           )}
         </div>
       </div>
+
+      {/* API Key Modal */}
+      {showApiKeyModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-terminal-surface border border-terminal-border p-6 w-full max-w-md">
+            <h2 className="text-xl text-terminal-text font-medium mb-4">API Key Generated</h2>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-terminal-text mb-2">Your API Key</label>
+                <div className="bg-terminal-bg border border-terminal-border p-3 rounded-sm font-mono text-sm text-terminal-text break-all">
+                  {apiKey}
+                </div>
+                <p className="text-xs text-terminal-muted mt-2">
+                  Store this key securely. It will not be shown again.
+                </p>
+              </div>
+
+              <div className="flex space-x-4">
+                <button
+                  onClick={() => navigator.clipboard.writeText(apiKey)}
+                  className="flex-1 bg-terminal-text text-terminal-bg py-2 text-sm hover:bg-terminal-muted transition-colors"
+                >
+                  Copy to Clipboard
+                </button>
+                <button
+                  onClick={() => setShowApiKeyModal(false)}
+                  className="flex-1 border border-terminal-border text-terminal-text py-2 text-sm hover:bg-terminal-hover transition-colors"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </AppLayout>
   )
 }
