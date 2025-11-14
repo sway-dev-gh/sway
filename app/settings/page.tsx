@@ -580,7 +580,10 @@ export default function Settings() {
                     <div className="border border-terminal-border rounded p-4 bg-terminal-bg">
                       <div className="flex items-center justify-between mb-3">
                         <h3 className="text-terminal-text font-medium">Slack integration</h3>
-                        <button className="px-3 py-1 text-xs bg-terminal-border text-terminal-text">
+                        <button
+                          disabled
+                          className="px-3 py-1 text-xs bg-terminal-border text-terminal-muted cursor-not-allowed opacity-50"
+                        >
                           Coming Soon
                         </button>
                       </div>
