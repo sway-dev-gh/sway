@@ -88,7 +88,7 @@ export default function CollaborativeCursors({
   projectId,
   className = ''
 }: CollaborativeCursorsProps) {
-  const { user, token } = useAuth()
+  const { user } = useAuth()
   const [socket, setSocket] = useState<Socket | null>(null)
   const [cursors, setCursors] = useState<Map<string, UserCursor>>(new Map())
   const [isConnected, setIsConnected] = useState(false)
@@ -98,16 +98,14 @@ export default function CollaborativeCursors({
 
   // Initialize Socket.IO connection
   useEffect(() => {
-    if (!user || !token || !workspaceId) return
+    if (!user || !workspaceId) return
 
     const backendUrl = process.env.NODE_ENV === 'production'
       ? 'https://api.swayfiles.com'
       : 'http://localhost:5001'
 
     const newSocket = io(backendUrl, {
-      auth: {
-        token: token
-      },
+      withCredentials: true, // Include HttpOnly cookies
       transports: ['websocket', 'polling']
     })
 
@@ -194,7 +192,7 @@ export default function CollaborativeCursors({
     return () => {
       newSocket.disconnect()
     }
-  }, [user, token, workspaceId, projectId])
+  }, [user, workspaceId, projectId])
 
   // Track mouse movements and send to backend
   const handleMouseMove = useCallback((e: MouseEvent) => {
