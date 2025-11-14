@@ -93,11 +93,11 @@ export function ErrorMonitoringProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <ErrorMonitoringContext.Provider value={{ trackError }}>
-      <ErrorBoundary>
+    React.createElement(ErrorMonitoringContext.Provider, {  value: { trackError }}, 
+      React.createElement(ErrorBoundary, null, 
         {children}
-      </ErrorBoundary>
-    </ErrorMonitoringContext.Provider>
+      )
+    )
   )
 }
 
