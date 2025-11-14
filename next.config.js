@@ -2,7 +2,7 @@
 const nextConfig = {
   async rewrites() {
     const apiUrl = process.env.NODE_ENV === 'production'
-      ? 'https://backend-fv2smk2ji-sway-dev.vercel.app'
+      ? 'https://api.swayfiles.com'
       : 'http://localhost:5001'
 
     return [
