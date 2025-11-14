@@ -240,21 +240,21 @@ const NotificationCenter: React.FC = () => {
     switch (type) {
       case 'review_assigned':
       case 'review_completed':
-        return '📝'
+        return 'REV'
       case 'comment_added':
-        return '💬'
+        return 'MSG'
       case 'file_uploaded':
-        return '📁'
+        return 'FILE'
       case 'project_shared':
-        return '🤝'
+        return 'SHARE'
       case 'collaboration_invite':
-        return '👥'
+        return 'TEAM'
       case 'system_alert':
-        return '⚠️'
+        return 'ALERT'
       case 'reminder':
-        return '⏰'
+        return 'TIME'
       default:
-        return '📢'
+        return 'INFO'
     }
   }
 
@@ -293,9 +293,10 @@ const NotificationCenter: React.FC = () => {
       {/* Notification Bell */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+        className="relative p-1 text-terminal-muted hover:text-terminal-text transition-colors"
+        title="Notifications"
       >
-        <Bell className="w-6 h-6" />
+        <Bell size={16} />
         {stats && stats.unread_count > 0 && (
           <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1">
             {stats.unread_count > 99 ? '99+' : stats.unread_count}
@@ -449,7 +450,7 @@ const NotificationCenter: React.FC = () => {
                     <div className="flex items-start space-x-3">
                       {/* Icon */}
                       <div className="flex-shrink-0 mt-1">
-                        <span className="text-lg">{getNotificationIcon(notification.type)}</span>
+                        <span className="text-xs font-mono text-terminal-muted bg-terminal-bg px-2 py-1 rounded">{getNotificationIcon(notification.type)}</span>
                       </div>
 
                       {/* Content */}
