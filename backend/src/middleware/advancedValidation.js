@@ -344,12 +344,30 @@ const hasSequentialChars = (password) => {
 // Content-Type validation middleware
 const validateContentType = (allowedTypes = ['application/json']) => {
   return (req, res, next) => {
+    // Skip validation for OPTIONS (CORS preflight) and GET/DELETE requests
+    if (req.method === 'OPTIONS' || req.method === 'GET' || req.method === 'DELETE') {
+      return next();
+    }
+
     const contentType = req.get('Content-Type') || '';
     const isAllowed = allowedTypes.some(type =>
       contentType.toLowerCase().includes(type.toLowerCase())
     );
 
-    if (req.method !== 'GET' && req.method !== 'DELETE' && !isAllowed) {
+    // Skip validation for health checks and CORS-related endpoints
+    if (req.path === '/health' || req.path === '/api/csrf-token') {
+      return next();
+    }
+
+    if (!isAllowed && contentType.length > 0) {
+      console.log('🔧 Content-Type validation failed:', {
+        method: req.method,
+        path: req.path,
+        contentType,
+        allowedTypes,
+        timestamp: new Date().toISOString()
+      });
+
       return res.status(415).json({
         error: 'Unsupported Media Type',
         expectedTypes: allowedTypes

@@ -1,1 +1,1 @@
-Fix projects schema mismatch: Wed Nov 13 21:46:00 PST 2025
+Fix CORS Content-Type validation + Login redirect: Thu Nov 14 06:07:00 UTC 2025
