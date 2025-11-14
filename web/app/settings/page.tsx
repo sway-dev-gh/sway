@@ -147,7 +147,7 @@ export default function Settings() {
       // Show success feedback with checkmark
       const successMessage = document.createElement('div')
       successMessage.className = 'fixed top-4 right-4 bg-terminal-text text-terminal-bg px-4 py-2 rounded z-50'
-      successMessage.textContent = '✓ Settings saved successfully'
+      successMessage.textContent = 'Settings saved successfully'
       document.body.appendChild(successMessage)
       setTimeout(() => document.body.removeChild(successMessage), 3000)
 
@@ -156,8 +156,8 @@ export default function Settings() {
 
       // Show error feedback
       const errorMessage = document.createElement('div')
-      errorMessage.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded z-50'
-      errorMessage.textContent = `✗ ${error.message || 'Failed to save settings'}`
+      errorMessage.className = 'fixed top-4 right-4 bg-terminal-surface border border-terminal-border text-terminal-text px-4 py-2 z-50'
+      errorMessage.textContent = `${error.message || 'Failed to save settings'}`
       document.body.appendChild(errorMessage)
       setTimeout(() => document.body.removeChild(errorMessage), 3000)
     } finally {

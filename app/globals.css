@@ -14,7 +14,7 @@ body {
   overflow-x: hidden;
   background-color: #000000;
   color: #ffffff;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', 'Liberation Mono', monospace;
 }
 
 a {

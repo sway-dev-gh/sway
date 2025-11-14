@@ -79,7 +79,7 @@ export default function Teams() {
       const notification = document.createElement('div')
       notification.className = 'fixed top-4 right-4 bg-terminal-text text-terminal-bg px-6 py-4 rounded z-50 max-w-sm'
       notification.innerHTML = `
-        <div>✓ Invitation sent to ${inviteEmail}</div>
+        <div>Invitation sent to ${inviteEmail}</div>
         <div class="text-xs mt-2 opacity-80">Invite link copied to clipboard</div>
         <div class="text-xs mt-1 font-mono break-all">${inviteLink}</div>
       `
@@ -150,7 +150,7 @@ export default function Teams() {
       // Show success notification
       const notification = document.createElement('div')
       notification.className = 'fixed top-4 right-4 bg-terminal-text text-terminal-bg px-4 py-2 rounded z-50'
-      notification.textContent = '✓ Permissions updated successfully!'
+      notification.textContent = 'Permissions updated successfully'
       document.body.appendChild(notification)
       setTimeout(() => document.body.removeChild(notification), 3000)
 
@@ -158,8 +158,8 @@ export default function Teams() {
       console.error('Permission save error:', error)
 
       const errorNotification = document.createElement('div')
-      errorNotification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded z-50'
-      errorNotification.textContent = '✗ Failed to update permissions'
+      errorNotification.className = 'fixed top-4 right-4 bg-terminal-surface border border-terminal-border text-terminal-text px-4 py-2 z-50'
+      errorNotification.textContent = 'Failed to update permissions'
       document.body.appendChild(errorNotification)
       setTimeout(() => document.body.removeChild(errorNotification), 3000)
     } finally {
@@ -208,7 +208,7 @@ export default function Teams() {
       // Show success and redirect
       const notification = document.createElement('div')
       notification.className = 'fixed top-4 right-4 bg-terminal-text text-terminal-bg px-4 py-2 rounded z-50'
-      notification.textContent = '✓ Team deleted successfully!'
+      notification.textContent = 'Team deleted successfully'
       document.body.appendChild(notification)
 
       // Redirect to dashboard after 2 seconds
@@ -220,8 +220,8 @@ export default function Teams() {
       console.error('Delete team error:', error)
 
       const errorNotification = document.createElement('div')
-      errorNotification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded z-50'
-      errorNotification.textContent = '✗ Failed to delete team'
+      errorNotification.className = 'fixed top-4 right-4 bg-terminal-surface border border-terminal-border text-terminal-text px-4 py-2 z-50'
+      errorNotification.textContent = 'Failed to delete team'
       document.body.appendChild(errorNotification)
       setTimeout(() => document.body.removeChild(errorNotification), 3000)
     } finally {
@@ -274,7 +274,7 @@ export default function Teams() {
       // Show success notification
       const notification = document.createElement('div')
       notification.className = 'fixed top-4 right-4 bg-terminal-text text-terminal-bg px-4 py-2 rounded z-50'
-      notification.textContent = '✓ Team settings saved successfully!'
+      notification.textContent = 'Team settings saved successfully'
       document.body.appendChild(notification)
       setTimeout(() => document.body.removeChild(notification), 3000)
 
@@ -287,8 +287,8 @@ export default function Teams() {
       console.error('Save team settings error:', error)
 
       const errorNotification = document.createElement('div')
-      errorNotification.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded z-50'
-      errorNotification.textContent = '✗ Failed to save team settings'
+      errorNotification.className = 'fixed top-4 right-4 bg-terminal-surface border border-terminal-border text-terminal-text px-4 py-2 z-50'
+      errorNotification.textContent = 'Failed to save team settings'
       document.body.appendChild(errorNotification)
       setTimeout(() => document.body.removeChild(errorNotification), 3000)
     } finally {

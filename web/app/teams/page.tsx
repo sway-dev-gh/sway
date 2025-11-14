@@ -41,7 +41,7 @@ export default function Teams() {
         <div className="p-6">
           <div className="flex items-center justify-center h-64">
             <div className="text-center space-y-4">
-              <div className="text-4xl text-terminal-muted">👥</div>
+              <div className="text-4xl text-terminal-muted">[ ]</div>
               <div>
                 <h2 className="text-lg font-medium text-terminal-text mb-2">
                   Team Management Under Development
