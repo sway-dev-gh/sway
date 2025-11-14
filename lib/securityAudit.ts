@@ -4,7 +4,7 @@
  */
 
 import { analytics } from './analytics'
-import { errorMonitoring } from './errorMonitoring'
+import { useErrorMonitoring } from './useErrorMonitoring'
 
 // Security Event Types
 export enum SecurityEventType {
@@ -574,7 +574,7 @@ class SecurityAuditSystem {
 
       // Send high/critical events to error monitoring
       if (event.severity === SecuritySeverity.HIGH || event.severity === SecuritySeverity.CRITICAL) {
-        errorMonitoring.captureError(new Error(`Security Event: ${event.type}`), {
+        useErrorMonitoring.captureError(new Error(`Security Event: ${event.type}`), {
           context: 'security',
           severity: event.severity,
           details: event.details
@@ -851,4 +851,4 @@ export const logAuditEvent = (eventType: string, action: string, outcome: 'succe
 }
 
 // Export types for external use
-export { SecurityEventType, SecuritySeverity, SecurityEvent, AuditLogEntry }
+export type { SecurityEventType, SecuritySeverity, SecurityEvent, AuditLogEntry }

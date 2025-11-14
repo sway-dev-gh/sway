@@ -363,6 +363,10 @@ class EnterpriseAnalytics {
     })
   }
 
+  public trackPerformance(milestone: string, timing: number): void {
+    this.trackPerformanceMilestone(milestone, timing)
+  }
+
   public trackError(error: Error, context?: Record<string, any>): void {
     this.track({
       type: 'error',
@@ -398,10 +402,10 @@ class EnterpriseAnalytics {
       documentsCreated: behaviorEvents.filter(e => e.data.action === 'document_create').length,
       collaborationsJoined: behaviorEvents.filter(e => e.data.action === 'collaboration_join').length,
       commentsPosted: behaviorEvents.filter(e => e.data.action === 'comment_post').length,
-      featuresUsed: [...new Set(behaviorEvents.map(e => e.data.action))],
-      keyboardShortcutsUsed: [...new Set(behaviorEvents
+      featuresUsed: Array.from(new Set(behaviorEvents.map(e => e.data.action))),
+      keyboardShortcutsUsed: Array.from(new Set(behaviorEvents
         .filter(e => e.data.action === 'keyboard_shortcut')
-        .map(e => e.data.context.shortcut))],
+        .map(e => e.data.context.shortcut))),
       toolbarButtonClicks: behaviorEvents.filter(e => e.data.action === 'toolbar_click').length
     }
   }

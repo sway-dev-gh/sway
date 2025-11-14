@@ -358,7 +358,7 @@ class EnterprisePerformanceOptimizer {
   }
 
   public invalidateByTag(tag: string): void {
-    for (const [key, entry] of this.cache.entries()) {
+    for (const [key, entry] of this.cache.entries())) {
       if (entry.tags.includes(tag)) {
         this.cache.delete(key)
       }
@@ -561,13 +561,13 @@ class EnterprisePerformanceOptimizer {
     let currentSize = 0
 
     // Calculate current size
-    for (const entry of this.cache.values()) {
+    for (const entry of this.cache.values())) {
       currentSize += entry.size
     }
 
     // Evict least recently used items if over limit
     if (currentSize > maxSizeBytes) {
-      const entries = Array.from(this.cache.entries())
+      const entries = Array.from(this.cache.entries()))
         .sort((a, b) => {
           // Sort by priority first, then by last access
           if (a[1].priority !== b[1].priority) {
@@ -589,14 +589,14 @@ class EnterprisePerformanceOptimizer {
     const now = Date.now()
 
     // Remove expired entries
-    for (const [key, entry] of this.cache.entries()) {
+    for (const [key, entry] of this.cache.entries())) {
       if (now - entry.timestamp > entry.ttl) {
         this.cache.delete(key)
       }
     }
 
     // Compress frequently accessed large entries
-    for (const [key, entry] of this.cache.entries()) {
+    for (const [key, entry] of this.cache.entries())) {
       if (!entry.compressed && entry.size > 51200 && entry.hits > 5) { // 50KB threshold
         this.compressData(entry.data).then((compressed) => {
           entry.data = compressed
@@ -620,7 +620,7 @@ class EnterprisePerformanceOptimizer {
     let hitCount = 0
     let accessCount = 0
 
-    for (const entry of this.cache.values()) {
+    for (const entry of this.cache.values())) {
       totalSize += entry.size
       hitCount += entry.hits
       accessCount += 1
@@ -639,7 +639,7 @@ class EnterprisePerformanceOptimizer {
   private measureTimeToInteractive(): void {
     // Simplified TTI calculation
     const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
-    const tti = navigation.domInteractive - navigation.navigationStart
+    const tti = navigation.domInteractive - navigation.startTime
     analytics.trackPerformance('tti', tti)
   }
 
@@ -682,7 +682,7 @@ class EnterprisePerformanceOptimizer {
   }
 
   private calculateTimeToInteractive(navigation: PerformanceNavigationTiming): number {
-    return navigation.domInteractive - navigation.navigationStart
+    return navigation.domInteractive - navigation.startTime
   }
 
   private calculateTotalBlockingTime(): number {
@@ -723,7 +723,7 @@ class EnterprisePerformanceOptimizer {
     let originalSize = 0
     let compressedSize = 0
 
-    for (const entry of this.cache.values()) {
+    for (const entry of this.cache.values())) {
       if (entry.compressed) {
         // Estimate original size (this would be tracked in real implementation)
         originalSize += entry.size * 2
@@ -833,7 +833,7 @@ class EnterprisePerformanceOptimizer {
 
   public destroy(): void {
     // Cleanup observers
-    for (const observer of this.observers.values()) {
+    for (const observer of this.observers.values())) {
       observer.disconnect()
     }
 
