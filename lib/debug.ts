@@ -59,7 +59,7 @@ export const testAuthAPI = async () => {
   console.log('==========================================')
 
   const token = localStorage.getItem('token')
-  const API_BASE = 'https://api.swayfiles.com'
+  const API_BASE = ''
 
   // Test 1: Basic connectivity
   try {
