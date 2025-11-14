@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import { authApi } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/contexts/AuthContext'
 import Image from 'next/image'
 
-// FORCE VERCEL REBUILD - Fix Cache Issue v4 - Thu Nov 14 06:16
+// FORCE VERCEL REBUILD - Fix Cache Issue v5 - Thu Nov 14 06:20
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -14,7 +14,6 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
-  const { login, signup } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,18 +21,19 @@ export default function Login() {
     setError('')
 
     try {
-      const success = isLogin
-        ? await login(email, password)
-        : await signup(email, password, username)
+      const result = isLogin
+        ? await authApi.login(email, password)
+        : await authApi.signup(email, password, username)
 
-      if (success) {
-        // Authentication state is now updated in context
-        router.push('/dashboard')
+      if (result.success) {
+        // Force refresh to update auth state everywhere
+        window.location.href = '/dashboard'
       } else {
-        setError('Authentication failed')
+        setError(result.message || 'Authentication failed')
       }
     } catch (error) {
       setError('Network error occurred')
+      console.error('Auth error:', error)
     } finally {
       setLoading(false)
     }
