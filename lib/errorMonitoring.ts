@@ -145,7 +145,7 @@ class EnterpriseErrorMonitor {
             stackTrace: event.error?.stack,
             // lineNumber: event.lineno,
             // columnNumber: event.colno,
-            filename: event.filename
+            // filename: event.filename
           }
         )
       })
