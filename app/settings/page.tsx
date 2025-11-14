@@ -101,7 +101,7 @@ export default function Settings() {
         })
       })
 
-      if (response.ok) {
+      if (response?.ok) {
         alert('Settings saved successfully!')
       } else {
         throw new Error('Failed to save settings')
@@ -121,7 +121,7 @@ export default function Settings() {
         method: 'POST'
       })
 
-      if (response.ok) {
+      if (response?.ok) {
         const data = await response.json()
         setApiKey(data.apiKey)
         setShowApiKeyModal(true)
@@ -152,7 +152,7 @@ export default function Settings() {
           method: 'POST'
         })
 
-        if (response.ok) {
+        if (response?.ok) {
           alert('Successfully logged out of all devices')
           window.location.href = '/login'
         } else {
