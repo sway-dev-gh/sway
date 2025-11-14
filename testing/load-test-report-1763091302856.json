@@ -1,0 +1,64 @@
+{
+  "testConfiguration": {
+    "baseUrl": "http://localhost:3001",
+    "wsUrl": "ws://localhost:3001",
+    "maxConcurrentUsers": 50,
+    "testDuration": 300000,
+    "blockCount": 30,
+    "aiContextUpdateInterval": 1000
+  },
+  "testDuration": 5584766.207332999,
+  "results": {
+    "webSocketConnections": {
+      "totalConnectionAttempts": 50,
+      "successfulConnections": 0,
+      "failedConnections": 50,
+      "successRate": 0,
+      "averageConnectionTime": null,
+      "maxConnectionTime": null,
+      "stability": "needs-improvement"
+    },
+    "blockInteractions": {
+      "totalInteractions": 0,
+      "averageResponseTime": null,
+      "maxResponseTime": null,
+      "blocksStressed": 30,
+      "performance": "needs-optimization"
+    },
+    "aiContextUpdates": {
+      "totalUpdates": 100,
+      "successfulUpdates": 100,
+      "successRate": 100,
+      "averageProcessingTime": 99.58990623993799,
+      "maxProcessingTime": 149.17137499991804,
+      "intelligence": "optimal"
+    },
+    "roleEvolutions": {
+      "totalEvolutions": 50,
+      "successfulEvolutions": 50,
+      "successRate": 100,
+      "averageEvolutionTime": 193.92927338013425,
+      "adaptability": "excellent"
+    },
+    "terminalAesthetic": {
+      "animationTests": 1,
+      "averageRenderTime": 303.3364160005003,
+      "terminalAestheticIntact": true,
+      "performance": "maintained"
+    },
+    "memoryUsage": {
+      "averageHeapUsed": 9,
+      "maxHeapUsed": 10,
+      "memoryGrowth": -1,
+      "leakDetection": "stable"
+    }
+  },
+  "recommendations": [
+    {
+      "area": "websocket",
+      "priority": "high",
+      "issue": "Connection stability below 95%",
+      "action": "Implement connection pooling and retry logic"
+    }
+  ]
+}

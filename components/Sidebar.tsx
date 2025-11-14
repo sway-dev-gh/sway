@@ -45,7 +45,7 @@ export default function Sidebar() {
       className="flex flex-col bg-terminal-surface border-r border-terminal-border h-screen font-mono"
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-terminal-border">
+      <div className="flex items-center justify-between p-4 border-b border-terminal-border overflow-hidden">
         <AnimatePresence mode="wait">
           {!collapsed && (
             <motion.div
@@ -66,11 +66,11 @@ export default function Sidebar() {
 
         {/* Collapsed Logo */}
         {collapsed && (
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center w-full">
             <img
               src="/logo.png"
               alt="Sway"
-              className="h-6 w-6"
+              className="h-6 w-6 object-contain"
             />
           </div>
         )}

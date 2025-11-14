@@ -60,6 +60,7 @@ const CSRF_EXEMPT_PATHS = [
   '/api/auth/login',      // Auth endpoints need to work without session
   '/api/auth/signup',     // Auth endpoints need to work without session
   '/api/auth/register',   // Auth endpoints need to work without session
+  '/api/projects',        // Temporarily exempt projects for serverless compatibility
   // Add other webhook endpoints here
 ]
 
