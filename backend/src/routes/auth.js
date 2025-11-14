@@ -71,14 +71,26 @@ router.post('/signup', signupLimiter, validateAuth.signup, async (req, res) => {
       { expiresIn: '30d' }
     )
 
+    // SECURITY FIX: Set HttpOnly cookie instead of returning token in response
+    // This prevents XSS attacks from stealing authentication tokens
+    const isProduction = process.env.NODE_ENV === 'production'
+    res.cookie('token', token, {
+      httpOnly: true, // Cannot be accessed by JavaScript (XSS protection)
+      secure: isProduction, // HTTPS only in production
+      sameSite: isProduction ? 'none' : 'lax', // Cross-origin support for production
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+      domain: isProduction ? '.swayfiles.com' : undefined // Allow subdomains in production
+    })
+
     res.json({
-      token,
+      success: true,
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
         plan: user.plan || 'free'
       }
+      // SECURITY: Token no longer included in response to prevent XSS token theft
     })
   } catch (error) {
     console.error('Signup error:', error)
@@ -118,14 +130,26 @@ router.post('/login', loginLimiter, validateAuth.login, async (req, res) => {
       { expiresIn: '30d' }
     )
 
+    // SECURITY FIX: Set HttpOnly cookie instead of returning token in response
+    // This prevents XSS attacks from stealing authentication tokens
+    const isProduction = process.env.NODE_ENV === 'production'
+    res.cookie('token', token, {
+      httpOnly: true, // Cannot be accessed by JavaScript (XSS protection)
+      secure: isProduction, // HTTPS only in production
+      sameSite: isProduction ? 'none' : 'lax', // Cross-origin support for production
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
+      domain: isProduction ? '.swayfiles.com' : undefined // Allow subdomains in production
+    })
+
     res.json({
-      token,
+      success: true,
       user: {
         id: user.id,
         email: user.email,
         name: user.name,
         plan: user.plan || 'free'
       }
+      // SECURITY: Token no longer included in response to prevent XSS token theft
     })
   } catch (error) {
     console.error('Login error:', error)

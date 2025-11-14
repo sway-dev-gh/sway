@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
+import jwt from 'jsonwebtoken'
 
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -10,13 +11,36 @@ function getStripe() {
   })
 }
 
+// Helper function to extract user ID from HttpOnly cookie
+function getUserIdFromToken(request: NextRequest): string | null {
+  try {
+    const token = request.cookies.get('token')?.value
+    if (!token || !process.env.JWT_SECRET) {
+      return null
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET) as any
+    return decoded.userId || null
+  } catch (error) {
+    console.error('JWT verification error:', error)
+    return null
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { priceId, mode, successUrl, cancelUrl } = await request.json()
     const stripe = getStripe()
 
-    // TODO: Get user ID from authentication
-    const userId = 'temp-user-id' // Replace with actual user ID from JWT
+    // SECURITY FIX: Extract user ID from HttpOnly cookie JWT
+    const userId = getUserIdFromToken(request)
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'Authentication required. Please log in to continue.' },
+        { status: 401 }
+      )
+    }
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],

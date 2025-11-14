@@ -69,14 +69,12 @@ export const authApi = {
 
       const data = await response.json()
 
-      if (response.ok && data.token) {
-        // SECURITY WARNING: localStorage is vulnerable to XSS attacks!
-        // TODO: Migrate to HttpOnly secure cookies for production
-        // Current localStorage implementation allows token theft via XSS
-        console.warn('🚨 SECURITY: Using insecure localStorage for tokens. Migrate to HttpOnly cookies!')
-        localStorage.setItem('token', data.token)
+      if (response.ok && data.success) {
+        // SECURITY FIX: Using HttpOnly cookies - no more localStorage token storage!
+        // Tokens are now stored securely in HttpOnly cookies that cannot be accessed by XSS
+        console.log('✅ SECURITY: Authentication tokens now stored in secure HttpOnly cookies')
         localStorage.setItem('user', JSON.stringify(data.user))
-        return { success: true, user: data.user, token: data.token }
+        return { success: true, user: data.user }
       }
 
       return { success: false, message: data.error || data.message || 'Login failed' }
@@ -109,13 +107,12 @@ export const authApi = {
 
       const data = await response.json()
 
-      if (response.ok && data.token) {
-        // SECURITY WARNING: localStorage is vulnerable to XSS attacks!
-        // TODO: Migrate to HttpOnly secure cookies for production
-        console.warn('🚨 SECURITY: Using insecure localStorage for tokens. Migrate to HttpOnly cookies!')
-        localStorage.setItem('token', data.token)
+      if (response.ok && data.success) {
+        // SECURITY FIX: Using HttpOnly cookies - no more localStorage token storage!
+        // Tokens are now stored securely in HttpOnly cookies that cannot be accessed by XSS
+        console.log('✅ SECURITY: Authentication tokens now stored in secure HttpOnly cookies')
         localStorage.setItem('user', JSON.stringify(data.user))
-        return { success: true, user: data.user, token: data.token }
+        return { success: true, user: data.user }
       }
 
       return { success: false, message: data.error || data.message || 'Signup failed' }
@@ -125,15 +122,27 @@ export const authApi = {
     }
   },
 
-  logout() {
-    localStorage.removeItem('token')
+  async logout() {
+    try {
+      // Call backend logout to clear HttpOnly cookies
+      await fetch(`${API_BASE}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include', // Include HttpOnly cookies
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+    } catch (error) {
+      console.error('Logout API error:', error)
+    }
+
+    // Clear user data from localStorage
     localStorage.removeItem('user')
     window.location.href = '/login'
   },
 
-  getToken(): string | null {
-    return localStorage.getItem('token')
-  },
+  // SECURITY NOTE: getToken() removed - HttpOnly cookies cannot be accessed by JavaScript
+  // This is intentional for security - tokens are automatically sent with requests
 
   getUser(): User | null {
     const userStr = localStorage.getItem('user')
@@ -141,21 +150,22 @@ export const authApi = {
   },
 
   isAuthenticated(): boolean {
-    const token = this.getToken()
-    return !!token
+    // Check if user data exists in localStorage
+    // HttpOnly cookies will be automatically validated by backend
+    const user = this.getUser()
+    return !!user
   }
 }
 
 // Helper to make authenticated API requests with CSRF protection
 export const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
-  const token = authApi.getToken()
-
+  // SECURITY FIX: No more manual token handling - HttpOnly cookies sent automatically
   let config: RequestInit = {
     ...options,
-    credentials: 'include', // Include cookies for session
+    credentials: 'include', // Include HttpOnly cookies for authentication
     headers: {
       'Content-Type': 'application/json',
-      ...(token && { Authorization: `Bearer ${token}` }),
+      // No Authorization header needed - HttpOnly cookies handle authentication
       ...options.headers,
     },
   }
