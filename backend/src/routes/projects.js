@@ -44,6 +44,24 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
 
   try {
     const userId = req.userId
+
+    // SECURITY FIX: Validate userId exists and is valid
+    if (!userId) {
+      return res.status(401).json({
+        error: 'User not authenticated',
+        code: 'AUTH_REQUIRED'
+      })
+    }
+
+    // SECURITY FIX: Validate userId is a valid UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(userId)) {
+      return res.status(401).json({
+        error: 'Invalid user identifier',
+        code: 'AUTH_INVALID'
+      })
+    }
+
     const { status, visibility } = req.query
 
     // SECURITY FIX: Calculate real statistics instead of hardcoded values

@@ -79,13 +79,13 @@ export default function Settings() {
     try {
       // Validate inputs
       if (email && !validateEmail(email)) {
-        alert('Please enter a valid email address')
+        showNotification('Please enter a valid email address')
         setSaving(false)
         return
       }
 
       if (username && !validateUsername(username)) {
-        alert('Username must be 3-30 characters and contain only letters, numbers, underscores, and hyphens')
+        showNotification('Username must be 3-30 characters and contain only letters, numbers, underscores, and hyphens')
         setSaving(false)
         return
       }
@@ -102,13 +102,13 @@ export default function Settings() {
       })
 
       if (response?.ok) {
-        alert('Settings saved successfully!')
+        showNotification('Settings saved successfully!')
       } else {
         throw new Error('Failed to save settings')
       }
     } catch (error) {
       console.error('Save error:', error)
-      alert('Failed to save settings')
+      showNotification('Failed to save settings')
     } finally {
       setSaving(false)
     }
@@ -126,11 +126,11 @@ export default function Settings() {
         setApiKey(data.apiKey)
         setShowApiKeyModal(true)
       } else {
-        alert('Failed to generate API key')
+        showNotification('Failed to generate API key')
       }
     } catch (error) {
       console.error('API key generation error:', error)
-      alert('Failed to generate API key')
+      showNotification('Failed to generate API key')
     } finally {
       setSaving(false)
     }
@@ -138,7 +138,7 @@ export default function Settings() {
 
   const handleConnectIntegration = (integration: string) => {
     // TODO: Implement OAuth flow for each integration
-    alert(`Connecting to ${integration}... This will redirect you to authorize access.`)
+    showNotification(`Connecting to ${integration}... This will redirect you to authorize access.`)
   }
 
   const handleChangePassword = () => {
@@ -153,14 +153,14 @@ export default function Settings() {
         })
 
         if (response?.ok) {
-          alert('Successfully logged out of all devices')
+          showNotification('Successfully logged out of all devices')
           window.location.href = '/login'
         } else {
-          alert('Failed to logout all devices')
+          showNotification('Failed to logout all devices')
         }
       } catch (error) {
         console.error('Logout all devices error:', error)
-        alert('Failed to logout all devices')
+        showNotification('Failed to logout all devices')
       }
     }
   }
@@ -308,8 +308,11 @@ export default function Settings() {
                 {tabs.map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                    onClick={() => {
+                      console.log('Settings tab clicked:', tab.id)
+                      setActiveTab(tab.id)
+                    }}
+                    className={`py-2 px-1 border-b-2 font-medium text-sm cursor-pointer ${
                       activeTab === tab.id
                         ? 'border-terminal-text text-terminal-text'
                         : 'border-transparent text-terminal-muted hover:text-terminal-text hover:border-terminal-hover'

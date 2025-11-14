@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import AppLayout from '@/components/AppLayout'
 import FileVersionHistory from '@/components/FileVersionHistory'
+import CustomDropdown from '@/components/CustomDropdown'
 
 interface Review {
   id: string
@@ -281,28 +282,30 @@ export default function Review() {
 
             {/* Filters */}
             <div className="flex items-center space-x-4">
-              <select
+              <CustomDropdown
                 value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-                className="bg-terminal-surface border border-terminal-border text-terminal-text text-sm px-3 py-2"
-              >
-                <option value="assigned">Assigned to Me</option>
-                <option value="created">Created by Me</option>
-                <option value="all">All Reviews</option>
-              </select>
+                onChange={setFilter}
+                options={[
+                  { value: 'assigned', label: 'Assigned to Me' },
+                  { value: 'created', label: 'Created by Me' },
+                  { value: 'all', label: 'All Reviews' }
+                ]}
+                className="w-48"
+              />
 
-              <select
+              <CustomDropdown
                 value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-terminal-surface border border-terminal-border text-terminal-text text-sm px-3 py-2"
-              >
-                <option value="all">All Status</option>
-                <option value="pending">Pending</option>
-                <option value="in_progress">In Progress</option>
-                <option value="approved">Approved</option>
-                <option value="rejected">Rejected</option>
-                <option value="needs_changes">Needs Changes</option>
-              </select>
+                onChange={setStatusFilter}
+                options={[
+                  { value: 'all', label: 'All Status' },
+                  { value: 'pending', label: 'Pending' },
+                  { value: 'in_progress', label: 'In Progress' },
+                  { value: 'approved', label: 'Approved' },
+                  { value: 'rejected', label: 'Rejected' },
+                  { value: 'needs_changes', label: 'Needs Changes' }
+                ]}
+                className="w-40"
+              />
             </div>
           </div>
         </div>
@@ -467,17 +470,19 @@ export default function Review() {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-terminal-muted text-sm mb-1">Status</label>
-                      <select
+                      <CustomDropdown
                         value={newStatus}
-                        onChange={(e) => setNewStatus(e.target.value)}
-                        className="w-full bg-terminal-surface border border-terminal-border text-terminal-text px-3 py-2"
-                      >
-                        <option value="pending">Pending</option>
-                        <option value="in_progress">In Progress</option>
-                        <option value="approved">Approved</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="needs_changes">Needs Changes</option>
-                      </select>
+                        onChange={setNewStatus}
+                        options={[
+                          { value: 'pending', label: 'Pending' },
+                          { value: 'in_progress', label: 'In Progress' },
+                          { value: 'approved', label: 'Approved' },
+                          { value: 'rejected', label: 'Rejected' },
+                          { value: 'needs_changes', label: 'Needs Changes' }
+                        ]}
+                        placeholder="Select status..."
+                        className="w-full"
+                      />
                     </div>
 
                     <div>
@@ -551,16 +556,17 @@ export default function Review() {
                     />
 
                     <div className="flex items-center justify-between">
-                      <select
+                      <CustomDropdown
                         value={commentType}
-                        onChange={(e) => setCommentType(e.target.value as any)}
-                        className="bg-terminal-surface border border-terminal-border text-terminal-text text-sm px-3 py-1"
-                      >
-                        <option value="comment">Comment</option>
-                        <option value="suggestion">Suggestion</option>
-                        <option value="approval">Approval</option>
-                        <option value="rejection">Rejection</option>
-                      </select>
+                        onChange={(value) => setCommentType(value as any)}
+                        options={[
+                          { value: 'comment', label: 'Comment' },
+                          { value: 'suggestion', label: 'Suggestion' },
+                          { value: 'approval', label: 'Approval' },
+                          { value: 'rejection', label: 'Rejection' }
+                        ]}
+                        className="w-32"
+                      />
 
                       <button
                         onClick={addComment}
