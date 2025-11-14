@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import AppLayout from '@/components/AppLayout'
+import CustomDropdown from '@/components/CustomDropdown'
 import { apiRequest } from '@/lib/auth'
 
 export default function Teams() {
@@ -10,6 +11,8 @@ export default function Teams() {
   const [showPermissionsModal, setShowPermissionsModal] = useState(false)
   const [showSettingsModal, setShowSettingsModal] = useState(false)
   const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRole, setInviteRole] = useState('member')
+  const [teamVisibility, setTeamVisibility] = useState('team')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -30,7 +33,7 @@ export default function Teams() {
       const invitationData = {
         email: inviteEmail,
         teamId: 'current_team',
-        role: 'member',
+        role: inviteRole,
         invitedBy: 'admin',
         invitedAt: new Date().toISOString(),
         status: 'pending',
@@ -236,13 +239,12 @@ export default function Teams() {
       // Get form values from the modal
       const nameInput = document.querySelector('#team-settings-modal input[type="text"]') as HTMLInputElement
       const descriptionInput = document.querySelector('#team-settings-modal textarea') as HTMLTextAreaElement
-      const visibilitySelect = document.querySelector('#team-settings-modal select') as HTMLSelectElement
 
       const teamSettings = {
         id: 'current_team',
         name: nameInput?.value || 'Your Team',
         description: descriptionInput?.value || 'A collaborative workspace',
-        defaultVisibility: visibilitySelect?.value || 'team',
+        defaultVisibility: teamVisibility,
         updatedAt: new Date().toISOString(),
         updatedBy: 'admin'
       }
@@ -402,11 +404,16 @@ export default function Teams() {
 
               <div>
                 <label className="block text-sm text-terminal-text mb-2">Role</label>
-                <select className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm">
-                  <option value="member">Member</option>
-                  <option value="editor">Editor</option>
-                  <option value="admin">Admin</option>
-                </select>
+                <CustomDropdown
+                  value={inviteRole}
+                  onChange={setInviteRole}
+                  options={[
+                    { value: 'member', label: 'Member' },
+                    { value: 'editor', label: 'Editor' },
+                    { value: 'admin', label: 'Admin' }
+                  ]}
+                  className="w-full"
+                />
               </div>
 
               <div className="flex space-x-4 mt-6">
@@ -520,11 +527,16 @@ export default function Teams() {
 
               <div>
                 <label className="block text-sm text-terminal-text mb-2">Default Project Visibility</label>
-                <select className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm">
-                  <option value="team">Team Only</option>
-                  <option value="private">Private</option>
-                  <option value="public">Public</option>
-                </select>
+                <CustomDropdown
+                  value={teamVisibility}
+                  onChange={setTeamVisibility}
+                  options={[
+                    { value: 'team', label: 'Team Only' },
+                    { value: 'private', label: 'Private' },
+                    { value: 'public', label: 'Public' }
+                  ]}
+                  className="w-full"
+                />
               </div>
 
               <div className="border-t border-terminal-border pt-4">

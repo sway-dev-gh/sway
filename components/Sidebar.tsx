@@ -142,7 +142,7 @@ export default function Sidebar() {
               {/* User Info */}
               <div className="text-xs text-terminal-muted space-y-1">
                 <div className="text-terminal-text font-medium">
-                  {user?.username || user?.email || 'User'}
+                  {user?.username || 'User'}
                 </div>
                 <div className="text-[10px]">{user?.email}</div>
               </div>

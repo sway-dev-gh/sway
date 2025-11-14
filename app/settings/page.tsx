@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react'
 import AppLayout from '@/components/AppLayout'
+import CustomDropdown from '@/components/CustomDropdown'
 import PricingPlans from '@/components/PricingPlans'
 import { useAuth } from '@/contexts/AuthContext'
 import { apiRequest } from '@/lib/auth'
@@ -22,6 +23,9 @@ export default function Settings() {
   const [realTimePresence, setRealTimePresence] = useState(true)
   const [autoApproveChanges, setAutoApproveChanges] = useState(false)
   const [teamNotifications, setTeamNotifications] = useState(true)
+  const [defaultTheme, setDefaultTheme] = useState('dark')
+  const [autoSaveInterval, setAutoSaveInterval] = useState('60')
+  const [defaultProjectVisibility, setDefaultProjectVisibility] = useState('private')
   const { user } = useAuth()
 
   // Password change form states
@@ -415,21 +419,31 @@ export default function Settings() {
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Default Theme</span>
-                      <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
-                        <option value="dark">Dark Terminal</option>
-                        <option value="light">Light Mode</option>
-                        <option value="auto">Auto</option>
-                      </select>
+                      <CustomDropdown
+                        value={defaultTheme}
+                        onChange={setDefaultTheme}
+                        options={[
+                          { value: 'dark', label: 'Dark Terminal' },
+                          { value: 'light', label: 'Light Mode' },
+                          { value: 'auto', label: 'Auto' }
+                        ]}
+                        className="w-36"
+                      />
                     </div>
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Auto-save Interval</span>
-                      <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
-                        <option value="30">30 seconds</option>
-                        <option value="60">1 minute</option>
-                        <option value="300">5 minutes</option>
-                        <option value="disabled">Disabled</option>
-                      </select>
+                      <CustomDropdown
+                        value={autoSaveInterval}
+                        onChange={setAutoSaveInterval}
+                        options={[
+                          { value: '30', label: '30 seconds' },
+                          { value: '60', label: '1 minute' },
+                          { value: '300', label: '5 minutes' },
+                          { value: 'disabled', label: 'Disabled' }
+                        ]}
+                        className="w-32"
+                      />
                     </div>
 
                     <div className="flex items-center justify-between">
@@ -472,11 +486,16 @@ export default function Settings() {
 
                     <div className="flex items-center justify-between">
                       <span className="text-terminal-text text-sm">Default Project Visibility</span>
-                      <select className="bg-terminal-bg border border-terminal-border px-3 py-1 text-terminal-text text-sm">
-                        <option value="private">Private</option>
-                        <option value="team">Team</option>
-                        <option value="public">Public</option>
-                      </select>
+                      <CustomDropdown
+                        value={defaultProjectVisibility}
+                        onChange={setDefaultProjectVisibility}
+                        options={[
+                          { value: 'private', label: 'Private' },
+                          { value: 'team', label: 'Team' },
+                          { value: 'public', label: 'Public' }
+                        ]}
+                        className="w-24"
+                      />
                     </div>
 
                     <div className="flex items-center justify-between">
@@ -876,30 +895,32 @@ export default function Settings() {
 
               <div>
                 <label className="block text-sm text-terminal-text mb-2">Trigger Condition</label>
-                <select
+                <CustomDropdown
                   value={triggerCondition}
-                  onChange={(e) => setTriggerCondition(e.target.value)}
-                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm"
-                >
-                  <option value="file_change">File changed</option>
-                  <option value="review_requested">Review requested</option>
-                  <option value="project_created">Project created</option>
-                  <option value="team_member_added">Team member added</option>
-                </select>
+                  onChange={setTriggerCondition}
+                  options={[
+                    { value: 'file_change', label: 'File changed' },
+                    { value: 'review_requested', label: 'Review requested' },
+                    { value: 'project_created', label: 'Project created' },
+                    { value: 'team_member_added', label: 'Team member added' }
+                  ]}
+                  className="w-full"
+                />
               </div>
 
               <div>
                 <label className="block text-sm text-terminal-text mb-2">Action</label>
-                <select
+                <CustomDropdown
                   value={action}
-                  onChange={(e) => setAction(e.target.value)}
-                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm"
-                >
-                  <option value="auto_approve">Auto-approve</option>
-                  <option value="notify_team">Notify team</option>
-                  <option value="assign_reviewer">Assign reviewer</option>
-                  <option value="send_email">Send email</option>
-                </select>
+                  onChange={setAction}
+                  options={[
+                    { value: 'auto_approve', label: 'Auto-approve' },
+                    { value: 'notify_team', label: 'Notify team' },
+                    { value: 'assign_reviewer', label: 'Assign reviewer' },
+                    { value: 'send_email', label: 'Send email' }
+                  ]}
+                  className="w-full"
+                />
               </div>
 
               <div className="flex space-x-4 mt-6">
