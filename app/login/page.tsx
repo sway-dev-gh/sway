@@ -116,10 +116,12 @@ export default function Login() {
             <form onSubmit={handleSubmit} className="space-y-4">
               {!isLogin && (
                 <div>
-                  <label className="block text-sm text-terminal-text mb-2">
+                  <label htmlFor="username" className="block text-sm text-terminal-text mb-2">
                     Username
                   </label>
                   <input
+                    id="username"
+                    name="username"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
@@ -131,10 +133,12 @@ export default function Login() {
               )}
 
               <div>
-                <label className="block text-sm text-terminal-text mb-2">
+                <label htmlFor="email" className="block text-sm text-terminal-text mb-2">
                   Email Address
                 </label>
                 <input
+                  id="email"
+                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -145,10 +149,12 @@ export default function Login() {
               </div>
 
               <div>
-                <label className="block text-sm text-terminal-text mb-2">
+                <label htmlFor="password" className="block text-sm text-terminal-text mb-2">
                   Password
                 </label>
                 <input
+                  id="password"
+                  name="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
