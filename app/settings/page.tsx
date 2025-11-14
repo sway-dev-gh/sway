@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import AppLayout from '@/components/AppLayout'
 import PricingPlans from '@/components/PricingPlans'
 import { useAuth } from '@/contexts/AuthContext'
+import { apiRequest } from '@/lib/auth'
 
 export default function Settings() {
   const [activeTab, setActiveTab] = useState('account')
@@ -90,11 +91,8 @@ export default function Settings() {
       }
 
       // Save to backend
-      const response = await fetch('/api/user/settings', {
+      const response = await apiRequest('/api/user/settings', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           email,
           username,
@@ -119,9 +117,8 @@ export default function Settings() {
   const handleGenerateApiKey = async () => {
     setSaving(true)
     try {
-      const response = await fetch('/api/user/generate-api-key', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+      const response = await apiRequest('/api/user/generate-api-key', {
+        method: 'POST'
       })
 
       if (response.ok) {
@@ -151,9 +148,8 @@ export default function Settings() {
   const handleLogoutAllDevices = async () => {
     if (confirm('Are you sure you want to log out of all devices? You will need to sign in again on all your devices.')) {
       try {
-        const response = await fetch('/api/auth/logout-all', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
+        const response = await apiRequest('/api/auth/logout-all', {
+          method: 'POST'
         })
 
         if (response.ok) {
@@ -201,12 +197,8 @@ export default function Settings() {
       // Save to localStorage
       localStorage.setItem('password_change_pending', JSON.stringify(passwordData))
 
-      const response = await fetch('/api/auth/change-password', {
+      const response = await apiRequest('/api/user/change-password', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
-        },
         body: JSON.stringify(passwordData)
       })
 
@@ -254,12 +246,8 @@ export default function Settings() {
       existingRules.push(ruleData)
       localStorage.setItem('automation_rules', JSON.stringify(existingRules))
 
-      const response = await fetch('/api/automation/rules', {
+      const response = await apiRequest('/api/automation/rules', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
-        },
         body: JSON.stringify(ruleData)
       })
 
