@@ -28,7 +28,7 @@ const navigation: NavigationItem[] = [
   { name: 'dashboard', href: '/', icon: '▣' },
   { name: 'workspace', href: '/workspace', icon: '▦' },
   { name: 'teams', href: '/teams', icon: '▩' },
-  { name: 'review', href: '/review', icon: '▨', count: 3 },
+  { name: 'review', href: '/review', icon: '▨' },
   { name: 'settings', href: '/settings', icon: '▥' },
 ]
 
