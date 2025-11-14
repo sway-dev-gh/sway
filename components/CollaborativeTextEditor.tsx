@@ -169,7 +169,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
 
     // Handle incoming operations from other users
     socket.on('operation', (operation: Operation & { userId: string }) => {
-      if (operation.userId !== user.id) {
+      if (user && operation.userId !== user.id) {
         applyOperation(operation)
       }
     })
@@ -180,7 +180,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
       user: { id: string; name: string; email: string }
       selection: TextSelection
     }) => {
-      if (data.userId !== user.id) {
+      if (user && data.userId !== user.id) {
         setRemoteUsers(prev => {
           const newRemoteUsers = new Map(prev)
           newRemoteUsers.set(data.userId, {
@@ -199,7 +199,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
       typing: boolean
       blockId: string
     }) => {
-      if (data.blockId === blockId && data.userId !== user.id) {
+      if (user && data.blockId === blockId && data.userId !== user.id) {
         setIsTyping(prev => {
           const newTyping = new Set(prev)
           if (data.typing) {
@@ -277,7 +277,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
 
   // Send operation to other users
   const sendOperation = useCallback((operation: Operation) => {
-    if (socketRef.current && isConnected) {
+    if (socketRef.current && isConnected && user) {
       socketRef.current.emit('operation', {
         ...operation,
         blockId,
@@ -394,7 +394,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
 
   // Add comment at current cursor position
   const handleAddComment = useCallback(() => {
-    if (!editorRef.current || !newComment.trim()) return
+    if (!editorRef.current || !newComment.trim() || !user) return
 
     const position = editorRef.current.selectionStart
     const comment: Comment = {
@@ -402,7 +402,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
       content: newComment,
       author: {
         id: user.id,
-        name: user.name || user.email.split('@')[0],
+        name: user.username || user.email.split('@')[0],
         email: user.email
       },
       timestamp: new Date(),
