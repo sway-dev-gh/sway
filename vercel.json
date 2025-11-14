@@ -1,7 +1,5 @@
 {
-  "framework": "nextjs",
   "buildCommand": "cd web && npm ci && npm run build",
   "outputDirectory": "web/.next",
-  "installCommand": "echo 'skipping root install'",
-  "rootDirectory": "web"
+  "installCommand": "echo 'skipping root install'"
 }
