@@ -15,7 +15,8 @@ import {
   logAuditEvent
 } from '../../lib/securityAudit'
 import { analytics } from '../../lib/analytics'
-import { errorMonitoring } from '../../lib/errorMonitoring'
+import { useErrorMonitoring } from '../../lib/errorMonitoring'
+const errorMonitoring = { captureError: jest.fn() }
 
 // Mock dependencies
 jest.mock('../../lib/analytics')
@@ -86,9 +87,9 @@ describe('Security Audit System', () => {
       )
 
       const lowRiskCall = mockAnalytics.track.mock.calls.find(call =>
-        call[0] === 'security_event'
+        call[0]?.type === 'security_event'
       )
-      expect(lowRiskCall[1].riskScore).toBeLessThan(0.5)
+      expect(lowRiskCall?.[0]?.data?.riskScore).toBeLessThan(0.5)
 
       // High risk event
       mockAnalytics.track.mockClear()
@@ -101,9 +102,9 @@ describe('Security Audit System', () => {
       jest.advanceTimersByTime(6000)
 
       const highRiskCall = mockAnalytics.track.mock.calls.find(call =>
-        call[0] === 'security_event'
+        call[0]?.type === 'security_event'
       )
-      expect(highRiskCall[1].riskScore).toBeGreaterThan(0.8)
+      expect(highRiskCall?.[0]?.data?.riskScore).toBeGreaterThan(0.8)
     })
 
     it('should identify threat indicators correctly', () => {

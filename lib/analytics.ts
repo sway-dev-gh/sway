@@ -411,7 +411,7 @@ class EnterpriseAnalytics {
   }
 
   private getUniqueUsers(): number {
-    const users = new Set()
+    const users = new Set<string>()
     this.events.forEach(e => {
       if (e.userId) users.add(e.userId)
     })
@@ -460,10 +460,10 @@ class EnterpriseAnalytics {
   private async flushEvents(): Promise<void> {
     if (this.metricsBuffer.length === 0) return
 
-    try {
-      const eventsToFlush = [...this.metricsBuffer]
-      this.metricsBuffer = []
+    const eventsToFlush = [...this.metricsBuffer]
+    this.metricsBuffer = []
 
+    try {
       // Send to analytics endpoint
       await this.sendAnalytics(eventsToFlush)
 
@@ -471,7 +471,7 @@ class EnterpriseAnalytics {
     } catch (error) {
       console.warn('Analytics: Failed to flush events:', error)
       // Re-add events to buffer for retry
-      this.metricsBuffer.unshift(...this.metricsBuffer)
+      this.metricsBuffer.unshift(...eventsToFlush)
     }
   }
 

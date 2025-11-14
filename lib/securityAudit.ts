@@ -4,7 +4,6 @@
  */
 
 import { analytics } from './analytics'
-import { useErrorMonitoring } from './useErrorMonitoring'
 
 // Security Event Types
 export enum SecurityEventType {
@@ -252,11 +251,14 @@ class SecurityAuditSystem {
     this.auditBuffer.push(auditEntry)
 
     // Track for analytics
-    analytics.track('audit_event', {
-      type: eventType,
-      action,
-      outcome,
-      resourceType
+    analytics.track({
+      type: 'audit_event',
+      data: {
+        eventType,
+        action,
+        outcome,
+        resourceType
+      }
     })
 
     // Flush buffer if full
@@ -566,15 +568,18 @@ class SecurityAuditSystem {
       console.log(`[SECURITY EVENT] ${event.type} - ${event.severity}:`, event.details)
 
       // Send to analytics
-      analytics.track('security_event', {
-        type: event.type,
-        severity: event.severity,
-        riskScore: event.risk_score
+      analytics.track({
+        type: 'security_event',
+        data: {
+          eventType: event.type,
+          severity: event.severity,
+          riskScore: event.risk_score
+        }
       })
 
       // Send high/critical events to error monitoring
       if (event.severity === SecuritySeverity.HIGH || event.severity === SecuritySeverity.CRITICAL) {
-        useErrorMonitoring.captureError(new Error(`Security Event: ${event.type}`), {
+        analytics.trackError(new Error(`Security Event: ${event.type}`), {
           context: 'security',
           severity: event.severity,
           details: event.details
@@ -850,5 +855,4 @@ export const logAuditEvent = (eventType: string, action: string, outcome: 'succe
   securityAudit.logAuditEvent(eventType, action, outcome, details, resourceType, resourceId)
 }
 
-// Export types for external use
-export type { SecurityEventType, SecuritySeverity, SecurityEvent, AuditLogEntry }
+// Types already exported above with enum declarations

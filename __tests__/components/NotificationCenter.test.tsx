@@ -21,6 +21,7 @@ const mockSocket = {
   disconnect: jest.fn(),
   connect: jest.fn(),
   connected: true,
+  _callbacks: {} as Record<string, Function> | undefined,
 }
 const mockSocketIO = socketModule as jest.Mocked<typeof socketModule>
 mockSocketIO.io = jest.fn(() => mockSocket as any)
@@ -89,7 +90,8 @@ describe('NotificationCenter', () => {
 
     // Mock successful fetch responses
     mockFetch.mockImplementation((url) => {
-      if (url.includes('/notifications')) {
+      const urlString = typeof url === 'string' ? url : url.toString()
+      if (urlString.includes('/notifications')) {
         return Promise.resolve({
           ok: true,
           json: () => Promise.resolve({
@@ -100,7 +102,7 @@ describe('NotificationCenter', () => {
         } as Response)
       }
 
-      if (url.includes('/notifications/stats')) {
+      if (urlString.includes('/notifications/stats')) {
         return Promise.resolve({
           ok: true,
           json: () => Promise.resolve({
@@ -291,7 +293,7 @@ describe('NotificationCenter', () => {
       }
     }
 
-    mockSocket._callbacks['new-notification'](newNotification)
+    mockSocket._callbacks?.['new-notification']?.(newNotification)
 
     await waitFor(() => {
       expect(screen.getByText('You were mentioned')).toBeInTheDocument()
@@ -467,11 +469,11 @@ describe('NotificationCenter', () => {
     render(<NotificationCenter />)
 
     // Simulate disconnection
-    mockSocket._callbacks['disconnect']()
+    mockSocket._callbacks?.['disconnect']?.()
     expect(screen.getByText(/connection lost/i)).toBeInTheDocument()
 
     // Simulate reconnection
-    mockSocket._callbacks['connect']()
+    mockSocket._callbacks?.['connect']?.()
     expect(screen.queryByText(/connection lost/i)).not.toBeInTheDocument()
   })
 

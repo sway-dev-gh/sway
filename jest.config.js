@@ -9,7 +9,7 @@ const createJestConfig = nextJest({
 // Add custom Jest configuration
 const customJestConfig = {
   // Test environment setup
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
   testEnvironment: 'jest-environment-jsdom',
 
   // Module name mapping for absolute imports

@@ -17,6 +17,7 @@ const mockSocket = {
   disconnect: jest.fn(),
   connect: jest.fn(),
   connected: true,
+  _callbacks: {} as Record<string, Function> | undefined,
 }
 const mockSocketIO = socketModule as jest.Mocked<typeof socketModule>
 mockSocketIO.io = jest.fn(() => mockSocket as any)
@@ -40,7 +41,9 @@ describe('CollaborativeTextEditor', () => {
       if (!mockSocket._callbacks) {
         mockSocket._callbacks = {}
       }
-      mockSocket._callbacks[event] = callback
+      if (mockSocket._callbacks) {
+        mockSocket._callbacks[event] = callback
+      }
       return mockSocket
     })
   })
@@ -133,7 +136,7 @@ describe('CollaborativeTextEditor', () => {
 
     // Simulate remote operation
     act(() => {
-      mockSocket._callbacks['text-operation']({
+      mockSocket._callbacks?.['text-operation']?.({
         operation: {
           type: 'insert',
           position: 0,
@@ -150,7 +153,7 @@ describe('CollaborativeTextEditor', () => {
     render(<CollaborativeTextEditor {...defaultProps} />)
 
     act(() => {
-      mockSocket._callbacks['document-state']({
+      mockSocket._callbacks?.['document-state']?.({
         content: 'Synced content from server',
         activeUsers: [
           { id: 'user-1', name: 'Alice', cursor: 5 },
@@ -188,7 +191,7 @@ describe('CollaborativeTextEditor', () => {
     render(<CollaborativeTextEditor {...defaultProps} />)
 
     act(() => {
-      mockSocket._callbacks['cursor-update']({
+      mockSocket._callbacks?.['cursor-update']?.({
         userId: 'remote-user-1',
         position: 10,
         user: { name: 'Remote User', color: '#ff0000' }
@@ -204,7 +207,7 @@ describe('CollaborativeTextEditor', () => {
 
     // User joins
     act(() => {
-      mockSocket._callbacks['user-joined']({
+      mockSocket._callbacks?.['user-joined']?.({
         userId: 'new-user-1',
         user: { name: 'New User', color: '#00ff00' }
       })
@@ -214,7 +217,7 @@ describe('CollaborativeTextEditor', () => {
 
     // User leaves
     act(() => {
-      mockSocket._callbacks['user-left']({
+      mockSocket._callbacks?.['user-left']?.({
         userId: 'new-user-1'
       })
     })
@@ -413,7 +416,7 @@ describe('CollaborativeTextEditor', () => {
     // Connection lost
     act(() => {
       mockSocket.connected = false
-      mockSocket._callbacks['disconnect']()
+      mockSocket._callbacks?.['disconnect']()
     })
 
     expect(screen.getByText(/offline/i)).toBeInTheDocument()
@@ -421,7 +424,7 @@ describe('CollaborativeTextEditor', () => {
     // Connection restored
     act(() => {
       mockSocket.connected = true
-      mockSocket._callbacks['connect']()
+      mockSocket._callbacks?.['connect']()
     })
 
     expect(screen.queryByText(/offline/i)).not.toBeInTheDocument()
@@ -469,7 +472,7 @@ describe('CollaborativeTextEditor', () => {
 
     // Send invalid operation
     act(() => {
-      mockSocket._callbacks['text-operation']({
+      mockSocket._callbacks?.['text-operation']?.({
         operation: {
           type: 'invalid',
           position: -1,
@@ -487,7 +490,7 @@ describe('CollaborativeTextEditor', () => {
     render(<CollaborativeTextEditor {...defaultProps} initialContent="Short" />)
 
     act(() => {
-      mockSocket._callbacks['text-operation']({
+      mockSocket._callbacks?.['text-operation']?.({
         operation: {
           type: 'insert',
           position: 1000, // Beyond text length
@@ -505,7 +508,7 @@ describe('CollaborativeTextEditor', () => {
     render(<CollaborativeTextEditor {...defaultProps} initialContent="Hello World" />)
 
     act(() => {
-      mockSocket._callbacks['text-operation']({
+      mockSocket._callbacks?.['text-operation']?.({
         operation: {
           type: 'delete',
           position: 5,

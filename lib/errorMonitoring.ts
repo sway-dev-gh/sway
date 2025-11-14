@@ -92,12 +92,10 @@ export function ErrorMonitoringProvider({ children }: { children: ReactNode }) {
     analytics.trackError(error, context as any)
   }
 
-  return (
-    React.createElement(ErrorMonitoringContext.Provider, {  value: { trackError }}, 
-      React.createElement(ErrorBoundary, null, 
-        {children}
-      )
-    )
+  return React.createElement(
+    ErrorMonitoringContext.Provider,
+    { value: { trackError } },
+    React.createElement(ErrorBoundary, null, children)
   )
 }
 
