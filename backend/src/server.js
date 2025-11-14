@@ -85,6 +85,24 @@ const PORT = process.env.PORT || 5001
 // Apply comprehensive security middleware (includes CORS, headers, rate limiting, etc.)
 applySecurity(app)
 
+// EMERGENCY: Add global CORS middleware as backup for all endpoints
+app.use((req, res, next) => {
+  // Set CORS headers for ALL requests
+  res.header('Access-Control-Allow-Origin', 'https://swayfiles.com')
+  res.header('Access-Control-Allow-Credentials', 'true')
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS, PATCH')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, X-CSRF-Token')
+
+  // Handle preflight OPTIONS requests immediately
+  if (req.method === 'OPTIONS') {
+    console.log('🔧 EMERGENCY CORS: Handling OPTIONS preflight for:', req.path)
+    return res.status(200).end()
+  }
+
+  console.log('🔧 EMERGENCY CORS: Added headers for:', req.method, req.path, 'from origin:', req.get('Origin'))
+  next()
+})
+
 // Setup Socket.IO with CORS configuration
 const io = new Server(server, {
   cors: {
