@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { authApi } from '@/lib/auth'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 import Image from 'next/image'
 
 // FORCE VERCEL REBUILD - Login Route Fix - Living Ecosystem Final Deploy v3
@@ -14,6 +14,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const { login, signup } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -21,14 +22,15 @@ export default function Login() {
     setError('')
 
     try {
-      const result = isLogin
-        ? await authApi.login(email, password)
-        : await authApi.signup(email, password, username)
+      const success = isLogin
+        ? await login(email, password)
+        : await signup(email, password, username)
 
-      if (result.success) {
-        router.push('/')
+      if (success) {
+        // Authentication state is now updated in context
+        router.push('/dashboard')
       } else {
-        setError(result.message || 'Authentication failed')
+        setError('Authentication failed')
       }
     } catch (error) {
       setError('Network error occurred')
