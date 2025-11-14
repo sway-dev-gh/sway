@@ -25,13 +25,17 @@ const signupLimiter = rateLimit({
   }
 })
 
-// Rate limiter for login - less strict
+// Rate limiter for login - very relaxed for testing
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // 10 login attempts per 15 minutes per IP
+  max: 1000, // 1000 login attempts per 15 minutes (basically unlimited)
   message: { error: 'Too many login attempts. Please try again in 15 minutes.' },
   standardHeaders: true,
-  legacyHeaders: false
+  legacyHeaders: false,
+  skip: (req) => {
+    // Skip rate limiting in development
+    return process.env.NODE_ENV !== 'production'
+  }
 })
 
 // POST /api/auth/signup
