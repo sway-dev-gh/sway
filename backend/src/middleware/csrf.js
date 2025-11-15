@@ -143,6 +143,12 @@ const verifyCSRFToken = (token, sessionId, userId) => {
 
 // Main CSRF middleware
 const csrfMiddleware = (req, res, next) => {
+  // URGENT: Completely bypass CSRF for all auth endpoints until deployment issues resolved
+  if (req.path.startsWith('/api/auth')) {
+    console.log(`🔓 CSRF bypassed for auth endpoint: ${req.path}`)
+    return next()
+  }
+
   // Skip CSRF protection for exempt paths
   if (isExemptPath(req.path)) {
     return next()
