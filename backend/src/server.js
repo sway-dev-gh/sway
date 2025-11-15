@@ -29,6 +29,9 @@ const migrateRoutes = require('./routes/migrate')
 // Prompting agent system
 const promptingRoutes = require('./routes/prompting')
 
+// Simple prompts management (for frontend compatibility)
+const promptsRoutes = require('./routes/prompts')
+
 // Collaboration features
 const teamRoutes = require('./routes/team')
 const projectRoutes = require('./routes/projects')
@@ -197,6 +200,9 @@ app.use('/api/migrate', adminRateLimit, migrateRoutes)
 
 // Prompting agent system routes
 app.use('/api/prompting', intelligentRateLimiter, promptingRoutes)
+
+// Simple prompts management routes (frontend compatibility)
+app.use('/api/prompts', intelligentRateLimiter, promptsRoutes)
 
 // Collaboration features with intelligent rate limiting
 app.use('/api/teams', intelligentRateLimiter, teamRoutes)
