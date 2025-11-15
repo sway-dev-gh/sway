@@ -1,4 +1,4 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === 'production' ? 'https://sway-backend-2qlr.onrender.com' : 'http://localhost:5001')
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001'
 
 interface User {
   id: string
@@ -20,9 +20,11 @@ interface CSRFResponse {
   message?: string
 }
 
-// Get CSRF token from backend
-const getCSRFToken = async (): Promise<string | null> => {
+// Get CSRF token from backend with better error handling
+const getCSRFToken = async (retryCount: number = 0): Promise<string | null> => {
   try {
+    console.log(`🔒 Getting CSRF token (attempt ${retryCount + 1}/3)...`)
+
     const response = await fetch(`${API_BASE}/api/csrf-token`, {
       method: 'GET',
       credentials: 'include', // Include cookies for session
@@ -31,16 +33,35 @@ const getCSRFToken = async (): Promise<string | null> => {
       },
     })
 
-    const data: CSRFResponse = await response.json()
+    console.log(`🔒 CSRF response status: ${response.status}`)
 
-    if (response.ok && data.success && data.csrfToken) {
+    if (!response.ok) {
+      console.error(`❌ CSRF request failed: ${response.status} ${response.statusText}`)
+      if (retryCount < 2) {
+        console.log(`🔄 Retrying CSRF request...`)
+        await new Promise(resolve => setTimeout(resolve, 1000)) // Wait 1s
+        return getCSRFToken(retryCount + 1)
+      }
+      return null
+    }
+
+    const data: CSRFResponse = await response.json()
+    console.log('🔒 CSRF response data:', { success: data.success, hasToken: !!data.csrfToken })
+
+    if (data.success && data.csrfToken) {
+      console.log('✅ CSRF token obtained successfully')
       return data.csrfToken
     }
 
-    console.error('Failed to get CSRF token:', data.message)
+    console.error('❌ Invalid CSRF response:', data.message)
     return null
   } catch (error) {
-    console.error('Network error getting CSRF token:', error)
+    console.error('❌ Network error getting CSRF token:', error)
+    if (retryCount < 2) {
+      console.log(`🔄 Retrying CSRF request after network error...`)
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      return getCSRFToken(retryCount + 1)
+    }
     return null
   }
 }
@@ -48,7 +69,9 @@ const getCSRFToken = async (): Promise<string | null> => {
 export const authApi = {
   async login(email: string, password: string): Promise<AuthResponse> {
     try {
-      // Try to get CSRF token, but continue without it if blocked
+      console.log('🔐 Starting login process...')
+
+      // Try to get CSRF token
       const csrfToken = await getCSRFToken()
 
       const headers: Record<string, string> = {
@@ -58,8 +81,12 @@ export const authApi = {
       // Only add CSRF token if we successfully got one
       if (csrfToken) {
         headers['X-CSRF-Token'] = csrfToken
+        console.log('🔒 Login request will include CSRF token')
+      } else {
+        console.warn('⚠️ Login proceeding WITHOUT CSRF token - request may fail')
       }
 
+      console.log('🚀 Sending login request...')
       const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         credentials: 'include', // Include cookies for session
@@ -67,25 +94,34 @@ export const authApi = {
         body: JSON.stringify({ email, password }),
       })
 
+      console.log(`🔐 Login response status: ${response.status}`)
+
       const data = await response.json()
 
       if (response.ok && data.success) {
-        // SECURITY FIX: Using HttpOnly cookies - no more localStorage user storage!
-        // Both tokens AND user data are now stored securely server-side only
-        console.log('✅ SECURITY: Authentication data now fully secure - no localStorage usage')
+        console.log('✅ LOGIN SUCCESSFUL - Authentication data secure in HttpOnly cookies')
         return { success: true, user: data.user }
       }
 
+      // Handle CSRF-specific errors
+      if (response.status === 403 && !csrfToken) {
+        console.error('❌ Login failed: CSRF token required but none available')
+        return { success: false, message: 'Security verification failed. Please refresh the page and try again.' }
+      }
+
+      console.error('❌ Login failed:', data.error || data.message || 'Unknown error')
       return { success: false, message: data.error || data.message || 'Login failed' }
     } catch (error) {
-      console.error('Login error:', error)
-      return { success: false, message: 'Network error occurred' }
+      console.error('❌ Login network error:', error)
+      return { success: false, message: 'Network error occurred. Please check your connection.' }
     }
   },
 
   async signup(email: string, password: string, username?: string): Promise<AuthResponse> {
     try {
-      // Try to get CSRF token, but continue without it if blocked
+      console.log('📝 Starting signup process...')
+
+      // Try to get CSRF token
       const csrfToken = await getCSRFToken()
 
       const headers: Record<string, string> = {
@@ -95,8 +131,12 @@ export const authApi = {
       // Only add CSRF token if we successfully got one
       if (csrfToken) {
         headers['X-CSRF-Token'] = csrfToken
+        console.log('🔒 Signup request will include CSRF token')
+      } else {
+        console.warn('⚠️ Signup proceeding WITHOUT CSRF token - request may fail')
       }
 
+      console.log('🚀 Sending signup request...')
       const response = await fetch(`${API_BASE}/api/auth/signup`, {
         method: 'POST',
         credentials: 'include', // Include cookies for session
@@ -104,19 +144,26 @@ export const authApi = {
         body: JSON.stringify({ email, password, name: username }),
       })
 
+      console.log(`📝 Signup response status: ${response.status}`)
+
       const data = await response.json()
 
       if (response.ok && data.success) {
-        // SECURITY FIX: Using HttpOnly cookies - no more localStorage user storage!
-        // Both tokens AND user data are now stored securely server-side only
-        console.log('✅ SECURITY: Authentication data now fully secure - no localStorage usage')
+        console.log('✅ SIGNUP SUCCESSFUL - Authentication data secure in HttpOnly cookies')
         return { success: true, user: data.user }
       }
 
+      // Handle CSRF-specific errors
+      if (response.status === 403 && !csrfToken) {
+        console.error('❌ Signup failed: CSRF token required but none available')
+        return { success: false, message: 'Security verification failed. Please refresh the page and try again.' }
+      }
+
+      console.error('❌ Signup failed:', data.error || data.message || 'Unknown error')
       return { success: false, message: data.error || data.message || 'Signup failed' }
     } catch (error) {
-      console.error('Signup error:', error)
-      return { success: false, message: 'Network error occurred' }
+      console.error('❌ Signup network error:', error)
+      return { success: false, message: 'Network error occurred. Please check your connection.' }
     }
   },
 
@@ -145,7 +192,7 @@ export const authApi = {
   async getUser(): Promise<User | null> {
     try {
       // SECURITY FIX: Fetch user data securely from server instead of localStorage
-      const response = await apiRequest('/api/user/me', {
+      const response = await apiRequest('/api/auth/me', {
         method: 'GET'
       })
 

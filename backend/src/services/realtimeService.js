@@ -129,36 +129,24 @@ class RealtimeService {
         this.handleSelectionUpdate(socket, data)
       })
 
-      // === PROMPTING AGENT SYSTEM EVENTS ===
-
-      // Handle joining prompting dashboard
-      socket.on('join-prompting-dashboard', (data) => {
-        this.handleJoinPromptingDashboard(socket, data)
+      // Handle document content updates (enhanced for living blocks)
+      socket.on('content-update', (data) => {
+        this.handleContentUpdate(socket, data)
       })
 
-      // Handle prompt submission
-      socket.on('prompt-submitted', (data) => {
-        this.handlePromptSubmitted(socket, data)
+      // Handle block focus changes
+      socket.on('block-focus', (data) => {
+        this.handleBlockFocus(socket, data)
       })
 
-      // Handle prompt status updates
-      socket.on('prompt-status-update', (data) => {
-        this.handlePromptStatusUpdate(socket, data)
+      // Handle edit requests
+      socket.on('request-edit', (data) => {
+        this.handleEditRequest(socket, data)
       })
 
-      // Handle agent status changes
-      socket.on('agent-status-change', (data) => {
-        this.handleAgentStatusChange(socket, data)
-      })
-
-      // Handle prompt optimization
-      socket.on('prompt-optimized', (data) => {
-        this.handlePromptOptimized(socket, data)
-      })
-
-      // Handle AI execution
-      socket.on('ai-execution-complete', (data) => {
-        this.handleAIExecutionComplete(socket, data)
+      // Handle edit permission responses
+      socket.on('edit-permission-response', (data) => {
+        this.handleEditPermissionResponse(socket, data)
       })
 
       // Handle disconnection
@@ -686,265 +674,266 @@ class RealtimeService {
     return users
   }
 
-  // === PROMPTING AGENT SYSTEM METHODS ===
+  // === ENHANCED COLLABORATIVE EDITING METHODS ===
 
-  async handleJoinPromptingDashboard(socket, { workspaceId }) {
+  // Handle enhanced content updates with conflict resolution
+  async handleContentUpdate(socket, { documentId, blockId, operations, version, workspaceId }) {
     try {
-      // Verify user has access to workspace
-      const accessCheck = await pool.query(`
-        SELECT p.id, p.title
-        FROM projects p
-        WHERE p.id = $1::UUID AND (
-          p.created_by = $2::UUID OR
-          EXISTS(SELECT 1 FROM collaborations c
-                 WHERE c.project_id = p.id AND c.collaborator_id = $2::UUID AND c.status = 'active')
-        )
-      `, [workspaceId, socket.userId])
+      const documentRoom = `document-${documentId}`
 
-      if (accessCheck.rows.length === 0) {
-        socket.emit('error', { message: 'Access denied to workspace prompting dashboard' })
+      // Verify user has edit permission for this document
+      const permission = await this.checkEditPermission(socket.userId, documentId, workspaceId)
+      if (!permission.canEdit) {
+        socket.emit('error', { type: 'permission_denied', message: 'No edit permission for this document' })
         return
       }
 
-      const promptingRoomId = `prompting-${workspaceId}`
-      socket.join(promptingRoomId)
-
-      socket.emit('prompting-dashboard-joined', {
-        workspaceId,
-        workspace: accessCheck.rows[0]
-      })
-
-      console.log(`User ${socket.userId} joined prompting dashboard for workspace ${workspaceId}`)
-    } catch (error) {
-      console.error('Error joining prompting dashboard:', error)
-      socket.emit('error', { message: 'Failed to join prompting dashboard' })
-    }
-  }
-
-  async handlePromptSubmitted(socket, { promptData, workspaceId }) {
-    try {
-      // Broadcast to all users in the workspace prompting room
-      const promptingRoomId = `prompting-${workspaceId}`
-
-      socket.to(promptingRoomId).emit('prompt-submitted', {
-        prompt: promptData,
-        submittedBy: {
-          id: socket.userId,
-          name: socket.user.name,
-          email: socket.user.email
+      // Broadcast operations to other users in the document
+      socket.to(documentRoom).emit('content-updated', {
+        documentId,
+        blockId,
+        operations,
+        version,
+        author: {
+          userId: socket.userId,
+          user: socket.user
         },
-        timestamp: new Date().toISOString()
+        timestamp: new Date()
       })
 
-      // Notify all available agents
-      this.notifyAvailableAgents('new-prompt', {
-        promptId: promptData.id,
-        workspaceId,
-        promptType: promptData.prompt_type,
-        priority: promptData.priority,
-        submittedBy: socket.user.name
-      })
+      // Store operations for conflict resolution (simplified version)
+      await this.storeOperations(documentId, operations, socket.userId, version)
 
-      console.log(`Prompt submitted by user ${socket.userId} in workspace ${workspaceId}`)
+      console.log(`Content updated by ${socket.user.email} in document ${documentId}`)
     } catch (error) {
-      console.error('Error broadcasting prompt submission:', error)
+      console.error('Content update error:', error)
+      socket.emit('error', { type: 'update_failed', message: 'Failed to update content' })
     }
   }
 
-  async handlePromptStatusUpdate(socket, { promptId, oldStatus, newStatus, workspaceId, promptData }) {
-    try {
-      const promptingRoomId = `prompting-${workspaceId}`
+  // Handle block focus for living blocks
+  handleBlockFocus(socket, { documentId, blockId, workspaceId, focusType }) {
+    const documentRoom = `document-${documentId}`
 
-      // Broadcast status update to workspace
-      this.io.to(promptingRoomId).emit('prompt-status-updated', {
-        promptId,
-        oldStatus,
-        newStatus,
-        prompt: promptData,
-        updatedBy: {
-          id: socket.userId,
-          name: socket.user.name
-        },
-        timestamp: new Date().toISOString()
-      })
-
-      // If status changed to agent_review, notify the assigned agent
-      if (newStatus === 'agent_review' && promptData.agent_id) {
-        this.sendToUser(promptData.agent_id, 'prompt-assigned', {
-          promptId,
-          prompt: promptData,
-          workspaceId
-        })
-      }
-
-      // If prompt was approved, notify workspace about AI execution readiness
-      if (newStatus === 'approved') {
-        this.io.to(promptingRoomId).emit('prompt-ready-for-ai', {
-          promptId,
-          prompt: promptData
-        })
-      }
-
-      console.log(`Prompt ${promptId} status updated from ${oldStatus} to ${newStatus}`)
-    } catch (error) {
-      console.error('Error broadcasting prompt status update:', error)
+    // Track which user is focusing on which block
+    if (!this.blockFocus) {
+      this.blockFocus = new Map()
     }
-  }
 
-  async handleAgentStatusChange(socket, { agentId, oldStatus, newStatus, agentData }) {
-    try {
-      // Broadcast agent status change to all connected workspaces where this agent operates
-      const workspacesQuery = await pool.query(`
-        SELECT DISTINCT wpc.workspace_id, p.title as workspace_name
-        FROM workspace_prompting_config wpc
-        JOIN projects p ON wpc.workspace_id = p.id
-        WHERE wpc.assigned_agent_id = $1::UUID
-      `, [agentId])
-
-      for (const workspace of workspacesQuery.rows) {
-        const promptingRoomId = `prompting-${workspace.workspace_id}`
-        this.io.to(promptingRoomId).emit('agent-status-changed', {
-          agentId,
-          oldStatus,
-          newStatus,
-          agent: agentData,
-          workspaceId: workspace.workspace_id,
-          timestamp: new Date().toISOString()
-        })
-      }
-
-      console.log(`Agent ${agentId} status changed from ${oldStatus} to ${newStatus}`)
-    } catch (error) {
-      console.error('Error broadcasting agent status change:', error)
+    const focusKey = `${documentId}-${blockId}`
+    if (!this.blockFocus.has(focusKey)) {
+      this.blockFocus.set(focusKey, new Set())
     }
-  }
 
-  async handlePromptOptimized(socket, { promptId, originalPrompt, optimizedPrompt, workspaceId, agentData }) {
-    try {
-      const promptingRoomId = `prompting-${workspaceId}`
+    const blockFocusSet = this.blockFocus.get(focusKey)
 
-      // Broadcast optimization to workspace
-      this.io.to(promptingRoomId).emit('prompt-optimized', {
-        promptId,
-        originalPrompt,
-        optimizedPrompt,
-        optimizedBy: agentData,
-        timestamp: new Date().toISOString()
-      })
-
-      // Create notification for workspace members
-      await createNotification({
-        user_id: null, // Workspace notification
-        workspace_id: workspaceId,
-        type: 'prompt_optimized',
-        title: 'Prompt Optimized',
-        message: `Agent ${agentData.agent_name} optimized a prompt`,
-        metadata: {
-          promptId,
-          agentId: agentData.id,
-          agentName: agentData.agent_name
-        }
-      })
-
-      console.log(`Prompt ${promptId} optimized by agent ${agentData.id}`)
-    } catch (error) {
-      console.error('Error broadcasting prompt optimization:', error)
+    if (focusType === 'focus') {
+      blockFocusSet.add(socket.userId)
+    } else {
+      blockFocusSet.delete(socket.userId)
     }
-  }
 
-  async handleAIExecutionComplete(socket, { promptId, aiResponse, executionTimeMs, tokensUsed, workspaceId }) {
-    try {
-      const promptingRoomId = `prompting-${workspaceId}`
-
-      // Broadcast AI execution completion to workspace
-      this.io.to(promptingRoomId).emit('ai-execution-complete', {
-        promptId,
-        aiResponse,
-        executionTimeMs,
-        tokensUsed,
-        completedAt: new Date().toISOString()
-      })
-
-      // Create notification for workspace
-      await createNotification({
-        user_id: null,
-        workspace_id: workspaceId,
-        type: 'ai_execution_complete',
-        title: 'AI Execution Complete',
-        message: `AI prompt execution completed in ${executionTimeMs}ms`,
-        metadata: {
-          promptId,
-          executionTimeMs,
-          tokensUsed
-        }
-      })
-
-      console.log(`AI execution completed for prompt ${promptId} in ${executionTimeMs}ms`)
-    } catch (error) {
-      console.error('Error broadcasting AI execution completion:', error)
-    }
-  }
-
-  async notifyAvailableAgents(event, data) {
-    try {
-      // Get all active agents
-      const agentsQuery = await pool.query(`
-        SELECT pa.id, pa.user_id, pa.agent_name, pa.expertise_areas, pa.status
-        FROM prompting_agents pa
-        WHERE pa.status = 'active'
-      `)
-
-      for (const agent of agentsQuery.rows) {
-        // Check if agent has expertise for this prompt type
-        const hasExpertise = agent.expertise_areas.includes(data.promptType) ||
-                           agent.expertise_areas.includes('general')
-
-        if (hasExpertise) {
-          this.sendToUser(agent.user_id, event, {
-            ...data,
-            agent: {
-              id: agent.id,
-              name: agent.agent_name,
-              expertise: agent.expertise_areas
-            }
-          })
-        }
-      }
-    } catch (error) {
-      console.error('Error notifying available agents:', error)
-    }
-  }
-
-  // Broadcast prompting activity to workspace
-  broadcastPromptingActivity(workspaceId, activityData) {
-    const promptingRoomId = `prompting-${workspaceId}`
-    this.io.to(promptingRoomId).emit('prompting-activity', {
-      ...activityData,
-      timestamp: new Date().toISOString()
+    // Broadcast focus changes to create living block indicators
+    socket.to(documentRoom).emit('block-focus-changed', {
+      documentId,
+      blockId,
+      focusType,
+      user: socket.user,
+      userId: socket.userId,
+      activeUsers: Array.from(blockFocusSet).map(userId => {
+        const connection = this.connectedUsers.get(userId)
+        return connection ? {
+          userId,
+          user: connection.user,
+          color: this.getUserColor(userId)
+        } : null
+      }).filter(Boolean),
+      timestamp: new Date()
     })
   }
 
-  // Get prompting-specific room users
-  getPromptingRoomUsers(workspaceId) {
-    const promptingRoomId = `prompting-${workspaceId}`
-    const room = this.io.sockets.adapter.rooms.get(promptingRoomId)
+  // Handle edit requests for permission-based collaboration
+  async handleEditRequest(socket, { documentId, blockId, workspaceId, message }) {
+    try {
+      // Get document owners/admins who can approve edit requests
+      const approvers = await pool.query(`
+        SELECT DISTINCT u.id, u.email, u.name
+        FROM users u
+        INNER JOIN projects p ON p.user_id = u.id OR EXISTS(
+          SELECT 1 FROM collaborations c
+          WHERE c.project_id = p.id AND c.collaborator_id = u.id
+          AND c.role IN ('admin', 'editor') AND c.status = 'active'
+        )
+        WHERE p.id = $1
+      `, [workspaceId])
 
-    if (room) {
-      const users = []
-      for (const socketId of room) {
-        const socket = this.io.sockets.sockets.get(socketId)
-        if (socket && socket.userId) {
-          users.push({
-            userId: socket.userId,
-            userName: socket.user.name,
-            userEmail: socket.user.email,
-            joinedAt: socket.joinedAt || new Date().toISOString()
+      // Create notification for approvers
+      for (const approver of approvers.rows) {
+        if (approver.id !== socket.userId) {
+          await createNotification(
+            approver.id,
+            'edit_request',
+            'Edit Request',
+            `${socket.user.name} requests edit permission for a document block`,
+            { documentId, blockId, projectId: workspaceId, requesterId: socket.userId }
+          )
+
+          // Send real-time notification
+          const userConnection = this.connectedUsers.get(approver.id)
+          if (userConnection) {
+            userConnection.socket.emit('edit-request', {
+              requestId: `req-${Date.now()}`,
+              requester: socket.user,
+              documentId,
+              blockId,
+              message,
+              timestamp: new Date()
+            })
+          }
+        }
+      }
+
+      socket.emit('edit-request-sent', {
+        documentId,
+        blockId,
+        message: 'Edit request sent to document owners'
+      })
+
+    } catch (error) {
+      console.error('Edit request error:', error)
+      socket.emit('error', { type: 'request_failed', message: 'Failed to send edit request' })
+    }
+  }
+
+  // Handle edit permission responses
+  async handleEditPermissionResponse(socket, { requestId, requesterId, documentId, blockId, approved, workspaceId }) {
+    try {
+      // Verify user can approve edit requests
+      const canApprove = await this.checkApprovalPermission(socket.userId, workspaceId)
+      if (!canApprove) {
+        socket.emit('error', { type: 'permission_denied', message: 'Cannot approve edit requests' })
+        return
+      }
+
+      // Send response to requester
+      const requesterConnection = this.connectedUsers.get(requesterId)
+      if (requesterConnection) {
+        requesterConnection.socket.emit('edit-permission-response', {
+          requestId,
+          documentId,
+          blockId,
+          approved,
+          approver: socket.user,
+          timestamp: new Date()
+        })
+
+        if (approved) {
+          // Grant temporary edit permission
+          await this.grantTemporaryEditPermission(requesterId, documentId, blockId, workspaceId)
+
+          // Notify workspace of new editor
+          const documentRoom = `document-${documentId}`
+          this.io.to(documentRoom).emit('editor-granted', {
+            documentId,
+            blockId,
+            editor: requesterConnection.user,
+            grantedBy: socket.user,
+            timestamp: new Date()
           })
         }
       }
-      return users
+
+      console.log(`Edit permission ${approved ? 'granted' : 'denied'} by ${socket.user.email}`)
+    } catch (error) {
+      console.error('Edit permission response error:', error)
     }
-    return []
+  }
+
+  // Enhanced helper methods for collaborative editing
+  async checkEditPermission(userId, documentId, workspaceId) {
+    try {
+      const result = await pool.query(`
+        SELECT
+          CASE
+            WHEN p.user_id = $1 THEN true
+            WHEN EXISTS(
+              SELECT 1 FROM collaborations c
+              WHERE c.project_id = p.id AND c.collaborator_id = $1
+              AND c.role IN ('admin', 'editor') AND c.status = 'active'
+            ) THEN true
+            WHEN EXISTS(
+              SELECT 1 FROM temporary_edit_permissions tep
+              WHERE tep.user_id = $1 AND tep.document_id = $2
+              AND tep.expires_at > NOW()
+            ) THEN true
+            ELSE false
+          END as can_edit
+        FROM projects p
+        WHERE p.id = $3
+      `, [userId, documentId, workspaceId])
+
+      return { canEdit: result.rows[0]?.can_edit || false }
+    } catch (error) {
+      console.error('Error checking edit permission:', error)
+      return { canEdit: false }
+    }
+  }
+
+  async checkApprovalPermission(userId, workspaceId) {
+    try {
+      const result = await pool.query(`
+        SELECT
+          CASE
+            WHEN p.user_id = $1 THEN true
+            WHEN EXISTS(
+              SELECT 1 FROM collaborations c
+              WHERE c.project_id = p.id AND c.collaborator_id = $1
+              AND c.role = 'admin' AND c.status = 'active'
+            ) THEN true
+            ELSE false
+          END as can_approve
+        FROM projects p
+        WHERE p.id = $2
+      `, [userId, workspaceId])
+
+      return result.rows[0]?.can_approve || false
+    } catch (error) {
+      console.error('Error checking approval permission:', error)
+      return false
+    }
+  }
+
+  async grantTemporaryEditPermission(userId, documentId, blockId, workspaceId) {
+    try {
+      // Grant 1-hour temporary edit permission
+      await pool.query(`
+        INSERT INTO temporary_edit_permissions (user_id, document_id, block_id, project_id, expires_at)
+        VALUES ($1, $2, $3, $4, NOW() + INTERVAL '1 hour')
+        ON CONFLICT (user_id, document_id, block_id)
+        DO UPDATE SET expires_at = NOW() + INTERVAL '1 hour'
+      `, [userId, documentId, blockId, workspaceId])
+    } catch (error) {
+      console.error('Error granting temporary edit permission:', error)
+    }
+  }
+
+  async storeOperations(documentId, operations, userId, version) {
+    try {
+      // Store operations for potential conflict resolution and history
+      await pool.query(`
+        INSERT INTO document_operations (document_id, operations, user_id, version, created_at)
+        VALUES ($1, $2, $3, $4, NOW())
+      `, [documentId, JSON.stringify(operations), userId, version])
+    } catch (error) {
+      console.error('Error storing operations:', error)
+    }
+  }
+
+  getUserColor(userId) {
+    // Generate consistent colors for user cursors and presence indicators
+    const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F']
+    const hash = userId.split('').reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a }, 0)
+    return colors[Math.abs(hash) % colors.length]
   }
 
   sendToUser(userId, event, data) {

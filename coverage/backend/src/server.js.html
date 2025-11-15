@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/142</span>
+                <span class='fraction'>0/149</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/26</span>
+                <span class='fraction'>0/28</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/142</span>
+                <span class='fraction'>0/149</span>
             </div>
         
             
@@ -451,7 +451,20 @@
 <a name='L386'></a><a href='#L386'>386</a>
 <a name='L387'></a><a href='#L387'>387</a>
 <a name='L388'></a><a href='#L388'>388</a>
-<a name='L389'></a><a href='#L389'>389</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L389'></a><a href='#L389'>389</a>
+<a name='L390'></a><a href='#L390'>390</a>
+<a name='L391'></a><a href='#L391'>391</a>
+<a name='L392'></a><a href='#L392'>392</a>
+<a name='L393'></a><a href='#L393'>393</a>
+<a name='L394'></a><a href='#L394'>394</a>
+<a name='L395'></a><a href='#L395'>395</a>
+<a name='L396'></a><a href='#L396'>396</a>
+<a name='L397'></a><a href='#L397'>397</a>
+<a name='L398'></a><a href='#L398'>398</a>
+<a name='L399'></a><a href='#L399'>399</a>
+<a name='L400'></a><a href='#L400'>400</a>
+<a name='L401'></a><a href='#L401'>401</a>
+<a name='L402'></a><a href='#L402'>402</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -484,6 +497,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -645,6 +661,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -819,9 +838,11 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -835,10 +856,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Only load dotenv in development
 <span class="cstat-no" title="statement not covered" >if (process.env.NODE_ENV !== 'production') {</span>
 <span class="cstat-no" title="statement not covered" >  require('dotenv').config()</span>
@@ -869,6 +895,9 @@ const migrateRoutes = <span class="cstat-no" title="statement not covered" >requ
 &nbsp;
 // Prompting agent system
 const promptingRoutes = <span class="cstat-no" title="statement not covered" >require('./routes/prompting')</span>
+&nbsp;
+// Simple prompts management (for frontend compatibility)
+const promptsRoutes = <span class="cstat-no" title="statement not covered" >require('./routes/prompts')</span>
 &nbsp;
 // Collaboration features
 const teamRoutes = <span class="cstat-no" title="statement not covered" >require('./routes/team')</span>
@@ -1039,8 +1068,11 @@ let realtimeService
 // Prompting agent system routes
 <span class="cstat-no" title="statement not covered" >app.use('/api/prompting', intelligentRateLimiter, promptingRoutes)</span>
 &nbsp;
+// Simple prompts management routes (frontend compatibility)
+<span class="cstat-no" title="statement not covered" >app.use('/api/prompts', intelligentRateLimiter, promptsRoutes)</span>
+&nbsp;
 // Collaboration features with intelligent rate limiting
-<span class="cstat-no" title="statement not covered" >app.use('/api/team', intelligentRateLimiter, teamRoutes)</span>
+<span class="cstat-no" title="statement not covered" >app.use('/api/teams', intelligentRateLimiter, teamRoutes)</span>
 <span class="cstat-no" title="statement not covered" >app.use('/api/projects', intelligentRateLimiter, projectRoutes)</span>
 <span class="cstat-no" title="statement not covered" >app.use('/api/reviews', intelligentRateLimiter, reviewRoutes)</span>
 <span class="cstat-no" title="statement not covered" >app.use('/api/reviewers', intelligentRateLimiter, reviewerRoutes)</span>
@@ -1207,26 +1239,33 @@ const cleanupExpiredRequests = <span class="cstat-no" title="statement not cover
 <span class="cstat-no" title="statement not covered" >cleanupExpiredRequests()</span>
 &nbsp;
 // Start server with Socket.IO support
-<span class="cstat-no" title="statement not covered" >server.listen(PORT, <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >  console.log(`✓ Sway backend running on port ${PORT} - Collaboration platform ready!`)</span>
-<span class="cstat-no" title="statement not covered" >  console.log(`🚀 Real-time collaboration enabled via WebSockets`)</span>
-})
-&nbsp;
-// Graceful shutdown
-const gracefulShutdown = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >  console.log('🔄 Shutting down gracefully...')</span>
-<span class="cstat-no" title="statement not covered" >  server.close(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >    console.log('✓ Server closed')</span>
-<span class="cstat-no" title="statement not covered" >    process.exit(0)</span>
+// Start server only when running directly (not when imported as module for Vercel)
+<span class="cstat-no" title="statement not covered" >if (require.main === module) {</span>
+<span class="cstat-no" title="statement not covered" >  server.listen(PORT, <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log(`✓ Sway backend running on port ${PORT} - Collaboration platform ready!`)</span>
+<span class="cstat-no" title="statement not covered" >    console.log(`🚀 Real-time collaboration enabled via WebSockets`)</span>
   })
+&nbsp;
+  // Graceful shutdown for direct execution
+  const gracefulShutdown = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >    console.log('🔄 Shutting down gracefully...')</span>
+<span class="cstat-no" title="statement not covered" >    server.close(<span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+<span class="cstat-no" title="statement not covered" >      console.log('✓ Server closed')</span>
+<span class="cstat-no" title="statement not covered" >      process.exit(0)</span>
+    })
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  process.on('SIGTERM', gracefulShutdown)</span>
+<span class="cstat-no" title="statement not covered" >  process.on('SIGINT', gracefulShutdown)</span>
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >process.on('SIGTERM', gracefulShutdown)</span>
-<span class="cstat-no" title="statement not covered" >process.on('SIGINT', gracefulShutdown)</span>
+// Export app for Vercel serverless deployment (default export required)
+<span class="cstat-no" title="statement not covered" >module.exports = app</span>
+<span class="cstat-no" title="statement not covered" >module.exports.default = app</span>
 &nbsp;
-// Export for Vercel serverless (if needed)
-module.exports = { app, server, io }
-// Force redeploy with Stripe routes - Wed Nov 13 21:44:00 PST 2025
+// Also export other components for compatibility
+<span class="cstat-no" title="statement not covered" >module.exports.server = server</span>
+<span class="cstat-no" title="statement not covered" >module.exports.io = io</span>
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -1234,7 +1273,7 @@ module.exports = { app, server, io }
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-15T05:44:54.355Z
+                at 2025-11-15T21:14:02.566Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

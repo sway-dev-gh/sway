@@ -26,11 +26,6 @@ const automationRoutes = require('./routes/automation')
 // const aiRoutes = require('./routes/ai') // Disabled - no OpenAI API key
 const migrateRoutes = require('./routes/migrate')
 
-// Prompting agent system
-const promptingRoutes = require('./routes/prompting')
-
-// Simple prompts management (for frontend compatibility)
-const promptsRoutes = require('./routes/prompts')
 
 // Collaboration features
 const teamRoutes = require('./routes/team')
@@ -114,11 +109,6 @@ try {
   realtimeService = new RealtimeService(io)
   console.log('✓ Real-time collaboration service initialized')
 
-  // Connect realtime service to prompting routes
-  if (promptingRoutes.setRealtimeService) {
-    promptingRoutes.setRealtimeService(realtimeService)
-    console.log('✓ Prompting routes connected to real-time service')
-  }
 } catch (error) {
   console.error('❌ Failed to initialize real-time service:', error)
 }
@@ -198,11 +188,6 @@ app.use('/api/automation', intelligentRateLimiter, automationRoutes)
 // app.use('/api/ai', aiRoutes) // Disabled - no OpenAI API key
 app.use('/api/migrate', adminRateLimit, migrateRoutes)
 
-// Prompting agent system routes
-app.use('/api/prompting', intelligentRateLimiter, promptingRoutes)
-
-// Simple prompts management routes (frontend compatibility)
-app.use('/api/prompts', intelligentRateLimiter, promptsRoutes)
 
 // Collaboration features with intelligent rate limiting
 app.use('/api/teams', intelligentRateLimiter, teamRoutes)

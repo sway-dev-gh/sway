@@ -13,7 +13,7 @@ import {
   FolderOpen,
   Users,
   FileCheck,
-  Terminal,
+  Activity,
   Settings
 } from 'lucide-react'
 
@@ -29,7 +29,7 @@ const navigation: NavigationItem[] = [
   { name: 'workspace', href: '/workspace', icon: FolderOpen },
   { name: 'teams', href: '/teams', icon: Users },
   { name: 'review', href: '/review', icon: FileCheck },
-  { name: 'prompting', href: '/prompting', icon: Terminal },
+  { name: 'activity', href: '/activity', icon: Activity },
   { name: 'settings', href: '/settings', icon: Settings },
 ]
 

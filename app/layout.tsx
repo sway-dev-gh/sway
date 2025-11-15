@@ -8,9 +8,9 @@ import { AuthWrapper } from '@/components/AuthWrapper'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'SwayFiles - Versionless Collaborative Workspace',
-  description: 'The world\'s first truly versionless collaborative workspace. Streamline team collaboration with powerful review workflows.',
-  keywords: ['collaboration', 'workspace', 'productivity', 'team', 'versionless'],
+  title: 'Sway - Collaborative Document Editor',
+  description: 'Real-time collaborative document editing and management platform. Work together on documents with live editing, version control, and team collaboration features.',
+  keywords: ['collaborative editing', 'document collaboration', 'real-time editing', 'team productivity', 'document management', 'version control', 'online editor'],
 }
 
 export default function RootLayout({

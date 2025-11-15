@@ -44,7 +44,7 @@ describe('AuthContext', () => {
   })
 
   it('should provide initial state with no authenticated user', () => {
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
 
     render(
       <AuthProvider>
@@ -59,7 +59,7 @@ describe('AuthContext', () => {
 
   it('should load existing user from localStorage on initialization', async () => {
     const mockUser = { id: '1', email: 'test@example.com', username: 'testuser' }
-    mockAuthApi.getUser.mockReturnValue(mockUser)
+    mockAuthApi.getUser.mockResolvedValue(mockUser)
 
     render(
       <AuthProvider>
@@ -76,7 +76,7 @@ describe('AuthContext', () => {
 
   it('should handle successful login', async () => {
     const mockUser = { id: '1', email: 'test@example.com', username: 'testuser' }
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
     mockAuthApi.login.mockResolvedValue({
       success: true,
       user: mockUser
@@ -99,7 +99,7 @@ describe('AuthContext', () => {
   })
 
   it('should handle failed login', async () => {
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
     mockAuthApi.login.mockResolvedValue({
       success: false,
       message: 'Invalid credentials'
@@ -123,7 +123,7 @@ describe('AuthContext', () => {
 
   it('should handle successful signup', async () => {
     const mockUser = { id: '1', email: 'test@example.com', username: 'testuser' }
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
     mockAuthApi.signup.mockResolvedValue({
       success: true,
       user: mockUser
@@ -146,7 +146,7 @@ describe('AuthContext', () => {
   })
 
   it('should handle failed signup', async () => {
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
     mockAuthApi.signup.mockResolvedValue({
       success: false,
       message: 'Email already exists'
@@ -170,7 +170,7 @@ describe('AuthContext', () => {
 
   it('should handle logout', async () => {
     const mockUser = { id: '1', email: 'test@example.com', username: 'testuser' }
-    mockAuthApi.getUser.mockReturnValue(mockUser)
+    mockAuthApi.getUser.mockResolvedValue(mockUser)
 
     render(
       <AuthProvider>
@@ -194,7 +194,7 @@ describe('AuthContext', () => {
   })
 
   it('should handle login with missing user data', async () => {
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
     mockAuthApi.login.mockResolvedValue({
       success: true
       // Missing user data
@@ -215,7 +215,7 @@ describe('AuthContext', () => {
   })
 
   it('should handle signup with missing user data', async () => {
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
     mockAuthApi.signup.mockResolvedValue({
       success: true
       // Missing user data
@@ -247,7 +247,7 @@ describe('AuthContext', () => {
   })
 
   it('should handle loading state properly', () => {
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
 
     render(
       <AuthProvider>
@@ -266,7 +266,7 @@ describe('AuthContext', () => {
       username: 'testuser',
       plan: 'premium'
     }
-    mockAuthApi.getUser.mockReturnValue(mockUser)
+    mockAuthApi.getUser.mockResolvedValue(mockUser)
 
     render(
       <AuthProvider>
@@ -285,7 +285,7 @@ describe('AuthContext', () => {
       id: '1',
       email: 'test@example.com'
     }
-    mockAuthApi.getUser.mockReturnValue(mockUser)
+    mockAuthApi.getUser.mockResolvedValue(mockUser)
 
     render(
       <AuthProvider>
@@ -301,7 +301,7 @@ describe('AuthContext', () => {
 
   it('should maintain state consistency through multiple operations', async () => {
     const mockUser = { id: '1', email: 'test@example.com', username: 'testuser' }
-    mockAuthApi.getUser.mockReturnValue(null)
+    mockAuthApi.getUser.mockResolvedValue(null)
     mockAuthApi.login.mockResolvedValue({ success: true, user: mockUser })
 
     render(

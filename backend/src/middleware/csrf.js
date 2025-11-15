@@ -163,17 +163,37 @@ const csrfMiddleware = (req, res, next) => {
     const sessionId = req.sessionID || req.session?.id
     const userId = req.userId || req.user?.id
 
-    // Verify CSRF token
-    const isValid = verifyCSRFToken(token, sessionId, userId)
+    // For authentication endpoints, allow anonymous CSRF tokens
+    const isAuthEndpoint = req.path.startsWith('/api/auth/')
 
-    if (!isValid) {
-      return res.status(403).json({
-        success: false,
-        error: 'CSRF token validation failed',
-        errorId: crypto.randomBytes(8).toString('hex'),
-        timestamp: new Date().toISOString(),
-        message: 'Invalid or missing CSRF token. Please refresh and try again.'
-      })
+    if (isAuthEndpoint && !sessionId && !userId) {
+      console.log('🔒 Using anonymous CSRF validation for auth endpoint:', req.path)
+      // Use a fallback identifier for anonymous tokens
+      const anonymousId = 'anonymous'
+      const isValid = verifyCSRFToken(token, anonymousId, null)
+
+      if (!isValid) {
+        return res.status(403).json({
+          success: false,
+          error: 'CSRF token validation failed',
+          errorId: crypto.randomBytes(8).toString('hex'),
+          timestamp: new Date().toISOString(),
+          message: 'Invalid or missing CSRF token. Please refresh and try again.'
+        })
+      }
+    } else {
+      // Standard CSRF validation for authenticated endpoints
+      const isValid = verifyCSRFToken(token, sessionId, userId)
+
+      if (!isValid) {
+        return res.status(403).json({
+          success: false,
+          error: 'CSRF token validation failed',
+          errorId: crypto.randomBytes(8).toString('hex'),
+          timestamp: new Date().toISOString(),
+          message: 'Invalid or missing CSRF token. Please refresh and try again.'
+        })
+      }
     }
 
     next()
@@ -197,7 +217,12 @@ const getCSRFTokenRoute = (req, res) => {
     const sessionId = req.sessionID || req.session?.id
     const userId = req.userId || req.user?.id
 
-    const { token, sessionId: generatedSessionId } = generateCSRFToken(sessionId, userId)
+    // For anonymous requests, use a consistent identifier
+    const identifier = sessionId || userId || 'anonymous'
+
+    const { token, sessionId: generatedSessionId } = generateCSRFToken(identifier, null)
+
+    console.log(`✓ CSRF token generated for identifier: ${identifier}`)
 
     res.json({
       success: true,

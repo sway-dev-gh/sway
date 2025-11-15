@@ -1,7 +1,7 @@
 {
-  "name": "swayfiles",
+  "name": "sway",
   "version": "3.0.0",
-  "description": "The world's first truly versionless collaborative workspace",
+  "description": "Collaborative Document Editor - Real-time collaborative editing and document management platform",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3001",
