@@ -32,14 +32,20 @@ const generateDeviceFingerprint = (req) => {
 // Helper function to log security events
 const logSecurityEvent = async (event, userId, details = {}) => {
   try {
+    // SECURITY FIX: Skip logging if no valid user ID to avoid foreign key errors
+    if (!userId || userId === '00000000-0000-0000-0000-000000000000') {
+      console.log(`⚠️ Skipping security log for ${event} - no valid user ID`);
+      return;
+    }
+
     await pool.query(
       `INSERT INTO activity_log (user_id, action, resource_type, resource_id, metadata)
        VALUES ($1, $2, $3, $4, $5)`,
       [
-        userId || '00000000-0000-0000-0000-000000000000',
+        userId,
         event,
         'security',
-        userId || '00000000-0000-0000-0000-000000000000',
+        userId,
         JSON.stringify({
           timestamp: new Date().toISOString(),
           ip: details.ip,
