@@ -1,6 +1,7 @@
 /**
  * Enterprise CSRF Protection Middleware
  * Protects against Cross-Site Request Forgery attacks
+ * Deployment trigger: Force re-deploy for production authentication fix
  */
 
 const csrf = require('csrf')
