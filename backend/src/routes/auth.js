@@ -95,7 +95,7 @@ router.post('/signup', signupLimiter, validateAuth.signup, async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name,
+        username: user.username,
         plan: user.plan || 'free'
       }
       // SECURITY: Token no longer included in response to prevent XSS token theft
@@ -154,7 +154,7 @@ router.post('/login', loginLimiter, validateAuth.login, async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name,
+        username: user.username,
         plan: user.plan || 'free'
       }
       // SECURITY: Token no longer included in response to prevent XSS token theft
@@ -187,7 +187,7 @@ router.get('/me', authenticateToken, async (req, res) => {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name,
+        username: user.username,
         plan: user.plan || 'free',
         created_at: user.created_at
       }
