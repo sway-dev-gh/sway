@@ -91,7 +91,7 @@ router.get('/', authenticateToken, reviewLimiter, asyncHandler(async (req, res) 
     FROM reviews r
     LEFT JOIN projects p ON r.project_id = p.id
     LEFT JOIN file_requests fr ON r.request_id = fr.id
-    LEFT JOIN project_files u ON r.upload_id = u.upload_id
+    LEFT JOIN project_files u ON r.upload_id = u.id
     LEFT JOIN users reviewer ON r.reviewer_id = reviewer.id
     LEFT JOIN users assigner ON r.assigned_by_id = assigner.id
     WHERE 1=1
@@ -173,7 +173,7 @@ router.get('/:reviewId', authenticateToken, reviewLimiter, asyncHandler(async (r
     FROM reviews r
     LEFT JOIN projects p ON r.project_id = p.id
     LEFT JOIN file_requests fr ON r.request_id = fr.id
-    LEFT JOIN project_files u ON r.upload_id = u.upload_id
+    LEFT JOIN project_files u ON r.upload_id = u.id
     LEFT JOIN users reviewer ON r.reviewer_id = reviewer.id
     LEFT JOIN users assigner ON r.assigned_by_id = assigner.id
     WHERE r.id = $1

@@ -112,13 +112,97 @@ export default function Settings() {
           localStorage.setItem('user', JSON.stringify(data.user))
           refreshUser()
         }
-        showNotification('Settings saved successfully!')
+        showNotification('Account settings saved successfully!')
       } else {
-        throw new Error('Failed to save settings')
+        throw new Error('Failed to save account settings')
       }
     } catch (error) {
-      console.error('Save error:', error)
-      showNotification('Failed to save settings')
+      console.error('Account save error:', error)
+      // Save to localStorage as fallback
+      localStorage.setItem('user_settings_account', JSON.stringify({
+        email,
+        username,
+        emailNotifications,
+        projectUpdates,
+        savedAt: new Date().toISOString()
+      }))
+      showNotification('Account settings saved locally - will sync when backend is available')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleSaveWorkspace = async () => {
+    setSaving(true)
+
+    try {
+      const workspaceSettings = {
+        defaultTheme,
+        autoSaveInterval,
+        showLineNumbers,
+        autoAssignReviews,
+        defaultProjectVisibility,
+        realTimePresence
+      }
+
+      // Save to backend
+      const response = await apiRequest('/api/user/workspace-settings', {
+        method: 'PUT',
+        body: JSON.stringify(workspaceSettings)
+      })
+
+      if (response?.ok) {
+        showNotification('Workspace settings saved successfully!')
+      } else {
+        throw new Error('Failed to save workspace settings')
+      }
+    } catch (error) {
+      console.error('Workspace save error:', error)
+      // Save to localStorage as fallback
+      localStorage.setItem('user_settings_workspace', JSON.stringify({
+        defaultTheme,
+        autoSaveInterval,
+        showLineNumbers,
+        autoAssignReviews,
+        defaultProjectVisibility,
+        realTimePresence,
+        savedAt: new Date().toISOString()
+      }))
+      showNotification('Workspace settings saved locally - will sync when backend is available')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleSaveAutomation = async () => {
+    setSaving(true)
+
+    try {
+      const automationSettings = {
+        autoApproveChanges,
+        teamNotifications
+      }
+
+      // Save to backend
+      const response = await apiRequest('/api/user/automation-settings', {
+        method: 'PUT',
+        body: JSON.stringify(automationSettings)
+      })
+
+      if (response?.ok) {
+        showNotification('Automation settings saved successfully!')
+      } else {
+        throw new Error('Failed to save automation settings')
+      }
+    } catch (error) {
+      console.error('Automation save error:', error)
+      // Save to localStorage as fallback
+      localStorage.setItem('user_settings_automation', JSON.stringify({
+        autoApproveChanges,
+        teamNotifications,
+        savedAt: new Date().toISOString()
+      }))
+      showNotification('Automation settings saved locally - will sync when backend is available')
     } finally {
       setSaving(false)
     }
@@ -522,7 +606,7 @@ export default function Settings() {
 
                 <div className="pt-4">
                   <button
-                    onClick={handleSave}
+                    onClick={handleSaveWorkspace}
                     disabled={saving}
                     className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
                   >
@@ -711,9 +795,20 @@ export default function Settings() {
                     </div>
                     <div className="bg-terminal-accent rounded p-3 font-mono text-xs text-terminal-text">
                       curl -H "Authorization: Bearer YOUR_API_KEY" \\<br />
-                      &nbsp;&nbsp;https://api.swayfiles.com/v1/projects
+                      &nbsp;&nbsp;https://sway-backend-2qlr.onrender.com/api/projects
                     </div>
                   </div>
+                </div>
+
+                {/* Save Automation Settings Button */}
+                <div className="pt-6 border-t border-terminal-border">
+                  <button
+                    onClick={handleSaveAutomation}
+                    disabled={saving}
+                    className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
+                  >
+                    {saving ? 'Saving...' : 'Save Automation Settings'}
+                  </button>
                 </div>
               </div>
             </div>

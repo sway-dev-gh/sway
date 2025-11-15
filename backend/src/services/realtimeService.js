@@ -129,6 +129,38 @@ class RealtimeService {
         this.handleSelectionUpdate(socket, data)
       })
 
+      // === PROMPTING AGENT SYSTEM EVENTS ===
+
+      // Handle joining prompting dashboard
+      socket.on('join-prompting-dashboard', (data) => {
+        this.handleJoinPromptingDashboard(socket, data)
+      })
+
+      // Handle prompt submission
+      socket.on('prompt-submitted', (data) => {
+        this.handlePromptSubmitted(socket, data)
+      })
+
+      // Handle prompt status updates
+      socket.on('prompt-status-update', (data) => {
+        this.handlePromptStatusUpdate(socket, data)
+      })
+
+      // Handle agent status changes
+      socket.on('agent-status-change', (data) => {
+        this.handleAgentStatusChange(socket, data)
+      })
+
+      // Handle prompt optimization
+      socket.on('prompt-optimized', (data) => {
+        this.handlePromptOptimized(socket, data)
+      })
+
+      // Handle AI execution
+      socket.on('ai-execution-complete', (data) => {
+        this.handleAIExecutionComplete(socket, data)
+      })
+
       // Handle disconnection
       socket.on('disconnect', () => {
         this.handleDisconnect(socket)
@@ -652,6 +684,267 @@ class RealtimeService {
       }
     }
     return users
+  }
+
+  // === PROMPTING AGENT SYSTEM METHODS ===
+
+  async handleJoinPromptingDashboard(socket, { workspaceId }) {
+    try {
+      // Verify user has access to workspace
+      const accessCheck = await pool.query(`
+        SELECT p.id, p.title
+        FROM projects p
+        WHERE p.id = $1::UUID AND (
+          p.created_by = $2::UUID OR
+          EXISTS(SELECT 1 FROM collaborations c
+                 WHERE c.project_id = p.id AND c.collaborator_id = $2::UUID AND c.status = 'active')
+        )
+      `, [workspaceId, socket.userId])
+
+      if (accessCheck.rows.length === 0) {
+        socket.emit('error', { message: 'Access denied to workspace prompting dashboard' })
+        return
+      }
+
+      const promptingRoomId = `prompting-${workspaceId}`
+      socket.join(promptingRoomId)
+
+      socket.emit('prompting-dashboard-joined', {
+        workspaceId,
+        workspace: accessCheck.rows[0]
+      })
+
+      console.log(`User ${socket.userId} joined prompting dashboard for workspace ${workspaceId}`)
+    } catch (error) {
+      console.error('Error joining prompting dashboard:', error)
+      socket.emit('error', { message: 'Failed to join prompting dashboard' })
+    }
+  }
+
+  async handlePromptSubmitted(socket, { promptData, workspaceId }) {
+    try {
+      // Broadcast to all users in the workspace prompting room
+      const promptingRoomId = `prompting-${workspaceId}`
+
+      socket.to(promptingRoomId).emit('prompt-submitted', {
+        prompt: promptData,
+        submittedBy: {
+          id: socket.userId,
+          name: socket.user.name,
+          email: socket.user.email
+        },
+        timestamp: new Date().toISOString()
+      })
+
+      // Notify all available agents
+      this.notifyAvailableAgents('new-prompt', {
+        promptId: promptData.id,
+        workspaceId,
+        promptType: promptData.prompt_type,
+        priority: promptData.priority,
+        submittedBy: socket.user.name
+      })
+
+      console.log(`Prompt submitted by user ${socket.userId} in workspace ${workspaceId}`)
+    } catch (error) {
+      console.error('Error broadcasting prompt submission:', error)
+    }
+  }
+
+  async handlePromptStatusUpdate(socket, { promptId, oldStatus, newStatus, workspaceId, promptData }) {
+    try {
+      const promptingRoomId = `prompting-${workspaceId}`
+
+      // Broadcast status update to workspace
+      this.io.to(promptingRoomId).emit('prompt-status-updated', {
+        promptId,
+        oldStatus,
+        newStatus,
+        prompt: promptData,
+        updatedBy: {
+          id: socket.userId,
+          name: socket.user.name
+        },
+        timestamp: new Date().toISOString()
+      })
+
+      // If status changed to agent_review, notify the assigned agent
+      if (newStatus === 'agent_review' && promptData.agent_id) {
+        this.sendToUser(promptData.agent_id, 'prompt-assigned', {
+          promptId,
+          prompt: promptData,
+          workspaceId
+        })
+      }
+
+      // If prompt was approved, notify workspace about AI execution readiness
+      if (newStatus === 'approved') {
+        this.io.to(promptingRoomId).emit('prompt-ready-for-ai', {
+          promptId,
+          prompt: promptData
+        })
+      }
+
+      console.log(`Prompt ${promptId} status updated from ${oldStatus} to ${newStatus}`)
+    } catch (error) {
+      console.error('Error broadcasting prompt status update:', error)
+    }
+  }
+
+  async handleAgentStatusChange(socket, { agentId, oldStatus, newStatus, agentData }) {
+    try {
+      // Broadcast agent status change to all connected workspaces where this agent operates
+      const workspacesQuery = await pool.query(`
+        SELECT DISTINCT wpc.workspace_id, p.title as workspace_name
+        FROM workspace_prompting_config wpc
+        JOIN projects p ON wpc.workspace_id = p.id
+        WHERE wpc.assigned_agent_id = $1::UUID
+      `, [agentId])
+
+      for (const workspace of workspacesQuery.rows) {
+        const promptingRoomId = `prompting-${workspace.workspace_id}`
+        this.io.to(promptingRoomId).emit('agent-status-changed', {
+          agentId,
+          oldStatus,
+          newStatus,
+          agent: agentData,
+          workspaceId: workspace.workspace_id,
+          timestamp: new Date().toISOString()
+        })
+      }
+
+      console.log(`Agent ${agentId} status changed from ${oldStatus} to ${newStatus}`)
+    } catch (error) {
+      console.error('Error broadcasting agent status change:', error)
+    }
+  }
+
+  async handlePromptOptimized(socket, { promptId, originalPrompt, optimizedPrompt, workspaceId, agentData }) {
+    try {
+      const promptingRoomId = `prompting-${workspaceId}`
+
+      // Broadcast optimization to workspace
+      this.io.to(promptingRoomId).emit('prompt-optimized', {
+        promptId,
+        originalPrompt,
+        optimizedPrompt,
+        optimizedBy: agentData,
+        timestamp: new Date().toISOString()
+      })
+
+      // Create notification for workspace members
+      await createNotification({
+        user_id: null, // Workspace notification
+        workspace_id: workspaceId,
+        type: 'prompt_optimized',
+        title: 'Prompt Optimized',
+        message: `Agent ${agentData.agent_name} optimized a prompt`,
+        metadata: {
+          promptId,
+          agentId: agentData.id,
+          agentName: agentData.agent_name
+        }
+      })
+
+      console.log(`Prompt ${promptId} optimized by agent ${agentData.id}`)
+    } catch (error) {
+      console.error('Error broadcasting prompt optimization:', error)
+    }
+  }
+
+  async handleAIExecutionComplete(socket, { promptId, aiResponse, executionTimeMs, tokensUsed, workspaceId }) {
+    try {
+      const promptingRoomId = `prompting-${workspaceId}`
+
+      // Broadcast AI execution completion to workspace
+      this.io.to(promptingRoomId).emit('ai-execution-complete', {
+        promptId,
+        aiResponse,
+        executionTimeMs,
+        tokensUsed,
+        completedAt: new Date().toISOString()
+      })
+
+      // Create notification for workspace
+      await createNotification({
+        user_id: null,
+        workspace_id: workspaceId,
+        type: 'ai_execution_complete',
+        title: 'AI Execution Complete',
+        message: `AI prompt execution completed in ${executionTimeMs}ms`,
+        metadata: {
+          promptId,
+          executionTimeMs,
+          tokensUsed
+        }
+      })
+
+      console.log(`AI execution completed for prompt ${promptId} in ${executionTimeMs}ms`)
+    } catch (error) {
+      console.error('Error broadcasting AI execution completion:', error)
+    }
+  }
+
+  async notifyAvailableAgents(event, data) {
+    try {
+      // Get all active agents
+      const agentsQuery = await pool.query(`
+        SELECT pa.id, pa.user_id, pa.agent_name, pa.expertise_areas, pa.status
+        FROM prompting_agents pa
+        WHERE pa.status = 'active'
+      `)
+
+      for (const agent of agentsQuery.rows) {
+        // Check if agent has expertise for this prompt type
+        const hasExpertise = agent.expertise_areas.includes(data.promptType) ||
+                           agent.expertise_areas.includes('general')
+
+        if (hasExpertise) {
+          this.sendToUser(agent.user_id, event, {
+            ...data,
+            agent: {
+              id: agent.id,
+              name: agent.agent_name,
+              expertise: agent.expertise_areas
+            }
+          })
+        }
+      }
+    } catch (error) {
+      console.error('Error notifying available agents:', error)
+    }
+  }
+
+  // Broadcast prompting activity to workspace
+  broadcastPromptingActivity(workspaceId, activityData) {
+    const promptingRoomId = `prompting-${workspaceId}`
+    this.io.to(promptingRoomId).emit('prompting-activity', {
+      ...activityData,
+      timestamp: new Date().toISOString()
+    })
+  }
+
+  // Get prompting-specific room users
+  getPromptingRoomUsers(workspaceId) {
+    const promptingRoomId = `prompting-${workspaceId}`
+    const room = this.io.sockets.adapter.rooms.get(promptingRoomId)
+
+    if (room) {
+      const users = []
+      for (const socketId of room) {
+        const socket = this.io.sockets.sockets.get(socketId)
+        if (socket && socket.userId) {
+          users.push({
+            userId: socket.userId,
+            userName: socket.user.name,
+            userEmail: socket.user.email,
+            joinedAt: socket.joinedAt || new Date().toISOString()
+          })
+        }
+      }
+      return users
+    }
+    return []
   }
 
   sendToUser(userId, event, data) {

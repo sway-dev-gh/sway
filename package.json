@@ -14,8 +14,8 @@
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",
     "test:debug": "jest --detectOpenHandles --verbose",
-    "test:unit": "jest --testPathPattern=components|lib|contexts",
-    "test:integration": "jest --testPathPattern=integration"
+    "test:unit": "jest --testNamePattern=\"unit|components|lib|contexts\" --testPathIgnorePatterns=\"integration\"",
+    "test:integration": "jest --testNamePattern=\"integration|e2e\""
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.4.0",

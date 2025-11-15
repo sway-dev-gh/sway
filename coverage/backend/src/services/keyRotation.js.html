@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/159</span>
+                <span class='fraction'>0/168</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/40</span>
+                <span class='fraction'>0/42</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/153</span>
+                <span class='fraction'>0/162</span>
             </div>
         
             
@@ -614,7 +614,22 @@
 <a name='L549'></a><a href='#L549'>549</a>
 <a name='L550'></a><a href='#L550'>550</a>
 <a name='L551'></a><a href='#L551'>551</a>
-<a name='L552'></a><a href='#L552'>552</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L552'></a><a href='#L552'>552</a>
+<a name='L553'></a><a href='#L553'>553</a>
+<a name='L554'></a><a href='#L554'>554</a>
+<a name='L555'></a><a href='#L555'>555</a>
+<a name='L556'></a><a href='#L556'>556</a>
+<a name='L557'></a><a href='#L557'>557</a>
+<a name='L558'></a><a href='#L558'>558</a>
+<a name='L559'></a><a href='#L559'>559</a>
+<a name='L560'></a><a href='#L560'>560</a>
+<a name='L561'></a><a href='#L561'>561</a>
+<a name='L562'></a><a href='#L562'>562</a>
+<a name='L563'></a><a href='#L563'>563</a>
+<a name='L564'></a><a href='#L564'>564</a>
+<a name='L565'></a><a href='#L565'>565</a>
+<a name='L566'></a><a href='#L566'>566</a>
+<a name='L567'></a><a href='#L567'>567</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -845,21 +860,36 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1394,24 +1424,39 @@ class KeyRotationService {
         ORDER BY created_at DESC
       `)
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      for (const row of result.rows) {</span>
-        const encryptedData = <span class="cstat-no" title="statement not covered" >typeof row.key_value === 'string' ? JSON.parse(row.key_value) : row.key_value</span>
-        const decryptedKey = <span class="cstat-no" title="statement not covered" >this.decryptKeyFromStorage(encryptedData)</span>
+      let loadedCount = <span class="cstat-no" title="statement not covered" >0</span>
+      let failedCount = <span class="cstat-no" title="statement not covered" >0</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        this.activeKeys.set(row.key_type, {</span>
-          keyId: row.key_id,
-          keyValue: decryptedKey,
-          algorithm: row.algorithm,
-          status: row.status,
-          expiresAt: row.expires_at,
-          metadata: typeof row.metadata === 'string' ? JSON.parse(row.metadata || '{}') : (row.metadata || {})
-        })
+<span class="cstat-no" title="statement not covered" >      for (const row of result.rows) {</span>
+<span class="cstat-no" title="statement not covered" >        try {</span>
+          const encryptedData = <span class="cstat-no" title="statement not covered" >typeof row.key_value === 'string' ? JSON.parse(row.key_value) : row.key_value</span>
+          const decryptedKey = <span class="cstat-no" title="statement not covered" >this.decryptKeyFromStorage(encryptedData)</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >          this.activeKeys.set(row.key_type, {</span>
+            keyId: row.key_id,
+            keyValue: decryptedKey,
+            algorithm: row.algorithm,
+            status: row.status,
+            expiresAt: row.expires_at,
+            metadata: typeof row.metadata === 'string' ? JSON.parse(row.metadata || '{}') : (row.metadata || {})
+          })
+<span class="cstat-no" title="statement not covered" >          loadedCount++</span>
+        } catch (decryptError) {
+          // Key was encrypted with different master key - mark for deletion
+<span class="cstat-no" title="statement not covered" >          console.warn(`⚠️ Cannot decrypt key ${row.key_type} (encrypted with different master key), will regenerate`)</span>
+<span class="cstat-no" title="statement not covered" >          await pool.query('UPDATE encryption_keys SET status = $1 WHERE key_id = $2', ['revoked', row.key_id])</span>
+<span class="cstat-no" title="statement not covered" >          failedCount++</span>
+        }
       }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      console.log(`✓ Loaded ${result.rows.length} active keys`)</span>
+<span class="cstat-no" title="statement not covered" >      if (failedCount &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >        console.log(`⚠️ Revoked ${failedCount} incompatible keys, will generate fresh keys`)</span>
+      }
+<span class="cstat-no" title="statement not covered" >      console.log(`✓ Loaded ${loadedCount} active keys`)</span>
     } catch (error) {
 <span class="cstat-no" title="statement not covered" >      console.error('Failed to load existing keys:', error)</span>
-<span class="cstat-no" title="statement not covered" >      throw error</span>
+      // Don't throw - continue with fresh key generation
+<span class="cstat-no" title="statement not covered" >      console.log('⚠️ Will generate fresh encryption keys')</span>
     }
   }
 &nbsp;
@@ -1723,7 +1768,7 @@ const keyRotationService = <span class="cstat-no" title="statement not covered" 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-14T19:59:03.976Z
+                at 2025-11-15T05:44:54.355Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -332,27 +332,109 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // Environment validation function
 const validateEnvironment = () => {
-  const requiredVars = ['JWT_SECRET']
+  console.log('🔍 VALIDATING ENVIRONMENT VARIABLES...')
+
+  // CRITICAL - Server won't start without these
+  const criticalVars = [
+    'JWT_SECRET',
+    'ADMIN_SECRET_KEY',
+    'ADMIN_PASSWORD',
+    'ENCRYPTION_KEY',
+    'IV_KEY',
+    'DATA_ENCRYPTION_KEY',
+    'MASTER_ENCRYPTION_KEY'
+  ]
+
+  // IMPORTANT - Features will fail without these
+  const importantVars = [
+    'STRIPE_SECRET_KEY',
+    'STRIPE_WEBHOOK_SECRET'
+  ]
+
+  // OPTIONAL - Features gracefully degrade without these
+  const optionalVars = [
+    'OPENAI_API_KEY',
+    'REDIS_URL',
+    'STRIPE_PRO_PRICE_ID',
+    'STRIPE_BUSINESS_PRICE_ID'
+  ]
 
   // Check database configuration - either DATABASE_URL or individual DB vars
   const hasDBUrl = process.env.DATABASE_URL
   const hasIndividualDB = process.env.DB_HOST && process.env.DB_NAME && process.env.DB_USER && process.env.DB_PASSWORD
 
+  let errors = []
+  let warnings = []
+
+  // Validate database configuration
   if (!hasDBUrl && !hasIndividualDB) {
-    requiredVars.push('DATABASE_URL or (DB_HOST, DB_NAME, DB_USER, DB_PASSWORD)')
+    errors.push('DATABASE_URL or (DB_HOST, DB_NAME, DB_USER, DB_PASSWORD)')
+  } else {
+    console.log('✓ Database configuration: OK')
   }
 
-  const missingVars = requiredVars.filter(varName => !process.env[varName])
+  // Validate critical variables
+  const missingCritical = criticalVars.filter(varName => !process.env[varName])
+  if (missingCritical.length > 0) {
+    errors.push(...missingCritical)
+  } else {
+    console.log('✓ Critical environment variables: OK')
+  }
 
-  if (missingVars.length > 0) {
-    console.error('🚨 MISSING REQUIRED ENVIRONMENT VARIABLES:')
-    missingVars.forEach(varName => {
-      console.error(`   - ${varName}`)
+  // Validate important variables (warnings only)
+  const missingImportant = importantVars.filter(varName => !process.env[varName])
+  if (missingImportant.length > 0) {
+    warnings.push(...missingImportant)
+  } else {
+    console.log('✓ Important environment variables: OK')
+  }
+
+  // Check optional variables (info only)
+  const missingOptional = optionalVars.filter(varName => !process.env[varName])
+  if (missingOptional.length > 0) {
+    console.log('ℹ️  Optional features disabled due to missing variables:')
+    missingOptional.forEach(varName => {
+      const feature = getFeatureForVar(varName)
+      console.log(`   - ${varName} (${feature} will be disabled)`)
     })
+  }
+
+  // Handle errors
+  if (errors.length > 0) {
+    console.error('\n🚨 CRITICAL: Missing required environment variables!')
+    console.error('Server cannot start without these variables:')
+    errors.forEach(varName => {
+      console.error(`   ❌ ${varName}`)
+    })
+    console.error('\n📝 Set these variables in your environment before starting the server.')
+    console.error('💡 See PRODUCTION_ENVIRONMENT_SETUP.md for guidance.')
     process.exit(1)
   }
 
-  console.log('✓ All required environment variables are set')
+  // Handle warnings
+  if (warnings.length > 0) {
+    console.warn('\n⚠️  WARNING: Missing important environment variables!')
+    console.warn('Some features will not work without these variables:')
+    warnings.forEach(varName => {
+      const feature = getFeatureForVar(varName)
+      console.warn(`   ⚠️  ${varName} (${feature} will fail)`)
+    })
+    console.warn('💡 Set these variables to enable full functionality.\n')
+  }
+
+  console.log('✅ Environment validation complete - server starting...\n')
+}
+
+const getFeatureForVar = (varName) => {
+  const featureMap = {
+    'OPENAI_API_KEY': 'AI prompting features',
+    'STRIPE_SECRET_KEY': 'Payment processing',
+    'STRIPE_WEBHOOK_SECRET': 'Stripe webhooks',
+    'STRIPE_PRO_PRICE_ID': 'Pro plan subscriptions',
+    'STRIPE_BUSINESS_PRICE_ID': 'Business plan subscriptions',
+    'REDIS_URL': 'Session persistence and caching'
+  }
+  return featureMap[varName] || 'Unknown feature'
 }
 
 // Health check endpoint function

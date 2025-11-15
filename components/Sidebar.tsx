@@ -8,22 +8,29 @@ import { useAuth } from '@/contexts/AuthContext'
 import {
   ChevronLeft,
   ChevronRight,
-  LogOut
+  LogOut,
+  LayoutDashboard,
+  FolderOpen,
+  Users,
+  FileCheck,
+  Terminal,
+  Settings
 } from 'lucide-react'
 
 interface NavigationItem {
   name: string
   href: string
-  icon: string
+  icon: React.ElementType
   count?: number
 }
 
 const navigation: NavigationItem[] = [
-  { name: 'dashboard', href: '/', icon: '▣' },
-  { name: 'workspace', href: '/workspace', icon: '▦' },
-  { name: 'teams', href: '/teams', icon: '▩' },
-  { name: 'review', href: '/review', icon: '▨' },
-  { name: 'settings', href: '/settings', icon: '▥' },
+  { name: 'dashboard', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'workspace', href: '/workspace', icon: FolderOpen },
+  { name: 'teams', href: '/teams', icon: Users },
+  { name: 'review', href: '/review', icon: FileCheck },
+  { name: 'prompting', href: '/prompting', icon: Terminal },
+  { name: 'settings', href: '/settings', icon: Settings },
 ]
 
 export default function Sidebar() {
@@ -98,7 +105,7 @@ export default function Sidebar() {
                   <div className="flex items-center space-x-3 w-full py-3 px-4">
                     {!collapsed && (
                       <>
-                        <span className="text-lg">{item.icon}</span>
+                        <item.icon size={16} />
                         <span className="text-terminal-text capitalize">{item.name}</span>
                         {item.count && (
                           <span className="text-terminal-muted ml-auto text-xs">({item.count})</span>
@@ -108,7 +115,7 @@ export default function Sidebar() {
 
                     {collapsed && (
                       <div className="flex items-center justify-center w-full">
-                        <span className="text-lg">{item.icon}</span>
+                        <item.icon size={16} />
                       </div>
                     )}
                   </div>

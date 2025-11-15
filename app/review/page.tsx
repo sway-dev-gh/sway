@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import AppLayout from '@/components/AppLayout'
 import FileVersionHistory from '@/components/FileVersionHistory'
 import CustomDropdown from '@/components/CustomDropdown'
+import { apiRequest } from '@/lib/auth'
 
 interface Review {
   id: string
@@ -79,23 +80,32 @@ export default function Review() {
   const fetchReviews = async () => {
     try {
       setLoading(true)
+      setError(null)
+
       const params = new URLSearchParams({
         type: filter,
         ...(statusFilter !== 'all' && { status: statusFilter })
       })
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews?${params}`, {
-        credentials: 'include'
-      })
+      const response = await apiRequest(`/api/reviews?${params}`)
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch reviews')
+      if (response?.ok) {
+        const data = await response.json()
+        setReviews(data.reviews || [])
+      } else {
+        // Show specific error message based on response
+        if (response?.status === 401) {
+          setError('Authentication expired. Please log in again.')
+        } else if (response?.status === 500) {
+          setError('Server error. Please try again later.')
+        } else {
+          const errorData = await response?.json().catch(() => null)
+          setError(errorData?.error || 'Failed to load reviews')
+        }
       }
-
-      const data = await response.json()
-      setReviews(data.reviews || [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch reviews')
+      console.error('Failed to load reviews:', err)
+      setError('Network error. Please check your connection and try again.')
     } finally {
       setLoading(false)
     }
@@ -104,21 +114,21 @@ export default function Review() {
   // Fetch detailed review
   const fetchReviewDetails = async (reviewId: string) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/${reviewId}`, {
-        credentials: 'include'
-      })
+      const response = await apiRequest(`/api/reviews/${reviewId}`)
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch review details')
+      if (response?.ok) {
+        const data = await response.json()
+        setSelectedReview(data.review)
+        setNewStatus(data.review.status)
+        setFeedback(data.review.feedback || '')
+        setRating(data.review.rating || 0)
+      } else {
+        const errorData = await response?.json().catch(() => null)
+        setError(errorData?.error || 'Failed to fetch review details')
       }
-
-      const data = await response.json()
-      setSelectedReview(data.review)
-      setNewStatus(data.review.status)
-      setFeedback(data.review.feedback || '')
-      setRating(data.review.rating || 0)
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch review details')
+      console.error('Failed to fetch review details:', err)
+      setError('Failed to fetch review details')
     }
   }
 
@@ -128,12 +138,8 @@ export default function Review() {
 
     try {
       setUpdatingStatus(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/${selectedReview.id}`, {
+      const response = await apiRequest(`/api/reviews/${selectedReview.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify({
           status: newStatus,
           feedback: feedback,
@@ -141,15 +147,17 @@ export default function Review() {
         })
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to update review')
+      if (response?.ok) {
+        const data = await response.json()
+        setSelectedReview(data.review)
+        await fetchReviews() // Refresh the list
+      } else {
+        const errorData = await response?.json().catch(() => null)
+        setError(errorData?.error || 'Failed to update review')
       }
-
-      const data = await response.json()
-      setSelectedReview(data.review)
-      await fetchReviews() // Refresh the list
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to update review')
+      console.error('Failed to update review:', err)
+      setError('Failed to update review')
     } finally {
       setUpdatingStatus(false)
     }
@@ -161,12 +169,8 @@ export default function Review() {
 
     try {
       setSubmittingComment(true)
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/reviews/${selectedReview.id}/comments`, {
+      const response = await apiRequest(`/api/reviews/${selectedReview.id}/comments`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify({
           content: newComment,
           comment_type: commentType,
@@ -174,18 +178,20 @@ export default function Review() {
         })
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to add comment')
+      if (response?.ok) {
+        const data = await response.json()
+        // Refresh review details to get updated comments
+        await fetchReviewDetails(selectedReview.id)
+        setNewComment('')
+        setReplyToComment(null)
+        setCommentType('comment')
+      } else {
+        const errorData = await response?.json().catch(() => null)
+        setError(errorData?.error || 'Failed to add comment')
       }
-
-      const data = await response.json()
-      // Refresh review details to get updated comments
-      await fetchReviewDetails(selectedReview.id)
-      setNewComment('')
-      setReplyToComment(null)
-      setCommentType('comment')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to add comment')
+      console.error('Failed to add comment:', err)
+      setError('Failed to add comment')
     } finally {
       setSubmittingComment(false)
     }
@@ -457,7 +463,7 @@ export default function Review() {
                         }}
                         className="w-full border border-terminal-border text-terminal-text px-3 py-2 text-sm hover:bg-terminal-hover transition-colors"
                       >
-                        📁 View Version History
+                        View Version History
                       </button>
                     </div>
                   </div>

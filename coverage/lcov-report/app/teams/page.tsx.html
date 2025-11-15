@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/159</span>
+                <span class='fraction'>0/161</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/44</span>
+                <span class='fraction'>0/42</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/150</span>
+                <span class='fraction'>0/152</span>
             </div>
         
             
@@ -624,12 +624,27 @@
 <a name='L559'></a><a href='#L559'>559</a>
 <a name='L560'></a><a href='#L560'>560</a>
 <a name='L561'></a><a href='#L561'>561</a>
-<a name='L562'></a><a href='#L562'>562</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L562'></a><a href='#L562'>562</a>
+<a name='L563'></a><a href='#L563'>563</a>
+<a name='L564'></a><a href='#L564'>564</a>
+<a name='L565'></a><a href='#L565'>565</a>
+<a name='L566'></a><a href='#L566'>566</a>
+<a name='L567'></a><a href='#L567'>567</a>
+<a name='L568'></a><a href='#L568'>568</a>
+<a name='L569'></a><a href='#L569'>569</a>
+<a name='L570'></a><a href='#L570'>570</a>
+<a name='L571'></a><a href='#L571'>571</a>
+<a name='L572'></a><a href='#L572'>572</a>
+<a name='L573'></a><a href='#L573'>573</a>
+<a name='L574'></a><a href='#L574'>574</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -862,7 +877,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1020,6 +1034,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1045,6 +1062,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1110,6 +1129,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1189,6 +1213,7 @@
 &nbsp;
 import React, { useState } from <span class="cstat-no" title="statement not covered" >'react'</span>
 import AppLayout from <span class="cstat-no" title="statement not covered" >'@/components/AppLayout'</span>
+import CustomDropdown from <span class="cstat-no" title="statement not covered" >'@/components/CustomDropdown'</span>
 import { apiRequest } from <span class="cstat-no" title="statement not covered" >'@/lib/auth'</span>
 &nbsp;
 export default function <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >Teams() {</span></span>
@@ -1197,6 +1222,8 @@ export default function <span class="cstat-no" title="statement not covered" ><s
   const [showPermissionsModal, setShowPermissionsModal] = <span class="cstat-no" title="statement not covered" >useState(false)</span>
   const [showSettingsModal, setShowSettingsModal] = <span class="cstat-no" title="statement not covered" >useState(false)</span>
   const [inviteEmail, setInviteEmail] = <span class="cstat-no" title="statement not covered" >useState('')</span>
+  const [inviteRole, setInviteRole] = <span class="cstat-no" title="statement not covered" >useState('member')</span>
+  const [teamVisibility, setTeamVisibility] = <span class="cstat-no" title="statement not covered" >useState('team')</span>
   const [loading, setLoading] = <span class="cstat-no" title="statement not covered" >useState(false)</span>
   const [error, setError] = <span class="cstat-no" title="statement not covered" >useState('')</span>
 &nbsp;
@@ -1217,7 +1244,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
       const invitationData = <span class="cstat-no" title="statement not covered" >{</span>
         email: inviteEmail,
         teamId: 'current_team',
-        role: 'member',
+        role: inviteRole,
         invitedBy: 'admin',
         invitedAt: new Date().toISOString(),
         status: 'pending',
@@ -1423,13 +1450,12 @@ export default function <span class="cstat-no" title="statement not covered" ><s
       // Get form values from the modal
       const nameInput = <span class="cstat-no" title="statement not covered" >document.querySelector('#team-settings-modal input[type="text"]') as HTMLInputElement</span>
       const descriptionInput = <span class="cstat-no" title="statement not covered" >document.querySelector('#team-settings-modal textarea') as HTMLTextAreaElement</span>
-      const visibilitySelect = <span class="cstat-no" title="statement not covered" >document.querySelector('#team-settings-modal select') as HTMLSelectElement</span>
 &nbsp;
       const teamSettings = <span class="cstat-no" title="statement not covered" >{</span>
         id: 'current_team',
         name: nameInput?.value || 'Your Team',
         description: descriptionInput?.value || 'A collaborative workspace',
-        defaultVisibility: visibilitySelect?.value || 'team',
+        defaultVisibility: teamVisibility,
         updatedAt: new Date().toISOString(),
         updatedBy: 'admin'
       }
@@ -1589,11 +1615,16 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
               &lt;div&gt;
                 &lt;label className="block text-sm text-terminal-text mb-2"&gt;Role&lt;/label&gt;
-                &lt;select className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm"&gt;
-                  &lt;option value="member"&gt;Member&lt;/option&gt;
-                  &lt;option value="editor"&gt;Editor&lt;/option&gt;
-                  &lt;option value="admin"&gt;Admin&lt;/option&gt;
-                &lt;/select&gt;
+                &lt;CustomDropdown
+                  value={inviteRole}
+                  onChange={setInviteRole}
+                  options={[
+                    { value: 'member', label: 'Member' },
+                    { value: 'editor', label: 'Editor' },
+                    { value: 'admin', label: 'Admin' }
+                  ]}
+                  className="w-full"
+                /&gt;
               &lt;/div&gt;
 &nbsp;
               &lt;div className="flex space-x-4 mt-6"&gt;
@@ -1643,19 +1674,19 @@ export default function <span class="cstat-no" title="statement not covered" ><s
                 &lt;h3 className="text-terminal-text font-medium mb-2"&gt;Default Permissions&lt;/h3&gt;
                 &lt;div className="space-y-2"&gt;
                   &lt;label className="flex items-center space-x-2"&gt;
-                    &lt;input type="checkbox" defaultChecked className="text-terminal-text" /&gt;
+                    &lt;input type="checkbox" defaultChecked /&gt;
                     &lt;span className="text-terminal-text text-sm"&gt;Can view projects&lt;/span&gt;
                   &lt;/label&gt;
                   &lt;label className="flex items-center space-x-2"&gt;
-                    &lt;input type="checkbox" defaultChecked className="text-terminal-text" /&gt;
+                    &lt;input type="checkbox" defaultChecked /&gt;
                     &lt;span className="text-terminal-text text-sm"&gt;Can comment on files&lt;/span&gt;
                   &lt;/label&gt;
                   &lt;label className="flex items-center space-x-2"&gt;
-                    &lt;input type="checkbox" className="text-terminal-text" /&gt;
+                    &lt;input type="checkbox" /&gt;
                     &lt;span className="text-terminal-text text-sm"&gt;Can upload files&lt;/span&gt;
                   &lt;/label&gt;
                   &lt;label className="flex items-center space-x-2"&gt;
-                    &lt;input type="checkbox" className="text-terminal-text" /&gt;
+                    &lt;input type="checkbox" /&gt;
                     &lt;span className="text-terminal-text text-sm"&gt;Can create projects&lt;/span&gt;
                   &lt;/label&gt;
                 &lt;/div&gt;
@@ -1707,11 +1738,16 @@ export default function <span class="cstat-no" title="statement not covered" ><s
 &nbsp;
               &lt;div&gt;
                 &lt;label className="block text-sm text-terminal-text mb-2"&gt;Default Project Visibility&lt;/label&gt;
-                &lt;select className="w-full bg-terminal-bg border border-terminal-border px-3 py-2 text-terminal-text text-sm"&gt;
-                  &lt;option value="team"&gt;Team Only&lt;/option&gt;
-                  &lt;option value="private"&gt;Private&lt;/option&gt;
-                  &lt;option value="public"&gt;Public&lt;/option&gt;
-                &lt;/select&gt;
+                &lt;CustomDropdown
+                  value={teamVisibility}
+                  onChange={setTeamVisibility}
+                  options={[
+                    { value: 'team', label: 'Team Only' },
+                    { value: 'private', label: 'Private' },
+                    { value: 'public', label: 'Public' }
+                  ]}
+                  className="w-full"
+                /&gt;
               &lt;/div&gt;
 &nbsp;
               &lt;div className="border-t border-terminal-border pt-4"&gt;
@@ -1753,7 +1789,7 @@ export default function <span class="cstat-no" title="statement not covered" ><s
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-14T19:59:03.916Z
+                at 2025-11-15T05:44:54.274Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

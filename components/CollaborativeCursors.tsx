@@ -101,7 +101,7 @@ export default function CollaborativeCursors({
     if (!user || !workspaceId) return
 
     const backendUrl = process.env.NODE_ENV === 'production'
-      ? 'https://api.swayfiles.com'
+      ? 'https://sway-backend-2qlr.onrender.com'
       : 'http://localhost:5001'
 
     const newSocket = io(backendUrl, {

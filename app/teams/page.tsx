@@ -463,19 +463,19 @@ export default function Teams() {
                 <h3 className="text-terminal-text font-medium mb-2">Default Permissions</h3>
                 <div className="space-y-2">
                   <label className="flex items-center space-x-2">
-                    <input type="checkbox" defaultChecked className="text-terminal-text" />
+                    <input type="checkbox" defaultChecked />
                     <span className="text-terminal-text text-sm">Can view projects</span>
                   </label>
                   <label className="flex items-center space-x-2">
-                    <input type="checkbox" defaultChecked className="text-terminal-text" />
+                    <input type="checkbox" defaultChecked />
                     <span className="text-terminal-text text-sm">Can comment on files</span>
                   </label>
                   <label className="flex items-center space-x-2">
-                    <input type="checkbox" className="text-terminal-text" />
+                    <input type="checkbox" />
                     <span className="text-terminal-text text-sm">Can upload files</span>
                   </label>
                   <label className="flex items-center space-x-2">
-                    <input type="checkbox" className="text-terminal-text" />
+                    <input type="checkbox" />
                     <span className="text-terminal-text text-sm">Can create projects</span>
                   </label>
                 </div>

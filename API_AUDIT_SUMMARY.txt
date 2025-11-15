@@ -1,0 +1,244 @@
+================================================================================
+SWAYFILES API AUDIT - EXECUTIVE SUMMARY
+================================================================================
+Date: November 14, 2025
+Audit Type: Comprehensive Frontend/Backend API Endpoint Mismatch Analysis
+Status: CRITICAL ISSUES FOUND
+
+================================================================================
+KEY FINDINGS
+================================================================================
+
+TOTAL MISMATCHES FOUND: 13 Missing Endpoints + 2 Configuration Issues
+SEVERITY: HIGH - Directly causes 404/500 errors users are experiencing
+ERROR TYPE BREAKDOWN:
+  - 404 Errors (Missing Endpoints): 11
+  - 405 Errors (Wrong HTTP Method): 1
+  - Route Mounting Errors: 1
+
+================================================================================
+CRITICAL ISSUES (Fix Immediately)
+================================================================================
+
+1. ROUTE MOUNTING ERROR - /api/team vs /api/teams
+   File: backend/src/server.js:202
+   Issue: Frontend calls /api/teams/* but backend mounts /api/team/*
+   Fix: Change "app.use('/api/team'" to "app.use('/api/teams'"
+   Impact: ALL team-related endpoints fail with 404
+
+2. MISSING FILE UPLOAD ENDPOINT
+   Frontend expects: POST /api/files/upload
+   Backend has: POST /api/r/:code/upload (public only)
+   Fix: Add authenticated upload endpoint to files.js
+   Impact: Users can't upload files - Critical feature broken
+
+3. MISSING TEAM ENDPOINTS (4 endpoints)
+   Frontend expects:
+     - GET /api/teams/current
+     - POST /api/teams/invite
+     - GET /api/teams/permissions
+     - PUT /api/teams/settings
+   Backend: None of these exist
+   Fix: Add all 4 endpoints to team.js
+   Impact: Team collaboration features completely broken
+
+================================================================================
+HIGH PRIORITY ISSUES (Fix This Week)
+================================================================================
+
+4. MISSING USER SETTINGS ENDPOINTS (2 endpoints)
+   Frontend expects:
+     - PUT /api/user/workspace-settings
+     - PUT /api/user/automation-settings
+   Backend: Only has /api/user/settings
+   Fix: Add both endpoints to user.js
+   Impact: Users can't configure workspace or automation
+
+5. MISSING PROJECT UPDATE ENDPOINT
+   Frontend expects: PATCH /api/projects/:id
+   Backend has: Only GET /api/projects/:id
+   Fix: Add PATCH method to projects.js
+   Impact: Users can't edit project details
+
+6. MISSING PROJECT INVITE ENDPOINT
+   Frontend expects: POST /api/projects/invite
+   Backend has: POST /api/projects/:id/share
+   Fix: Add /invite endpoint or update frontend
+   Impact: Users can't invite collaborators
+
+7. STRIPE PORTAL ENDPOINT MISMATCH
+   Frontend expects: POST /api/stripe/create-portal-session
+   Backend has: POST /api/billing/portal
+   Fix: Add endpoint to stripe.js OR update frontend
+   Impact: Users can't access billing portal
+
+8. UNCLEAR PROMPTING ENDPOINTS
+   Frontend expects:
+     - GET /api/prompting/agents
+     - GET /api/prompting/prompts
+     - GET /api/prompting/workspace-config
+   Backend: Unclear if these exist
+   Fix: Verify these endpoints exist in prompting.js
+   Impact: Prompting features may be broken
+
+================================================================================
+IMPACTED FEATURES (User Facing)
+================================================================================
+
+BROKEN FEATURES:
+1. File Upload - Can't upload authenticated files
+2. Team Management - Can't view/manage team
+3. Project Settings - Can't edit project details
+4. Workspace Configuration - Can't configure workspace
+5. Automation Rules - Can't set automation preferences
+6. Team Invitations - Can't invite team members
+7. Billing Portal - Can't access billing
+8. Prompting System - May be completely broken
+
+WORKING FEATURES:
+1. Authentication (login/signup)
+2. Project Creation
+3. Basic Project Viewing
+4. Activity Log (partially)
+5. Public File Uploads via /api/r/:code/upload
+
+================================================================================
+DOCUMENTATION PROVIDED
+================================================================================
+
+Three detailed reports have been created in /Users/wjc2007/Desktop/sway/:
+
+1. API_ENDPOINT_AUDIT.md
+   - Comprehensive analysis of all mismatches
+   - Detailed explanation of each issue
+   - Summary table showing all 13 problems
+   - Test checklist
+
+2. API_FIX_IMPLEMENTATION_GUIDE.md
+   - Step-by-step code changes needed
+   - Complete code snippets for each fix
+   - File paths and line numbers
+   - Priority ordering
+
+3. API_AUDIT_SUMMARY.txt (this file)
+   - Executive overview
+   - Quick reference guide
+   - Action items
+
+================================================================================
+QUICK FIX CHECKLIST
+================================================================================
+
+PRIORITY 1 - CRITICAL (Do Today):
+[ ] Fix server.js line 202: /api/team -> /api/teams
+[ ] Add POST /api/files/upload to files.js
+[ ] Add 4 team endpoints to team.js
+[ ] Add PATCH /api/projects/:id to projects.js
+[ ] Add POST /api/projects/invite to projects.js
+[ ] Add 2 user settings endpoints to user.js
+
+PRIORITY 2 - HIGH (Do This Week):
+[ ] Fix/add stripe portal endpoint
+[ ] Verify prompting endpoints exist
+[ ] Test all endpoints with authentication
+[ ] Verify response structures match frontend
+
+PRIORITY 3 - MEDIUM (Do This Sprint):
+[ ] Add comprehensive API documentation
+[ ] Add API endpoint tests
+[ ] Update error messages
+[ ] Performance optimization
+
+================================================================================
+ESTIMATED EFFORT
+================================================================================
+
+Time to fix: 2-4 hours
+Difficulty: Low-Medium (mostly straightforward endpoint additions)
+Risk: Low (changes are isolated, no database schema changes)
+Testing: 30 minutes per feature (manual testing recommended)
+
+================================================================================
+BACKEND ROUTE INVENTORY
+================================================================================
+
+FULLY MOUNTED AND WORKING:
+✓ /api/auth - Login, signup, logout
+✓ /api/projects - Create, list, share
+✓ /api/files - List, download (not upload authenticated)
+✓ /api/r - Public file uploads
+✓ /api/activity - Activity logging
+✓ /api/collaborations - Collaboration management
+✓ /api/notifications - Notification management
+✓ /api/stats - Statistics and usage
+
+PARTIALLY WORKING:
+⚠ /api/team - Mounted but missing endpoints
+⚠ /api/prompting - Mounted but endpoints unclear
+⚠ /api/stripe - Has checkout but missing portal
+⚠ /api/user - Has basic settings but missing workspace/automation
+⚠ /api/projects - Missing PATCH and invite
+
+NOT MOUNTED:
+✗ No /api/teams (wrong plural form)
+
+================================================================================
+ROOT CAUSE ANALYSIS
+================================================================================
+
+Why is the user seeing so many 404/500 errors?
+
+1. ROUTE MOUNTING ERROR (Critical)
+   - Frontend uses /api/teams/ (plural)
+   - Backend mounts /api/team/ (singular)
+   - ALL team endpoints return 404
+
+2. MISSING AUTHENTICATED ENDPOINTS
+   - Frontend expects multiple endpoints that don't exist
+   - Each causes 404 immediately when accessed
+   - Examples: /api/files/upload, /api/user/workspace-settings
+
+3. INCOMPLETE ENDPOINTS
+   - Some routes exist but are missing specific methods
+   - Example: /api/projects exists but lacks PATCH method
+   - Results in 405 "Method Not Allowed" errors
+
+4. CONFIGURATION MISMATCHES
+   - Frontend and backend don't agree on endpoint paths
+   - Example: Stripe portal endpoints differ
+
+================================================================================
+VERIFICATION STEPS
+================================================================================
+
+After making fixes, test these endpoints:
+
+curl -H "Authorization: Bearer TOKEN" http://localhost:5001/api/files/upload
+curl -H "Authorization: Bearer TOKEN" http://localhost:5001/api/teams/current
+curl -H "Authorization: Bearer TOKEN" http://localhost:5001/api/user/workspace-settings
+curl -H "Authorization: Bearer TOKEN" http://localhost:5001/api/projects/test -X PATCH
+curl -H "Authorization: Bearer TOKEN" http://localhost:5001/api/projects/invite
+
+Expected: 200 or 400 (validation error), not 404 or 405
+
+================================================================================
+NEXT STEPS
+================================================================================
+
+1. READ the detailed reports (API_ENDPOINT_AUDIT.md and API_FIX_IMPLEMENTATION_GUIDE.md)
+2. IMPLEMENT fixes in order of priority
+3. TEST each endpoint after implementation
+4. VERIFY frontend pages load without errors
+5. DEPLOY to production after testing
+
+================================================================================
+QUESTIONS?
+================================================================================
+
+See detailed documentation files for:
+- Specific code changes needed
+- Exact line numbers to modify
+- Complete code snippets to copy/paste
+- Testing checklist
+- Response structure expectations
+

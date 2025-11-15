@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/109</span>
+                <span class='fraction'>0/111</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/55</span>
+                <span class='fraction'>0/67</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/109</span>
+                <span class='fraction'>0/111</span>
             </div>
         
             
@@ -319,7 +319,12 @@
 <a name='L254'></a><a href='#L254'>254</a>
 <a name='L255'></a><a href='#L255'>255</a>
 <a name='L256'></a><a href='#L256'>256</a>
-<a name='L257'></a><a href='#L257'>257</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L257'></a><a href='#L257'>257</a>
+<a name='L258'></a><a href='#L258'>258</a>
+<a name='L259'></a><a href='#L259'>259</a>
+<a name='L260'></a><a href='#L260'>260</a>
+<a name='L261'></a><a href='#L261'>261</a>
+<a name='L262'></a><a href='#L262'>262</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -369,17 +374,22 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -391,8 +401,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -600,14 +610,14 @@ class TokenBlacklist {
         url: process.env.REDIS_URL || 'redis://localhost:6379',
         retry_strategy: <span class="fstat-no" title="function not covered" >(o</span>ptions) =&gt; {
 <span class="cstat-no" title="statement not covered" >          if (options.error &amp;&amp; options.error.code === 'ECONNREFUSED') {</span>
-<span class="cstat-no" title="statement not covered" >            if (!this.redisErrorLogged) {</span>
+<span class="cstat-no" title="statement not covered" >            if (!this.redisErrorLogged &amp;&amp; process.env.NODE_ENV !== 'production') {</span>
 <span class="cstat-no" title="statement not covered" >              console.log('⚠️ Redis connection refused, using fallback in-memory blacklist')</span>
 <span class="cstat-no" title="statement not covered" >              this.redisErrorLogged = true</span>
             }
 <span class="cstat-no" title="statement not covered" >            return undefined</span>
           }
 <span class="cstat-no" title="statement not covered" >          if (options.total_retry_time &gt; 1000 * 60 * 60) {</span>
-<span class="cstat-no" title="statement not covered" >            if (!this.redisErrorLogged) {</span>
+<span class="cstat-no" title="statement not covered" >            if (!this.redisErrorLogged &amp;&amp; process.env.NODE_ENV !== 'production') {</span>
 <span class="cstat-no" title="statement not covered" >              console.log('⚠️ Redis retry time exhausted, using fallback')</span>
 <span class="cstat-no" title="statement not covered" >              this.redisErrorLogged = true</span>
             }
@@ -622,20 +632,25 @@ class TokenBlacklist {
 &nbsp;
       // Handle Redis connection events
 <span class="cstat-no" title="statement not covered" >      this.redisClient.on('connect', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        console.log('✓ Redis connected for token blacklist')</span>
+<span class="cstat-no" title="statement not covered" >        if (process.env.NODE_ENV !== 'production') {</span>
+<span class="cstat-no" title="statement not covered" >          console.log('✓ Redis connected for token blacklist')</span>
+        }
 <span class="cstat-no" title="statement not covered" >        this.isConnected = true</span>
       })
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      this.redisClient.on('error', <span class="fstat-no" title="function not covered" >(e</span>rr) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        if (!this.redisErrorLogged) {</span>
-<span class="cstat-no" title="statement not covered" >          console.log('⚠️ Redis error, falling back to in-memory blacklist:', err.message)</span>
+          // Only log in development - silent fallback in production
+<span class="cstat-no" title="statement not covered" >          if (process.env.NODE_ENV !== 'production') {</span>
+<span class="cstat-no" title="statement not covered" >            console.log('⚠️ Redis unavailable, using in-memory fallback:', err.message)</span>
+          }
 <span class="cstat-no" title="statement not covered" >          this.redisErrorLogged = true</span>
         }
 <span class="cstat-no" title="statement not covered" >        this.isConnected = false</span>
       })
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      this.redisClient.on('end', <span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
-<span class="cstat-no" title="statement not covered" >        if (!this.redisErrorLogged) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!this.redisErrorLogged &amp;&amp; process.env.NODE_ENV !== 'production') {</span>
 <span class="cstat-no" title="statement not covered" >          console.log('⚠️ Redis disconnected, using fallback blacklist')</span>
 <span class="cstat-no" title="statement not covered" >          this.redisErrorLogged = true</span>
         }
@@ -645,10 +660,10 @@ class TokenBlacklist {
       // Connect to Redis
 <span class="cstat-no" title="statement not covered" >      await this.redisClient.connect()</span>
     } catch (error) {
-<span class="cstat-no" title="statement not covered" >      if (!this.redisErrorLogged) {</span>
+<span class="cstat-no" title="statement not covered" >      if (!this.redisErrorLogged &amp;&amp; process.env.NODE_ENV !== 'production') {</span>
 <span class="cstat-no" title="statement not covered" >        console.log('⚠️ Redis initialization failed, using in-memory fallback:', error.message)</span>
-<span class="cstat-no" title="statement not covered" >        this.redisErrorLogged = true</span>
       }
+<span class="cstat-no" title="statement not covered" >      this.redisErrorLogged = true</span>
 <span class="cstat-no" title="statement not covered" >      this.isConnected = false</span>
     }
   }
@@ -838,7 +853,7 @@ const tokenBlacklist = <span class="cstat-no" title="statement not covered" >new
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-14T19:59:03.976Z
+                at 2025-11-15T05:44:54.355Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

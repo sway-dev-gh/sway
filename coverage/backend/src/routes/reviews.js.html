@@ -892,14 +892,7 @@
 <a name='L827'></a><a href='#L827'>827</a>
 <a name='L828'></a><a href='#L828'>828</a>
 <a name='L829'></a><a href='#L829'>829</a>
-<a name='L830'></a><a href='#L830'>830</a>
-<a name='L831'></a><a href='#L831'>831</a>
-<a name='L832'></a><a href='#L832'>832</a>
-<a name='L833'></a><a href='#L833'>833</a>
-<a name='L834'></a><a href='#L834'>834</a>
-<a name='L835'></a><a href='#L835'>835</a>
-<a name='L836'></a><a href='#L836'>836</a>
-<a name='L837'></a><a href='#L837'>837</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<a name='L830'></a><a href='#L830'>830</a></td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -998,8 +991,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1047,7 +1038,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1090,7 +1080,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1102,7 +1091,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1641,8 +1629,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1816,13 +1802,11 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
 &nbsp;
       -- Reviewer info
       reviewer.email as reviewer_email,
-      reviewer.first_name as reviewer_first_name,
-      reviewer.last_name as reviewer_last_name,
+      reviewer.name as reviewer_name,
 &nbsp;
       -- Assigned by info
       assigner.email as assigned_by_email,
-      assigner.first_name as assigned_by_first_name,
-      assigner.last_name as assigned_by_last_name,
+      assigner.name as assigned_by_name,
 &nbsp;
       -- Comment count
       (SELECT COUNT(*) FROM review_comments WHERE review_id = r.id) as comment_count
@@ -1830,7 +1814,7 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
     FROM reviews r
     LEFT JOIN projects p ON r.project_id = p.id
     LEFT JOIN file_requests fr ON r.request_id = fr.id
-    LEFT JOIN uploads u ON r.upload_id = u.id
+    LEFT JOIN project_files u ON r.upload_id = u.id
     LEFT JOIN users reviewer ON r.reviewer_id = reviewer.id
     LEFT JOIN users assigner ON r.assigned_by_id = assigner.id
     WHERE 1=1
@@ -1898,13 +1882,11 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
       -- Upload info
       u.original_filename,
       u.file_size,
-      u.content_type,
       u.storage_path,
 &nbsp;
       -- Reviewer info
       reviewer.email as reviewer_email,
-      reviewer.first_name as reviewer_first_name,
-      reviewer.last_name as reviewer_last_name,
+      reviewer.name as reviewer_name,
 &nbsp;
       -- Assigned by info
       assigner.email as assigned_by_email,
@@ -1914,7 +1896,7 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
     FROM reviews r
     LEFT JOIN projects p ON r.project_id = p.id
     LEFT JOIN file_requests fr ON r.request_id = fr.id
-    LEFT JOIN uploads u ON r.upload_id = u.id
+    LEFT JOIN project_files u ON r.upload_id = u.id
     LEFT JOIN users reviewer ON r.reviewer_id = reviewer.id
     LEFT JOIN users assigner ON r.assigned_by_id = assigner.id
     WHERE r.id = $1
@@ -1941,8 +1923,7 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
     SELECT
       rc.*,
       u.email as author_email,
-      u.first_name as author_first_name,
-      u.last_name as author_last_name,
+      u.name as author_name,
 &nbsp;
       -- Reply count for threaded comments
       (SELECT COUNT(*) FROM review_comments WHERE parent_id = rc.id) as reply_count
@@ -2482,8 +2463,7 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
       SELECT
         rc.*,
         u.email as author_email,
-        u.first_name as author_first_name,
-        u.last_name as author_last_name,
+        u.name as author_name,
         0 as depth,
         ARRAY[rc.created_at] as path
       FROM review_comments rc
@@ -2496,8 +2476,7 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
       SELECT
         rc.*,
         u.email as author_email,
-        u.first_name as author_first_name,
-        u.last_name as author_last_name,
+        u.name as author_name,
         ct.depth + 1,
         ct.path || rc.created_at
       FROM review_comments rc
@@ -2578,7 +2557,7 @@ const addCommentSchema = <span class="cstat-no" title="statement not covered" >J
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-14T19:59:03.976Z
+                at 2025-11-15T05:44:54.355Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

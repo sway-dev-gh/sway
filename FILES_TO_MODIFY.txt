@@ -1,0 +1,214 @@
+================================================================================
+COMPLETE FILE MODIFICATION LIST
+================================================================================
+
+This document lists every file that needs to be created or modified to fix
+all 13 missing API endpoints causing 404/500 errors.
+
+================================================================================
+FILES TO MODIFY (7 Files)
+================================================================================
+
+1. /Users/wjc2007/Desktop/sway/backend/src/server.js
+   Line: 202
+   Current: app.use('/api/team', intelligentRateLimiter, teamRoutes)
+   Change to: app.use('/api/teams', intelligentRateLimiter, teamRoutes)
+   Reason: Route mount mismatch - frontend expects /api/teams/*
+
+2. /Users/wjc2007/Desktop/sway/backend/src/routes/files.js
+   Add at end (before module.exports): 
+   - POST /api/files/upload endpoint (see API_FIX_IMPLEMENTATION_GUIDE.md for code)
+   Reason: Frontend needs authenticated file upload capability
+
+3. /Users/wjc2007/Desktop/sway/backend/src/routes/user.js
+   Add at end (before module.exports):
+   - PUT /api/user/workspace-settings endpoint
+   - PUT /api/user/automation-settings endpoint
+   (See API_FIX_IMPLEMENTATION_GUIDE.md for complete code)
+   Reason: Frontend needs workspace and automation configuration endpoints
+
+4. /Users/wjc2007/Desktop/sway/backend/src/routes/team.js
+   Add at end (before module.exports):
+   - GET /api/teams/current endpoint
+   - POST /api/teams/invite endpoint
+   - GET /api/teams/permissions endpoint
+   - PUT /api/teams/settings endpoint
+   (See API_FIX_IMPLEMENTATION_GUIDE.md for complete code)
+   Reason: Frontend needs complete team management capability
+
+5. /Users/wjc2007/Desktop/sway/backend/src/routes/projects.js
+   Add at end (before module.exports):
+   - PATCH /api/projects/:projectId endpoint
+   - POST /api/projects/invite endpoint
+   (See API_FIX_IMPLEMENTATION_GUIDE.md for complete code)
+   Reason: Frontend needs project update and invite endpoints
+
+6. /Users/wjc2007/Desktop/sway/backend/src/routes/stripe.js
+   Add before module.exports:
+   - POST /api/stripe/create-portal-session endpoint
+   (See API_FIX_IMPLEMENTATION_GUIDE.md for complete code)
+   Reason: Frontend expects portal session creation endpoint
+   Alternative: Update frontend /lib/stripe.ts to use /api/billing/portal instead
+
+7. /Users/wjc2007/Desktop/sway/backend/src/routes/prompting.js
+   Verify these endpoints exist:
+   - GET /agents
+   - GET /prompts
+   - GET /workspace-config
+   Add if missing (see API_FIX_IMPLEMENTATION_GUIDE.md)
+   Reason: Frontend makes calls to these endpoints
+
+================================================================================
+REFERENCE DOCUMENTATION
+================================================================================
+
+For complete code snippets and implementation details, see:
+
+API_FIX_IMPLEMENTATION_GUIDE.md
+  - Contains full code for all 7 fixes
+  - Copy-paste ready code snippets
+  - Exact line numbers and file paths
+  - Implementation priority ordering
+
+API_ENDPOINT_AUDIT.md
+  - Detailed analysis of each mismatch
+  - Root cause explanation
+  - Testing checklist
+  - Summary table of all issues
+
+API_AUDIT_SUMMARY.txt
+  - Executive overview
+  - Quick checklist
+  - Impacted features list
+  - Effort estimation
+
+================================================================================
+IMPLEMENTATION ORDER
+================================================================================
+
+PHASE 1 - CRITICAL (Must do first, 15 minutes):
+1. server.js line 202: /api/team -> /api/teams
+   - Single line change
+   - Fixes all /api/teams/* routing issues
+
+PHASE 2 - Core Endpoints (2 hours):
+2. files.js: Add POST /upload
+3. projects.js: Add PATCH /:id and POST /invite
+4. user.js: Add PUT /workspace-settings and /automation-settings
+5. team.js: Add all 4 team endpoints
+
+PHASE 3 - Payment Integration (30 minutes):
+6. stripe.js: Add POST /create-portal-session
+
+PHASE 4 - Verification (15 minutes):
+7. prompting.js: Verify endpoints exist
+
+================================================================================
+VALIDATION & TESTING
+================================================================================
+
+After each modification, test with curl:
+
+Example test commands:
+  curl -v http://localhost:5001/api/teams/current
+  curl -v http://localhost:5001/api/files/upload
+  curl -v http://localhost:5001/api/user/workspace-settings
+  curl -v -X PATCH http://localhost:5001/api/projects/test-id
+
+Expected results:
+  - Should NOT return 404 (route exists now)
+  - May return 401 (unauthorized - that's OK, means endpoint exists)
+  - May return 400 (validation error - that's OK)
+  - Should NOT return 405 (method not allowed)
+
+================================================================================
+BACKUP RECOMMENDATION
+================================================================================
+
+Before making changes, backup these files:
+  - /Users/wjc2007/Desktop/sway/backend/src/server.js
+  - /Users/wjc2007/Desktop/sway/backend/src/routes/files.js
+  - /Users/wjc2007/Desktop/sway/backend/src/routes/user.js
+  - /Users/wjc2007/Desktop/sway/backend/src/routes/team.js
+  - /Users/wjc2007/Desktop/sway/backend/src/routes/projects.js
+  - /Users/wjc2007/Desktop/sway/backend/src/routes/stripe.js
+  - /Users/wjc2007/Desktop/sway/backend/src/routes/prompting.js
+
+Recommend: git commit before making changes:
+  git add -A
+  git commit -m "Backup before API endpoint fixes"
+
+================================================================================
+DEPLOYMENT CHECKLIST
+================================================================================
+
+Before deploying to production:
+[ ] All 7 files modified
+[ ] All new endpoints tested locally
+[ ] Frontend pages load without 404 errors
+[ ] Test with real user authentication
+[ ] Verify response structures match frontend expectations
+[ ] Check error handling
+[ ] Performance test (no slowdowns)
+[ ] Security review (new endpoints don't expose sensitive data)
+[ ] Rate limiting works on new endpoints
+[ ] Database queries are optimized
+[ ] Logging is working
+
+Deployment steps:
+1. Test thoroughly in development
+2. Deploy to staging
+3. Test in staging environment
+4. Deploy to production during low-traffic period
+5. Monitor logs for errors post-deployment
+6. Rollback plan ready if needed
+
+================================================================================
+COMMON MISTAKES TO AVOID
+================================================================================
+
+1. Don't forget the module.exports at end of files
+2. Don't change route method if you mean to add endpoint
+3. Don't forget to pass userId from req.userId
+4. Don't forget authentication middleware (authenticateToken)
+5. Don't forget error handling (try/catch blocks)
+6. Don't return different response structures than frontend expects
+7. Don't forget to test with authentication (use valid JWT token)
+8. Don't skip the prompting.js verification step
+
+================================================================================
+SUPPORT & TROUBLESHOOTING
+================================================================================
+
+If you encounter issues:
+
+404 Error Still Occurring:
+  - Check server.js line 202 was changed correctly
+  - Verify route is properly exported from module
+  - Check route file syntax is correct (no missing curly braces)
+  - Restart backend server
+
+Authentication Error (401):
+  - This is normal for endpoints without valid JWT
+  - Test with Authorization header: Bearer <valid_token>
+
+Syntax Errors:
+  - Check for missing commas in function parameters
+  - Verify all async/await syntax is correct
+  - Check for unmatched brackets or parentheses
+
+Database Errors:
+  - Verify database tables exist
+  - Check SQL query syntax
+  - Ensure parameterized queries (use $1, $2, etc.)
+
+Performance Issues:
+  - Add indexes to frequently queried columns
+  - Check for N+1 query problems
+  - Consider query optimization
+
+================================================================================
+
+Generated: November 14, 2025
+For questions or issues, see the detailed documentation files.
+

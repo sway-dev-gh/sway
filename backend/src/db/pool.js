@@ -1,26 +1,40 @@
 require('dotenv').config()
 const { Pool } = require('pg')
 
-// SECURITY FIX: Proper SSL configuration for managed databases
+// SECURITY FIX: Secure SSL configuration for all databases
 const getSSLConfig = () => {
   if (process.env.NODE_ENV !== 'production') {
     return false // No SSL for development
   }
 
-  // For managed databases (Render, etc.) that use self-signed certs
-  if (process.env.DATABASE_URL && process.env.DATABASE_URL.includes('render.com')) {
-    return {
-      rejectUnauthorized: false // Accept self-signed certs from managed providers
-    }
+  // SECURITY: Always validate SSL certificates in production
+  // Use environment variable to override only when absolutely necessary
+  const rejectUnauthorized = process.env.DB_REJECT_UNAUTHORIZED !== 'false'
+
+  // Production SSL configuration with proper certificate validation
+  const sslConfig = {
+    rejectUnauthorized: rejectUnauthorized,
+    ca: process.env.DB_CA_CERT || undefined,     // Optional: Custom CA certificate
+    cert: process.env.DB_CLIENT_CERT || undefined, // Optional: Client certificate
+    key: process.env.DB_CLIENT_KEY || undefined    // Optional: Client key
   }
 
-  // Production SSL with proper certificate validation for custom databases
-  return {
-    rejectUnauthorized: process.env.DB_REJECT_UNAUTHORIZED !== 'false',
-    ca: process.env.DB_CA_CERT || undefined, // Optional: Custom CA certificate
-    cert: process.env.DB_CLIENT_CERT || undefined, // Optional: Client certificate
-    key: process.env.DB_CLIENT_KEY || undefined // Optional: Client key
+  // Log SSL configuration for security auditing
+  console.log(`🔐 Database SSL Configuration:`, {
+    rejectUnauthorized: sslConfig.rejectUnauthorized,
+    hasCustomCA: !!sslConfig.ca,
+    hasClientCert: !!sslConfig.cert,
+    environment: process.env.NODE_ENV
+  })
+
+  // SECURITY WARNING: Log if SSL validation is disabled
+  if (!sslConfig.rejectUnauthorized) {
+    console.warn('⚠️  WARNING: Database SSL certificate validation is DISABLED')
+    console.warn('   This is a security risk in production environments')
+    console.warn('   Set DB_REJECT_UNAUTHORIZED=true to enable validation')
   }
+
+  return sslConfig
 }
 
 // Use DATABASE_URL if available (Render/Heroku format), otherwise use individual env vars

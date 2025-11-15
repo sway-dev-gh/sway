@@ -221,8 +221,8 @@ router.get('/', authenticateToken, activityLimiter, async (req, res) => {
 
     queryParams.push(parseInt(limit), parseInt(offset))
 
-    // Temporary fix: return empty data to avoid schema issues
-    const result = { rows: [] }
+    // Execute the query
+    const result = await pool.query(finalQuery, queryParams)
 
     // Format activities with descriptions
     const formattedActivities = result.rows.map(activity => ({
@@ -518,5 +518,198 @@ router.get('/notifications', authenticateToken, activityLimiter, async (req, res
     })
   }
 })
+
+// =====================================================
+// GET /api/activity/logs - Get activity logs for RightTerminal logs tab
+// =====================================================
+router.get('/logs', authenticateToken, activityLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+    const { limit = 20, type = 'all' } = req.query
+
+    const logsQuery = `
+      SELECT DISTINCT
+        a.id,
+        a.action,
+        a.resource_type,
+        a.created_at,
+        a.metadata,
+        actor.name as user,
+        CASE
+          WHEN a.action LIKE '%success%' OR a.action LIKE '%completed%' OR a.action LIKE '%approved%' THEN 'success'
+          WHEN a.action LIKE '%error%' OR a.action LIKE '%failed%' OR a.action LIKE '%rejected%' THEN 'error'
+          WHEN a.action LIKE '%warning%' OR a.action LIKE '%pending%' OR a.action LIKE '%requested%' THEN 'warning'
+          ELSE 'info'
+        END as type,
+        CASE
+          WHEN a.resource_type = 'project' THEN p.title
+          WHEN a.resource_type = 'review' THEN r.title
+          WHEN a.resource_type = 'collaboration' THEN 'Collaboration'
+          WHEN a.resource_type = 'file_request' THEN fr.title
+          ELSE a.action
+        END as message_context
+      FROM activity_log a
+      LEFT JOIN users actor ON a.actor_id = actor.id
+      LEFT JOIN projects p ON a.resource_type = 'project' AND a.resource_id = p.id::text
+      LEFT JOIN reviews r ON a.resource_type = 'review' AND a.resource_id = r.id::text
+      LEFT JOIN file_requests fr ON a.resource_type = 'file_request' AND a.resource_id = fr.id::text
+      WHERE (
+        a.user_id = $1 OR
+        a.actor_id = $1 OR
+        a.target_user_id = $1 OR
+        EXISTS (
+          SELECT 1 FROM collaborations co
+          WHERE co.id::text = a.resource_id
+          AND (co.owner_id = $1 OR co.collaborator_id = $1)
+        ) OR
+        EXISTS (
+          SELECT 1 FROM projects pr
+          WHERE pr.id::text = a.resource_id
+          AND pr.user_id = $1
+        ) OR
+        EXISTS (
+          SELECT 1 FROM reviews rv
+          WHERE rv.id::text = a.resource_id
+          AND (rv.reviewer_id = $1 OR rv.assigned_by_id = $1)
+        )
+      )
+      ORDER BY a.created_at DESC
+      LIMIT $2
+    `
+
+    const result = await pool.query(logsQuery, [userId, parseInt(limit)])
+
+    const logs = result.rows.map(log => ({
+      id: log.id,
+      timestamp: log.created_at,
+      type: log.type,
+      message: getActivityDescription(log.action, log.metadata, log.user || 'Someone'),
+      user: log.user || 'System',
+      action: log.action.toUpperCase(),
+      details: log.message_context
+    }))
+
+    res.json({
+      success: true,
+      logs
+    })
+
+  } catch (error) {
+    console.error('Get activity logs error:', error)
+    res.status(500).json({
+      error: 'Failed to fetch activity logs',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// =====================================================
+// GET /api/activity/feed - Get activity feed for RightTerminal activity tab
+// =====================================================
+router.get('/feed', authenticateToken, activityLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+    const { limit = 20 } = req.query
+
+    const feedQuery = `
+      SELECT DISTINCT
+        a.id,
+        a.action,
+        a.resource_type,
+        a.resource_id,
+        a.created_at,
+        a.metadata,
+        actor.name as user,
+        CASE
+          WHEN a.resource_type = 'project' THEN p.title
+          WHEN a.resource_type = 'review' THEN r.title
+          WHEN a.resource_type = 'collaboration' THEN 'collaboration session'
+          WHEN a.resource_type = 'file_request' THEN fr.title
+          ELSE a.resource_type
+        END as resource,
+        CASE
+          WHEN a.resource_type = 'project' THEN 'project'
+          WHEN a.resource_type = 'review' THEN 'review'
+          WHEN a.resource_type = 'collaboration' THEN 'team'
+          WHEN a.resource_type = 'file_request' THEN 'file'
+          ELSE 'project'
+        END as type
+      FROM activity_log a
+      LEFT JOIN users actor ON a.actor_id = actor.id
+      LEFT JOIN projects p ON a.resource_type = 'project' AND a.resource_id = p.id::text
+      LEFT JOIN reviews r ON a.resource_type = 'review' AND a.resource_id = r.id::text
+      LEFT JOIN file_requests fr ON a.resource_type = 'file_request' AND a.resource_id = fr.id::text
+      WHERE (
+        a.user_id = $1 OR
+        a.actor_id = $1 OR
+        a.target_user_id = $1 OR
+        EXISTS (
+          SELECT 1 FROM collaborations co
+          WHERE co.id::text = a.resource_id
+          AND (co.owner_id = $1 OR co.collaborator_id = $1)
+        ) OR
+        EXISTS (
+          SELECT 1 FROM projects pr
+          WHERE pr.id::text = a.resource_id
+          AND pr.user_id = $1
+        ) OR
+        EXISTS (
+          SELECT 1 FROM reviews rv
+          WHERE rv.id::text = a.resource_id
+          AND (rv.reviewer_id = $1 OR rv.assigned_by_id = $1)
+        )
+      )
+      ORDER BY a.created_at DESC
+      LIMIT $2
+    `
+
+    const result = await pool.query(feedQuery, [userId, parseInt(limit)])
+
+    const activities = result.rows.map(activity => ({
+      id: activity.id,
+      user: activity.user === userId ? 'You' : (activity.user || 'Someone'),
+      action: getActionDescription(activity.action),
+      resource: activity.resource || activity.resource_type,
+      timestamp: activity.created_at,
+      type: activity.type
+    }))
+
+    res.json({
+      success: true,
+      activities
+    })
+
+  } catch (error) {
+    console.error('Get activity feed error:', error)
+    res.status(500).json({
+      error: 'Failed to fetch activity feed',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// Helper function for action descriptions in feed
+const getActionDescription = (action) => {
+  const actionMap = {
+    'project_created': 'created',
+    'project_shared': 'shared',
+    'project_updated': 'updated',
+    'project_completed': 'completed',
+    'collaboration_created': 'started collaboration with',
+    'collaboration_invited': 'invited to collaborate',
+    'collaboration_accepted': 'joined collaboration',
+    'collaboration_ended': 'ended collaboration',
+    'review_assigned': 'assigned review for',
+    'review_approved': 'approved',
+    'review_rejected': 'rejected',
+    'review_completed': 'completed review for',
+    'team_invitation_sent': 'invited',
+    'team_invitation_accepted': 'joined team for',
+    'file_uploaded': 'uploaded file to',
+    'file_request_created': 'requested file for'
+  }
+
+  return actionMap[action] || action.replace(/_/g, ' ')
+}
 
 module.exports = router

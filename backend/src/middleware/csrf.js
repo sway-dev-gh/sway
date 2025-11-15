@@ -54,15 +54,13 @@ const cleanupExpiredTokens = () => {
 setInterval(cleanupExpiredTokens, 60 * 60 * 1000)
 
 // Endpoints that should be excluded from CSRF protection
+// SECURITY FIX: Minimized exempt paths - only essential webhooks and health checks
 const CSRF_EXEMPT_PATHS = [
-  '/health',
-  '/api/stripe/webhook',  // Stripe webhook needs raw body
-  '/api/auth/login',      // Auth endpoints need to work without session
-  '/api/auth/signup',     // Auth endpoints need to work without session
-  '/api/auth/register',   // Auth endpoints need to work without session
-  '/api/projects',        // Temporarily exempt projects for serverless compatibility
-  '/api/user/settings',   // User settings - already protected by authenticateToken middleware
-  // Add other webhook endpoints here
+  '/health',              // Health check endpoint
+  '/api/csrf-token',      // CSRF token generation endpoint
+  '/api/stripe/webhook',  // Stripe webhook needs raw body processing
+  // NOTE: Removed unsafe exemptions for /api/projects, /api/user/settings, and auth endpoints
+  // All state-changing operations now require CSRF protection as intended
 ]
 
 // Check if path should be exempt from CSRF protection

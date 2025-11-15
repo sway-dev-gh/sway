@@ -167,15 +167,44 @@ export default function Dashboard() {
     <AppLayout>
       <div className="flex-1 overflow-auto bg-terminal-bg">
         {/* Header */}
-        <div className="bg-terminal-surface border-b border-terminal-border p-6">
-          <h1 className="text-xl text-terminal-text font-medium">Dashboard</h1>
-          <p className="text-terminal-muted text-sm mt-1">Welcome to SwayFiles - Live Collaboration Platform</p>
-        </div>
+        <motion.div
+          className="bg-terminal-surface border-b border-terminal-border p-6"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <motion.h1
+            className="text-xl text-terminal-text font-medium"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
+            Dashboard
+          </motion.h1>
+          <motion.p
+            className="text-terminal-muted text-sm mt-1"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            Welcome to SwayFiles - Live Collaboration Platform
+          </motion.p>
+        </motion.div>
 
-        <div className="p-6">
+        <motion.div
+          className="p-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           {/* Project List */}
           {projects.length > 0 && (
-            <div className="mb-6">
+            <motion.div
+              className="mb-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+            >
               <h2 className="text-lg font-medium text-terminal-text mb-4">Recent Projects</h2>
               <div className="space-y-2">
                 {projects.slice(0, 3).map(project => (
@@ -189,16 +218,26 @@ export default function Dashboard() {
                   </div>
                 ))}
               </div>
-            </div>
+            </motion.div>
           )}
 
           {/* Main Content Area */}
-          <div className="bg-terminal-surface border border-terminal-border rounded-sm p-6">
+          <motion.div
+            className="bg-terminal-surface border border-terminal-border rounded-sm p-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+          >
             <div className="text-center py-12">
               <h2 className="text-terminal-text text-lg mb-2">Your Workspace</h2>
               <p className="text-terminal-muted text-sm">Start by creating your first project or uploading files</p>
 
-              <div className="mt-8 space-x-4">
+              <motion.div
+                className="mt-8 space-x-4"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.8 }}
+              >
                 <button
                   onClick={() => setShowCreateModal(true)}
                   className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors"
@@ -211,10 +250,10 @@ export default function Dashboard() {
                 >
                   Upload Files
                 </button>
-              </div>
+              </motion.div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Create Project Modal */}

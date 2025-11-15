@@ -25,28 +25,28 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/124</span>
+                <span class='fraction'>0/131</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/78</span>
+                <span class='fraction'>0/91</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/14</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/122</span>
+                <span class='fraction'>0/129</span>
             </div>
         
             
@@ -537,7 +537,19 @@
 <a name='L472'></a><a href='#L472'>472</a>
 <a name='L473'></a><a href='#L473'>473</a>
 <a name='L474'></a><a href='#L474'>474</a>
-<a name='L475'></a><a href='#L475'>475</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L475'></a><a href='#L475'>475</a>
+<a name='L476'></a><a href='#L476'>476</a>
+<a name='L477'></a><a href='#L477'>477</a>
+<a name='L478'></a><a href='#L478'>478</a>
+<a name='L479'></a><a href='#L479'>479</a>
+<a name='L480'></a><a href='#L480'>480</a>
+<a name='L481'></a><a href='#L481'>481</a>
+<a name='L482'></a><a href='#L482'>482</a>
+<a name='L483'></a><a href='#L483'>483</a>
+<a name='L484'></a><a href='#L484'>484</a>
+<a name='L485'></a><a href='#L485'>485</a>
+<a name='L486'></a><a href='#L486'>486</a>
+<a name='L487'></a><a href='#L487'>487</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -935,13 +947,21 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -977,7 +997,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -998,6 +1021,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1400,9 +1424,18 @@ const sessionAnomalyDetection = <span class="cstat-no" title="statement not cove
 const securityRequestLogger = <span class="cstat-no" title="statement not covered" >expressWinston.logger({</span>
   winstonInstance: securityLogger,
   meta: true,
-  msg: 'Security HTTP {{req.method}} {{req.url}}',
-  expressFormat: true,
+  msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+  expressFormat: false,
   colorize: false,
+  skip: <span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt; {
+    // In production, only log if there are threats or errors
+<span class="cstat-no" title="statement not covered" >    if (process.env.NODE_ENV === 'production') {</span>
+      const hasThreats = <span class="cstat-no" title="statement not covered" >req.threatInfo &amp;&amp; req.threatInfo.totalScore &gt; 0;</span>
+      const isError = <span class="cstat-no" title="statement not covered" >res.statusCode &gt;= 400;</span>
+<span class="cstat-no" title="statement not covered" >      return !hasThreats &amp;&amp; !isError;</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return false; /</span>/ Log everything in development
+  },
   requestFilter: <span class="fstat-no" title="function not covered" >(r</span>eq, propName) =&gt; {
     // Exclude sensitive data from logs
 <span class="cstat-no" title="statement not covered" >    if (propName === 'headers') {</span>
@@ -1418,8 +1451,7 @@ const securityRequestLogger = <span class="cstat-no" title="statement not covere
       ip: req.ip,
       userAgent: req.get('User-Agent'),
       threatInfo: req.threatInfo,
-      userId: req.user ? req.user.id : null,
-      timestamp: new Date()
+      userId: req.user ? req.user.id : null
     };
   }
 });
@@ -1451,7 +1483,10 @@ const collectSecurityMetrics = <span class="cstat-no" title="statement not cover
     }
   });
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  securityLogger.info('📊 Security Metrics', metrics);</span>
+  // Only log metrics in development or if there are actual threats
+<span class="cstat-no" title="statement not covered" >  if (process.env.NODE_ENV !== 'production' || metrics.activeThreats.length &gt; 0 || metrics.blockedRequests &gt; 0) {</span>
+<span class="cstat-no" title="statement not covered" >    securityLogger.info('📊 Security Metrics', metrics);</span>
+  }
 <span class="cstat-no" title="statement not covered" >  return metrics;</span>
 };
 &nbsp;
@@ -1471,8 +1506,9 @@ const cleanupCaches = <span class="cstat-no" title="statement not covered" ><spa
 <span class="cstat-no" title="statement not covered" >  securityLogger.info('🧹 Security cache cleanup completed');</span>
 };
 &nbsp;
-// Start periodic tasks
-<span class="cstat-no" title="statement not covered" >setInterval(collectSecurityMetrics, 5 * 60 * 1000); /</span>/ Every 5 minutes
+// Start periodic tasks - reduced frequency in production
+const metricsInterval = <span class="cstat-no" title="statement not covered" >process.env.NODE_ENV === 'production' ? 30 * 60 * 1000 : 5 * 60 * 1000; /</span>/ 30 min in prod, 5 min in dev
+<span class="cstat-no" title="statement not covered" >setInterval(collectSecurityMetrics, metricsInterval);</span>
 <span class="cstat-no" title="statement not covered" >setInterval(cleanupCaches, 60 * 60 * 1000); /</span>/ Every hour
 &nbsp;
 <span class="cstat-no" title="statement not covered" >module.exports = {</span>
@@ -1492,7 +1528,7 @@ const cleanupCaches = <span class="cstat-no" title="statement not covered" ><spa
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-14T19:59:03.916Z
+                at 2025-11-15T05:44:54.274Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

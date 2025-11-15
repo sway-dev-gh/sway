@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">2.79% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/143</span>
+                <span class='fraction'>4/143</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">3.07% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/130</span>
+                <span class='fraction'>4/130</span>
             </div>
         
             
@@ -613,10 +613,11 @@
 <a name='L548'></a><a href='#L548'>548</a>
 <a name='L549'></a><a href='#L549'>549</a>
 <a name='L550'></a><a href='#L550'>550</a>
-<a name='L551'></a><a href='#L551'>551</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L551'></a><a href='#L551'>551</a>
+<a name='L552'></a><a href='#L552'>552</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -653,6 +654,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -660,7 +662,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -908,6 +909,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1163,10 +1165,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">'use client'
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">'use client'
 &nbsp;
-import React, { useState, useEffect, useCallback } from <span class="cstat-no" title="statement not covered" >'react'</span>
-import { Bell, Check, X, Settings, Filter, Search, Clock, AlertCircle } from <span class="cstat-no" title="statement not covered" >'lucide-react'</span>
+import React, { useState, useEffect, useCallback } from 'react'
+import { Bell, Check, X, Settings, Filter, Search, Clock, AlertCircle } from 'lucide-react'
 &nbsp;
 interface Notification {
   id: string
@@ -1203,7 +1205,7 @@ interface NotificationPreferences {
   }
 }
 &nbsp;
-const NotificationCenter: React.FC = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >() =&gt; {</span></span>
+const NotificationCenter: React.FC = <span class="fstat-no" title="function not covered" >() =&gt; {</span>
   const [notifications, setNotifications] = <span class="cstat-no" title="statement not covered" >useState&lt;Notification[]&gt;([])</span>
   const [stats, setStats] = <span class="cstat-no" title="statement not covered" >useState&lt;NotificationStats | null&gt;(null)</span>
   const [preferences, setPreferences] = <span class="cstat-no" title="statement not covered" >useState&lt;NotificationPreferences | null&gt;(null)</span>
@@ -1405,21 +1407,21 @@ const NotificationCenter: React.FC = <span class="cstat-no" title="statement not
 <span class="cstat-no" title="statement not covered" >    switch (type) {</span>
       case 'review_assigned':
       case 'review_completed':
-<span class="cstat-no" title="statement not covered" >        return '📝'</span>
+<span class="cstat-no" title="statement not covered" >        return 'REV'</span>
       case 'comment_added':
-<span class="cstat-no" title="statement not covered" >        return '💬'</span>
+<span class="cstat-no" title="statement not covered" >        return 'MSG'</span>
       case 'file_uploaded':
-<span class="cstat-no" title="statement not covered" >        return '📁'</span>
+<span class="cstat-no" title="statement not covered" >        return 'FILE'</span>
       case 'project_shared':
-<span class="cstat-no" title="statement not covered" >        return '🤝'</span>
+<span class="cstat-no" title="statement not covered" >        return 'SHARE'</span>
       case 'collaboration_invite':
-<span class="cstat-no" title="statement not covered" >        return '👥'</span>
+<span class="cstat-no" title="statement not covered" >        return 'TEAM'</span>
       case 'system_alert':
-<span class="cstat-no" title="statement not covered" >        return '⚠️'</span>
+<span class="cstat-no" title="statement not covered" >        return 'ALERT'</span>
       case 'reminder':
-<span class="cstat-no" title="statement not covered" >        return '⏰'</span>
+<span class="cstat-no" title="statement not covered" >        return 'TIME'</span>
       default:
-<span class="cstat-no" title="statement not covered" >        return '📢'</span>
+<span class="cstat-no" title="statement not covered" >        return 'INFO'</span>
     }
   }
 &nbsp;
@@ -1458,9 +1460,10 @@ const NotificationCenter: React.FC = <span class="cstat-no" title="statement not
       {/* Notification Bell */}
       &lt;button
         onClick={<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etIsOpen(!isOpen)}</span>
-        className="relative p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+        className="relative p-1 text-terminal-muted hover:text-terminal-text transition-colors"
+        title="Notifications"
       &gt;
-        &lt;Bell className="w-6 h-6" /&gt;
+        &lt;Bell size={16} /&gt;
         {stats &amp;&amp; stats.unread_count &gt; 0 &amp;&amp; (
           &lt;span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full min-w-[1.25rem] h-5 flex items-center justify-center px-1"&gt;
             {stats.unread_count &gt; 99 ? '99+' : stats.unread_count}
@@ -1614,7 +1617,7 @@ const NotificationCenter: React.FC = <span class="cstat-no" title="statement not
                     &lt;div className="flex items-start space-x-3"&gt;
                       {/* Icon */}
                       &lt;div className="flex-shrink-0 mt-1"&gt;
-                        &lt;span className="text-lg"&gt;{getNotificationIcon(notification.type)}&lt;/span&gt;
+                        &lt;span className="text-xs font-mono text-terminal-muted bg-terminal-bg px-2 py-1 rounded"&gt;{getNotificationIcon(notification.type)}&lt;/span&gt;
                       &lt;/div&gt;
 &nbsp;
                       {/* Content */}
@@ -1713,14 +1716,14 @@ const NotificationCenter: React.FC = <span class="cstat-no" title="statement not
   )
 }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >export default <span class="cstat-no" title="statement not covered" >N</span>otificationCenter</span></pre></td></tr></table></pre>
+<span class="cstat-no" title="statement not covered" >export default N</span>otificationCenter</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-14T19:59:03.916Z
+                at 2025-11-15T05:44:54.274Z
             </div>
         <script src="../prettify.js"></script>
         <script>

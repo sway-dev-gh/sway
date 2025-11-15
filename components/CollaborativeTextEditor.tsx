@@ -143,7 +143,7 @@ const CollaborativeTextEditor = forwardRef<CollaborativeTextEditorRef, Collabora
     if (!user || !workspaceId || !blockId) return
 
     const backendUrl = process.env.NODE_ENV === 'production'
-      ? 'https://api.swayfiles.com'
+      ? 'https://sway-backend-2qlr.onrender.com'
       : 'http://localhost:5001'
 
     const socket = io(backendUrl, {

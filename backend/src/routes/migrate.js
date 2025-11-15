@@ -109,6 +109,22 @@ router.get('/run-collaboration-migrations', async (req, res) => {
           created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
           updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
       );
+
+      CREATE TABLE IF NOT EXISTS notifications (
+          id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+          recipient_id UUID NOT NULL,
+          sender_id UUID,
+          type VARCHAR(100) NOT NULL,
+          title VARCHAR(255) NOT NULL,
+          message TEXT,
+          priority VARCHAR(50) DEFAULT 'normal',
+          is_read BOOLEAN DEFAULT false,
+          is_dismissed BOOLEAN DEFAULT false,
+          action_url TEXT,
+          metadata JSONB DEFAULT '{}'::jsonb,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+      );
     `
 
     await pool.query(sql)
