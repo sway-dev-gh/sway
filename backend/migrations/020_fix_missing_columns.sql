@@ -33,23 +33,57 @@ BEGIN
     END IF;
 END $$;
 
--- Create activity_log table if it doesn't exist
+-- Create activity_log table if it doesn't exist (FIXED: Complete schema with all required columns)
 CREATE TABLE IF NOT EXISTS activity_log (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID REFERENCES users(id),
-    action VARCHAR(255) NOT NULL DEFAULT 'unknown',
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    actor_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    action VARCHAR(100) NOT NULL,
     resource_type VARCHAR(100),
     resource_id UUID,
-    details JSONB DEFAULT '{}',
+    target_user_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    metadata JSONB DEFAULT '{}'::jsonb,
     ip_address INET,
     user_agent TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT NOW()
 );
 
--- Create indexes for activity_log if they don't exist
+-- Add missing columns if table already exists with incomplete schema
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+                   WHERE table_name='activity_log' AND column_name='actor_id') THEN
+        ALTER TABLE activity_log ADD COLUMN actor_id UUID REFERENCES users(id) ON DELETE SET NULL;
+        COMMENT ON COLUMN activity_log.actor_id IS 'User who performed the action (can be different from user_id)';
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+                   WHERE table_name='activity_log' AND column_name='target_user_id') THEN
+        ALTER TABLE activity_log ADD COLUMN target_user_id UUID REFERENCES users(id) ON DELETE SET NULL;
+        COMMENT ON COLUMN activity_log.target_user_id IS 'User who was the target of the action';
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns
+                   WHERE table_name='activity_log' AND column_name='metadata') THEN
+        ALTER TABLE activity_log ADD COLUMN metadata JSONB DEFAULT '{}'::jsonb;
+        COMMENT ON COLUMN activity_log.metadata IS 'Additional metadata for the activity';
+    END IF;
+END $$;
+
+-- Create indexes for activity_log if they don't exist (FIXED: Complete index set)
 CREATE INDEX IF NOT EXISTS idx_activity_log_user_id ON activity_log(user_id);
+CREATE INDEX IF NOT EXISTS idx_activity_log_actor_id ON activity_log(actor_id);
+CREATE INDEX IF NOT EXISTS idx_activity_log_target_user_id ON activity_log(target_user_id);
 CREATE INDEX IF NOT EXISTS idx_activity_log_created_at ON activity_log(created_at);
 CREATE INDEX IF NOT EXISTS idx_activity_log_resource ON activity_log(resource_type, resource_id);
+CREATE INDEX IF NOT EXISTS idx_activity_log_action ON activity_log(action);
+CREATE INDEX IF NOT EXISTS idx_activity_log_user_created ON activity_log(user_id, created_at);
 
 -- Update existing activity_log records to have valid action if they're null/empty
 UPDATE activity_log SET action = 'legacy_action' WHERE action IS NULL OR action = '';
