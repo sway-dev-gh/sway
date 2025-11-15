@@ -96,3 +96,40 @@ a {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--terminal-scrollbar-thumb-hover);
 }
+
+/* Force input text to be white - override everything including autofill */
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  caret-color: #ffffff !important;
+}
+
+/* Target autofill states specifically */
+input[type="email"]:-webkit-autofill,
+input[type="password"]:-webkit-autofill,
+input[type="text"]:-webkit-autofill,
+input[type="email"]:-webkit-autofill:hover,
+input[type="password"]:-webkit-autofill:hover,
+input[type="text"]:-webkit-autofill:hover,
+input[type="email"]:-webkit-autofill:focus,
+input[type="password"]:-webkit-autofill:focus,
+input[type="text"]:-webkit-autofill:focus,
+input[type="email"]:-webkit-autofill:active,
+input[type="password"]:-webkit-autofill:active,
+input[type="text"]:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff !important;
+  color: #ffffff !important;
+  background-color: transparent !important;
+  box-shadow: 0 0 0px 1000px transparent inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* Additional force overrides */
+input {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}

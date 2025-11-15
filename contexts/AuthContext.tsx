@@ -17,6 +17,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>
   signup: (email: string, password: string, username?: string) => Promise<boolean>
   logout: () => void
+  refreshUser: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -60,6 +61,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
   }
 
+  const refreshUser = () => {
+    // Refresh user data from localStorage (updated by successful API calls)
+    const savedUser = authApi.getUser()
+    if (savedUser) {
+      setUser(savedUser)
+    }
+  }
+
   // Fixed auth context - removed token for HttpOnly cookies
   const value: AuthContextType = {
     user,
@@ -67,7 +76,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isLoading,
     login,
     signup,
-    logout
+    logout,
+    refreshUser
   }
 
   return (

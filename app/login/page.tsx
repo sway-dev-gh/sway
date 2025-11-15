@@ -125,7 +125,8 @@ export default function Login() {
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 text-terminal-text placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                    className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                  style={{ color: 'white !important' }}
                     placeholder="Choose a username"
                     required={!isLogin}
                   />
@@ -142,8 +143,10 @@ export default function Login() {
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 text-black placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                  style={{ color: 'white !important' }}
                   placeholder="Enter your email"
+                  autoComplete="off"
                   required
                 />
               </div>
@@ -158,8 +161,10 @@ export default function Login() {
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 text-black placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                  className="w-full bg-terminal-bg border border-terminal-border px-3 py-3 placeholder-terminal-muted text-sm focus:outline-none focus:border-terminal-text transition-colors"
+                  style={{ color: 'white !important' }}
                   placeholder="Enter your password"
+                  autoComplete="off"
                   required
                 />
               </div>

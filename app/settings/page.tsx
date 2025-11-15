@@ -26,7 +26,7 @@ export default function Settings() {
   const [defaultTheme, setDefaultTheme] = useState('dark')
   const [autoSaveInterval, setAutoSaveInterval] = useState('60')
   const [defaultProjectVisibility, setDefaultProjectVisibility] = useState('private')
-  const { user } = useAuth()
+  const { user, refreshUser } = useAuth()
 
   // Password change form states
   const [currentPassword, setCurrentPassword] = useState('')
@@ -106,6 +106,12 @@ export default function Settings() {
       })
 
       if (response?.ok) {
+        // Update localStorage with new user data and refresh auth context
+        const data = await response.json()
+        if (data.success && data.user) {
+          localStorage.setItem('user', JSON.stringify(data.user))
+          refreshUser()
+        }
         showNotification('Settings saved successfully!')
       } else {
         throw new Error('Failed to save settings')
@@ -397,13 +403,27 @@ export default function Settings() {
                   </div>
                 </div>
 
-                <div className="pt-4">
+                <div className="pt-4 space-x-4">
                   <button
                     onClick={handleSave}
                     disabled={saving}
                     className="bg-terminal-text text-terminal-bg px-4 py-2 text-sm hover:bg-terminal-muted transition-colors disabled:opacity-50"
                   >
                     {saving ? 'Saving...' : 'Save Changes'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      // Emergency fix: Force refresh user data from backend
+                      if (user) {
+                        const updatedUser = { ...user, username: username || user.username }
+                        localStorage.setItem('user', JSON.stringify(updatedUser))
+                        refreshUser()
+                        showNotification('Username refreshed! Check the sidebar.')
+                      }
+                    }}
+                    className="bg-terminal-border text-terminal-text px-4 py-2 text-sm hover:bg-terminal-hover transition-colors"
+                  >
+                    🚨 Force Refresh Username
                   </button>
                 </div>
               </div>
