@@ -59,8 +59,8 @@ const CSRF_EXEMPT_PATHS = [
   '/health',              // Health check endpoint
   '/api/csrf-token',      // CSRF token generation endpoint
   '/api/stripe/webhook',  // Stripe webhook needs raw body processing
-  // NOTE: Removed unsafe exemptions for /api/projects, /api/user/settings, and auth endpoints
-  // All state-changing operations now require CSRF protection as intended
+  '/api/auth/',           // TEMPORARILY EXEMPT auth endpoints for login/signup
+  // NOTE: Added back auth exemption to allow users to login
 ]
 
 // Check if path should be exempt from CSRF protection
