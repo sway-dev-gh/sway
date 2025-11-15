@@ -55,7 +55,7 @@ const corsOptions = {
         ? [
             'https://swayfiles.com',
             'https://www.swayfiles.com',
-            'https://api.swayfiles.com'
+            'https://sway-b8roag6ci-sway-dev.vercel.app'
           ]
         : [
             'http://localhost:3000',
@@ -115,7 +115,7 @@ const cspDirectives = {
   connectSrc: [
     "'self'",
     "*.swayfiles.com",
-    "api.swayfiles.com",
+    "sway-backend-2qlr.onrender.com",
     "wss:", "ws:"
   ],
   frameSrc: ["'none'"],
