@@ -79,13 +79,11 @@ router.get('/', authenticateToken, reviewLimiter, asyncHandler(async (req, res) 
 
       -- Reviewer info
       reviewer.email as reviewer_email,
-      reviewer.first_name as reviewer_first_name,
-      reviewer.last_name as reviewer_last_name,
+      reviewer.name as reviewer_name,
 
       -- Assigned by info
       assigner.email as assigned_by_email,
-      assigner.first_name as assigned_by_first_name,
-      assigner.last_name as assigned_by_last_name,
+      assigner.name as assigned_by_name,
 
       -- Comment count
       (SELECT COUNT(*) FROM review_comments WHERE review_id = r.id) as comment_count
@@ -93,7 +91,7 @@ router.get('/', authenticateToken, reviewLimiter, asyncHandler(async (req, res) 
     FROM reviews r
     LEFT JOIN projects p ON r.project_id = p.id
     LEFT JOIN file_requests fr ON r.request_id = fr.id
-    LEFT JOIN uploads u ON r.upload_id = u.id
+    LEFT JOIN project_files u ON r.upload_id = u.upload_id
     LEFT JOIN users reviewer ON r.reviewer_id = reviewer.id
     LEFT JOIN users assigner ON r.assigned_by_id = assigner.id
     WHERE 1=1
@@ -165,8 +163,7 @@ router.get('/:reviewId', authenticateToken, reviewLimiter, asyncHandler(async (r
 
       -- Reviewer info
       reviewer.email as reviewer_email,
-      reviewer.first_name as reviewer_first_name,
-      reviewer.last_name as reviewer_last_name,
+      reviewer.name as reviewer_name,
 
       -- Assigned by info
       assigner.email as assigned_by_email,
@@ -176,7 +173,7 @@ router.get('/:reviewId', authenticateToken, reviewLimiter, asyncHandler(async (r
     FROM reviews r
     LEFT JOIN projects p ON r.project_id = p.id
     LEFT JOIN file_requests fr ON r.request_id = fr.id
-    LEFT JOIN uploads u ON r.upload_id = u.id
+    LEFT JOIN project_files u ON r.upload_id = u.upload_id
     LEFT JOIN users reviewer ON r.reviewer_id = reviewer.id
     LEFT JOIN users assigner ON r.assigned_by_id = assigner.id
     WHERE r.id = $1
@@ -203,8 +200,7 @@ router.get('/:reviewId', authenticateToken, reviewLimiter, asyncHandler(async (r
     SELECT
       rc.*,
       u.email as author_email,
-      u.first_name as author_first_name,
-      u.last_name as author_last_name,
+      u.name as author_name,
 
       -- Reply count for threaded comments
       (SELECT COUNT(*) FROM review_comments WHERE parent_id = rc.id) as reply_count
@@ -744,8 +740,7 @@ router.get('/:reviewId/comments', authenticateToken, reviewLimiter, asyncHandler
       SELECT
         rc.*,
         u.email as author_email,
-        u.first_name as author_first_name,
-        u.last_name as author_last_name,
+        u.name as author_name,
         0 as depth,
         ARRAY[rc.created_at] as path
       FROM review_comments rc
@@ -758,8 +753,7 @@ router.get('/:reviewId/comments', authenticateToken, reviewLimiter, asyncHandler
       SELECT
         rc.*,
         u.email as author_email,
-        u.first_name as author_first_name,
-        u.last_name as author_last_name,
+        u.name as author_name,
         ct.depth + 1,
         ct.path || rc.created_at
       FROM review_comments rc

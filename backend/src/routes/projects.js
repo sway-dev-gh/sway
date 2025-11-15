@@ -95,7 +95,7 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
         WHERE is_current_version = true
         GROUP BY project_id
       ) f ON p.id = f.project_id
-      WHERE p.user_id = $1
+      WHERE p.user_id = $1::UUID
     `
 
     const queryParams = [userId]
@@ -170,7 +170,7 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
           COUNT(*) FILTER (WHERE p.status = 'active') as owned_active,
           COUNT(*) FILTER (WHERE p.status = 'completed') as owned_completed
         FROM projects p
-        WHERE p.user_id = $1
+        WHERE p.user_id = $1::UUID
       ),
       collaborating_stats AS (
         SELECT COUNT(*) as collaborating_projects
