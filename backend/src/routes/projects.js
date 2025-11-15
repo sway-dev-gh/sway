@@ -153,7 +153,7 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
         WHERE is_current_version = true
         GROUP BY project_id
       ) f ON p.id = f.project_id
-      WHERE c.collaborator_id = $${queryParams.length + 1} AND c.status = 'active'
+      WHERE c.collaborator_id = $${queryParams.length + 1}::UUID AND c.status = 'active'
       ORDER BY p.updated_at DESC
     `
 
@@ -175,7 +175,7 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
       collaborating_stats AS (
         SELECT COUNT(*) as collaborating_projects
         FROM collaborations c
-        WHERE c.collaborator_id = $1 AND c.status = 'active'
+        WHERE c.collaborator_id = $1::UUID AND c.status = 'active'
       )
       SELECT
         owned_projects,

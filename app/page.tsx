@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import AppLayout from '@/components/AppLayout'
+import { useAuth } from '@/contexts/AuthContext'
 import { apiRequest } from '@/lib/auth'
 import '@/lib/debug' // Load debug utilities
 
@@ -16,6 +17,7 @@ interface Project {
 }
 
 export default function Dashboard() {
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth()
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showUploadModal, setShowUploadModal] = useState(false)
   const [projects, setProjects] = useState<Project[]>([])
@@ -27,20 +29,34 @@ export default function Dashboard() {
   const [description, setDescription] = useState('')
   const [projectType, setProjectType] = useState('review')
 
-  // Load projects
+  // Load projects only after authentication is confirmed
   useEffect(() => {
-    loadProjects()
-  }, [])
+    if (!authLoading && isAuthenticated) {
+      loadProjects()
+    }
+  }, [authLoading, isAuthenticated])
 
   const loadProjects = async () => {
     try {
+      setError('') // Clear any previous errors
       const response = await apiRequest('/api/projects')
       if (response?.ok) {
         const data = await response.json()
         setProjects(data.projects.owned || [])
+      } else {
+        // Show specific error message based on response
+        if (response?.status === 401) {
+          setError('Authentication expired. Please log in again.')
+        } else if (response?.status === 500) {
+          setError('Server error. Please try again later.')
+        } else {
+          const errorData = await response?.json().catch(() => null)
+          setError(errorData?.error || 'Failed to load projects')
+        }
       }
     } catch (error) {
       console.error('Failed to load projects:', error)
+      setError('Network error. Please check your connection and try again.')
     }
   }
 

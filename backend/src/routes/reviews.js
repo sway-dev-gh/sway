@@ -75,7 +75,7 @@ router.get('/', authenticateToken, reviewLimiter, asyncHandler(async (req, res) 
 
       -- Upload info
       u.id as upload_id,
-      u.file_name as original_filename,
+      u.original_filename,
 
       -- Reviewer info
       reviewer.email as reviewer_email,
@@ -157,7 +157,7 @@ router.get('/:reviewId', authenticateToken, reviewLimiter, asyncHandler(async (r
       fr.description as request_description,
 
       -- Upload info
-      u.file_name as original_filename,
+      u.original_filename,
       u.file_size,
       u.storage_path,
 
