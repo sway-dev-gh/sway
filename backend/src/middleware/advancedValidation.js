@@ -5,10 +5,6 @@
 
 const joi = require('joi');
 const validator = require('validator');
-const DOMPurify = require('dompurify');
-const { JSDOM } = require('jsdom');
-const window = new JSDOM('').window;
-const purify = DOMPurify(window);
 
 // Advanced validation schemas
 const validationSchemas = {
@@ -97,14 +93,13 @@ const validationSchemas = {
 
 // Advanced sanitization functions
 const sanitizationFunctions = {
-  // HTML sanitization with strict policy
+  // HTML sanitization with strict policy (server-side only)
   sanitizeHTML: (input) => {
     if (typeof input !== 'string') return input;
-    return purify.sanitize(input, {
-      ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'ol', 'ul', 'li'],
-      ALLOWED_ATTR: [],
-      KEEP_CONTENT: true
-    });
+    // Simple HTML tag removal for backend - escape HTML entities
+    return validator.escape(input)
+      .replace(/<script[^>]*>.*?<\/script>/gi, '') // Remove script tags
+      .replace(/<[^>]*>/g, ''); // Remove all remaining HTML tags
   },
 
   // SQL injection prevention
