@@ -187,6 +187,66 @@ router.post('/webhook', async (req, res) => {
   }
 })
 
+// Create customer portal session for subscription management
+router.post('/create-portal-session', authenticateToken, stripeLimiter, async (req, res) => {
+  try {
+    const stripe = getStripe()
+    if (!stripe) {
+      return res.status(503).json({ error: 'Stripe is not configured' })
+    }
+
+    // Get user's Stripe customer ID
+    const userResult = await pool.query(
+      'SELECT stripe_customer_id, email FROM users WHERE id = $1',
+      [req.userId]
+    )
+
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' })
+    }
+
+    const { stripe_customer_id, email } = userResult.rows[0]
+
+    let customerId = stripe_customer_id
+
+    // If user doesn't have a Stripe customer ID, create one
+    if (!customerId) {
+      const customer = await stripe.customers.create({
+        email: email,
+        metadata: {
+          userId: req.userId.toString()
+        }
+      })
+
+      // Update user with new customer ID
+      await pool.query(
+        'UPDATE users SET stripe_customer_id = $1 WHERE id = $2',
+        [customer.id, req.userId]
+      )
+
+      customerId = customer.id
+    }
+
+    // Create customer portal session
+    const portalSession = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${process.env.FRONTEND_URL}/settings?tab=billing`,
+    })
+
+    res.json({
+      success: true,
+      url: portalSession.url
+    })
+
+  } catch (error) {
+    console.error('Create portal session error:', error)
+    res.status(500).json({
+      error: 'Failed to create customer portal session',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
 // Get current plan info
 router.get('/plan-info', authenticateToken, async (req, res) => {
   try {

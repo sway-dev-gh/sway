@@ -199,7 +199,7 @@ app.use('/api/migrate', adminRateLimit, migrateRoutes)
 app.use('/api/prompting', intelligentRateLimiter, promptingRoutes)
 
 // Collaboration features with intelligent rate limiting
-app.use('/api/team', intelligentRateLimiter, teamRoutes)
+app.use('/api/teams', intelligentRateLimiter, teamRoutes)
 app.use('/api/projects', intelligentRateLimiter, projectRoutes)
 app.use('/api/reviews', intelligentRateLimiter, reviewRoutes)
 app.use('/api/reviewers', intelligentRateLimiter, reviewerRoutes)

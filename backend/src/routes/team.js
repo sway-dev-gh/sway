@@ -378,6 +378,225 @@ router.post('/accept-invitation', authenticateToken, teamLimiter, async (req, re
 })
 
 // =====================================================
+// GET /api/teams/current - Get current team summary
+// =====================================================
+router.get('/current', authenticateToken, teamLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+
+    // Get current user's team stats
+    const teamStatsQuery = `
+      SELECT
+        COUNT(DISTINCT c.collaborator_id) as total_members,
+        COUNT(DISTINCT CASE WHEN c.status = 'active' THEN c.collaborator_id END) as active_members,
+        COUNT(DISTINCT ti.id) as pending_invitations,
+        COUNT(DISTINCT p.id) as team_projects,
+        COUNT(DISTINCT r.id) as pending_reviews
+      FROM users u
+      LEFT JOIN collaborations c ON c.owner_id = u.id
+      LEFT JOIN team_invitations ti ON ti.inviter_id = u.id AND ti.status = 'pending' AND ti.expires_at > NOW()
+      LEFT JOIN projects p ON p.user_id = u.id AND p.status = 'active'
+      LEFT JOIN reviews r ON r.reviewer_id IN (SELECT collaborator_id FROM collaborations WHERE owner_id = u.id) AND r.status = 'pending'
+      WHERE u.id = $1
+      GROUP BY u.id
+    `
+
+    const statsResult = await pool.query(teamStatsQuery, [userId])
+    const stats = statsResult.rows[0] || {
+      total_members: 0,
+      active_members: 0,
+      pending_invitations: 0,
+      team_projects: 0,
+      pending_reviews: 0
+    }
+
+    // Get user's own team info
+    const userQuery = await pool.query('SELECT name, email, plan FROM users WHERE id = $1', [userId])
+    const user = userQuery.rows[0]
+
+    res.json({
+      success: true,
+      current_team: {
+        owner: {
+          name: user.name,
+          email: user.email,
+          plan: user.plan || 'free'
+        },
+        stats: {
+          total_members: parseInt(stats.total_members),
+          active_members: parseInt(stats.active_members),
+          pending_invitations: parseInt(stats.pending_invitations),
+          team_projects: parseInt(stats.team_projects),
+          pending_reviews: parseInt(stats.pending_reviews)
+        },
+        limits: {
+          max_members: user.plan === 'pro' ? 50 : 5,
+          max_projects: user.plan === 'pro' ? 100 : 10
+        }
+      }
+    })
+
+    await logActivity(userId, 'team_current_accessed', 'team', userId)
+
+  } catch (error) {
+    console.error('Get current team error:', error)
+    res.status(500).json({
+      error: 'Failed to fetch current team information',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// =====================================================
+// GET /api/teams/permissions - Get team permissions overview
+// =====================================================
+router.get('/permissions', authenticateToken, teamLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+
+    // Get team permissions structure
+    const permissionsQuery = `
+      SELECT
+        c.collaborator_id,
+        u.name,
+        u.email,
+        c.role,
+        c.permissions,
+        c.status,
+        c.last_activity_at
+      FROM collaborations c
+      JOIN users u ON c.collaborator_id = u.id
+      WHERE c.owner_id = $1 AND c.status = 'active'
+      ORDER BY c.role, u.name
+    `
+
+    const permissionsResult = await pool.query(permissionsQuery, [userId])
+
+    // Define available permissions and roles
+    const availableRoles = ['viewer', 'editor', 'reviewer', 'admin']
+    const availablePermissions = {
+      can_view: 'View files and projects',
+      can_edit: 'Edit files and projects',
+      can_review: 'Review and approve submissions',
+      can_invite: 'Invite new team members',
+      can_manage: 'Manage team settings and permissions'
+    }
+
+    res.json({
+      success: true,
+      permissions: {
+        team_members: permissionsResult.rows.map(member => ({
+          id: member.collaborator_id,
+          name: member.name,
+          email: member.email,
+          role: member.role,
+          permissions: typeof member.permissions === 'string' ? JSON.parse(member.permissions) : member.permissions,
+          status: member.status,
+          last_activity: member.last_activity_at
+        })),
+        available_roles: availableRoles,
+        available_permissions: availablePermissions,
+        role_hierarchy: {
+          viewer: 1,
+          editor: 2,
+          reviewer: 3,
+          admin: 4
+        }
+      }
+    })
+
+    await logActivity(userId, 'team_permissions_accessed', 'team', userId)
+
+  } catch (error) {
+    console.error('Get team permissions error:', error)
+    res.status(500).json({
+      error: 'Failed to fetch team permissions',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// =====================================================
+// PUT /api/teams/settings - Update team settings
+// =====================================================
+router.put('/settings', authenticateToken, teamLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+    const {
+      default_role = 'viewer',
+      auto_accept_invitations = false,
+      require_approval_for_uploads = false,
+      max_file_size_mb = 25,
+      allowed_file_types = [],
+      notification_settings = {},
+      team_name,
+      team_description
+    } = req.body
+
+    // Validate inputs
+    if (!['viewer', 'editor', 'reviewer'].includes(default_role)) {
+      return res.status(400).json({ error: 'Invalid default role' })
+    }
+
+    if (max_file_size_mb < 1 || max_file_size_mb > 100) {
+      return res.status(400).json({ error: 'File size limit must be between 1MB and 100MB' })
+    }
+
+    // Check if user already has team settings
+    const existingSettingsQuery = 'SELECT id FROM team_settings WHERE user_id = $1'
+    const existingSettings = await pool.query(existingSettingsQuery, [userId])
+
+    const teamSettings = {
+      default_role,
+      auto_accept_invitations,
+      require_approval_for_uploads,
+      max_file_size_mb,
+      allowed_file_types,
+      notification_settings,
+      team_name: team_name || null,
+      team_description: team_description || null,
+      updated_at: new Date()
+    }
+
+    if (existingSettings.rows.length > 0) {
+      // Update existing settings
+      const updateQuery = `
+        UPDATE team_settings
+        SET settings = $1, updated_at = NOW()
+        WHERE user_id = $2
+        RETURNING id
+      `
+      await pool.query(updateQuery, [JSON.stringify(teamSettings), userId])
+    } else {
+      // Create new settings
+      const insertQuery = `
+        INSERT INTO team_settings (user_id, settings, created_at, updated_at)
+        VALUES ($1, $2, NOW(), NOW())
+        RETURNING id
+      `
+      await pool.query(insertQuery, [userId, JSON.stringify(teamSettings)])
+    }
+
+    await logActivity(userId, 'team_settings_updated', 'team', userId, {
+      settings_changed: Object.keys(req.body)
+    })
+
+    res.json({
+      success: true,
+      message: 'Team settings updated successfully',
+      settings: teamSettings
+    })
+
+  } catch (error) {
+    console.error('Update team settings error:', error)
+    res.status(500).json({
+      error: 'Failed to update team settings',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// =====================================================
 // DELETE /api/team/:memberId - Remove team member
 // =====================================================
 router.delete('/:memberId', authenticateToken, teamLimiter, async (req, res) => {

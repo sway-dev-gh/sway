@@ -120,7 +120,8 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
     `
 
     // SECURITY FIX: Get real collaborating projects instead of empty array
-    const collaboratingProjectsQuery = `
+    // Build the collaborating query with proper parameter indexing
+    let collaboratingProjectsQuery = `
       SELECT
         p.*,
         c.role as my_role,
@@ -153,11 +154,28 @@ router.get('/', authenticateToken, projectLimiter, async (req, res) => {
         WHERE is_current_version = true
         GROUP BY project_id
       ) f ON p.id = f.project_id
-      WHERE c.collaborator_id = $${queryParams.length + 1}::UUID AND c.status = 'active'
-      ORDER BY p.updated_at DESC
+      WHERE c.collaborator_id = $1::UUID AND c.status = 'active'
     `
 
-    const collaboratingQueryParams = [...queryParams, userId]
+    // Apply the same filters as the owned projects query
+    const collaboratingConditions = []
+    const collaboratingQueryParams = [userId] // Start with userId as $1
+
+    if (status) {
+      collaboratingQueryParams.push(status)
+      collaboratingConditions.push(`p.status = $${collaboratingQueryParams.length}`)
+    }
+
+    if (visibility) {
+      collaboratingQueryParams.push(visibility)
+      collaboratingConditions.push(`p.visibility = $${collaboratingQueryParams.length}`)
+    }
+
+    if (collaboratingConditions.length > 0) {
+      collaboratingProjectsQuery += ` AND ${collaboratingConditions.join(' AND ')}`
+    }
+
+    collaboratingProjectsQuery += ` ORDER BY p.updated_at DESC`
 
     const ownedResult = await pool.query(ownedProjectsQuery, queryParams)
     const collaboratingResult = await pool.query(collaboratingProjectsQuery, collaboratingQueryParams)
@@ -511,6 +529,303 @@ router.get('/:projectId', authenticateToken, projectLimiter, async (req, res) =>
     console.error('Get project details error:', error)
     res.status(500).json({
       error: 'Failed to fetch project details',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// =====================================================
+// PATCH /api/projects/:id - Update project details
+// =====================================================
+router.patch('/:id', authenticateToken, projectLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+    const projectId = req.params.id
+    const {
+      title,
+      description,
+      project_type,
+      visibility,
+      due_date,
+      status,
+      settings = {},
+      client_link,
+      workspace_type,
+      workflow_template,
+      default_reviewers,
+      auto_assign_reviewers,
+      external_access_enabled
+    } = req.body
+
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+    if (!uuidRegex.test(projectId)) {
+      return res.status(400).json({ error: 'Invalid project ID format' })
+    }
+
+    // Verify project ownership or admin access
+    const ownershipQuery = `
+      SELECT p.*, c.role
+      FROM projects p
+      LEFT JOIN collaborations c ON p.id = c.project_id AND c.collaborator_id = $2 AND c.status = 'active'
+      WHERE p.id = $1 AND (p.user_id = $2 OR c.role = 'admin')
+    `
+    const ownershipResult = await pool.query(ownershipQuery, [projectId, userId])
+
+    if (ownershipResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Project not found or access denied' })
+    }
+
+    const existingProject = ownershipResult.rows[0]
+
+    // Validate input data
+    if (title && title.trim().length === 0) {
+      return res.status(400).json({ error: 'Project title cannot be empty' })
+    }
+
+    if (project_type && !['review', 'collaboration', 'shared_folder'].includes(project_type)) {
+      return res.status(400).json({ error: 'Invalid project type' })
+    }
+
+    if (visibility && !['private', 'team', 'public'].includes(visibility)) {
+      return res.status(400).json({ error: 'Invalid visibility setting' })
+    }
+
+    if (status && !['draft', 'active', 'completed', 'archived', 'paused'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' })
+    }
+
+    // Build update query dynamically
+    let updateQuery = 'UPDATE projects SET updated_at = NOW()'
+    const queryParams = []
+    let paramIndex = 1
+    const changedFields = []
+
+    if (title !== undefined) {
+      updateQuery += `, title = $${paramIndex}`
+      queryParams.push(title.trim())
+      changedFields.push('title')
+      paramIndex++
+    }
+
+    if (description !== undefined) {
+      updateQuery += `, description = $${paramIndex}`
+      queryParams.push(description?.trim() || '')
+      changedFields.push('description')
+      paramIndex++
+    }
+
+    if (project_type !== undefined) {
+      updateQuery += `, project_type = $${paramIndex}`
+      queryParams.push(project_type)
+      changedFields.push('project_type')
+      paramIndex++
+    }
+
+    if (visibility !== undefined) {
+      updateQuery += `, visibility = $${paramIndex}`
+      queryParams.push(visibility)
+      changedFields.push('visibility')
+      paramIndex++
+    }
+
+    if (due_date !== undefined) {
+      updateQuery += `, due_date = $${paramIndex}`
+      queryParams.push(due_date)
+      changedFields.push('due_date')
+      paramIndex++
+    }
+
+    if (status !== undefined) {
+      updateQuery += `, status = $${paramIndex}`
+      queryParams.push(status)
+      changedFields.push('status')
+      paramIndex++
+    }
+
+    // Update settings if provided
+    const existingSettings = JSON.parse(existingProject.settings || '{}')
+    const updatedSettings = {
+      ...existingSettings,
+      ...settings,
+      client_link: client_link !== undefined ? client_link : existingSettings.client_link,
+      workspace_type: workspace_type || existingSettings.workspace_type,
+      workflow_template: workflow_template || existingSettings.workflow_template,
+      default_reviewers: default_reviewers || existingSettings.default_reviewers,
+      auto_assign_reviewers: auto_assign_reviewers !== undefined ? auto_assign_reviewers : existingSettings.auto_assign_reviewers,
+      external_access_enabled: external_access_enabled !== undefined ? external_access_enabled : existingSettings.external_access_enabled
+    }
+
+    updateQuery += `, settings = $${paramIndex}`
+    queryParams.push(JSON.stringify(updatedSettings))
+    changedFields.push('settings')
+    paramIndex++
+
+    updateQuery += ` WHERE id = $${paramIndex} RETURNING *`
+    queryParams.push(projectId)
+
+    // Execute update
+    const updateResult = await pool.query(updateQuery, queryParams)
+    const updatedProject = updateResult.rows[0]
+
+    // Log activity
+    await logActivity(userId, 'project_updated', 'project', projectId, {
+      changed_fields: changedFields,
+      title: updatedProject.title
+    })
+
+    // Extract client_link from settings for frontend compatibility
+    const responseSettings = JSON.parse(updatedProject.settings || '{}')
+    const projectResponse = {
+      ...updatedProject,
+      client_link: responseSettings.client_link || null
+    }
+
+    res.json({
+      success: true,
+      project: projectResponse,
+      message: 'Project updated successfully',
+      changed_fields: changedFields
+    })
+
+  } catch (error) {
+    console.error('Update project error:', error)
+    res.status(500).json({
+      error: 'Failed to update project',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// =====================================================
+// POST /api/projects/invite - Send project invitation
+// =====================================================
+router.post('/invite', authenticateToken, projectLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+    const {
+      email,
+      project_id,
+      role = 'viewer',
+      message,
+      expiration_hours = 168 // 7 days default
+    } = req.body
+
+    // Input validation
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'Valid email address is required' })
+    }
+
+    if (!project_id) {
+      return res.status(400).json({ error: 'Project ID is required' })
+    }
+
+    if (!['viewer', 'editor', 'reviewer', 'admin'].includes(role)) {
+      return res.status(400).json({ error: 'Invalid role specified' })
+    }
+
+    // Verify project ownership
+    const projectQuery = await pool.query(
+      'SELECT title, visibility FROM projects WHERE id = $1 AND user_id = $2',
+      [project_id, userId]
+    )
+
+    if (projectQuery.rows.length === 0) {
+      return res.status(404).json({ error: 'Project not found or access denied' })
+    }
+
+    const project = projectQuery.rows[0]
+
+    // Get inviter information
+    const inviterQuery = await pool.query('SELECT name, email FROM users WHERE id = $1', [userId])
+    const inviter = inviterQuery.rows[0]
+
+    // Check if there's already a pending invitation
+    const existingInvitationQuery = `
+      SELECT id FROM project_invitations
+      WHERE project_id = $1 AND email = $2 AND status = 'pending' AND expires_at > NOW()
+    `
+    const existingInvitation = await pool.query(existingInvitationQuery, [project_id, email.toLowerCase()])
+
+    if (existingInvitation.rows.length > 0) {
+      return res.status(400).json({ error: 'Pending invitation already exists for this email' })
+    }
+
+    // Check if user is already a collaborator
+    const existingCollaboratorQuery = `
+      SELECT c.id FROM collaborations c
+      JOIN users u ON c.collaborator_id = u.id
+      WHERE c.project_id = $1 AND u.email = $2 AND c.status = 'active'
+    `
+    const existingCollaborator = await pool.query(existingCollaboratorQuery, [project_id, email.toLowerCase()])
+
+    if (existingCollaborator.rows.length > 0) {
+      return res.status(400).json({ error: 'User is already a collaborator on this project' })
+    }
+
+    // Generate secure invitation token
+    const crypto = require('crypto')
+    const invitationToken = crypto.randomBytes(32).toString('hex')
+
+    // Set permissions based on role
+    const rolePermissions = {
+      viewer: { can_view: true, can_edit: false, can_review: false, can_manage: false },
+      editor: { can_view: true, can_edit: true, can_review: false, can_manage: false },
+      reviewer: { can_view: true, can_edit: false, can_review: true, can_manage: false },
+      admin: { can_view: true, can_edit: true, can_review: true, can_manage: true }
+    }
+
+    // Calculate expiration time
+    const expiresAt = new Date(Date.now() + (expiration_hours * 60 * 60 * 1000))
+
+    // Create invitation record
+    const insertQuery = `
+      INSERT INTO project_invitations
+      (project_id, inviter_id, email, role, permissions, invitation_token, message, status, expires_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8)
+      RETURNING id, expires_at
+    `
+
+    const defaultMessage = message || `${inviter.name || inviter.email} invited you to collaborate on "${project.title}"`
+
+    const insertResult = await pool.query(insertQuery, [
+      project_id,
+      userId,
+      email.toLowerCase(),
+      role,
+      JSON.stringify(rolePermissions[role]),
+      invitationToken,
+      defaultMessage,
+      expiresAt
+    ])
+
+    const invitation = insertResult.rows[0]
+
+    // Log activity
+    await logActivity(userId, 'project_invitation_sent', 'project', project_id, {
+      invited_email: email,
+      role: role,
+      invitation_id: invitation.id
+    })
+
+    res.json({
+      success: true,
+      invitation: {
+        id: invitation.id,
+        email: email,
+        role: role,
+        permissions: rolePermissions[role],
+        project_title: project.title,
+        expires_at: invitation.expires_at,
+        invitation_url: `${req.get('origin') || 'https://swayfiles.com'}/invite/${invitationToken}`
+      },
+      message: 'Project invitation sent successfully'
+    })
+
+  } catch (error) {
+    console.error('Send project invitation error:', error)
+    res.status(500).json({
+      error: 'Failed to send project invitation',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     })
   }

@@ -15,6 +15,57 @@ const userLimiter = rateLimit({
   legacyHeaders: false
 })
 
+// SECURITY FIX: Get current user data securely via authenticated endpoint
+// Replaces localStorage user data access to prevent XSS vulnerabilities
+router.get('/me', authenticateToken, userLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+
+    // Fetch user data from database
+    const userQuery = `
+      SELECT
+        id,
+        email,
+        name as username,
+        plan,
+        created_at,
+        updated_at
+      FROM users
+      WHERE id = $1
+    `
+
+    const result = await pool.query(userQuery, [userId])
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: 'User not found',
+        message: 'User account may have been deleted'
+      })
+    }
+
+    const user = result.rows[0]
+
+    res.json({
+      success: true,
+      user: {
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        plan: user.plan || 'free',
+        created_at: user.created_at,
+        updated_at: user.updated_at
+      }
+    })
+
+  } catch (error) {
+    console.error('Get current user error:', error)
+    res.status(500).json({
+      error: 'Failed to fetch user data',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
 // Update user settings
 router.put('/settings', authenticateToken, userLimiter, async (req, res) => {
   try {
@@ -190,6 +241,197 @@ router.post('/generate-api-key', authenticateToken, userLimiter, async (req, res
   } catch (error) {
     console.error('Generate API key error:', error)
     res.status(500).json({ error: 'Failed to generate API key' })
+  }
+})
+
+// Update workspace settings
+router.put('/workspace-settings', authenticateToken, userLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+    const {
+      theme = 'light',
+      language = 'en',
+      timezone = 'UTC',
+      auto_save = true,
+      show_line_numbers = true,
+      word_wrap = false,
+      tab_size = 2,
+      show_minimap = false,
+      font_size = 14,
+      font_family = 'monospace',
+      layout = 'default',
+      sidebar_collapsed = false,
+      file_tree_expanded = true
+    } = req.body
+
+    // Validate workspace settings
+    const validThemes = ['light', 'dark', 'auto']
+    const validLanguages = ['en', 'es', 'fr', 'de', 'ja', 'zh']
+
+    if (!validThemes.includes(theme)) {
+      return res.status(400).json({ error: 'Invalid theme selection' })
+    }
+
+    if (!validLanguages.includes(language)) {
+      return res.status(400).json({ error: 'Invalid language selection' })
+    }
+
+    if (font_size < 8 || font_size > 24) {
+      return res.status(400).json({ error: 'Font size must be between 8 and 24' })
+    }
+
+    const workspaceSettings = {
+      theme,
+      language,
+      timezone,
+      auto_save,
+      show_line_numbers,
+      word_wrap,
+      tab_size,
+      show_minimap,
+      font_size,
+      font_family,
+      layout,
+      sidebar_collapsed,
+      file_tree_expanded,
+      updated_at: new Date()
+    }
+
+    // Check if workspace settings already exist
+    const existingQuery = 'SELECT id FROM user_workspace_settings WHERE user_id = $1'
+    const existing = await pool.query(existingQuery, [userId])
+
+    if (existing.rows.length > 0) {
+      // Update existing settings
+      await pool.query(
+        'UPDATE user_workspace_settings SET settings = $1, updated_at = NOW() WHERE user_id = $2',
+        [JSON.stringify(workspaceSettings), userId]
+      )
+    } else {
+      // Create new settings
+      await pool.query(
+        `INSERT INTO user_workspace_settings (user_id, settings, created_at, updated_at)
+         VALUES ($1, $2, NOW(), NOW())`,
+        [userId, JSON.stringify(workspaceSettings)]
+      )
+    }
+
+    res.json({
+      success: true,
+      message: 'Workspace settings updated successfully',
+      settings: workspaceSettings
+    })
+
+  } catch (error) {
+    console.error('Update workspace settings error:', error)
+    res.status(500).json({
+      error: 'Failed to update workspace settings',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
+  }
+})
+
+// Update automation settings
+router.put('/automation-settings', authenticateToken, userLimiter, async (req, res) => {
+  try {
+    const userId = req.userId
+    const {
+      auto_backup = true,
+      backup_frequency = 'daily',
+      auto_sync_enabled = true,
+      sync_on_file_change = false,
+      webhook_notifications = false,
+      webhook_url = null,
+      slack_integration = false,
+      slack_webhook = null,
+      email_reports = true,
+      report_frequency = 'weekly',
+      auto_cleanup_enabled = false,
+      cleanup_after_days = 30,
+      auto_archive_projects = false,
+      archive_after_days = 90,
+      git_auto_commit = false,
+      commit_frequency = 'daily'
+    } = req.body
+
+    // Validate automation settings
+    const validFrequencies = ['hourly', 'daily', 'weekly', 'monthly']
+
+    if (!validFrequencies.includes(backup_frequency)) {
+      return res.status(400).json({ error: 'Invalid backup frequency' })
+    }
+
+    if (!validFrequencies.includes(report_frequency)) {
+      return res.status(400).json({ error: 'Invalid report frequency' })
+    }
+
+    if (cleanup_after_days < 1 || cleanup_after_days > 365) {
+      return res.status(400).json({ error: 'Cleanup days must be between 1 and 365' })
+    }
+
+    if (archive_after_days < 7 || archive_after_days > 730) {
+      return res.status(400).json({ error: 'Archive days must be between 7 and 730' })
+    }
+
+    // Validate webhook URL if provided
+    if (webhook_notifications && webhook_url) {
+      const urlRegex = /^https?:\/\/.+/
+      if (!urlRegex.test(webhook_url)) {
+        return res.status(400).json({ error: 'Invalid webhook URL format' })
+      }
+    }
+
+    const automationSettings = {
+      auto_backup,
+      backup_frequency,
+      auto_sync_enabled,
+      sync_on_file_change,
+      webhook_notifications,
+      webhook_url: webhook_notifications ? webhook_url : null,
+      slack_integration,
+      slack_webhook: slack_integration ? slack_webhook : null,
+      email_reports,
+      report_frequency,
+      auto_cleanup_enabled,
+      cleanup_after_days,
+      auto_archive_projects,
+      archive_after_days,
+      git_auto_commit,
+      commit_frequency,
+      updated_at: new Date()
+    }
+
+    // Check if automation settings already exist
+    const existingQuery = 'SELECT id FROM user_automation_settings WHERE user_id = $1'
+    const existing = await pool.query(existingQuery, [userId])
+
+    if (existing.rows.length > 0) {
+      // Update existing settings
+      await pool.query(
+        'UPDATE user_automation_settings SET settings = $1, updated_at = NOW() WHERE user_id = $2',
+        [JSON.stringify(automationSettings), userId]
+      )
+    } else {
+      // Create new settings
+      await pool.query(
+        `INSERT INTO user_automation_settings (user_id, settings, created_at, updated_at)
+         VALUES ($1, $2, NOW(), NOW())`,
+        [userId, JSON.stringify(automationSettings)]
+      )
+    }
+
+    res.json({
+      success: true,
+      message: 'Automation settings updated successfully',
+      settings: automationSettings
+    })
+
+  } catch (error) {
+    console.error('Update automation settings error:', error)
+    res.status(500).json({
+      error: 'Failed to update automation settings',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined
+    })
   }
 })
 

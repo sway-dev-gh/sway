@@ -109,7 +109,7 @@ router.get('/stats', authenticateToken, requirePermission(PERMISSIONS.VIEW_DASHB
       AND pa.max_concurrent_workspaces > 0
     `
 
-    const queryParams = [req.userId]
+    const queryParams = [req.user.userId]
 
     // Add workspace filter if provided
     if (workspace_id) {
@@ -163,7 +163,7 @@ router.post('/agents', authenticateToken, requireAgentManagement, async (req, re
     `
 
     const values = [
-      req.userId,
+      req.user.userId,
       agent_name,
       expertise_areas,
       'active',
@@ -224,7 +224,7 @@ router.get('/prompts', authenticateToken, requirePermission(PERMISSIONS.VIEW_DAS
       ))
     `
 
-    const queryParams = [req.userId]
+    const queryParams = [req.user.userId]
     let paramIndex = 2
 
     if (workspace_id) {
@@ -288,7 +288,7 @@ router.post('/prompts', authenticateToken, requirePermission(PERMISSIONS.EDIT_PR
         ORDER BY created_at DESC
         LIMIT 1
       `
-      const workspaceResult = await pool.query(workspaceQuery, [req.userId])
+      const workspaceResult = await pool.query(workspaceQuery, [req.user.userId])
       if (workspaceResult.rows.length > 0) {
         finalWorkspaceId = workspaceResult.rows[0].id
       } else {
@@ -308,7 +308,7 @@ router.post('/prompts', authenticateToken, requirePermission(PERMISSIONS.EDIT_PR
 
     const values = [
       finalWorkspaceId,
-      req.userId,
+      req.user.userId,
       original_prompt.trim(),
       prompt_type,
       JSON.stringify(context_metadata),
@@ -330,7 +330,7 @@ router.post('/prompts', authenticateToken, requirePermission(PERMISSIONS.EDIT_PR
     const logValues = [
       finalWorkspaceId,
       newPrompt.id,
-      req.userId,
+      req.user.userId,
       'prompt_submitted',
       `User submitted a new ${prompt_type} prompt`,
       'prompt_submission',
@@ -390,7 +390,7 @@ router.put('/prompts/:id', authenticateToken, checkPromptingAccess(), async (req
       ))
     `
 
-    const permissionResult = await pool.query(permissionQuery, [id, req.userId])
+    const permissionResult = await pool.query(permissionQuery, [id, req.user.userId])
 
     if (permissionResult.rows.length === 0) {
       return res.status(403).json({
@@ -603,7 +603,7 @@ router.put('/prompts/:id', authenticateToken, checkPromptingAccess(), async (req
       currentPrompt.workspace_id,
       updatedPrompt.id,
       agent_id || currentPrompt.agent_id,
-      req.userId,
+      req.user.userId,
       action,
       description,
       'prompt_lifecycle',
@@ -664,7 +664,7 @@ router.get('/workspace-config', authenticateToken, requirePermission(PERMISSIONS
       )
     `
 
-    const queryParams = [req.userId]
+    const queryParams = [req.user.userId]
 
     if (workspace_id) {
       query += ` AND wpc.workspace_id = $2::UUID`
@@ -720,7 +720,7 @@ router.get('/activity', authenticateToken, requirePermission(PERMISSIONS.VIEW_LO
       )
     `
 
-    const queryParams = [req.userId]
+    const queryParams = [req.user.userId]
     let paramIndex = 2
 
     if (workspace_id) {
@@ -776,7 +776,7 @@ router.get('/activity', authenticateToken, requirePermission(PERMISSIONS.VIEW_LO
 router.get('/permissions', authenticateToken, requirePermission(PERMISSIONS.VIEW_DASHBOARD), async (req, res) => {
   try {
     const { workspace_id } = req.query
-    const permissions = await getUserPermissions(req.userId, workspace_id)
+    const permissions = await getUserPermissions(req.user.userId, workspace_id)
 
     res.json({
       success: true,
@@ -825,7 +825,7 @@ router.post('/permissions', authenticateToken, requirePermission(PERMISSIONS.WOR
 
     const logValues = [
       workspace_id,
-      req.userId,
+      req.user.userId,
       'permissions_assigned',
       `Permissions assigned to user`,
       'permission_management',
@@ -884,7 +884,7 @@ router.delete('/permissions', authenticateToken, requirePermission(PERMISSIONS.W
 
     const logValues = [
       workspace_id,
-      req.userId,
+      req.user.userId,
       'permissions_revoked',
       `Permissions revoked from user`,
       'permission_management',
@@ -948,7 +948,7 @@ router.post('/permissions/role', authenticateToken, requirePermission(PERMISSION
 
     const logValues = [
       workspace_id,
-      req.userId,
+      req.user.userId,
       'role_assigned',
       `Role '${role}' assigned to user`,
       'permission_management',
@@ -1022,7 +1022,7 @@ router.post('/ai/test', authenticateToken, requirePermission(PERMISSIONS.EXECUTE
       `
 
       const logValues = [
-        req.userId,
+        req.user.userId,
         'ai_test_success',
         'AI service connection test successful',
         'ai_testing',
@@ -1053,7 +1053,7 @@ router.post('/ai/test', authenticateToken, requirePermission(PERMISSIONS.EXECUTE
       `
 
       const logValues = [
-        req.userId,
+        req.user.userId,
         'ai_test_failed',
         'AI service connection test failed',
         'ai_testing',
@@ -1094,7 +1094,7 @@ router.post('/prompts/:id/execute', authenticateToken, requirePromptExecution, a
       ))
     `
 
-    const promptResult = await pool.query(promptQuery, [id, req.userId])
+    const promptResult = await pool.query(promptQuery, [id, req.user.userId])
 
     if (promptResult.rows.length === 0) {
       return res.status(404).json({
@@ -1168,7 +1168,7 @@ router.post('/prompts/:id/execute', authenticateToken, requirePromptExecution, a
     const logValues = [
       promptData.workspace_id,
       id,
-      req.userId,
+      req.user.userId,
       'ai_manual_execution',
       'Prompt manually executed via API',
       'manual_execution',
@@ -1338,14 +1338,14 @@ router.put('/config', authenticateToken, requirePermission(PERMISSIONS.WORKSPACE
     `
 
     const logValues = [
-      req.userId,
+      req.user.userId,
       'config_updated',
       'System configuration updated',
       'configuration_management',
       'admin_workflow',
       JSON.stringify({
         updates: validUpdates,
-        updatedBy: req.userId,
+        updatedBy: req.user.userId,
         timestamp: new Date().toISOString()
       })
     ]
