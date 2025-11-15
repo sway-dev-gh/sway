@@ -17,7 +17,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>
   signup: (email: string, password: string, username?: string) => Promise<boolean>
   logout: () => void
-  refreshUser: () => void
+  refreshUser: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -29,13 +29,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Check if user is already logged in on app start
     // HttpOnly cookies will be automatically validated by backend
-    const savedUser = authApi.getUser()
-
-    if (savedUser) {
-      setUser(savedUser)
+    const checkUser = async () => {
+      try {
+        const savedUser = await authApi.getUser()
+        if (savedUser) {
+          setUser(savedUser)
+        }
+      } catch (error) {
+        console.log('No saved user found')
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    setIsLoading(false)
+    checkUser()
   }, [])
 
   const login = async (email: string, password: string): Promise<boolean> => {
@@ -61,11 +68,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null)
   }
 
-  const refreshUser = () => {
+  const refreshUser = async () => {
     // Refresh user data from localStorage (updated by successful API calls)
-    const savedUser = authApi.getUser()
-    if (savedUser) {
-      setUser(savedUser)
+    try {
+      const savedUser = await authApi.getUser()
+      if (savedUser) {
+        setUser(savedUser)
+      }
+    } catch (error) {
+      console.log('Error refreshing user:', error)
     }
   }
 
