@@ -366,23 +366,30 @@ setInterval(cleanupExpiredRequests, 60 * 60 * 1000)
 cleanupExpiredRequests()
 
 // Start server with Socket.IO support
-server.listen(PORT, () => {
-  console.log(`✓ Sway backend running on port ${PORT} - Collaboration platform ready!`)
-  console.log(`🚀 Real-time collaboration enabled via WebSockets`)
-})
-
-// Graceful shutdown
-const gracefulShutdown = () => {
-  console.log('🔄 Shutting down gracefully...')
-  server.close(() => {
-    console.log('✓ Server closed')
-    process.exit(0)
+// Start server only when running directly (not when imported as module for Vercel)
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`✓ Sway backend running on port ${PORT} - Collaboration platform ready!`)
+    console.log(`🚀 Real-time collaboration enabled via WebSockets`)
   })
+
+  // Graceful shutdown for direct execution
+  const gracefulShutdown = () => {
+    console.log('🔄 Shutting down gracefully...')
+    server.close(() => {
+      console.log('✓ Server closed')
+      process.exit(0)
+    })
+  }
+
+  process.on('SIGTERM', gracefulShutdown)
+  process.on('SIGINT', gracefulShutdown)
 }
 
-process.on('SIGTERM', gracefulShutdown)
-process.on('SIGINT', gracefulShutdown)
+// Export app for Vercel serverless deployment (default export required)
+module.exports = app
+module.exports.default = app
 
-// Export for Vercel serverless (if needed)
-module.exports = { app, server, io }
-// Force redeploy with Stripe routes - Wed Nov 13 21:44:00 PST 2025
+// Also export other components for compatibility
+module.exports.server = server
+module.exports.io = io
