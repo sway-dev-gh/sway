@@ -26,8 +26,10 @@ const uploadLimiter = rateLimit({
   legacyHeaders: false
 })
 
-// Configure multer for file uploads
-const uploadsDir = path.join(__dirname, '../uploads')
+// Configure multer for file uploads - use /tmp for serverless compatibility
+const uploadsDir = process.env.NODE_ENV === 'production'
+  ? '/tmp/uploads'
+  : path.join(__dirname, '../uploads')
 
 // Ensure uploads directory exists
 if (!fs.existsSync(uploadsDir)) {
